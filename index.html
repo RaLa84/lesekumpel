@@ -1,0 +1,519 @@
+<!doctype html>
+<html lang="de" data-syllmode="off">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Lesekumpel – Berlin</title>
+  <meta name="description" content="Lesetext über Berlin mit Fragen zum Verständnis. Lesekumpel – Lesenlernen inklusiv und webbasiert." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg:#ffffff; --fg:#16202a; --muted:#4a5b6a; --brand:#12a594;
+      --card:#f7fbfc; --border:#d0dde4;
+      --focus:#ffd54a;
+    }
+    [data-contrast="high"] {
+      --bg:#000; --fg:#fff; --muted:#e6e6e6; --card:#111; --border:#2a2a2a; --brand:#00e5c2;
+      --focus:#ffcc00;
+    }
+
+    html,body {
+      margin:0; padding:0;
+      background:var(--bg); color:var(--fg);
+      font-family:"Atkinson Hyperlegible", system-ui, -apple-system, Segoe UI, Roboto, Arial, "Noto Sans", sans-serif;
+    }
+    a { color:var(--brand); text-decoration:none; }
+    a:focus, button:focus { outline:3px solid var(--brand); outline-offset:2px; }
+
+    .visually-hidden{
+      position:absolute !important; width:1px; height:1px; padding:0; margin:-1px;
+      overflow:hidden; clip:rect(0 0 0 0); white-space:nowrap; border:0;
+    }
+
+    header{ position:sticky; top:0; background:var(--bg); border-bottom:1px solid var(--border); z-index:20; }
+    .wrap{ max-width:900px; margin:0 auto; padding:1rem; }
+    nav{ position:relative; display:flex; align-items:center; gap:1rem; justify-content:space-between; flex-wrap:wrap; }
+
+    /* BRAND-LOGO */
+    .brand{ display:flex; align-items:center; gap:.5rem; font-weight:700; text-decoration:none; color:inherit; }
+    .brand img{
+      height:50px; width:50px;
+      display:block;
+      border-radius:.4rem;
+      object-fit:contain;
+    }
+
+    .burger{
+      display:inline-flex; align-items:center; justify-content:center;
+      width:44px; height:44px;
+      background:var(--card); border:1px solid var(--border); border-radius:.6rem; cursor:pointer;
+    }
+    .burger svg{ width:22px; height:22px; }
+
+    .menu{
+      display:none;
+      position:absolute; top:100%; left:0; right:0;
+      background:var(--bg);
+      border-bottom:1px solid var(--border);
+      padding:.5rem 0;
+      box-shadow:0 6px 12px rgba(0,0,0,.06);
+    }
+    .menu[data-open="true"]{ display:block; }
+    .menu a{ display:block; padding:.75rem 1rem; border-radius:.5rem; }
+    .menu a:hover, .menu a:focus{ background:var(--card); }
+
+    @media (min-width: 720px){
+      .burger{ display:none; }
+      .menu{
+        position:static; display:flex; align-items:center; gap:.25rem;
+        border:none; padding:0; box-shadow:none;
+      }
+      .menu a{ padding:.5rem .75rem; }
+    }
+
+    main{ padding-block:1rem 3rem; }
+    .hero{ background:var(--card); border:1px solid var(--border); border-radius:1rem; overflow:hidden; }
+    .hero img{
+      width:100%; height:auto; max-width:500px; max-height:500px; object-fit:cover;
+      display:block; margin:0 auto;
+    }
+    .content{ padding:1rem 1.25rem 1.5rem; }
+    h1{ margin:.25rem 0 .25rem; font-size:clamp(1.4rem, 2vw + 1rem, 2.2rem); }
+    .meta{ color:var(--muted); margin-bottom:.5rem; }
+
+    .tools{ display:flex; flex-wrap:wrap; gap:.5rem; margin:.5rem 0 1rem; }
+    .tools button{
+      background:var(--brand); color:#001713; border:none; padding:.55rem .8rem;
+      border-radius:.7rem; cursor:pointer; font-weight:700;
+    }
+
+    .segmented {
+      display:inline-flex; border:1px solid var(--border); border-radius:.6rem; overflow:hidden; background:var(--bg);
+    }
+    .segmented button { border:0; padding:.5rem .75rem; cursor:pointer; background:transparent; }
+    .segmented button[aria-pressed="true"]{ background:var(--brand); color:#001713; font-weight:700; }
+
+    article p{ line-height:1.7; font-size:1.125rem; margin:.6rem 0; }
+
+    .qa{ margin-top:1rem; padding:1rem; border:1px solid var(--border); border-radius:.8rem; background:var(--card); }
+    .qa h2{ margin-top:0; font-size:1.1rem; }
+
+    .survey{ display:flex; align-items:center; gap:.5rem; margin-top:.5rem; }
+    .survey button{ background:#fff; border:1px solid var(--border); border-radius:.6rem; padding:.4rem .6rem; cursor:pointer; }
+
+    footer{ border-top:1px solid var(--border); background:var(--bg); }
+    .footgrid{ display:grid; grid-template-columns:1fr; gap:.5rem; }
+    @media (min-width: 720px){
+      .footgrid{ grid-template-columns:1fr 1fr; }
+    }
+
+    .answers{ display:flex; flex-wrap:wrap; gap:.6rem; margin-bottom:1rem; }
+    .answers button{
+      background:var(--bg);
+      border:2px solid var(--border);
+      border-radius:.6rem;
+      padding:.5rem 1rem;
+      cursor:pointer;
+      box-shadow:0 2px 3px rgba(0,0,0,0.05);
+      font-size:1rem;
+      transition:background .2s, border-color .2s, box-shadow .2s;
+    }
+    .answers button:hover, .answers button:focus{
+      background:var(--brand);
+      border-color:var(--brand);
+      color:#001713;
+      font-weight:700;
+      box-shadow:0 0 0 3px rgba(18,165,148,0.25);
+    }
+
+    /* Silben-Basis */
+    .word{ position:relative; }
+    .syll{ padding-bottom:.05em; border-bottom:1px dotted var(--border); }
+
+    /* Modi: Farbige Silben / Trennstriche */
+    html[data-syllmode="color"] .word .syll:nth-child(odd){ background:rgba(18,165,148,.15); }
+    html[data-syllmode="color"] .word .syll:nth-child(even){ background:rgba(18,165,148,.28); }
+    html[data-syllmode="hyphen"] .word .syll + .syll::before{
+      content:"-"; position:relative; left:-.15em; margin:0 .15em; color:currentColor; opacity:.7;
+    }
+
+    /* High Contrast: Farben raus, Linien deutlicher */
+    html[data-contrast="high"][data-syllmode="color"] .syll{ background:transparent; }
+    html[data-contrast="high"] .syll{ border-bottom:2px dotted currentColor; }
+
+    /* Vorlese-Fokus auf Wort */
+    .read-focus{
+      background: var(--focus);
+      border-radius:.25rem;
+      box-shadow: 0 0 0 2px rgba(0,0,0,0.08) inset;
+      transition: background .12s ease-in-out;
+    }
+
+    /* Lupe (Lesehilfe) */
+    .lens {
+      position: fixed;
+      z-index: 30;
+      pointer-events: none;
+      padding: .25rem .5rem;
+      background: var(--bg);
+      border: 2px solid var(--brand);
+      border-radius: .6rem;
+      box-shadow: 0 8px 18px rgba(0,0,0,.12);
+      font-weight: 700;
+      line-height: 1.2;
+      transform: translate(-50%, -120%);
+      min-width: 48px;
+      text-align: center;
+      display: none;
+    }
+    .lens[data-show="true"] { display:block; }
+    .lens .lens-text {
+      font-size: 1.6rem; /* wird dynamisch skaliert */
+      white-space: nowrap;
+    }
+  </style>
+</head>
+<body>
+<a href="#main" class="visually-hidden">Zum Inhalt springen</a>
+
+<header role="banner">
+  <div class="wrap">
+    <nav aria-label="Hauptnavigation">
+      <a href="/" class="brand">
+        <img src="/Ressources/logo1.png" alt="Lesekumpel Logo" />
+        <span>Lesekumpel</span>
+      </a>
+
+      <button class="burger" id="burger"
+              aria-label="Menü öffnen"
+              aria-expanded="false"
+              aria-controls="primary-menu">
+        <svg viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+          <path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+        </svg>
+      </button>
+
+      <div class="menu" id="primary-menu" role="menubar" aria-label="Seiten" data-open="false">
+        <a role="menuitem" href="/">Tool</a>
+        <a role="menuitem" href="/themen">Themen</a>
+        <a role="menuitem" href="/about">About</a>
+        <a role="menuitem" href="/spenden">Spenden</a>
+      </div>
+
+      <div class="a11y" aria-label="Barrierefreiheits-Einstellungen">
+        <button id="btnFontUp" aria-label="Schrift größer">A+</button>
+        <button id="btnFontDown" aria-label="Schrift kleiner">A−</button>
+        <button id="btnContrast" aria-pressed="false" aria-label="Kontrast umschalten">Kontrast</button>
+      </div>
+    </nav>
+  </div>
+</header>
+
+<main id="main" class="wrap" role="main">
+  <section class="hero" aria-labelledby="title">
+    <img src="/Ressources/berlin.png" alt="Vier Kinder mit Rucksäcken stehen vor dem Brandenburger Tor in Berlin." />
+    <div class="content">
+      <h1 id="title">Berlin</h1>
+      <p class="meta">Leseübung • Niveau: Anfänger • Silben: aus / färben / trennen</p>
+
+      <div class="tools" aria-label="Lese-Tools">
+        <button id="readBtn">Vorlesen</button>
+        <!-- Fokus-Button schaltet jetzt Lens + Auto-Scroll gemeinsam -->
+        <button id="focusBtn" aria-pressed="false">Fokuslesen</button>
+        <button id="stopBtn">Stopp</button>
+        <div class="segmented" role="group" aria-label="Silben-Darstellung">
+          <button id="syllOff" aria-pressed="true">Aus</button>
+          <button id="syllColor" aria-pressed="false">Färben</button>
+          <button id="syllHyphen" aria-pressed="false">Trennen</button>
+        </div>
+      </div>
+
+      <!-- Lesetext -->
+      <article aria-label="Lesetext" id="reader">
+        <p><span class="word"><span class="syll">Ber</span><span class="syll">lin</span></span> ist die <span class="word"><span class="syll">Haupt</span><span class="syll">stadt</span></span> von <span class="word"><span class="syll">Deutsch</span><span class="syll">land</span></span>.</p>
+        <p>In <span class="word"><span class="syll">Ber</span><span class="syll">lin</span></span> gibt es <span class="word"><span class="syll">vie</span><span class="syll">le</span></span> <span class="word"><span class="syll">span</span><span class="syll">nen</span><span class="syll">de</span></span> <span class="word"><span class="syll">Din</span><span class="syll">ge</span></span> zu <span class="word"><span class="syll">se</span><span class="syll">hen</span></span>.</p>
+        <p>Das <span class="word"><span class="syll">Bran</span><span class="syll">den</span><span class="syll">bur</span><span class="syll">ger</span></span> Tor ist ein <span class="word"><span class="syll">be</span><span class="syll">kannt</span><span class="syll">es</span></span> Tor in der <span class="word"><span class="syll">Stadt</span></span>.</p>
+        <p><span class="word"><span class="syll">Vie</span><span class="syll">le</span></span> <span class="word"><span class="syll">Men</span><span class="syll">schen</span></span> <span class="word"><span class="syll">ma</span><span class="syll">chen</span></span> dort <span class="word"><span class="syll">Fo</span><span class="syll">tos</span></span>.</p>
+        <p>Es gibt auch eine <span class="word"><span class="syll">gro</span><span class="syll">ße</span></span> Uhr, die <span class="word"><span class="syll">Welt</span><span class="syll">zeit</span><span class="syll">uhr</span></span> heißt.</p>
+        <p>In <span class="word"><span class="syll">Ber</span><span class="syll">lin</span></span> <span class="word"><span class="syll">fah</span><span class="syll">ren</span></span> <span class="word"><span class="syll">vie</span><span class="syll">le</span></span> <span class="word"><span class="syll">Bus</span><span class="syll">se</span></span> und <span class="word"><span class="syll">Bah</span><span class="syll">nen</span></span>.</p>
+        <p>Man kann durch <span class="word"><span class="syll">Parks</span></span> <span class="word"><span class="syll">ge</span><span class="syll">hen</span></span> oder am <span class="word"><span class="syll">Fluss</span></span> <span class="word"><span class="syll">Spree</span></span> <span class="word"><span class="syll">sit</span><span class="syll">zen</span></span>.</p>
+        <p>Im Zoo von <span class="word"><span class="syll">Ber</span><span class="syll">lin</span></span> <span class="word"><span class="syll">le</span><span class="syll">ben</span></span> <span class="word"><span class="syll">vie</span><span class="syll">le</span></span> <span class="word"><span class="syll">Tie</span><span class="syll">re</span></span> aus <span class="word"><span class="syll">al</span><span class="syll">len</span></span> <span class="word"><span class="syll">Län</span><span class="syll">dern</span></span>.</p>
+        <p><span class="word"><span class="syll">Ber</span><span class="syll">lin</span></span> ist <span class="word"><span class="syll">laut</span></span> und <span class="word"><span class="syll">bunt</span></span>, aber auch <span class="word"><span class="syll">schön</span></span> und <span class="word"><span class="syll">voll</span></span> <span class="word"><span class="syll">Le</span><span class="syll">ben</span></span>.</p>
+      </article>
+
+      <div class="qa" aria-labelledby="fragen">
+        <h2 id="fragen">Fragen</h2>
+
+        <div class="question">
+          <p>1. Was kann man in Berlin sehen?</p>
+          <div class="answers">
+            <button>Das Brandenburger Tor</button>
+            <button>Die Alpen</button>
+            <button>Den Kölner Dom</button>
+          </div>
+        </div>
+
+        <div class="question">
+          <p>2. Wie heißt der Fluss in Berlin?</p>
+          <div class="answers">
+            <button>Spree</button>
+            <button>Elbe</button>
+            <button>Rhein</button>
+          </div>
+        </div>
+
+        <div class="question">
+          <p>3. Was gefällt dir an der Stadt Berlin?</p>
+          <div class="answers">
+            <button>Die Parks</button>
+            <button>Die vielen Menschen</button>
+            <button>Die Tiere im Zoo</button>
+          </div>
+        </div>
+
+        <div class="survey" aria-label="Microsurvey zur Geschichte">
+          <span>Wie fandest du den Text?</span>
+          <button id="thumbUp" aria-label="Daumen hoch">👍</button>
+          <button id="thumbDown" aria-label="Daumen runter">👎</button>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer role="contentinfo">
+  <div class="wrap footgrid">
+    <p><strong>Lesekumpel</strong> – Lesenlernen barrierefrei & webbasiert.</p>
+    <p><a href="/impressum">Impressum</a> • <a href="/datenschutz">Datenschutz</a> • <a href="/kontakt">Kontakt</a></p>
+  </div>
+</footer>
+
+<!-- Lupe -->
+<div class="lens" id="lens" aria-hidden="true"><span class="lens-text" id="lensText"></span></div>
+
+<script>
+  // ---------- A11y-Einstellungen ----------
+  const root = document.documentElement;
+  const btnContrast = document.getElementById('btnContrast');
+  const btnFontUp = document.getElementById('btnFontUp');
+  const btnFontDown = document.getElementById('btnFontDown');
+  let base = 100; // Prozent
+
+  btnContrast.addEventListener('click', () => {
+    const high = root.getAttribute('data-contrast') === 'high';
+    root.setAttribute('data-contrast', high ? 'normal' : 'high');
+    btnContrast.setAttribute('aria-pressed', String(!high));
+  });
+  btnFontUp.addEventListener('click', () => {
+    base = Math.min(base + 10, 200);
+    root.style.fontSize = base + '%';
+  });
+  btnFontDown.addEventListener('click', () => {
+    base = Math.max(base - 10, 70);
+    root.style.fontSize = base + '%';
+  });
+
+  // ---------- Burger-Menü ----------
+  const burger = document.getElementById('burger');
+  const menu = document.getElementById('primary-menu');
+  function closeMenu() {
+    menu.dataset.open = "false";
+    burger.setAttribute('aria-expanded', 'false');
+    burger.setAttribute('aria-label', 'Menü öffnen');
+  }
+  function openMenu() {
+    menu.dataset.open = "true";
+    burger.setAttribute('aria-expanded', 'true');
+    burger.setAttribute('aria-label', 'Menü schließen');
+    const firstLink = menu.querySelector('a');
+    if (firstLink) firstLink.focus();
+  }
+  burger.addEventListener('click', () => {
+    const isOpen = menu.dataset.open === 'true';
+    if (isOpen) { closeMenu(); } else { openMenu(); }
+  });
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape' && menu.dataset.open === 'true') { closeMenu(); burger.focus(); }
+  });
+  document.addEventListener('click', (e) => {
+    if (menu.dataset.open === 'true') {
+      const inside = menu.contains(e.target) || burger.contains(e.target);
+      if (!inside) closeMenu();
+    }
+  });
+
+  // ---------- Vorlesen + Auto-Fokus ----------
+  const readBtn = document.getElementById('readBtn');
+  const stopBtn = document.getElementById('stopBtn');
+  const focusBtn = document.getElementById('focusBtn');
+  const synth = window.speechSynthesis;
+  const readerEl = document.getElementById('reader');
+
+  function collectWords() {
+    const words = [...readerEl.querySelectorAll('.word')];
+    let plain = ''; const map = [];
+    words.forEach((w, idx) => {
+      const t = w.textContent;
+      for (let i = 0; i < t.length; i++) map.push(idx);
+      plain += t; plain += ' '; map.push(-1);
+    });
+    return { words, plain: plain.trimEnd(), map };
+  }
+
+  function textForTTS() {
+    const clone = readerEl.cloneNode(true);
+    clone.querySelectorAll('.syll').forEach(el => { el.outerHTML = el.textContent; });
+    clone.querySelectorAll('.word').forEach(el => { el.outerHTML = el.textContent + ' '; });
+    return clone.textContent.replace(/\s+/g, ' ').trim();
+  }
+
+  let currentFocusIndex = -1;
+  function highlightWord(words, index) {
+    if (index === currentFocusIndex) return;
+    if (currentFocusIndex >= 0 && words[currentFocusIndex]) {
+      words[currentFocusIndex].classList.remove('read-focus');
+    }
+    currentFocusIndex = index;
+    const el = words[index]; if (!el) return;
+    el.classList.add('read-focus');
+    const rect = el.getBoundingClientRect();
+    if (rect.top < 80 || rect.bottom > window.innerHeight - 80) {
+      el.scrollIntoView({ block: 'center', behavior: 'smooth' });
+    }
+  }
+  function clearReadFocus() {
+    const prev = readerEl.querySelector('.read-focus');
+    if (prev) prev.classList.remove('read-focus');
+    currentFocusIndex = -1;
+  }
+
+  let focusTimer = null;
+  let focusActive = false;   // steuert Auto-Scroll + Lens
+  let lensEnabled = false;   // Lens ist an, wenn Fokus an
+
+  focusBtn.addEventListener('click', () => {
+    focusActive = !focusActive;
+    focusBtn.setAttribute('aria-pressed', String(focusActive));
+    // Auto-Scroll togglen
+    if (focusActive) {
+      const scroller = readerEl;
+      let y = scroller.getBoundingClientRect().top + window.scrollY - 12;
+      focusTimer = setInterval(() => { window.scrollTo({ top: y, behavior: 'smooth' }); y += 36; }, 1200);
+    } else {
+      if (focusTimer) { clearInterval(focusTimer); focusTimer = null; }
+      // Lens auch aus
+      lensEnabled = false;
+      lens.dataset.show = "false";
+    }
+    // Lens-Status folgt Fokus-Status
+    lensEnabled = focusActive;
+  });
+
+  readBtn.addEventListener('click', () => {
+    if (!('speechSynthesis' in window)) { alert('Vorlesen wird von diesem Browser nicht unterstützt.'); return; }
+    synth.cancel(); clearReadFocus();
+
+    const { words, map } = collectWords();
+    const utt = new SpeechSynthesisUtterance(textForTTS());
+    utt.lang = 'de-DE'; utt.rate = 0.95;
+
+    if ('onboundary' in utt) {
+      utt.onboundary = (e) => {
+        if (e.name === 'word' || e.charIndex !== undefined) {
+          const i = Math.min(e.charIndex, map.length - 1);
+          let wi = map[i];
+          if (wi === -1) { let k = i + 1; while (k < map.length && map[k] === -1) k++; wi = map[k] ?? wi; }
+          if (wi >= 0) highlightWord(words, wi);
+        }
+      };
+    }
+    utt.onend = utt.onerror = () => { clearReadFocus(); };
+
+    synth.speak(utt);
+  });
+
+  stopBtn.addEventListener('click', () => {
+    synth.cancel();
+    clearReadFocus();
+    // Fokus AUS (inkl. Auto-Scroll + Lens)
+    if (focusTimer) { clearInterval(focusTimer); focusTimer = null; }
+    focusActive = false;
+    focusBtn.setAttribute('aria-pressed', 'false');
+    lensEnabled = false;
+    lens.dataset.show = "false";
+  });
+
+  // ---------- Lesehilfe-Lupe ----------
+  const lens = document.getElementById('lens');
+  const lensText = document.getElementById('lensText');
+
+  function showLensForWord(wEl, clientX, clientY) {
+    if (!lensEnabled || !wEl) { lens.dataset.show = "false"; return; }
+    const txt = wEl.textContent.trim(); if (!txt) { lens.dataset.show = "false"; return; }
+    lensText.textContent = txt;
+    const rootPx = parseFloat(getComputedStyle(document.documentElement).fontSize) || 16;
+    lensText.style.fontSize = Math.max(1.4, Math.min(2.2, rootPx / 10 + 1.2)) + "rem";
+    lens.style.left = clientX + "px";
+    lens.style.top  = clientY + "px";
+    lens.dataset.show = "true";
+  }
+  function findWordTarget(el) {
+    if (!el) return null;
+    if (el.classList && el.classList.contains('word')) return el;
+    return el.closest ? el.closest('.word') : null;
+  }
+
+  // Maus: Hover bewegt Lupe (nur wenn Fokus/Lens an)
+  readerEl.addEventListener('mousemove', (e) => {
+    if (!lensEnabled) { lens.dataset.show = "false"; return; }
+    const wEl = findWordTarget(e.target);
+    showLensForWord(wEl, e.clientX, e.clientY);
+  });
+  readerEl.addEventListener('mouseleave', () => { lens.dataset.show = "false"; });
+
+  // Touch: Tippen zeigt Lupe kurz an und setzt Fokus (nur wenn Fokus/Lens an)
+  readerEl.addEventListener('touchstart', (e) => {
+    if (!lensEnabled) return;
+    const touch = e.touches[0];
+    const el = document.elementFromPoint(touch.clientX, touch.clientY);
+    const wEl = findWordTarget(el);
+    if (wEl) {
+      showLensForWord(wEl, touch.clientX, touch.clientY - 10);
+      wEl.classList.add('read-focus');
+      setTimeout(() => {
+        lens.dataset.show = "false";
+        wEl.classList.remove('read-focus');
+      }, 900);
+    }
+  }, { passive: true });
+
+  // ---------- Microsurvey ----------
+  document.getElementById('thumbUp').addEventListener('click', () => alert('Danke!'));
+  document.getElementById('thumbDown').addEventListener('click', () => alert('Danke fürs Feedback!'));
+
+  // ---------- Antwortbuttons Feedback ----------
+  document.querySelectorAll('.answers button').forEach(btn => {
+    btn.addEventListener('click', () => { alert(`Danke für deine Antwort: "${btn.textContent}"`); });
+  });
+
+  // ---------- Silben-Modus ----------
+  const modeButtons = {
+    off:    document.getElementById('syllOff'),
+    color:  document.getElementById('syllColor'),
+    hyphen: document.getElementById('syllHyphen')
+  };
+  function setSyllMode(mode){
+    root.setAttribute('data-syllmode', mode);
+    modeButtons.off.setAttribute('aria-pressed', String(mode === 'off'));
+    modeButtons.color.setAttribute('aria-pressed', String(mode === 'color'));
+    modeButtons.hyphen.setAttribute('aria-pressed', String(mode === 'hyphen'));
+  }
+  modeButtons.off.addEventListener('click',   () => setSyllMode('off'));
+  modeButtons.color.addEventListener('click', () => setSyllMode('color'));
+  modeButtons.hyphen.addEventListener('click',() => setSyllMode('hyphen'));
+  setSyllMode(root.getAttribute('data-syllmode') || 'off');
+</script>
+</body>
+</html>
