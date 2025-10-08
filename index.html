@@ -182,7 +182,7 @@
   <div class="wrap">
     <nav aria-label="Hauptnavigation">
       <a href="/" class="brand">
-        <img src="logo1.png" alt="Lesekumpel Logo" />
+        <img src="/Ressources/logo1.png" alt="Lesekumpel Logo" />
         <span>Lesekumpel</span>
       </a>
 
@@ -213,15 +213,15 @@
 
 <main id="main" class="wrap" role="main">
   <section class="hero" aria-labelledby="title">
-    <img src="berlin.png" alt="Vier Kinder mit Rucksäcken stehen vor dem Brandenburger Tor in Berlin." />
+    <img src="/Ressources/berlin.png" alt="Vier Kinder mit Rucksäcken stehen vor dem Brandenburger Tor in Berlin." />
     <div class="content">
       <h1 id="title">Berlin</h1>
       <p class="meta">Leseübung • Niveau: Anfänger • Silben: aus / färben / trennen</p>
 
       <div class="tools" aria-label="Lese-Tools">
         <button id="readBtn">Vorlesen</button>
-        <!-- Fokus-Button schaltet jetzt Lens + Auto-Scroll gemeinsam -->
-        <button id="focusBtn" aria-pressed="false">Fokuslesen</button>
+        <!-- Fokus-Button: toggelt NUR die Lupe -->
+        <button id="focusBtn" aria-pressed="false">Lesehilfe</button>
         <button id="stopBtn">Stopp</button>
         <div class="segmented" role="group" aria-label="Silben-Darstellung">
           <button id="syllOff" aria-pressed="true">Aus</button>
@@ -344,7 +344,7 @@
     }
   });
 
-  // ---------- Vorlesen + Auto-Fokus ----------
+  // ---------- Vorlesen + Wort-Fokus ----------
   const readBtn = document.getElementById('readBtn');
   const stopBtn = document.getElementById('stopBtn');
   const focusBtn = document.getElementById('focusBtn');
@@ -378,38 +378,13 @@
     currentFocusIndex = index;
     const el = words[index]; if (!el) return;
     el.classList.add('read-focus');
-    const rect = el.getBoundingClientRect();
-    if (rect.top < 80 || rect.bottom > window.innerHeight - 80) {
-      el.scrollIntoView({ block: 'center', behavior: 'smooth' });
-    }
+    // kein Auto-Scroll mehr
   }
   function clearReadFocus() {
     const prev = readerEl.querySelector('.read-focus');
     if (prev) prev.classList.remove('read-focus');
     currentFocusIndex = -1;
   }
-
-  let focusTimer = null;
-  let focusActive = false;   // steuert Auto-Scroll + Lens
-  let lensEnabled = false;   // Lens ist an, wenn Fokus an
-
-  focusBtn.addEventListener('click', () => {
-    focusActive = !focusActive;
-    focusBtn.setAttribute('aria-pressed', String(focusActive));
-    // Auto-Scroll togglen
-    if (focusActive) {
-      const scroller = readerEl;
-      let y = scroller.getBoundingClientRect().top + window.scrollY - 12;
-      focusTimer = setInterval(() => { window.scrollTo({ top: y, behavior: 'smooth' }); y += 36; }, 1200);
-    } else {
-      if (focusTimer) { clearInterval(focusTimer); focusTimer = null; }
-      // Lens auch aus
-      lensEnabled = false;
-      lens.dataset.show = "false";
-    }
-    // Lens-Status folgt Fokus-Status
-    lensEnabled = focusActive;
-  });
 
   readBtn.addEventListener('click', () => {
     if (!('speechSynthesis' in window)) { alert('Vorlesen wird von diesem Browser nicht unterstützt.'); return; }
@@ -434,20 +409,25 @@
     synth.speak(utt);
   });
 
+  // ---------- Lens-Only Fokus (kein Scrollen) ----------
+  const lens = document.getElementById('lens');
+  const lensText = document.getElementById('lensText');
+  let lensEnabled = false; // wird nur über Fokus-Button geschaltet
+
+  focusBtn.addEventListener('click', () => {
+    lensEnabled = !lensEnabled;
+    focusBtn.setAttribute('aria-pressed', String(lensEnabled));
+    if (!lensEnabled) lens.dataset.show = "false";
+  });
+
   stopBtn.addEventListener('click', () => {
     synth.cancel();
     clearReadFocus();
-    // Fokus AUS (inkl. Auto-Scroll + Lens)
-    if (focusTimer) { clearInterval(focusTimer); focusTimer = null; }
-    focusActive = false;
-    focusBtn.setAttribute('aria-pressed', 'false');
+    // Lens aus
     lensEnabled = false;
+    focusBtn.setAttribute('aria-pressed','false');
     lens.dataset.show = "false";
   });
-
-  // ---------- Lesehilfe-Lupe ----------
-  const lens = document.getElementById('lens');
-  const lensText = document.getElementById('lensText');
 
   function showLensForWord(wEl, clientX, clientY) {
     if (!lensEnabled || !wEl) { lens.dataset.show = "false"; return; }
@@ -465,7 +445,7 @@
     return el.closest ? el.closest('.word') : null;
   }
 
-  // Maus: Hover bewegt Lupe (nur wenn Fokus/Lens an)
+  // Maus: Hover bewegt Lupe (nur wenn Lens an)
   readerEl.addEventListener('mousemove', (e) => {
     if (!lensEnabled) { lens.dataset.show = "false"; return; }
     const wEl = findWordTarget(e.target);
@@ -473,7 +453,7 @@
   });
   readerEl.addEventListener('mouseleave', () => { lens.dataset.show = "false"; });
 
-  // Touch: Tippen zeigt Lupe kurz an und setzt Fokus (nur wenn Fokus/Lens an)
+  // Touch: Tippen zeigt Lupe kurz an und setzt temporären Fokus (nur wenn Lens an)
   readerEl.addEventListener('touchstart', (e) => {
     if (!lensEnabled) return;
     const touch = e.touches[0];
@@ -495,7 +475,9 @@
 
   // ---------- Antwortbuttons Feedback ----------
   document.querySelectorAll('.answers button').forEach(btn => {
-    btn.addEventListener('click', () => { alert(`Danke für deine Antwort: "${btn.textContent}"`); });
+    btn.addEventListener('click', () => {
+      alert(`Danke für deine Antwort: "${btn.textContent}"`);
+    });
   });
 
   // ---------- Silben-Modus ----------
