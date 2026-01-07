@@ -212,75 +212,15 @@
 </header>
 
 <main id="main" class="wrap" role="main">
-  <section class="hero" aria-labelledby="title">
-    <img src="berlin.png" alt="Vier Kinder mit Rucksäcken stehen vor dem Brandenburger Tor in Berlin." />
-    <div class="content">
-      <h1 id="title">Berlin</h1>
-      <p class="meta">Leseübung • Niveau: Anfänger • Silben: aus / färben / trennen</p>
-
-      <div class="tools" aria-label="Lese-Tools">
-        <button id="readBtn">Vorlesen</button>
-        <!-- Fokus-Button: toggelt NUR die Lupe -->
-        <button id="focusBtn" aria-pressed="false">Lesehilfe</button>
-        <button id="stopBtn">Stopp</button>
-        <div class="segmented" role="group" aria-label="Silben-Darstellung">
-          <button id="syllOff" aria-pressed="true">Aus</button>
-          <button id="syllColor" aria-pressed="false">Färben</button>
-          <button id="syllHyphen" aria-pressed="false">Trennen</button>
-        </div>
-      </div>
-
-      <!-- Lesetext -->
-      <article aria-label="Lesetext" id="reader">
-        <p><span class="word"><span class="syll">Ber</span><span class="syll">lin</span></span> ist die <span class="word"><span class="syll">Haupt</span><span class="syll">stadt</span></span> von <span class="word"><span class="syll">Deutsch</span><span class="syll">land</span></span>.</p>
-        <p>In <span class="word"><span class="syll">Ber</span><span class="syll">lin</span></span> gibt es <span class="word"><span class="syll">vie</span><span class="syll">le</span></span> <span class="word"><span class="syll">span</span><span class="syll">nen</span><span class="syll">de</span></span> <span class="word"><span class="syll">Din</span><span class="syll">ge</span></span> zu <span class="word"><span class="syll">se</span><span class="syll">hen</span></span>.</p>
-        <p>Das <span class="word"><span class="syll">Bran</span><span class="syll">den</span><span class="syll">bur</span><span class="syll">ger</span></span> Tor ist ein <span class="word"><span class="syll">be</span><span class="syll">kannt</span><span class="syll">es</span></span> Tor in der <span class="word"><span class="syll">Stadt</span></span>.</p>
-        <p><span class="word"><span class="syll">Vie</span><span class="syll">le</span></span> <span class="word"><span class="syll">Men</span><span class="syll">schen</span></span> <span class="word"><span class="syll">ma</span><span class="syll">chen</span></span> dort <span class="word"><span class="syll">Fo</span><span class="syll">tos</span></span>.</p>
-        <p>Es gibt auch eine <span class="word"><span class="syll">gro</span><span class="syll">ße</span></span> Uhr, die <span class="word"><span class="syll">Welt</span><span class="syll">zeit</span><span class="syll">uhr</span></span> heißt.</p>
-        <p>In <span class="word"><span class="syll">Ber</span><span class="syll">lin</span></span> <span class="word"><span class="syll">fah</span><span class="syll">ren</span></span> <span class="word"><span class="syll">vie</span><span class="syll">le</span></span> <span class="word"><span class="syll">Bus</span><span class="syll">se</span></span> und <span class="word"><span class="syll">Bah</span><span class="syll">nen</span></span>.</p>
-        <p>Man kann durch <span class="word"><span class="syll">Parks</span></span> <span class="word"><span class="syll">ge</span><span class="syll">hen</span></span> oder am <span class="word"><span class="syll">Fluss</span></span> <span class="word"><span class="syll">Spree</span></span> <span class="word"><span class="syll">sit</span><span class="syll">zen</span></span>.</p>
-        <p>Im Zoo von <span class="word"><span class="syll">Ber</span><span class="syll">lin</span></span> <span class="word"><span class="syll">le</span><span class="syll">ben</span></span> <span class="word"><span class="syll">vie</span><span class="syll">le</span></span> <span class="word"><span class="syll">Tie</span><span class="syll">re</span></span> aus <span class="word"><span class="syll">al</span><span class="syll">len</span></span> <span class="word"><span class="syll">Län</span><span class="syll">dern</span></span>.</p>
-        <p><span class="word"><span class="syll">Ber</span><span class="syll">lin</span></span> ist <span class="word"><span class="syll">laut</span></span> und <span class="word"><span class="syll">bunt</span></span>, aber auch <span class="word"><span class="syll">schön</span></span> und <span class="word"><span class="syll">voll</span></span> <span class="word"><span class="syll">Le</span><span class="syll">ben</span></span>.</p>
-      </article>
-
-      <div class="qa" aria-labelledby="fragen">
-        <h2 id="fragen">Fragen</h2>
-
-        <div class="question">
-          <p>1. Was kann man in Berlin sehen?</p>
-          <div class="answers">
-            <button>Das Brandenburger Tor</button>
-            <button>Die Alpen</button>
-            <button>Den Kölner Dom</button>
-          </div>
-        </div>
-
-        <div class="question">
-          <p>2. Wie heißt der Fluss in Berlin?</p>
-          <div class="answers">
-            <button>Spree</button>
-            <button>Elbe</button>
-            <button>Rhein</button>
-          </div>
-        </div>
-
-        <div class="question">
-          <p>3. Was gefällt dir an der Stadt Berlin?</p>
-          <div class="answers">
-            <button>Die Parks</button>
-            <button>Die vielen Menschen</button>
-            <button>Die Tiere im Zoo</button>
-          </div>
-        </div>
-
-        <div class="survey" aria-label="Microsurvey zur Geschichte">
-          <span>Wie fandest du den Text?</span>
-          <button id="thumbUp" aria-label="Daumen hoch">👍</button>
-          <button id="thumbDown" aria-label="Daumen runter">👎</button>
-        </div>
-      </div>
-    </div>
-  </section>
+  
+<iframe 
+  src="https://rala84.app.n8n.cloud/form/30d75a75-54fd-42fd-bea6-ab24799ca565" 
+  width="100%" 
+  height="700" 
+  style="border: none; box-shadow: 0 4px 12px rgba(0,0,0,0.1); border-radius: 10px;">
+</iframe>
+     
+     
 </main>
 
 <footer role="contentinfo">
