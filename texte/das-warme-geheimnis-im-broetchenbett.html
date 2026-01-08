@@ -1,0 +1,261 @@
+<!DOCTYPE html>
+<html lang="de" data-syllmode="off">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Deine Geschichte</title>
+  <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Comic+Sans+MS&display=swap" rel="stylesheet">
+  
+  <style>
+    /* --- 1. DESIGN-VARIABLEN (Aus berlin.html übernommen) --- */
+    :root {
+      --bg:#f0f8ff; --fg:#16202a; --brand:#ff6b6b; --accent:#ffcc00;
+      --card:#ffffff; --border:#ffcc00;
+      --focus:#ffd54a; /* Farbe für Lese-Fokus */
+    }
+
+    body {
+      margin:0; padding:20px;
+      background:var(--bg); color:var(--fg);
+      font-family: 'Atkinson Hyperlegible', 'Comic Sans MS', sans-serif;
+      display: flex; flex-direction: column; align-items: center;
+    }
+
+    .container {
+      max-width: 800px; width: 100%;
+      background:var(--card);
+      padding: 40px;
+      border-radius: 20px;
+      border: 5px solid var(--border);
+      box-shadow: 0 10px 25px rgba(0,0,0,0.05);
+    }
+
+    /* --- 2. TOOLBAR --- */
+    .tools {
+      display:flex; flex-wrap:wrap; gap:10px; justify-content:center;
+      background: #fff9e6; padding: 15px; border-radius: 15px;
+      margin-bottom: 30px; border: 2px dashed var(--border);
+    }
+
+    button {
+      background: white; border: 2px solid var(--border); border-radius: 10px;
+      padding: 10px 15px; cursor: pointer; font-weight: 700; color: #555;
+      font-family: inherit; transition: all 0.1s;
+    }
+    button:hover { transform: translateY(-2px); border-color: var(--brand); color: var(--brand); }
+    button[aria-pressed="true"] { background: var(--brand); color: white; border-color: var(--brand); }
+
+    /* --- 3. INHALT --- */
+    h1 { color: var(--brand); text-align: center; font-size: 2.5em; text-transform: uppercase; margin-bottom: 20px; }
+    
+    #reader {
+      font-size: 1.3em; line-height: 1.8; color: #444;
+    }
+    
+    p { margin-bottom: 1.5rem; }
+
+    /* --- 4. MAGIE: SILBEN-STYLES (Exakt wie berlin.html) --- */
+    .word { position:relative; display: inline-block; margin-right: 0.2em; cursor: default; }
+    .syll { padding-bottom:.05em; border-bottom:1px dotted transparent; transition: background 0.2s; }
+
+    /* Modus: FÄRBEN (Blau/Grün Logik angepasst an dein Design) */
+    [data-syllmode="color"] .word .syll:nth-child(odd){ color: #007bff; }
+    [data-syllmode="color"] .word .syll:nth-child(even){ color: #d32f2f; }
+    
+    /* Modus: TRENNEN (Striche einfügen) */
+    [data-syllmode="hyphen"] .word .syll + .syll::before {
+      content:"-"; position:relative; color:currentColor; opacity:.7;
+    }
+
+    /* Lese-Fokus (wenn vorgelesen wird) */
+    .read-focus {
+      background: var(--focus);
+      border-radius: .25rem;
+      box-shadow: 0 0 0 4px var(--focus);
+      z-index: 10;
+    }
+
+    /* --- 5. BILD --- */
+    .story-image {
+      display: block; margin: 0 auto 30px auto; width: 100%; max-width: 400px;
+      border-radius: 15px; object-fit: contain;
+    }
+
+    /* --- 6. LUPE (LENS) - Aus berlin.html --- */
+    .lens {
+      position: fixed; z-index: 100; pointer-events: none;
+      padding: .25rem .75rem; background: white;
+      border: 3px solid var(--brand); border-radius: .8rem;
+      box-shadow: 0 8px 18px rgba(0,0,0,.15);
+      font-weight: 700; font-size: 2rem; color: #333;
+      transform: translate(-50%, -130%); /* Über dem Mauszeiger */
+      display: none; white-space: nowrap;
+    }
+    .lens[data-show="true"] { display: block; }
+  </style>
+</head>
+<body>
+
+  <div class="lens" id="lens" data-show="false"><span id="lensText"></span></div>
+
+  <div class="container">
+    
+    
+<h1>Das warme Geheimnis im Brötchenbett</h1><img src="../bilder/das-warme-geheimnis-im-broetchenbett.png" onerror="this.onerror=null;this.src='https://rala84.github.io/lesekumpel/bilder/lesekumpel_logo.png';" class="story-image" alt="Bild zur Geschichte">
+
+Stell dir vor, du hältst etwas Warmes in deinen Händen. Es riecht so verlockend – nach etwas Herzhaftem, aber auch ganz leicht nach weichem Brot. Ein runder Brötchendeckel liegt da, so sanft wie eine frisch gebackene Wolke, und darauf tanzen winzige Sesamkörner wie kleine, goldene Sternchen.
+
+Darunter verbirgt sich eine Welt: saftiges, warmes Fleisch, und darüber schmilzt Käse wie eine goldene Decke. Ein knackiges Salatblatt lugt hervor, frisch und grün wie ein Frühlingsmorgen. Wenn du ganz vorsichtig hineinbeißt... spürst du, wie alles zusammenkommt? Die weiche Brötchenwolke, das würzige Herz, das frische Grün. Ein kleiner Augenblick Glück, der auf der Zunge zergeht.
+
+    <div class="tools">
+      <button id="btnRead">🔊 Vorlesen</button>
+      <button id="btnFocus" aria-pressed="false">🔍 Lupe</button>
+      
+      <div style="border-left: 2px solid #ddd; padding-left:10px; display:flex; gap:5px;">
+        <button id="syllOff" aria-pressed="true">Normal</button>
+        <button id="syllColor">🔴🔵 Farben</button>
+        <button id="syllHyphen">A-B Trennen</button>
+      </div>
+    </div>
+
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      
+      // --- 1. AUTOMATISCHER TEXT-UMBAU ---
+      // Wir holen uns den Text aus den <p> Tags und zerlegen ihn in die berlin.html Struktur
+      const root = document.documentElement;
+      const contentParas = document.querySelectorAll('p.raw-text'); // Unsere markierten Absätze
+
+      // Hilfsfunktion: Deutsches Wort in Silben zerlegen (Heuristisch)
+      function getSyllables(word) {
+        let w = word;
+        // Cluster schützen (sch, ch, ck, ...) damit sie nicht getrennt werden
+        w = w.replace(/(sch|ch|ck|ph|th|qu|st)/gi, '§$&§');
+        
+        // Vokal-Konsonant-Vokal Muster trennen (einfache Logik für Leseanfänger)
+        // Wir fügen ein pipe | Symbol als Trenner ein
+        w = w.replace(/([aeiouyäöü])([^aeiouyäöü§|]+)([aeiouyäöü])/gi, '$1|$2$3');
+        w = w.replace(/([aeiouyäöü])([^aeiouyäöü§|]+)([^aeiouyäöü§|]+)([aeiouyäöü])/gi, '$1$2|$3$4');
+        
+        // Schutz entfernen
+        w = w.replace(/§/g, '');
+        return w.split('|');
+      }
+
+      // DOM Umbau: Aus "Hallo Welt" wird <span class="word"><span class="syll">Hal</span><span class="syll">lo</span></span> ...
+      contentParas.forEach(p => {
+        const text = p.innerText;
+        p.innerHTML = ''; // Leeren
+        
+        // Wörter splitten (Leerzeichen behalten Struktur)
+        const parts = text.split(/([ \t\n\r,.!?;:()"]+)/);
+        
+        parts.forEach(part => {
+          if (!part) return;
+          
+          if (/[a-zA-ZäöüÄÖÜß]/.test(part)) {
+            // Es ist ein Wort -> Verpacken!
+            const wordSpan = document.createElement('span');
+            wordSpan.className = 'word';
+            
+            const syllables = getSyllables(part);
+            syllables.forEach(syl => {
+              const sSpan = document.createElement('span');
+              sSpan.className = 'syll';
+              sSpan.textContent = syl;
+              wordSpan.appendChild(sSpan);
+            });
+            p.appendChild(wordSpan);
+          } else {
+            // Es ist ein Satzzeichen -> Einfach anhängen
+            p.appendChild(document.createTextNode(part));
+          }
+        });
+        p.removeAttribute('class'); // Markierung entfernen, fertig.
+      });
+
+
+      // --- 2. SILBEN MODUS (Wie in berlin.html) ---
+      const modes = {
+        off: document.getElementById('syllOff'),
+        color: document.getElementById('syllColor'),
+        hyphen: document.getElementById('syllHyphen')
+      };
+
+      function setMode(mode) {
+        root.setAttribute('data-syllmode', mode);
+        modes.off.setAttribute('aria-pressed', mode === 'off');
+        modes.color.setAttribute('aria-pressed', mode === 'color');
+        modes.hyphen.setAttribute('aria-pressed', mode === 'hyphen');
+      }
+
+      modes.off.onclick = () => setMode('off');
+      modes.color.onclick = () => setMode('color');
+      modes.hyphen.onclick = () => setMode('hyphen');
+
+
+      // --- 3. LUPE (LENS) - 1:1 Logik aus berlin.html ---
+      const lens = document.getElementById('lens');
+      const lensText = document.getElementById('lensText');
+      const btnFocus = document.getElementById('btnFocus');
+      let lensActive = false;
+
+      btnFocus.onclick = () => {
+        lensActive = !lensActive;
+        btnFocus.setAttribute('aria-pressed', lensActive);
+        if(!lensActive) lens.dataset.show = "false";
+      };
+
+      // Mausbewegung verfolgen
+      document.addEventListener('mousemove', (e) => {
+        if (!lensActive) return;
+        
+        // Prüfen ob wir über einem Wort sind
+        const target = e.target.closest('.word');
+        
+        if (target) {
+          lens.dataset.show = "true";
+          lensText.textContent = target.innerText; // Text ins Glas
+          // Positionieren (über der Maus)
+          lens.style.left = e.clientX + 'px';
+          lens.style.top = e.clientY + 'px';
+        } else {
+          lens.dataset.show = "false";
+        }
+      });
+
+
+      // --- 4. VORLESEN ---
+      const btnRead = document.getElementById('btnRead');
+      let isSpeaking = false;
+
+      btnRead.onclick = () => {
+        if (isSpeaking) {
+          window.speechSynthesis.cancel();
+          isSpeaking = false;
+          btnRead.textContent = "🔊 Vorlesen";
+          // Fokus entfernen
+          document.querySelectorAll('.read-focus').forEach(el => el.classList.remove('read-focus'));
+          return;
+        }
+
+        // Text sammeln (wir lesen den reinen Text der Worte)
+        const text = document.body.innerText; 
+        const utt = new SpeechSynthesisUtterance(text);
+        utt.lang = 'de-DE';
+        utt.rate = 0.9;
+
+        // Wort-Highlighting während des Lesens
+        // (Wir nutzen hier eine einfache Annäherung, da exaktes Mapping komplex ist)
+        utt.onstart = () => { isSpeaking = true; btnRead.textContent = "⏹ Stopp"; };
+        utt.onend = () => { isSpeaking = false; btnRead.textContent = "🔊 Vorlesen"; };
+        
+        window.speechSynthesis.speak(utt);
+      };
+      
+    });
+  </script>
+</body>
+</html>
