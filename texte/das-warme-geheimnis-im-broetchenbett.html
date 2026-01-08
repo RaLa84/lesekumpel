@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deine Geschichte</title>
+    <style>
+        /* GRUNDLAGEN */
+        body {
+            font-family: 'Comic Sans MS', 'Chalkboard SE', sans-serif;
+            background-color: #f0f8ff;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: #ffffff;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+            border: 5px solid #ffcc00;
+        }
+
+        /* TOOLBAR STYLES */
+        .toolbar {
+            background-color: #fff9e6;
+            border-radius: 15px;
+            padding: 10px;
+            margin-bottom: 30px;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 10px;
+            border: 2px dashed #ffcc00;
+        }
+        .tool-btn {
+            background: white; border: 2px solid #ffcc00; border-radius: 10px;
+            padding: 10px 15px; cursor: pointer; font-family: inherit; font-weight: bold;
+            font-size: 16px; color: #555; display: flex; align-items: center; gap: 5px;
+            transition: all 0.1s; user-select: none;
+        }
+        .tool-btn:hover { background-color: #ff6b6b; border-color: #ff6b6b; color: white; transform: translateY(-2px); }
+        .tool-btn:active { transform: translateY(1px); }
+        .tool-btn.active { background-color: #ffcc00; color: #333; border-color: #e6b800; }
+
+        /* INHALT */
+        h1 { color: #ff6b6b; text-align: center; font-size: 2.5em; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 2px; }
+        
+        /* WICHTIG: lang="de" erzwingt deutsche Silbentrennung */
+        #story-content { 
+            font-size: 1.2em; 
+            line-height: 1.8; 
+            color: #555; 
+            transition: font-size 0.2s;
+        }
+        
+        /* Die Klasse für Silbentrennung */
+        .hyphen-mode {
+            text-align: justify;
+            -webkit-hyphens: auto;
+            -moz-hyphens: auto;
+            -ms-hyphens: auto;
+            hyphens: auto;
+        }
+
+        p { margin-bottom: 20px; }
+        strong { color: #2c3e50; background-color: #fff3cd; padding: 0 4px; border-radius: 4px; }
+
+        /* BILD */
+        .story-image {
+            display: block; margin: 20px auto 40px auto; width: 100%; max-width: 400px;
+            height: auto; border-radius: 15px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); object-fit: contain;
+        }
+
+        /* FOOTER */
+        .footer { margin-top: 60px; padding-top: 30px; border-top: 3px dashed #ffcc00; text-align: center; font-size: 1em; color: #888; }
+        .footer-links { margin-top: 10px; }
+        .footer a { color: #888; text-decoration: none; font-weight: bold; margin: 0 10px; transition: color 0.2s; }
+        .footer a:hover { color: #ff6b6b; }
+        .separator { color: #ffcc00; font-weight: bold; }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        
+        <div class="toolbar">
+            <button class="tool-btn" id="btnSpeak">🔊 Vorlesen</button>
+            <button class="tool-btn" id="btnHyphen">✂️ Silben trennen</button>
+            <button class="tool-btn" id="btnSmaller">🅰️ Kleiner</button>
+            <button class="tool-btn" id="btnBigger">🅰️ Größer</button>
+        </div>
+
+        <div id="story-content" lang="de">
+            
+<h1>Das warme Geheimnis im Brötchenbett</h1><img src="../bilder/das-warme-geheimnis-im-broetchenbett.png" onerror="this.onerror=null;this.src='https://rala84.github.io/lesekumpel/bilder/lesekumpel_logo.png';" class="story-image" alt="Geschichten Bild">
+
+Stell dir vor, du hältst etwas Warmes in deinen Händen. Es riecht so verlockend – nach etwas Herzhaftem, aber auch ganz leicht nach weichem Brot. Ein runder Brötchendeckel liegt da, so sanft wie eine frisch gebackene Wolke, und darauf tanzen winzige Sesamkörner wie kleine, goldene Sternchen.
+
+Darunter verbirgt sich eine Welt: saftiges, warmes Fleisch, und darüber schmilzt Käse wie eine goldene Decke. Ein knackiges Salatblatt lugt hervor, frisch und grün wie ein Frühlingsmorgen. Wenn du ganz vorsichtig hineinbeißt... spürst du, wie alles zusammenkommt? Die weiche Brötchenwolke, das würzige Herz, das frische Grün. Ein kleiner Augenblick Glück, der auf der Zunge zergeht.
+        </div>
+        
+        <div class="footer">
+            <p>Erstellt von deinem KI-Lesekumpel 🤖</p>
+            <div class="footer-links">
+                <a href="https://rala84.app.n8n.cloud/form/30d75a75-54fd-42fd-bea6-ab24799ca565">✨ Neue Geschichte</a>
+                <span class="separator">|</span>
+                <a href="../index.html">📚 Zur Bibliothek</a>
+            </div>
+        </div>
+    </div>
+
+    <script>
+    document.addEventListener("DOMContentLoaded", function() {
+        // Wir warten, bis alles geladen ist, bevor wir Buttons verbinden
+        
+        const content = document.getElementById('story-content');
+        let currentSize = 1.2;
+        let isSpeaking = false;
+        let speechUtterance = null;
+
+        // --- 1. SCHRIFTGRÖSSE ---
+        document.getElementById('btnBigger').addEventListener('click', function() {
+            if(currentSize < 3.0) {
+                currentSize += 0.2;
+                content.style.fontSize = currentSize + "em";
+            }
+        });
+
+        document.getElementById('btnSmaller').addEventListener('click', function() {
+            if(currentSize > 0.8) {
+                currentSize -= 0.2;
+                content.style.fontSize = currentSize + "em";
+            }
+        });
+
+        // --- 2. SILBENTRENNUNG ---
+        document.getElementById('btnHyphen').addEventListener('click', function() {
+            this.classList.toggle('active');
+            content.classList.toggle('hyphen-mode');
+            
+            if(content.classList.contains('hyphen-mode')) {
+                this.innerHTML = "✂️ Trennung: AN";
+            } else {
+                this.innerHTML = "✂️ Silben trennen";
+            }
+        });
+
+        // --- 3. VORLESEN ---
+        document.getElementById('btnSpeak').addEventListener('click', function() {
+            const btn = this;
+
+            // Browser-Check
+            if (!('speechSynthesis' in window)) {
+                alert("Dein Browser kann leider nicht vorlesen.");
+                return;
+            }
+
+            if (isSpeaking) {
+                // Stoppen
+                window.speechSynthesis.cancel();
+                isSpeaking = false;
+                btn.innerHTML = "🔊 Vorlesen";
+                btn.classList.remove('active');
+            } else {
+                // Starten
+                // Wir nehmen nur den reinen Text, ohne HTML Tags
+                const textToRead = content.innerText;
+                
+                speechUtterance = new SpeechSynthesisUtterance(textToRead);
+                speechUtterance.lang = 'de-DE';
+                speechUtterance.rate = 0.9;
+                
+                // Event: Wenn fertig gesprochen
+                speechUtterance.onend = function() {
+                    isSpeaking = false;
+                    btn.innerHTML = "🔊 Vorlesen";
+                    btn.classList.remove('active');
+                };
+
+                // Fehler abfangen
+                speechUtterance.onerror = function(e) {
+                    console.error('Sprachfehler:', e);
+                    isSpeaking = false;
+                    btn.classList.remove('active');
+                };
+
+                window.speechSynthesis.speak(speechUtterance);
+                isSpeaking = true;
+                btn.innerHTML = "⏹️ Stoppen";
+                btn.classList.add('active');
+            }
+        });
+        
+        // Beim Verlassen stoppen
+        window.onbeforeunload = function() {
+            window.speechSynthesis.cancel();
+        };
+    });
+    </script>
+</body>
+</html>
