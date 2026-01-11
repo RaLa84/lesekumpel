@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html lang="de" data-syllmode="off">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Deine Geschichte</title>
+  <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Comic+Sans+MS&display=swap" rel="stylesheet">
+  
+  <style>
+    /* 1. BASIS */
+    :root { --bg:#f0f8ff; --fg:#16202a; --brand:#ff6b6b; --border:#ffcc00; --focus:#ffd54a; --card:#ffffff; --correct:#4CAF50; --wrong:#ff5252; }
+    
+    /* Box-Sizing Fix für alle Elemente (verhindert Layout-Sprengung durch Padding) */
+    *, *::before, *::after { box-sizing: border-box; }
+
+    body { margin:0; padding:0; background:var(--bg); color:var(--fg); font-family: 'Atkinson Hyperlegible', 'Comic Sans MS', sans-serif; display: flex; flex-direction: column; align-items: center; }
+
+    /* 2. HEADER */
+    header { position: sticky; top: 0; width: 100%; background: var(--card); border-bottom: 3px solid var(--border); z-index: 1000; box-shadow: 0 4px 10px rgba(0,0,0,0.05); }
+    .nav-wrap { max-width: 900px; margin: 0 auto; padding: 10px 20px; display: flex; align-items: center; justify-content: space-between; }
+    .brand { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--brand); font-weight: 700; font-size: 1.5em; font-family: 'Comic Sans MS', sans-serif; }
+    .brand img { height: 45px; width: auto; border-radius: 8px; }
+    .nav-links { display: flex; gap: 15px; align-items: center; }
+    .nav-btn { text-decoration: none; color: #555; font-weight: bold; padding: 8px 15px; border-radius: 20px; transition: all 0.2s; border: 2px solid transparent; }
+    .nav-btn:hover { background: #fff5e6; color: var(--brand); }
+    .nav-btn.cta { border-color: var(--border); background: #fff; }
+    .nav-btn.cta:hover { background: var(--brand); color: #fff; border-color: var(--brand); }
+    .burger { display: none; background: none; border: 2px solid var(--border); border-radius: 8px; cursor: pointer; padding: 5px; color: var(--brand); }
+    .burger svg { width: 28px; height: 28px; display: block; }
+    .mobile-menu { display: none; position: absolute; top: 100%; left: 0; width: 100%; background: var(--card); border-bottom: 3px solid var(--border); flex-direction: column; padding: 10px 0; box-shadow: 0 10px 20px rgba(0,0,0,0.1); }
+    .mobile-menu a { display: block; padding: 15px 20px; text-decoration: none; color: #555; font-weight: bold; border-bottom: 1px solid #eee; }
+    .mobile-menu.open { display: flex; }
+    @media (max-width: 700px) { .nav-links { display: none; } .burger { display: block; } }
+
+    /* 3. CONTAINER & TOOLS */
+    .container { max-width: 800px; width: 90%; background:var(--card); padding: 40px; border-radius: 20px; border: 5px solid var(--border); box-shadow: 0 10px 25px rgba(0,0,0,0.05); position: relative; margin-top: 30px; margin-bottom: 40px; }
+    .tools { display:flex; flex-wrap:wrap; gap:10px; justify-content:center; background: #fff9e6; padding: 15px; border-radius: 15px; margin-bottom: 30px; border: 2px dashed var(--border); }
+    button { background: white; border: 2px solid var(--border); border-radius: 10px; padding: 10px 15px; cursor: pointer; font-weight: 700; color: #555; font-family: inherit; transition: all 0.1s; }
+    button:hover { transform: translateY(-2px); border-color: var(--brand); color: var(--brand); }
+    button[aria-pressed="true"] { background: var(--brand); color: white; border-color: var(--brand); }
+
+    /* 4. CONTENT STYLES */
+    h1 { color: var(--brand); text-align: center; font-size: 2.5em; text-transform: uppercase; margin-bottom: 20px; line-height: 1.2; }
+    #story-content { font-size: 1.4em; line-height: 1.8; color: #444; transition: font-size 0.2s; }
+    p { margin-bottom: 1.5rem; }
+    
+    /* Silben */
+    .word { position:relative; display: inline-block; margin-right: 0.25em; cursor: default; }
+    .syll { padding-bottom:.05em; border-bottom:1px dotted transparent; transition: color 0.2s; }
+    [data-syllmode="color"] .word .syll:nth-child(odd){ color: #007bff; }
+    [data-syllmode="color"] .word .syll:nth-child(even){ color: #d32f2f; }
+    
+    /* Bild */
+    .story-image { display: block; margin: 0 auto 30px auto; width: 100%; max-width: 400px; border-radius: 15px; object-fit: contain; }
+
+    /* 5. AUTOREN PROFIL */
+    .author-profile {
+      display: flex; align-items: center; gap: 20px;
+      background: #fff; border: 2px solid #eee; border-left: 5px solid var(--brand);
+      border-radius: 15px; padding: 20px; margin-top: 50px; margin-bottom: 30px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.03);
+    }
+    .author-img {
+      width: 80px; height: 80px; border-radius: 50%; object-fit: cover;
+      border: 3px solid var(--border); flex-shrink: 0;
+    }
+    .author-info h4 { margin: 0 0 5px 0; color: var(--brand); font-size: 1.3em; font-family: 'Comic Sans MS', sans-serif; }
+    .author-info p { margin: 0; color: #666; font-size: 1em; line-height: 1.4; font-weight: normal; }
+    @media (max-width: 500px) {
+      .author-profile { flex-direction: column; text-align: center; }
+      .author-profile h4 { margin-top: 10px; }
+    }
+
+    /* 6. QUIZ STYLES */
+    .quiz-section { margin-top: 30px; padding-top: 30px; border-top: 2px dashed #eee; }
+    .quiz-section h2 { text-align: center; color: var(--brand); margin-bottom: 30px; }
+    .quiz-card { background: #fdfdfd; border: 2px solid #eee; border-radius: 15px; padding: 20px; margin-bottom: 20px; }
+    .quiz-card h3 { margin-top: 0; color: #555; }
+    .answers-grid { display: grid; gap: 10px; margin-top: 15px; }
+    .quiz-btn { width: 100%; text-align: left; padding: 15px; border: 2px solid var(--border); background: white; border-radius: 10px; font-size: 1em; cursor: pointer; transition: all 0.2s; }
+    .quiz-btn:hover { background: #fff9e6; }
+    .quiz-btn.correct { background-color: var(--correct) !important; color: white; border-color: var(--correct); }
+    .quiz-btn.wrong { background-color: var(--wrong) !important; color: white; border-color: var(--wrong); animation: shake 0.4s; }
+    @keyframes shake { 0% { transform: translateX(0); } 25% { transform: translateX(-5px); } 50% { transform: translateX(5px); } 75% { transform: translateX(-5px); } 100% { transform: translateX(0); } }
+
+    /* 7. INTERACTION & FOOTER */
+    .interaction-area { margin-top: 50px; padding-top: 30px; border-top: 2px dashed #eee; }
+    .microsurvey { text-align: center; margin-bottom: 40px; }
+    .thumbs-btn { font-size: 1.8em; margin: 0 10px; padding: 10px 20px; background: #f9f9f9; border-color: #eee; }
+    .comment-box { background: #fdfdfd; border: 2px solid #eee; border-radius: 15px; padding: 20px; }
+    .fake-textarea { width: 100%; height: 80px; padding: 10px; border: 2px solid var(--border); border-radius: 10px; resize: none; margin-bottom: 10px; }
+    .send-btn { background: var(--brand); color: white; border: none; float: right; }
+    
+    .footer { margin-top: 60px; padding-top: 30px; border-top: 3px dashed var(--border); text-align: center; color: #888; clear: both; }
+    .footer a { color: #888; text-decoration: none; font-weight: bold; margin: 0 10px; transition: color 0.2s; }
+    .footer a:hover { color: var(--brand); }
+    .separator { color: var(--border); font-weight: bold; }
+
+    /* Lupe */
+    .lens { position: fixed; z-index: 9999; pointer-events: none; padding: .25rem .75rem; background: white; border: 3px solid var(--brand); border-radius: .8rem; box-shadow: 0 8px 18px rgba(0,0,0,.15); font-weight: 700; font-size: 1.8rem; color: #333; transform: translate(-50%, -130%); display: none; white-space: nowrap; }
+    .lens[data-show="true"] { display: block; }
+
+    /* --- MOBILE OPTIMIERUNG (für Displays um 412px) --- */
+    @media (max-width: 600px) {
+      /* Der Container wird breiter und hat weniger Rand */
+      .container {
+        width: 100%;
+        margin-top: 15px;
+        padding: 20px 15px; /* Weniger Padding für mehr Text-Platz */
+        border-width: 3px;
+        border-radius: 10px;
+      }
+
+      /* Schriftgrößen anpassen */
+      h1 { font-size: 1.8em; }
+      #story-content { font-size: 1.2em; line-height: 1.6; }
+      
+      /* Header kompakter */
+      .nav-wrap { padding: 10px 15px; }
+      .brand { font-size: 1.2em; }
+      
+      /* Toolbar Buttons sollen Platz nutzen */
+      .tools { gap: 5px; padding: 10px; }
+      .tools button { flex-grow: 1; padding: 8px 10px; font-size: 0.9em; }
+
+      /* Quiz Buttons besser klickbar machen */
+      .quiz-btn { padding: 12px; font-size: 0.95em; }
+      
+      /* Footer Links untereinander, falls zu breit */
+      .footer div { display: flex; flex-direction: column; gap: 10px; }
+      .separator { display: none; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <div class="nav-wrap">
+      <a href="https://rala84.github.io/lesekumpel/" class="brand">
+        <img src="https://rala84.github.io/lesekumpel/logo1.png" alt="Logo">
+        <span>Lesekumpel</span>
+      </a>
+      <div class="nav-links">
+        <a href="../index.html" class="nav-btn">📚 Bibliothek</a>
+        <a href="https://rala84.app.n8n.cloud/form/b6f28a18-e90d-4bb8-b201-0c8f6c667a7a" class="nav-btn cta">✨ Neue Geschichte</a>
+      </div>
+      <button class="burger" id="burgerBtn"><svg viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line></svg></button>
+    </div>
+    <div class="mobile-menu" id="mobileMenu">
+      <a href="../index.html">📚 Zur Bibliothek</a>
+      <a href="https://rala84.app.n8n.cloud/form/30d75a75-54fd-42fd-bea6-ab24799ca565">✨ Neue Geschichte schreiben</a>
+    </div>
+  </header>
+
+  <div class="lens" id="lens" data-show="false"><span id="lensText"></span></div>
+
+  <div class="container">
+    
+    <div class="tools">
+      <button id="btnRead">🔊 Vorlesen</button>
+      <button id="btnFocus" aria-pressed="false">🔍 Lupe</button>
+      <div style="border-left: 2px solid #ddd; padding-left:10px; display:flex; gap:5px; flex-grow: 1;">
+        <button id="syllOff" aria-pressed="true" style="flex-grow:1;">Normal</button>
+        <button id="syllColor" style="flex-grow:1;">🔴🔵 Farben</button>
+      </div>
+      <div style="border-left: 2px solid #ddd; padding-left:10px; display:flex; gap:5px;">
+        <button id="btnSmaller">A-</button>
+        <button id="btnBigger">A+</button>
+      </div>
+    </div>
+
+    <div id="story-content">
+       <h1>Stell dir vor: Dein Angelhaken fängt... GOLD! 🤯</h1><img src="../bilder/stell-dir-vor-dein-angelhaken-faengt-gold.png" onerror="this.onerror=null;this.src='https://rala84.github.io/lesekumpel/bilder/lesekumpel_logo.png';" class="story-image" alt="Bild">
+
+Hey du! Stell dir mal vor, du bist ein Fischer. Du sitzt in deinem kleinen Boot, die Sonne kitzelt deine Nase, und die Wellen schaukeln dich sanft hin und her. Seit Stunden hast du deine Angel ausgeworfen. Mal ein kleiner Zupfer, mal ein größerer, aber meistens ist da... <strong>nichts Besonderes.</strong> Nur Fische eben. Aber was, wenn plötzlich dein Angelhaken nicht einen glitschigen Aal, sondern etwas ganz anderes an Land ziehen würde? Etwas, das glänzt wie die Sonne selbst und dich auf einen Schlag... sagenhaft reich macht?!
+
+<h2>Der "Fisch" deines Lebens! 🎣✨</h2>
+
+Genau das ist manchen Menschen schon passiert! Sie waren unterwegs, haben ihr Netz ausgeworfen oder ihre Angel ins Wasser getaucht, und <strong>BUMM!</strong> Da war nicht der lang ersehnte Lachs, sondern... Gold! Kein Witz! Denk mal drüber nach: Du ziehst und ziehst, und es ist <strong>schwerer</strong> als der größte Fisch, den du je gefangen hast. Deine Muskeln brennen, du kämpfst gegen die Strömung, und dann, ganz langsam, taucht es auf: kein schuppiges Ding, sondern etwas, das in der Sonne <strong>funkelt und glitzert</strong>, als hätte es einen geheimen Schatz geleuchtet.
+
+<h2>Schatzsuche? Einfach so?! 💰</h2>
+
+Manchmal ist es ein riesiger Goldklumpen, auch "Nugget" genannt. Stell dir vor, so ein Stück ist so groß wie deine Faust und wiegt so viel wie ein ganzes Paket Milch! Oder es sind uralte Münzen, die so alt sind, dass vielleicht Piraten sie mal in ihren schmutzigen Händen gehalten haben. <strong>Pling!</strong> Jede einzelne Münze erzählt eine Geschichte von vor Hunderten von Jahren.
+
+Aber wie kommt das Gold überhaupt in den See oder ins Meer? Ganz oft sind das Reste von <strong>Schiffswracks</strong>. Vor langer Zeit sind große Handelsschiffe – manchmal randvoll mit Gold, Silber und Edelsteinen – auf stürmischer See gesunken. <strong>KRACH!</strong> Die Schiffe sind auf den Meeresgrund gerauscht, und mit ihnen all die Schätze. Oder es sind einfach Goldstücke, die aus alten Bergwerken oder Flüssen über viele, viele Jahre ins Meer gespült wurden. Ein richtiger Glücks-<strong>Wusch</strong>!
+
+<h2>Und was dann? Party oder Geheimnis? 🎉🤫</h2>
+
+Stell dir vor, du hast diesen riesigen Goldklumpen in den Händen. Was machst du damit? Erstmal staunen, klar! Vielleicht einen kleinen Freudensprung machen! Aber dann? Das ist die spannende Frage! Denn wenn du so einen Schatz findest, gibt es manchmal Gesetze, die festlegen, wem das Gold gehört. Manchmal gehört es dir, manchmal musst du es melden oder teilen. <strong>Uff!</strong> Gar nicht so einfach, dieser Schatzfinder-Job!
+
+Aber egal, was danach passiert: Der Moment, in dem du merkst, dass du nicht nur einen Fisch, sondern echtes, glänzendes Gold gefangen hast, der ist einfach <strong>unvergesslich</strong>. Du bist auf einmal der coolste Schatzsucher der Welt, und deine Freunde werden aus dem Staunen nicht mehr herauskommen! <strong>Echt jetzt!</strong> Hättest du gedacht, dass man so ganz nebenbei zum Schatzfinder werden kann? Was würdest du als Erstes kaufen, wenn du einen riesigen Goldklumpen finden würdest? Schreib's mir in Gedanken! 😉
+    </div>
+
+    
+        <div class="author-profile">
+           <img src="https://rala84.github.io/lesekumpel/Samira-min-compressed.webp" onerror="this.src='https://rala84.github.io/lesekumpel/bilder/lesekumpel_logo.png'" alt="Samira Wissensfreund" class="author-img">
+           <div class="author-info">
+             <h4>Samira Wissensfreund</h4>
+             <p>Samira liebt es, spannende Fakten zu sammeln und dir die Welt zu erklären. Mit ihr lernst du immer etwas Neues!</p>
+           </div>
+        </div>
+        
+
+    <div class="quiz-section">
+      <h2>🧠 Quiz-Zeit! Hast du gut aufgepasst?</h2>
+      <div class="quiz-card">
+  <h3>1. Stell dir vor, du bist Fischer – was haben manche Leute statt einem Fisch gefangen?</h3>
+  <div class="answers-grid">
+    <button class="quiz-btn" onclick="checkAnswer(this, 'wrong')">Einen alten, stinkenden Schuh</button>
+    <button class="quiz-btn" onclick="checkAnswer(this, 'correct')">Glänzendes Gold</button>
+    <button class="quiz-btn" onclick="checkAnswer(this, 'wrong')">Einen riesigen Hai</button>
+  </div>
+</div>
+
+<div class="quiz-card">
+  <h3>2. Wie kommt das Gold manchmal überhaupt in den See oder ins Meer?</h3>
+  <div class="answers-grid">
+    <button class="quiz-btn" onclick="checkAnswer(this, 'correct')">Von alten, gesunkenen Schiffen oder aus Flüssen. </button>
+    <button class="quiz-btn" onclick="checkAnswer(this, 'wrong')">Vögel lassen es fallen.</button>
+    <button class="quiz-btn" onclick="checkAnswer(this, 'wrong')">Es wächst dort unten wie eine Pflanze.</button>
+  </div>
+</div>
+
+<div class="quiz-card">
+  <h3>3. Was ist ein Gold-"Nugget", wie es im Text beschrieben wird?</h3>
+  <div class="answers-grid">
+    <button class="quiz-btn" onclick="checkAnswer(this, 'wrong')">Eine Art besonderer Fisch, der glitzert.</button>
+    <button class="quiz-btn" onclick="checkAnswer(this, 'wrong')">Eine kleine, sehr alte Münze.</button>
+    <button class="quiz-btn" onclick="checkAnswer(this, 'correct')">Ein großer Goldklumpen, manchmal so groß wie eine Faust.</button>
+  </div>
+</div>
+    </div>
+
+    <div class="interaction-area">
+        <div class="microsurvey" id="microsurvey">
+            <p>Hat dir die Geschichte gefallen?</p>
+            <div id="survey-buttons">
+                <button class="thumbs-btn" onclick="handleSurvey('up')">👍</button>
+                <button class="thumbs-btn down" onclick="handleSurvey('down')">👎</button>
+            </div>
+            <div id="survey-feedback" style="display:none; color:var(--brand); font-weight:bold;"></div>
+        </div>
+        <div class="comment-box">
+            <div style="font-weight:bold; color:#555; margin-bottom:10px;">💬 Dein Kommentar</div>
+            <textarea class="fake-textarea" id="commentText" placeholder="Was denkst du über die Geschichte?"></textarea>
+            <button class="send-btn" onclick="sendFakeComment()">Senden</button>
+            <div style="clear:both;"></div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <p>Erstellt von deinem KI-Lesekumpel 🤖</p>
+        <div style="margin-top: 10px;">
+            <a href="https://rala84.app.n8n.cloud/form/b6f28a18-e90d-4bb8-b201-0c8f6c667a7a">✨ Neue Geschichte</a>
+            <span class="separator">|</span>
+            <a href="../index.html">📚 Zur Bibliothek</a>
+        </div>
+    </div>
+
+  </div>
+
+  <script>
+    /* 1. QUIZ LOGIK */
+    function checkAnswer(btn, type) { if (type === 'correct') { btn.classList.add('correct'); btn.innerHTML += ' ✅'; } else { btn.classList.add('wrong'); btn.innerHTML += ' ❌'; } }
+
+    /* 2. BURGER MENU */
+    document.getElementById('burgerBtn').onclick = () => document.getElementById('mobileMenu').classList.toggle('open');
+
+    /* 3. MOCK INTERACTION */
+    function handleSurvey(type) { document.getElementById('survey-buttons').style.display = 'none'; const fb = document.getElementById('survey-feedback'); fb.style.display = 'block'; fb.innerText = type === 'up' ? "Juhu! Das freut uns! 🎉" : "Danke für dein Feedback! 💪"; }
+    function sendFakeComment() { const inp = document.getElementById('commentText'); if(!inp.value.trim()){ alert("Bitte schreibe erst etwas."); return; } inp.value = ""; alert("Kommentar gesendet! (Prototyp)"); }
+
+    /* 4. SILBEN & TEXT LOGIK */
+    function getSyllables(word) { if (word.length < 3) return [word]; let w = word.replace(/(sch|ch|ck|ph|th|qu|st|sp)/gi, '§$&§'); w = w.replace(/([aeiouyäöü])([^aeiouyäöü§|])([aeiouyäöü])/gi, '$1|$2$3'); w = w.replace(/([aeiouyäöü])([^aeiouyäöü§|])([aeiouyäöü§|])([aeiouyäöü])/gi, '$1$2|$3$4'); return w.replace(/§/g, '').split('|'); }
+    function processNode(node) { if (node.nodeType === 3) { const text = node.nodeValue; if (!text.trim()) return; const wrapper = document.createElement('span'); text.split(/([ \t\n\r,.!?;:()"]+)/).forEach(p => { if (/[a-zA-ZäöüÄÖÜß]/.test(p)) { const ws = document.createElement('span'); ws.className = 'word'; getSyllables(p).forEach(s => { const ss = document.createElement('span'); ss.className = 'syll'; ss.innerText = s; ws.appendChild(ss); }); wrapper.appendChild(ws); } else wrapper.appendChild(document.createTextNode(p)); }); node.parentNode.replaceChild(wrapper, node); } else if (node.nodeType === 1) { if (['SCRIPT','STYLE','BUTTON','IMG','HEADER','TEXTAREA'].includes(node.tagName)) return; if (['tools','footer','interaction-area','quiz-section','mobile-menu','author-profile'].some(c => node.classList.contains(c))) return; Array.from(node.childNodes).forEach(processNode); } }
+
+    document.addEventListener("DOMContentLoaded", () => {
+      const contentRoot = document.getElementById('story-content');
+      processNode(contentRoot);
+
+      const root = document.documentElement;
+      const setSyllMode = (m) => { root.setAttribute('data-syllmode', m); document.getElementById('syllOff').setAttribute('aria-pressed', m==='off'); document.getElementById('syllColor').setAttribute('aria-pressed', m==='color'); };
+      document.getElementById('syllOff').onclick = () => setSyllMode('off');
+      document.getElementById('syllColor').onclick = () => setSyllMode('color');
+      let cSize = 1.4;
+      document.getElementById('btnBigger').onclick = () => { if(cSize<3) contentRoot.style.fontSize=(cSize+=0.2)+"em"; };
+      document.getElementById('btnSmaller').onclick = () => { if(cSize>0.8) contentRoot.style.fontSize=(cSize-=0.2)+"em"; };
+
+      const btnFocus=document.getElementById('btnFocus'), lens=document.getElementById('lens'); let lAct=false;
+      btnFocus.onclick=()=>{lAct=!lAct; btnFocus.setAttribute('aria-pressed',lAct); if(!lAct)lens.dataset.show="false";};
+      document.addEventListener('mousemove',e=>{ if(!lAct)return; const t=e.target.closest('.word'); if(t){ lens.dataset.show="true"; document.getElementById('lensText').innerText=t.innerText; lens.style.left=e.clientX+'px'; lens.style.top=e.clientY+'px'; } else lens.dataset.show="false"; });
+
+      const btnRead=document.getElementById('btnRead'); let isSp=false;
+      btnRead.onclick=()=>{ if(isSp){ window.speechSynthesis.cancel(); isSp=false; btnRead.innerText="🔊 Vorlesen"; } else { const txt=document.getElementById('story-content').innerText; const u=new SpeechSynthesisUtterance(txt); u.lang='de-DE'; u.rate=0.9; u.onend=()=>{isSp=false; btnRead.innerText="🔊 Vorlesen";}; window.speechSynthesis.speak(u); isSp=true; btnRead.innerText="⏹ Stopp"; } };
+    });
+  </script>
+</body>
+</html>
