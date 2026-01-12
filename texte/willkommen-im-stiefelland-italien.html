@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="de" data-syllmode="off" data-langmode="none">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Deine Geschichte</title>
+  <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:wght@400;700&family=Comic+Sans+MS&display=swap" rel="stylesheet">
+  
+  <style>
+    /* ... (Dein bisheriges CSS hier lassen) ... */
+    :root { --bg:#f0f8ff; --fg:#16202a; --brand:#ff6b6b; --border:#ffcc00; --focus:#ffd54a; }
+    *, *::before, *::after { box-sizing: border-box; }
+    body { margin:0; padding:0; background:var(--bg); color:var(--fg); font-family: 'Atkinson Hyperlegible', 'Comic Sans MS', sans-serif; display: flex; flex-direction: column; align-items: center; }
+    
+    /* ... (Header, Container etc. wie gehabt) ... */
+    /* Füge dein bisheriges CSS hier ein (Container, Tools, etc.) */
+    /* Ich kürze es hier ab für die Übersicht */
+    .container { max-width: 800px; width: 90%; background:#fff; padding: 20px; border-radius: 20px; border: 5px solid var(--border); margin: 20px 0; }
+    .tools { display:flex; flex-wrap:wrap; gap:10px; justify-content:center; background: #fff9e6; padding: 15px; border-radius: 15px; margin-bottom: 30px; border: 2px dashed var(--border); }
+    button, select { background: white; border: 2px solid var(--border); border-radius: 10px; padding: 8px 12px; cursor: pointer; font-weight: 700; color: #555; font-family: inherit; }
+    
+    /* NEU: VOKABEL STYLES */
+    .vocab {
+        border-bottom: 3px dotted var(--brand);
+        cursor: pointer;
+        position: relative;
+        transition: background 0.2s;
+        font-weight: bold;
+        color: #d35400;
+    }
+    .vocab:hover { background-color: #ffe0b2; }
+    
+    /* Das kleine Übersetzungsschild über dem Wort */
+    .vocab::after {
+        content: attr(data-trans);
+        position: absolute;
+        bottom: 100%; left: 50%; transform: translateX(-50%);
+        background: #333; color: #fff;
+        padding: 4px 8px; border-radius: 6px;
+        font-size: 0.7em; white-space: nowrap;
+        opacity: 0; pointer-events: none; transition: opacity 0.2s;
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        z-index: 10;
+    }
+    
+    /* Wenn Sprache aktiv ist, zeigen wir die Übersetzung dauerhaft oder beim Hover */
+    [data-langmode]:not([data-langmode="none"]) .vocab::after {
+        opacity: 1; bottom: 120%; /* Etwas höher schieben */
+    }
+    
+    /* Mobile Anpassung */
+    @media (max-width: 600px) {
+       .vocab::after { font-size: 0.6em; }
+    }
+  </style>
+</head>
+<body>
+
+  <header style="padding:10px; text-align:center; background:white; border-bottom:3px solid var(--border);">
+    <strong style="color:var(--brand); font-size:1.5em;">Lesekumpel</strong>
+  </header>
+
+  <div class="container">
+    
+    <div class="tools">
+      <button id="btnRead">🔊 Vorlesen</button>
+      
+      <select id="langSelect" onchange="setLanguage(this.value)">
+        <option value="none">🌐 Sprache wählen</option>
+        <option value="none">❌ Keine Übersetzung</option>
+        <option value="en">🇬🇧 Englisch</option>
+        <option value="ar">🇸🇾 Arabisch (Syrisch)</option>
+        <option value="tr">🇹🇷 Türkisch</option>
+        <option value="ru">🇷🇺 Russisch</option>
+        <option value="symbol">🧩 Symbole</option>
+      </select>
+
+      <div style="border-left: 2px solid #ddd; padding-left:10px; display:flex; gap:5px;">
+        <button id="btnSmaller">A-</button>
+        <button id="btnBigger">A+</button>
+      </div>
+    </div>
+
+    <div id="story-content">
+       <h1>Willkommen im Stiefel-Land: Italien!</h1><img src="https://rala84.github.io/lesekumpel/bilder/willkommen-im-stiefelland-italien.png" onerror="this.onerror=null;this.src='https://rala84.github.io/lesekumpel/bilder/lesekumpel_logo.png';" class="story-image" style="max-width:100%; border-radius:15px; margin:0 auto; display:block;"><p>Hey du! Schnall dich an, denn wir düsen heute nach ... <strong>Italien</strong>! Kennst du das Land, das aussieht wie ein <strong>Stiefel</strong>, der gerade ins Meer tritt? Echt jetzt! Stell dir vor, du könntest das ganze Land als riesigen Schuh anprobieren! Aber Italien ist nicht nur ein cooler Stiefel, es ist auch die Heimat von Dingen, die du <strong>LIEBST</strong>! Pizza! Nudeln! Gelato! Mhmm, riechst du das auch?</p><p>Aber Italien hat nicht nur superlecker Essen, sondern auch alte, uralte Geheimnisse. Hast du schon mal vom <span id="word_1" class="vocab">Kolosseum</span> in Rom gehört? Das ist wie ein riesiges, steinernes Stadion, das schon da stand, als deine Ur-Ur-Ur-Großeltern noch gar nicht geboren waren! Früher haben sich dort mutige <span id="word_2" class="vocab">Gladiatoren</span> getummelt. Kein Witz!</p><p>Und dann gibt's da noch was Mega-Spannendes: <span id="word_3" class="vocab">Vulkane</span>! Ja, ganze Berge, die manchmal ordentlich <strong>RUMSEN</strong> und Feuer spucken können. Stell dir vor, so ein Berg wäre ein riesiger Drache, der ab und zu husten muss. Einer davon ist der <strong>Ätna</strong> – ein echter Gigant!</p><p>Also, wenn du das nächste Mal eine Pizza mampfst oder ein leckeres Eis schleckst, denk dran: Das ist ein kleiner Gruß aus dem Stiefel-Land. Italien ist einfach <strong>WOW</strong>, oder?</p>
+    </div>
+
+    </div>
+
+  <script>
+    // Hier spritzen wir das JSON vom Daten Helfer direkt als JavaScript Objekt rein
+    const vocabDB = {"word_1":{"original":"Kolosseum","en":"Colosseum","ar":"كولوسيوم","tr":"Kolezyum","ru":"Колизей","symbol":"🏟️"},"word_2":{"original":"Gladiatoren","en":"Gladiators","ar":"مصارعون","tr":"Gladyatörler","ru":"Гладиаторы","symbol":"⚔️"},"word_3":{"original":"Vulkane","en":"Volcanoes","ar":"براكين","tr":"Volkanlar","ru":"Вулканы","symbol":"🌋"}}; 
+  </script>
+
+  <script>
+    // --- SPRACH LOGIK ---
+    function setLanguage(lang) {
+        document.documentElement.setAttribute('data-langmode', lang);
+        
+        // Alle Wörter finden
+        const words = document.querySelectorAll('.vocab');
+        
+        words.forEach(el => {
+            const id = el.id; // z.B. "word_1"
+            if (vocabDB[id] && lang !== 'none') {
+                // Übersetzung holen
+                const trans = vocabDB[id][lang];
+                // In das data-Attribute schreiben (CSS zeigt es dann an)
+                el.setAttribute('data-trans', trans);
+            } else {
+                el.removeAttribute('data-trans');
+            }
+        });
+    }
+
+    // --- VORLESEN (Muss angepasst werden, um Übersetzungen zu ignorieren) ---
+    const btnRead = document.getElementById('btnRead');
+    let isSpeaking = false;
+    
+    btnRead.onclick = () => {
+        if(isSpeaking){ window.speechSynthesis.cancel(); isSpeaking=false; btnRead.innerText="🔊 Vorlesen"; return; }
+        
+        // Text holen, aber ohne die angezeigten Übersetzungen (CSS Pseudo-Elemente werden eh nicht gelesen)
+        const txt = document.getElementById('story-content').innerText;
+        const u = new SpeechSynthesisUtterance(txt);
+        u.lang = 'de-DE'; u.rate = 0.9;
+        u.onend = () => { isSpeaking=false; btnRead.innerText="🔊 Vorlesen"; };
+        window.speechSynthesis.speak(u); 
+        isSpeaking = true; 
+        btnRead.innerText="⏹ Stopp";
+    };
+
+    // --- DEINE ANDEREN SCRIPTS (Silben etc.) ---
+    // ... hier einfügen ...
+  </script>
+</body>
+</html>
