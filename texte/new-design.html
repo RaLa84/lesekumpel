@@ -1,3 +1,15 @@
+Das ist eine sehr sinnvolle Änderung. So wird die "Einfache Sprache" zu einer gleichwertigen Lese-Alternative und nicht nur zu einem versteckten Zusatz.
+
+Ich habe folgende Änderungen vorgenommen:
+
+1. **Toolbar:** Neuer Button **"📖 Einfach"**.
+2. **Funktion:** Wenn man klickt, wird der **gesamte Haupttext** gegen die einfache Zusammenfassung ausgetauscht.
+3. **Logik:** Alle anderen Funktionen (Vorlesen, Silbenfärbung, Lupe, Schriftgröße) funktionieren nun automatisch auch für die Zusammenfassung.
+4. **Entfernt:** Der alte Ausklapp-Bereich unten ist weg.
+
+Hier ist der komplette Code:
+
+```html
 <!DOCTYPE html>
 <html lang="de">
 <head>
@@ -104,6 +116,11 @@
             background: #264653;
             border: 2px solid var(--highlight-color);
         }
+        /* Spezieller Style für den "Einfach" Button wenn aktiv */
+        button#btn-summary.active {
+            background: #e76f51; /* Orange zur Unterscheidung */
+            border-color: #e76f51;
+        }
 
         /* --- DYSLEXIE & SILBEN --- */
         body.dyslexia-mode {
@@ -152,7 +169,6 @@
             margin-bottom: 20px;
             font-size: 1.3rem;
             min-height: 150px;
-            /* FIX: Display Flex entfernt, damit Text fließt */
             display: block; 
             line-height: 1.8;
         }
@@ -165,14 +181,6 @@
         }
 
         /* --- EXTRAS --- */
-        .summary-box {
-            background-color: #e9f5f5;
-            border-left: 5px solid var(--accent-color);
-            padding: 15px;
-            margin: 30px 0;
-            border-radius: 5px;
-        }
-
         .quiz-container {
             background: #fff;
             padding: 20px;
@@ -259,6 +267,7 @@
         <img src="https://rala84.github.io/lesekumpel/bilder/der-knochenschatzsucher.png" alt="Hund gräbt im Garten nach Knochen" class="hero-image">
 
         <nav class="toolbar">
+            <button onclick="toggleSummaryMode()" id="btn-summary">📖 Einfach</button>
             <button onclick="toggleTTS()">🔊 Vorlesen</button>
             <button onclick="toggleSyllables()" id="btn-syllables">🔡 Silben: AUS</button>
             <button onclick="toggleDyslexia()">👁️ Schrift</button>
@@ -287,11 +296,6 @@
                     <button onclick="nextChunk()">Weiter</button>
                 </div>
             </div>
-
-            <details class="summary-box">
-                <summary style="font-weight:bold; cursor:pointer;">📖 Zusammenfassung (Leichte Sprache)</summary>
-                <div id="simple-summary-text" style="margin-top:10px;"></div>
-            </details>
 
             <section class="quiz-container">
                 <h2>❓ Lese-Quiz</h2>
@@ -363,12 +367,12 @@ A-ber ich tat so, als hät-te ich nichts ge-se-hen.
             fontSize: 100,
             isMagnifier: false,
             isSyllables: false, 
+            isSummaryMode: false, // Neu: Status für Zusammenfassung
             chunkIndex: 0,
             chunks: []
         };
 
         function formatText(rawText, showSyllables) {
-            // FIX: Newlines im Code-Editor erst durch Leerzeichen ersetzen
             let cleanRaw = rawText.replace(/\n/g, " "); 
             let paragraphs = cleanRaw.split('<br>');
             
@@ -393,7 +397,6 @@ A-ber ich tat so, als hät-te ich nichts ge-se-hen.
                             }).join('-'); 
                         }
                     }
-                    // Leere Wörter filtern
                     if(word.trim() === "") return "";
                     return `<span class="word-interactive" onclick="handleWordClick(this, '${cleanWord}')">${displayHTML}</span>`;
                 });
@@ -402,23 +405,47 @@ A-ber ich tat so, als hät-te ich nichts ge-se-hen.
             return formattedParagraphs.join('<br>');
         }
 
+        // Hauptfunktion zum Rendern
         function renderAll() {
-            const btn = document.getElementById('btn-syllables');
+            // 1. Silben Button Status
+            const btnSyl = document.getElementById('btn-syllables');
             if (state.isSyllables) {
-                btn.innerText = "🔡 Silben: AN";
-                btn.classList.add('active');
+                btnSyl.innerText = "🔡 Silben: AN";
+                btnSyl.classList.add('active');
             } else {
-                btn.innerText = "🔡 Silben: AUS";
-                btn.classList.remove('active');
+                btnSyl.innerText = "🔡 Silben: AUS";
+                btnSyl.classList.remove('active');
             }
 
-            const fullHtml = formatText(storyRaw, state.isSyllables);
+            // 2. Zusammenfassung Button Status
+            const btnSum = document.getElementById('btn-summary');
+            let currentRawText = "";
+            
+            if (state.isSummaryMode) {
+                // Wir sind im Einfach-Modus
+                btnSum.innerText = "📖 Original"; // Button bietet Rückkehr an
+                btnSum.classList.add('active');
+                currentRawText = summaryRaw;
+            } else {
+                // Wir sind im Normal-Modus
+                btnSum.innerText = "📖 Einfach"; // Button bietet Vereinfachung an
+                btnSum.classList.remove('active');
+                currentRawText = storyRaw;
+            }
+
+            // 3. Text rendern (abhängig ob Original oder Zusammenfassung)
+            const fullHtml = formatText(currentRawText, state.isSyllables);
             document.getElementById('full-text-view').innerHTML = fullHtml;
             
-            const sumHtml = formatText(summaryRaw, state.isSyllables);
-            document.getElementById('simple-summary-text').innerHTML = sumHtml;
-
-            state.chunks = storyRaw.split('<br><br>').map(c => formatText(c, state.isSyllables));
+            // 4. Häppchen berechnen (basiert nun auch auf dem ausgewählten Text)
+            // Die Zusammenfassung hat einfache <br>, die Geschichte <br><br>. Wir passen den Splitter an.
+            // Wenn keine doppelten <br> da sind, wird es 1 großes Häppchen (was für Zusammenfassung okay ist).
+            state.chunks = currentRawText.split('<br><br>').map(c => formatText(c, state.isSyllables));
+            
+            // Sicherstellen, dass Index gültig bleibt beim Umschalten
+            if (state.chunkIndex >= state.chunks.length) {
+                state.chunkIndex = 0;
+            }
             updateChunkDisplay();
         }
 
@@ -427,6 +454,14 @@ A-ber ich tat so, als hät-te ich nichts ge-se-hen.
                 document.getElementById('chunk-display').innerHTML = state.chunks[state.chunkIndex];
                 document.getElementById('chunk-counter').innerText = (state.chunkIndex + 1) + " / " + state.chunks.length;
             }
+        }
+
+        // --- NEUE FUNKTION: Toggle Summary ---
+        function toggleSummaryMode() {
+            state.isSummaryMode = !state.isSummaryMode;
+            // Wenn man umschaltet, setzen wir Häppchen auf Anfang zurück
+            state.chunkIndex = 0;
+            renderAll();
         }
 
         function toggleSyllables() {
@@ -438,7 +473,13 @@ A-ber ich tat so, als hät-te ich nichts ge-se-hen.
             if (window.speechSynthesis.speaking) {
                 window.speechSynthesis.cancel();
             } else {
+                // Liest immer das vor, was gerade sichtbar ist
                 let textToRead = document.getElementById('full-text-view').innerText;
+                if(document.getElementById('full-text-view').classList.contains('hidden')) {
+                     // Falls Häppchenmodus an ist, lesen wir das aktuelle Häppchen
+                     textToRead = document.getElementById('chunk-display').innerText;
+                }
+                
                 let u = new SpeechSynthesisUtterance(textToRead);
                 u.lang = "de-DE";
                 u.rate = 0.9;
