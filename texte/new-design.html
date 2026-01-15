@@ -121,13 +121,11 @@
 
         .burger-icon { font-size: 1.8rem; cursor: pointer; display: block; color: var(--text-dark); }
 
-        /* Mobile Anpassungen */
         @media (max-width: 767px) {
             .brand-name { display: none; }
             .hidden-mobile { display: none !important; }
         }
 
-        /* Desktop Anpassungen */
         @media (min-width: 768px) {
             .burger-icon { display: none; }
             .nav-links-desktop { display: flex; }
@@ -163,7 +161,6 @@
             box-shadow: 0 10px 0 rgba(0,0,0,0.05);
         }
 
-        /* --- 2. TITEL --- */
         h1#main-title {
             font-family: var(--font-heading);
             color: var(--accent-salmon);
@@ -175,7 +172,6 @@
             text-transform: uppercase;
         }
 
-        /* --- 3. NUTZERBEWERTUNG (Badge) --- */
         .quality-badge {
             display: block;
             text-align: center;
@@ -189,7 +185,6 @@
             font-weight: bold;
         }
 
-        /* --- 4. BILD --- */
         .hero-image {
             width: 100%;
             border-radius: 15px;
@@ -197,7 +192,6 @@
             box-shadow: 0 5px 15px rgba(0,0,0,0.1);
         }
 
-        /* --- 5. TEXT (inkl. Toolbar) --- */
         .toolbar-container {
             border: 2px dashed var(--primary-yellow);
             border-radius: 15px;
@@ -239,153 +233,100 @@
             margin-bottom: 40px;
         }
 
+        /* --- NEU: Chunk Controls & Progress Ring --- */
+        .chunk-controls {
+            display: flex;
+            justify-content: space-between; /* Buttons links/rechts */
+            align-items: center;
+            margin-top: 30px;
+            margin-bottom: 20px;
+            padding: 0 10px;
+        }
+
+        .progress-ring {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            /* Hier passiert die Magie: --p wird per JS gesetzt */
+            background: conic-gradient(var(--primary-yellow) var(--p), #f0f0f0 0deg);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: var(--font-heading);
+            font-weight: bold;
+            font-size: 1rem;
+            color: var(--text-dark);
+            border: 4px solid #fff; /* Weisser Rand für saubereren Look */
+            box-shadow: 0 0 0 2px #eee; /* Äußerer feiner Rahmen */
+        }
+        /* Innerer weißer Kreis für Donut-Look (Optional, hier voll gefüllt gelassen für Pie-Chart Look) */
+
+        /* Hilfsklassen Text */
         .syl-blue { color: var(--syl-blue); }
         .syl-red { color: var(--syl-red); }
         .translated-word { color: var(--trans-color); font-weight: bold; font-style: italic; }
         .word-interactive:hover { background-color: #fffbe6; cursor: pointer; border-radius: 4px; }
 
-        /* --- 6. AUTOR --- */
-        .author-box {
-            margin-bottom: 40px;
-        }
+        /* Restliche Styles wie gehabt */
+        .author-box { margin-bottom: 40px; }
         .author-card {
-            border: 2px solid #eee;
-            border-left: 5px solid var(--accent-salmon);
-            border-radius: 15px;
-            padding: 20px;
-            display: flex;
-            align-items: center;
-            gap: 20px;
-            background: #fff;
+            border: 2px solid #eee; border-left: 5px solid var(--accent-salmon);
+            border-radius: 15px; padding: 20px;
+            display: flex; align-items: center; gap: 20px; background: #fff;
         }
-        .author-img {
-            width: 70px; height: 70px;
-            border-radius: 50%;
-            border: 3px solid var(--primary-yellow);
-            padding: 2px;
-        }
-        .author-name {
-            font-family: var(--font-heading);
-            color: var(--accent-salmon);
-            font-size: 1.3rem;
-            margin: 0;
-        }
+        .author-img { width: 70px; height: 70px; border-radius: 50%; border: 3px solid var(--primary-yellow); padding: 2px; }
+        .author-name { font-family: var(--font-heading); color: var(--accent-salmon); font-size: 1.3rem; margin: 0; }
 
-        /* --- 7. QUIZ --- */
-        .quiz-section {
-            margin-bottom: 40px;
-        }
+        .quiz-section { margin-bottom: 40px; }
         .section-title {
-            text-align: center;
-            font-family: var(--font-heading);
-            color: var(--accent-salmon);
-            font-size: 1.5rem;
-            margin-bottom: 20px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
+            text-align: center; font-family: var(--font-heading); color: var(--accent-salmon);
+            font-size: 1.5rem; margin-bottom: 20px;
+            display: flex; align-items: center; justify-content: center; gap: 10px;
         }
-        .quiz-card {
-            border: 2px solid #eee;
-            border-radius: 15px;
-            padding: 20px;
-            background: #fff;
-        }
+        .quiz-card { border: 2px solid #eee; border-radius: 15px; padding: 20px; background: #fff; }
         .quiz-option {
-            display: block;
-            border: 2px solid var(--primary-yellow);
-            border-radius: 10px;
-            padding: 12px;
-            margin-bottom: 10px;
-            cursor: pointer;
-            font-weight: 600;
-            background: #fff;
-            transition: 0.2s;
+            display: block; border: 2px solid var(--primary-yellow); border-radius: 10px;
+            padding: 12px; margin-bottom: 10px; cursor: pointer; font-weight: 600;
+            background: #fff; transition: 0.2s;
         }
         .quiz-option:hover { background: #fffbe6; }
         .quiz-option.correct { background: #d4edda; border-color: #28a745; }
         .quiz-option.wrong { background: #f8d7da; border-color: #dc3545; }
 
-        /* --- 8. MICROSURVEY --- */
-        .survey-section {
-            margin-bottom: 40px;
-        }
+        .survey-section { margin-bottom: 40px; }
         .vote-wrapper { display: flex; justify-content: center; gap: 20px; }
         .vote-card {
-            width: 60px; height: 60px;
-            display: flex; justify-content: center; align-items: center;
-            background: #fff;
-            border: 2px solid #eee;
-            border-radius: 15px;
-            font-size: 2rem;
-            cursor: pointer;
-            box-shadow: 0 4px 0 #eee;
-            transition: transform 0.1s;
+            width: 60px; height: 60px; display: flex; justify-content: center; align-items: center;
+            background: #fff; border: 2px solid #eee; border-radius: 15px; font-size: 2rem;
+            cursor: pointer; box-shadow: 0 4px 0 #eee; transition: transform 0.1s;
         }
         .vote-card:active { transform: translateY(4px); box-shadow: none; }
 
-        /* --- 9. & 10. KOMMENTARE --- */
-        .comments-section {
-            margin-bottom: 20px;
-        }
-        .comments-box {
-            border: 2px solid #eee;
-            border-radius: 15px;
-            padding: 20px;
-        }
-        
+        .comments-section { margin-bottom: 20px; }
+        .comments-box { border: 2px solid #eee; border-radius: 15px; padding: 20px; }
         .comment-input-wrapper { margin-bottom: 30px; }
         .comment-input {
-            width: 100%;
-            border: 2px solid var(--primary-yellow);
-            border-radius: 10px;
-            padding: 15px;
-            font-family: var(--font-body);
-            font-size: 1rem;
-            box-sizing: border-box;
-            outline: none;
+            width: 100%; border: 2px solid var(--primary-yellow); border-radius: 10px;
+            padding: 15px; font-family: var(--font-body); font-size: 1rem; box-sizing: border-box; outline: none;
         }
         .comment-input:focus { border-color: #f39c12; }
         .btn-send {
-            background-color: var(--accent-salmon);
-            color: white;
-            border: none;
-            padding: 10px 30px;
-            border-radius: 10px;
-            font-weight: bold;
-            font-family: var(--font-heading);
-            font-size: 1rem;
-            float: right;
-            margin-top: 10px;
-            cursor: pointer;
-            box-shadow: 0 4px 0 #c0392b;
+            background-color: var(--accent-salmon); color: white; border: none;
+            padding: 10px 30px; border-radius: 10px; font-weight: bold;
+            font-family: var(--font-heading); font-size: 1rem; float: right;
+            margin-top: 10px; cursor: pointer; box-shadow: 0 4px 0 #c0392b;
         }
         .btn-send:active { transform: translateY(4px); box-shadow: none; }
 
-        .comment-list-wrapper {
-            border-top: 2px dashed #eee;
-            padding-top: 20px;
-        }
-        .single-comment {
-            background-color: #f9f9f9;
-            border-radius: 10px;
-            padding: 15px;
-            margin-bottom: 15px;
-        }
+        .comment-list-wrapper { border-top: 2px dashed #eee; padding-top: 20px; }
+        .single-comment { background-color: #f9f9f9; border-radius: 10px; padding: 15px; margin-bottom: 15px; }
 
-        /* --- 11. FOOTER --- */
         footer {
-            text-align: center;
-            margin-top: 50px;
-            color: #888;
-            font-size: 0.9rem;
-            padding-top: 20px;
-            border-top: 1px solid #eee;
+            text-align: center; margin-top: 50px; color: #888; font-size: 0.9rem;
+            padding-top: 20px; border-top: 1px solid #eee;
         }
         .footer-links a { color: #888; text-decoration: none; margin: 0 5px; }
 
-        /* --- EXTRAS --- */
         .magnifier-overlay {
             position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
             background: #fff; border: 4px solid var(--primary-yellow);
@@ -456,11 +397,16 @@
 
         <div id="full-text-view" class="story-text"></div>
         
-        <div id="chunk-view" class="story-text hidden" style="text-align:center; font-size:1.4rem;">
-            <div id="chunk-display" style="margin-bottom:20px; min-height:100px;"></div>
-            <button class="tool-btn" onclick="prevChunk()">Zurück</button>
-            <span id="chunk-counter" style="margin:0 10px; font-weight:bold;">1/5</span>
-            <button class="tool-btn" onclick="nextChunk()">Weiter</button>
+        <div id="chunk-view" class="story-text hidden">
+            <div id="chunk-display" style="min-height:100px; text-align:left;"></div>
+            
+            <div class="chunk-controls">
+                <button class="tool-btn" onclick="prevChunk()">← Zurück</button>
+                
+                <div id="chunk-progress" class="progress-ring" style="--p: 20%;">1/5</div>
+                
+                <button class="tool-btn" onclick="nextChunk()">Weiter →</button>
+            </div>
         </div>
 
         <div class="author-box">
@@ -489,13 +435,11 @@
         <div class="comments-section">
             <div class="section-title" style="justify-content:flex-start;">💬 Dein Kommentar</div>
             <div class="comments-box">
-                
                 <div class="comment-input-wrapper">
                     <textarea class="comment-input" placeholder="Was denkst du über die Geschichte?"></textarea>
                     <button class="btn-send" onclick="alert('Gesendet!')">Senden</button>
                     <div class="clearfix"></div>
                 </div>
-
                 <div class="comment-list-wrapper">
                     <div class="single-comment">
                         <div style="font-weight:bold; color:var(--text-dark); margin-bottom:5px;">
@@ -503,7 +447,6 @@
                         </div>
                         <div>Witzig, mein Hund heißt auch Buddy</div>
                     </div>
-                    
                     <div class="single-comment">
                         <div style="font-weight:bold; color:var(--text-dark); margin-bottom:5px;">
                             Mama Wutz <span style="font-weight:normal; font-size:0.8em; color:#888; float:right;">12.12.2025</span>
@@ -511,7 +454,6 @@
                         <div>Das ist die Lieblingsgeschichte von meiner Tochter</div>
                     </div>
                 </div>
-
             </div>
         </div>
 
@@ -592,8 +534,18 @@
 
         function updateChunkDisplay() {
             if(state.chunkIndex >= state.chunks.length) state.chunkIndex = 0;
+            
+            // Text Update
             document.getElementById('chunk-display').innerHTML = state.chunks[state.chunkIndex] || "";
-            document.getElementById('chunk-counter').innerText = (state.chunkIndex+1) + "/" + state.chunks.length;
+            
+            // Circular Progress Update
+            let current = state.chunkIndex + 1;
+            let total = state.chunks.length;
+            let percent = (current / total) * 100;
+            
+            let ring = document.getElementById('chunk-progress');
+            ring.innerText = current + "/" + total;
+            ring.style.setProperty('--p', percent + '%');
         }
 
         function toggleSyllables() { state.syllables = !state.syllables; renderText(); }
@@ -602,27 +554,18 @@
         
         function toggleTTS() {
             const btn = document.getElementById('btn-tts');
-            
             if (window.speechSynthesis.speaking) {
-                // Stoppen
                 window.speechSynthesis.cancel();
                 btn.classList.remove('active');
             } else {
-                // Starten
                 let text = document.getElementById('full-text-view').innerText;
                 if(!document.getElementById('chunk-view').classList.contains('hidden')) {
                     text = document.getElementById('chunk-display').innerText;
                 }
-                
                 let u = new SpeechSynthesisUtterance(text);
                 u.lang = "de-DE";
                 u.rate = 0.9;
-
-                // Event Listener: Wenn fertig gelesen, Button zurücksetzen
-                u.onend = function() {
-                    btn.classList.remove('active');
-                };
-
+                u.onend = function() { btn.classList.remove('active'); };
                 window.speechSynthesis.speak(u);
                 btn.classList.add('active');
             }
@@ -647,6 +590,7 @@
             window.speechSynthesis.speak(u);
         }
         function closeMagnifier() { document.getElementById('magnifier-overlay').style.display = 'none'; }
+        
         function toggleViewMode() {
             let full = document.getElementById('full-text-view');
             let chunk = document.getElementById('chunk-view');
