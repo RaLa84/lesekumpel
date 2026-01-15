@@ -1,3 +1,10 @@
+Das ist der letzte Baustein. Ein Footer rundet die Seite professionell ab und bietet Platz für rechtliche Hinweise.
+
+Ich habe den Footer ganz unten eingefügt, optisch dezent durch eine dünne Linie abgetrennt, damit er nicht vom Inhalt ablenkt.
+
+Hier ist der **finale, komplette Code** für Ihre `index.html`:
+
+```html
 <!DOCTYPE html>
 <html lang="de">
 <head>
@@ -31,7 +38,7 @@
             transition: all 0.3s ease;
         }
 
-        /* --- HAUPT NAVIGATION (NEU) --- */
+        /* --- HAUPT NAVIGATION --- */
         .main-navbar {
             background-color: var(--nav-bg);
             padding: 10px 20px;
@@ -54,7 +61,7 @@
             width: auto;
         }
 
-        /* Desktop Links (werden mobil ausgeblendet) */
+        /* Desktop Links */
         .nav-links-desktop {
             display: none; 
             gap: 20px;
@@ -73,7 +80,7 @@
             color: var(--accent-color);
         }
 
-        /* Rechte Seite: Nutzer & Burger */
+        /* Rechte Seite */
         .nav-right {
             display: flex;
             align-items: center;
@@ -98,7 +105,6 @@
             font-size: 1.2rem;
         }
 
-        /* Burger Menu Icon */
         .burger-icon {
             font-size: 1.8rem;
             cursor: pointer;
@@ -106,7 +112,6 @@
             user-select: none;
         }
 
-        /* Mobile Dropdown Menu */
         .mobile-menu {
             display: none;
             background-color: var(--nav-bg);
@@ -133,7 +138,6 @@
             border-bottom: 1px solid #f9f9f9;
         }
 
-        /* Media Query für Desktop ab 768px */
         @media (min-width: 768px) {
             .burger-icon { display: none; }
             .mobile-menu { display: none !important; }
@@ -147,9 +151,9 @@
             top: 0;
             left: 0;
             width: 100%;
-            height: 5px; /* Etwas dünner, da unter Nav evtl. verdeckt, aber wir lassen es ganz oben */
+            height: 5px;
             background: transparent;
-            z-index: 4000; /* Über allem */
+            z-index: 4000;
         }
         #progress-bar {
             height: 100%;
@@ -203,7 +207,7 @@
             gap: 8px;
             justify-content: center;
             position: sticky;
-            top: 10px; /* Klebt am oberen Rand beim Scrollen */
+            top: 10px;
             z-index: 900;
         }
         
@@ -331,7 +335,7 @@
             object-fit: cover;
         }
 
-        /* --- MICROSURVEY & KOMMENTARE --- */
+        /* --- INTERAKTION --- */
         .survey-section {
             text-align: center;
             margin-top: 40px;
@@ -463,6 +467,30 @@
             z-index: 100;
             text-decoration: none;
         }
+
+        /* --- FOOTER (NEU) --- */
+        footer {
+            text-align: center;
+            padding: 40px 20px;
+            margin-top: 50px;
+            border-top: 1px solid #ddd;
+            color: #666;
+            font-size: 0.9rem;
+            background-color: #fdfbf7; /* Gleiche Farbe wie Body für nahtlosen Übergang */
+        }
+        .footer-links {
+            margin-top: 10px;
+        }
+        .footer-links a {
+            color: #666;
+            text-decoration: none;
+            margin: 0 8px;
+        }
+        .footer-links a:hover {
+            color: var(--accent-color);
+            text-decoration: underline;
+        }
+
     </style>
 </head>
 <body>
@@ -472,7 +500,6 @@
     <nav class="main-navbar">
         <div class="nav-left">
             <img src="https://github.com/RaLa84/lesekumpel/blob/main/logo1.png?raw=true" alt="Lesekumpel Logo" class="nav-logo">
-            
             <div class="nav-links-desktop">
                 <a href="https://rala84.github.io/lesekumpel/index.html">📚 Bibliothek</a>
                 <a href="https://rala84.app.n8n.cloud/form/b6f28a18-e90d-4bb8-b201-0c8f6c667a7a">✨ Neue Geschichte</a>
@@ -588,16 +615,25 @@
         </main>
     </div>
 
+    <footer>
+        <div class="footer-content">
+            <p>Erstellt von deinem KI-Lesekumpel 🤖</p>
+            <div class="footer-links">
+                <a href="#">Impressum</a> | 
+                <a href="#">Datenschutz</a> | 
+                <a href="#">Über uns</a>
+            </div>
+        </div>
+    </footer>
+
     <a href="whatsapp://send?text=Lies dir diese Geschichte durch!" class="whatsapp-float">📱</a>
 
     <script>
-        // --- BURGER MENU LOGIK ---
         function toggleMenu() {
             const menu = document.getElementById('mobile-menu');
             menu.classList.toggle('open');
         }
 
-        // --- STORY DATEN ---
         const dictionary = {
             "Garten": "garden", "Gar-ten": "garden", "Langeweile": "boredom", "su-per-lang-wei-lig": "super boring", "superlangweilig": "super boring", "Sonne": "sun", "Son-ne": "sun", "Buddy": "Buddy", "Bud-dy": "Buddy", "Hund": "dog", "Knochen": "bone", "Kno-chen": "bone", "Markknochen": "marrow bone", "Mark-kno-chen": "marrow bone", "Schatz": "treasure", "Gras": "grass", "Nase": "nose", "Na-se": "nose", "Boden": "ground", "Bo-den": "ground", "Schwanz": "tail", "Loch": "hole", "buddeln": "dig", "bud-del-te": "dug", "verstecken": "hide", "ver-ste-cken": "hide", "Apfelbaum": "apple tree", "Ap-fel-baum": "apple tree", "Erde": "soil", "Er-de": "soil", "Pfoten": "paws", "Pfo-ten": "paws", "stolz": "proud", "Archäologe": "archaeologist", "Ar-chä-o-lo-ge": "archaeologist", "Pyramide": "pyramid", "Py-ra-mi-de": "pyramid", "schnüffeln": "sniff", "schnüf-fel-te": "sniffed", "lachen": "laugh", "la-chen": "laugh", "Haustiere": "pets", "Haus-tie-re": "pets", "süß": "cute", "lieb": "love"
         };
@@ -883,3 +919,5 @@ A-ber ich tat so, als hät-te ich nichts ge-se-hen.
     </script>
 </body>
 </html>
+
+```
