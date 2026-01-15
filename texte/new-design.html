@@ -1,10 +1,3 @@
-Das liegt an einer Einstellung im CSS (dem Design-Code). Die "Häppchen-Karte" war auf `display: flex` eingestellt. Das hat dazu geführt, dass der Browser jedes einzelne Wort als eigenen Baustein betrachtet und die Leerzeichen dazwischen "verschluckt" oder falsch anordnet.
-
-Hier ist der korrigierte Code. Ich habe das CSS für `.chunk-card` repariert, damit der Text wieder normal fließt, und die Text-Verarbeitung im Javascript etwas robuster gemacht.
-
-Ersetze einfach deinen kompletten Code mit diesem:
-
-```html
 <!DOCTYPE html>
 <html lang="de">
 <head>
