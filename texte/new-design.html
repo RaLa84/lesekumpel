@@ -1,3 +1,10 @@
+Das ist eine super Ergänzung! Eine "Das könnte dir auch gefallen"-Sektion hält die Kinder auf der Plattform und motiviert zum Weiterlesen.
+
+Ich habe den Bereich unten in die Hauptkarte eingefügt, direkt unter die Kommentare. Das Design passt sich nahtlos an (Karten-Layout mit Bildern, abgerundete Ecken, Hover-Effekte).
+
+Hier ist der **finale, komplette Code** mit der neuen Sektion:
+
+```html
 <!DOCTYPE html>
 <html lang="de">
 <head>
@@ -23,7 +30,7 @@
         }
         body.dyslexia-mode { font-family: var(--font-dyslexic) !important; letter-spacing: 0.05em; line-height: 2.0; }
 
-        /* --- KARAOKE HIGHLIGHT --- */
+        /* --- HIGHLIGHT --- */
         .highlight-active {
             background-color: #ffeb3b !important;
             border-radius: 4px;
@@ -57,7 +64,7 @@
         }
         .mobile-menu.open { display: flex; }
 
-        /* --- LAYOUT --- */
+        /* --- MAIN CARD --- */
         .main-card {
             max-width: 800px; margin: 40px auto; background: var(--bg-card);
             border: 4px solid var(--primary-yellow); border-radius: 25px; padding: 40px;
@@ -122,7 +129,7 @@
             .fab-tools { display: none !important; }
         }
 
-        /* --- CONTENT --- */
+        /* --- CONTENT & EXTRAS --- */
         .story-text { font-size: 1.2em; color: #444; margin-bottom: 40px; }
         .syl-blue { color: var(--syl-blue); }
         .syl-red { color: var(--syl-red); }
@@ -138,23 +145,78 @@
             color: var(--text-dark); border: 4px solid #fff; box-shadow: 0 0 0 2px #eee;
         }
 
-        /* Sections */
-        .author-box, .quiz-section, .survey-section, .comments-section { margin-bottom: 40px; }
+        /* --- SECTIONS --- */
+        .author-box, .quiz-section, .survey-section, .comments-section, .related-section { margin-bottom: 40px; }
         .section-title { text-align: center; font-family: var(--font-heading); color: var(--accent-salmon); font-size: 1.5rem; margin-bottom: 20px; }
+        
         .vote-wrapper { display: flex; justify-content: center; gap: 20px; }
         .vote-card { width: 60px; height: 60px; display: flex; justify-content: center; align-items: center; background: #fff; border: 2px solid #eee; border-radius: 15px; font-size: 2rem; cursor: pointer; box-shadow: 0 4px 0 #eee; }
         .vote-card:active { transform: translateY(4px); box-shadow: none; }
+        
         .author-card { border: 2px solid #eee; border-left: 5px solid var(--accent-salmon); border-radius: 15px; padding: 20px; display: flex; align-items: center; gap: 20px; background: #fff; }
         .author-img { width: 70px; height: 70px; border-radius: 50%; border: 3px solid var(--primary-yellow); padding: 2px; }
         .author-name { font-family: var(--font-heading); color: var(--accent-salmon); font-size: 1.3rem; margin: 0; }
+        
         .quiz-card { border: 2px solid #eee; border-radius: 15px; padding: 20px; background: #fff; }
         .quiz-option { display: block; border: 2px solid var(--primary-yellow); border-radius: 10px; padding: 12px; margin-bottom: 10px; cursor: pointer; font-weight: 600; background: #fff; }
         .quiz-option.correct { background: #d4edda; border-color: #28a745; }
         .quiz-option.wrong { background: #f8d7da; border-color: #dc3545; }
+        
         .comments-box { border: 2px solid #eee; border-radius: 15px; padding: 20px; }
         .comment-input { width: 100%; border: 2px solid var(--primary-yellow); border-radius: 10px; padding: 15px; font-family: var(--font-body); font-size: 1rem; box-sizing: border-box; outline: none; }
         .btn-send { background-color: var(--accent-salmon); color: white; border: none; padding: 10px 30px; border-radius: 10px; font-weight: bold; font-size: 1rem; float: right; margin-top: 10px; cursor: pointer; box-shadow: 0 4px 0 #c0392b; }
         .single-comment { background-color: #f9f9f9; border-radius: 10px; padding: 15px; margin-bottom: 15px; }
+        
+        /* --- NEU: RELATED ARTICLES (DAS KÖNNTE DIR GEFALLEN) --- */
+        .related-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 20px;
+        }
+        .related-card {
+            background: #fff;
+            border: 2px solid #eee;
+            border-radius: 15px;
+            overflow: hidden;
+            text-decoration: none;
+            color: var(--text-dark);
+            transition: transform 0.2s, box-shadow 0.2s;
+            display: flex;
+            flex-direction: column;
+        }
+        .related-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            border-color: var(--primary-yellow);
+        }
+        .related-img {
+            width: 100%;
+            height: 140px;
+            object-fit: cover;
+            border-bottom: 2px solid #eee;
+        }
+        .related-content {
+            padding: 15px;
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .related-title {
+            font-family: var(--font-heading);
+            font-size: 1.1rem;
+            line-height: 1.3;
+            margin-bottom: 10px;
+            color: var(--accent-teal);
+        }
+        .related-meta {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.85rem;
+            color: #777;
+            font-weight: 600;
+        }
+
         .clearfix::after { content: ""; display: table; clear: both; }
         footer { text-align: center; margin-top: 50px; color: #888; font-size: 0.9rem; padding-top: 20px; border-top: 1px solid #eee; }
         .footer-links a { color: #888; text-decoration: none; margin: 0 5px; }
@@ -257,6 +319,47 @@
                 </div>
             </div>
         </div>
+
+        <div class="related-section">
+            <div class="section-title">Das könnte dir auch gefallen</div>
+            <div class="related-grid">
+                
+                <a href="https://rala84.github.io/lesekumpel/texte/hola-spanien-dein-reisefuehrer-der-superlative.html" class="related-card">
+                    <img src="https://rala84.github.io/lesekumpel/bilder/hola-spanien-dein-reisefuehrer-der-superlative.png" alt="Spanien" class="related-img">
+                    <div class="related-content">
+                        <div class="related-title">Hola Spanien - Dein Reiseführer</div>
+                        <div class="related-meta">
+                            <span>🖊️ Samira</span>
+                            <span>⭐ 89%</span>
+                        </div>
+                    </div>
+                </a>
+
+                <a href="https://rala84.github.io/lesekumpel/texte/fliegen-ohne-motor-das-segelflugzeuggeheimnis.html" class="related-card">
+                    <img src="https://rala84.github.io/lesekumpel/bilder/fliegen-ohne-motor-das-segelflugzeuggeheimnis.png" alt="Segelflugzeug" class="related-img">
+                    <div class="related-content">
+                        <div class="related-title">Fliegen ohne Motor</div>
+                        <div class="related-meta">
+                            <span>🖊️ Samira</span>
+                            <span>⭐ 89%</span>
+                        </div>
+                    </div>
+                </a>
+
+                <a href="https://rala84.github.io/lesekumpel/texte/der-blaue-panzer-des-schreckens.html" class="related-card">
+                    <img src="https://rala84.github.io/lesekumpel/bilder/der-blaue-panzer-des-schreckens.png" alt="Blauer Panzer" class="related-img">
+                    <div class="related-content">
+                        <div class="related-title">Der blaue Panzer des Schreckens</div>
+                        <div class="related-meta">
+                            <span>🖊️ Jonas</span>
+                            <span>⭐ 93%</span>
+                        </div>
+                    </div>
+                </a>
+
+            </div>
+        </div>
+
     </div>
 
     <footer>
@@ -271,6 +374,8 @@
             <button class="tool-btn btn-salmon" onclick="closeMagnifier()">Schließen</button>
         </div>
     </div>
+
+    <a href="whatsapp://send?text=Lies dir diese Geschichte durch!" class="whatsapp-float">📱</a>
 
     <script>
         function toggleMobileToolbar() {
@@ -332,48 +437,45 @@
         
         function toggleTTS() {
             const btn = document.getElementById('btn-tts');
-            
-            // Erst prüfen ob schon gesprochen wird
             if (window.speechSynthesis.speaking) {
                 window.speechSynthesis.cancel();
                 btn.classList.remove('active');
                 clearHighlights();
-                return; // Wichtig: Hier rausspringen, damit nicht direkt neu gestartet wird!
+            } else {
+                let container = document.getElementById('chunk-view').classList.contains('hidden') 
+                    ? document.getElementById('full-text-view') 
+                    : document.getElementById('chunk-display');
+                
+                let spans = container.querySelectorAll('.word-interactive');
+                let speechText = "";
+                let wordMap = []; 
+                
+                spans.forEach(span => {
+                    let word = span.innerText; 
+                    let start = speechText.length;
+                    speechText += word + " ";
+                    let end = speechText.length - 1; 
+                    wordMap.push({ start, end, el: span });
+                });
+
+                let u = new SpeechSynthesisUtterance(speechText);
+                u.lang = "de-DE";
+                u.rate = 0.9;
+
+                // Standard Web Speech API (robusteste Lösung)
+                u.onboundary = function(event) {
+                    if (event.name === 'word') {
+                        let charIndex = event.charIndex;
+                        let currentWord = wordMap.find(w => charIndex >= w.start && charIndex < w.end);
+                        clearHighlights();
+                        if (currentWord) currentWord.el.classList.add('highlight-active');
+                    }
+                };
+
+                u.onend = function() { btn.classList.remove('active'); clearHighlights(); };
+                window.speechSynthesis.speak(u);
+                btn.classList.add('active');
             }
-
-            // Wenn nicht gesprochen wird -> Starten
-            let container = document.getElementById('chunk-view').classList.contains('hidden') 
-                ? document.getElementById('full-text-view') 
-                : document.getElementById('chunk-display');
-            
-            let spans = container.querySelectorAll('.word-interactive');
-            let speechText = "";
-            let wordMap = []; 
-            
-            spans.forEach(span => {
-                let word = span.innerText; 
-                let start = speechText.length;
-                speechText += word + " ";
-                let end = speechText.length - 1; 
-                wordMap.push({ start, end, el: span });
-            });
-
-            let u = new SpeechSynthesisUtterance(speechText);
-            u.lang = "de-DE";
-            u.rate = 0.9;
-
-            u.onboundary = function(event) {
-                if (event.name === 'word') {
-                    let charIndex = event.charIndex;
-                    let currentWord = wordMap.find(w => charIndex >= w.start && charIndex < w.end);
-                    clearHighlights();
-                    if (currentWord) currentWord.el.classList.add('highlight-active');
-                }
-            };
-
-            u.onend = function() { btn.classList.remove('active'); clearHighlights(); };
-            window.speechSynthesis.speak(u);
-            btn.classList.add('active');
         }
 
         function clearHighlights() {
@@ -435,3 +537,5 @@
     </script>
 </body>
 </html>
+
+```
