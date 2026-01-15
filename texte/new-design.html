@@ -14,6 +14,7 @@
             --syl-blue: #00509d; 
             --syl-red: #c1121f; 
             --trans-color: #7209b7; 
+            --nav-bg: #ffffff;
             --font-main: 'Verdana', sans-serif;
             --font-dyslexic: 'Comic Sans MS', 'Chalkboard SE', sans-serif;
             --spacing-std: 1.6;
@@ -30,15 +31,125 @@
             transition: all 0.3s ease;
         }
 
+        /* --- HAUPT NAVIGATION (NEU) --- */
+        .main-navbar {
+            background-color: var(--nav-bg);
+            padding: 10px 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            z-index: 3000;
+        }
+
+        .nav-left {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .nav-logo {
+            height: 40px;
+            width: auto;
+        }
+
+        /* Desktop Links (werden mobil ausgeblendet) */
+        .nav-links-desktop {
+            display: none; 
+            gap: 20px;
+        }
+        .nav-links-desktop a {
+            text-decoration: none;
+            color: var(--text-color);
+            font-weight: bold;
+            font-size: 1rem;
+            padding: 5px 10px;
+            border-radius: 5px;
+            transition: background 0.2s;
+        }
+        .nav-links-desktop a:hover {
+            background-color: #f0f0f0;
+            color: var(--accent-color);
+        }
+
+        /* Rechte Seite: Nutzer & Burger */
+        .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+            background-color: var(--highlight-color);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.2rem;
+        }
+
+        /* Burger Menu Icon */
+        .burger-icon {
+            font-size: 1.8rem;
+            cursor: pointer;
+            display: block;
+            user-select: none;
+        }
+
+        /* Mobile Dropdown Menu */
+        .mobile-menu {
+            display: none;
+            background-color: var(--nav-bg);
+            border-top: 1px solid #eee;
+            padding: 10px 20px;
+            flex-direction: column;
+            gap: 10px;
+            box-shadow: 0 5px 5px rgba(0,0,0,0.05);
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            box-sizing: border-box;
+            z-index: 2999;
+        }
+        .mobile-menu.open {
+            display: flex;
+        }
+        .mobile-menu a {
+            text-decoration: none;
+            color: var(--text-color);
+            font-size: 1.1rem;
+            padding: 10px 0;
+            border-bottom: 1px solid #f9f9f9;
+        }
+
+        /* Media Query für Desktop ab 768px */
+        @media (min-width: 768px) {
+            .burger-icon { display: none; }
+            .mobile-menu { display: none !important; }
+            .nav-links-desktop { display: flex; }
+        }
+
+
         /* --- FORTSCHRITTSBALKEN --- */
         #progress-container {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
-            height: 8px;
-            background: #ddd;
-            z-index: 1000;
+            height: 5px; /* Etwas dünner, da unter Nav evtl. verdeckt, aber wir lassen es ganz oben */
+            background: transparent;
+            z-index: 4000; /* Über allem */
         }
         #progress-bar {
             height: 100%;
@@ -92,7 +203,7 @@
             gap: 8px;
             justify-content: center;
             position: sticky;
-            top: 10px;
+            top: 10px; /* Klebt am oberen Rand beim Scrollen */
             z-index: 900;
         }
         
@@ -220,9 +331,7 @@
             object-fit: cover;
         }
 
-        /* --- NEU: MICROSURVEY & KOMMENTARE --- */
-        
-        /* 1. Microsurvey (Abstimmung) */
+        /* --- MICROSURVEY & KOMMENTARE --- */
         .survey-section {
             text-align: center;
             margin-top: 40px;
@@ -252,7 +361,6 @@
             background-color: #f0f0f0;
         }
 
-        /* 2. Kommentar-Bereich (Design wie im Bild) */
         .comments-section {
             background: #fff;
             border-radius: 15px;
@@ -268,7 +376,6 @@
             gap: 10px;
         }
 
-        /* Liste der existierenden Kommentare */
         .comments-list {
             margin-bottom: 20px;
             border-bottom: 1px solid #eee;
@@ -296,24 +403,23 @@
             margin: 0;
         }
 
-        /* Eingabefeld */
         .comment-input-area textarea {
             width: 100%;
             height: 80px;
             padding: 15px;
-            border: 2px solid var(--highlight-color); /* Gelber Rahmen */
+            border: 2px solid var(--highlight-color);
             border-radius: 10px;
             font-family: inherit;
             font-size: 1rem;
             resize: vertical;
-            box-sizing: border-box; /* Wichtig damit Padding nicht die Breite sprengt */
+            box-sizing: border-box; 
         }
         .comment-input-area textarea:focus {
             outline: none;
             border-color: #d4b05d;
         }
         .comment-submit-btn {
-            background-color: #e76f51; /* Lachsfarbe wie im Bild */
+            background-color: #e76f51;
             color: white;
             border: none;
             padding: 10px 25px;
@@ -324,15 +430,13 @@
             margin-top: 10px;
             cursor: pointer;
         }
-        /* Clearfix für den float Button */
         .comment-input-area::after {
             content: "";
             display: table;
             clear: both;
         }
         
-        /* --- TAGS & WHATSAPP --- */
-        .tags { margin-top: 20px; clear: both; } /* Clear float */
+        .tags { margin-top: 20px; clear: both; }
         .tag {
             background: #ddd;
             padding: 5px 10px;
@@ -364,6 +468,30 @@
 <body>
 
     <div id="progress-container"><div id="progress-bar"></div></div>
+
+    <nav class="main-navbar">
+        <div class="nav-left">
+            <img src="https://github.com/RaLa84/lesekumpel/blob/main/logo1.png?raw=true" alt="Lesekumpel Logo" class="nav-logo">
+            
+            <div class="nav-links-desktop">
+                <a href="https://rala84.github.io/lesekumpel/index.html">📚 Bibliothek</a>
+                <a href="https://rala84.app.n8n.cloud/form/b6f28a18-e90d-4bb8-b201-0c8f6c667a7a">✨ Neue Geschichte</a>
+            </div>
+        </div>
+
+        <div class="nav-right">
+            <div class="user-profile">
+                <span>Papa Wutz</span>
+                <div class="user-avatar">🐷</div>
+            </div>
+            <div class="burger-icon" onclick="toggleMenu()">☰</div>
+        </div>
+
+        <div id="mobile-menu" class="mobile-menu">
+            <a href="https://rala84.github.io/lesekumpel/index.html">📚 Bibliothek</a>
+            <a href="https://rala84.app.n8n.cloud/form/b6f28a18-e90d-4bb8-b201-0c8f6c667a7a">✨ Neue Geschichte</a>
+        </div>
+    </nav>
 
     <div class="container">
         <header>
@@ -463,6 +591,13 @@
     <a href="whatsapp://send?text=Lies dir diese Geschichte durch!" class="whatsapp-float">📱</a>
 
     <script>
+        // --- BURGER MENU LOGIK ---
+        function toggleMenu() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('open');
+        }
+
+        // --- STORY DATEN ---
         const dictionary = {
             "Garten": "garden", "Gar-ten": "garden", "Langeweile": "boredom", "su-per-lang-wei-lig": "super boring", "superlangweilig": "super boring", "Sonne": "sun", "Son-ne": "sun", "Buddy": "Buddy", "Bud-dy": "Buddy", "Hund": "dog", "Knochen": "bone", "Kno-chen": "bone", "Markknochen": "marrow bone", "Mark-kno-chen": "marrow bone", "Schatz": "treasure", "Gras": "grass", "Nase": "nose", "Na-se": "nose", "Boden": "ground", "Bo-den": "ground", "Schwanz": "tail", "Loch": "hole", "buddeln": "dig", "bud-del-te": "dug", "verstecken": "hide", "ver-ste-cken": "hide", "Apfelbaum": "apple tree", "Ap-fel-baum": "apple tree", "Erde": "soil", "Er-de": "soil", "Pfoten": "paws", "Pfo-ten": "paws", "stolz": "proud", "Archäologe": "archaeologist", "Ar-chä-o-lo-ge": "archaeologist", "Pyramide": "pyramid", "Py-ra-mi-de": "pyramid", "schnüffeln": "sniff", "schnüf-fel-te": "sniffed", "lachen": "laugh", "la-chen": "laugh", "Haustiere": "pets", "Haus-tie-re": "pets", "süß": "cute", "lieb": "love"
         };
@@ -748,5 +883,3 @@ A-ber ich tat so, als hät-te ich nichts ge-se-hen.
     </script>
 </body>
 </html>
-
-```
