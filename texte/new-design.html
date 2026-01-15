@@ -12,18 +12,14 @@
         :root {
             --bg-body: #f0f8ff; 
             --bg-card: #ffffff;
-            
             --primary-yellow: #f4d03f; 
             --accent-salmon: #f08080; 
             --accent-teal: #2a9d8f;   
-            
             --text-dark: #2c3e50;
             --text-light: #666;
-            
             --font-heading: 'Fredoka', cursive, sans-serif;
             --font-body: 'Quicksand', sans-serif;
             --font-dyslexic: 'Comic Sans MS', 'Chalkboard SE', sans-serif;
-            
             --syl-blue: #00509d; 
             --syl-red: #c1121f; 
             --trans-color: #7209b7; 
@@ -46,7 +42,15 @@
             line-height: 2.0;
         }
 
-        /* --- 1. HEADER / NAVIGATION --- */
+        /* --- KARAOKE HIGHLIGHT (NEU) --- */
+        .highlight-active {
+            background-color: #ffeb3b; /* Leuchtendes Gelb */
+            border-radius: 4px;
+            box-shadow: 0 0 5px rgba(255, 235, 59, 0.5);
+            transition: background-color 0.1s;
+        }
+
+        /* --- NAVIGATION --- */
         .main-navbar {
             background-color: #fff;
             padding: 10px 20px;
@@ -95,46 +99,23 @@
         .btn-new-story:hover { transform: scale(1.05); background: #fffbe6; }
 
         .nav-right { display: flex; align-items: center; gap: 15px; }
-
-        .user-burger-container {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-        }
-
-        .user-profile {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-weight: bold;
-            font-size: 0.9rem;
-        }
-        .user-avatar {
-            width: 32px;
-            height: 32px;
-            background-color: var(--primary-yellow);
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 1.2rem;
-        }
-
+        .user-burger-container { display: flex; align-items: center; gap: 15px; }
+        .user-profile { display: flex; align-items: center; gap: 8px; font-weight: bold; font-size: 0.9rem; }
+        .user-avatar { width: 32px; height: 32px; background-color: var(--primary-yellow); border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 1.2rem; }
         .burger-icon { font-size: 1.8rem; cursor: pointer; display: block; color: var(--text-dark); }
 
-        /* Mobile Anpassungen */
         @media (max-width: 767px) {
             .brand-name { display: none; }
             .hidden-mobile { display: none !important; }
         }
 
-        /* Desktop Anpassungen */
         @media (min-width: 768px) {
             .burger-icon { display: none; }
             .nav-links-desktop { display: flex; }
             .nav-logo { height: 50px; }
             .brand-name { font-size: 1.5rem; display: block; }
             .nav-left { gap: 15px; }
+            .fab-tools { display: none !important; }
         }
 
         .mobile-menu {
@@ -152,7 +133,7 @@
         }
         .mobile-menu.open { display: flex; }
 
-        /* --- HAUPT CONTAINER --- */
+        /* --- LAYOUT --- */
         .main-card {
             max-width: 800px;
             margin: 40px auto;
@@ -164,39 +145,23 @@
             box-shadow: 0 10px 0 rgba(0,0,0,0.05);
         }
 
-        /* --- TITEL --- */
         h1#main-title {
-            font-family: var(--font-heading);
-            color: var(--accent-salmon);
-            font-size: 3rem;
-            text-align: center;
-            line-height: 1.1;
-            margin-bottom: 10px;
-            margin-top: 0;
-            text-transform: uppercase;
+            font-family: var(--font-heading); color: var(--accent-salmon); font-size: 3rem;
+            text-align: center; line-height: 1.1; margin-bottom: 10px; margin-top: 0; text-transform: uppercase;
         }
 
         .quality-badge {
-            display: block;
-            text-align: center;
-            background: #fffbe6;
-            color: #d4ac0d;
-            border: 1px solid var(--primary-yellow);
-            border-radius: 20px;
-            padding: 5px 15px;
-            width: fit-content;
-            margin: 0 auto 30px auto;
-            font-weight: bold;
+            display: block; text-align: center; background: #fffbe6; color: #d4ac0d;
+            border: 1px solid var(--primary-yellow); border-radius: 20px; padding: 5px 15px;
+            width: fit-content; margin: 0 auto 30px auto; font-weight: bold;
         }
 
         .hero-image {
-            width: 100%;
-            border-radius: 15px;
-            margin-bottom: 30px;
+            width: 100%; border-radius: 15px; margin-bottom: 30px;
             box-shadow: 0 5px 15px rgba(0,0,0,0.1);
         }
 
-        /* --- TOOLBAR (Responsive) --- */
+        /* --- TOOLBAR --- */
         .toolbar-container {
             border: 2px dashed var(--primary-yellow);
             border-radius: 15px;
@@ -211,214 +176,96 @@
         }
 
         .tool-btn {
-            background: #fff;
-            border: 2px solid #ddd;
-            border-radius: 12px;
-            padding: 8px 15px;
-            font-family: var(--font-body);
-            font-weight: 600;
-            color: var(--text-dark);
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            transition: all 0.2s;
+            background: #fff; border: 2px solid #ddd; border-radius: 12px; padding: 8px 15px;
+            font-family: var(--font-body); font-weight: 600; color: var(--text-dark); cursor: pointer;
+            display: flex; align-items: center; gap: 6px; transition: all 0.2s;
         }
         .tool-btn:hover { border-color: var(--accent-teal); color: var(--accent-teal); }
-        .tool-btn.active {
-            background: var(--accent-teal);
-            color: #fff;
-            border-color: var(--accent-teal);
-        }
+        .tool-btn.active { background: var(--accent-teal); color: #fff; border-color: var(--accent-teal); }
         .btn-salmon { border-color: var(--accent-salmon); color: var(--accent-salmon); }
         .btn-salmon.active { background: var(--accent-salmon); color: white; }
 
-        /* --- MOBILE FAB (Geändert: Rechts unten) --- */
+        /* --- MOBILE FAB (RECHTS UNTEN) --- */
         .fab-tools {
-            display: none; /* Desktop: versteckt */
-            position: fixed;
-            bottom: 20px;
-            right: 20px; /* HIER GEÄNDERT: RECHTS STATT LINKS */
-            width: 60px;
-            height: 60px;
-            background-color: var(--accent-salmon);
-            color: white;
-            border-radius: 50%;
-            border: none;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-            font-size: 1.8rem;
-            cursor: pointer;
-            z-index: 5000;
-            justify-content: center;
-            align-items: center;
+            display: none; position: fixed; bottom: 20px; right: 20px;
+            width: 60px; height: 60px; background-color: var(--accent-salmon); color: white;
+            border-radius: 50%; border: none; box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            font-size: 1.8rem; cursor: pointer; z-index: 5000; justify-content: center; align-items: center;
             transition: transform 0.2s;
         }
         .fab-tools:active { transform: scale(0.9); }
 
-        /* --- MOBILE & DESKTOP REGELN TOOLBAR --- */
+        /* Toolbar Mobile Logic */
         @media (max-width: 767px) {
             .toolbar-container {
-                position: fixed;
-                bottom: -100%;
-                left: 0;
-                width: 100%;
-                border: none;
-                border-top: 4px solid var(--primary-yellow);
-                border-radius: 20px 20px 0 0;
-                box-shadow: 0 -5px 20px rgba(0,0,0,0.2);
-                z-index: 4000;
-                box-sizing: border-box;
-                margin: 0;
-                padding-bottom: 30px;
-                flex-direction: row;
-                align-content: flex-start;
-                height: auto;
-                max-height: 50vh;
-                overflow-y: auto;
+                position: fixed; bottom: -100%; left: 0; width: 100%; border: none;
+                border-top: 4px solid var(--primary-yellow); border-radius: 20px 20px 0 0;
+                box-shadow: 0 -5px 20px rgba(0,0,0,0.2); z-index: 4000; box-sizing: border-box;
+                margin: 0; padding-bottom: 30px; flex-direction: row; align-content: flex-start;
+                height: auto; max-height: 50vh; overflow-y: auto;
             }
             .toolbar-container.open { bottom: 0; }
             .fab-tools { display: flex; }
             body { padding-bottom: 100px; }
         }
 
-        @media (min-width: 768px) {
-            .fab-tools { display: none !important; }
-        }
-
         /* --- TEXT --- */
-        .story-text {
-            font-size: 1.2em; /* em für Scaling */
-            color: #444;
-            margin-bottom: 40px;
-        }
-
-        /* --- CHUNK CONTROLS --- */
-        .chunk-controls {
-            display: flex;
-            justify-content: space-between; 
-            align-items: center;
-            margin-top: 30px;
-            margin-bottom: 20px;
-            padding: 0 10px;
-        }
-
-        .progress-ring {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            background: conic-gradient(var(--primary-yellow) var(--p), #f0f0f0 0deg);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-family: var(--font-heading);
-            font-weight: bold;
-            font-size: 1rem;
-            color: var(--text-dark);
-            border: 4px solid #fff;
-            box-shadow: 0 0 0 2px #eee;
-        }
-
-        /* Hilfsklassen Text */
+        .story-text { font-size: 1.2em; color: #444; margin-bottom: 40px; }
+        
         .syl-blue { color: var(--syl-blue); }
         .syl-red { color: var(--syl-red); }
         .translated-word { color: var(--trans-color); font-weight: bold; font-style: italic; }
-        .word-interactive:hover { background-color: #fffbe6; cursor: pointer; border-radius: 4px; }
+        .word-interactive { border-radius: 3px; } 
+        .word-interactive:hover { background-color: #fffbe6; cursor: pointer; }
 
-        /* Restliche Styles */
-        .author-box { margin-bottom: 40px; }
-        .author-card {
-            border: 2px solid #eee; border-left: 5px solid var(--accent-salmon);
-            border-radius: 15px; padding: 20px;
-            display: flex; align-items: center; gap: 20px; background: #fff;
+        .chunk-controls { display: flex; justify-content: space-between; align-items: center; margin-top: 30px; padding: 0 10px; }
+        .progress-ring {
+            width: 60px; height: 60px; border-radius: 50%;
+            background: conic-gradient(var(--primary-yellow) var(--p), #f0f0f0 0deg);
+            display: flex; align-items: center; justify-content: center;
+            font-family: var(--font-heading); font-weight: bold; font-size: 1rem;
+            color: var(--text-dark); border: 4px solid #fff; box-shadow: 0 0 0 2px #eee;
         }
+
+        /* Sections */
+        .author-box, .quiz-section, .survey-section, .comments-section { margin-bottom: 40px; }
+        .section-title { text-align: center; font-family: var(--font-heading); color: var(--accent-salmon); font-size: 1.5rem; margin-bottom: 20px; }
+        .vote-wrapper { display: flex; justify-content: center; gap: 20px; }
+        .vote-card { width: 60px; height: 60px; display: flex; justify-content: center; align-items: center; background: #fff; border: 2px solid #eee; border-radius: 15px; font-size: 2rem; cursor: pointer; box-shadow: 0 4px 0 #eee; }
+        .vote-card:active { transform: translateY(4px); box-shadow: none; }
+        .author-card { border: 2px solid #eee; border-left: 5px solid var(--accent-salmon); border-radius: 15px; padding: 20px; display: flex; align-items: center; gap: 20px; background: #fff; }
         .author-img { width: 70px; height: 70px; border-radius: 50%; border: 3px solid var(--primary-yellow); padding: 2px; }
         .author-name { font-family: var(--font-heading); color: var(--accent-salmon); font-size: 1.3rem; margin: 0; }
-
-        .quiz-section { margin-bottom: 40px; }
-        .section-title {
-            text-align: center; font-family: var(--font-heading); color: var(--accent-salmon);
-            font-size: 1.5rem; margin-bottom: 20px;
-            display: flex; align-items: center; justify-content: center; gap: 10px;
-        }
         .quiz-card { border: 2px solid #eee; border-radius: 15px; padding: 20px; background: #fff; }
-        .quiz-option {
-            display: block; border: 2px solid var(--primary-yellow); border-radius: 10px;
-            padding: 12px; margin-bottom: 10px; cursor: pointer; font-weight: 600;
-            background: #fff; transition: 0.2s;
-        }
-        .quiz-option:hover { background: #fffbe6; }
+        .quiz-option { display: block; border: 2px solid var(--primary-yellow); border-radius: 10px; padding: 12px; margin-bottom: 10px; cursor: pointer; font-weight: 600; background: #fff; }
         .quiz-option.correct { background: #d4edda; border-color: #28a745; }
         .quiz-option.wrong { background: #f8d7da; border-color: #dc3545; }
-
-        .survey-section { margin-bottom: 40px; }
-        .vote-wrapper { display: flex; justify-content: center; gap: 20px; }
-        .vote-card {
-            width: 60px; height: 60px; display: flex; justify-content: center; align-items: center;
-            background: #fff; border: 2px solid #eee; border-radius: 15px; font-size: 2rem;
-            cursor: pointer; box-shadow: 0 4px 0 #eee; transition: transform 0.1s;
-        }
-        .vote-card:active { transform: translateY(4px); box-shadow: none; }
-
-        .comments-section { margin-bottom: 20px; }
         .comments-box { border: 2px solid #eee; border-radius: 15px; padding: 20px; }
-        .comment-input-wrapper { margin-bottom: 30px; }
-        .comment-input {
-            width: 100%; border: 2px solid var(--primary-yellow); border-radius: 10px;
-            padding: 15px; font-family: var(--font-body); font-size: 1rem; box-sizing: border-box; outline: none;
-        }
-        .comment-input:focus { border-color: #f39c12; }
-        .btn-send {
-            background-color: var(--accent-salmon); color: white; border: none;
-            padding: 10px 30px; border-radius: 10px; font-weight: bold;
-            font-family: var(--font-heading); font-size: 1rem; float: right;
-            margin-top: 10px; cursor: pointer; box-shadow: 0 4px 0 #c0392b;
-        }
-        .btn-send:active { transform: translateY(4px); box-shadow: none; }
-
-        .comment-list-wrapper { border-top: 2px dashed #eee; padding-top: 20px; }
+        .comment-input { width: 100%; border: 2px solid var(--primary-yellow); border-radius: 10px; padding: 15px; font-family: var(--font-body); font-size: 1rem; box-sizing: border-box; outline: none; }
+        .btn-send { background-color: var(--accent-salmon); color: white; border: none; padding: 10px 30px; border-radius: 10px; font-weight: bold; font-size: 1rem; float: right; margin-top: 10px; cursor: pointer; box-shadow: 0 4px 0 #c0392b; }
         .single-comment { background-color: #f9f9f9; border-radius: 10px; padding: 15px; margin-bottom: 15px; }
-
-        footer {
-            text-align: center; margin-top: 50px; color: #888; font-size: 0.9rem;
-            padding-top: 20px; border-top: 1px solid #eee;
-        }
-        .footer-links a { color: #888; text-decoration: none; margin: 0 5px; }
-
-        .magnifier-overlay {
-            position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
-            background: #fff; border: 4px solid var(--primary-yellow);
-            padding: 20px; border-radius: 20px; font-size: 2rem;
-            box-shadow: 0 10px 20px rgba(0,0,0,0.2); z-index: 2000;
-            display: none; text-align: center; font-family: var(--font-heading);
-        }
-        
-        .hidden { display: none; }
         .clearfix::after { content: ""; display: table; clear: both; }
+        footer { text-align: center; margin-top: 50px; color: #888; font-size: 0.9rem; padding-top: 20px; border-top: 1px solid #eee; }
+        .footer-links a { color: #888; text-decoration: none; margin: 0 5px; }
+        .magnifier-overlay { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: #fff; border: 4px solid var(--primary-yellow); padding: 20px; border-radius: 20px; font-size: 2rem; box-shadow: 0 10px 20px rgba(0,0,0,0.2); z-index: 6000; display: none; text-align: center; font-family: var(--font-heading); }
+        .hidden { display: none; }
 
     </style>
 </head>
 <body>
 
-    <button class="fab-tools" onclick="toggleMobileToolbar()" aria-label="Werkzeuge öffnen">
-        🛠️
-    </button>
+    <button class="fab-tools" onclick="toggleMobileToolbar()" aria-label="Werkzeuge öffnen">🛠️</button>
 
     <nav class="main-navbar">
         <div class="nav-left">
             <img src="https://github.com/RaLa84/lesekumpel/blob/main/logo1.png?raw=true" alt="Logo" class="nav-logo">
             <a href="#" class="brand-name">Lesekumpel</a>
-            <div class="nav-links-desktop">
-                <a href="#" class="nav-btn">📚 Bibliothek</a>
-            </div>
+            <div class="nav-links-desktop"><a href="#" class="nav-btn">📚 Bibliothek</a></div>
         </div>
         <div class="nav-right">
             <a href="https://rala84.app.n8n.cloud/form/b6f28a18-e90d-4bb8-b201-0c8f6c667a7a" class="btn-new-story hidden-mobile">✨ Neue Geschichte</a>
-            
             <div class="user-burger-container">
-                <div class="user-profile">
-                    <span>Papa Wutz</span>
-                    <div class="user-avatar">🐷</div>
-                </div>
+                <div class="user-profile"><span>Papa Wutz</span><div class="user-avatar">🐷</div></div>
                 <span class="burger-icon" onclick="toggleMenu()">☰</span>
             </div>
         </div>
@@ -429,18 +276,14 @@
     </nav>
 
     <div class="main-card">
-        
         <h1 id="main-title">DER KNOCHEN-<br>SCHATZSUCHER</h1>
-        
         <div class="quality-badge">⭐ 90% gefällt das</div>
-
         <img src="https://rala84.github.io/lesekumpel/bilder/der-knochenschatzsucher.png" alt="Hund" class="hero-image">
 
         <div class="toolbar-container" id="toolbar">
             <div style="width:100%; text-align:right; display:none;" id="toolbar-close-btn">
                 <button onclick="toggleMobileToolbar()" style="background:none; border:none; font-size:1.5rem;">❌</button>
             </div>
-            
             <button class="tool-btn" onclick="toggleTTS()" id="btn-tts">🔊 Vorlesen</button>
             <button class="tool-btn" onclick="toggleMagnifier()" id="magnifier-btn">🔍 Lupe</button>
             <span style="width:1px; background:#ddd; margin:0 5px;"></span>
@@ -454,10 +297,8 @@
         </div>
 
         <div id="full-text-view" class="story-text"></div>
-        
         <div id="chunk-view" class="story-text hidden" style="text-align:left; font-size:1.4em;">
             <div id="chunk-display" style="min-height:100px;"></div>
-            
             <div class="chunk-controls">
                 <button class="tool-btn" onclick="prevChunk()">← Zurück</button>
                 <div id="chunk-progress" class="progress-ring" style="--p: 20%;">1/5</div>
@@ -468,10 +309,7 @@
         <div class="author-box">
             <div class="author-card">
                 <img src="https://github.com/RaLa84/lesekumpel/blob/main/Jonas-min-compressed.webp?raw=true" alt="Jonas" class="author-img">
-                <div>
-                    <h3 class="author-name">Jonas Entdecker</h3>
-                    <p style="margin:5px 0 0 0; font-size:0.9rem;">Jonas ist immer auf Achse! Er erzählt dir die besten Geschichten von seinen wilden Abenteuern.</p>
-                </div>
+                <div><h3 class="author-name">Jonas Entdecker</h3><p style="margin:5px 0 0 0; font-size:0.9rem;">Jonas ist immer auf Achse! Er erzählt dir die besten Geschichten.</p></div>
             </div>
         </div>
 
@@ -491,37 +329,28 @@
         <div class="comments-section">
             <div class="section-title" style="justify-content:flex-start;">💬 Dein Kommentar</div>
             <div class="comments-box">
-                
                 <div class="comment-input-wrapper">
                     <textarea class="comment-input" placeholder="Was denkst du über die Geschichte?"></textarea>
                     <button class="btn-send" onclick="alert('Gesendet!')">Senden</button>
                     <div class="clearfix"></div>
                 </div>
-
                 <div class="comment-list-wrapper">
                     <div class="single-comment">
-                        <div style="font-weight:bold; color:var(--text-dark); margin-bottom:5px;">
-                            Peppa Wutz <span style="font-weight:normal; font-size:0.8em; color:#888; float:right;">10.01.2026</span>
-                        </div>
+                        <div style="font-weight:bold; color:var(--text-dark);">Peppa Wutz <span style="font-size:0.8em; color:#888; float:right;">10.01.2026</span></div>
                         <div>Witzig, mein Hund heißt auch Buddy</div>
                     </div>
-                    
                     <div class="single-comment">
-                        <div style="font-weight:bold; color:var(--text-dark); margin-bottom:5px;">
-                            Mama Wutz <span style="font-weight:normal; font-size:0.8em; color:#888; float:right;">12.12.2025</span>
-                        </div>
+                        <div style="font-weight:bold; color:var(--text-dark);">Mama Wutz <span style="font-size:0.8em; color:#888; float:right;">12.12.2025</span></div>
                         <div>Das ist die Lieblingsgeschichte von meiner Tochter</div>
                     </div>
                 </div>
-
             </div>
         </div>
+    </div>
 
-    </div> <footer>
+    <footer>
         <p>Erstellt von deinem KI-Lesekumpel 🤖</p>
-        <div class="footer-links">
-            <a href="#">Impressum</a> • <a href="#">Datenschutz</a> • <a href="#">Über uns</a>
-        </div>
+        <div class="footer-links"><a href="#">Impressum</a> • <a href="#">Datenschutz</a> • <a href="#">Über uns</a></div>
     </footer>
 
     <div id="magnifier-overlay" class="magnifier-overlay">
@@ -533,31 +362,21 @@
     </div>
 
     <script>
+        // --- LOGIC ---
         function toggleMobileToolbar() {
             const tb = document.getElementById('toolbar');
             tb.classList.toggle('open');
-            const closeBtn = document.getElementById('toolbar-close-btn');
             if(window.innerWidth < 768) {
-                closeBtn.style.display = tb.classList.contains('open') ? 'block' : 'none';
+                document.getElementById('toolbar-close-btn').style.display = tb.classList.contains('open') ? 'block' : 'none';
             }
         }
 
-        const dictionary = {
-            "Garten": "garden", "Langeweile": "boredom", "Sonne": "sun", "Hund": "dog", "Knochen": "bone", "Schatz": "treasure", "Gras": "grass", "Nase": "nose", "Boden": "ground", "Loch": "hole", "Apfelbaum": "apple tree", "Erde": "soil", "Pfoten": "paws", "stolz": "proud", "süß": "cute"
-        };
+        const dictionary = { "Garten": "garden", "Langeweile": "boredom", "Sonne": "sun", "Hund": "dog", "Knochen": "bone", "Schatz": "treasure", "Gras": "grass", "Nase": "nose", "Boden": "ground", "Loch": "hole", "Apfelbaum": "apple tree", "Erde": "soil", "Pfoten": "paws", "stolz": "proud", "süß": "cute" };
         const storyRaw = `Oh Mann, ich saß neu-lich im Gar-ten und mir war su-per-lang-wei-lig. Die Son-ne schien, a-ber es gab ein-fach nichts Span-nen-des zu tun. Dann kam Bud-dy, un-ser Hund, um die E-cke ge-flitzt. Er hat-te ei-nen rie-si-gen Kno-chen im Maul, so ei-nen rich-tig di-cken Mark-kno-chen.<br><br>Bud-dy trot-te-te durchs Gras. Sei-ne Na-se schnüf-fel-te am Bo-den. Er woll-te den Kno-chen ver-ste-cken. Er bud-del-te hier ein klei-nes Loch. Er schau-te sich um und schien zu den-ken: „Nee, doch nicht gut ge-nug.“<br><br>Nach ge-fühlt tau-send Fehl-ver-su-chen fand er end-lich sei-nen Platz un-ter dem Ap-fel-baum. Er leg-te den Kno-chen rein. Er schob Er-de drü-ber mit der Na-se und den Pfo-ten.<br><br>Als er fer-tig war, war er so stolz auf sein Werk! Niemand weiß, wo der Kno-chen ist! Aber ich wusste es natürlich.<br><br>Kennst du das auch, wenn Haustiere so süß sind?`;
-        
         const summaryRaw = `Ich saß im Gar-ten.<br>Unser Hund Bud-dy kam mit einem Kno-chen.<br>Er wollte ihn ver-ste-cken.<br>Er grub ein Loch unter dem Ap-fel-baum.<br>Er war sehr stolz.`;
+        const quizData = [ { q: "Was hatte Buddy im Maul?", a: ["Einen kleinen Stock", "Eine Spielzeugmaus", "Einen riesigen Knochen"], correct: 2 }, { q: "Wo versteckte er ihn?", a: ["Unter dem Apfelbaum", "Im Bett", "Im Keller"], correct: 0 }, { q: "Wie viele Löcher hat er angefangen?", a: ["Nur eins", "Mindestens fünf", "Hundert"], correct: 1 } ];
 
-        const quizData = [
-            { q: "Was hatte Buddy im Maul?", a: ["Einen kleinen Stock", "Eine Spielzeugmaus", "Einen riesigen Knochen"], correct: 2 },
-            { q: "Wo versteckte er ihn?", a: ["Unter dem Apfelbaum", "Im Bett", "Im Keller"], correct: 0 },
-            { q: "Wie viele Löcher hat er angefangen?", a: ["Nur eins", "Mindestens fünf", "Hundert"], correct: 1 }
-        ];
-
-        let state = {
-            syllables: false, summary: false, english: false, chunkIndex: 0, chunks: [], magnifier: false
-        };
+        let state = { syllables: false, summary: false, english: false, chunkIndex: 0, chunks: [], magnifier: false };
 
         function renderText() {
             let txt = state.summary ? summaryRaw : storyRaw;
@@ -568,27 +387,16 @@
             }).join('<br>');
             document.getElementById('full-text-view').innerHTML = html;
             state.chunks = txt.split('<br><br>').map(c => c.split(' ').map(w => processWord(w)).join(' '));
-            if(state.summary && state.chunks.length === 1) {
-                 state.chunks = txt.split('<br>').map(c => c.split(' ').map(w => processWord(w)).join(' '));
-            }
-            updateChunkDisplay();
-            updateButtons();
+            if(state.summary && state.chunks.length === 1) state.chunks = txt.split('<br>').map(c => c.split(' ').map(w => processWord(w)).join(' '));
+            updateChunkDisplay(); updateButtons();
         }
 
         function processWord(raw) {
             let clean = raw.replace(/-/g, "").replace(/[.,!?:;„“()]/g, "");
             let display = raw.replace(/-/g, ""); 
             let isTrans = false;
-            if(state.english && dictionary[clean]) {
-                display = dictionary[clean];
-                isTrans = true;
-            }
-            if(state.syllables && !isTrans) {
-                 let parts = raw.split('-');
-                 if(parts.length > 1) {
-                     display = parts.map((p,i) => `<span class="${i%2===0?'syl-blue':'syl-red'}">${p}</span>`).join('');
-                 }
-            }
+            if(state.english && dictionary[clean]) { display = dictionary[clean]; isTrans = true; }
+            if(state.syllables && !isTrans) { let parts = raw.split('-'); if(parts.length > 1) display = parts.map((p,i) => `<span class="${i%2===0?'syl-blue':'syl-red'}">${p}</span>`).join(''); }
             let cls = isTrans ? "translated-word" : "";
             return `<span class="word-interactive ${cls}" onclick="clickWord(this, '${clean}', '${isTrans?'en':'de'}')">${display}</span>`;
         }
@@ -601,16 +409,11 @@
 
         function updateChunkDisplay() {
             if(state.chunkIndex >= state.chunks.length) state.chunkIndex = 0;
-            
             document.getElementById('chunk-display').innerHTML = state.chunks[state.chunkIndex] || "";
-            
-            let current = state.chunkIndex + 1;
-            let total = state.chunks.length;
-            let percent = (current / total) * 100;
-            
+            let current = state.chunkIndex + 1, total = state.chunks.length;
             let ring = document.getElementById('chunk-progress');
             ring.innerText = current + "/" + total;
-            ring.style.setProperty('--p', percent + '%');
+            ring.style.setProperty('--p', ((current / total) * 100) + '%');
         }
 
         function toggleSyllables() { state.syllables = !state.syllables; renderText(); }
@@ -622,18 +425,57 @@
             if (window.speechSynthesis.speaking) {
                 window.speechSynthesis.cancel();
                 btn.classList.remove('active');
+                clearHighlights(); // Reset Colors
             } else {
-                let text = document.getElementById('full-text-view').innerText;
-                if(!document.getElementById('chunk-view').classList.contains('hidden')) {
-                    text = document.getElementById('chunk-display').innerText;
-                }
-                let u = new SpeechSynthesisUtterance(text);
+                let container = document.getElementById('chunk-view').classList.contains('hidden') 
+                    ? document.getElementById('full-text-view') 
+                    : document.getElementById('chunk-display');
+                
+                // Wir sammeln alle interaktiven Wörter (Spans)
+                let spans = container.querySelectorAll('.word-interactive');
+                
+                // Wir bauen den reinen Text für die Sprachsynthese und merken uns die Index-Positionen
+                let speechText = "";
+                let wordMap = []; // speichert {start, end, element}
+                
+                spans.forEach(span => {
+                    let word = span.innerText; // Nimmt den sichtbaren Text
+                    let start = speechText.length;
+                    speechText += word + " ";
+                    let end = speechText.length - 1; // ohne Leerzeichen
+                    wordMap.push({ start, end, el: span });
+                });
+
+                let u = new SpeechSynthesisUtterance(speechText);
                 u.lang = "de-DE";
                 u.rate = 0.9;
-                u.onend = function() { btn.classList.remove('active'); };
+
+                // KARAOKE LOGIC
+                u.onboundary = function(event) {
+                    if (event.name === 'word') {
+                        let charIndex = event.charIndex;
+                        // Finde das Wort, das gerade gesprochen wird
+                        let currentWord = wordMap.find(w => charIndex >= w.start && charIndex < w.end);
+                        
+                        clearHighlights();
+                        if (currentWord) {
+                            currentWord.el.classList.add('highlight-active');
+                        }
+                    }
+                };
+
+                u.onend = function() { 
+                    btn.classList.remove('active'); 
+                    clearHighlights();
+                };
+
                 window.speechSynthesis.speak(u);
                 btn.classList.add('active');
             }
+        }
+
+        function clearHighlights() {
+            document.querySelectorAll('.highlight-active').forEach(el => el.classList.remove('highlight-active'));
         }
 
         function toggleMagnifier() {
@@ -671,9 +513,7 @@
         function prevChunk() { if(state.chunkIndex > 0) { state.chunkIndex--; updateChunkDisplay(); } }
         function changeFontSize(d) {
             let s = parseFloat(window.getComputedStyle(document.body).fontSize);
-            let newSize = s + d;
-            if(newSize < 12) newSize = 12;
-            if(newSize > 40) newSize = 40;
+            let newSize = s + d; if(newSize < 12) newSize = 12; if(newSize > 40) newSize = 40;
             document.body.style.fontSize = newSize + "px";
         }
         function toggleMenu() { document.getElementById('mobile-menu').classList.toggle('open'); }
@@ -693,5 +533,3 @@
     </script>
 </body>
 </html>
-
-```
