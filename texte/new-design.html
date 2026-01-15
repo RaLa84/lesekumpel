@@ -7,13 +7,15 @@
     <style>
         /* --- GRUNDLAGEN & VARIABLEN (Mobile First) --- */
         :root {
-            --bg-color: #fdfbf7; /* Creme-weiß, angenehm für die Augen */
+            --bg-color: #fdfbf7; 
             --text-color: #2c2c2c;
             --accent-color: #2a9d8f;
             --highlight-color: #e9c46a;
+            --syl-blue: #00509d; /* Kontrastreiches Blau */
+            --syl-red: #c1121f;  /* Kontrastreiches Rot */
             --font-main: 'Verdana', sans-serif;
-            --font-dyslexic: 'Comic Sans MS', 'Chalkboard SE', sans-serif; /* Fallback für Dyslexie-freundlich */
-            --spacing-std: 1.5;
+            --font-dyslexic: 'Comic Sans MS', 'Chalkboard SE', sans-serif;
+            --spacing-std: 1.6;
             --spacing-dyslexic: 2.0;
         }
 
@@ -23,7 +25,7 @@
             color: var(--text-color);
             line-height: var(--spacing-std);
             margin: 0;
-            padding-bottom: 80px; /* Platz für Floating Action Button */
+            padding-bottom: 80px; 
             transition: all 0.3s ease;
         }
 
@@ -50,11 +52,8 @@
             padding: 20px;
         }
 
-        /* --- HEADER & BILD --- */
-        header {
-            text-align: center;
-            margin-top: 20px;
-        }
+        header { text-align: center; margin-top: 20px; }
+        
         .hero-image {
             width: 100%;
             height: auto;
@@ -62,6 +61,7 @@
             box-shadow: 0 4px 8px rgba(0,0,0,0.1);
             margin-bottom: 20px;
         }
+        
         .quality-badge {
             background-color: #fff;
             border: 2px solid var(--accent-color);
@@ -73,16 +73,16 @@
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
 
-        /* --- TOOLBAR (Steuerung) --- */
+        /* --- TOOLBAR --- */
         .toolbar {
             background: #fff;
-            padding: 15px;
+            padding: 10px;
             border-radius: 10px;
             box-shadow: 0 2px 10px rgba(0,0,0,0.1);
             margin-bottom: 20px;
             display: flex;
             flex-wrap: wrap;
-            gap: 10px;
+            gap: 8px;
             justify-content: center;
             position: sticky;
             top: 10px;
@@ -93,15 +93,13 @@
             background: var(--accent-color);
             color: white;
             border: none;
-            padding: 10px 15px;
+            padding: 8px 12px;
             border-radius: 8px;
-            font-size: 1rem;
+            font-size: 0.95rem;
             cursor: pointer;
-            touch-action: manipulation; /* Mobile Optimierung */
+            touch-action: manipulation;
         }
-        button:hover {
-            opacity: 0.9;
-        }
+        button:hover { opacity: 0.9; }
         button.active {
             background: #264653;
             border: 2px solid var(--highlight-color);
@@ -110,10 +108,16 @@
         /* --- DYSLEXIE MODUS --- */
         body.dyslexia-mode {
             font-family: var(--font-dyslexic);
-            letter-spacing: 0.1em;
-            word-spacing: 0.2em;
+            letter-spacing: 0.05em;
+            word-spacing: 0.1em;
             line-height: var(--spacing-dyslexic);
         }
+
+        /* --- SILBEN FARBEN --- */
+        .syl-blue { color: var(--syl-blue); }
+        .syl-red { color: var(--syl-red); }
+        /* Wenn Silbenmodus aus ist, Farbe normal überschreiben, falls Klassen bleiben */
+        .no-syl-color { color: inherit !important; }
 
         /* --- LUPEN FUNKTION --- */
         .magnifier-overlay {
@@ -130,32 +134,37 @@
             z-index: 2000;
             display: none;
             text-align: center;
-            width: 80%;
+            width: 85%;
         }
         .word-interactive {
             cursor: pointer;
-            transition: background 0.2s;
+            border-radius: 3px;
         }
         .word-interactive:hover {
             background-color: var(--highlight-color);
         }
 
-        /* --- TEXT ANSICHTEN (Normal vs. Häppchen) --- */
+        /* --- TEXT ANSICHTEN --- */
         .hidden { display: none; }
         
         .chunk-card {
             background: #fff;
-            padding: 30px;
+            padding: 25px;
             border-radius: 15px;
             box-shadow: 0 5px 15px rgba(0,0,0,0.05);
             margin-bottom: 20px;
-            font-size: 1.2rem;
+            font-size: 1.3rem;
+            min-height: 150px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
 
         .chunk-controls {
             display: flex;
             justify-content: space-between;
-            margin-top: 20px;
+            align-items: center;
+            margin-top: 10px;
         }
 
         /* --- ZUSAMMENFASSUNG --- */
@@ -177,7 +186,7 @@
         }
         .quiz-option {
             display: block;
-            margin: 10px 0;
+            margin: 8px 0;
             padding: 10px;
             background: #f0f0f0;
             border-radius: 5px;
@@ -213,9 +222,7 @@
             border-radius: 15px;
         }
         
-        .tags {
-            margin-top: 20px;
-        }
+        .tags { margin-top: 20px; }
         .tag {
             background: #ddd;
             padding: 5px 10px;
@@ -224,9 +231,10 @@
             margin-right: 5px;
             text-decoration: none;
             color: #333;
+            display: inline-block;
+            margin-bottom: 5px;
         }
 
-        /* --- SHARE BUTTON (Mobile Style) --- */
         .whatsapp-float {
             position: fixed;
             bottom: 20px;
@@ -241,7 +249,6 @@
             z-index: 100;
             text-decoration: none;
         }
-
     </style>
 </head>
 <body>
@@ -250,36 +257,35 @@
 
     <div class="container">
         <header>
-            <div class="quality-badge">
-                ⭐ 90% gefällt das (110 Leser)
-            </div>
+            <div class="quality-badge">⭐ 90% gefällt das (110 Leser)</div>
             <h1 id="main-title">DER KNOCHEN-SCHATZSUCHER</h1>
         </header>
 
         <img src="https://rala84.github.io/lesekumpel/bilder/der-knochenschatzsucher.png" alt="Hund gräbt im Garten nach Knochen" class="hero-image">
 
         <nav class="toolbar" aria-label="Lese-Einstellungen">
-            <button onclick="toggleTTS()" aria-label="Text vorlesen starten oder stoppen">🔊 Vorlesen</button>
-            <button onclick="toggleDyslexia()" aria-label="Dyslexie-freundliche Schriftart umschalten">👁️ Schriftart</button>
-            <button onclick="changeFontSize(1)" aria-label="Schrift vergrößern">A+</button>
-            <button onclick="changeFontSize(-1)" aria-label="Schrift verkleinern">A-</button>
-            <button onclick="toggleViewMode()" id="view-toggle-btn" aria-label="Ansicht wechseln zwischen Gesamttext und Häppchen">🧩 Häppchen-Modus</button>
-            <button onclick="toggleMagnifier()" id="magnifier-btn" aria-label="Lupe aktivieren">🔍 Lupe</button>
+            <button onclick="toggleTTS()" aria-label="Text vorlesen">🔊 Vorlesen</button>
+            <button onclick="toggleSyllables()" id="btn-syllables" aria-label="Silbentrennung und Farben umschalten">🔡 Silben: AUS</button>
+            <button onclick="toggleDyslexia()" aria-label="Schriftart ändern">👁️ Schrift</button>
+            <button onclick="changeFontSize(1)" aria-label="Größer">A+</button>
+            <button onclick="changeFontSize(-1)" aria-label="Kleiner">A-</button>
+            <button onclick="toggleViewMode()" id="view-toggle-btn">🧩 Häppchen</button>
+            <button onclick="toggleMagnifier()" id="magnifier-btn">🔍 Lupe</button>
         </nav>
 
         <div id="magnifier-overlay" class="magnifier-overlay">
             <span id="magnifier-text">Wort</span>
-            <button onclick="speakMagnifiedWord()" style="margin-left:10px; font-size: 0.5em;">🔊</button>
-            <button onclick="closeMagnifier()" style="margin-left:10px; font-size: 0.5em; background:#e76f51;">X</button>
+            <div style="margin-top:15px;">
+                <button onclick="speakMagnifiedWord()">🔊 Hören</button>
+                <button onclick="closeMagnifier()" style="background:#e76f51;">Schließen</button>
+            </div>
         </div>
 
         <main>
-            <div id="full-text-view" class="content-view">
-                </div>
+            <div id="full-text-view" class="content-view"></div>
 
             <div id="chunk-view" class="content-view hidden">
-                <div id="chunk-display" class="chunk-card">
-                    </div>
+                <div id="chunk-display" class="chunk-card"></div>
                 <div class="chunk-controls">
                     <button onclick="prevChunk()">Zurück</button>
                     <span id="chunk-counter">1 / 5</span>
@@ -288,15 +294,13 @@
             </div>
 
             <details class="summary-box">
-                <summary style="font-weight:bold; cursor:pointer;">📖 Zusammenfassung in einfacher Sprache (Hier klicken)</summary>
-                <div id="simple-summary-text" style="margin-top:10px;">
-                    </div>
+                <summary style="font-weight:bold; cursor:pointer;">📖 Zusammenfassung (Leichte Sprache)</summary>
+                <div id="simple-summary-text" style="margin-top:10px;"></div>
             </details>
 
-            <section class="quiz-container" aria-label="Quiz zum Text">
+            <section class="quiz-container">
                 <h2>❓ Lese-Quiz</h2>
-                <div id="quiz-wrapper">
-                    </div>
+                <div id="quiz-wrapper"></div>
             </section>
 
             <section class="author-box">
@@ -309,37 +313,33 @@
 
             <section class="interaction-area">
                 <div class="microsurvey">
-                    <p>Wie fandest du die Geschichte?</p>
-                    <button onclick="alert('Danke für dein Like!')">👍</button>
-                    <button onclick="alert('Danke für dein Feedback!')">👎</button>
+                    <p>Wie war die Geschichte?</p>
+                    <button onclick="alert('Danke!')">👍</button>
+                    <button onclick="alert('Danke!')">👎</button>
                 </div>
                 <div class="comments">
-                    <button onclick="toggleComments()">💬 Kommentare anzeigen</button>
+                    <button onclick="toggleComments()">💬 Kommentare</button>
                 </div>
             </section>
 
             <div id="comment-section" class="hidden" style="margin-top:20px;">
-                <textarea style="width:100%; height:80px; padding:10px;" placeholder="Schreibe einen Kommentar..."></textarea>
+                <textarea style="width:100%; height:80px; padding:10px;" placeholder="Dein Kommentar..."></textarea>
                 <button style="margin-top:5px;">Senden</button>
             </div>
 
             <div class="tags">
-                <span class="tag">#Hund</span>
-                <span class="tag">#Haustier</span>
-                <span class="tag">#Tierverhalten</span>
-                <span class="tag">#Alltag</span>
-                <span class="tag">#Humor</span>
+                <span class="tag">#Hund</span> <span class="tag">#Haustier</span> 
+                <span class="tag">#Tierverhalten</span> <span class="tag">#Humor</span>
             </div>
         </main>
     </div>
 
-    <a href="whatsapp://send?text=Lies dir diese tolle Geschichte durch: Der Knochen-Schatzsucher!" class="whatsapp-float" aria-label="Auf Whatsapp teilen">
-        📱
-    </a>
+    <a href="whatsapp://send?text=Lies dir diese Geschichte durch!" class="whatsapp-float">📱</a>
 
     <script>
         // --- DATEN ---
-        const storyTextSyllables = `
+        // Rohdaten mit Trennstrichen
+        const storyRaw = `
 Oh Mann, ich saß neu-lich im Gar-ten und mir war su-per-lang-wei-lig. Die Son-ne schien, a-ber es gab ein-fach nichts Span-nen-des zu tun. Dann kam Bud-dy, un-ser Hund, um die E-cke ge-flitzt. Er hat-te ei-nen rie-si-gen Kno-chen im Maul, so ei-nen rich-tig di-cken Mark-kno-chen. Und er hat-te die-sen Blick drauf, weißt du? Die-sen Blick, der sagt: „Das ist MEIN Schatz und nie-mand kriegt ihn!“
 <br><br>
 Bud-dy trot-te-te durchs Gras. Sei-ne Na-se schnüf-fel-te am Bo-den. Der Schwanz wa-ckel-te wie wild. Er woll-te den Kno-chen ver-ste-cken. A-ber nicht ein-fach so, nein! Es muss-te der per-fek-te Ort sein. Er bud-del-te hier ein klei-nes Loch. Er schau-te sich um und schien zu den-ken: „Nee, doch nicht gut ge-nug.“ Dann scharr-te er ein Stück wei-ter. Er mach-te wie-der ein klei-nes Loch und guck-te mich an, als wür-de er sa-gen: „Guck bloß nicht her!“ Als ob ich ihn nicht se-hen wür-de!
@@ -351,7 +351,7 @@ Als er fer-tig war, stand er da. Er dreh-te sich noch ein paar Mal um den Hau-fe
 Kennst du das auch, wenn dei-ne Haus-tie-re manch-mal so blö-de, a-ber gleich-zei-tig so süß sind, dass man sie ein-fach lieb ha-ben muss?
 `;
 
-        const simpleSummary = `
+        const summaryRaw = `
 Ich saß ge-lang-weilt im Gar-ten.<br>
 Dann kam un-ser Hund Bud-dy mit ei-nem gro-ßen Kno-chen.<br>
 Bud-dy woll-te den Kno-chen ver-ste-cken.<br>
@@ -361,74 +361,130 @@ A-ber ich tat so, als hät-te ich nichts ge-se-hen.
 `;
 
         const quizData = [
-            { q: "Was hatte Buddy im Maul?", a: ["Einen kleinen Stock", "Eine Spielzeugmaus", "Einen riesigen Knochen"], correct: 2 },
+            { q: "Was hatte Buddy im Maul?", a: ["Einen Stock", "Eine Spielzeugmaus", "Einen riesigen Knochen"], correct: 2 },
             { q: "Wo hat Buddy den Knochen versteckt?", a: ["Unter dem Apfelbaum", "Im Blumenbeet", "Hinter der Hütte"], correct: 0 },
             { q: "Wie viele Löcher hat er angefangen?", a: ["Nur eins", "Mindestens fünf", "Hundert"], correct: 1 }
         ];
 
-        // --- STATUS VARIABLEN ---
-        let currentFontSize = 100; // in Prozent
-        let isMagnifierActive = false;
-        let currentChunkIndex = 0;
-        let speechUtterance = null;
-        
-        // Texte vorbereiten (Silbentrennung für Display, aber Clean Text für TTS)
-        function prepareText(textWithHyphens) {
-            // Wir machen jedes Wort klickbar für die Lupe
-            const words = textWithHyphens.split(' ');
-            return words.map(word => `<span class="word-interactive" onclick="handleWordClick(this)">${word}</span>`).join(' ');
+        // --- STATE ---
+        let state = {
+            fontSize: 100,
+            isMagnifier: false,
+            isSyllables: false, // Standard: Silben aus (Normaltext)
+            chunkIndex: 0,
+            chunks: []
+        };
+
+        // --- CORE FUNCTIONS ---
+
+        // Text aufbereiten: Wandelt Rohstring in HTML um (mit/ohne Silben)
+        function formatText(rawText, showSyllables) {
+            // Wir splitten erst nach HTML Tags (<br>) um Struktur zu erhalten, 
+            // dann nach Leerzeichen für Wörter.
+            // Vereinfachung: Wir ersetzen <br> temporär durch Marker oder verarbeiten Blöcke.
+            // Hier: Wir splitten das Ganze erst in Wörter.
+            
+            // 1. Zuerst die <br> erhalten
+            let paragraphs = rawText.split('<br>');
+            
+            let formattedParagraphs = paragraphs.map(para => {
+                if(para.trim() === "") return "";
+                
+                const words = para.split(' ');
+                
+                const processedWords = words.map(word => {
+                    // Wort säubern für Klick-Handler
+                    const cleanWord = word.replace(/-/g, "").replace(/[.,!?:;„“()]/g, ""); 
+                    
+                    let displayHTML = "";
+
+                    if (!showSyllables) {
+                        // Modus AUS: Keine Bindestriche anzeigen
+                        displayHTML = word.replace(/-/g, "");
+                    } else {
+                        // Modus AN: Silben färben + Bindestriche behalten
+                        const parts = word.split('-');
+                        if (parts.length === 1) {
+                            displayHTML = `<span class="syl-blue">${parts[0]}</span>`;
+                        } else {
+                            displayHTML = parts.map((part, idx) => {
+                                const colorClass = (idx % 2 === 0) ? 'syl-blue' : 'syl-red';
+                                return `<span class="${colorClass}">${part}</span>`;
+                            }).join('-'); // Hier fügen wir den Bindestrich visuell wieder ein
+                        }
+                    }
+
+                    return `<span class="word-interactive" onclick="handleWordClick(this, '${cleanWord}')">${displayHTML}</span>`;
+                });
+
+                return processedWords.join(' ');
+            });
+
+            return formattedParagraphs.join('<br>');
         }
-        
-        // Text in Chunks aufteilen (wir nutzen <br><br> als Trenner im Rohdaten-String)
-        const chunks = storyTextSyllables.split('<br><br>').map(chunk => prepareText(chunk));
 
-        // --- INITIALISIERUNG ---
-        window.onload = function() {
-            // Haupttext setzen
-            document.getElementById('full-text-view').innerHTML = prepareText(storyTextSyllables);
-            document.getElementById('simple-summary-text').innerHTML = simpleSummary;
-            loadQuiz();
-            updateChunkView();
-        };
+        // GUI Updates
+        function renderAll() {
+            // 1. Button Status
+            const btn = document.getElementById('btn-syllables');
+            if (state.isSyllables) {
+                btn.innerText = "🔡 Silben: AN";
+                btn.classList.add('active');
+            } else {
+                btn.innerText = "🔡 Silben: AUS";
+                btn.classList.remove('active');
+            }
 
-        // --- SCROLL PROGRESS BAR ---
-        window.onscroll = function() {
-            let winScroll = document.body.scrollTop || document.documentElement.scrollTop;
-            let height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-            let scrolled = (winScroll / height) * 100;
-            document.getElementById("progress-bar").style.width = scrolled + "%";
-        };
+            // 2. Inhalte neu generieren
+            const fullHtml = formatText(storyRaw, state.isSyllables);
+            document.getElementById('full-text-view').innerHTML = fullHtml;
+            
+            const sumHtml = formatText(summaryRaw, state.isSyllables);
+            document.getElementById('simple-summary-text').innerHTML = sumHtml;
 
-        // --- FUNKTIONEN ---
+            // 3. Häppchen neu berechnen und anzeigen
+            // Wir splitten die Rohdaten erneut für die Chunks
+            state.chunks = storyRaw.split('<br><br>').map(c => formatText(c, state.isSyllables));
+            updateChunkDisplay();
+        }
 
-        // 1. Vorlesen (TTS)
+        function updateChunkDisplay() {
+            if(state.chunks.length > 0) {
+                document.getElementById('chunk-display').innerHTML = state.chunks[state.chunkIndex];
+                document.getElementById('chunk-counter').innerText = (state.chunkIndex + 1) + " / " + state.chunks.length;
+            }
+        }
+
+        // --- ACTIONS ---
+
+        function toggleSyllables() {
+            state.isSyllables = !state.isSyllables;
+            renderAll();
+        }
+
         function toggleTTS() {
             if (window.speechSynthesis.speaking) {
                 window.speechSynthesis.cancel();
             } else {
-                // Text reinigen (Bindestriche entfernen für flüssiges Lesen)
-                let textToRead = document.getElementById('full-text-view').innerText.replace(/-/g, "");
-                speechUtterance = new SpeechSynthesisUtterance(textToRead);
-                speechUtterance.lang = "de-DE";
-                speechUtterance.rate = 0.9; // Etwas langsamer für Lerner
-                window.speechSynthesis.speak(speechUtterance);
+                let textToRead = document.getElementById('full-text-view').innerText;
+                let u = new SpeechSynthesisUtterance(textToRead);
+                u.lang = "de-DE";
+                u.rate = 0.9;
+                window.speechSynthesis.speak(u);
             }
         }
 
-        // 2. Dyslexie Modus
         function toggleDyslexia() {
             document.body.classList.toggle('dyslexia-mode');
         }
 
-        // 3. Schriftgröße
-        function changeFontSize(direction) {
-            currentFontSize += (direction * 10);
-            if(currentFontSize < 80) currentFontSize = 80;
-            if(currentFontSize > 200) currentFontSize = 200;
-            document.body.style.fontSize = currentFontSize + "%";
+        function changeFontSize(dir) {
+            state.fontSize += (dir * 10);
+            if(state.fontSize < 80) state.fontSize = 80;
+            if(state.fontSize > 200) state.fontSize = 200;
+            document.body.style.fontSize = state.fontSize + "%";
         }
 
-        // 4. Häppchen Modus (ADHS)
         function toggleViewMode() {
             const fullView = document.getElementById('full-text-view');
             const chunkView = document.getElementById('chunk-view');
@@ -437,65 +493,56 @@ A-ber ich tat so, als hät-te ich nichts ge-se-hen.
             if (fullView.classList.contains('hidden')) {
                 fullView.classList.remove('hidden');
                 chunkView.classList.add('hidden');
-                btn.innerText = "🧩 Häppchen-Modus";
+                btn.innerText = "🧩 Häppchen";
             } else {
                 fullView.classList.add('hidden');
                 chunkView.classList.remove('hidden');
                 btn.innerText = "📜 Gesamttext";
-                currentChunkIndex = 0;
-                updateChunkView();
+                state.chunkIndex = 0;
+                updateChunkDisplay();
             }
         }
 
-        function updateChunkView() {
-            document.getElementById('chunk-display').innerHTML = chunks[currentChunkIndex];
-            document.getElementById('chunk-counter').innerText = (currentChunkIndex + 1) + " / " + chunks.length;
-        }
-
         function nextChunk() {
-            if (currentChunkIndex < chunks.length - 1) {
-                currentChunkIndex++;
-                updateChunkView();
+            if (state.chunkIndex < state.chunks.length - 1) {
+                state.chunkIndex++;
+                updateChunkDisplay();
             }
         }
 
         function prevChunk() {
-            if (currentChunkIndex > 0) {
-                currentChunkIndex--;
-                updateChunkView();
+            if (state.chunkIndex > 0) {
+                state.chunkIndex--;
+                updateChunkDisplay();
             }
         }
 
-        // 5. Lupe
+        // --- LUPE ---
         function toggleMagnifier() {
-            isMagnifierActive = !isMagnifierActive;
+            state.isMagnifier = !state.isMagnifier;
             const btn = document.getElementById('magnifier-btn');
-            if(isMagnifierActive) {
+            if(state.isMagnifier) {
                 btn.classList.add('active');
-                alert("Lupe aktiviert: Tippe auf ein Wort im Text, um es groß zu sehen.");
             } else {
                 btn.classList.remove('active');
                 closeMagnifier();
             }
         }
 
-        function handleWordClick(element) {
-            if (!isMagnifierActive) return;
+        function handleWordClick(el, cleanWord) {
+            if(!state.isMagnifier) return;
             
-            const rawWord = element.innerText;
-            // Clean word for display without hyphens if desired, or keep structure
-            // Hier zeigen wir es groß an
             const overlay = document.getElementById('magnifier-overlay');
             const magText = document.getElementById('magnifier-text');
             
-            magText.innerText = rawWord;
-            magText.setAttribute('data-clean', rawWord.replace(/-/g, ""));
-            
+            // Wir zeigen das Wort im Overlay OHNE Trennstriche an, damit es leichter lesbar ist
+            magText.innerText = cleanWord; 
+            magText.setAttribute('data-speak', cleanWord);
             overlay.style.display = 'block';
         }
 
         function speakMagnifiedWord() {
-            const word = document.getElementById('magnifier-text').getAttribute('data-clean');
+            const word = document.getElementById('magnifier-text').getAttribute('data-speak');
             let u = new SpeechSynthesisUtterance(word);
             u.lang = "de-DE";
             window.speechSynthesis.speak(u);
@@ -505,18 +552,16 @@ A-ber ich tat so, als hät-te ich nichts ge-se-hen.
             document.getElementById('magnifier-overlay').style.display = 'none';
         }
 
-        // 6. Kommentare
+        // --- EXTRAS ---
         function toggleComments() {
-            const sec = document.getElementById('comment-section');
-            sec.classList.toggle('hidden');
+            document.getElementById('comment-section').classList.toggle('hidden');
         }
 
-        // 7. Quiz Logic
+        // Quiz
         function loadQuiz() {
             const wrapper = document.getElementById('quiz-wrapper');
             quizData.forEach((item, index) => {
-                let html = `<div style="margin-bottom:20px;">
-                    <p><strong>${index + 1}. ${item.q}</strong></p>`;
+                let html = `<div style="margin-bottom:20px;"><p><strong>${index + 1}. ${item.q}</strong></p>`;
                 item.a.forEach((ans, aIndex) => {
                     html += `<span class="quiz-option" onclick="checkAnswer(this, ${index}, ${aIndex})">${ans}</span>`;
                 });
@@ -526,10 +571,9 @@ A-ber ich tat so, als hät-te ich nichts ge-se-hen.
         }
 
         function checkAnswer(el, qIndex, aIndex) {
-            // Reset styles for this question
             const parent = el.parentNode;
             const options = parent.getElementsByClassName('quiz-option');
-            for(let opt of options) opt.style.background = '#f0f0f0';
+            for(let opt of options) opt.style.background = '#f0f0f0'; // reset
 
             if (aIndex === quizData[qIndex].correct) {
                 el.classList.add('correct');
@@ -539,6 +583,20 @@ A-ber ich tat so, als hät-te ich nichts ge-se-hen.
                 el.innerText += " ❌";
             }
         }
+
+        // Scroll Bar
+        window.onscroll = function() {
+            let winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            let height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            let scrolled = (winScroll / height) * 100;
+            document.getElementById("progress-bar").style.width = scrolled + "%";
+        };
+
+        // --- INIT ---
+        window.onload = function() {
+            loadQuiz();
+            renderAll(); // Startet das Rendern (default: keine Silben)
+        };
 
     </script>
 </body>
