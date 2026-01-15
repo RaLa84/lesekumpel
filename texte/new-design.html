@@ -123,8 +123,8 @@
 
         /* Mobile Anpassungen */
         @media (max-width: 767px) {
-            .brand-name { display: none; } /* Markennamen auf kleinen Screens ausblenden */
-            .hidden-mobile { display: none !important; } /* Button ausblenden */
+            .brand-name { display: none; }
+            .hidden-mobile { display: none !important; }
         }
 
         /* Desktop Anpassungen */
@@ -185,7 +185,7 @@
             border-radius: 20px;
             padding: 5px 15px;
             width: fit-content;
-            margin: 0 auto 30px auto; /* Abstand nach unten zum Bild */
+            margin: 0 auto 30px auto;
             font-weight: bold;
         }
 
@@ -325,7 +325,7 @@
         }
         .vote-card:active { transform: translateY(4px); box-shadow: none; }
 
-        /* --- 9. & 10. KOMMENTARE (Eingabe + Liste) --- */
+        /* --- 9. & 10. KOMMENTARE --- */
         .comments-section {
             margin-bottom: 20px;
         }
@@ -335,10 +335,7 @@
             padding: 20px;
         }
         
-        /* Eingabefeld (Oben) */
-        .comment-input-wrapper {
-            margin-bottom: 30px;
-        }
+        .comment-input-wrapper { margin-bottom: 30px; }
         .comment-input {
             width: 100%;
             border: 2px solid var(--primary-yellow);
@@ -366,7 +363,6 @@
         }
         .btn-send:active { transform: translateY(4px); box-shadow: none; }
 
-        /* Kommentar Liste (Unten) */
         .comment-list-wrapper {
             border-top: 2px dashed #eee;
             padding-top: 20px;
@@ -446,7 +442,7 @@
         <img src="https://rala84.github.io/lesekumpel/bilder/der-knochenschatzsucher.png" alt="Hund" class="hero-image">
 
         <div class="toolbar-container">
-            <button class="tool-btn" onclick="toggleTTS()">🔊 Vorlesen</button>
+            <button class="tool-btn" onclick="toggleTTS()" id="btn-tts">🔊 Vorlesen</button>
             <button class="tool-btn" onclick="toggleMagnifier()" id="magnifier-btn">🔍 Lupe</button>
             <span style="width:1px; background:#ddd; margin:0 5px;"></span>
             <button class="tool-btn btn-salmon" onclick="toggleSummaryMode()" id="btn-summary">📖 Einfach</button>
@@ -602,14 +598,35 @@
         function toggleSyllables() { state.syllables = !state.syllables; renderText(); }
         function toggleSummaryMode() { state.summary = !state.summary; state.chunkIndex=0; renderText(); }
         function toggleLanguage() { state.english = !state.english; renderText(); }
+        
         function toggleTTS() {
-            window.speechSynthesis.cancel();
-            let text = document.getElementById('full-text-view').innerText;
-            if(!document.getElementById('chunk-view').classList.contains('hidden')) text = document.getElementById('chunk-display').innerText;
-            let u = new SpeechSynthesisUtterance(text);
-            u.lang = "de-DE";
-            window.speechSynthesis.speak(u);
+            const btn = document.getElementById('btn-tts');
+            
+            if (window.speechSynthesis.speaking) {
+                // Stoppen
+                window.speechSynthesis.cancel();
+                btn.classList.remove('active');
+            } else {
+                // Starten
+                let text = document.getElementById('full-text-view').innerText;
+                if(!document.getElementById('chunk-view').classList.contains('hidden')) {
+                    text = document.getElementById('chunk-display').innerText;
+                }
+                
+                let u = new SpeechSynthesisUtterance(text);
+                u.lang = "de-DE";
+                u.rate = 0.9;
+
+                // Event Listener: Wenn fertig gelesen, Button zurücksetzen
+                u.onend = function() {
+                    btn.classList.remove('active');
+                };
+
+                window.speechSynthesis.speak(u);
+                btn.classList.add('active');
+            }
         }
+
         function toggleMagnifier() {
             state.magnifier = !state.magnifier;
             document.getElementById('magnifier-btn').className = state.magnifier ? "tool-btn active" : "tool-btn";
