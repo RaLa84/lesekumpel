@@ -1,3 +1,10 @@
+Natürlich, das ändert den Lesefluss sehr angenehm, da die Kinder nach der Bewertung direkt neue Vorschläge bekommen, bevor sie in die Kommentare eintauchen.
+
+Ich habe den Codeblock für die **"Das könnte dir auch gefallen"**-Sektion (`related-section`) nun genau zwischen die `survey-section` (Daumen hoch/runter) und die `comments-section` verschoben.
+
+Hier ist der angepasste, komplette Code:
+
+```html
 <!DOCTYPE html>
 <html lang="de">
 <head>
@@ -160,7 +167,7 @@
         .btn-send { background-color: var(--accent-salmon); color: white; border: none; padding: 10px 30px; border-radius: 10px; font-weight: bold; font-size: 1rem; float: right; margin-top: 10px; cursor: pointer; box-shadow: 0 4px 0 #c0392b; }
         .single-comment { background-color: #f9f9f9; border-radius: 10px; padding: 15px; margin-bottom: 15px; }
         
-        /* --- NEU: RELATED ARTICLES (DAS KÖNNTE DIR GEFALLEN) --- */
+        /* --- RELATED ARTICLES --- */
         .related-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -292,27 +299,6 @@
             </div>
         </div>
 
-        <div class="comments-section">
-            <div class="section-title" style="justify-content:flex-start;">💬 Dein Kommentar</div>
-            <div class="comments-box">
-                <div class="comment-input-wrapper">
-                    <textarea class="comment-input" placeholder="Was denkst du über die Geschichte?"></textarea>
-                    <button class="btn-send" onclick="alert('Gesendet!')">Senden</button>
-                    <div class="clearfix"></div>
-                </div>
-                <div class="comment-list-wrapper">
-                    <div class="single-comment">
-                        <div style="font-weight:bold; color:var(--text-dark);">Peppa Wutz <span style="font-size:0.8em; color:#888; float:right;">10.01.2026</span></div>
-                        <div>Witzig, mein Hund heißt auch Buddy</div>
-                    </div>
-                    <div class="single-comment">
-                        <div style="font-weight:bold; color:var(--text-dark);">Mama Wutz <span style="font-size:0.8em; color:#888; float:right;">12.12.2025</span></div>
-                        <div>Das ist die Lieblingsgeschichte von meiner Tochter</div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
         <div class="related-section">
             <div class="section-title">Das könnte dir auch gefallen</div>
             <div class="related-grid">
@@ -353,6 +339,26 @@
             </div>
         </div>
 
+        <div class="comments-section">
+            <div class="section-title" style="justify-content:flex-start;">💬 Dein Kommentar</div>
+            <div class="comments-box">
+                <div class="comment-input-wrapper">
+                    <textarea class="comment-input" placeholder="Was denkst du über die Geschichte?"></textarea>
+                    <button class="btn-send" onclick="alert('Gesendet!')">Senden</button>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="comment-list-wrapper">
+                    <div class="single-comment">
+                        <div style="font-weight:bold; color:var(--text-dark);">Peppa Wutz <span style="font-size:0.8em; color:#888; float:right;">10.01.2026</span></div>
+                        <div>Witzig, mein Hund heißt auch Buddy</div>
+                    </div>
+                    <div class="single-comment">
+                        <div style="font-weight:bold; color:var(--text-dark);">Mama Wutz <span style="font-size:0.8em; color:#888; float:right;">12.12.2025</span></div>
+                        <div>Das ist die Lieblingsgeschichte von meiner Tochter</div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <footer>
@@ -455,7 +461,6 @@
                 u.lang = "de-DE";
                 u.rate = 0.9;
 
-                // Standard Web Speech API (robusteste Lösung)
                 u.onboundary = function(event) {
                     if (event.name === 'word') {
                         let charIndex = event.charIndex;
