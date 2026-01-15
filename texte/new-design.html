@@ -53,8 +53,14 @@
             padding: 20px;
         }
 
-        header { text-align: center; margin-top: 20px; }
+        header { text-align: center; margin-top: 20px; margin-bottom: 20px; }
         
+        /* Titel Style Anpassung */
+        h1#main-title {
+            margin-bottom: 5px; /* Weniger Abstand zur Badge */
+            line-height: 1.2;
+        }
+
         .hero-image {
             width: 100%;
             height: auto;
@@ -70,7 +76,8 @@
             padding: 5px 15px;
             font-size: 0.9em;
             display: inline-block;
-            margin-bottom: 10px;
+            margin-top: 5px;  /* Abstand nach oben zum Titel */
+            margin-bottom: 15px;
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
 
@@ -105,12 +112,10 @@
             background: #264653;
             border: 2px solid var(--highlight-color);
         }
-        /* Style für den Zusammenfassungs-Button */
         button#btn-summary.active {
             background: #e76f51; 
             border-color: #e76f51;
         }
-        /* Style für den Sprach-Button */
         button#btn-lang.active {
             background: var(--trans-color);
         }
@@ -126,7 +131,6 @@
         .syl-blue { color: var(--syl-blue); }
         .syl-red { color: var(--syl-red); }
         
-        /* Englische Wörter hervorheben */
         .translated-word {
             color: var(--trans-color);
             font-style: italic;
@@ -260,8 +264,8 @@
 
     <div class="container">
         <header>
-            <div class="quality-badge">⭐ 90% gefällt das (110 Leser)</div>
             <h1 id="main-title">DER KNOCHEN-SCHATZSUCHER</h1>
+            <div class="quality-badge">⭐ 90% gefällt das (110 Leser)</div>
         </header>
 
         <img src="https://rala84.github.io/lesekumpel/bilder/der-knochenschatzsucher.png" alt="Hund gräbt im Garten nach Knochen" class="hero-image">
@@ -337,12 +341,9 @@
     <a href="whatsapp://send?text=Lies dir diese Geschichte durch!" class="whatsapp-float">📱</a>
 
     <script>
-        // --- DATEN ---
-
-        // Wörterbuch für Übersetzungen
         const dictionary = {
             "Garten": "garden",
-            "Gar-ten": "garden", // Fallback für Rohdaten Match
+            "Gar-ten": "garden",
             "Langeweile": "boredom",
             "su-per-lang-wei-lig": "super boring",
             "superlangweilig": "super boring",
@@ -420,7 +421,7 @@ A-ber ich tat so, als hät-te ich nichts ge-se-hen.
             isMagnifier: false,
             isSyllables: false, 
             isSummaryMode: false,
-            isEnglish: false, // Neuer Status für Sprache
+            isEnglish: false, 
             chunkIndex: 0,
             chunks: []
         };
@@ -434,38 +435,26 @@ A-ber ich tat so, als hät-te ich nichts ge-se-hen.
                 const words = para.split(' ');
                 
                 const processedWords = words.map(word => {
-                    // Reinigung für Lupe und ID
                     const cleanWord = word.replace(/-/g, "").replace(/[.,!?:;„“()]/g, ""); 
-                    
-                    // -- SPRACH LOGIK --
                     let displayHTML = "";
                     let speakText = cleanWord;
                     let isTranslated = false;
 
-                    // Prüfen ob wir im English Mode sind und ob es ein Wort im Wörterbuch ist
                     if (state.isEnglish) {
-                        // Wir prüfen sowohl das reine Wort als auch das Wort mit Silben (falls im Dict)
                         if (dictionary[cleanWord]) {
                             displayHTML = dictionary[cleanWord];
                             speakText = dictionary[cleanWord];
                             isTranslated = true;
                         } else if (dictionary[word.replace(/[.,!?:;„“()]/g, "")]) {
-                            // Fallback falls Dictionary mit Bindestrichen gefüttert ist
                             displayHTML = dictionary[word.replace(/[.,!?:;„“()]/g, "")];
                             speakText = displayHTML;
                             isTranslated = true;
                         }
                     }
 
-                    // -- ANZEIGE LOGIK --
                     if (isTranslated) {
-                        // Wenn übersetzt, zeigen wir das englische Wort ohne Silbentrennung aber farbig
                         displayHTML = `<span class="translated-word">${displayHTML}</span>`;
-                        // Punctuation wieder anhängen (vereinfacht: wir nehmen an das Wort endet sauber)
-                        // Um Layout nicht zu brechen, ignorieren wir hier komplexe Punctuation Wiederherstellung für den Prototyp
-                        // und nutzen das simple Replacement.
                     } else {
-                        // Nicht übersetzt -> Deutsches Wort rendern
                         if (!showSyllables) {
                             displayHTML = word.replace(/-/g, "");
                         } else {
@@ -482,7 +471,6 @@ A-ber ich tat so, als hät-te ich nichts ge-se-hen.
                     }
 
                     if(word.trim() === "") return "";
-                    // Wir geben dem Span auch ein Attribut für die Sprache (für TTS)
                     const langAttr = isTranslated ? 'en-US' : 'de-DE';
                     return `<span class="word-interactive" onclick="handleWordClick(this, '${speakText}', '${langAttr}')">${displayHTML}</span>`;
                 });
@@ -492,7 +480,6 @@ A-ber ich tat so, als hät-te ich nichts ge-se-hen.
         }
 
         function renderAll() {
-            // Button Updates
             const btnSyl = document.getElementById('btn-syllables');
             btnSyl.innerText = state.isSyllables ? "🔡 Silben: AN" : "🔡 Silben: AUS";
             if(state.isSyllables) btnSyl.classList.add('active'); else btnSyl.classList.remove('active');
@@ -510,7 +497,6 @@ A-ber ich tat so, als hät-te ich nichts ge-se-hen.
                 currentRawText = storyRaw;
             }
 
-            // Sprach Button Update
             const btnLang = document.getElementById('btn-lang');
             if(state.isEnglish) {
                 btnLang.classList.add('active');
@@ -520,7 +506,6 @@ A-ber ich tat so, als hät-te ich nichts ge-se-hen.
                 btnLang.innerText = "🇩🇪 Deutsch";
             }
 
-            // Render
             const fullHtml = formatText(currentRawText, state.isSyllables);
             document.getElementById('full-text-view').innerHTML = fullHtml;
             
@@ -536,7 +521,6 @@ A-ber ich tat so, als hät-te ich nichts ge-se-hen.
             }
         }
 
-        // --- TOGGLES ---
         function toggleLanguage() {
             state.isEnglish = !state.isEnglish;
             renderAll();
@@ -563,7 +547,7 @@ A-ber ich tat so, als hät-te ich nichts ge-se-hen.
                 }
                 
                 let u = new SpeechSynthesisUtterance(textToRead);
-                u.lang = "de-DE"; // Vorlesen ganzer Texte bleibt auf Deutsch (mit englischen Wörtern drin)
+                u.lang = "de-DE";
                 u.rate = 0.9;
                 window.speechSynthesis.speak(u);
             }
@@ -612,7 +596,6 @@ A-ber ich tat so, als hät-te ich nichts ge-se-hen.
             }
         }
 
-        // --- LUPE ---
         function toggleMagnifier() {
             state.isMagnifier = !state.isMagnifier;
             const btn = document.getElementById('magnifier-btn');
@@ -630,7 +613,7 @@ A-ber ich tat so, als hät-te ich nichts ge-se-hen.
             
             magText.innerText = speakText; 
             magText.setAttribute('data-speak', speakText);
-            magText.setAttribute('data-lang', langCode); // Sprache speichern
+            magText.setAttribute('data-lang', langCode);
             
             overlay.style.display = 'block';
         }
@@ -640,7 +623,7 @@ A-ber ich tat so, als hät-te ich nichts ge-se-hen.
             const lang = document.getElementById('magnifier-text').getAttribute('data-lang');
             
             let u = new SpeechSynthesisUtterance(word);
-            u.lang = lang || "de-DE"; // Nutzt korrekte Sprache (EN oder DE)
+            u.lang = lang || "de-DE"; 
             window.speechSynthesis.speak(u);
         }
 
@@ -652,7 +635,6 @@ A-ber ich tat so, als hät-te ich nichts ge-se-hen.
             document.getElementById('comment-section').classList.toggle('hidden');
         }
 
-        // --- QUIZ & INIT ---
         function loadQuiz() {
             const wrapper = document.getElementById('quiz-wrapper');
             quizData.forEach((item, index) => {
