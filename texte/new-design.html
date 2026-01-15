@@ -2,7 +2,7 @@
 <html lang="de">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Der Knochen-Schatzsucher - Lesekumpel</title>
     
     <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
@@ -16,10 +16,10 @@
             --accent-salmon: #f08080; 
             --accent-teal: #2a9d8f;   
             --text-dark: #2c3e50;
-            --text-light: #666;
             --font-heading: 'Fredoka', cursive, sans-serif;
             --font-body: 'Quicksand', sans-serif;
             --font-dyslexic: 'Comic Sans MS', 'Chalkboard SE', sans-serif;
+            
             --syl-blue: #00509d; 
             --syl-red: #c1121f; 
             --trans-color: #7209b7; 
@@ -42,12 +42,11 @@
             line-height: 2.0;
         }
 
-        /* --- KARAOKE HIGHLIGHT (NEU) --- */
+        /* --- KARAOKE HIGHLIGHT --- */
         .highlight-active {
-            background-color: #ffeb3b; /* Leuchtendes Gelb */
+            background-color: #ffeb3b; 
             border-radius: 4px;
             box-shadow: 0 0 5px rgba(255, 235, 59, 0.5);
-            transition: background-color 0.1s;
         }
 
         /* --- NAVIGATION --- */
@@ -65,7 +64,6 @@
 
         .nav-left { display: flex; align-items: center; gap: 10px; }
         .nav-logo { height: 40px; width: auto; }
-        
         .brand-name {
             font-family: var(--font-heading);
             font-size: 1.2rem;
@@ -75,7 +73,6 @@
         }
 
         .nav-links-desktop { display: none; gap: 15px; align-items: center; }
-        
         .nav-btn {
             text-decoration: none;
             color: var(--text-dark);
@@ -104,32 +101,9 @@
         .user-avatar { width: 32px; height: 32px; background-color: var(--primary-yellow); border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 1.2rem; }
         .burger-icon { font-size: 1.8rem; cursor: pointer; display: block; color: var(--text-dark); }
 
-        @media (max-width: 767px) {
-            .brand-name { display: none; }
-            .hidden-mobile { display: none !important; }
-        }
-
-        @media (min-width: 768px) {
-            .burger-icon { display: none; }
-            .nav-links-desktop { display: flex; }
-            .nav-logo { height: 50px; }
-            .brand-name { font-size: 1.5rem; display: block; }
-            .nav-left { gap: 15px; }
-            .fab-tools { display: none !important; }
-        }
-
         .mobile-menu {
-            display: none;
-            background: white;
-            padding: 10px;
-            position: absolute;
-            top: 100%;
-            left: 0;
-            width: 100%;
-            border-bottom: 2px solid var(--primary-yellow);
-            flex-direction: column;
-            gap: 10px;
-            z-index: 999;
+            display: none; background: white; padding: 10px; position: absolute; top: 100%; left: 0; width: 100%;
+            border-bottom: 2px solid var(--primary-yellow); flex-direction: column; gap: 10px; z-index: 999;
         }
         .mobile-menu.open { display: flex; }
 
@@ -185,7 +159,6 @@
         .btn-salmon { border-color: var(--accent-salmon); color: var(--accent-salmon); }
         .btn-salmon.active { background: var(--accent-salmon); color: white; }
 
-        /* --- MOBILE FAB (RECHTS UNTEN) --- */
         .fab-tools {
             display: none; position: fixed; bottom: 20px; right: 20px;
             width: 60px; height: 60px; background-color: var(--accent-salmon); color: white;
@@ -195,8 +168,10 @@
         }
         .fab-tools:active { transform: scale(0.9); }
 
-        /* Toolbar Mobile Logic */
         @media (max-width: 767px) {
+            .brand-name { display: none; }
+            .hidden-mobile { display: none !important; }
+            
             .toolbar-container {
                 position: fixed; bottom: -100%; left: 0; width: 100%; border: none;
                 border-top: 4px solid var(--primary-yellow); border-radius: 20px 20px 0 0;
@@ -209,14 +184,22 @@
             body { padding-bottom: 100px; }
         }
 
-        /* --- TEXT --- */
+        @media (min-width: 768px) {
+            .burger-icon { display: none; }
+            .nav-links-desktop { display: flex; }
+            .nav-logo { height: 50px; }
+            .brand-name { font-size: 1.5rem; display: block; }
+            .nav-left { gap: 15px; }
+            .fab-tools { display: none !important; }
+        }
+
+        /* --- TEXT & EXTRAS --- */
         .story-text { font-size: 1.2em; color: #444; margin-bottom: 40px; }
         
         .syl-blue { color: var(--syl-blue); }
         .syl-red { color: var(--syl-red); }
         .translated-word { color: var(--trans-color); font-weight: bold; font-style: italic; }
-        .word-interactive { border-radius: 3px; } 
-        .word-interactive:hover { background-color: #fffbe6; cursor: pointer; }
+        .word-interactive:hover { background-color: #fffbe6; cursor: pointer; border-radius: 4px; }
 
         .chunk-controls { display: flex; justify-content: space-between; align-items: center; margin-top: 30px; padding: 0 10px; }
         .progress-ring {
@@ -361,8 +344,9 @@
         </div>
     </div>
 
+    <a href="whatsapp://send?text=Lies dir diese Geschichte durch!" class="whatsapp-float">📱</a>
+
     <script>
-        // --- LOGIC ---
         function toggleMobileToolbar() {
             const tb = document.getElementById('toolbar');
             tb.classList.toggle('open');
@@ -377,6 +361,14 @@
         const quizData = [ { q: "Was hatte Buddy im Maul?", a: ["Einen kleinen Stock", "Eine Spielzeugmaus", "Einen riesigen Knochen"], correct: 2 }, { q: "Wo versteckte er ihn?", a: ["Unter dem Apfelbaum", "Im Bett", "Im Keller"], correct: 0 }, { q: "Wie viele Löcher hat er angefangen?", a: ["Nur eins", "Mindestens fünf", "Hundert"], correct: 1 } ];
 
         let state = { syllables: false, summary: false, english: false, chunkIndex: 0, chunks: [], magnifier: false };
+        let availableVoices = [];
+
+        // VERBESSERTE STIMMEN-LADE-LOGIK
+        function loadVoices() {
+            availableVoices = window.speechSynthesis.getVoices();
+        }
+        window.speechSynthesis.onvoiceschanged = loadVoices;
+        loadVoices(); // Initialer Aufruf
 
         function renderText() {
             let txt = state.summary ? summaryRaw : storyRaw;
@@ -425,24 +417,21 @@
             if (window.speechSynthesis.speaking) {
                 window.speechSynthesis.cancel();
                 btn.classList.remove('active');
-                clearHighlights(); // Reset Colors
+                clearHighlights();
             } else {
                 let container = document.getElementById('chunk-view').classList.contains('hidden') 
                     ? document.getElementById('full-text-view') 
                     : document.getElementById('chunk-display');
                 
-                // Wir sammeln alle interaktiven Wörter (Spans)
                 let spans = container.querySelectorAll('.word-interactive');
-                
-                // Wir bauen den reinen Text für die Sprachsynthese und merken uns die Index-Positionen
                 let speechText = "";
-                let wordMap = []; // speichert {start, end, element}
+                let wordMap = []; 
                 
                 spans.forEach(span => {
-                    let word = span.innerText; // Nimmt den sichtbaren Text
+                    let word = span.innerText; 
                     let start = speechText.length;
                     speechText += word + " ";
-                    let end = speechText.length - 1; // ohne Leerzeichen
+                    let end = speechText.length - 1; 
                     wordMap.push({ start, end, el: span });
                 });
 
@@ -450,25 +439,23 @@
                 u.lang = "de-DE";
                 u.rate = 0.9;
 
-                // KARAOKE LOGIC
+                // STIMMEN-AUSWAHL VERSUCH (Für Android/Google Unterstützung)
+                if(availableVoices.length > 0) {
+                    // Versuche eine Google-Stimme zu finden
+                    let preferred = availableVoices.find(v => v.lang.startsWith('de') && v.name.includes('Google'));
+                    if(preferred) u.voice = preferred;
+                }
+
                 u.onboundary = function(event) {
                     if (event.name === 'word') {
                         let charIndex = event.charIndex;
-                        // Finde das Wort, das gerade gesprochen wird
                         let currentWord = wordMap.find(w => charIndex >= w.start && charIndex < w.end);
-                        
                         clearHighlights();
-                        if (currentWord) {
-                            currentWord.el.classList.add('highlight-active');
-                        }
+                        if (currentWord) currentWord.el.classList.add('highlight-active');
                     }
                 };
 
-                u.onend = function() { 
-                    btn.classList.remove('active'); 
-                    clearHighlights();
-                };
-
+                u.onend = function() { btn.classList.remove('active'); clearHighlights(); };
                 window.speechSynthesis.speak(u);
                 btn.classList.add('active');
             }
