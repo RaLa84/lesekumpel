@@ -37,6 +37,8 @@
             margin: 0;
             padding-bottom: 50px;
             transition: all 0.3s ease;
+            /* Startgröße explizit setzen für JS Berechnung */
+            font-size: 18px; 
         }
 
         body.dyslexia-mode {
@@ -227,16 +229,16 @@
         .btn-salmon { border-color: var(--accent-salmon); color: var(--accent-salmon); }
         .btn-salmon.active { background: var(--accent-salmon); color: white; }
 
+        /* --- KORRIGIERT: EM statt REM --- */
         .story-text {
-            font-size: 1.2rem;
+            font-size: 1.2em; /* Relativ zum Body, damit Scaling funktioniert */
             color: #444;
             margin-bottom: 40px;
         }
 
-        /* --- NEU: Chunk Controls & Progress Ring --- */
         .chunk-controls {
             display: flex;
-            justify-content: space-between; /* Buttons links/rechts */
+            justify-content: space-between; 
             align-items: center;
             margin-top: 30px;
             margin-bottom: 20px;
@@ -247,7 +249,6 @@
             width: 60px;
             height: 60px;
             border-radius: 50%;
-            /* Hier passiert die Magie: --p wird per JS gesetzt */
             background: conic-gradient(var(--primary-yellow) var(--p), #f0f0f0 0deg);
             display: flex;
             align-items: center;
@@ -256,10 +257,9 @@
             font-weight: bold;
             font-size: 1rem;
             color: var(--text-dark);
-            border: 4px solid #fff; /* Weisser Rand für saubereren Look */
-            box-shadow: 0 0 0 2px #eee; /* Äußerer feiner Rahmen */
+            border: 4px solid #fff;
+            box-shadow: 0 0 0 2px #eee;
         }
-        /* Innerer weißer Kreis für Donut-Look (Optional, hier voll gefüllt gelassen für Pie-Chart Look) */
 
         /* Hilfsklassen Text */
         .syl-blue { color: var(--syl-blue); }
@@ -267,7 +267,7 @@
         .translated-word { color: var(--trans-color); font-weight: bold; font-style: italic; }
         .word-interactive:hover { background-color: #fffbe6; cursor: pointer; border-radius: 4px; }
 
-        /* Restliche Styles wie gehabt */
+        /* Restliche Styles */
         .author-box { margin-bottom: 40px; }
         .author-card {
             border: 2px solid #eee; border-left: 5px solid var(--accent-salmon);
@@ -389,16 +389,16 @@
             <button class="tool-btn btn-salmon" onclick="toggleSummaryMode()" id="btn-summary">📖 Einfach</button>
             <button class="tool-btn" onclick="toggleSyllables()" id="btn-syllables">🔴🔵 Silben</button>
             <span style="width:1px; background:#ddd; margin:0 5px;"></span>
-            <button class="tool-btn" onclick="changeFontSize(-1)">A-</button>
-            <button class="tool-btn" onclick="changeFontSize(1)">A+</button>
+            <button class="tool-btn" onclick="changeFontSize(-2)">A-</button>
+            <button class="tool-btn" onclick="changeFontSize(2)">A+</button>
             <button class="tool-btn" onclick="toggleViewMode()" id="view-toggle-btn">🧩 Häppchen</button>
             <button class="tool-btn" onclick="toggleLanguage()" id="btn-lang">🇩🇪 / 🇬🇧</button>
         </div>
 
         <div id="full-text-view" class="story-text"></div>
         
-        <div id="chunk-view" class="story-text hidden">
-            <div id="chunk-display" style="min-height:100px; text-align:left;"></div>
+        <div id="chunk-view" class="story-text hidden" style="text-align:left; font-size:1.4em;">
+            <div id="chunk-display" style="min-height:100px;"></div>
             
             <div class="chunk-controls">
                 <button class="tool-btn" onclick="prevChunk()">← Zurück</button>
@@ -604,9 +604,14 @@
         }
         function nextChunk() { if(state.chunkIndex < state.chunks.length-1) { state.chunkIndex++; updateChunkDisplay(); } }
         function prevChunk() { if(state.chunkIndex > 0) { state.chunkIndex--; updateChunkDisplay(); } }
+        
         function changeFontSize(d) {
             let s = parseFloat(window.getComputedStyle(document.body).fontSize);
-            document.body.style.fontSize = (s + d) + "px";
+            // Sicherheitsgrenze (z.B. min 12px, max 40px)
+            let newSize = s + d;
+            if(newSize < 12) newSize = 12;
+            if(newSize > 40) newSize = 40;
+            document.body.style.fontSize = newSize + "px";
         }
         function toggleMenu() { document.getElementById('mobile-menu').classList.toggle('open'); }
 
