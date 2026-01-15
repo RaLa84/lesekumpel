@@ -8,99 +8,49 @@
     <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
 
     <style>
-        /* --- GRUNDLAGEN & VARIABLEN --- */
+        /* --- GRUNDLAGEN --- */
         :root {
-            --bg-body: #f0f8ff; 
-            --bg-card: #ffffff;
-            --primary-yellow: #f4d03f; 
-            --accent-salmon: #f08080; 
-            --accent-teal: #2a9d8f;   
-            --text-dark: #2c3e50;
-            --font-heading: 'Fredoka', cursive, sans-serif;
-            --font-body: 'Quicksand', sans-serif;
-            --font-dyslexic: 'Comic Sans MS', 'Chalkboard SE', sans-serif;
-            
-            --syl-blue: #00509d; 
-            --syl-red: #c1121f; 
-            --trans-color: #7209b7; 
+            --bg-body: #f0f8ff; --bg-card: #ffffff;
+            --primary-yellow: #f4d03f; --accent-salmon: #f08080; --accent-teal: #2a9d8f;   
+            --text-dark: #2c3e50; --font-heading: 'Fredoka', cursive, sans-serif;
+            --font-body: 'Quicksand', sans-serif; --font-dyslexic: 'Comic Sans MS', 'Chalkboard SE', sans-serif;
+            --syl-blue: #00509d; --syl-red: #c1121f; --trans-color: #7209b7; 
         }
 
         body {
-            font-family: var(--font-body);
-            background-color: var(--bg-body);
-            color: var(--text-dark);
-            line-height: 1.6;
-            margin: 0;
-            padding-bottom: 50px;
-            transition: all 0.3s ease;
-            font-size: 18px; 
+            font-family: var(--font-body); background-color: var(--bg-body); color: var(--text-dark);
+            line-height: 1.6; margin: 0; padding-bottom: 50px; transition: all 0.3s ease; font-size: 18px; 
         }
-
-        body.dyslexia-mode {
-            font-family: var(--font-dyslexic) !important;
-            letter-spacing: 0.05em;
-            line-height: 2.0;
-        }
+        body.dyslexia-mode { font-family: var(--font-dyslexic) !important; letter-spacing: 0.05em; line-height: 2.0; }
 
         /* --- KARAOKE HIGHLIGHT --- */
         .highlight-active {
-            background-color: #ffeb3b; 
+            background-color: #ffeb3b !important;
             border-radius: 4px;
-            box-shadow: 0 0 5px rgba(255, 235, 59, 0.5);
+            box-shadow: 0 0 5px rgba(255, 235, 59, 0.8);
+            transition: background-color 0.1s;
         }
 
         /* --- NAVIGATION --- */
         .main-navbar {
-            background-color: #fff;
-            padding: 10px 20px;
-            border-bottom: 4px solid var(--primary-yellow);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
+            background-color: #fff; padding: 10px 20px; border-bottom: 4px solid var(--primary-yellow);
+            display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000;
         }
-
         .nav-left { display: flex; align-items: center; gap: 10px; }
         .nav-logo { height: 40px; width: auto; }
-        .brand-name {
-            font-family: var(--font-heading);
-            font-size: 1.2rem;
-            color: var(--accent-salmon);
-            font-weight: 600;
-            text-decoration: none;
-        }
-
+        .brand-name { font-family: var(--font-heading); font-size: 1.2rem; color: var(--accent-salmon); font-weight: 600; text-decoration: none; }
         .nav-links-desktop { display: none; gap: 15px; align-items: center; }
-        .nav-btn {
-            text-decoration: none;
-            color: var(--text-dark);
-            font-weight: 600;
-            font-size: 1rem;
-            display: flex;
-            align-items: center;
-            gap: 5px;
-        }
-        
+        .nav-btn { text-decoration: none; color: var(--text-dark); font-weight: 600; font-size: 1rem; display: flex; align-items: center; gap: 5px; }
         .btn-new-story {
-            border: 2px solid var(--primary-yellow);
-            background: #fff;
-            padding: 8px 15px;
-            border-radius: 25px;
-            color: var(--text-dark);
-            font-weight: bold;
-            transition: transform 0.2s;
-            text-decoration: none;
+            border: 2px solid var(--primary-yellow); background: #fff; padding: 8px 15px;
+            border-radius: 25px; color: var(--text-dark); font-weight: bold; transition: transform 0.2s; text-decoration: none;
         }
         .btn-new-story:hover { transform: scale(1.05); background: #fffbe6; }
-
         .nav-right { display: flex; align-items: center; gap: 15px; }
         .user-burger-container { display: flex; align-items: center; gap: 15px; }
         .user-profile { display: flex; align-items: center; gap: 8px; font-weight: bold; font-size: 0.9rem; }
         .user-avatar { width: 32px; height: 32px; background-color: var(--primary-yellow); border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 1.2rem; }
         .burger-icon { font-size: 1.8rem; cursor: pointer; display: block; color: var(--text-dark); }
-
         .mobile-menu {
             display: none; background: white; padding: 10px; position: absolute; top: 100%; left: 0; width: 100%;
             border-bottom: 2px solid var(--primary-yellow); flex-direction: column; gap: 10px; z-index: 999;
@@ -109,46 +59,27 @@
 
         /* --- LAYOUT --- */
         .main-card {
-            max-width: 800px;
-            margin: 40px auto;
-            background: var(--bg-card);
-            border: 4px solid var(--primary-yellow);
-            border-radius: 25px;
-            padding: 40px;
-            position: relative;
-            box-shadow: 0 10px 0 rgba(0,0,0,0.05);
+            max-width: 800px; margin: 40px auto; background: var(--bg-card);
+            border: 4px solid var(--primary-yellow); border-radius: 25px; padding: 40px;
+            position: relative; box-shadow: 0 10px 0 rgba(0,0,0,0.05);
         }
-
         h1#main-title {
             font-family: var(--font-heading); color: var(--accent-salmon); font-size: 3rem;
             text-align: center; line-height: 1.1; margin-bottom: 10px; margin-top: 0; text-transform: uppercase;
         }
-
         .quality-badge {
             display: block; text-align: center; background: #fffbe6; color: #d4ac0d;
             border: 1px solid var(--primary-yellow); border-radius: 20px; padding: 5px 15px;
             width: fit-content; margin: 0 auto 30px auto; font-weight: bold;
         }
-
-        .hero-image {
-            width: 100%; border-radius: 15px; margin-bottom: 30px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-        }
+        .hero-image { width: 100%; border-radius: 15px; margin-bottom: 30px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
 
         /* --- TOOLBAR --- */
         .toolbar-container {
-            border: 2px dashed var(--primary-yellow);
-            border-radius: 15px;
-            padding: 15px;
-            margin-bottom: 20px;
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 10px;
-            background: #fff;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            border: 2px dashed var(--primary-yellow); border-radius: 15px; padding: 15px;
+            margin-bottom: 20px; display: flex; flex-wrap: wrap; justify-content: center; gap: 10px;
+            background: #fff; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
         }
-
         .tool-btn {
             background: #fff; border: 2px solid #ddd; border-radius: 12px; padding: 8px 15px;
             font-family: var(--font-body); font-weight: 600; color: var(--text-dark); cursor: pointer;
@@ -171,7 +102,6 @@
         @media (max-width: 767px) {
             .brand-name { display: none; }
             .hidden-mobile { display: none !important; }
-            
             .toolbar-container {
                 position: fixed; bottom: -100%; left: 0; width: 100%; border: none;
                 border-top: 4px solid var(--primary-yellow); border-radius: 20px 20px 0 0;
@@ -183,7 +113,6 @@
             .fab-tools { display: flex; }
             body { padding-bottom: 100px; }
         }
-
         @media (min-width: 768px) {
             .burger-icon { display: none; }
             .nav-links-desktop { display: flex; }
@@ -193,9 +122,8 @@
             .fab-tools { display: none !important; }
         }
 
-        /* --- TEXT & EXTRAS --- */
+        /* --- CONTENT --- */
         .story-text { font-size: 1.2em; color: #444; margin-bottom: 40px; }
-        
         .syl-blue { color: var(--syl-blue); }
         .syl-red { color: var(--syl-red); }
         .translated-word { color: var(--trans-color); font-weight: bold; font-style: italic; }
@@ -344,8 +272,6 @@
         </div>
     </div>
 
-    <a href="whatsapp://send?text=Lies dir diese Geschichte durch!" class="whatsapp-float">📱</a>
-
     <script>
         function toggleMobileToolbar() {
             const tb = document.getElementById('toolbar');
@@ -361,14 +287,6 @@
         const quizData = [ { q: "Was hatte Buddy im Maul?", a: ["Einen kleinen Stock", "Eine Spielzeugmaus", "Einen riesigen Knochen"], correct: 2 }, { q: "Wo versteckte er ihn?", a: ["Unter dem Apfelbaum", "Im Bett", "Im Keller"], correct: 0 }, { q: "Wie viele Löcher hat er angefangen?", a: ["Nur eins", "Mindestens fünf", "Hundert"], correct: 1 } ];
 
         let state = { syllables: false, summary: false, english: false, chunkIndex: 0, chunks: [], magnifier: false };
-        let availableVoices = [];
-
-        // VERBESSERTE STIMMEN-LADE-LOGIK
-        function loadVoices() {
-            availableVoices = window.speechSynthesis.getVoices();
-        }
-        window.speechSynthesis.onvoiceschanged = loadVoices;
-        loadVoices(); // Initialer Aufruf
 
         function renderText() {
             let txt = state.summary ? summaryRaw : storyRaw;
@@ -414,51 +332,48 @@
         
         function toggleTTS() {
             const btn = document.getElementById('btn-tts');
+            
+            // Erst prüfen ob schon gesprochen wird
             if (window.speechSynthesis.speaking) {
                 window.speechSynthesis.cancel();
                 btn.classList.remove('active');
                 clearHighlights();
-            } else {
-                let container = document.getElementById('chunk-view').classList.contains('hidden') 
-                    ? document.getElementById('full-text-view') 
-                    : document.getElementById('chunk-display');
-                
-                let spans = container.querySelectorAll('.word-interactive');
-                let speechText = "";
-                let wordMap = []; 
-                
-                spans.forEach(span => {
-                    let word = span.innerText; 
-                    let start = speechText.length;
-                    speechText += word + " ";
-                    let end = speechText.length - 1; 
-                    wordMap.push({ start, end, el: span });
-                });
-
-                let u = new SpeechSynthesisUtterance(speechText);
-                u.lang = "de-DE";
-                u.rate = 0.9;
-
-                // STIMMEN-AUSWAHL VERSUCH (Für Android/Google Unterstützung)
-                if(availableVoices.length > 0) {
-                    // Versuche eine Google-Stimme zu finden
-                    let preferred = availableVoices.find(v => v.lang.startsWith('de') && v.name.includes('Google'));
-                    if(preferred) u.voice = preferred;
-                }
-
-                u.onboundary = function(event) {
-                    if (event.name === 'word') {
-                        let charIndex = event.charIndex;
-                        let currentWord = wordMap.find(w => charIndex >= w.start && charIndex < w.end);
-                        clearHighlights();
-                        if (currentWord) currentWord.el.classList.add('highlight-active');
-                    }
-                };
-
-                u.onend = function() { btn.classList.remove('active'); clearHighlights(); };
-                window.speechSynthesis.speak(u);
-                btn.classList.add('active');
+                return; // Wichtig: Hier rausspringen, damit nicht direkt neu gestartet wird!
             }
+
+            // Wenn nicht gesprochen wird -> Starten
+            let container = document.getElementById('chunk-view').classList.contains('hidden') 
+                ? document.getElementById('full-text-view') 
+                : document.getElementById('chunk-display');
+            
+            let spans = container.querySelectorAll('.word-interactive');
+            let speechText = "";
+            let wordMap = []; 
+            
+            spans.forEach(span => {
+                let word = span.innerText; 
+                let start = speechText.length;
+                speechText += word + " ";
+                let end = speechText.length - 1; 
+                wordMap.push({ start, end, el: span });
+            });
+
+            let u = new SpeechSynthesisUtterance(speechText);
+            u.lang = "de-DE";
+            u.rate = 0.9;
+
+            u.onboundary = function(event) {
+                if (event.name === 'word') {
+                    let charIndex = event.charIndex;
+                    let currentWord = wordMap.find(w => charIndex >= w.start && charIndex < w.end);
+                    clearHighlights();
+                    if (currentWord) currentWord.el.classList.add('highlight-active');
+                }
+            };
+
+            u.onend = function() { btn.classList.remove('active'); clearHighlights(); };
+            window.speechSynthesis.speak(u);
+            btn.classList.add('active');
         }
 
         function clearHighlights() {
