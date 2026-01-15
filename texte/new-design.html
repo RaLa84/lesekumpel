@@ -1,921 +1,631 @@
-Das ist der letzte Baustein. Ein Footer rundet die Seite professionell ab und bietet Platz für rechtliche Hinweise.
-
-Ich habe den Footer ganz unten eingefügt, optisch dezent durch eine dünne Linie abgetrennt, damit er nicht vom Inhalt ablenkt.
-
-Hier ist der **finale, komplette Code** für Ihre `index.html`:
-
-```html
 <!DOCTYPE html>
 <html lang="de">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Der Knochen-Schatzsucher - Lesekumpel</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
+
     <style>
-        /* --- GRUNDLAGEN & VARIABLEN (Mobile First) --- */
+        /* --- GRUNDLAGEN & VARIABLEN --- */
         :root {
-            --bg-color: #fdfbf7; 
-            --text-color: #2c2c2c;
-            --accent-color: #2a9d8f;
-            --highlight-color: #e9c46a;
+            --bg-body: #f0f8ff; /* Hellblau wie im Bild */
+            --bg-card: #ffffff;
+            
+            --primary-yellow: #f4d03f; /* Der gelbe Rahmen */
+            --accent-salmon: #f08080; /* "Senden" Button / Normal Modus */
+            --accent-teal: #2a9d8f;   /* Aktive Buttons / Akzente */
+            
+            --text-dark: #2c3e50;
+            --text-light: #666;
+            
+            --font-heading: 'Fredoka', cursive, sans-serif;
+            --font-body: 'Quicksand', sans-serif;
+            --font-dyslexic: 'Comic Sans MS', 'Chalkboard SE', sans-serif;
+            
+            /* Silben-Farben */
             --syl-blue: #00509d; 
             --syl-red: #c1121f; 
             --trans-color: #7209b7; 
-            --nav-bg: #ffffff;
-            --font-main: 'Verdana', sans-serif;
-            --font-dyslexic: 'Comic Sans MS', 'Chalkboard SE', sans-serif;
-            --spacing-std: 1.6;
-            --spacing-dyslexic: 2.0;
         }
 
         body {
-            font-family: var(--font-main);
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            line-height: var(--spacing-std);
+            font-family: var(--font-body);
+            background-color: var(--bg-body);
+            color: var(--text-dark);
+            line-height: 1.6;
             margin: 0;
-            padding-bottom: 80px; 
+            padding-bottom: 50px;
             transition: all 0.3s ease;
         }
 
-        /* --- HAUPT NAVIGATION --- */
+        /* --- DYSLEXIE MODUS --- */
+        body.dyslexia-mode {
+            font-family: var(--font-dyslexic) !important;
+            letter-spacing: 0.05em;
+            line-height: 2.0;
+        }
+
+        /* --- NAVIGATION (Oben) --- */
         .main-navbar {
-            background-color: var(--nav-bg);
+            background-color: #fff;
             padding: 10px 20px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+            border-bottom: 4px solid var(--primary-yellow); /* Gelbe Linie unten */
             display: flex;
             justify-content: space-between;
             align-items: center;
-            position: relative;
-            z-index: 3000;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
         }
 
-        .nav-left {
-            display: flex;
-            align-items: center;
-            gap: 20px;
-        }
-
-        .nav-logo {
-            height: 40px;
-            width: auto;
-        }
-
-        /* Desktop Links */
-        .nav-links-desktop {
-            display: none; 
-            gap: 20px;
-        }
-        .nav-links-desktop a {
+        .nav-left { display: flex; align-items: center; gap: 15px; }
+        .nav-logo { height: 50px; width: auto; }
+        
+        /* Logo Text im Bild-Stil */
+        .brand-name {
+            font-family: var(--font-heading);
+            font-size: 1.5rem;
+            color: var(--accent-salmon);
+            font-weight: 600;
             text-decoration: none;
-            color: var(--text-color);
-            font-weight: bold;
+        }
+
+        .nav-links-desktop { display: none; gap: 15px; align-items: center; }
+        
+        /* Buttons in der Nav */
+        .nav-btn {
+            text-decoration: none;
+            color: var(--text-dark);
+            font-weight: 600;
             font-size: 1rem;
-            padding: 5px 10px;
-            border-radius: 5px;
-            transition: background 0.2s;
-        }
-        .nav-links-desktop a:hover {
-            background-color: #f0f0f0;
-            color: var(--accent-color);
-        }
-
-        /* Rechte Seite */
-        .nav-right {
             display: flex;
             align-items: center;
-            gap: 15px;
+            gap: 5px;
         }
-
-        .user-profile {
-            display: flex;
-            align-items: center;
-            gap: 8px;
+        
+        /* "Neue Geschichte" Button Style */
+        .btn-new-story {
+            border: 2px solid var(--primary-yellow);
+            background: #fff;
+            padding: 8px 15px;
+            border-radius: 25px;
+            color: var(--text-dark);
             font-weight: bold;
-            font-size: 0.9rem;
+            transition: transform 0.2s;
         }
-        .user-avatar {
-            width: 32px;
-            height: 32px;
-            background-color: var(--highlight-color);
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 1.2rem;
+        .btn-new-story:hover { transform: scale(1.05); background: #fffbe6; }
+
+        .nav-right { display: flex; align-items: center; gap: 15px; }
+        .user-avatar { font-size: 1.5rem; }
+        .burger-icon { font-size: 1.8rem; cursor: pointer; display: block; color: var(--text-dark); }
+
+        @media (min-width: 768px) {
+            .burger-icon { display: none; }
+            .nav-links-desktop { display: flex; }
         }
 
-        .burger-icon {
-            font-size: 1.8rem;
-            cursor: pointer;
-            display: block;
-            user-select: none;
-        }
-
+        /* Mobile Menu */
         .mobile-menu {
             display: none;
-            background-color: var(--nav-bg);
-            border-top: 1px solid #eee;
-            padding: 10px 20px;
-            flex-direction: column;
-            gap: 10px;
-            box-shadow: 0 5px 5px rgba(0,0,0,0.05);
+            background: white;
+            padding: 10px;
             position: absolute;
             top: 100%;
             left: 0;
             width: 100%;
-            box-sizing: border-box;
-            z-index: 2999;
+            border-bottom: 2px solid var(--primary-yellow);
+            flex-direction: column;
+            gap: 10px;
+            z-index: 999;
         }
-        .mobile-menu.open {
-            display: flex;
-        }
-        .mobile-menu a {
-            text-decoration: none;
-            color: var(--text-color);
-            font-size: 1.1rem;
-            padding: 10px 0;
-            border-bottom: 1px solid #f9f9f9;
-        }
+        .mobile-menu.open { display: flex; }
 
-        @media (min-width: 768px) {
-            .burger-icon { display: none; }
-            .mobile-menu { display: none !important; }
-            .nav-links-desktop { display: flex; }
-        }
-
-
-        /* --- FORTSCHRITTSBALKEN --- */
-        #progress-container {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 5px;
-            background: transparent;
-            z-index: 4000;
-        }
-        #progress-bar {
-            height: 100%;
-            background: var(--accent-color);
-            width: 0%;
-        }
-
-        /* --- CONTAINER --- */
-        .container {
+        /* --- MAIN CONTAINER (Die weiße Karte) --- */
+        .main-card {
             max-width: 800px;
-            margin: 0 auto;
-            padding: 20px;
+            margin: 40px auto;
+            background: var(--bg-card);
+            border: 4px solid var(--primary-yellow); /* Der dicke gelbe Rahmen */
+            border-radius: 25px;
+            padding: 40px;
+            position: relative;
+            box-shadow: 0 10px 0 rgba(0,0,0,0.05); /* Soft Shadow */
         }
 
-        header { text-align: center; margin-top: 20px; margin-bottom: 20px; }
-        
+        /* --- TOOLBAR (Gestrichelt) --- */
+        .toolbar-container {
+            border: 2px dashed var(--primary-yellow);
+            border-radius: 15px;
+            padding: 15px;
+            margin-bottom: 30px;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 10px;
+            background: #fff;
+        }
+
+        .tool-btn {
+            background: #fff;
+            border: 2px solid #ddd;
+            border-radius: 12px;
+            padding: 8px 15px;
+            font-family: var(--font-body);
+            font-weight: 600;
+            color: var(--text-dark);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            transition: all 0.2s;
+        }
+        .tool-btn:hover { border-color: var(--accent-teal); color: var(--accent-teal); }
+        .tool-btn.active {
+            background: var(--accent-teal);
+            color: #fff;
+            border-color: var(--accent-teal);
+        }
+        /* Spezielle Buttons */
+        .btn-salmon { border-color: var(--accent-salmon); color: var(--accent-salmon); }
+        .btn-salmon.active { background: var(--accent-salmon); color: white; }
+
+        /* --- CONTENT --- */
         h1#main-title {
-            margin-bottom: 5px;
-            line-height: 1.2;
+            font-family: var(--font-heading);
+            color: var(--accent-salmon); /* Titel in Lachs/Rot */
+            font-size: 3rem;
+            text-align: center;
+            line-height: 1.1;
+            margin-bottom: 10px;
+            text-transform: uppercase;
+        }
+
+        .quality-badge {
+            display: block;
+            text-align: center;
+            background: #fffbe6;
+            color: #d4ac0d;
+            border: 1px solid var(--primary-yellow);
+            border-radius: 20px;
+            padding: 5px 15px;
+            width: fit-content;
+            margin: 0 auto 20px auto;
+            font-weight: bold;
         }
 
         .hero-image {
             width: 100%;
-            height: auto;
             border-radius: 15px;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-            margin-bottom: 20px;
-        }
-        
-        .quality-badge {
-            background-color: #fff;
-            border: 2px solid var(--accent-color);
-            border-radius: 20px;
-            padding: 5px 15px;
-            font-size: 0.9em;
-            display: inline-block;
-            margin-top: 5px;
-            margin-bottom: 15px;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
         }
 
-        /* --- TOOLBAR --- */
-        .toolbar {
-            background: #fff;
-            padding: 10px;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            margin-bottom: 20px;
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            justify-content: center;
-            position: sticky;
-            top: 10px;
-            z-index: 900;
-        }
-        
-        button {
-            background: var(--accent-color);
-            color: white;
-            border: none;
-            padding: 8px 12px;
-            border-radius: 8px;
-            font-size: 0.95rem;
-            cursor: pointer;
-            touch-action: manipulation;
-        }
-        button:hover { opacity: 0.9; }
-        button.active {
-            background: #264653;
-            border: 2px solid var(--highlight-color);
-        }
-        button#btn-summary.active {
-            background: #e76f51; 
-            border-color: #e76f51;
-        }
-        button#btn-lang.active {
-            background: var(--trans-color);
+        /* Text Styling */
+        .story-text {
+            font-size: 1.2rem;
+            color: #444;
         }
 
-        /* --- DYSLEXIE & SILBEN --- */
-        body.dyslexia-mode {
-            font-family: var(--font-dyslexic);
-            letter-spacing: 0.05em;
-            word-spacing: 0.1em;
-            line-height: var(--spacing-dyslexic);
-        }
-
+        /* Silben Colors */
         .syl-blue { color: var(--syl-blue); }
         .syl-red { color: var(--syl-red); }
-        
-        .translated-word {
-            color: var(--trans-color);
-            font-style: italic;
-            font-weight: bold;
-        }
-        
-        /* --- LUPE --- */
-        .magnifier-overlay {
-            position: fixed;
-            bottom: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            background: #fff;
-            border: 3px solid var(--accent-color);
-            padding: 20px;
-            border-radius: 15px;
-            font-size: 2rem;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.3);
-            z-index: 2000;
-            display: none;
-            text-align: center;
-            width: 85%;
-        }
-        .word-interactive {
-            cursor: pointer;
-            border-radius: 3px;
-        }
-        .word-interactive:hover {
-            background-color: var(--highlight-color);
-        }
+        .translated-word { color: var(--trans-color); font-weight: bold; font-style: italic; }
+        .word-interactive:hover { background-color: #fffbe6; cursor: pointer; border-radius: 4px; }
 
-        /* --- TEXT ANSICHTEN --- */
-        .hidden { display: none; }
-        
-        .chunk-card {
-            background: #fff;
-            padding: 25px;
-            border-radius: 15px;
-            box-shadow: 0 5px 15px rgba(0,0,0,0.05);
-            margin-bottom: 20px;
-            font-size: 1.3rem;
-            min-height: 150px;
-            display: block; 
-            line-height: 1.8;
-        }
-
-        .chunk-controls {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-top: 10px;
-        }
-
-        /* --- QUIZ --- */
-        .quiz-container {
-            background: #fff;
-            padding: 20px;
-            border-radius: 15px;
-            margin-top: 30px;
-            border: 1px solid #ddd;
-        }
-        .quiz-option {
-            display: block;
-            margin: 8px 0;
-            padding: 10px;
-            background: #f0f0f0;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-        .quiz-option:hover { background: #e0e0e0; }
-        .correct { background: #a7c957 !important; }
-        .wrong { background: #e76f51 !important; }
-
-        /* --- AUTOR --- */
-        .author-box {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            background: #fff;
-            padding: 15px;
-            border-radius: 15px;
-            margin-top: 30px;
-        }
-        .author-img {
-            width: 60px;
-            height: 60px;
-            border-radius: 50%;
-            object-fit: cover;
-        }
-
-        /* --- INTERAKTION --- */
-        .survey-section {
-            text-align: center;
+        /* --- QUIZ & INTERACTIVE (Gelbe Rahmen) --- */
+        .quiz-section, .survey-section, .comments-section, .author-box {
             margin-top: 40px;
-            margin-bottom: 30px;
-        }
-        .survey-section h3 {
-            margin-bottom: 20px;
-            color: var(--text-color);
-        }
-        .vote-wrapper {
-            display: flex;
-            justify-content: center;
-            gap: 20px;
-        }
-        .vote-card {
-            background: #fff;
-            border-radius: 15px;
-            padding: 15px 25px;
-            font-size: 2rem;
-            cursor: pointer;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-            border: 1px solid #eee;
-            transition: transform 0.1s;
-        }
-        .vote-card:active {
-            transform: scale(0.95);
-            background-color: #f0f0f0;
         }
 
-        .comments-section {
-            background: #fff;
-            border-radius: 15px;
-            padding: 20px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-            border: 1px solid #e0e0e0;
-            margin-bottom: 30px;
-        }
-        .comments-section h3 {
-            margin-top: 0;
+        .section-title {
+            text-align: center;
+            font-family: var(--font-heading);
+            color: var(--accent-salmon);
+            font-size: 1.5rem;
+            margin-bottom: 20px;
             display: flex;
             align-items: center;
+            justify-content: center;
             gap: 10px;
         }
 
-        .comments-list {
-            margin-bottom: 20px;
-            border-bottom: 1px solid #eee;
-            padding-bottom: 10px;
+        .quiz-card {
+            border: 2px solid #eee;
+            border-radius: 15px;
+            padding: 20px;
+            background: #fff;
         }
-        .comment-item {
-            margin-bottom: 15px;
-            padding: 10px;
-            background-color: #f9f9f9;
+        
+        .quiz-option {
+            display: block;
+            border: 2px solid var(--primary-yellow); /* Gelbe Rahmen für Antworten */
             border-radius: 10px;
+            padding: 12px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            font-weight: 600;
+            background: #fff;
+            transition: 0.2s;
         }
-        .comment-header {
-            display: flex;
-            justify-content: space-between;
-            font-size: 0.85rem;
-            color: #666;
-            margin-bottom: 5px;
-        }
-        .comment-author {
-            font-weight: bold;
-            color: var(--text-color);
-        }
-        .comment-text {
-            font-size: 1rem;
-            margin: 0;
-        }
+        .quiz-option:hover { background: #fffbe6; }
+        .quiz-option.correct { background: #d4edda; border-color: #28a745; }
+        .quiz-option.wrong { background: #f8d7da; border-color: #dc3545; }
 
-        .comment-input-area textarea {
+        /* --- SURVEY --- */
+        .vote-wrapper { display: flex; justify-content: center; gap: 20px; }
+        .vote-card {
+            width: 60px; height: 60px;
+            display: flex; justify-content: center; align-items: center;
+            background: #fff;
+            border: 2px solid #eee;
+            border-radius: 15px;
+            font-size: 2rem;
+            cursor: pointer;
+            box-shadow: 0 4px 0 #eee;
+            transition: transform 0.1s;
+        }
+        .vote-card:active { transform: translateY(4px); box-shadow: none; }
+
+        /* --- COMMENTS --- */
+        .comments-box {
+            border: 2px solid #eee;
+            border-radius: 15px;
+            padding: 20px;
+        }
+        .comment-input {
             width: 100%;
-            height: 80px;
-            padding: 15px;
-            border: 2px solid var(--highlight-color);
+            border: 2px solid var(--primary-yellow);
             border-radius: 10px;
-            font-family: inherit;
+            padding: 15px;
+            font-family: var(--font-body);
             font-size: 1rem;
-            resize: vertical;
-            box-sizing: border-box; 
-        }
-        .comment-input-area textarea:focus {
+            box-sizing: border-box;
             outline: none;
-            border-color: #d4b05d;
         }
-        .comment-submit-btn {
-            background-color: #e76f51;
+        .comment-input:focus { border-color: #f39c12; }
+        
+        .btn-send {
+            background-color: var(--accent-salmon);
             color: white;
             border: none;
-            padding: 10px 25px;
+            padding: 10px 30px;
             border-radius: 10px;
-            font-size: 1rem;
             font-weight: bold;
+            font-family: var(--font-heading);
+            font-size: 1rem;
             float: right;
             margin-top: 10px;
             cursor: pointer;
+            box-shadow: 0 4px 0 #c0392b;
         }
-        .comment-input-area::after {
-            content: "";
-            display: table;
-            clear: both;
-        }
-        
-        .tags { margin-top: 20px; clear: both; }
-        .tag {
-            background: #ddd;
-            padding: 5px 10px;
+        .btn-send:active { transform: translateY(4px); box-shadow: none; }
+
+        /* --- AUTHOR --- */
+        .author-card {
+            border: 2px solid #eee;
+            border-left: 5px solid var(--accent-salmon);
             border-radius: 15px;
-            font-size: 0.8rem;
-            margin-right: 5px;
-            text-decoration: none;
-            color: #333;
-            display: inline-block;
-            margin-bottom: 5px;
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            background: #fff;
+        }
+        .author-img {
+            width: 70px; height: 70px;
+            border-radius: 50%;
+            border: 3px solid var(--primary-yellow);
+            padding: 2px;
+        }
+        .author-name {
+            font-family: var(--font-heading);
+            color: var(--accent-salmon);
+            font-size: 1.3rem;
+            margin: 0;
         }
 
-        .whatsapp-float {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background-color: #25d366;
-            color: #FFF;
-            border-radius: 50px;
-            text-align: center;
-            font-size: 30px;
-            padding: 10px 15px;
-            box-shadow: 2px 2px 3px #999;
-            z-index: 100;
-            text-decoration: none;
-        }
-
-        /* --- FOOTER (NEU) --- */
+        /* --- FOOTER --- */
         footer {
             text-align: center;
-            padding: 40px 20px;
             margin-top: 50px;
-            border-top: 1px solid #ddd;
-            color: #666;
+            color: #888;
             font-size: 0.9rem;
-            background-color: #fdfbf7; /* Gleiche Farbe wie Body für nahtlosen Übergang */
         }
-        .footer-links {
-            margin-top: 10px;
+        .footer-links a { color: #888; text-decoration: none; margin: 0 5px; }
+
+        /* --- EXTRAS --- */
+        .magnifier-overlay {
+            position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+            background: #fff; border: 4px solid var(--primary-yellow);
+            padding: 20px; border-radius: 20px; font-size: 2rem;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2); z-index: 2000;
+            display: none; text-align: center; font-family: var(--font-heading);
         }
-        .footer-links a {
-            color: #666;
-            text-decoration: none;
-            margin: 0 8px;
+        
+        .whatsapp-float {
+            position: fixed; bottom: 20px; right: 20px;
+            background: #25d366; color: #fff; border-radius: 50px;
+            padding: 10px 15px; font-size: 30px; text-decoration: none;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2); z-index: 5000;
         }
-        .footer-links a:hover {
-            color: var(--accent-color);
-            text-decoration: underline;
-        }
+
+        /* --- HELPER --- */
+        .hidden { display: none; }
+        .clearfix::after { content: ""; display: table; clear: both; }
 
     </style>
 </head>
 <body>
 
-    <div id="progress-container"><div id="progress-bar"></div></div>
-
     <nav class="main-navbar">
         <div class="nav-left">
-            <img src="https://github.com/RaLa84/lesekumpel/blob/main/logo1.png?raw=true" alt="Lesekumpel Logo" class="nav-logo">
+            <img src="https://github.com/RaLa84/lesekumpel/blob/main/logo1.png?raw=true" alt="Logo" class="nav-logo">
+            <a href="#" class="brand-name">Lesekumpel</a>
+            
             <div class="nav-links-desktop">
-                <a href="https://rala84.github.io/lesekumpel/index.html">📚 Bibliothek</a>
-                <a href="https://rala84.app.n8n.cloud/form/b6f28a18-e90d-4bb8-b201-0c8f6c667a7a">✨ Neue Geschichte</a>
+                <a href="#" class="nav-btn">📚 Bibliothek</a>
             </div>
         </div>
-
         <div class="nav-right">
-            <div class="user-profile">
-                <span>Papa Wutz</span>
-                <div class="user-avatar">🐷</div>
+            <a href="#" class="btn-new-story hidden-mobile" style="text-decoration:none;">✨ Neue Geschichte</a>
+            
+            <div style="display:flex; align-items:center; gap:10px; margin-left:10px;">
+                <span class="user-avatar">🐷</span>
+                <span class="burger-icon" onclick="toggleMenu()">☰</span>
             </div>
-            <div class="burger-icon" onclick="toggleMenu()">☰</div>
         </div>
-
+        
         <div id="mobile-menu" class="mobile-menu">
-            <a href="https://rala84.github.io/lesekumpel/index.html">📚 Bibliothek</a>
-            <a href="https://rala84.app.n8n.cloud/form/b6f28a18-e90d-4bb8-b201-0c8f6c667a7a">✨ Neue Geschichte</a>
+            <a href="#" class="nav-btn">📚 Bibliothek</a>
+            <a href="#" class="nav-btn">✨ Neue Geschichte</a>
         </div>
     </nav>
 
-    <div class="container">
-        <header>
-            <h1 id="main-title">DER KNOCHEN-SCHATZSUCHER</h1>
-            <div class="quality-badge">⭐ 90% gefällt das (110 Leser)</div>
-        </header>
+    <div class="main-card">
+        
+        <div class="toolbar-container">
+            <button class="tool-btn" onclick="toggleTTS()">🔊 Vorlesen</button>
+            <button class="tool-btn" onclick="toggleMagnifier()" id="magnifier-btn">🔍 Lupe</button>
+            <span style="width:1px; background:#ddd; margin:0 5px;"></span>
+            <button class="tool-btn btn-salmon" onclick="toggleSummaryMode()" id="btn-summary">📖 Einfach</button>
+            <button class="tool-btn" onclick="toggleSyllables()" id="btn-syllables">🔴🔵 Silben</button>
+            <span style="width:1px; background:#ddd; margin:0 5px;"></span>
+            <button class="tool-btn" onclick="changeFontSize(-1)">A-</button>
+            <button class="tool-btn" onclick="changeFontSize(1)">A+</button>
+            <button class="tool-btn" onclick="toggleViewMode()" id="view-toggle-btn">🧩 Häppchen</button>
+            <button class="tool-btn" onclick="toggleLanguage()" id="btn-lang">🇩🇪 / 🇬🇧</button>
+        </div>
 
-        <img src="https://rala84.github.io/lesekumpel/bilder/der-knochenschatzsucher.png" alt="Hund gräbt im Garten nach Knochen" class="hero-image">
+        <div class="quality-badge">⭐ 90% gefällt das</div>
+        <h1 id="main-title">DER KNOCHEN-<br>SCHATZSUCHER</h1>
+        
+        <img src="https://rala84.github.io/lesekumpel/bilder/der-knochenschatzsucher.png" alt="Hund" class="hero-image">
 
-        <nav class="toolbar">
-            <button onclick="toggleLanguage()" id="btn-lang">🇩🇪 Deutsch</button>
-            <button onclick="toggleSummaryMode()" id="btn-summary">📖 Einfach</button>
-            <button onclick="toggleTTS()">🔊 Vorlesen</button>
-            <button onclick="toggleSyllables()" id="btn-syllables">🔡 Silben: AUS</button>
-            <button onclick="toggleDyslexia()">👁️ Schrift</button>
-            <button onclick="changeFontSize(1)">A+</button>
-            <button onclick="changeFontSize(-1)">A-</button>
-            <button onclick="toggleViewMode()" id="view-toggle-btn">🧩 Häppchen</button>
-            <button onclick="toggleMagnifier()" id="magnifier-btn">🔍 Lupe</button>
-        </nav>
+        <div id="full-text-view" class="story-text"></div>
+        
+        <div id="chunk-view" class="story-text hidden" style="text-align:center; font-size:1.4rem;">
+            <div id="chunk-display" style="margin-bottom:20px; min-height:100px;"></div>
+            <button class="tool-btn" onclick="prevChunk()">Zurück</button>
+            <span id="chunk-counter" style="margin:0 10px; font-weight:bold;">1/5</span>
+            <button class="tool-btn" onclick="nextChunk()">Weiter</button>
+        </div>
 
-        <div id="magnifier-overlay" class="magnifier-overlay">
-            <span id="magnifier-text">Wort</span>
-            <div style="margin-top:15px;">
-                <button onclick="speakMagnifiedWord()">🔊 Hören</button>
-                <button onclick="closeMagnifier()" style="background:#e76f51;">Schließen</button>
+        <div class="quiz-section">
+            <div class="section-title">🧠 Quiz-Zeit! Hast du gut aufgepasst?</div>
+            <div id="quiz-wrapper" class="quiz-card"></div>
+        </div>
+
+        <div class="survey-section">
+            <div class="section-title">Hat dir die Geschichte gefallen?</div>
+            <div class="vote-wrapper">
+                <div class="vote-card" onclick="alert('Yay!')">👍</div>
+                <div class="vote-card" onclick="alert('Oh nein!')">👎</div>
             </div>
         </div>
 
-        <main>
-            <div id="full-text-view" class="content-view"></div>
-
-            <div id="chunk-view" class="content-view hidden">
-                <div id="chunk-display" class="chunk-card"></div>
-                <div class="chunk-controls">
-                    <button onclick="prevChunk()">Zurück</button>
-                    <span id="chunk-counter">1 / 5</span>
-                    <button onclick="nextChunk()">Weiter</button>
+        <div class="comments-section">
+            <div class="section-title" style="justify-content:flex-start;">💬 Dein Kommentar</div>
+            <div class="comments-box">
+                <div style="margin-bottom:15px; border-bottom:1px solid #eee; padding-bottom:10px;">
+                    <div style="font-weight:bold; color:var(--text-dark);">Peppa Wutz <span style="font-weight:normal; font-size:0.8em; color:#888;">10.01.2026</span></div>
+                    <div>Witzig, mein Hund heißt auch Buddy</div>
                 </div>
-            </div>
-
-            <section class="quiz-container">
-                <h2>❓ Lese-Quiz</h2>
-                <div id="quiz-wrapper"></div>
-            </section>
-
-            <section class="author-box">
-                <img src="https://github.com/RaLa84/lesekumpel/blob/main/Jonas-min-compressed.webp?raw=true" alt="Autor Jonas" class="author-img">
-                <div>
-                    <strong>Autor: Jonas</strong>
-                    <p>Jonas ist immer auf Achse! Er erzählt dir die besten Geschichten von seinen wilden Abenteuern draußen.</p>
-                </div>
-            </section>
-
-            <section class="survey-section">
-                <h3>Hat dir die Geschichte gefallen?</h3>
-                <div class="vote-wrapper">
-                    <div class="vote-card" onclick="alert('Danke für den Daumen hoch!')">👍</div>
-                    <div class="vote-card" onclick="alert('Danke für dein Feedback!')">👎</div>
-                </div>
-            </section>
-
-            <section class="comments-section">
-                <h3>💬 Dein Kommentar</h3>
                 
-                <div class="comments-list">
-                    <div class="comment-item">
-                        <div class="comment-header">
-                            <span class="comment-author">Peppa Wutz</span>
-                            <span>10.01.2026</span>
-                        </div>
-                        <p class="comment-text">Witzig, mein Hund heißt auch Buddy</p>
-                    </div>
-
-                    <div class="comment-item">
-                        <div class="comment-header">
-                            <span class="comment-author">Mama Wutz</span>
-                            <span>12.12.2025</span>
-                        </div>
-                        <p class="comment-text">Das ist die Lieblingsgeschichte von meiner Tochter</p>
-                    </div>
-                </div>
-
-                <div class="comment-input-area">
-                    <textarea placeholder="Was denkst du über die Geschichte?"></textarea>
-                    <button class="comment-submit-btn" onclick="alert('Kommentar gesendet (Simulation)')">Senden</button>
-                </div>
-            </section>
-
-            <div class="tags">
-                <span class="tag">#Hund</span> <span class="tag">#Haustier</span> 
-                <span class="tag">#Tierverhalten</span> <span class="tag">#Humor</span>
+                <textarea class="comment-input" placeholder="Was denkst du über die Geschichte?"></textarea>
+                <button class="btn-send" onclick="alert('Gesendet!')">Senden</button>
+                <div class="clearfix"></div>
             </div>
-        </main>
-    </div>
+        </div>
 
-    <footer>
-        <div class="footer-content">
-            <p>Erstellt von deinem KI-Lesekumpel 🤖</p>
-            <div class="footer-links">
-                <a href="#">Impressum</a> | 
-                <a href="#">Datenschutz</a> | 
-                <a href="#">Über uns</a>
+        <div class="author-box">
+            <div class="author-card">
+                <img src="https://github.com/RaLa84/lesekumpel/blob/main/Jonas-min-compressed.webp?raw=true" alt="Jonas" class="author-img">
+                <div>
+                    <h3 class="author-name">Jonas Entdecker</h3>
+                    <p style="margin:5px 0 0 0; font-size:0.9rem;">Jonas ist immer auf Achse! Er erzählt dir die besten Geschichten von seinen wilden Abenteuern.</p>
+                </div>
             </div>
+        </div>
+
+    </div> <footer>
+        <p>Erstellt von deinem KI-Lesekumpel 🤖</p>
+        <div class="footer-links">
+            <a href="#">Impressum</a> • <a href="#">Datenschutz</a> • <a href="#">Über uns</a>
         </div>
     </footer>
+
+    <div id="magnifier-overlay" class="magnifier-overlay">
+        <span id="magnifier-text">Wort</span>
+        <div style="margin-top:10px; font-size:1rem;">
+            <button class="tool-btn" onclick="speakMagnifiedWord()">🔊 Hören</button>
+            <button class="tool-btn btn-salmon" onclick="closeMagnifier()">Schließen</button>
+        </div>
+    </div>
 
     <a href="whatsapp://send?text=Lies dir diese Geschichte durch!" class="whatsapp-float">📱</a>
 
     <script>
-        function toggleMenu() {
-            const menu = document.getElementById('mobile-menu');
-            menu.classList.toggle('open');
-        }
-
+        // --- DATA ---
         const dictionary = {
-            "Garten": "garden", "Gar-ten": "garden", "Langeweile": "boredom", "su-per-lang-wei-lig": "super boring", "superlangweilig": "super boring", "Sonne": "sun", "Son-ne": "sun", "Buddy": "Buddy", "Bud-dy": "Buddy", "Hund": "dog", "Knochen": "bone", "Kno-chen": "bone", "Markknochen": "marrow bone", "Mark-kno-chen": "marrow bone", "Schatz": "treasure", "Gras": "grass", "Nase": "nose", "Na-se": "nose", "Boden": "ground", "Bo-den": "ground", "Schwanz": "tail", "Loch": "hole", "buddeln": "dig", "bud-del-te": "dug", "verstecken": "hide", "ver-ste-cken": "hide", "Apfelbaum": "apple tree", "Ap-fel-baum": "apple tree", "Erde": "soil", "Er-de": "soil", "Pfoten": "paws", "Pfo-ten": "paws", "stolz": "proud", "Archäologe": "archaeologist", "Ar-chä-o-lo-ge": "archaeologist", "Pyramide": "pyramid", "Py-ra-mi-de": "pyramid", "schnüffeln": "sniff", "schnüf-fel-te": "sniffed", "lachen": "laugh", "la-chen": "laugh", "Haustiere": "pets", "Haus-tie-re": "pets", "süß": "cute", "lieb": "love"
+            "Garten": "garden", "Langeweile": "boredom", "Sonne": "sun", "Hund": "dog", "Knochen": "bone", "Schatz": "treasure", "Gras": "grass", "Nase": "nose", "Boden": "ground", "Loch": "hole", "Apfelbaum": "apple tree", "Erde": "soil", "Pfoten": "paws", "stolz": "proud", "süß": "cute"
         };
-
-        const storyRaw = `
-Oh Mann, ich saß neu-lich im Gar-ten und mir war su-per-lang-wei-lig. Die Son-ne schien, a-ber es gab ein-fach nichts Span-nen-des zu tun. Dann kam Bud-dy, un-ser Hund, um die E-cke ge-flitzt. Er hat-te ei-nen rie-si-gen Kno-chen im Maul, so ei-nen rich-tig di-cken Mark-kno-chen. Und er hat-te die-sen Blick drauf, weißt du? Die-sen Blick, der sagt: „Das ist MEIN Schatz und nie-mand kriegt ihn!“
-<br><br>
-Bud-dy trot-te-te durchs Gras. Sei-ne Na-se schnüf-fel-te am Bo-den. Der Schwanz wa-ckel-te wie wild. Er woll-te den Kno-chen ver-ste-cken. A-ber nicht ein-fach so, nein! Es muss-te der per-fek-te Ort sein. Er bud-del-te hier ein klei-nes Loch. Er schau-te sich um und schien zu den-ken: „Nee, doch nicht gut ge-nug.“ Dann scharr-te er ein Stück wei-ter. Er mach-te wie-der ein klei-nes Loch und guck-te mich an, als wür-de er sa-gen: „Guck bloß nicht her!“ Als ob ich ihn nicht se-hen wür-de!
-<br><br>
-Nach ge-fühlt tau-send Fehl-ver-su-chen (er hat min-des-tens fünf Lö-cher an-ge-fan-gen und dann wie-der zu-ge-schüt-tet), fand er end-lich sei-nen aus-er-wähl-ten Platz un-ter dem Ap-fel-baum. Er leg-te den Kno-chen vor-sich-tig rein. Er stup-ste ihn mit der Na-se tie-fer und dann ging die Ar-beit los. Er schob Er-de drü-ber, im-mer wie-der, mit der Na-se und den Pfo-ten. Da-bei hat er so ei-ne erns-te Mie-ne ge-macht, als wä-re er ein Ar-chä-o-lo-ge, der ge-ra-de ei-ne al-te Py-ra-mi-de ver-bud-delt.
-<br><br>
-Als er fer-tig war, stand er da. Er dreh-te sich noch ein paar Mal um den Hau-fen und schnüf-fel-te. Er war so stolz auf sein Werk! Und dann guck-te er mich wie-der an, als woll-te er sa-gen: „Siehst du? Nie-mand weiß, wo der Kno-chen ist!“ Ich muss-te mir echt auf die Lip-pe bei-ßen, um nicht zu la-chen. Ich wuss-te na-tür-lich ge-nau, wo er war. Ein-mal kurz hin-schau-en und zack, ge-fun-den! A-ber ich hab so ge-tan, als hät-te ich nichts mit-be-kom-men. Er soll doch den-ken, er ist der ge-ni-als-te Kno-chen-ver-ste-cker der Welt.
-<br><br>
-Kennst du das auch, wenn dei-ne Haus-tie-re manch-mal so blö-de, a-ber gleich-zei-tig so süß sind, dass man sie ein-fach lieb ha-ben muss?
-`;
-
-        const summaryRaw = `
-Ich saß ge-lang-weilt im Gar-ten.<br>
-Dann kam un-ser Hund Bud-dy mit ei-nem gro-ßen Kno-chen.<br>
-Bud-dy woll-te den Kno-chen ver-ste-cken.<br>
-Er grub vie-le Lö-cher. Am En-de ver-grub er ihn un-ter dem Ap-fel-baum.<br>
-Er war sehr stolz. Ich wuss-te, wo der Kno-chen liegt.<br>
-A-ber ich tat so, als hät-te ich nichts ge-se-hen.
-`;
+        const storyRaw = `Oh Mann, ich saß neu-lich im Gar-ten und mir war su-per-lang-wei-lig. Die Son-ne schien, a-ber es gab ein-fach nichts Span-nen-des zu tun. Dann kam Bud-dy, un-ser Hund, um die E-cke ge-flitzt. Er hat-te ei-nen rie-si-gen Kno-chen im Maul, so ei-nen rich-tig di-cken Mark-kno-chen.<br><br>Bud-dy trot-te-te durchs Gras. Sei-ne Na-se schnüf-fel-te am Bo-den. Er woll-te den Kno-chen ver-ste-cken. Er bud-del-te hier ein klei-nes Loch. Er schau-te sich um und schien zu den-ken: „Nee, doch nicht gut ge-nug.“<br><br>Nach ge-fühlt tau-send Fehl-ver-su-chen fand er end-lich sei-nen Platz un-ter dem Ap-fel-baum. Er leg-te den Kno-chen rein. Er schob Er-de drü-ber mit der Na-se und den Pfo-ten.<br><br>Als er fer-tig war, war er so stolz auf sein Werk! Niemand weiß, wo der Kno-chen ist! Aber ich wusste es natürlich.<br><br>Kennst du das auch, wenn Haustiere so süß sind?`;
+        
+        const summaryRaw = `Ich saß im Gar-ten.<br>Unser Hund Bud-dy kam mit einem Kno-chen.<br>Er wollte ihn ver-ste-cken.<br>Er grub ein Loch unter dem Ap-fel-baum.<br>Er war sehr stolz.`;
 
         const quizData = [
-            { q: "Was hatte Buddy im Maul?", a: ["Einen Stock", "Eine Spielzeugmaus", "Einen riesigen Knochen"], correct: 2 },
-            { q: "Wo hat Buddy den Knochen versteckt?", a: ["Unter dem Apfelbaum", "Im Blumenbeet", "Hinter der Hütte"], correct: 0 },
-            { q: "Wie viele Löcher hat er angefangen?", a: ["Nur eins", "Mindestens fünf", "Hundert"], correct: 1 }
+            { q: "Was hatte Buddy im Maul?", a: ["Einen kleinen Stock", "Eine Spielzeugmaus", "Einen riesigen Knochen"], correct: 2 },
+            { q: "Wo versteckte er ihn?", a: ["Unter dem Apfelbaum", "Im Bett", "Im Keller"], correct: 0 }
         ];
 
+        // --- STATE ---
         let state = {
-            fontSize: 100,
-            isMagnifier: false,
-            isSyllables: false, 
-            isSummaryMode: false,
-            isEnglish: false, 
+            syllables: false,
+            summary: false,
+            english: false,
             chunkIndex: 0,
-            chunks: []
+            chunks: [],
+            magnifier: false
         };
 
-        function formatText(rawText, showSyllables) {
-            let cleanRaw = rawText.replace(/\n/g, " "); 
-            let paragraphs = cleanRaw.split('<br>');
+        // --- LOGIC ---
+        function renderText() {
+            let txt = state.summary ? summaryRaw : storyRaw;
+            let paragraphs = txt.split('<br>');
             
-            let formattedParagraphs = paragraphs.map(para => {
-                if(para.trim() === "") return "";
-                const words = para.split(' ');
-                
-                const processedWords = words.map(word => {
-                    const cleanWord = word.replace(/-/g, "").replace(/[.,!?:;„“()]/g, ""); 
-                    let displayHTML = "";
-                    let speakText = cleanWord;
-                    let isTranslated = false;
+            let html = paragraphs.map(p => {
+                if(!p.trim()) return "";
+                return p.split(' ').map(w => processWord(w)).join(' ');
+            }).join('<br>');
 
-                    if (state.isEnglish) {
-                        if (dictionary[cleanWord]) {
-                            displayHTML = dictionary[cleanWord];
-                            speakText = dictionary[cleanWord];
-                            isTranslated = true;
-                        } else if (dictionary[word.replace(/[.,!?:;„“()]/g, "")]) {
-                            displayHTML = dictionary[word.replace(/[.,!?:;„“()]/g, "")];
-                            speakText = displayHTML;
-                            isTranslated = true;
-                        }
-                    }
-
-                    if (isTranslated) {
-                        displayHTML = `<span class="translated-word">${displayHTML}</span>`;
-                    } else {
-                        if (!showSyllables) {
-                            displayHTML = word.replace(/-/g, "");
-                        } else {
-                            const parts = word.split('-');
-                            if (parts.length === 1) {
-                                displayHTML = `<span class="syl-blue">${parts[0]}</span>`;
-                            } else {
-                                displayHTML = parts.map((part, idx) => {
-                                    const colorClass = (idx % 2 === 0) ? 'syl-blue' : 'syl-red';
-                                    return `<span class="${colorClass}">${part}</span>`;
-                                }).join('-'); 
-                            }
-                        }
-                    }
-
-                    if(word.trim() === "") return "";
-                    const langAttr = isTranslated ? 'en-US' : 'de-DE';
-                    return `<span class="word-interactive" onclick="handleWordClick(this, '${speakText}', '${langAttr}')">${displayHTML}</span>`;
-                });
-                return processedWords.join(' ');
+            document.getElementById('full-text-view').innerHTML = html;
+            
+            // Chunks update
+            state.chunks = txt.split('<br><br>').map(c => {
+                 return c.split(' ').map(w => processWord(w)).join(' ');
             });
-            return formattedParagraphs.join('<br>');
+            // Fix single chunk in summary
+            if(state.summary && state.chunks.length === 1) {
+                 state.chunks = txt.split('<br>').map(c => c.split(' ').map(w => processWord(w)).join(' '));
+            }
+            updateChunkDisplay();
+            updateButtons();
         }
 
-        function renderAll() {
-            const btnSyl = document.getElementById('btn-syllables');
-            btnSyl.innerText = state.isSyllables ? "🔡 Silben: AN" : "🔡 Silben: AUS";
-            if(state.isSyllables) btnSyl.classList.add('active'); else btnSyl.classList.remove('active');
+        function processWord(raw) {
+            let clean = raw.replace(/-/g, "").replace(/[.,!?:;„“()]/g, "");
+            let display = raw.replace(/-/g, ""); // Default: normal text
+            let isTrans = false;
 
-            const btnSum = document.getElementById('btn-summary');
-            let currentRawText = "";
+            if(state.english) {
+                // Simple Check
+                if(dictionary[clean]) {
+                    display = dictionary[clean];
+                    isTrans = true;
+                }
+            }
             
-            if (state.isSummaryMode) {
-                btnSum.innerText = "📖 Original";
-                btnSum.classList.add('active');
-                currentRawText = summaryRaw;
-            } else {
-                btnSum.innerText = "📖 Einfach";
-                btnSum.classList.remove('active');
-                currentRawText = storyRaw;
+            if(state.syllables && !isTrans) {
+                 let parts = raw.split('-');
+                 if(parts.length > 1) {
+                     display = parts.map((p,i) => `<span class="${i%2===0?'syl-blue':'syl-red'}">${p}</span>`).join('');
+                 }
             }
 
-            const btnLang = document.getElementById('btn-lang');
-            if(state.isEnglish) {
-                btnLang.classList.add('active');
-                btnLang.innerText = "🇬🇧 English";
-            } else {
-                btnLang.classList.remove('active');
-                btnLang.innerText = "🇩🇪 Deutsch";
-            }
+            let cls = isTrans ? "translated-word" : "";
+            return `<span class="word-interactive ${cls}" onclick="clickWord(this, '${clean}', '${isTrans?'en':'de'}')">${display}</span>`;
+        }
 
-            const fullHtml = formatText(currentRawText, state.isSyllables);
-            document.getElementById('full-text-view').innerHTML = fullHtml;
-            
-            state.chunks = currentRawText.split('<br><br>').map(c => formatText(c, state.isSyllables));
-            if (state.chunkIndex >= state.chunks.length) state.chunkIndex = 0;
-            updateChunkDisplay();
+        function updateButtons() {
+            document.getElementById('btn-syllables').className = state.syllables ? "tool-btn active" : "tool-btn";
+            document.getElementById('btn-summary').className = state.summary ? "tool-btn btn-salmon active" : "tool-btn btn-salmon";
+            document.getElementById('btn-lang').className = state.english ? "tool-btn active" : "tool-btn";
         }
 
         function updateChunkDisplay() {
-            if(state.chunks.length > 0) {
-                document.getElementById('chunk-display').innerHTML = state.chunks[state.chunkIndex];
-                document.getElementById('chunk-counter').innerText = (state.chunkIndex + 1) + " / " + state.chunks.length;
-            }
+            if(state.chunkIndex >= state.chunks.length) state.chunkIndex = 0;
+            document.getElementById('chunk-display').innerHTML = state.chunks[state.chunkIndex] || "";
+            document.getElementById('chunk-counter').innerText = (state.chunkIndex+1) + "/" + state.chunks.length;
         }
 
-        function toggleLanguage() {
-            state.isEnglish = !state.isEnglish;
-            renderAll();
-        }
-
-        function toggleSummaryMode() {
-            state.isSummaryMode = !state.isSummaryMode;
-            state.chunkIndex = 0;
-            renderAll();
-        }
-
-        function toggleSyllables() {
-            state.isSyllables = !state.isSyllables;
-            renderAll();
-        }
-
+        // --- ACTIONS ---
+        function toggleSyllables() { state.syllables = !state.syllables; renderText(); }
+        function toggleSummaryMode() { state.summary = !state.summary; state.chunkIndex=0; renderText(); }
+        function toggleLanguage() { state.english = !state.english; renderText(); }
+        
         function toggleTTS() {
-            if (window.speechSynthesis.speaking) {
-                window.speechSynthesis.cancel();
-            } else {
-                let textToRead = document.getElementById('full-text-view').innerText;
-                if(document.getElementById('full-text-view').classList.contains('hidden')) {
-                     textToRead = document.getElementById('chunk-display').innerText;
-                }
-                
-                let u = new SpeechSynthesisUtterance(textToRead);
-                u.lang = "de-DE";
-                u.rate = 0.9;
-                window.speechSynthesis.speak(u);
+            window.speechSynthesis.cancel();
+            let text = document.getElementById('full-text-view').innerText;
+            if(!document.getElementById('chunk-view').classList.contains('hidden')) {
+                text = document.getElementById('chunk-display').innerText;
             }
-        }
-
-        function toggleDyslexia() {
-            document.body.classList.toggle('dyslexia-mode');
-        }
-
-        function changeFontSize(dir) {
-            state.fontSize += (dir * 10);
-            if(state.fontSize < 80) state.fontSize = 80;
-            if(state.fontSize > 200) state.fontSize = 200;
-            document.body.style.fontSize = state.fontSize + "%";
-        }
-
-        function toggleViewMode() {
-            const fullView = document.getElementById('full-text-view');
-            const chunkView = document.getElementById('chunk-view');
-            const btn = document.getElementById('view-toggle-btn');
-            
-            if (fullView.classList.contains('hidden')) {
-                fullView.classList.remove('hidden');
-                chunkView.classList.add('hidden');
-                btn.innerText = "🧩 Häppchen";
-            } else {
-                fullView.classList.add('hidden');
-                chunkView.classList.remove('hidden');
-                btn.innerText = "📜 Gesamttext";
-                state.chunkIndex = 0;
-                updateChunkDisplay();
-            }
-        }
-
-        function nextChunk() {
-            if (state.chunkIndex < state.chunks.length - 1) {
-                state.chunkIndex++;
-                updateChunkDisplay();
-            }
-        }
-
-        function prevChunk() {
-            if (state.chunkIndex > 0) {
-                state.chunkIndex--;
-                updateChunkDisplay();
-            }
-        }
-
-        function toggleMagnifier() {
-            state.isMagnifier = !state.isMagnifier;
-            const btn = document.getElementById('magnifier-btn');
-            if(state.isMagnifier) btn.classList.add('active');
-            else {
-                btn.classList.remove('active');
-                closeMagnifier();
-            }
-        }
-
-        function handleWordClick(el, speakText, langCode) {
-            if(!state.isMagnifier) return;
-            const overlay = document.getElementById('magnifier-overlay');
-            const magText = document.getElementById('magnifier-text');
-            
-            magText.innerText = speakText; 
-            magText.setAttribute('data-speak', speakText);
-            magText.setAttribute('data-lang', langCode);
-            
-            overlay.style.display = 'block';
-        }
-
-        function speakMagnifiedWord() {
-            const word = document.getElementById('magnifier-text').getAttribute('data-speak');
-            const lang = document.getElementById('magnifier-text').getAttribute('data-lang');
-            
-            let u = new SpeechSynthesisUtterance(word);
-            u.lang = lang || "de-DE"; 
+            let u = new SpeechSynthesisUtterance(text);
+            u.lang = "de-DE";
             window.speechSynthesis.speak(u);
         }
 
-        function closeMagnifier() {
-            document.getElementById('magnifier-overlay').style.display = 'none';
+        function toggleMagnifier() {
+            state.magnifier = !state.magnifier;
+            document.getElementById('magnifier-btn').className = state.magnifier ? "tool-btn active" : "tool-btn";
         }
 
-        function loadQuiz() {
-            const wrapper = document.getElementById('quiz-wrapper');
-            quizData.forEach((item, index) => {
-                let html = `<div style="margin-bottom:20px;"><p><strong>${index + 1}. ${item.q}</strong></p>`;
-                item.a.forEach((ans, aIndex) => {
-                    html += `<span class="quiz-option" onclick="checkAnswer(this, ${index}, ${aIndex})">${ans}</span>`;
-                });
-                html += `</div>`;
-                wrapper.innerHTML += html;
-            });
+        function clickWord(el, word, lang) {
+            if(!state.magnifier) return;
+            document.getElementById('magnifier-text').innerText = el.innerText; // Show displayed text
+            document.getElementById('magnifier-text').setAttribute('data-s', word); // Speak clean word
+            document.getElementById('magnifier-text').setAttribute('data-l', lang);
+            document.getElementById('magnifier-overlay').style.display = 'block';
         }
 
-        function checkAnswer(el, qIndex, aIndex) {
-            const parent = el.parentNode;
-            const options = parent.getElementsByClassName('quiz-option');
-            for(let opt of options) opt.style.background = '#f0f0f0'; 
-            if (aIndex === quizData[qIndex].correct) {
-                el.classList.add('correct');
-                el.innerText += " ✅";
+        function speakMagnifiedWord() {
+            let t = document.getElementById('magnifier-text').innerText; // Read what is seen
+            let l = document.getElementById('magnifier-text').getAttribute('data-l');
+            let u = new SpeechSynthesisUtterance(t);
+            u.lang = l === 'en' ? 'en-US' : 'de-DE';
+            window.speechSynthesis.speak(u);
+        }
+        function closeMagnifier() { document.getElementById('magnifier-overlay').style.display = 'none'; }
+
+        function toggleViewMode() {
+            let full = document.getElementById('full-text-view');
+            let chunk = document.getElementById('chunk-view');
+            let btn = document.getElementById('view-toggle-btn');
+            if(full.classList.contains('hidden')) {
+                full.classList.remove('hidden'); chunk.classList.add('hidden');
+                btn.className = "tool-btn";
             } else {
-                el.classList.add('wrong');
-                el.innerText += " ❌";
+                full.classList.add('hidden'); chunk.classList.remove('hidden');
+                btn.className = "tool-btn active";
+                state.chunkIndex = 0; updateChunkDisplay();
             }
         }
+        function nextChunk() { if(state.chunkIndex < state.chunks.length-1) { state.chunkIndex++; updateChunkDisplay(); } }
+        function prevChunk() { if(state.chunkIndex > 0) { state.chunkIndex--; updateChunkDisplay(); } }
+        
+        function changeFontSize(d) {
+            let s = parseFloat(window.getComputedStyle(document.body).fontSize);
+            document.body.style.fontSize = (s + d) + "px";
+        }
 
-        window.onscroll = function() {
-            let winScroll = document.body.scrollTop || document.documentElement.scrollTop;
-            let height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
-            let scrolled = (winScroll / height) * 100;
-            document.getElementById("progress-bar").style.width = scrolled + "%";
-        };
+        function toggleMenu() { document.getElementById('mobile-menu').classList.toggle('open'); }
 
+        // --- INIT ---
         window.onload = function() {
-            loadQuiz();
-            renderAll();
+            renderText();
+            // Render Quiz
+            let qHTML = "";
+            quizData.forEach((item, i) => {
+                qHTML += `<div style="margin-bottom:20px;"><div style="font-weight:bold; margin-bottom:10px;">${i+1}. ${item.q}</div>`;
+                item.a.forEach((ans, j) => {
+                    qHTML += `<div class="quiz-option" onclick="this.classList.add('${j===item.correct?'correct':'wrong'}')">${ans}</div>`;
+                });
+                qHTML += `</div>`;
+            });
+            document.getElementById('quiz-wrapper').innerHTML = qHTML;
         };
+
     </script>
 </body>
 </html>
