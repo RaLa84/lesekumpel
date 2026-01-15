@@ -58,12 +58,12 @@
             z-index: 1000;
         }
 
-        .nav-left { display: flex; align-items: center; gap: 15px; }
-        .nav-logo { height: 50px; width: auto; }
+        .nav-left { display: flex; align-items: center; gap: 10px; }
+        .nav-logo { height: 40px; width: auto; }
         
         .brand-name {
             font-family: var(--font-heading);
-            font-size: 1.5rem;
+            font-size: 1.2rem;
             color: var(--accent-salmon);
             font-weight: 600;
             text-decoration: none;
@@ -89,16 +89,51 @@
             color: var(--text-dark);
             font-weight: bold;
             transition: transform 0.2s;
+            text-decoration: none;
         }
         .btn-new-story:hover { transform: scale(1.05); background: #fffbe6; }
 
         .nav-right { display: flex; align-items: center; gap: 15px; }
-        .user-avatar { font-size: 1.5rem; }
+
+        .user-burger-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .user-profile {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-weight: bold;
+            font-size: 0.9rem;
+        }
+        .user-avatar {
+            width: 32px;
+            height: 32px;
+            background-color: var(--primary-yellow);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 1.2rem;
+        }
+
         .burger-icon { font-size: 1.8rem; cursor: pointer; display: block; color: var(--text-dark); }
 
+        /* Mobile Anpassungen */
+        @media (max-width: 767px) {
+            .brand-name { display: none; } /* Markennamen auf kleinen Screens ausblenden */
+            .hidden-mobile { display: none !important; } /* Button ausblenden */
+        }
+
+        /* Desktop Anpassungen */
         @media (min-width: 768px) {
             .burger-icon { display: none; }
             .nav-links-desktop { display: flex; }
+            .nav-logo { height: 50px; }
+            .brand-name { font-size: 1.5rem; display: block; }
+            .nav-left { gap: 15px; }
         }
 
         .mobile-menu {
@@ -386,15 +421,19 @@
             </div>
         </div>
         <div class="nav-right">
-            <a href="#" class="btn-new-story hidden-mobile" style="text-decoration:none;">✨ Neue Geschichte</a>
-            <div style="display:flex; align-items:center; gap:10px; margin-left:10px;">
-                <span class="user-avatar">🐷</span>
+            <a href="https://rala84.app.n8n.cloud/form/b6f28a18-e90d-4bb8-b201-0c8f6c667a7a" class="btn-new-story hidden-mobile">✨ Neue Geschichte</a>
+            
+            <div class="user-burger-container">
+                <div class="user-profile">
+                    <span>Papa Wutz</span>
+                    <div class="user-avatar">🐷</div>
+                </div>
                 <span class="burger-icon" onclick="toggleMenu()">☰</span>
             </div>
         </div>
         <div id="mobile-menu" class="mobile-menu">
             <a href="#" class="nav-btn">📚 Bibliothek</a>
-            <a href="#" class="nav-btn">✨ Neue Geschichte</a>
+            <a href="https://rala84.app.n8n.cloud/form/b6f28a18-e90d-4bb8-b201-0c8f6c667a7a" class="nav-btn">✨ Neue Geschichte</a>
         </div>
     </nav>
 
