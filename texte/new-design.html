@@ -13,6 +13,7 @@
             --highlight-color: #e9c46a;
             --syl-blue: #00509d; 
             --syl-red: #c1121f; 
+            --trans-color: #7209b7; /* Farbe für englische Wörter */
             --font-main: 'Verdana', sans-serif;
             --font-dyslexic: 'Comic Sans MS', 'Chalkboard SE', sans-serif;
             --spacing-std: 1.6;
@@ -104,10 +105,14 @@
             background: #264653;
             border: 2px solid var(--highlight-color);
         }
-        /* Spezieller Style für den "Einfach" Button wenn aktiv */
+        /* Style für den Zusammenfassungs-Button */
         button#btn-summary.active {
-            background: #e76f51; /* Orange zur Unterscheidung */
+            background: #e76f51; 
             border-color: #e76f51;
+        }
+        /* Style für den Sprach-Button */
+        button#btn-lang.active {
+            background: var(--trans-color);
         }
 
         /* --- DYSLEXIE & SILBEN --- */
@@ -120,6 +125,13 @@
 
         .syl-blue { color: var(--syl-blue); }
         .syl-red { color: var(--syl-red); }
+        
+        /* Englische Wörter hervorheben */
+        .translated-word {
+            color: var(--trans-color);
+            font-style: italic;
+            font-weight: bold;
+        }
         
         /* --- LUPE --- */
         .magnifier-overlay {
@@ -255,6 +267,7 @@
         <img src="https://rala84.github.io/lesekumpel/bilder/der-knochenschatzsucher.png" alt="Hund gräbt im Garten nach Knochen" class="hero-image">
 
         <nav class="toolbar">
+            <button onclick="toggleLanguage()" id="btn-lang">🇩🇪 Deutsch</button>
             <button onclick="toggleSummaryMode()" id="btn-summary">📖 Einfach</button>
             <button onclick="toggleTTS()">🔊 Vorlesen</button>
             <button onclick="toggleSyllables()" id="btn-syllables">🔡 Silben: AUS</button>
@@ -324,6 +337,57 @@
     <a href="whatsapp://send?text=Lies dir diese Geschichte durch!" class="whatsapp-float">📱</a>
 
     <script>
+        // --- DATEN ---
+
+        // Wörterbuch für Übersetzungen
+        const dictionary = {
+            "Garten": "garden",
+            "Gar-ten": "garden", // Fallback für Rohdaten Match
+            "Langeweile": "boredom",
+            "su-per-lang-wei-lig": "super boring",
+            "superlangweilig": "super boring",
+            "Sonne": "sun",
+            "Son-ne": "sun",
+            "Buddy": "Buddy",
+            "Bud-dy": "Buddy",
+            "Hund": "dog",
+            "Knochen": "bone",
+            "Kno-chen": "bone",
+            "Markknochen": "marrow bone",
+            "Mark-kno-chen": "marrow bone",
+            "Schatz": "treasure",
+            "Gras": "grass",
+            "Nase": "nose",
+            "Na-se": "nose",
+            "Boden": "ground",
+            "Bo-den": "ground",
+            "Schwanz": "tail",
+            "Loch": "hole",
+            "buddeln": "dig",
+            "bud-del-te": "dug",
+            "verstecken": "hide",
+            "ver-ste-cken": "hide",
+            "Apfelbaum": "apple tree",
+            "Ap-fel-baum": "apple tree",
+            "Erde": "soil",
+            "Er-de": "soil",
+            "Pfoten": "paws",
+            "Pfo-ten": "paws",
+            "stolz": "proud",
+            "Archäologe": "archaeologist",
+            "Ar-chä-o-lo-ge": "archaeologist",
+            "Pyramide": "pyramid",
+            "Py-ra-mi-de": "pyramid",
+            "schnüffeln": "sniff",
+            "schnüf-fel-te": "sniffed",
+            "lachen": "laugh",
+            "la-chen": "laugh",
+            "Haustiere": "pets",
+            "Haus-tie-re": "pets",
+            "süß": "cute",
+            "lieb": "love"
+        };
+
         const storyRaw = `
 Oh Mann, ich saß neu-lich im Gar-ten und mir war su-per-lang-wei-lig. Die Son-ne schien, a-ber es gab ein-fach nichts Span-nen-des zu tun. Dann kam Bud-dy, un-ser Hund, um die E-cke ge-flitzt. Er hat-te ei-nen rie-si-gen Kno-chen im Maul, so ei-nen rich-tig di-cken Mark-kno-chen. Und er hat-te die-sen Blick drauf, weißt du? Die-sen Blick, der sagt: „Das ist MEIN Schatz und nie-mand kriegt ihn!“
 <br><br>
@@ -355,7 +419,8 @@ A-ber ich tat so, als hät-te ich nichts ge-se-hen.
             fontSize: 100,
             isMagnifier: false,
             isSyllables: false, 
-            isSummaryMode: false, // Neu: Status für Zusammenfassung
+            isSummaryMode: false,
+            isEnglish: false, // Neuer Status für Sprache
             chunkIndex: 0,
             chunks: []
         };
@@ -369,71 +434,98 @@ A-ber ich tat so, als hät-te ich nichts ge-se-hen.
                 const words = para.split(' ');
                 
                 const processedWords = words.map(word => {
+                    // Reinigung für Lupe und ID
                     const cleanWord = word.replace(/-/g, "").replace(/[.,!?:;„“()]/g, ""); 
+                    
+                    // -- SPRACH LOGIK --
                     let displayHTML = "";
+                    let speakText = cleanWord;
+                    let isTranslated = false;
 
-                    if (!showSyllables) {
-                        displayHTML = word.replace(/-/g, "");
-                    } else {
-                        const parts = word.split('-');
-                        if (parts.length === 1) {
-                            displayHTML = `<span class="syl-blue">${parts[0]}</span>`;
-                        } else {
-                            displayHTML = parts.map((part, idx) => {
-                                const colorClass = (idx % 2 === 0) ? 'syl-blue' : 'syl-red';
-                                return `<span class="${colorClass}">${part}</span>`;
-                            }).join('-'); 
+                    // Prüfen ob wir im English Mode sind und ob es ein Wort im Wörterbuch ist
+                    if (state.isEnglish) {
+                        // Wir prüfen sowohl das reine Wort als auch das Wort mit Silben (falls im Dict)
+                        if (dictionary[cleanWord]) {
+                            displayHTML = dictionary[cleanWord];
+                            speakText = dictionary[cleanWord];
+                            isTranslated = true;
+                        } else if (dictionary[word.replace(/[.,!?:;„“()]/g, "")]) {
+                            // Fallback falls Dictionary mit Bindestrichen gefüttert ist
+                            displayHTML = dictionary[word.replace(/[.,!?:;„“()]/g, "")];
+                            speakText = displayHTML;
+                            isTranslated = true;
                         }
                     }
+
+                    // -- ANZEIGE LOGIK --
+                    if (isTranslated) {
+                        // Wenn übersetzt, zeigen wir das englische Wort ohne Silbentrennung aber farbig
+                        displayHTML = `<span class="translated-word">${displayHTML}</span>`;
+                        // Punctuation wieder anhängen (vereinfacht: wir nehmen an das Wort endet sauber)
+                        // Um Layout nicht zu brechen, ignorieren wir hier komplexe Punctuation Wiederherstellung für den Prototyp
+                        // und nutzen das simple Replacement.
+                    } else {
+                        // Nicht übersetzt -> Deutsches Wort rendern
+                        if (!showSyllables) {
+                            displayHTML = word.replace(/-/g, "");
+                        } else {
+                            const parts = word.split('-');
+                            if (parts.length === 1) {
+                                displayHTML = `<span class="syl-blue">${parts[0]}</span>`;
+                            } else {
+                                displayHTML = parts.map((part, idx) => {
+                                    const colorClass = (idx % 2 === 0) ? 'syl-blue' : 'syl-red';
+                                    return `<span class="${colorClass}">${part}</span>`;
+                                }).join('-'); 
+                            }
+                        }
+                    }
+
                     if(word.trim() === "") return "";
-                    return `<span class="word-interactive" onclick="handleWordClick(this, '${cleanWord}')">${displayHTML}</span>`;
+                    // Wir geben dem Span auch ein Attribut für die Sprache (für TTS)
+                    const langAttr = isTranslated ? 'en-US' : 'de-DE';
+                    return `<span class="word-interactive" onclick="handleWordClick(this, '${speakText}', '${langAttr}')">${displayHTML}</span>`;
                 });
                 return processedWords.join(' ');
             });
             return formattedParagraphs.join('<br>');
         }
 
-        // Hauptfunktion zum Rendern
         function renderAll() {
-            // 1. Silben Button Status
+            // Button Updates
             const btnSyl = document.getElementById('btn-syllables');
-            if (state.isSyllables) {
-                btnSyl.innerText = "🔡 Silben: AN";
-                btnSyl.classList.add('active');
-            } else {
-                btnSyl.innerText = "🔡 Silben: AUS";
-                btnSyl.classList.remove('active');
-            }
+            btnSyl.innerText = state.isSyllables ? "🔡 Silben: AN" : "🔡 Silben: AUS";
+            if(state.isSyllables) btnSyl.classList.add('active'); else btnSyl.classList.remove('active');
 
-            // 2. Zusammenfassung Button Status
             const btnSum = document.getElementById('btn-summary');
             let currentRawText = "";
             
             if (state.isSummaryMode) {
-                // Wir sind im Einfach-Modus
-                btnSum.innerText = "📖 Original"; // Button bietet Rückkehr an
+                btnSum.innerText = "📖 Original";
                 btnSum.classList.add('active');
                 currentRawText = summaryRaw;
             } else {
-                // Wir sind im Normal-Modus
-                btnSum.innerText = "📖 Einfach"; // Button bietet Vereinfachung an
+                btnSum.innerText = "📖 Einfach";
                 btnSum.classList.remove('active');
                 currentRawText = storyRaw;
             }
 
-            // 3. Text rendern (abhängig ob Original oder Zusammenfassung)
+            // Sprach Button Update
+            const btnLang = document.getElementById('btn-lang');
+            if(state.isEnglish) {
+                btnLang.classList.add('active');
+                btnLang.innerText = "🇬🇧 English";
+            } else {
+                btnLang.classList.remove('active');
+                btnLang.innerText = "🇩🇪 Deutsch";
+            }
+
+            // Render
             const fullHtml = formatText(currentRawText, state.isSyllables);
             document.getElementById('full-text-view').innerHTML = fullHtml;
             
-            // 4. Häppchen berechnen (basiert nun auch auf dem ausgewählten Text)
-            // Die Zusammenfassung hat einfache <br>, die Geschichte <br><br>. Wir passen den Splitter an.
-            // Wenn keine doppelten <br> da sind, wird es 1 großes Häppchen (was für Zusammenfassung okay ist).
             state.chunks = currentRawText.split('<br><br>').map(c => formatText(c, state.isSyllables));
-            
-            // Sicherstellen, dass Index gültig bleibt beim Umschalten
-            if (state.chunkIndex >= state.chunks.length) {
-                state.chunkIndex = 0;
-            }
+            if (state.chunkIndex >= state.chunks.length) state.chunkIndex = 0;
             updateChunkDisplay();
         }
 
@@ -444,10 +536,14 @@ A-ber ich tat so, als hät-te ich nichts ge-se-hen.
             }
         }
 
-        // --- NEUE FUNKTION: Toggle Summary ---
+        // --- TOGGLES ---
+        function toggleLanguage() {
+            state.isEnglish = !state.isEnglish;
+            renderAll();
+        }
+
         function toggleSummaryMode() {
             state.isSummaryMode = !state.isSummaryMode;
-            // Wenn man umschaltet, setzen wir Häppchen auf Anfang zurück
             state.chunkIndex = 0;
             renderAll();
         }
@@ -461,15 +557,13 @@ A-ber ich tat so, als hät-te ich nichts ge-se-hen.
             if (window.speechSynthesis.speaking) {
                 window.speechSynthesis.cancel();
             } else {
-                // Liest immer das vor, was gerade sichtbar ist
                 let textToRead = document.getElementById('full-text-view').innerText;
                 if(document.getElementById('full-text-view').classList.contains('hidden')) {
-                     // Falls Häppchenmodus an ist, lesen wir das aktuelle Häppchen
                      textToRead = document.getElementById('chunk-display').innerText;
                 }
                 
                 let u = new SpeechSynthesisUtterance(textToRead);
-                u.lang = "de-DE";
+                u.lang = "de-DE"; // Vorlesen ganzer Texte bleibt auf Deutsch (mit englischen Wörtern drin)
                 u.rate = 0.9;
                 window.speechSynthesis.speak(u);
             }
@@ -518,30 +612,35 @@ A-ber ich tat so, als hät-te ich nichts ge-se-hen.
             }
         }
 
+        // --- LUPE ---
         function toggleMagnifier() {
             state.isMagnifier = !state.isMagnifier;
             const btn = document.getElementById('magnifier-btn');
-            if(state.isMagnifier) {
-                btn.classList.add('active');
-            } else {
+            if(state.isMagnifier) btn.classList.add('active');
+            else {
                 btn.classList.remove('active');
                 closeMagnifier();
             }
         }
 
-        function handleWordClick(el, cleanWord) {
+        function handleWordClick(el, speakText, langCode) {
             if(!state.isMagnifier) return;
             const overlay = document.getElementById('magnifier-overlay');
             const magText = document.getElementById('magnifier-text');
-            magText.innerText = cleanWord; 
-            magText.setAttribute('data-speak', cleanWord);
+            
+            magText.innerText = speakText; 
+            magText.setAttribute('data-speak', speakText);
+            magText.setAttribute('data-lang', langCode); // Sprache speichern
+            
             overlay.style.display = 'block';
         }
 
         function speakMagnifiedWord() {
             const word = document.getElementById('magnifier-text').getAttribute('data-speak');
+            const lang = document.getElementById('magnifier-text').getAttribute('data-lang');
+            
             let u = new SpeechSynthesisUtterance(word);
-            u.lang = "de-DE";
+            u.lang = lang || "de-DE"; // Nutzt korrekte Sprache (EN oder DE)
             window.speechSynthesis.speak(u);
         }
 
@@ -553,6 +652,7 @@ A-ber ich tat so, als hät-te ich nichts ge-se-hen.
             document.getElementById('comment-section').classList.toggle('hidden');
         }
 
+        // --- QUIZ & INIT ---
         function loadQuiz() {
             const wrapper = document.getElementById('quiz-wrapper');
             quizData.forEach((item, index) => {
@@ -592,5 +692,3 @@ A-ber ich tat so, als hät-te ich nichts ge-se-hen.
     </script>
 </body>
 </html>
-
-```
