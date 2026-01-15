@@ -1,3 +1,15 @@
+Das ist eine sehr schöne Design-Anpassung. Das Layout wirkt dadurch viel aufgeräumter und animiert mehr zur Interaktion.
+
+Ich habe folgende Änderungen vorgenommen, um genau Ihrem Bild und den Anforderungen zu entsprechen:
+
+1. **Trennung:** Die Microsurvey (Abstimmung) und die Kommentare sind jetzt zwei komplett getrennte Blöcke untereinander.
+2. **Microsurvey-Design:** Die Daumen-Buttons sind jetzt größer, sitzen in weißen "Karten" und die Frage lautet wie im Bild "Hat dir die Geschichte gefallen?".
+3. **Kommentar-Design:** Der Kommentarbereich sieht nun aus wie im Screenshot (weiße Box, gelber Rahmen beim Textfeld).
+4. **Beispiel-Kommentare:** Ich habe "Peppa Wutz" und "Mama Wutz" mit Datum und Text als feste Beispiele eingefügt.
+
+Hier ist der komplette, aktualisierte Code:
+
+```html
 <!DOCTYPE html>
 <html lang="de">
 <head>
@@ -13,7 +25,7 @@
             --highlight-color: #e9c46a;
             --syl-blue: #00509d; 
             --syl-red: #c1121f; 
-            --trans-color: #7209b7; /* Farbe für englische Wörter */
+            --trans-color: #7209b7; 
             --font-main: 'Verdana', sans-serif;
             --font-dyslexic: 'Comic Sans MS', 'Chalkboard SE', sans-serif;
             --spacing-std: 1.6;
@@ -55,9 +67,8 @@
 
         header { text-align: center; margin-top: 20px; margin-bottom: 20px; }
         
-        /* Titel Style Anpassung */
         h1#main-title {
-            margin-bottom: 5px; /* Weniger Abstand zur Badge */
+            margin-bottom: 5px;
             line-height: 1.2;
         }
 
@@ -76,7 +87,7 @@
             padding: 5px 15px;
             font-size: 0.9em;
             display: inline-block;
-            margin-top: 5px;  /* Abstand nach oben zum Titel */
+            margin-top: 5px;
             margin-bottom: 15px;
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
         }
@@ -184,7 +195,7 @@
             margin-top: 10px;
         }
 
-        /* --- EXTRAS --- */
+        /* --- QUIZ --- */
         .quiz-container {
             background: #fff;
             padding: 20px;
@@ -204,6 +215,7 @@
         .correct { background: #a7c957 !important; }
         .wrong { background: #e76f51 !important; }
 
+        /* --- AUTOR --- */
         .author-box {
             display: flex;
             align-items: center;
@@ -220,16 +232,119 @@
             object-fit: cover;
         }
 
-        .interaction-area {
+        /* --- NEU: MICROSURVEY & KOMMENTARE --- */
+        
+        /* 1. Microsurvey (Abstimmung) */
+        .survey-section {
+            text-align: center;
+            margin-top: 40px;
+            margin-bottom: 30px;
+        }
+        .survey-section h3 {
+            margin-bottom: 20px;
+            color: var(--text-color);
+        }
+        .vote-wrapper {
             display: flex;
-            justify-content: space-around;
-            margin-top: 20px;
-            padding: 20px;
+            justify-content: center;
+            gap: 20px;
+        }
+        .vote-card {
             background: #fff;
             border-radius: 15px;
+            padding: 15px 25px;
+            font-size: 2rem;
+            cursor: pointer;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            border: 1px solid #eee;
+            transition: transform 0.1s;
+        }
+        .vote-card:active {
+            transform: scale(0.95);
+            background-color: #f0f0f0;
+        }
+
+        /* 2. Kommentar-Bereich (Design wie im Bild) */
+        .comments-section {
+            background: #fff;
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            border: 1px solid #e0e0e0;
+            margin-bottom: 30px;
+        }
+        .comments-section h3 {
+            margin-top: 0;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        /* Liste der existierenden Kommentare */
+        .comments-list {
+            margin-bottom: 20px;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 10px;
+        }
+        .comment-item {
+            margin-bottom: 15px;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border-radius: 10px;
+        }
+        .comment-header {
+            display: flex;
+            justify-content: space-between;
+            font-size: 0.85rem;
+            color: #666;
+            margin-bottom: 5px;
+        }
+        .comment-author {
+            font-weight: bold;
+            color: var(--text-color);
+        }
+        .comment-text {
+            font-size: 1rem;
+            margin: 0;
+        }
+
+        /* Eingabefeld */
+        .comment-input-area textarea {
+            width: 100%;
+            height: 80px;
+            padding: 15px;
+            border: 2px solid var(--highlight-color); /* Gelber Rahmen */
+            border-radius: 10px;
+            font-family: inherit;
+            font-size: 1rem;
+            resize: vertical;
+            box-sizing: border-box; /* Wichtig damit Padding nicht die Breite sprengt */
+        }
+        .comment-input-area textarea:focus {
+            outline: none;
+            border-color: #d4b05d;
+        }
+        .comment-submit-btn {
+            background-color: #e76f51; /* Lachsfarbe wie im Bild */
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 10px;
+            font-size: 1rem;
+            font-weight: bold;
+            float: right;
+            margin-top: 10px;
+            cursor: pointer;
+        }
+        /* Clearfix für den float Button */
+        .comment-input-area::after {
+            content: "";
+            display: table;
+            clear: both;
         }
         
-        .tags { margin-top: 20px; }
+        /* --- TAGS & WHATSAPP --- */
+        .tags { margin-top: 20px; clear: both; } /* Clear float */
         .tag {
             background: #ddd;
             padding: 5px 10px;
@@ -315,21 +430,40 @@
                 </div>
             </section>
 
-            <section class="interaction-area">
-                <div class="microsurvey">
-                    <p>Wie war die Geschichte?</p>
-                    <button onclick="alert('Danke!')">👍</button>
-                    <button onclick="alert('Danke!')">👎</button>
-                </div>
-                <div class="comments">
-                    <button onclick="toggleComments()">💬 Kommentare</button>
+            <section class="survey-section">
+                <h3>Hat dir die Geschichte gefallen?</h3>
+                <div class="vote-wrapper">
+                    <div class="vote-card" onclick="alert('Danke für den Daumen hoch!')">👍</div>
+                    <div class="vote-card" onclick="alert('Danke für dein Feedback!')">👎</div>
                 </div>
             </section>
 
-            <div id="comment-section" class="hidden" style="margin-top:20px;">
-                <textarea style="width:100%; height:80px; padding:10px;" placeholder="Dein Kommentar..."></textarea>
-                <button style="margin-top:5px;">Senden</button>
-            </div>
+            <section class="comments-section">
+                <h3>💬 Dein Kommentar</h3>
+                
+                <div class="comments-list">
+                    <div class="comment-item">
+                        <div class="comment-header">
+                            <span class="comment-author">Peppa Wutz</span>
+                            <span>10.01.2026</span>
+                        </div>
+                        <p class="comment-text">Witzig, mein Hund heißt auch Buddy</p>
+                    </div>
+
+                    <div class="comment-item">
+                        <div class="comment-header">
+                            <span class="comment-author">Mama Wutz</span>
+                            <span>12.12.2025</span>
+                        </div>
+                        <p class="comment-text">Das ist die Lieblingsgeschichte von meiner Tochter</p>
+                    </div>
+                </div>
+
+                <div class="comment-input-area">
+                    <textarea placeholder="Was denkst du über die Geschichte?"></textarea>
+                    <button class="comment-submit-btn" onclick="alert('Kommentar gesendet (Simulation)')">Senden</button>
+                </div>
+            </section>
 
             <div class="tags">
                 <span class="tag">#Hund</span> <span class="tag">#Haustier</span> 
@@ -342,51 +476,7 @@
 
     <script>
         const dictionary = {
-            "Garten": "garden",
-            "Gar-ten": "garden",
-            "Langeweile": "boredom",
-            "su-per-lang-wei-lig": "super boring",
-            "superlangweilig": "super boring",
-            "Sonne": "sun",
-            "Son-ne": "sun",
-            "Buddy": "Buddy",
-            "Bud-dy": "Buddy",
-            "Hund": "dog",
-            "Knochen": "bone",
-            "Kno-chen": "bone",
-            "Markknochen": "marrow bone",
-            "Mark-kno-chen": "marrow bone",
-            "Schatz": "treasure",
-            "Gras": "grass",
-            "Nase": "nose",
-            "Na-se": "nose",
-            "Boden": "ground",
-            "Bo-den": "ground",
-            "Schwanz": "tail",
-            "Loch": "hole",
-            "buddeln": "dig",
-            "bud-del-te": "dug",
-            "verstecken": "hide",
-            "ver-ste-cken": "hide",
-            "Apfelbaum": "apple tree",
-            "Ap-fel-baum": "apple tree",
-            "Erde": "soil",
-            "Er-de": "soil",
-            "Pfoten": "paws",
-            "Pfo-ten": "paws",
-            "stolz": "proud",
-            "Archäologe": "archaeologist",
-            "Ar-chä-o-lo-ge": "archaeologist",
-            "Pyramide": "pyramid",
-            "Py-ra-mi-de": "pyramid",
-            "schnüffeln": "sniff",
-            "schnüf-fel-te": "sniffed",
-            "lachen": "laugh",
-            "la-chen": "laugh",
-            "Haustiere": "pets",
-            "Haus-tie-re": "pets",
-            "süß": "cute",
-            "lieb": "love"
+            "Garten": "garden", "Gar-ten": "garden", "Langeweile": "boredom", "su-per-lang-wei-lig": "super boring", "superlangweilig": "super boring", "Sonne": "sun", "Son-ne": "sun", "Buddy": "Buddy", "Bud-dy": "Buddy", "Hund": "dog", "Knochen": "bone", "Kno-chen": "bone", "Markknochen": "marrow bone", "Mark-kno-chen": "marrow bone", "Schatz": "treasure", "Gras": "grass", "Nase": "nose", "Na-se": "nose", "Boden": "ground", "Bo-den": "ground", "Schwanz": "tail", "Loch": "hole", "buddeln": "dig", "bud-del-te": "dug", "verstecken": "hide", "ver-ste-cken": "hide", "Apfelbaum": "apple tree", "Ap-fel-baum": "apple tree", "Erde": "soil", "Er-de": "soil", "Pfoten": "paws", "Pfo-ten": "paws", "stolz": "proud", "Archäologe": "archaeologist", "Ar-chä-o-lo-ge": "archaeologist", "Pyramide": "pyramid", "Py-ra-mi-de": "pyramid", "schnüffeln": "sniff", "schnüf-fel-te": "sniffed", "lachen": "laugh", "la-chen": "laugh", "Haustiere": "pets", "Haus-tie-re": "pets", "süß": "cute", "lieb": "love"
         };
 
         const storyRaw = `
@@ -631,10 +721,6 @@ A-ber ich tat so, als hät-te ich nichts ge-se-hen.
             document.getElementById('magnifier-overlay').style.display = 'none';
         }
 
-        function toggleComments() {
-            document.getElementById('comment-section').classList.toggle('hidden');
-        }
-
         function loadQuiz() {
             const wrapper = document.getElementById('quiz-wrapper');
             quizData.forEach((item, index) => {
@@ -674,3 +760,5 @@ A-ber ich tat so, als hät-te ich nichts ge-se-hen.
     </script>
 </body>
 </html>
+
+```
