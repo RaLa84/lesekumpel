@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Max sucht einen Schatz</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
+
+    <style>
+        /* --- GRUNDDESIGN --- */
+        :root {
+            --bg-body: #f0f8ff; 
+            --bg-card: #ffffff;
+            --primary-yellow: #f4d03f; 
+            --accent-salmon: #f08080; 
+            --accent-teal: #2a9d8f;   
+            --text-dark: #2c3e50; 
+            --syl-blue: #00509d; 
+            --syl-red: #c1121f;
+            --font-heading: 'Fredoka', cursive, sans-serif;
+            --font-body: 'Quicksand', sans-serif;
+        }
+
+        body {
+            font-family: var(--font-body); 
+            background-color: var(--bg-body); 
+            color: var(--text-dark);
+            margin: 0; 
+            padding-bottom: 50px; 
+            font-size: 18px; 
+        }
+
+        /* --- NAVIGATION --- */
+        .main-navbar {
+            background-color: #fff; padding: 10px 20px; border-bottom: 4px solid var(--primary-yellow);
+            display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000;
+        }
+        .nav-left { display: flex; align-items: center; gap: 10px; }
+        .nav-logo { height: 40px; width: auto; }
+        .brand-name { font-family: var(--font-heading); font-size: 1.2rem; color: var(--accent-salmon); font-weight: 600; text-decoration: none; }
+        .nav-right { display: flex; align-items: center; gap: 15px; }
+        
+        /* --- HAUPTBEREICH --- */
+        .main-card {
+            max-width: 800px; 
+            margin: 30px auto; 
+            background: var(--bg-card);
+            border: 4px solid var(--primary-yellow); 
+            border-radius: 25px; 
+            padding: 20px;
+            position: relative; 
+            box-shadow: 0 10px 0 rgba(0,0,0,0.05);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        /* Quality Badge */
+        .quality-badge {
+            background: #fffbe6; color: #d4ac0d;
+            border: 1px solid var(--primary-yellow); border-radius: 20px; padding: 5px 15px;
+            font-weight: bold; margin-bottom: 10px; font-size: 0.9rem;
+        }
+
+        h1#book-title {
+            font-family: var(--font-heading); color: var(--accent-salmon); font-size: 2rem;
+            text-align: center; margin-top: 0; margin-bottom: 20px;
+        }
+
+        /* --- TOOLBAR --- */
+        .toolbar-container {
+            border: 2px dashed var(--primary-yellow); border-radius: 15px; padding: 10px;
+            margin-bottom: 20px; display: flex; flex-wrap: wrap; justify-content: center; gap: 10px;
+            background: #fff; width: 100%; box-sizing: border-box;
+        }
+        .tool-btn {
+            background: #fff; border: 2px solid #ddd; border-radius: 12px; padding: 8px 12px;
+            font-family: var(--font-body); font-weight: 600; color: var(--text-dark); cursor: pointer;
+            display: flex; align-items: center; gap: 5px; transition: all 0.2s; font-size: 0.9rem;
+        }
+        .tool-btn:hover { border-color: var(--accent-teal); color: var(--accent-teal); }
+        .tool-btn.active { background: var(--accent-teal); color: #fff; border-color: var(--accent-teal); }
+
+        /* --- COMIC BEREICH --- */
+        .comic-image-area {
+            width: 100%; height: 400px; 
+            background-color: #f9f9f9; border-radius: 15px; margin-bottom: 20px;
+            display: flex; justify-content: center; align-items: center; overflow: hidden;
+            border: 2px solid #eee;
+        }
+        .comic-image-area img {
+            max-width: 100%; max-height: 100%; object-fit: contain;
+            transition: opacity 0.3s ease-in-out; border-radius: 10px;
+        }
+
+        /* Text Bereich mit interaktiven Wörtern */
+        .comic-text-area {
+            font-family: var(--font-body); font-size: 26px; line-height: 1.6;
+            text-align: center; color: var(--text-dark); min-height: 100px;
+            margin-bottom: 20px; font-weight: 600; padding: 0 10px; width: 100%;
+        }
+        
+        .word-interactive { cursor: pointer; border-radius: 4px; padding: 0 2px; }
+        .word-interactive:hover { background-color: #fffbe6; }
+        .highlight-active { background-color: #ffeb3b !important; box-shadow: 0 0 5px rgba(255, 235, 59, 0.8); }
+        
+        /* Silben Farben */
+        .syl-blue { color: var(--syl-blue); }
+        .syl-red { color: var(--syl-red); }
+
+        /* --- STEUERUNG --- */
+        .comic-controls {
+            display: flex; justify-content: space-between; align-items: center; width: 100%; gap: 10px; margin-bottom: 30px;
+        }
+        .nav-btn-big {
+            background-color: var(--accent-teal); color: white; border: none; padding: 12px 20px;
+            font-family: var(--font-heading); font-size: 1.1rem; border-radius: 50px; cursor: pointer;
+            box-shadow: 0 4px 0 #1d7a6e; flex: 1; text-align: center;
+        }
+        .nav-btn-big:active { box-shadow: none; transform: translateY(4px); }
+        .nav-btn-big:disabled { background-color: #bdc3c7; box-shadow: none; cursor: default; transform: none; }
+        .page-indicator { font-weight: bold; color: #7f8c8d; }
+
+        /* --- MICROSURVEY --- */
+        .survey-section {
+            border-top: 2px dashed #eee; width: 100%; padding-top: 20px; text-align: center;
+        }
+        .vote-wrapper { display: flex; justify-content: center; gap: 20px; margin-top: 10px; }
+        .vote-card {
+            width: 50px; height: 50px; display: flex; justify-content: center; align-items: center;
+            background: #fff; border: 2px solid #eee; border-radius: 12px; font-size: 1.5rem;
+            cursor: pointer; box-shadow: 0 4px 0 #eee; transition: transform 0.1s;
+        }
+        .vote-card:active { transform: translateY(4px); box-shadow: none; }
+
+        /* --- LUPE OVERLAY --- */
+        .magnifier-overlay {
+            position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+            background: #fff; border: 4px solid var(--primary-yellow); padding: 20px;
+            border-radius: 20px; font-size: 2rem; box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            z-index: 6000; display: none; text-align: center; font-family: var(--font-heading); min-width: 200px;
+        }
+
+        /* Mobile */
+        @media (max-width: 600px) {
+            .comic-image-area { height: 250px; }
+            .comic-text-area { font-size: 20px; }
+            .toolbar-container { padding: 5px; gap: 5px; }
+            .tool-btn { font-size: 0.8rem; padding: 6px 10px; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="main-navbar">
+        <div class="nav-left">
+            <img src="https://github.com/RaLa84/lesekumpel/blob/main/logo1.png?raw=true" alt="Logo" class="nav-logo">
+            <a href="#" class="brand-name">Lesekumpel</a>
+        </div>
+        <div class="nav-right">
+             <div style="font-weight:bold; font-size:0.9rem;">Dein Comic</div>
+        </div>
+    </nav>
+
+    <div class="main-card">
+        <div class="quality-badge">⭐ 4.9 / 5 (Sehr beliebt)</div>
+        
+        <h1 id="book-title">Max sucht einen Schatz</h1>
+
+        <div class="toolbar-container">
+            <button class="tool-btn" onclick="toggleTTS()" id="btn-tts">🔊 Vorlesen</button>
+            <button class="tool-btn" onclick="toggleMagnifier()" id="btn-magnifier">🔍 Lupe</button>
+            <button class="tool-btn" onclick="toggleSyllables()" id="btn-syllables">🔴🔵 Silben</button>
+            <span style="width:1px; background:#ddd; margin:0 5px;"></span>
+            <button class="tool-btn" onclick="changeFontSize(2)">A+</button>
+            <button class="tool-btn" onclick="changeFontSize(-2)">A-</button>
+        </div>
+
+        <div class="comic-image-area">
+            <img id="story-image" src="" alt="Bild zur Geschichte">
+        </div>
+
+        <div class="comic-text-area" id="story-text">
+            ...
+        </div>
+
+        <div class="comic-controls">
+            <button id="btn-prev" class="nav-btn-big" onclick="changePage(-1)">← Zurück</button>
+            <span class="page-indicator" id="page-num">1 / 6</span>
+            <button id="btn-next" class="nav-btn-big" onclick="changePage(1)">Weiter →</button>
+        </div>
+
+        <div class="survey-section">
+            <div style="font-weight: bold; color: var(--accent-salmon);">Gefällt dir das Bild?</div>
+            <div class="vote-wrapper">
+                <div class="vote-card" onclick="alert('Super! Das freut uns.')">👍</div>
+                <div class="vote-card" onclick="alert('Danke für dein Feedback.')">👎</div>
+            </div>
+        </div>
+    </div>
+
+    <footer style="text-align: center; margin-top: 30px; color: #999; font-size: 0.8rem;">
+        Erstellt mit ❤️ vom Lesekumpel
+    </footer>
+
+    <div id="magnifier-overlay" class="magnifier-overlay">
+        <span id="magnifier-text" style="display:block; margin-bottom:10px;">Wort</span>
+        <button class="tool-btn" onclick="closeMagnifier()" style="margin: 0 auto;">Schließen</button>
+    </div>
+
+    <script>
+        // --- DATEN AUS N8N ---
+        const inputData = {
+            "title": "Max sucht einen Schatz",
+            "content": {  
+                "download_url_1": "https://raw.githubusercontent.com/RaLa84/lesekumpel/main/comics/max-sucht-einen-schatz-1.png",
+                "tile1": "Max hat eine Kar-te. Die Kar-te zeigt einen Baum.",
+                "download_url_2": "https://raw.githubusercontent.com/RaLa84/lesekumpel/main/comics/max-sucht-einen-schatz-2.png",
+                "tile2": "Max geht zum Baum. Er gräbt im Sand.",
+                "download_url_3": "https://raw.githubusercontent.com/RaLa84/lesekumpel/main/comics/max-sucht-einen-schatz-3.png",
+                "tile3": "Max fin-det eine Kis-te. Die Kis-te ist bunt.",
+                "download_url_4": "https://raw.githubusercontent.com/RaLa84/lesekumpel/main/comics/max-sucht-einen-schatz-4.png",
+                "tile4": "Max macht die Kis-te auf. Ein klei-ner Ball ist drin.",
+                "download_url_5": "https://raw.githubusercontent.com/RaLa84/lesekumpel/main/comics/max-sucht-einen-schatz-5.png",
+                "tile5": "Max freut sich sehr. Er spielt mit dem Ball.",
+                "download_url_6": "https://raw.githubusercontent.com/RaLa84/lesekumpel/main/comics/max-sucht-einen-schatz-6.png",
+                "tile6": "Max spielt am Strand. Der Vogel schaut zu."
+            }
+        };
+
+        // --- STATE & TOOLS ---
+        let currentPageIndex = 0;
+        const pages = [];
+        // Werkzeug-Status
+        let state = {
+            tts: false,
+            magnifier: false,
+            syllables: false
+        };
+
+        // Daten vorbereiten
+        if (inputData.content) {
+            for (let i = 1; i <= 6; i++) {
+                // Text bereinigen (Anführungszeichen etc.)
+                let rawText = inputData.content[`tile${i}`] || "";
+                pages.push({
+                    image: inputData.content[`download_url_${i}`],
+                    text: rawText.replace(/"/g, '') // Einfache Bereinigung
+                });
+            }
+        }
+
+        const domImage = document.getElementById('story-image');
+        const domText = document.getElementById('story-text');
+        const domPageNum = document.getElementById('page-num');
+        const btnPrev = document.getElementById('btn-prev');
+        const btnNext = document.getElementById('btn-next');
+
+        // --- RENDER LOGIC ---
+        function updateView() {
+            if (pages.length === 0) return;
+            const pageData = pages[currentPageIndex];
+
+            domImage.style.opacity = 0;
+            
+            // TTS stoppen beim Blättern
+            window.speechSynthesis.cancel();
+            document.getElementById('btn-tts').classList.remove('active');
+
+            setTimeout(() => {
+                domImage.src = pageData.image || "";
+                
+                // TEXT RENDEREN (mit Tools Logik)
+                renderText(pageData.text);
+
+                domPageNum.innerText = `${currentPageIndex + 1} / ${pages.length}`;
+                
+                btnPrev.disabled = currentPageIndex === 0;
+                if (currentPageIndex === pages.length - 1) {
+                    btnNext.innerText = "Nochmal ↺";
+                    btnNext.onclick = function() { changePage(-5); };
+                } else {
+                    btnNext.innerText = "Weiter →";
+                    btnNext.onclick = function() { changePage(1); };
+                    btnNext.disabled = false;
+                }
+                domImage.style.opacity = 1;
+            }, 200);
+        }
+
+        // --- CORE TEXT PROCESSOR ---
+        // Verwandelt den String in interaktive HTML Spans und wendet Silben an
+        function renderText(textStr) {
+            if(!textStr) return;
+            
+            const words = textStr.split(' ');
+            
+            const html = words.map(word => {
+                let displayHTML = word;
+                let cleanWord = word.replace(/[.,!?:;()]/g, ""); // Für TTS und Lupe
+
+                // Silben Logik (Simulation für Deutsch)
+                if (state.syllables) {
+                    displayHTML = colorizeSyllables(word);
+                }
+
+                // Wrapper für Interaktivität
+                return `<span class="word-interactive" onclick="handleWordClick(this, '${cleanWord}')">${displayHTML}</span>`;
+            }).join(' ');
+
+            domText.innerHTML = html;
+        }
+
+        // --- TOOL FUNCTIONS ---
+
+        function toggleTTS() {
+            const btn = document.getElementById('btn-tts');
+            if (window.speechSynthesis.speaking) {
+                window.speechSynthesis.cancel();
+                btn.classList.remove('active');
+            } else {
+                readPageAloud();
+                btn.classList.add('active');
+            }
+        }
+
+        function readPageAloud() {
+            const textToRead = pages[currentPageIndex].text;
+            let u = new SpeechSynthesisUtterance(textToRead);
+            u.lang = "de-DE";
+            u.rate = 0.9;
+            
+            // Highlight Logik
+            let spans = domText.querySelectorAll('.word-interactive');
+            let charCount = 0;
+            // Mapping erstellen (vereinfacht) ist bei reinem Text komplex, 
+            // wir machen hier einfaches Highlighting ganzer Sätze oder Wörter wenn möglich.
+            // Da Mapping exakt sein muss, belassen wir es für den Comic Reader bei einfachem Lesen.
+            
+            u.onend = function() { document.getElementById('btn-tts').classList.remove('active'); };
+            window.speechSynthesis.speak(u);
+        }
+
+        function toggleMagnifier() {
+            state.magnifier = !state.magnifier;
+            document.getElementById('btn-magnifier').className = state.magnifier ? "tool-btn active" : "tool-btn";
+        }
+
+        function toggleSyllables() {
+            state.syllables = !state.syllables;
+            document.getElementById('btn-syllables').className = state.syllables ? "tool-btn active" : "tool-btn";
+            // Seite neu rendern, um Effekt anzuwenden
+            renderText(pages[currentPageIndex].text);
+        }
+
+        function handleWordClick(el, cleanWord) {
+            // Wenn Lupe an ist
+            if (state.magnifier) {
+                document.getElementById('magnifier-text').innerText = el.innerText; // Text zeigen
+                document.getElementById('magnifier-overlay').style.display = 'block';
+                
+                // Optional: Wort vorlesen wenn vergrößert
+                let u = new SpeechSynthesisUtterance(cleanWord);
+                u.lang = "de-DE";
+                window.speechSynthesis.speak(u);
+            }
+        }
+
+        function closeMagnifier() {
+            document.getElementById('magnifier-overlay').style.display = 'none';
+        }
+
+        function changeFontSize(delta) {
+            let style = window.getComputedStyle(domText);
+            let size = parseFloat(style.fontSize);
+            domText.style.fontSize = (size + delta) + 'px';
+        }
+
+        function changePage(dir) {
+            const newIndex = currentPageIndex + dir;
+            if (newIndex >= 0 && newIndex < pages.length) {
+                currentPageIndex = newIndex;
+                updateView();
+            }
+        }
+
+        // --- SIMPLE SYLLABLE HEURISTIC (REGEX) ---
+        // Versucht deutsche Silben visuell zu trennen (Vokal-Konsonant Muster)
+        function colorizeSyllables(word) {
+            // Einfacher Ansatz: Wir färben einfach Vokale und Konsonanten-Gruppen abwechselnd?
+            // Besser: Regex Split. Dies ist nicht perfekt, aber visuell hilfreich für Kinder.
+            // Wir nutzen eine sehr simple Logik: Splitte nach jedem Vokal, wenn ein Konsonant folgt.
+            
+            // Regex für "Silben-Chunks" (Vokal + Konsonanten)
+            // Dies ist nur eine Annäherung!
+            const parts = word.match(/[^aeiouäöüAEIOUÄÖÜ]*[aeiouäöüAEIOUÄÖÜ]+(?:[^aeiouäöüAEIOUÄÖÜ]*$|[^aeiouäöüAEIOUÄÖÜ](?=[^aeiouäöüAEIOUÄÖÜ]))?/gi) || [word];
+            
+            return parts.map((part, i) => {
+                let cls = (i % 2 === 0) ? 'syl-blue' : 'syl-red';
+                return `<span class="${cls}">${part}</span>`;
+            }).join('');
+        }
+
+        // Start
+        updateView();
+
+    </script>
+</body>
+</html>
