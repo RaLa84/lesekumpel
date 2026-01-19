@@ -1,33 +1,3 @@
-Das ist absolut korrekt beobachtet. Das Problem ist technischer Natur:
-
-**Warum passiert das?**
-GitHub Pages ist ein "statischer Webserver". Jedes Mal, wenn du eine Änderung an deiner Website vornimmst (auch wenn du nur *eine* Datei änderst), baut GitHub die Seite im Hintergrund neu. Dabei bekommen oft **alle** Dateien einen neuen "Zeitstempel" vom Server (das sogenannte `Last-Modified` Datum). Der Server sagt also quasi: *"Diese Datei wurde gerade eben beim Bau der Webseite frisch auf die Festplatte gelegt."*
-
-**Die Lösung: Das Datum fest in die Geschichte schreiben**
-Da wir uns auf den Server-Zeitstempel nicht verlassen können, müssen wir das Datum **in die HTML-Datei selbst** schreiben.
-
-Wir machen das am besten unsichtbar mit einem sogenannten "Meta-Tag" im Kopfbereich deiner Geschichten-Dateien.
-
-Hier ist der Plan:
-
-### Schritt 1: Deine HTML-Dateien anpassen
-
-Du (oder dein n8n-Workflow) musst in Zukunft beim Erstellen der HTML-Datei im `<head>` Bereich folgende Zeile einfügen:
-
-```html
-<meta name="date" content="2024-05-12">
-
-```
-
-*(Das Datum natürlich entsprechend anpassen: JJJJ-MM-TT)*
-
-### Schritt 2: Das Skript aktualisieren
-
-Ich habe das Skript nun so umgebaut, dass es die Geschichte kurz "anliest", um nach diesem Datum zu suchen. Wenn es kein eingetragenes Datum findet, nimmt es das Server-Datum als Notlösung.
-
-Hier ist dein aktualisierter Code (einfach komplett ersetzen):
-
-```html
 <!DOCTYPE html>
 <html lang="de">
 <head>
