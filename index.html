@@ -4,18 +4,81 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Meine Bibliothek</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
+
     <style>
+        /* --- GRUNDLAGEN & STYLES AUS DER VORLAGE (Header/Footer) --- */
+        :root {
+            --bg-body: #f0f8ff; --bg-card: #ffffff;
+            --primary-yellow: #f4d03f; --accent-salmon: #f08080; --accent-teal: #2a9d8f;   
+            --text-dark: #2c3e50; --font-heading: 'Fredoka', cursive, sans-serif;
+            --font-body: 'Quicksand', sans-serif;
+        }
+
         body {
-            font-family: 'Comic Sans MS', 'Chalkboard SE', sans-serif;
-            background-color: #f0f8ff;
-            padding: 40px 20px;
+            font-family: var(--font-body); /* Angepasst an Lesekumpel-Design */
+            background-color: var(--bg-body);
+            color: var(--text-dark);
+            margin: 0;
+            padding: 0; /* Padding wird im Container geregelt */
             text-align: center;
         }
+
+        /* --- NAVIGATION --- */
+        .main-navbar {
+            background-color: #fff; padding: 10px 20px; border-bottom: 4px solid var(--primary-yellow);
+            display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000;
+            text-align: left; /* Damit die Elemente nicht zentriert werden */
+        }
+        .nav-left { display: flex; align-items: center; gap: 10px; }
+        .nav-logo { height: 40px; width: auto; }
+        .brand-name { font-family: var(--font-heading); font-size: 1.2rem; color: var(--accent-salmon); font-weight: 600; text-decoration: none; }
+        .nav-links-desktop { display: none; gap: 15px; align-items: center; }
+        .nav-btn { text-decoration: none; color: var(--text-dark); font-weight: 600; font-size: 1rem; display: flex; align-items: center; gap: 5px; }
+        .btn-new-story {
+            border: 2px solid var(--primary-yellow); background: #fff; padding: 8px 15px;
+            border-radius: 25px; color: var(--text-dark); font-weight: bold; transition: transform 0.2s; text-decoration: none;
+        }
+        .btn-new-story:hover { transform: scale(1.05); background: #fffbe6; }
+        .nav-right { display: flex; align-items: center; gap: 15px; }
+        .user-burger-container { display: flex; align-items: center; gap: 15px; }
+        .user-profile { display: flex; align-items: center; gap: 8px; font-weight: bold; font-size: 0.9rem; }
+        .user-avatar { width: 32px; height: 32px; background-color: var(--primary-yellow); border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 1.2rem; }
+        .burger-icon { font-size: 1.8rem; cursor: pointer; display: block; color: var(--text-dark); }
+        .mobile-menu {
+            display: none; background: white; padding: 10px; position: absolute; top: 100%; left: 0; width: 100%;
+            border-bottom: 2px solid var(--primary-yellow); flex-direction: column; gap: 10px; z-index: 999;
+            box-sizing: border-box;
+        }
+        .mobile-menu.open { display: flex; }
+        .hidden-mobile { display: none; }
+
+        @media (min-width: 768px) {
+            .burger-icon { display: none; }
+            .nav-links-desktop { display: flex; }
+            .nav-logo { height: 50px; }
+            .brand-name { font-size: 1.5rem; display: block; }
+            .nav-left { gap: 15px; }
+            .hidden-mobile { display: inline-block; }
+        }
+
+        /* --- FOOTER --- */
+        footer { text-align: center; margin-top: 50px; color: #888; font-size: 0.9rem; padding: 20px; border-top: 1px solid #eee; background: #fff; }
+        .footer-links a { color: #888; text-decoration: none; margin: 0 5px; }
+
+        /* --- BIBLIOTHEK SPECIFIC STYLES --- */
         .container {
             max-width: 800px;
-            margin: 0 auto;
+            margin: 40px auto;
+            padding: 0 20px;
         }
-        h1 { color: #ff6b6b; margin-bottom: 20px; }
+        h1 { 
+            font-family: var(--font-heading); 
+            color: var(--accent-salmon); 
+            margin-bottom: 20px; 
+            text-transform: uppercase;
+        }
         
         /* --- STEUERELEMENTE (Filter & Suche) --- */
         .controls {
@@ -24,6 +87,7 @@
             border-radius: 20px;
             box-shadow: 0 4px 10px rgba(0,0,0,0.05);
             margin-bottom: 30px;
+            border: 2px solid #eee;
         }
 
         /* Filter Buttons */
@@ -47,9 +111,9 @@
         }
         .filter-btn:hover { background: #ddd; }
         .filter-btn.active {
-            background: #ff6b6b;
+            background: var(--accent-salmon);
             color: white;
-            box-shadow: 0 4px 6px rgba(255, 107, 107, 0.3);
+            box-shadow: 0 4px 6px rgba(240, 128, 128, 0.3);
         }
 
         /* Das Suchfeld */
@@ -57,12 +121,13 @@
             width: 100%;
             padding: 12px;
             font-size: 1.1em;
-            border: 2px solid #ffcc00;
+            border: 2px solid var(--primary-yellow);
             border-radius: 15px;
             outline: none;
             box-sizing: border-box;
+            font-family: var(--font-body);
         }
-        #searchInput:focus { border-color: #ff6b6b; }
+        #searchInput:focus { border-color: var(--accent-salmon); }
 
         /* Sortier Info */
         .sort-info {
@@ -86,13 +151,14 @@
             border-left: 10px solid #ccc;
             opacity: 0; /* Für Fade-In Animation */
             animation: fadeIn 0.5s forwards;
+            text-align: left; /* Inhalt der Karten linksbündig */
         }
         
         @keyframes fadeIn { to { opacity: 1; } }
 
         /* Farben */
-        .type-texte { border-left-color: #4CAF50; }
-        .type-comicgeschichten { border-left-color: #FF9800; }
+        .type-texte { border-left-color: var(--accent-teal); }
+        .type-comicgeschichten { border-left-color: var(--primary-yellow); }
 
         .book-item:hover {
             transform: scale(1.02);
@@ -112,6 +178,7 @@
             font-size: 1.2em;
             font-weight: bold;
             display: block;
+            font-family: var(--font-heading);
         }
         .book-meta {
             font-size: 0.85em;
@@ -133,10 +200,31 @@
             margin-top: 30px;
             color: #555;
             text-decoration: none;
+            font-weight: bold;
         }
+        .back-btn:hover { color: var(--accent-salmon); }
     </style>
 </head>
 <body>
+
+    <nav class="main-navbar">
+        <div class="nav-left">
+            <img src="https://github.com/RaLa84/lesekumpel/blob/main/logo1.png?raw=true" alt="Logo" class="nav-logo">
+            <a href="#" class="brand-name">Lesekumpel</a>
+            <div class="nav-links-desktop"><a href="https://rala84.github.io/lesekumpel/index.html" class="nav-btn">📚 Bibliothek</a></div>
+        </div>
+        <div class="nav-right">
+            <a href="https://rala84.app.n8n.cloud/form/d934fee1-a67d-4146-8b19-1e3c8a1a8967" class="btn-new-story hidden-mobile">✨ Neue Geschichte</a>
+            <div class="user-burger-container">
+                <div class="user-profile"><span>Papa Wutz</span><div class="user-avatar">🐷</div></div>
+                <span class="burger-icon" onclick="toggleMenu()">☰</span>
+            </div>
+        </div>
+        <div id="mobile-menu" class="mobile-menu">
+            <a href="https://rala84.github.io/lesekumpel/index.html" class="nav-btn">📚 Bibliothek</a>
+            <a href="https://rala84.app.n8n.cloud/form/b6f28a18-e90d-4bb8-b201-0c8f6c667a7a" class="nav-btn">✨ Neue Geschichte</a>
+        </div>
+    </nav>
 
     <div class="container">
         <h1>📚 Deine Bibliothek</h1>
@@ -156,10 +244,21 @@
         <div id="loadingMsg" class="loading">Lade Bücherregal...</div>
         <ul id="bookList"></ul>
 
-        <a href="https://rala84.app.n8n.cloud/form/30d75a75-54fd-42fd-bea6-ab24799ca565" class="back-btn">⬅ Zurück zum Geschichten-Generator</a>
+        <a href="https://rala84.app.n8n.cloud/form/30d75a75-54fd-42fd-bea6-ab24799ca565" class="back-btn">⬅ Zurück zum Generator</a>
     </div>
 
+    <footer>
+        <p>Erstellt von deinem KI-Lesekumpel 🤖</p>
+        <div class="footer-links"><a href="#">Impressum</a> • <a href="#">Datenschutz</a> • <a href="#">Über uns</a></div>
+    </footer>
+
     <script>
+        // --- FUNKTION FÜR DAS BURGER MENU ---
+        function toggleMenu() { 
+            document.getElementById('mobile-menu').classList.toggle('open'); 
+        }
+
+        // --- EXISTIERENDE LOGIK DER BIBLIOTHEK ---
         const user = 'RaLa84';
         const repo = 'lesekumpel';
         const folders = ['texte', 'comicgeschichten'];
@@ -317,3 +416,5 @@
 
 </body>
 </html>
+
+```
