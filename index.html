@@ -1,3 +1,33 @@
+Das ist absolut korrekt beobachtet. Das Problem ist technischer Natur:
+
+**Warum passiert das?**
+GitHub Pages ist ein "statischer Webserver". Jedes Mal, wenn du eine Änderung an deiner Website vornimmst (auch wenn du nur *eine* Datei änderst), baut GitHub die Seite im Hintergrund neu. Dabei bekommen oft **alle** Dateien einen neuen "Zeitstempel" vom Server (das sogenannte `Last-Modified` Datum). Der Server sagt also quasi: *"Diese Datei wurde gerade eben beim Bau der Webseite frisch auf die Festplatte gelegt."*
+
+**Die Lösung: Das Datum fest in die Geschichte schreiben**
+Da wir uns auf den Server-Zeitstempel nicht verlassen können, müssen wir das Datum **in die HTML-Datei selbst** schreiben.
+
+Wir machen das am besten unsichtbar mit einem sogenannten "Meta-Tag" im Kopfbereich deiner Geschichten-Dateien.
+
+Hier ist der Plan:
+
+### Schritt 1: Deine HTML-Dateien anpassen
+
+Du (oder dein n8n-Workflow) musst in Zukunft beim Erstellen der HTML-Datei im `<head>` Bereich folgende Zeile einfügen:
+
+```html
+<meta name="date" content="2024-05-12">
+
+```
+
+*(Das Datum natürlich entsprechend anpassen: JJJJ-MM-TT)*
+
+### Schritt 2: Das Skript aktualisieren
+
+Ich habe das Skript nun so umgebaut, dass es die Geschichte kurz "anliest", um nach diesem Datum zu suchen. Wenn es kein eingetragenes Datum findet, nimmt es das Server-Datum als Notlösung.
+
+Hier ist dein aktualisierter Code (einfach komplett ersetzen):
+
+```html
 <!DOCTYPE html>
 <html lang="de">
 <head>
@@ -107,10 +137,7 @@
             text-align: left;
         }
         
-        /* Inhalt Layout im Listenelement */
-        .book-content {
-            flex-grow: 1;
-        }
+        .book-content { flex-grow: 1; }
         .book-title {
             font-size: 1.2em;
             font-weight: bold;
@@ -125,17 +152,8 @@
             align-items: center;
         }
         
-        .icon { 
-            font-size: 2em; 
-            margin-right: 15px; 
-        }
-
-        .badge {
-            background: #eee;
-            padding: 2px 8px;
-            border-radius: 8px;
-            font-size: 0.8em;
-        }
+        .icon { font-size: 2em; margin-right: 15px; }
+        .badge { background: #eee; padding: 2px 8px; border-radius: 8px; font-size: 0.8em; }
         
         .loading { color: #888; font-style: italic; margin: 20px 0; }
         .error { color: red; }
@@ -176,10 +194,8 @@
         const repo = 'lesekumpel';
         const folders = ['texte', 'comicgeschichten'];
         
-        // Globale Variablen für den Status
         let allStoriesData = [];
         let currentFilter = 'all';
-        let loadingDates = true;
 
         const listElement = document.getElementById('bookList');
         const searchInput = document.getElementById('searchInput');
@@ -187,7 +203,7 @@
         const sortStatus = document.getElementById('sortStatus');
         const buttons = document.querySelectorAll('.filter-btn');
 
-        // 1. Initialer Abruf der Dateinamen
+        // 1. Initialer Abruf der Dateiliste
         function fetchFolder(folderName) {
             return fetch(`https://api.github.com/repos/${user}/${repo}/contents/${folderName}`)
                 .then(response => response.ok ? response.json() : [])
@@ -198,81 +214,76 @@
                             name: file.name,
                             path: `${folderName}/${file.name}`,
                             folder: folderName,
-                            // Standardmäßig setzen wir das Datum auf 0 (sehr alt), bis wir es wissen
-                            date: new Date(0), 
-                            dateString: 'Datum wird geladen...'
+                            date: new Date(0), // Default: Ganz alt
+                            dateString: ''
                         }));
                 });
         }
 
-        // Hauptstart
         Promise.all(folders.map(fetchFolder))
             .then(results => {
                 loadingMsg.style.display = 'none';
                 allStoriesData = results.flat();
-                
-                // Erste Anzeige (noch unsortiert / alphabetisch)
-                updateUI();
-
-                // JETZT: Daten (Last-Modified) im Hintergrund nachladen
-                fetchRealDates();
+                updateUI(); // Zeige erstmal die Liste ohne Datum an
+                fetchRealDates(); // Starte Datums-Suche im Hintergrund
             })
             .catch(err => {
                 loadingMsg.innerText = "Fehler: " + err.message;
                 loadingMsg.className = "error";
             });
 
-        // 2. Datum ermitteln (Trick: HEAD Request auf die echte GitHub Page URL)
+        // 2. Datum ermitteln: Wir laden die Datei und suchen nach <meta name="date">
         async function fetchRealDates() {
-            sortStatus.innerText = "Lade Erstellungsdaten...";
+            sortStatus.innerText = "Lade Daten aus Dateien...";
             
             const updates = allStoriesData.map(async (story) => {
                 try {
-                    // Wir fragen die echte URL (nicht API) nach dem Header
-                    const response = await fetch(story.path, { method: 'HEAD' });
-                    const lastMod = response.headers.get('Last-Modified');
+                    // Wir laden den Text der Geschichte herunter
+                    const response = await fetch(story.path);
+                    const text = await response.text();
                     
-                    if (lastMod) {
-                        story.date = new Date(lastMod);
+                    // Regex Suche nach: <meta name="date" content="YYYY-MM-DD">
+                    // Funktioniert auch mit ' oder "
+                    const metaMatch = text.match(/<meta\s+name=["']date["']\s+content=["'](.*?)["']/i);
+                    
+                    if (metaMatch && metaMatch[1]) {
+                        // Juhu, Meta-Tag gefunden!
+                        story.date = new Date(metaMatch[1]);
+                    } else {
+                        // Fallback: Server Header (oft ungenau, aber besser als nichts)
+                        const lastMod = response.headers.get('Last-Modified');
+                        if (lastMod) story.date = new Date(lastMod);
+                    }
+
+                    // Formatierung für Anzeige (z.B. 19.01.2026)
+                    if (story.date.getTime() > 0) {
                         story.dateString = story.date.toLocaleDateString('de-DE', {
                             day: '2-digit', month: '2-digit', year: 'numeric'
                         });
-                    } else {
-                        story.dateString = ""; // Kein Datum gefunden
                     }
+
                 } catch (e) {
-                    console.log("Konnte Datum nicht laden für", story.name);
-                    story.dateString = "";
+                    console.log("Fehler beim Laden von", story.name);
                 }
                 return story;
             });
 
-            // Warten bis alle Daten da sind (oder parallel updaten)
             await Promise.all(updates);
             
-            loadingDates = false;
             sortStatus.innerText = "Sortierung: Neuste zuerst 🔽";
-            
-            // Liste neu sortieren und anzeigen
             sortStoriesByDate();
             updateUI();
         }
 
         function sortStoriesByDate() {
-            // Sortiert absteigend (neuste zuerst)
             allStoriesData.sort((a, b) => b.date - a.date);
         }
 
-        // 3. UI Logik (Filtern & Rendern)
+        // 3. UI Logik
         function setFilter(filterType) {
             currentFilter = filterType;
-            
-            // Buttons visuell umschalten
             buttons.forEach(btn => btn.classList.remove('active'));
-            // Da wir onClick hardcoded haben, suchen wir den richtigen Button
-            // Einfacher Hack: Dem geklickten Button die Klasse geben (via Event wäre sauberer, aber so gehts auch)
             event.target.classList.add('active');
-
             updateUI();
         }
 
@@ -281,13 +292,11 @@
         function updateUI() {
             const searchTerm = searchInput.value.toLowerCase();
 
-            // 1. Filtern nach Typ (Comic/Text)
             let filtered = allStoriesData.filter(story => {
                 if (currentFilter === 'all') return true;
                 return story.folder === currentFilter;
             });
 
-            // 2. Filtern nach Suchbegriff
             filtered = filtered.filter(story => 
                 formatName(story.name).toLowerCase().includes(searchTerm)
             );
@@ -309,7 +318,7 @@
                 const icon = file.folder === 'comicgeschichten' ? '🖼️' : '📖';
                 const typeLabel = file.folder === 'comicgeschichten' ? 'Comic' : 'Geschichte';
                 
-                // Datum nur anzeigen, wenn fertig geladen
+                // Datum anzeigen wenn vorhanden, sonst leer
                 const dateDisplay = file.dateString ? `📅 ${file.dateString}` : '';
 
                 li.innerHTML = `
@@ -338,3 +347,5 @@
 
 </body>
 </html>
+
+```
