@@ -41,14 +41,20 @@
             border-radius: 15px;
             box-shadow: 0 4px 6px rgba(0,0,0,0.05);
             transition: transform 0.2s;
-            border-left: 10px solid #4CAF50; /* Grüner Buchrücken */
+            border-left: 10px solid #ccc; /* Fallback Farbe */
         }
+        
+        /* Unterscheidung durch Farben */
+        .type-texte { border-left-color: #4CAF50; } /* Grün für Texte */
+        .type-comicgeschichten { border-left-color: #FF9800; } /* Orange für Comics */
+
         .book-item:hover {
             transform: scale(1.02);
             box-shadow: 0 8px 15px rgba(0,0,0,0.1);
         }
         .book-link {
-            display: block;
+            display: flex;
+            align-items: center;
             padding: 20px;
             text-decoration: none;
             color: #333;
@@ -56,7 +62,19 @@
             font-weight: bold;
             text-align: left;
         }
-        .icon { margin-right: 10px; }
+        .icon { 
+            margin-right: 15px; 
+            font-size: 1.5em;
+        }
+        .meta-tag {
+            font-size: 0.7em;
+            font-weight: normal;
+            color: #888;
+            margin-left: auto; /* Schiebt das Tag nach rechts */
+            background: #eee;
+            padding: 2px 8px;
+            border-radius: 10px;
+        }
         
         .loading { color: #888; font-style: italic; }
         .error { color: red; }
@@ -86,38 +104,59 @@
     <script>
         const user = 'RaLa84';
         const repo = 'lesekumpel';
-        const folder = 'texte';
+        
+        // Wir definieren hier die Ordner, die durchsucht werden sollen
+        const folders = ['texte', 'comicgeschichten'];
         
         const listElement = document.getElementById('bookList');
         const searchInput = document.getElementById('searchInput');
         const loadingMsg = document.getElementById('loadingMsg');
 
-        // 1. Abrufen der Dateiliste von GitHub
-        fetch(`https://api.github.com/repos/${user}/${repo}/contents/${folder}`)
-            .then(response => {
-                if (!response.ok) throw new Error("Konnte Bibliothek nicht laden.");
-                return response.json();
-            })
-            .then(data => {
+        // Funktion um einen einzelnen Ordner abzurufen
+        function fetchFolder(folderName) {
+            return fetch(`https://api.github.com/repos/${user}/${repo}/contents/${folderName}`)
+                .then(response => {
+                    if (!response.ok) {
+                        console.warn(`Ordner ${folderName} konnte nicht geladen werden oder ist leer.`);
+                        return []; // Leeres Array zurückgeben, damit der Rest weiterläuft
+                    }
+                    return response.json();
+                })
+                .then(data => {
+                    // Wir filtern nur HTML Dateien
+                    // Und: WICHTIG! Wir merken uns, aus welchem Ordner die Datei kam (.source_folder)
+                    return data
+                        .filter(file => file.name.endsWith('.html'))
+                        .map(file => ({
+                            ...file,
+                            source_folder: folderName // Speichert "texte" oder "comicgeschichten"
+                        }));
+                });
+        }
+
+        // Wir rufen beide Ordner parallel ab (Promise.all)
+        Promise.all(folders.map(folder => fetchFolder(folder)))
+            .then(results => {
                 loadingMsg.style.display = 'none';
-                
-                // Filtere nur HTML Dateien heraus
-                const stories = data.filter(file => file.name.endsWith('.html'));
+
+                // results ist ein Array aus Arrays [[Dateien aus texte], [Dateien aus comics]]
+                // Wir fügen diese zu einer großen Liste zusammen (.flat())
+                const allStories = results.flat();
 
                 // Generiere die Liste
-                renderList(stories);
+                renderList(allStories);
 
                 // Aktiviere die Suche
                 searchInput.addEventListener('input', (e) => {
                     const searchTerm = e.target.value.toLowerCase();
-                    const filtered = stories.filter(file => 
+                    const filtered = allStories.filter(file => 
                         formatName(file.name).toLowerCase().includes(searchTerm)
                     );
                     renderList(filtered);
                 });
             })
             .catch(err => {
-                loadingMsg.innerText = "Fehler: " + err.message;
+                loadingMsg.innerText = "Fehler beim Laden: " + err.message;
                 loadingMsg.className = "error";
             });
 
@@ -131,16 +170,22 @@
 
             files.forEach(file => {
                 const li = document.createElement('li');
-                li.className = 'book-item';
                 
-                // Link zur echten GitHub Page bauen
-                // Von: github.com/RaLa84/lesekumpel/blob/main/texte/xyz.html
-                // Zu:  RaLa84.github.io/lesekumpel/texte/xyz.html
-                const pageUrl = `texte/${file.name}`;
+                // CSS Klasse basierend auf Ordnername (für Farben)
+                li.className = `book-item type-${file.source_folder}`; 
                 
+                // Der Link muss jetzt den jeweiligen Ordner beinhalten
+                const pageUrl = `${file.source_folder}/${file.name}`;
+                
+                // Icon Auswahl: Buch für Texte, Bild für Comics
+                const icon = file.source_folder === 'comicgeschichten' ? '🖼️' : '📖';
+                const label = file.source_folder === 'comicgeschichten' ? 'Comic' : 'Geschichte';
+
                 li.innerHTML = `
                     <a href="${pageUrl}" class="book-link">
-                        <span class="icon">📖</span> ${formatName(file.name)}
+                        <span class="icon">${icon}</span> 
+                        <span>${formatName(file.name)}</span>
+                        <span class="meta-tag">${label}</span>
                     </a>
                 `;
                 listElement.appendChild(li);
@@ -148,7 +193,6 @@
         }
 
         // Funktion: Dateinamen schön machen
-        // Macht aus "die-kleine-katze.html" -> "Die Kleine Katze"
         function formatName(filename) {
             return filename
                 .replace('.html', '')
