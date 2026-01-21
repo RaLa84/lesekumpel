@@ -1,0 +1,463 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Der traurige Teddy</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        /* --- GRUNDDESIGN & VARIABLEN --- */
+        :root {
+            --bg-body: #f0f8ff; 
+            --bg-card: #ffffff;
+            --primary-yellow: #f4d03f; 
+            --accent-salmon: #f08080; 
+            --accent-teal: #2a9d8f;   
+            --text-dark: #2c3e50; 
+            
+            /* Comic spezifisch */
+            --syl-blue: #00509d; 
+            --syl-red: #c1121f;
+            --btn-red: #d56b6b; 
+            --btn-red-shadow: #b05555;
+            --btn-grey: #ecf0f1;
+            --btn-grey-shadow: #bdc3c7;
+            
+            /* DYSLEXIE ANPASSUNG: Lexend (Google Font) ist sehr stabil und leserlich */
+            /* Fallback ist Comic Sans MS, da auch dies gut für Dyslexie ist */
+            --font-heading: 'Lexend', 'Comic Sans MS', 'Fredoka', sans-serif;
+            --font-body: 'Lexend', 'Comic Sans MS', sans-serif;
+        }
+
+        body {
+            font-family: var(--font-body); 
+            background-color: var(--bg-body); 
+            color: var(--text-dark);
+            margin: 0; 
+            padding-bottom: 50px; 
+            /* GRÖSSE ERHÖHT */
+            font-size: 20px; 
+            /* BESSERE LESBARKEIT */
+            line-height: 1.8; 
+            letter-spacing: 0.02em;
+        }
+
+        /* --- NAVIGATION --- */
+        .main-navbar {
+            background-color: #fff; padding: 10px 20px; border-bottom: 4px solid var(--primary-yellow);
+            display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000;
+        }
+        .nav-left { display: flex; align-items: center; gap: 10px; }
+        .nav-logo { height: 40px; width: auto; }
+        .brand-name { font-family: var(--font-heading); font-size: 1.2rem; color: var(--accent-salmon); font-weight: 600; text-decoration: none; }
+        .nav-links-desktop { display: none; gap: 15px; align-items: center; margin-left: 20px;}
+        
+        .header-nav-btn { text-decoration: none; color: var(--text-dark); font-weight: 600; font-size: 1rem; display: flex; align-items: center; gap: 5px; }
+        .btn-new-story {
+            border: 2px solid var(--primary-yellow); background: #fff; padding: 8px 15px;
+            border-radius: 25px; color: var(--text-dark); font-weight: bold; transition: transform 0.2s; text-decoration: none;
+            font-size: 0.9rem;
+        }
+        .btn-new-story:hover { transform: scale(1.05); background: #fffbe6; }
+
+        .nav-right { display: flex; align-items: center; gap: 15px; }
+        .user-burger-container { display: flex; align-items: center; gap: 15px; }
+        .user-profile { display: flex; align-items: center; gap: 8px; font-weight: bold; font-size: 0.9rem; }
+        .user-avatar { width: 32px; height: 32px; background-color: var(--primary-yellow); border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 1.2rem; }
+        .burger-icon { font-size: 1.8rem; cursor: pointer; display: block; color: var(--text-dark); }
+        
+        .mobile-menu {
+            display: none; background: white; padding: 10px; position: absolute; top: 100%; left: 0; width: 100%;
+            border-bottom: 2px solid var(--primary-yellow); flex-direction: column; gap: 10px; z-index: 999;
+            box-sizing: border-box; text-align: left;
+        }
+        .mobile-menu.open { display: flex; }
+        .hidden-mobile { display: none; }
+
+        @media (min-width: 768px) {
+            .burger-icon { display: none; }
+            .nav-links-desktop { display: flex; }
+            .nav-logo { height: 50px; }
+            .brand-name { font-size: 1.5rem; display: block; }
+            .hidden-mobile { display: inline-block; }
+        }
+
+        /* --- COMIC HAUPTBEREICH --- */
+        .main-card {
+            max-width: 800px; 
+            margin: 30px auto; 
+            background: var(--bg-card);
+            border: 4px solid var(--primary-yellow); 
+            border-radius: 25px; 
+            padding: 25px;
+            position: relative; 
+            box-shadow: 0 10px 0 rgba(0,0,0,0.05);
+            display: flex; flex-direction: column; align-items: center;
+        }
+
+        h1#book-title {
+            font-family: var(--font-heading); color: var(--accent-salmon); font-size: 2.2rem;
+            text-align: center; margin-top: 0; margin-bottom: 10px; line-height: 1.3;
+        }
+
+        .quality-badge {
+            background: #fffbe6; color: #d4ac0d;
+            border: 1px solid var(--primary-yellow); border-radius: 20px; padding: 5px 15px;
+            font-weight: bold; margin-bottom: 25px; font-size: 1rem;
+        }
+
+        .comic-image-area {
+            width: 100%; height: 400px; 
+            background-color: #f9f9f9; border-radius: 15px; margin-bottom: 15px;
+            display: flex; justify-content: center; align-items: center; overflow: hidden;
+            border: 2px solid #eee;
+        }
+        .comic-image-area img {
+            max-width: 100%; max-height: 100%; object-fit: contain;
+            transition: opacity 0.3s ease-in-out; border-radius: 10px;
+        }
+
+        .toolbar-container {
+            border: 2px dashed #eee; border-radius: 15px; padding: 10px;
+            margin-bottom: 20px; display: flex; flex-wrap: wrap; justify-content: center; gap: 8px;
+            background: #fdfdfd; width: 100%; box-sizing: border-box;
+        }
+        .tool-btn {
+            background: #fff; border: 2px solid #ddd; border-radius: 10px; padding: 8px 14px;
+            font-family: var(--font-body); font-weight: 600; color: #555; cursor: pointer;
+            display: flex; align-items: center; gap: 5px; transition: all 0.2s; font-size: 0.95rem;
+        }
+        .tool-btn:hover { border-color: var(--accent-teal); color: var(--accent-teal); }
+        .tool-btn.active { background: var(--accent-teal); color: #fff; border-color: var(--accent-teal); }
+
+        .comic-text-area {
+            font-family: var(--font-body); 
+            /* SCHRIFTGRÖSSE TEXT GROSS */
+            font-size: 34px; 
+            line-height: 1.6; 
+            text-align: center; color: var(--text-dark); min-height: 80px;
+            margin-bottom: 30px; font-weight: 500; padding: 0 10px; width: 100%;
+        }
+        
+        .word-interactive { cursor: pointer; border-radius: 4px; padding: 0 2px; }
+        .word-interactive:hover { background-color: #fffbe6; }
+        .syl-blue { color: var(--syl-blue); }
+        .syl-red { color: var(--syl-red); }
+
+        /* --- COMIC NAV BUTTONS --- */
+        .comic-controls {
+            display: flex; justify-content: center; align-items: center; width: 100%; 
+            gap: 20px; margin-bottom: 30px;
+        }
+        
+        .comic-nav-btn {
+            border: none; padding: 12px 0; width: 160px; 
+            font-family: var(--font-heading); font-size: 1.3rem; font-weight: bold;
+            border-radius: 12px; cursor: pointer; text-align: center;
+            transition: transform 0.1s;
+        }
+
+        .comic-nav-btn:active { box-shadow: none; transform: translateY(4px); }
+
+        .btn-prev { background-color: var(--btn-grey); color: #7f8c8d; box-shadow: 0 5px 0 var(--btn-grey-shadow); }
+        .btn-prev:disabled { opacity: 0.5; cursor: default; transform: none; box-shadow: none; }
+
+        .btn-next { background-color: var(--btn-red); color: white; box-shadow: 0 5px 0 var(--btn-red-shadow); }
+
+        .page-indicator { font-weight: bold; color: #999; font-size: 1.2rem; min-width: 50px; text-align: center; }
+
+        /* --- SURVEY --- */
+        .survey-section { border-top: 2px dashed #eee; width: 100%; padding-top: 20px; text-align: center; }
+        .vote-wrapper { display: flex; justify-content: center; gap: 20px; margin-top: 10px; }
+        .vote-card {
+            width: 50px; height: 50px; display: flex; justify-content: center; align-items: center;
+            background: #fff; border: 2px solid #eee; border-radius: 12px; font-size: 1.5rem;
+            cursor: pointer; box-shadow: 0 4px 0 #eee; transition: transform 0.1s;
+        }
+        .vote-card:active { transform: translateY(4px); box-shadow: none; }
+
+        /* --- FOOTER --- */
+        footer { text-align: center; margin-top: 50px; color: #888; font-size: 0.9rem; padding: 20px; border-top: 1px solid #eee; background: #fff; }
+        .footer-links a { color: #888; text-decoration: none; margin: 0 5px; }
+
+        /* --- LUPE --- */
+        .magnifier-overlay {
+            position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+            background: #fff; border: 4px solid var(--primary-yellow); padding: 20px;
+            border-radius: 20px; font-size: 2.5rem; box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+            z-index: 6000; display: none; text-align: center; font-family: var(--font-heading); min-width: 200px;
+        }
+
+        @media (max-width: 600px) {
+            .comic-image-area { height: 250px; }
+            .comic-text-area { font-size: 28px; line-height: 1.5; }
+            .comic-nav-btn { width: 130px; font-size: 1rem; } 
+            h1#book-title { font-size: 1.8rem; }
+        }
+    </style>
+</head>
+<body>
+
+    <nav class="main-navbar">
+        <div class="nav-left">
+            <img src="https://github.com/RaLa84/lesekumpel/blob/main/logo1.png?raw=true" alt="Logo" class="nav-logo">
+            <a href="#" class="brand-name">Lesekumpel</a>
+            <div class="nav-links-desktop">
+                <a href="https://rala84.github.io/lesekumpel/index.html" class="header-nav-btn">📚 Bibliothek</a>
+            </div>
+        </div>
+        <div class="nav-right">
+            <a href="https://rala84.app.n8n.cloud/form/d934fee1-a67d-4146-8b19-1e3c8a1a8967" class="btn-new-story hidden-mobile">✨ Neue Geschichte</a>
+            <div class="user-burger-container">
+                <div class="user-profile"><span>Papa Wutz</span><div class="user-avatar">🐷</div></div>
+                <span class="burger-icon" onclick="toggleMenu()">☰</span>
+            </div>
+        </div>
+        <div id="mobile-menu" class="mobile-menu">
+            <a href="https://rala84.github.io/lesekumpel/index.html" class="header-nav-btn">📚 Bibliothek</a>
+            <a href="https://rala84.app.n8n.cloud/form/b6f28a18-e90d-4bb8-b201-0c8f6c667a7a" class="header-nav-btn">✨ Neue Geschichte</a>
+        </div>
+    </nav>
+
+    <div class="main-card">
+        
+        <h1 id="book-title">Der traurige Teddy</h1>
+        <div class="quality-badge">⭐ Bewerte die Geschichte ⭐</div>
+        
+        <div class="comic-image-area">
+            <img id="story-image" src="" alt="Bild lädt...">
+        </div>
+
+        <div class="toolbar-container">
+            <button class="tool-btn" onclick="toggleTTS()" id="btn-tts">🔊 Vorlesen</button>
+            <button class="tool-btn" onclick="toggleMagnifier()" id="btn-magnifier">🔍 Lupe</button>
+            <button class="tool-btn" onclick="toggleSyllables()" id="btn-syllables">🔴🔵 Silben</button>
+            <span style="width:1px; background:#ddd; margin:0 5px;"></span>
+            <button class="tool-btn" onclick="changeFontSize(2)">A+</button>
+            <button class="tool-btn" onclick="changeFontSize(-2)">A-</button>
+        </div>
+
+        <div class="comic-text-area" id="story-text">
+            Lade Text...
+        </div>
+
+        <div class="comic-controls">
+            <button id="btn-prev" class="comic-nav-btn btn-prev" onclick="changePage(-1)">Zurück</button>
+            <span class="page-indicator" id="page-num">1 / 6</span>
+            <button id="btn-next" class="comic-nav-btn btn-next" onclick="changePage(1)">Weiter</button>
+        </div>
+
+        <div class="survey-section">
+            <div style="font-weight: bold; color: var(--accent-salmon);">Gefällt dir die Geschichte?</div>
+            <div class="vote-wrapper">
+                <div class="vote-card" onclick="alert('Super! Das freut uns.')">👍</div>
+                <div class="vote-card" onclick="alert('Danke für dein Feedback.')">👎</div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>Erstellt von deinem KI-Lesekumpel 🤖</p>
+    </footer>
+
+    <div id="magnifier-overlay" class="magnifier-overlay">
+        <span id="magnifier-text" style="display:block; margin-bottom:10px;">Wort</span>
+        <button class="tool-btn" onclick="closeMagnifier()" style="margin: 0 auto;">Schließen</button>
+    </div>
+
+    <script>
+        // --- BURGER MENU LOGIK ---
+        function toggleMenu() { 
+            document.getElementById('mobile-menu').classList.toggle('open'); 
+        }
+
+        // --- COMIC LOGIK ---
+        // Hier werden die N8N Daten sicher eingefügt. 
+        // || "" verhindert Abstürze bei leeren Feldern.
+        const inputData = {
+            "title": "Der traurige Teddy",
+            "content": {  
+                "download_url_1": "https://raw.githubusercontent.com/RaLa84/lesekumpel/main/comics/der-traurige-teddy-1.png",
+                "tile1": "Teddy Bär ist in der Schule. Er hat schlechte Laune.",
+                "download_url_2": "https://raw.githubusercontent.com/RaLa84/lesekumpel/main/comics/der-traurige-teddy-2.png",
+                "tile2": "Lina sieht Teddy. Lina fragt Teddy: "Was ist los?"",
+                "download_url_3": "https://raw.githubusercontent.com/RaLa84/lesekumpel/main/comics/der-traurige-teddy-3.png",
+                "tile3": "Teddy sagt: "Ich bin traurig." Er findet sein Lieblingsbuch nicht.",
+                "download_url_4": "https://raw.githubusercontent.com/RaLa84/lesekumpel/main/comics/der-traurige-teddy-4.png",
+                "tile4": "Lina sucht das Buch. Sie findet das Buch.",
+                "download_url_5": "https://raw.githubusercontent.com/RaLa84/lesekumpel/main/comics/der-traurige-teddy-5.png",
+                "tile5": "Das Buch liegt unter dem Tisch. Teddy lächelt jetzt.",
+                "download_url_6": "https://raw.githubusercontent.com/RaLa84/lesekumpel/main/comics/der-traurige-teddy-6.png",
+                "tile6": "Er liest sein Buch. Teddy ist wieder froh."
+            }
+        };
+
+        let currentPageIndex = 0;
+        const pages = [];
+        let state = { tts: false, magnifier: false, syllables: false };
+
+        // Daten verarbeiten
+        if (inputData.content) {
+            for (let i = 1; i <= 6; i++) {
+                let rawText = inputData.content[`tile${i}`] || "";
+                // Anführungszeichen entfernen, um Fehler zu vermeiden
+                let cleanText = rawText.replace(/"/g, '').trim();
+                
+                // Falls kein Bild da ist, Platzhalter nutzen oder leer lassen
+                let imgSrc = inputData.content[`download_url_${i}`];
+                
+                pages.push({
+                    image: imgSrc,
+                    text: cleanText
+                });
+            }
+        }
+
+        // DOM Elemente
+        const domImage = document.getElementById('story-image');
+        const domText = document.getElementById('story-text');
+        const domPageNum = document.getElementById('page-num');
+        const btnPrev = document.getElementById('btn-prev');
+        const btnNext = document.getElementById('btn-next');
+
+        function updateView() {
+            if (pages.length === 0) {
+                domText.innerText = "Keine Daten gefunden.";
+                return;
+            }
+            const pageData = pages[currentPageIndex];
+
+            domImage.style.opacity = 0;
+            window.speechSynthesis.cancel();
+            document.getElementById('btn-tts').classList.remove('active');
+
+            setTimeout(() => {
+                // Bild setzen
+                if(pageData.image && pageData.image.startsWith('http')) {
+                    domImage.src = pageData.image;
+                    domImage.style.display = 'block';
+                } else {
+                    // Fallback, wenn kein Bild da ist
+                    domImage.style.display = 'none';
+                }
+
+                renderText(pageData.text);
+
+                domPageNum.innerText = `${currentPageIndex + 1} / ${pages.length}`;
+                
+                btnPrev.disabled = currentPageIndex === 0;
+                
+                if (currentPageIndex === pages.length - 1) {
+                    btnNext.innerText = "Nochmal ↺";
+                    btnNext.onclick = function() { changePage(-5); }; // Zurück zum Start
+                } else {
+                    btnNext.innerText = "Weiter";
+                    btnNext.onclick = function() { changePage(1); };
+                    btnNext.disabled = false;
+                }
+                domImage.style.opacity = 1;
+            }, 200);
+        }
+
+        function renderText(textStr) {
+            if(!textStr) {
+                domText.innerHTML = "...";
+                return;
+            }
+            const words = textStr.split(' ');
+            const html = words.map(word => {
+                let displayHTML = word;
+                let cleanWord = word.replace(/[.,!?:;()]/g, ""); 
+                if (state.syllables) {
+                    displayHTML = colorizeSyllables(word);
+                }
+                // Word-Interactive Klasse für Klick-Events
+                return `<span class="word-interactive" onclick="handleWordClick(this, '${cleanWord}')">${displayHTML}</span>`;
+            }).join(' ');
+            domText.innerHTML = html;
+        }
+
+        function toggleTTS() {
+            const btn = document.getElementById('btn-tts');
+            if (window.speechSynthesis.speaking) {
+                window.speechSynthesis.cancel();
+                btn.classList.remove('active');
+            } else {
+                readPageAloud();
+                btn.classList.add('active');
+            }
+        }
+
+        function readPageAloud() {
+            const textToRead = pages[currentPageIndex].text;
+            if(!textToRead) return;
+            
+            let u = new SpeechSynthesisUtterance(textToRead);
+            u.lang = "de-DE";
+            u.rate = 0.9;
+            u.onend = function() { document.getElementById('btn-tts').classList.remove('active'); };
+            window.speechSynthesis.speak(u);
+        }
+
+        function toggleMagnifier() {
+            state.magnifier = !state.magnifier;
+            document.getElementById('btn-magnifier').className = state.magnifier ? "tool-btn active" : "tool-btn";
+        }
+
+        function toggleSyllables() {
+            state.syllables = !state.syllables;
+            document.getElementById('btn-syllables').className = state.syllables ? "tool-btn active" : "tool-btn";
+            renderText(pages[currentPageIndex].text);
+        }
+
+        function handleWordClick(el, cleanWord) {
+            if (state.magnifier) {
+                document.getElementById('magnifier-text').innerText = el.innerText;
+                document.getElementById('magnifier-overlay').style.display = 'block';
+                // Wort vorlesen in der Lupe
+                let u = new SpeechSynthesisUtterance(cleanWord);
+                u.lang = "de-DE";
+                window.speechSynthesis.speak(u);
+            }
+        }
+
+        function closeMagnifier() {
+            document.getElementById('magnifier-overlay').style.display = 'none';
+        }
+
+        function changeFontSize(delta) {
+            let style = window.getComputedStyle(domText);
+            let size = parseFloat(style.fontSize);
+            domText.style.fontSize = (size + delta) + 'px';
+        }
+
+        function changePage(dir) {
+            const newIndex = currentPageIndex + dir;
+            if (newIndex >= 0 && newIndex < pages.length) {
+                currentPageIndex = newIndex;
+                updateView();
+            } else if (dir === -5) {
+                // Reset Logik
+                currentPageIndex = 0;
+                updateView();
+            }
+        }
+
+        function colorizeSyllables(word) {
+            // Regex zur Silbentrennung (Approximation für Deutsch)
+            const parts = word.match(/[^aeiouäöüAEIOUÄÖÜ]*[aeiouäöüAEIOUÄÖÜ]+(?:[^aeiouäöüAEIOUÄÖÜ]*$|[^aeiouäöüAEIOUÄÖÜ](?=[^aeiouäöüAEIOUÄÖÜ]))?/gi) || [word];
+            return parts.map((part, i) => {
+                let cls = (i % 2 === 0) ? 'syl-blue' : 'syl-red';
+                return `<span class="${cls}">${part}</span>`;
+            }).join('');
+        }
+
+        // Initialisierung
+        updateView();
+    </script>
+</body>
+</html>
