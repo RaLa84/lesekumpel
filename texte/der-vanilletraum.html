@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Der Vanilletraum</title>
+    
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
+
+    <style>
+        /* --- GRUNDLAGEN --- */
+        :root {
+            --bg-body: #f0f8ff; --bg-card: #ffffff;
+            --primary-yellow: #f4d03f; --accent-salmon: #f08080; --accent-teal: #2a9d8f;   
+            --text-dark: #2c3e50; --font-heading: 'Fredoka', cursive, sans-serif;
+            --font-body: 'Quicksand', sans-serif; --font-dyslexic: 'Comic Sans MS', 'Chalkboard SE', sans-serif;
+            --syl-blue: #00509d; --syl-red: #c1121f; --trans-color: #7209b7; 
+        }
+
+        body {
+            font-family: var(--font-body); background-color: var(--bg-body); color: var(--text-dark);
+            /* Barrierefreiheit: Große Schrift & hoher Zeilenabstand */
+            line-height: 1.7; margin: 0; padding-bottom: 50px; transition: all 0.3s ease; font-size: 22px; 
+        }
+        body.dyslexia-mode { font-family: var(--font-dyslexic) !important; letter-spacing: 0.05em; line-height: 2.1; }
+
+        .highlight-active {
+            background-color: #ffeb3b !important;
+            border-radius: 4px;
+            box-shadow: 0 0 5px rgba(255, 235, 59, 0.8);
+            transition: background-color 0.1s;
+        }
+
+        /* --- NAVIGATION --- */
+        .main-navbar {
+            background-color: #fff; padding: 10px 20px; border-bottom: 4px solid var(--primary-yellow);
+            display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000;
+        }
+        .nav-left { display: flex; align-items: center; gap: 10px; }
+        .nav-logo { height: 40px; width: auto; }
+        .brand-name { font-family: var(--font-heading); font-size: 1.2rem; color: var(--accent-salmon); font-weight: 600; text-decoration: none; }
+        .nav-links-desktop { display: none; gap: 15px; align-items: center; }
+        .nav-btn { text-decoration: none; color: var(--text-dark); font-weight: 600; font-size: 1rem; display: flex; align-items: center; gap: 5px; }
+        .btn-new-story {
+            border: 2px solid var(--primary-yellow); background: #fff; padding: 8px 15px;
+            border-radius: 25px; color: var(--text-dark); font-weight: bold; transition: transform 0.2s; text-decoration: none;
+        }
+        .btn-new-story:hover { transform: scale(1.05); background: #fffbe6; }
+        .nav-right { display: flex; align-items: center; gap: 15px; }
+        .user-burger-container { display: flex; align-items: center; gap: 15px; }
+        .user-profile { display: flex; align-items: center; gap: 8px; font-weight: bold; font-size: 0.9rem; }
+        .user-avatar { width: 32px; height: 32px; background-color: var(--primary-yellow); border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 1.2rem; }
+        .burger-icon { font-size: 1.8rem; cursor: pointer; display: block; color: var(--text-dark); }
+        .mobile-menu {
+            display: none; background: white; padding: 10px; position: absolute; top: 100%; left: 0; width: 100%;
+            border-bottom: 2px solid var(--primary-yellow); flex-direction: column; gap: 10px; z-index: 999;
+        }
+        .mobile-menu.open { display: flex; }
+
+        /* --- MAIN CARD --- */
+        .main-card {
+            max-width: 800px; margin: 40px auto; background: var(--bg-card);
+            border: 4px solid var(--primary-yellow); border-radius: 25px; padding: 40px;
+            position: relative; box-shadow: 0 10px 0 rgba(0,0,0,0.05);
+        }
+        h1#main-title {
+            font-family: var(--font-heading); color: var(--accent-salmon); font-size: 3rem;
+            text-align: center; line-height: 1.1; margin-bottom: 10px; margin-top: 0; text-transform: uppercase;
+        }
+        .quality-badge {
+            display: block; text-align: center; background: #fffbe6; color: #d4ac0d;
+            border: 1px solid var(--primary-yellow); border-radius: 20px; padding: 5px 15px;
+            width: fit-content; margin: 0 auto 30px auto; font-weight: bold;
+        }
+        .hero-image { width: 100%; border-radius: 15px; margin-bottom: 30px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+
+        /* --- TOOLBAR --- */
+        .toolbar-container {
+            border: 2px dashed var(--primary-yellow); border-radius: 15px; padding: 15px;
+            margin-bottom: 20px; display: flex; flex-wrap: wrap; justify-content: center; gap: 10px;
+            background: #fff; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .tool-btn {
+            background: #fff; border: 2px solid #ddd; border-radius: 12px; padding: 8px 15px;
+            font-family: var(--font-body); font-weight: 600; color: var(--text-dark); cursor: pointer;
+            display: flex; align-items: center; gap: 6px; transition: all 0.2s; font-size: 0.9em;
+        }
+        .tool-btn:hover { border-color: var(--accent-teal); color: var(--accent-teal); }
+        .tool-btn.active { background: var(--accent-teal); color: #fff; border-color: var(--accent-teal); }
+        .btn-salmon { border-color: var(--accent-salmon); color: var(--accent-salmon); }
+        .btn-salmon.active { background: var(--accent-salmon); color: white; }
+
+        .fab-tools {
+            display: none; position: fixed; bottom: 20px; right: 20px;
+            width: 60px; height: 60px; background-color: var(--accent-salmon); color: white;
+            border-radius: 50%; border: none; box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            font-size: 1.8rem; cursor: pointer; z-index: 5000; justify-content: center; align-items: center;
+            transition: transform 0.2s;
+        }
+        .fab-tools:active { transform: scale(0.9); }
+
+        @media (max-width: 767px) {
+            .brand-name { display: none; }
+            .hidden-mobile { display: none !important; }
+            .toolbar-container {
+                position: fixed; bottom: -100%; left: 0; width: 100%; border: none;
+                border-top: 4px solid var(--primary-yellow); border-radius: 20px 20px 0 0;
+                box-shadow: 0 -5px 20px rgba(0,0,0,0.2); z-index: 4000; box-sizing: border-box;
+                margin: 0; padding-bottom: 30px; flex-direction: row; align-content: flex-start;
+                height: auto; max-height: 50vh; overflow-y: auto;
+            }
+            .toolbar-container.open { bottom: 0; }
+            .fab-tools { display: flex; }
+            body { padding-bottom: 100px; }
+            h1#main-title { font-size: 2.2rem; }
+        }
+        @media (min-width: 768px) {
+            .burger-icon { display: none; }
+            .nav-links-desktop { display: flex; }
+            .nav-logo { height: 50px; }
+            .brand-name { font-size: 1.5rem; display: block; }
+            .nav-left { gap: 15px; }
+            .fab-tools { display: none !important; }
+        }
+
+        /* --- CONTENT --- */
+        .story-text { font-size: 1.2em; color: #444; margin-bottom: 40px; }
+        .syl-blue { color: var(--syl-blue); }
+        .syl-red { color: var(--syl-red); }
+        .translated-word { color: var(--trans-color); font-weight: bold; font-style: italic; }
+        .word-interactive:hover { background-color: #fffbe6; cursor: pointer; border-radius: 4px; }
+
+        /* KORRIGIERT: Häppchen-Modus Text-Flow */
+        .chunk-controls { display: flex; justify-content: space-between; align-items: center; margin-top: 30px; padding: 0 10px; }
+        
+        #chunk-display { 
+            min-height: 150px; 
+            /* WICHTIG: Flexbox hier entfernt, damit Wörter normalen Abstand haben */
+            display: block; 
+            text-align: center;
+            line-height: 1.8;
+            padding: 40px 20px; /* Padding sorgt für vertikale Luft */
+        }
+        
+        .progress-ring {
+            width: 60px; height: 60px; border-radius: 50%;
+            background: conic-gradient(var(--primary-yellow) var(--p), #f0f0f0 0deg);
+            display: flex; align-items: center; justify-content: center;
+            font-family: var(--font-heading); font-weight: bold; font-size: 1rem;
+            color: var(--text-dark); border: 4px solid #fff; box-shadow: 0 0 0 2px #eee;
+        }
+
+        /* --- SECTIONS --- */
+        .author-box, .quiz-section, .survey-section, .comments-section, .related-section { margin-bottom: 40px; }
+        .section-title { text-align: center; font-family: var(--font-heading); color: var(--accent-salmon); font-size: 1.5rem; margin-bottom: 20px; }
+        
+        .vote-wrapper { display: flex; justify-content: center; gap: 20px; }
+        .vote-card { width: 60px; height: 60px; display: flex; justify-content: center; align-items: center; background: #fff; border: 2px solid #eee; border-radius: 15px; font-size: 2rem; cursor: pointer; box-shadow: 0 4px 0 #eee; }
+        .vote-card:active { transform: translateY(4px); box-shadow: none; }
+        
+        .author-card { border: 2px solid #eee; border-left: 5px solid var(--accent-salmon); border-radius: 15px; padding: 20px; display: flex; align-items: center; gap: 20px; background: #fff; }
+        .author-img { width: 70px; height: 70px; border-radius: 50%; border: 3px solid var(--primary-yellow); padding: 2px; }
+        .author-name { font-family: var(--font-heading); color: var(--accent-salmon); font-size: 1.3rem; margin: 0; }
+        
+        .quiz-card { border: 2px solid #eee; border-radius: 15px; padding: 20px; background: #fff; }
+        
+        /* --- NEURO-INKLUSIVES QUIZ CSS --- */
+        @keyframes gentleShake {
+            0% { transform: translateX(0); }
+            25% { transform: translateX(-5px); }
+            50% { transform: translateX(5px); }
+            75% { transform: translateX(-5px); }
+            100% { transform: translateX(0); }
+        }
+
+        .quiz-option { 
+            display: flex; align-items: center; justify-content: space-between;
+            border: 2px solid var(--primary-yellow); 
+            border-radius: 10px; padding: 12px; margin-bottom: 10px; 
+            cursor: pointer; font-weight: 600; background: #fff; 
+            transition: all 0.3s ease;
+        }
+
+        .quiz-option.correct { 
+            background: #fffbe6; border-color: #f1c40f; color: #b7950b;
+            box-shadow: 0 0 10px rgba(241, 196, 15, 0.3);
+            pointer-events: none;
+        }
+        
+        .quiz-option.try-again { 
+            opacity: 0.6; background-color: #f4f4f4; border-color: #ddd; color: #999;
+            animation: gentleShake 0.4s ease-in-out; cursor: default;
+        }
+        
+        .comments-box { border: 2px solid #eee; border-radius: 15px; padding: 20px; }
+        .comment-input { width: 100%; border: 2px solid var(--primary-yellow); border-radius: 10px; padding: 15px; font-family: var(--font-body); font-size: 1rem; box-sizing: border-box; outline: none; }
+        .btn-send { background-color: var(--accent-salmon); color: white; border: none; padding: 10px 30px; border-radius: 10px; font-weight: bold; font-size: 1rem; float: right; margin-top: 10px; cursor: pointer; box-shadow: 0 4px 0 #c0392b; }
+        .single-comment { background-color: #f9f9f9; border-radius: 10px; padding: 15px; margin-bottom: 15px; }
+        
+        /* --- RELATED --- */
+        .related-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; }
+        .related-card { background: #fff; border: 2px solid #eee; border-radius: 15px; overflow: hidden; text-decoration: none; color: var(--text-dark); transition: transform 0.2s, box-shadow 0.2s; display: flex; flex-direction: column; }
+        .related-card:hover { transform: translateY(-5px); box-shadow: 0 5px 15px rgba(0,0,0,0.1); border-color: var(--primary-yellow); }
+        .related-img { width: 100%; height: 140px; object-fit: cover; border-bottom: 2px solid #eee; }
+        .related-content { padding: 15px; flex-grow: 1; display: flex; flex-direction: column; justify-content: space-between; }
+        .related-title { font-family: var(--font-heading); font-size: 1.1rem; line-height: 1.3; margin-bottom: 10px; color: var(--accent-teal); }
+        .related-meta { display: flex; justify-content: space-between; font-size: 0.85rem; color: #777; font-weight: 600; }
+
+        .clearfix::after { content: ""; display: table; clear: both; }
+        footer { text-align: center; margin-top: 50px; color: #888; font-size: 0.9rem; padding-top: 20px; border-top: 1px solid #eee; }
+        .footer-links a { color: #888; text-decoration: none; margin: 0 5px; }
+        .magnifier-overlay { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: #fff; border: 4px solid var(--primary-yellow); padding: 20px; border-radius: 20px; font-size: 2rem; box-shadow: 0 10px 20px rgba(0,0,0,0.2); z-index: 6000; display: none; text-align: center; font-family: var(--font-heading); }
+        .hidden { display: none; }
+
+    </style>
+</head>
+<body>
+
+    <button class="fab-tools" onclick="toggleMobileToolbar()" aria-label="Werkzeuge öffnen">🛠️</button>
+
+    <nav class="main-navbar">
+        <div class="nav-left">
+            <img src="https://github.com/RaLa84/lesekumpel/blob/main/logo1.png?raw=true" alt="Logo" class="nav-logo">
+            <a href="#" class="brand-name">Lesekumpel</a>
+            <div class="nav-links-desktop"><a href="https://rala84.github.io/lesekumpel/index.html" class="nav-btn">📚 Bibliothek</a></div>
+        </div>
+        <div class="nav-right">
+            <a href="https://rala84.app.n8n.cloud/form/d934fee1-a67d-4146-8b19-1e3c8a1a8967" class="btn-new-story hidden-mobile">✨ Neue Geschichte</a>
+            <div class="user-burger-container">
+                <div class="user-profile"><span>Papa Wutz</span><div class="user-avatar">🐷</div></div>
+                <span class="burger-icon" onclick="toggleMenu()">☰</span>
+            </div>
+        </div>
+        <div id="mobile-menu" class="mobile-menu">
+            <a href="https://rala84.github.io/lesekumpel/index.html" class="nav-btn">📚 Bibliothek</a>
+            <a href="https://rala84.app.n8n.cloud/form/b6f28a18-e90d-4bb8-b201-0c8f6c667a7a" class="nav-btn">✨ Neue Geschichte</a>
+        </div>
+    </nav>
+
+    <div class="main-card">
+        <h1 id="main-title">Der Vanilletraum</h1>
+        <div class="quality-badge">⭐ Bewerte die Geschichte ⭐</div>
+        <img src="https://raw.githubusercontent.com/RaLa84/lesekumpel/main/bilder/der-vanilletraum.png" alt="Titelbild" class="hero-image">
+
+        <div class="toolbar-container" id="toolbar">
+            <div style="width:100%; text-align:right; display:none;" id="toolbar-close-btn">
+                <button onclick="toggleMobileToolbar()" style="background:none; border:none; font-size:1.5rem;">❌</button>
+            </div>
+            <button class="tool-btn" onclick="toggleTTS()" id="btn-tts">🔊 Vorlesen</button>
+            <button class="tool-btn" onclick="toggleMagnifier()" id="magnifier-btn">🔍 Lupe</button>
+            <span style="width:1px; background:#ddd; margin:0 5px;"></span>
+            <button class="tool-btn btn-salmon" onclick="toggleSummaryMode()" id="btn-summary">📖 Einfach</button>
+            <button class="tool-btn" onclick="toggleSyllables()" id="btn-syllables">🔴🔵 Silben</button>
+            <span style="width:1px; background:#ddd; margin:0 5px;"></span>
+            <button class="tool-btn" onclick="changeFontSize(-2)">A-</button>
+            <button class="tool-btn" onclick="changeFontSize(2)">A+</button>
+            <button class="tool-btn" onclick="toggleViewMode()" id="view-toggle-btn">🧩 Häppchen</button>
+            <button class="tool-btn" onclick="toggleLanguage()" id="btn-lang">🇩🇪 / 🇬🇧</button>
+        </div>
+
+        <div id="full-text-view" class="story-text"></div>
+        <div id="chunk-view" class="story-text hidden" style="text-align:left; font-size:1.4em;">
+            <div id="chunk-display"></div>
+            <div class="chunk-controls">
+                <button class="tool-btn" onclick="prevChunk()">← Zurück</button>
+                <div id="chunk-progress" class="progress-ring" style="--p: 20%;">1/5</div>
+                <button class="tool-btn" onclick="nextChunk()">Weiter →</button>
+            </div>
+        </div>
+
+        <div class="author-box">
+            <div class="author-card">
+                <img src="https://rala84.github.io/lesekumpel/Deniz-min-compressed2.webp" alt="Autor" class="author-img">
+                <div>
+                    <h3 class="author-name">Deniz Traumfänger</h3>
+                    <p style="margin:5px 0 0 0; font-size:0.9rem;">Deniz hat eine blühende Fantasie. Er nimmt dich mit auf Reisen in fantastische Welten, wo alles möglich ist.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="quiz-section">
+            <div class="section-title">🧠 Quiz-Zeit! Hast du gut aufgepasst?</div>
+            <div id="quiz-wrapper" class="quiz-card"></div>
+        </div>
+
+        <div class="survey-section">
+            <div class="section-title">Hat dir die Geschichte gefallen?</div>
+            <div class="vote-wrapper">
+                <div class="vote-card" onclick="alert('Yay!')">👍</div>
+                <div class="vote-card" onclick="alert('Oh nein!')">👎</div>
+            </div>
+        </div>
+
+        <div class="related-section">
+            <div class="section-title">Das könnte dir auch gefallen</div>
+            <div class="related-grid">
+                <a href="https://rala84.github.io/lesekumpel/texte/hola-spanien-dein-reisefuehrer-der-superlative.html" class="related-card">
+                    <img src="https://rala84.github.io/lesekumpel/bilder/hola-spanien-dein-reisefuehrer-der-superlative.png" alt="Spanien" class="related-img">
+                    <div class="related-content"><div class="related-title">Hola Spanien - Dein Reiseführer</div><div class="related-meta"><span>🖊️ Samira</span><span>⭐ 89%</span></div></div>
+                </a>
+                <a href="https://rala84.github.io/lesekumpel/texte/fliegen-ohne-motor-das-segelflugzeuggeheimnis.html" class="related-card">
+                    <img src="https://rala84.github.io/lesekumpel/bilder/fliegen-ohne-motor-das-segelflugzeuggeheimnis.png" alt="Segelflugzeug" class="related-img">
+                    <div class="related-content"><div class="related-title">Fliegen ohne Motor</div><div class="related-meta"><span>🖊️ Samira</span><span>⭐ 89%</span></div></div>
+                </a>
+                <a href="https://rala84.github.io/lesekumpel/texte/der-blaue-panzer-des-schreckens.html" class="related-card">
+                    <img src="https://rala84.github.io/lesekumpel/bilder/der-blaue-panzer-des-schreckens.png" alt="Blauer Panzer" class="related-img">
+                    <div class="related-content"><div class="related-title">Der blaue Panzer des Schreckens</div><div class="related-meta"><span>🖊️ Jonas</span><span>⭐ 93%</span></div></div>
+                </a>
+            </div>
+        </div>
+
+        <div class="comments-section">
+            <div class="section-title" style="justify-content:flex-start;">💬 Dein Kommentar</div>
+            <div class="comments-box">
+                <div class="comment-input-wrapper">
+                    <textarea class="comment-input" placeholder="Was denkst du über die Geschichte?"></textarea>
+                    <button class="btn-send" onclick="alert('Gesendet!')">Senden</button>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="comment-list-wrapper">
+                    <div class="single-comment">
+                        <div style="font-weight:bold; color:var(--text-dark);">Peppa Wutz <span style="font-size:0.8em; color:#888; float:right;">10.01.2026</span></div>
+                        <div>Witzig, mein Hund heißt auch Buddy</div>
+                    </div>
+                    <div class="single-comment">
+                        <div style="font-weight:bold; color:var(--text-dark);">Mama Wutz <span style="font-size:0.8em; color:#888; float:right;">12.12.2025</span></div>
+                        <div>Das ist die Lieblingsgeschichte von meiner Tochter</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>Erstellt von deinem KI-Lesekumpel 🤖</p>
+        <div class="footer-links"><a href="#">Impressum</a> • <a href="#">Datenschutz</a> • <a href="#">Über uns</a></div>
+    </footer>
+
+    <div id="magnifier-overlay" class="magnifier-overlay">
+        <span id="magnifier-text">Wort</span>
+        <div style="margin-top:10px; font-size:1rem;">
+            <button class="tool-btn" onclick="speakMagnifiedWord()">🔊 Hören</button>
+            <button class="tool-btn btn-salmon" onclick="closeMagnifier()">Schließen</button>
+        </div>
+    </div>
+
+    <a href="whatsapp://send?text=Lies dir diese Geschichte durch!" class="whatsapp-float">📱</a>
+
+    <script>
+        function toggleMobileToolbar() {
+            const tb = document.getElementById('toolbar');
+            tb.classList.toggle('open');
+            if(window.innerWidth < 768) {
+                document.getElementById('toolbar-close-btn').style.display = tb.classList.contains('open') ? 'block' : 'none';
+            }
+        }
+
+        /* --- DYNAMISCHE INJEKTION & PARSING --- */
+        
+        let rawStory = "Stell dir vor, ein ganz ge-wöhn-li-cher Tag. Die Son-ne malt ih-re lan-gen Schat-ten auf den Bo-den. Und dann... schleicht sich et-was Be-son-de-res in die Luft. Es ist kein Ge-räusch, das man hö-ren kann, und nichts, das man se-hen wür-de. Es ist ein Duft. Ganz lei-se, wie ein un-sicht-ba-res Wölk-chen, schwebt er durch den Raum. Kannst du es rie-chen? Es ist der Duft von Va-nil-le. Er ist so warm und süß, dass es sich an-fühlt, als wür-de dich ei-ne wei-che De-cke ganz sanft um-hül-len. Die-ser Ge-ruch ist nicht laut oder auf-dring-lich, son-dern zart, wie ein klei-nes, ge-hei-mes Flüs-tern, das nur für dich be-stimmt ist. Er kit-zelt ein biss-chen in dei-ner Na-se und malt so-fort die schöns-ten Bil-der in dei-nem Kopf. Viel-leicht siehst du ei-ne al-te Kü-che, in der gold-brau-ne Kek-se ge-rade aus dem Ofen kom-men und der Zu-cker wie Dia-man-ten auf ih-nen fun-kelt. Oder ei-ne Tas-se war-mer Milch mit Ho-nig, die dich an die Hand ei-nes lie-ben Men-schen er-in-nert. Der Va-nil-le-duft ist wie ein klei-ner, war-mer Son-nen-strahl, der dich von in-nen he-raus wärmt. Er er-zählt von Ge-bor-gen-heit, von ru-hi-gen Mo-men-ten und von all den schö-nen Din-gen, die dein Herz zum Lä-cheln brin-gen. Spürst du, wie sich dein Bauch ganz weich an-fühlt, wenn du da-ran denkst? Ein klei-ner, sü-ßer Traum, der ein-fach so, in der Luft tanzt.";
+        const storyRaw = rawStory.replace(/\n/g, "<br>");
+        
+        let rawSummary = "Ein Tag ist ganz ge-wöhn-lich. Dann kommt ein be-son-de-rer Duft. Es ist der Duft von Va-nil-le. Er ist warm und süß, wie ei-ne wei-che De-cke. Er macht schö-ne Bil-der im Kopf. Man denkt an Kek-se oder war-me Milch. Der Duft wärmt das Herz. Es ist ein sü-ßer Traum in der Luft.";
+        const summaryRaw = rawSummary.replace(/\n/g, "<br>");
+
+        const quizData = [{"q":"Was schleicht sich an diesem Tag Besonderes in die Luft?","a":["Ein lautes Geräusch.","Ein süßer Duft.","Ein großer Vogel."],"correct":1},{"q":"Wie fühlt sich der Vanille-Duft an?","a":["Wie eine warme, weiche Decke.","Wie ein kalter Wind.","Wie ein hartes Kissen."],"correct":0},{"q":"Welche schönen Bilder malt der Duft in deinem Kopf?","a":["Bilder von Regen und Gewitter.","Bilder von Autos und Flugzeugen.","Bilder von Keksen und warmer Milch."],"correct":2}];
+
+        // INTELLIGENTER DICTIONARY PARSER
+        const rawDictionaryEntry = ["ge-wöhn-li-cher Tag (ordinary day)","Son-ne (sun)","Schat-ten (shadows)","Bo-den (ground)","Be-son-de-res (something special)","Luft (air)","Ge-räusch (sound)","se-hen (see)","Duft (scent)","un-sicht-ba-res Wölk-chen (invisible cloud)","Raum (room)","rie-chen (smell)","Va-nil-le (vanilla)","warm (warm)","süß (sweet)","wei-che De-cke (soft blanket)","um-hül-len (envelop)","Ge-ruch (smell)","zart (delicate)","ge-hei-mes Flüs-tern (secret whisper)","Na-se (nose)","Bil-der (pictures)","Kopf (head)","al-te Kü-che (old kitchen)","Kek-se (cookies)","Ofen (oven)","Zu-cker (sugar)","Dia-man-ten (diamonds)","Tas-se Milch (cup of milk)","Ho-nig (honey)","lie-ben Men-schen (dear person)","Va-nil-le-duft (vanilla scent)","Son-nen-strahl (sunbeam)","wärmt (warms)","Ge-bor-gen-heit (security/comfort)","ru-hi-gen Mo-men-ten (calm moments)","Herz (heart)","Lä-cheln (smile)","Bauch (belly)","weich (soft)","sü-ßer Traum (sweet dream)"];
+        let dictionary = {};
+        
+        if (Array.isArray(rawDictionaryEntry)) {
+            rawDictionaryEntry.forEach(item => {
+                let key = "";
+                let value = "";
+
+                if (item.includes('(') && item.includes(')')) {
+                    let parts = item.split('(');
+                    key = parts[0].trim().replace(/-/g, ""); 
+                    value = parts[1].replace(')', '').trim();
+                } 
+                else if (item.includes(':')) {
+                    let parts = item.split(':');
+                    key = parts[0].trim().replace(/-/g, "");
+                    value = parts.slice(1).join(':').trim();
+                }
+
+                if (key && value) {
+                    dictionary[key] = value;
+                }
+            });
+        } else {
+            dictionary = rawDictionaryEntry;
+        }
+
+        /* --- LOGIC --- */
+        let state = { syllables: false, summary: false, english: false, chunkIndex: 0, chunks: [], magnifier: false };
+
+        function renderText() {
+            let txt = state.summary ? summaryRaw : storyRaw;
+            
+            // 1. Volltext-Ansicht
+            let paragraphs = txt.split('<br>');
+            let html = paragraphs.map(p => {
+                if(!p.trim()) return "";
+                return p.split(' ').map(w => processWord(w)).join(' ');
+            }).join('<br>');
+            document.getElementById('full-text-view').innerHTML = html;
+
+            // 2. Häppchen-Ansicht: Aufteilung in maximal 2 Sätze
+            // Bereinigen von HTML-Tags für sauberes Splitting
+            let cleanTextForChunks = txt.replace(/<br\s*\/?>/gi, " ");
+            
+            // Regex: Findet Sätze basierend auf ., !, ? und stellt sicher, dass Leerzeichen danach berücksichtigt werden
+            let sentences = cleanTextForChunks.match(/[^\.!\?]+[\.!\?]+(\s+|$)/g);
+            
+            if (!sentences) sentences = [cleanTextForChunks]; 
+
+            state.chunks = [];
+            let tempChunk = "";
+            let sentenceCount = 0;
+
+            sentences.forEach((sent, index) => {
+                tempChunk += sent;
+                sentenceCount++;
+
+                // Wenn 2 Sätze erreicht sind ODER es der allerletzte Satz ist
+                if (sentenceCount >= 2 || index === sentences.length - 1) {
+                    // split(/\s+/) entfernt Leerzeichen, join(' ') fügt sie explizit wieder hinzu
+                    let processedChunk = tempChunk.trim().split(/\s+/).map(w => processWord(w)).join(' ');
+                    
+                    // WICHTIG: Das Ergebnis muss ein String mit Leerzeichen sein. 
+                    // Da #chunk-display jetzt display:block ist, werden diese Leerzeichen auch angezeigt.
+                    state.chunks.push(processedChunk);
+                    
+                    tempChunk = "";
+                    sentenceCount = 0;
+                }
+            });
+
+            updateChunkDisplay(); 
+            updateButtons();
+        }
+
+        function processWord(raw) {
+            let clean = raw.replace(/-/g, "").replace(/[.,!?:;„“()]/g, "");
+            let display = raw.replace(/-/g, ""); 
+            let isTrans = false;
+            let cleanLower = clean.toLowerCase();
+            let dictKey = Object.keys(dictionary).find(k => k.toLowerCase() === cleanLower);
+
+            if(state.english && dictKey) { 
+                display = dictionary[dictKey]; 
+                isTrans = true; 
+            }
+            if(state.syllables && !isTrans) { 
+                let parts = raw.split('-'); 
+                if(parts.length > 1) display = parts.map((p,i) => `<span class="${i%2===0?'syl-blue':'syl-red'}">${p}</span>`).join(''); 
+            }
+            let cls = isTrans ? "translated-word" : "";
+            return `<span class="word-interactive ${cls}" onclick="clickWord(this, '${clean}', '${isTrans?'en':'de'}')">${display}</span>`;
+        }
+
+        function updateButtons() {
+            document.getElementById('btn-syllables').className = state.syllables ? "tool-btn active" : "tool-btn";
+            document.getElementById('btn-summary').className = state.summary ? "tool-btn btn-salmon active" : "tool-btn btn-salmon";
+            document.getElementById('btn-lang').className = state.english ? "tool-btn active" : "tool-btn";
+        }
+
+        function updateChunkDisplay() {
+            if(state.chunkIndex >= state.chunks.length) state.chunkIndex = 0;
+            // Der Inhalt wird nun in einen normalen Block gerendert, Leerzeichen funktionieren wieder
+            document.getElementById('chunk-display').innerHTML = state.chunks[state.chunkIndex] || "";
+            
+            let current = state.chunkIndex + 1, total = state.chunks.length;
+            let ring = document.getElementById('chunk-progress');
+            ring.innerText = current + "/" + total;
+            ring.style.setProperty('--p', ((current / total) * 100) + '%');
+        }
+
+        function toggleSyllables() { state.syllables = !state.syllables; renderText(); }
+        function toggleSummaryMode() { state.summary = !state.summary; state.chunkIndex=0; renderText(); }
+        function toggleLanguage() { state.english = !state.english; renderText(); }
+        
+        function toggleTTS() {
+            const btn = document.getElementById('btn-tts');
+            if (window.speechSynthesis.speaking) {
+                window.speechSynthesis.cancel();
+                btn.classList.remove('active');
+                clearHighlights();
+            } else {
+                let container = document.getElementById('chunk-view').classList.contains('hidden') 
+                    ? document.getElementById('full-text-view') 
+                    : document.getElementById('chunk-display');
+                
+                let spans = container.querySelectorAll('.word-interactive');
+                let speechText = "";
+                let wordMap = []; 
+                
+                spans.forEach(span => {
+                    let word = span.innerText; 
+                    let start = speechText.length;
+                    speechText += word + " ";
+                    let end = speechText.length - 1; 
+                    wordMap.push({ start, end, el: span });
+                });
+
+                let u = new SpeechSynthesisUtterance(speechText);
+                u.lang = "de-DE";
+                u.rate = 0.9;
+
+                u.onboundary = function(event) {
+                    if (event.name === 'word') {
+                        let charIndex = event.charIndex;
+                        let currentWord = wordMap.find(w => charIndex >= w.start && charIndex < w.end);
+                        clearHighlights();
+                        if (currentWord) currentWord.el.classList.add('highlight-active');
+                    }
+                };
+
+                u.onend = function() { btn.classList.remove('active'); clearHighlights(); };
+                window.speechSynthesis.speak(u);
+                btn.classList.add('active');
+            }
+        }
+
+        function clearHighlights() {
+            document.querySelectorAll('.highlight-active').forEach(el => el.classList.remove('highlight-active'));
+        }
+
+        function toggleMagnifier() {
+            state.magnifier = !state.magnifier;
+            document.getElementById('magnifier-btn').className = state.magnifier ? "tool-btn active" : "tool-btn";
+        }
+        function clickWord(el, word, lang) {
+            if(!state.magnifier) return;
+            document.getElementById('magnifier-text').innerText = el.innerText;
+            document.getElementById('magnifier-text').setAttribute('data-s', word);
+            document.getElementById('magnifier-text').setAttribute('data-l', lang);
+            document.getElementById('magnifier-overlay').style.display = 'block';
+        }
+        function speakMagnifiedWord() {
+            let t = document.getElementById('magnifier-text').innerText;
+            let l = document.getElementById('magnifier-text').getAttribute('data-l');
+            let u = new SpeechSynthesisUtterance(t);
+            u.lang = l === 'en' ? 'en-US' : 'de-DE';
+            window.speechSynthesis.speak(u);
+        }
+        function closeMagnifier() { document.getElementById('magnifier-overlay').style.display = 'none'; }
+        
+        function toggleViewMode() {
+            let full = document.getElementById('full-text-view');
+            let chunk = document.getElementById('chunk-view');
+            let btn = document.getElementById('view-toggle-btn');
+            if(full.classList.contains('hidden')) {
+                full.classList.remove('hidden'); chunk.classList.add('hidden'); btn.className = "tool-btn";
+            } else {
+                full.classList.add('hidden'); chunk.classList.remove('hidden'); btn.className = "tool-btn active";
+                state.chunkIndex = 0; updateChunkDisplay();
+            }
+        }
+        function nextChunk() { if(state.chunkIndex < state.chunks.length-1) { state.chunkIndex++; updateChunkDisplay(); } }
+        function prevChunk() { if(state.chunkIndex > 0) { state.chunkIndex--; updateChunkDisplay(); } }
+        function changeFontSize(d) {
+            let s = parseFloat(window.getComputedStyle(document.body).fontSize);
+            let newSize = s + d; if(newSize < 12) newSize = 12; if(newSize > 40) newSize = 40;
+            document.body.style.fontSize = newSize + "px";
+        }
+        function toggleMenu() { document.getElementById('mobile-menu').classList.toggle('open'); }
+
+        function checkQuizAnswer(element, isCorrect) {
+            if(element.classList.contains('correct') || element.classList.contains('try-again')) return;
+
+            if (isCorrect) {
+                element.classList.add('correct');
+                element.innerHTML += " 🌟";
+            } else {
+                element.classList.add('try-again');
+            }
+        }
+
+        window.onload = function() {
+            renderText();
+            
+            let qHTML = "";
+            quizData.forEach((item, i) => {
+                qHTML += `<div style="margin-bottom:30px; border-bottom:1px dashed #eee; padding-bottom:20px;">
+                            <div style="font-weight:bold; margin-bottom:15px; color:var(--accent-teal);">${i+1}. ${item.q}</div>`;
+                
+                item.a.forEach((ans, j) => {
+                    const isCorrect = (j === item.correct);
+                    qHTML += `<div class="quiz-option" onclick="checkQuizAnswer(this, ${isCorrect})">
+                                <span>${ans}</span>
+                              </div>`;
+                });
+                qHTML += `</div>`;
+            });
+            
+            const quizWrapper = document.getElementById('quiz-wrapper');
+            if(quizData.length > 0) {
+                quizWrapper.innerHTML = qHTML;
+            } else {
+                document.querySelector('.quiz-section').style.display = 'none';
+            }
+        };
+    </script>
+</body>
+</html>
