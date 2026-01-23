@@ -8,7 +8,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
 
     <style>
-        /* --- GRUNDLAGEN & STYLES AUS DER VORLAGE (Header/Footer) --- */
+        /* --- GRUNDLAGEN & STYLES --- */
         :root {
             --bg-body: #f0f8ff; --bg-card: #ffffff;
             --primary-yellow: #f4d03f; --accent-salmon: #f08080; --accent-teal: #2a9d8f;   
@@ -17,11 +17,10 @@
         }
 
         body {
-            font-family: var(--font-body); /* Angepasst an Lesekumpel-Design */
+            font-family: var(--font-body);
             background-color: var(--bg-body);
             color: var(--text-dark);
-            margin: 0;
-            padding: 0; /* Padding wird im Container geregelt */
+            margin: 0; padding: 0;
             text-align: center;
         }
 
@@ -29,7 +28,7 @@
         .main-navbar {
             background-color: #fff; padding: 10px 20px; border-bottom: 4px solid var(--primary-yellow);
             display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000;
-            text-align: left; /* Damit die Elemente nicht zentriert werden */
+            text-align: left;
         }
         .nav-left { display: flex; align-items: center; gap: 10px; }
         .nav-logo { height: 40px; width: auto; }
@@ -67,141 +66,82 @@
         footer { text-align: center; margin-top: 50px; color: #888; font-size: 0.9rem; padding: 20px; border-top: 1px solid #eee; background: #fff; }
         .footer-links a { color: #888; text-decoration: none; margin: 0 5px; }
 
-        /* --- BIBLIOTHEK SPECIFIC STYLES --- */
-        .container {
-            max-width: 800px;
-            margin: 40px auto;
-            padding: 0 20px;
-        }
-        h1 { 
-            font-family: var(--font-heading); 
-            color: var(--accent-salmon); 
-            margin-bottom: 20px; 
-            text-transform: uppercase;
-        }
+        /* --- BIBLIOTHEK STYLES --- */
+        .container { max-width: 800px; margin: 40px auto; padding: 0 20px; }
+        h1 { font-family: var(--font-heading); color: var(--accent-salmon); margin-bottom: 20px; text-transform: uppercase; }
         
-        /* --- STEUERELEMENTE (Filter & Suche) --- */
+        /* --- STEUERELEMENTE --- */
         .controls {
-            background: white;
-            padding: 20px;
-            border-radius: 20px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-            margin-bottom: 30px;
-            border: 2px solid #eee;
+            background: white; padding: 20px; border-radius: 20px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05); margin-bottom: 30px; border: 2px solid #eee;
         }
 
-        /* Filter Buttons */
-        .filter-btn-group {
-            display: flex;
-            justify-content: center;
-            gap: 10px;
-            margin-bottom: 20px;
-            flex-wrap: wrap;
+        /* AUTOREN FILTER STYLES (NEU) */
+        .author-filter-container {
+            display: flex; justify-content: center; gap: 15px; margin-bottom: 25px; flex-wrap: wrap;
         }
+        .author-item {
+            display: flex; flex-direction: column; align-items: center; gap: 5px; cursor: pointer;
+            transition: transform 0.2s;
+        }
+        .author-item:hover { transform: translateY(-3px); }
+        
+        .author-img-wrapper {
+            width: 60px; height: 60px; border-radius: 50%; overflow: hidden;
+            border: 3px solid transparent; box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            transition: all 0.2s; background: #f9f9f9; display: flex; align-items: center; justify-content: center;
+        }
+        .author-img { width: 100%; height: 100%; object-fit: cover; }
+        .author-placeholder { font-size: 1.5rem; }
+        .author-name { font-size: 0.8rem; font-weight: bold; color: #777; }
+
+        /* Active State für Autoren */
+        .author-item.active .author-img-wrapper {
+            border-color: var(--accent-salmon);
+            box-shadow: 0 0 0 2px rgba(240, 128, 128, 0.3);
+            transform: scale(1.1);
+        }
+        .author-item.active .author-name { color: var(--accent-salmon); }
+
+        /* Filter Buttons (Texte/Comics) */
+        .filter-btn-group { display: flex; justify-content: center; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
         .filter-btn {
-            background: #eee;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 20px;
-            cursor: pointer;
-            font-family: inherit;
-            font-weight: bold;
-            color: #555;
-            transition: all 0.2s;
+            background: #eee; border: none; padding: 8px 16px; border-radius: 20px;
+            cursor: pointer; font-family: inherit; font-weight: bold; color: #555; transition: all 0.2s;
         }
         .filter-btn:hover { background: #ddd; }
-        .filter-btn.active {
-            background: var(--accent-salmon);
-            color: white;
-            box-shadow: 0 4px 6px rgba(240, 128, 128, 0.3);
-        }
+        .filter-btn.active { background: var(--primary-yellow); color: var(--text-dark); box-shadow: 0 3px 5px rgba(244, 208, 63, 0.4); }
 
-        /* Das Suchfeld */
+        /* Suche & Info */
         #searchInput {
-            width: 100%;
-            padding: 12px;
-            font-size: 1.1em;
-            border: 2px solid var(--primary-yellow);
-            border-radius: 15px;
-            outline: none;
-            box-sizing: border-box;
-            font-family: var(--font-body);
+            width: 100%; padding: 12px; font-size: 1.1em; border: 2px solid var(--primary-yellow);
+            border-radius: 15px; outline: none; box-sizing: border-box; font-family: var(--font-body);
         }
         #searchInput:focus { border-color: var(--accent-salmon); }
-
-        /* Sortier Info */
-        .sort-info {
-            font-size: 0.9em;
-            color: #888;
-            margin-top: 10px;
-            font-style: italic;
-        }
+        .sort-info { font-size: 0.9em; color: #888; margin-top: 10px; font-style: italic; }
 
         /* --- LISTE --- */
-        #bookList {
-            list-style: none;
-            padding: 0;
-        }
+        #bookList { list-style: none; padding: 0; }
         .book-item {
-            background: white;
-            margin-bottom: 15px;
-            border-radius: 15px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
-            transition: transform 0.2s, opacity 0.3s;
-            border-left: 10px solid #ccc;
-            opacity: 0; /* Für Fade-In Animation */
-            animation: fadeIn 0.5s forwards;
-            text-align: left; /* Inhalt der Karten linksbündig */
+            background: white; margin-bottom: 15px; border-radius: 15px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05); transition: transform 0.2s, opacity 0.3s;
+            border-left: 10px solid #ccc; opacity: 0; animation: fadeIn 0.5s forwards; text-align: left;
         }
-        
         @keyframes fadeIn { to { opacity: 1; } }
-
-        /* Farben */
         .type-texte { border-left-color: var(--accent-teal); }
         .type-comicgeschichten { border-left-color: var(--primary-yellow); }
-
-        .book-item:hover {
-            transform: scale(1.02);
-            box-shadow: 0 8px 15px rgba(0,0,0,0.1);
-        }
-        .book-link {
-            display: flex;
-            align-items: center;
-            padding: 15px 20px;
-            text-decoration: none;
-            color: #333;
-            text-align: left;
-        }
-        
+        .book-item:hover { transform: scale(1.02); box-shadow: 0 8px 15px rgba(0,0,0,0.1); }
+        .book-link { display: flex; align-items: center; padding: 15px 20px; text-decoration: none; color: #333; text-align: left; }
         .book-content { flex-grow: 1; }
-        .book-title {
-            font-size: 1.2em;
-            font-weight: bold;
-            display: block;
-            font-family: var(--font-heading);
-        }
-        .book-meta {
-            font-size: 0.85em;
-            color: #777;
-            margin-top: 4px;
-            display: flex;
-            gap: 10px;
-            align-items: center;
-        }
-        
+        .book-title { font-size: 1.2em; font-weight: bold; display: block; font-family: var(--font-heading); }
+        .book-meta { font-size: 0.85em; color: #777; margin-top: 4px; display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
         .icon { font-size: 2em; margin-right: 15px; }
         .badge { background: #eee; padding: 2px 8px; border-radius: 8px; font-size: 0.8em; }
+        .author-badge { color: var(--accent-salmon); font-weight: 600; }
         
         .loading { color: #888; font-style: italic; margin: 20px 0; }
         .error { color: red; }
-        
-        .back-btn {
-            display: inline-block;
-            margin-top: 30px;
-            color: #555;
-            text-decoration: none;
-            font-weight: bold;
-        }
+        .back-btn { display: inline-block; margin-top: 30px; color: #555; text-decoration: none; font-weight: bold; }
         .back-btn:hover { color: var(--accent-salmon); }
     </style>
 </head>
@@ -230,10 +170,52 @@
         <h1>📚 Deine Bibliothek</h1>
         
         <div class="controls">
+            <div class="author-filter-container">
+                <div class="author-item active" onclick="setAuthorFilter('all', this)">
+                    <div class="author-img-wrapper" style="background:#eee;"><span class="author-placeholder">👥</span></div>
+                    <span class="author-name">Alle</span>
+                </div>
+                
+                <div class="author-item" onclick="setAuthorFilter('Samira', this)">
+                    <div class="author-img-wrapper">
+                        <img src="https://github.com/RaLa84/lesekumpel/blob/main/Samira-min-compressed2.webp?raw=true" class="author-img" alt="Samira">
+                    </div>
+                    <span class="author-name">Samira</span>
+                </div>
+
+                <div class="author-item" onclick="setAuthorFilter('Holzi', this)">
+                    <div class="author-img-wrapper">
+                        <img src="https://github.com/RaLa84/lesekumpel/blob/main/Holzi-min-compressed.webp?raw=true" class="author-img" alt="Holzi">
+                    </div>
+                    <span class="author-name">Holzi</span>
+                </div>
+
+                <div class="author-item" onclick="setAuthorFilter('Deniz', this)">
+                    <div class="author-img-wrapper">
+                        <img src="https://github.com/RaLa84/lesekumpel/blob/main/Deniz-min-compressed2.webp?raw=true" class="author-img" alt="Deniz">
+                    </div>
+                    <span class="author-name">Deniz</span>
+                </div>
+
+                <div class="author-item" onclick="setAuthorFilter('Jonas', this)">
+                    <div class="author-img-wrapper">
+                        <img src="https://github.com/RaLa84/lesekumpel/blob/main/Jonas-min-compressed2.webp?raw=true" class="author-img" alt="Jonas">
+                    </div>
+                    <span class="author-name">Jonas</span>
+                </div>
+
+                <div class="author-item" onclick="setAuthorFilter('Filterlos', this)">
+                    <div class="author-img-wrapper" style="background:#ddd;">
+                        <span class="author-placeholder">😶</span>
+                    </div>
+                    <span class="author-name">Filterlos</span>
+                </div>
+            </div>
+
             <div class="filter-btn-group">
-                <button class="filter-btn active" onclick="setFilter('all')">Alles</button>
-                <button class="filter-btn" onclick="setFilter('texte')">📖 Geschichten</button>
-                <button class="filter-btn" onclick="setFilter('comicgeschichten')">🖼️ Bildergeschichten</button>
+                <button class="filter-btn active" onclick="setFilter('all')">Alle Formate</button>
+                <button class="filter-btn" onclick="setFilter('texte')">📖 Texte</button>
+                <button class="filter-btn" onclick="setFilter('comicgeschichten')">🖼️ Comics</button>
             </div>
 
             <input type="text" id="searchInput" placeholder="Suche nach Titel...">
@@ -253,26 +235,25 @@
     </footer>
 
     <script>
-        // --- FUNKTION FÜR DAS BURGER MENU ---
         function toggleMenu() { 
             document.getElementById('mobile-menu').classList.toggle('open'); 
         }
 
-        // --- EXISTIERENDE LOGIK DER BIBLIOTHEK ---
         const user = 'RaLa84';
         const repo = 'lesekumpel';
         const folders = ['texte', 'comicgeschichten'];
         
         let allStoriesData = [];
-        let currentFilter = 'all';
+        let currentTypeFilter = 'all';
+        let currentAuthorFilter = 'all';
 
         const listElement = document.getElementById('bookList');
         const searchInput = document.getElementById('searchInput');
         const loadingMsg = document.getElementById('loadingMsg');
         const sortStatus = document.getElementById('sortStatus');
-        const buttons = document.querySelectorAll('.filter-btn');
+        const typeButtons = document.querySelectorAll('.filter-btn');
 
-        // 1. Initialer Abruf der Dateiliste
+        // 1. Initialer Abruf
         function fetchFolder(folderName) {
             return fetch(`https://api.github.com/repos/${user}/${repo}/contents/${folderName}`)
                 .then(response => response.ok ? response.json() : [])
@@ -283,8 +264,9 @@
                             name: file.name,
                             path: `${folderName}/${file.name}`,
                             folder: folderName,
-                            date: new Date(0), // Default: Ganz alt
-                            dateString: ''
+                            date: new Date(0), 
+                            dateString: '',
+                            author: '' // Feld für Autor
                         }));
                 });
         }
@@ -293,46 +275,47 @@
             .then(results => {
                 loadingMsg.style.display = 'none';
                 allStoriesData = results.flat();
-                updateUI(); // Zeige erstmal die Liste ohne Datum an
-                fetchRealDates(); // Starte Datums-Suche im Hintergrund
+                updateUI(); 
+                fetchStoryMetadata(); // Holt Datum UND Autor
             })
             .catch(err => {
                 loadingMsg.innerText = "Fehler: " + err.message;
                 loadingMsg.className = "error";
             });
 
-        // 2. Datum ermitteln: Wir laden die Datei und suchen nach <meta name="date">
-        async function fetchRealDates() {
-            sortStatus.innerText = "Lade Daten aus Dateien...";
+        // 2. Metadaten (Datum und Autor) laden
+        async function fetchStoryMetadata() {
+            sortStatus.innerText = "Lade Autoren & Daten...";
             
             const updates = allStoriesData.map(async (story) => {
                 try {
-                    // Wir laden den Text der Geschichte herunter
                     const response = await fetch(story.path);
                     const text = await response.text();
                     
-                    // Regex Suche nach: <meta name="date" content="YYYY-MM-DD">
-                    // Funktioniert auch mit ' oder "
-                    const metaMatch = text.match(/<meta\s+name=["']date["']\s+content=["'](.*?)["']/i);
-                    
-                    if (metaMatch && metaMatch[1]) {
-                        // Juhu, Meta-Tag gefunden!
-                        story.date = new Date(metaMatch[1]);
+                    // A) Datum finden
+                    const metaDate = text.match(/<meta\s+name=["']date["']\s+content=["'](.*?)["']/i);
+                    if (metaDate && metaDate[1]) {
+                        story.date = new Date(metaDate[1]);
                     } else {
-                        // Fallback: Server Header (oft ungenau, aber besser als nichts)
                         const lastMod = response.headers.get('Last-Modified');
                         if (lastMod) story.date = new Date(lastMod);
                     }
 
-                    // Formatierung für Anzeige (z.B. 19.01.2026)
                     if (story.date.getTime() > 0) {
                         story.dateString = story.date.toLocaleDateString('de-DE', {
                             day: '2-digit', month: '2-digit', year: 'numeric'
                         });
                     }
 
+                    // B) Autor finden
+                    // Suche nach: <meta name="author" content="Holzi">
+                    const metaAuthor = text.match(/<meta\s+name=["']author["']\s+content=["'](.*?)["']/i);
+                    if (metaAuthor && metaAuthor[1]) {
+                        story.author = metaAuthor[1];
+                    }
+
                 } catch (e) {
-                    console.log("Fehler beim Laden von", story.name);
+                    console.log("Fehler bei", story.name);
                 }
                 return story;
             });
@@ -340,19 +323,26 @@
             await Promise.all(updates);
             
             sortStatus.innerText = "Sortierung: Neuste zuerst 🔽";
-            sortStoriesByDate();
+            allStoriesData.sort((a, b) => b.date - a.date);
             updateUI();
         }
 
-        function sortStoriesByDate() {
-            allStoriesData.sort((a, b) => b.date - a.date);
+        // 3. UI Logik (Typ Filter)
+        function setFilter(filterType) {
+            currentTypeFilter = filterType;
+            typeButtons.forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+            updateUI();
         }
 
-        // 3. UI Logik
-        function setFilter(filterType) {
-            currentFilter = filterType;
-            buttons.forEach(btn => btn.classList.remove('active'));
-            event.target.classList.add('active');
+        // 4. UI Logik (Autor Filter)
+        function setAuthorFilter(authorName, element) {
+            currentAuthorFilter = authorName;
+            
+            // Visuelles Feedback
+            document.querySelectorAll('.author-item').forEach(el => el.classList.remove('active'));
+            element.classList.add('active');
+
             updateUI();
         }
 
@@ -362,10 +352,21 @@
             const searchTerm = searchInput.value.toLowerCase();
 
             let filtered = allStoriesData.filter(story => {
-                if (currentFilter === 'all') return true;
-                return story.folder === currentFilter;
+                // Typ Filter
+                if (currentTypeFilter !== 'all' && story.folder !== currentTypeFilter) return false;
+                
+                // Autor Filter
+                if (currentAuthorFilter !== 'all') {
+                    // Wenn kein Autor in Datei gefunden wurde, fliegt er raus, 
+                    // außer der Filter heißt "Filterlos" und wir suchen explizit danach
+                    if (!story.author) return false; 
+                    if (story.author.toLowerCase() !== currentAuthorFilter.toLowerCase()) return false;
+                }
+
+                return true;
             });
 
+            // Suche
             filtered = filtered.filter(story => 
                 formatName(story.name).toLowerCase().includes(searchTerm)
             );
@@ -376,7 +377,7 @@
         function renderList(files) {
             listElement.innerHTML = '';
             if(files.length === 0) {
-                listElement.innerHTML = '<p style="color:#777">Nichts gefunden.</p>';
+                listElement.innerHTML = '<p style="color:#777">Keine Geschichten für diese Auswahl gefunden.</p>';
                 return;
             }
 
@@ -387,8 +388,8 @@
                 const icon = file.folder === 'comicgeschichten' ? '🖼️' : '📖';
                 const typeLabel = file.folder === 'comicgeschichten' ? 'Bildergeschichte' : 'Geschichte';
                 
-                // Datum anzeigen wenn vorhanden, sonst leer
                 const dateDisplay = file.dateString ? `📅 ${file.dateString}` : '';
+                const authorDisplay = file.author ? `✍️ ${file.author}` : '';
 
                 li.innerHTML = `
                     <a href="${file.path}" class="book-link">
@@ -397,6 +398,7 @@
                             <span class="book-title">${formatName(file.name)}</span>
                             <div class="book-meta">
                                 <span class="badge">${typeLabel}</span>
+                                <span class="author-badge">${authorDisplay}</span>
                                 <span>${dateDisplay}</span>
                             </div>
                         </div>
@@ -416,5 +418,3 @@
 
 </body>
 </html>
-
-```
