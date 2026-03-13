@@ -1,0 +1,582 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lesekumpel – Kinder lesen mit Freude | Kostenlose Leseförderung</title>
+    <meta name="description" content="Lesekumpel macht Lesen lernen zum Abenteuer. Werbefreie Geschichten, angepasst an die Interessen deines Kindes. Kostenlos, inklusiv und ohne Druck.">
+    <meta name="keywords" content="Kinder Lesen lernen, Leseförderung Grundschule, kostenlose Leseapp Kinder, Lesen üben online, barrierefreie Leseapp, Lesekumpel">
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="Lesekumpel – Kinder lesen mit Freude">
+    <meta property="og:description" content="Werbefreie Geschichten, angepasst an die Interessen deines Kindes. Kostenlos, inklusiv und ohne Druck.">
+    <meta property="og:image" content="https://rala84.github.io/lesekumpel/bilder/lesekumpel_logo.png">
+    <meta property="og:url" content="https://rala84.github.io/lesekumpel/landingpage.html">
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="de_DE">
+
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "SoftwareApplication",
+        "name": "Lesekumpel",
+        "applicationCategory": "EducationalApplication",
+        "operatingSystem": "Web",
+        "offers": {
+            "@type": "Offer",
+            "price": "0",
+            "priceCurrency": "EUR"
+        },
+        "description": "Kostenlose, werbefreie Leseförderung für Kinder von 5-10 Jahren mit KI-generierten Geschichten.",
+        "url": "https://rala84.github.io/lesekumpel/"
+    }
+    </script>
+
+    <link rel="canonical" href="https://rala84.github.io/lesekumpel/landingpage.html">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-body: #fafafa;
+            --bg-card: #ffffff;
+            --primary-yellow: #f4d03f;
+            --accent-teal: #2a9d8f;
+            --accent-teal-light: #e8f5f3;
+            --text-dark: #1a1a2e;
+            --text-muted: #6b7280;
+            --shadow-card: 0 2px 12px rgba(0,0,0,0.06);
+            --shadow-card-hover: 0 8px 24px rgba(0,0,0,0.1);
+            --radius-card: 16px;
+            --font-heading: 'Fredoka', sans-serif;
+            --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        h1, h2, h3 { letter-spacing: -0.02em; }
+
+        body {
+            font-family: var(--font-body);
+            background-color: var(--bg-body);
+            color: var(--text-dark);
+        }
+
+        /* --- NAVBAR --- */
+        .main-navbar {
+            background-color: #fff;
+            padding: 12px 24px;
+            border-bottom: 1px solid #e5e7eb;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+            display: flex; justify-content: space-between; align-items: center;
+            position: sticky; top: 0; z-index: 1000;
+        }
+        .nav-left { display: flex; align-items: center; gap: 10px; }
+        .nav-logo { height: 40px; width: auto; }
+        .brand-name {
+            font-family: var(--font-heading); font-size: 1.2rem;
+            color: var(--accent-teal); font-weight: 600; text-decoration: none;
+        }
+        .nav-links-desktop { display: none; gap: 20px; align-items: center; margin-left: 16px; }
+        .nav-btn {
+            text-decoration: none; color: var(--text-muted); font-weight: 500;
+            font-size: 0.95rem; display: flex; align-items: center; gap: 5px;
+            transition: color 0.2s;
+        }
+        .nav-btn:hover { color: var(--accent-teal); }
+        .btn-cta-nav {
+            background: var(--accent-teal); color: #fff; padding: 10px 22px;
+            border-radius: 10px; font-weight: 600; transition: opacity 0.2s;
+            text-decoration: none; font-family: var(--font-body); font-size: 0.9rem;
+            border: none;
+        }
+        .btn-cta-nav:hover { opacity: 0.9; }
+        .nav-right { display: flex; align-items: center; gap: 15px; }
+        .burger-icon { font-size: 1.8rem; cursor: pointer; display: block; color: var(--text-dark); }
+        .mobile-menu {
+            display: none; background: white; padding: 15px 24px;
+            position: absolute; top: 100%; left: 0; width: 100%;
+            border-bottom: 1px solid #e5e7eb; box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            flex-direction: column; gap: 12px; z-index: 999;
+        }
+        .mobile-menu.open { display: flex; }
+
+        @media (min-width: 768px) {
+            .burger-icon { display: none; }
+            .nav-links-desktop { display: flex; }
+            .nav-logo { height: 50px; }
+            .brand-name { font-size: 1.5rem; }
+            .nav-left { gap: 15px; }
+        }
+
+        /* --- SECTIONS --- */
+        .lp-section { padding: 80px 20px; }
+        .lp-container { max-width: 1080px; margin: 0 auto; }
+
+        @media (min-width: 768px) {
+            .lp-section { padding: 120px 40px; }
+        }
+
+        /* --- HERO --- */
+        .lp-hero { background: #ffffff; }
+        .lp-hero-inner {
+            display: flex; flex-direction: column; align-items: center; text-align: center; gap: 40px;
+        }
+        .lp-hero-text { max-width: 560px; }
+        .lp-hero h1 {
+            font-family: var(--font-heading); font-size: 2rem; color: var(--text-dark);
+            line-height: 1.15; margin-bottom: 20px;
+        }
+        .lp-hero h1 span { color: var(--accent-teal); }
+        .lp-hero-sub {
+            font-size: 1.05rem; color: var(--text-muted); line-height: 1.7; margin-bottom: 32px;
+        }
+        .lp-btn-primary {
+            display: inline-block; background: var(--accent-teal); color: #fff;
+            padding: 16px 40px; border-radius: 12px; font-family: var(--font-body); font-size: 1rem;
+            font-weight: 600; text-decoration: none; transition: opacity 0.2s, transform 0.2s;
+            box-shadow: 0 4px 14px rgba(42,157,143,0.3);
+        }
+        .lp-btn-primary:hover { opacity: 0.9; transform: translateY(-1px); }
+        .lp-hero-note { font-size: 0.85rem; color: var(--text-muted); margin-top: 16px; }
+        .lp-hero-visual {
+            width: 100%; max-width: 420px; aspect-ratio: 4/3;
+        }
+        .lp-hero-placeholder {
+            width: 100%; height: 100%;
+            background: linear-gradient(135deg, var(--accent-teal-light), #f0f4f8);
+            border-radius: var(--radius-card);
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            gap: 12px; color: var(--text-muted); font-size: 0.85rem;
+        }
+
+        @media (min-width: 768px) {
+            .lp-hero-inner { flex-direction: row; text-align: left; gap: 60px; }
+            .lp-hero h1 { font-size: 2.8rem; }
+            .lp-hero-sub { font-size: 1.15rem; }
+            .lp-hero-visual { flex-shrink: 0; max-width: 420px; }
+        }
+
+        /* --- SOCIAL PROOF BAR --- */
+        .lp-proof {
+            background: #fff; padding: 28px 20px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+        }
+        .lp-proof-inner {
+            display: flex; justify-content: center; align-items: center; gap: 24px; flex-wrap: wrap;
+            max-width: 700px; margin: 0 auto;
+        }
+        .lp-proof-item {
+            display: flex; align-items: center; gap: 8px;
+            font-weight: 500; font-size: 0.95rem; color: var(--text-dark);
+        }
+        .lp-proof-item svg { flex-shrink: 0; }
+
+        @media (min-width: 768px) {
+            .lp-proof-inner { gap: 50px; }
+        }
+
+        /* --- PROBLEM SECTION --- */
+        .lp-problem { background: var(--bg-body); }
+        .lp-section-title {
+            font-family: var(--font-heading); font-size: 1.6rem; text-align: center;
+            margin-bottom: 12px; color: var(--text-dark);
+        }
+        .lp-section-subtitle {
+            text-align: center; color: var(--text-muted); font-size: 1rem; margin-bottom: 48px;
+            max-width: 560px; margin-left: auto; margin-right: auto;
+        }
+        .lp-card-grid {
+            display: grid; grid-template-columns: 1fr; gap: 24px;
+        }
+        .lp-pain-card {
+            background: #fff; border-radius: var(--radius-card); padding: 32px 28px;
+            box-shadow: var(--shadow-card);
+            transition: box-shadow 0.2s;
+        }
+        .lp-pain-card:hover { box-shadow: var(--shadow-card-hover); }
+        .lp-pain-icon {
+            width: 56px; height: 56px; background: var(--accent-teal-light);
+            border-radius: 12px; display: flex; align-items: center; justify-content: center;
+            margin-bottom: 20px;
+        }
+        .lp-pain-card h3 {
+            font-family: var(--font-heading); font-size: 1.1rem; margin-bottom: 10px; color: var(--text-dark);
+        }
+        .lp-pain-card p { color: var(--text-muted); line-height: 1.7; font-size: 0.95rem; }
+
+        @media (min-width: 768px) {
+            .lp-card-grid { grid-template-columns: repeat(3, 1fr); }
+            .lp-section-title { font-size: 2rem; }
+        }
+
+        /* --- FEATURES SECTION --- */
+        .lp-features { background: #ffffff; }
+        .lp-feature-grid {
+            display: grid; grid-template-columns: 1fr; gap: 20px;
+        }
+        .lp-feature {
+            display: flex; flex-direction: column; align-items: flex-start;
+            text-align: left; gap: 16px;
+            background: var(--bg-body); border-radius: var(--radius-card);
+            padding: 32px 28px;
+            transition: box-shadow 0.2s;
+        }
+        .lp-feature:hover { box-shadow: var(--shadow-card); }
+        .lp-feature-icon {
+            width: 52px; height: 52px; border-radius: 12px; display: flex;
+            align-items: center; justify-content: center; flex-shrink: 0;
+        }
+        .lp-feature-icon.yellow { background: #fef9e7; }
+        .lp-feature-icon.teal { background: var(--accent-teal-light); }
+        .lp-feature-icon.neutral { background: #f0f4f8; }
+        .lp-feature-text h3 {
+            font-family: var(--font-heading); font-size: 1.1rem; margin-bottom: 8px; color: var(--text-dark);
+        }
+        .lp-feature-text p { color: var(--text-muted); line-height: 1.7; font-size: 0.95rem; }
+
+        @media (min-width: 768px) {
+            .lp-feature-grid { grid-template-columns: 1fr 1fr; gap: 28px; }
+        }
+
+        /* --- HOW IT WORKS --- */
+        .lp-how { background: var(--bg-body); }
+        .lp-steps {
+            display: flex; flex-direction: column; align-items: center; gap: 40px;
+        }
+        .lp-step {
+            display: flex; flex-direction: column; align-items: center;
+            text-align: center; max-width: 280px;
+        }
+        .lp-step-number {
+            width: 56px; height: 56px; border-radius: 50%; background: var(--primary-yellow);
+            display: flex; align-items: center; justify-content: center;
+            font-family: var(--font-heading); font-size: 1.4rem; font-weight: 600; color: var(--text-dark);
+            margin-bottom: 16px; box-shadow: 0 2px 8px rgba(244,208,63,0.3);
+        }
+        .lp-step h3 {
+            font-family: var(--font-heading); font-size: 1.05rem; margin-bottom: 8px; color: var(--text-dark);
+        }
+        .lp-step p { color: var(--text-muted); line-height: 1.6; font-size: 0.95rem; }
+
+        @media (min-width: 768px) {
+            .lp-steps { flex-direction: row; justify-content: center; align-items: flex-start; gap: 56px; }
+        }
+
+        /* --- TESTIMONIALS --- */
+        .lp-testimonials { background: #ffffff; }
+        .lp-testimonial-grid {
+            display: grid; grid-template-columns: 1fr; gap: 24px;
+        }
+        .lp-testimonial {
+            background: #fff; border-radius: var(--radius-card); padding: 36px 30px;
+            box-shadow: var(--shadow-card);
+            transition: box-shadow 0.2s;
+        }
+        .lp-testimonial:hover { box-shadow: var(--shadow-card-hover); }
+        .lp-testimonial-quote-icon { margin-bottom: 16px; line-height: 1; }
+        .lp-testimonial-stars {
+            color: var(--primary-yellow); font-size: 0.95rem; letter-spacing: 2px; margin-bottom: 8px;
+        }
+        .lp-testimonial blockquote {
+            font-style: normal; color: var(--text-dark); line-height: 1.7;
+            font-size: 0.95rem; margin-bottom: 16px;
+        }
+        .lp-testimonial-author {
+            font-weight: 600; font-size: 0.85rem; color: var(--text-muted);
+        }
+
+        @media (min-width: 768px) {
+            .lp-testimonial-grid { grid-template-columns: repeat(3, 1fr); }
+        }
+
+        /* --- FINAL CTA --- */
+        .lp-cta {
+            background: linear-gradient(135deg, #2a9d8f, #238b80);
+            padding: 80px 20px; text-align: center;
+        }
+        .lp-cta h2 {
+            font-family: var(--font-heading); font-size: 1.8rem; color: #fff; margin-bottom: 12px;
+        }
+        .lp-cta p { color: rgba(255,255,255,0.85); font-size: 1.05rem; margin-bottom: 32px; }
+        .lp-btn-cta-white {
+            display: inline-block; background: #ffffff; color: var(--accent-teal);
+            padding: 16px 40px; border-radius: 12px; font-family: var(--font-body); font-size: 1rem;
+            font-weight: 600; text-decoration: none; transition: opacity 0.2s, transform 0.2s;
+            box-shadow: 0 4px 14px rgba(0,0,0,0.15);
+        }
+        .lp-btn-cta-white:hover { transform: translateY(-1px); opacity: 0.95; }
+        .lp-cta-secondary {
+            display: block; margin-top: 20px; color: rgba(255,255,255,0.7); font-size: 0.9rem; text-decoration: underline;
+        }
+        .lp-cta-secondary:hover { color: #fff; }
+
+        @media (min-width: 768px) {
+            .lp-cta { padding: 120px 40px; }
+            .lp-cta h2 { font-size: 2.2rem; }
+        }
+
+        /* --- FOOTER --- */
+        footer {
+            text-align: center; color: var(--text-muted); font-size: 0.85rem;
+            padding: 24px; border-top: 1px solid #e5e7eb; background: #fff;
+        }
+        .footer-links { margin-top: 6px; }
+        .footer-links a { color: var(--text-muted); text-decoration: none; margin: 0 6px; }
+        .footer-links a:hover { color: var(--accent-teal); }
+    </style>
+</head>
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="main-navbar">
+        <div class="nav-left">
+            <img src="logo1.png" alt="Lesekumpel Logo" class="nav-logo">
+            <a href="landingpage.html" class="brand-name">Lesekumpel</a>
+            <div class="nav-links-desktop">
+                <a href="#features" class="nav-btn">So hilft Lesekumpel</a>
+                <a href="#how-it-works" class="nav-btn">So funktioniert's</a>
+            </div>
+        </div>
+        <div class="nav-right">
+            <a href="index.html" class="btn-cta-nav">Jetzt loslesen</a>
+            <span class="burger-icon" onclick="toggleMenu()">&#9776;</span>
+        </div>
+        <div id="mobile-menu" class="mobile-menu">
+            <a href="#features" class="nav-btn" onclick="toggleMenu()">So hilft Lesekumpel</a>
+            <a href="#how-it-works" class="nav-btn" onclick="toggleMenu()">So funktioniert's</a>
+            <a href="index.html" class="nav-btn">Zur Bibliothek</a>
+        </div>
+    </nav>
+
+    <main>
+
+        <!-- HERO -->
+        <section class="lp-section lp-hero">
+            <div class="lp-container lp-hero-inner">
+                <div class="lp-hero-text">
+                    <h1>Dein Kind liest nicht gerne?<br><span>Das &auml;ndern wir.</span></h1>
+                    <p class="lp-hero-sub">Lesekumpel bietet werbefreie Geschichten, die sich an die Interessen deines Kindes anpassen &ndash; damit Lesen endlich Spa&szlig; macht statt Stress.</p>
+                    <a href="index.html" class="lp-btn-primary">Kostenlos ausprobieren</a>
+                    <p class="lp-hero-note">Komplett kostenlos &middot; Keine Werbung &middot; Keine Installation</p>
+                </div>
+                <div class="lp-hero-visual">
+                    <div class="lp-hero-placeholder">
+                        <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="#2a9d8f" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                            <rect x="2" y="3" width="20" height="14" rx="2"/>
+                            <path d="M8 21h8"/>
+                            <path d="M12 17v4"/>
+                        </svg>
+                        <span>Lifestyle-Foto Platzhalter</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- SOCIAL PROOF BAR -->
+        <section class="lp-proof">
+            <div class="lp-proof-inner">
+                <div class="lp-proof-item">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2a9d8f" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+                    <span>50+ Geschichten</span>
+                </div>
+                <div class="lp-proof-item">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2a9d8f" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+                    <span>100% werbefrei</span>
+                </div>
+                <div class="lp-proof-item">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2a9d8f" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+                    <span>F&uuml;r Kinder von 5&ndash;10</span>
+                </div>
+            </div>
+        </section>
+
+        <!-- PROBLEM SECTION -->
+        <section class="lp-section lp-problem">
+            <div class="lp-container">
+                <h2 class="lp-section-title">Kommt dir das bekannt vor?</h2>
+                <p class="lp-section-subtitle">Viele Eltern kennen diese Situationen &ndash; du bist nicht allein.</p>
+                <div class="lp-card-grid">
+                    <div class="lp-pain-card">
+                        <div class="lp-pain-icon">
+                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#2a9d8f" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/>
+                                <path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/>
+                            </svg>
+                        </div>
+                        <h3>Lesen f&uuml;hlt sich wie Pflicht an</h3>
+                        <p>Jeden Abend der gleiche Kampf: Dein Kind soll lesen, aber es fehlt die Lust. Klassische Lese&uuml;bungen f&uuml;hlen sich nach Schule an &ndash; nicht nach Spa&szlig;.</p>
+                    </div>
+                    <div class="lp-pain-card">
+                        <div class="lp-pain-icon">
+                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#2a9d8f" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                <circle cx="12" cy="12" r="10"/>
+                                <path d="M12 6v6l4 2"/>
+                            </svg>
+                        </div>
+                        <h3>Keine Zeit, keine Ideen</h3>
+                        <p>Du willst dein Kind f&ouml;rdern, aber nach einem langen Tag fehlt die Energie, passende Texte zu suchen oder &Uuml;bungen vorzubereiten.</p>
+                    </div>
+                    <div class="lp-pain-card">
+                        <div class="lp-pain-icon">
+                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#2a9d8f" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                                <line x1="4.5" y1="4.5" x2="19.5" y2="19.5"/>
+                            </svg>
+                        </div>
+                        <h3>Das Angebot passt nicht</h3>
+                        <p>Andere Apps sind voller Werbung, zu teuer oder bieten nur Einheitsgeschichten. Inklusive, barrierefreie Angebote? Fehlanzeige.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FEATURES SECTION -->
+        <section class="lp-section lp-features" id="features">
+            <div class="lp-container">
+                <h2 class="lp-section-title">So hilft Lesekumpel deinem Kind</h2>
+                <p class="lp-section-subtitle">Geschichten, die begeistern &ndash; und Funktionen, die wirklich helfen.</p>
+                <div class="lp-feature-grid">
+                    <div class="lp-feature">
+                        <div class="lp-feature-icon yellow">
+                            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#2a9d8f" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/>
+                                <path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/>
+                            </svg>
+                        </div>
+                        <div class="lp-feature-text">
+                            <h3>Geschichten, die begeistern</h3>
+                            <p>Vier einzigartige Autoren-Pers&ouml;nlichkeiten schreiben Geschichten &uuml;ber Themen, die dein Kind wirklich liebt &ndash; von D&ouml;nern &uuml;ber Dinosaurier bis Raumfahrt.</p>
+                        </div>
+                    </div>
+                    <div class="lp-feature">
+                        <div class="lp-feature-icon teal">
+                            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#2a9d8f" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+                                <path d="M9 12l2 2 4-4"/>
+                            </svg>
+                        </div>
+                        <div class="lp-feature-text">
+                            <h3>Null Werbung. Null Kosten.</h3>
+                            <p>Lesekumpel ist komplett kostenlos und werbefrei. Keine versteckten Abos, keine In-App-K&auml;ufe, keine Datensammlung.</p>
+                        </div>
+                    </div>
+                    <div class="lp-feature">
+                        <div class="lp-feature-icon neutral">
+                            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#2a9d8f" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 000-7.78z"/>
+                            </svg>
+                        </div>
+                        <div class="lp-feature-text">
+                            <h3>F&uuml;r jedes Kind gemacht</h3>
+                            <p>Silbentrennung, Dyslexie-Modus, anpassbare Schriftgr&ouml;&szlig;e. Egal ob Leseanf&auml;nger, neurodivergent oder mehrsprachig aufwachsend.</p>
+                        </div>
+                    </div>
+                    <div class="lp-feature">
+                        <div class="lp-feature-icon yellow">
+                            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#2a9d8f" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+                            </svg>
+                        </div>
+                        <div class="lp-feature-text">
+                            <h3>Einfach loslegen</h3>
+                            <p>Keine Installation, keine Registrierung. &Ouml;ffne den Browser, w&auml;hle eine Geschichte &ndash; fertig. Funktioniert auf Handy, Tablet und Computer.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- HOW IT WORKS -->
+        <section class="lp-section lp-how" id="how-it-works">
+            <div class="lp-container">
+                <h2 class="lp-section-title">In 3 Schritten zum Lesespa&szlig;</h2>
+                <div class="lp-steps">
+                    <div class="lp-step">
+                        <div class="lp-step-number">1</div>
+                        <h3>Geschichte ausw&auml;hlen</h3>
+                        <p>St&ouml;bert gemeinsam in der Bibliothek und findet eine Geschichte, die euer Kind begeistert.</p>
+                    </div>
+                    <div class="lp-step">
+                        <div class="lp-step-number">2</div>
+                        <h3>Gemeinsam oder alleine lesen</h3>
+                        <p>Dein Kind liest die Geschichte am Bildschirm. Schwierige W&ouml;rter? Einfach antippen f&uuml;r Hilfe.</p>
+                    </div>
+                    <div class="lp-step">
+                        <div class="lp-step-number">3</div>
+                        <h3>Fortschritte erleben</h3>
+                        <p>Mit jeder Geschichte w&auml;chst die Lesefreude. Ohne Druck, im eigenen Tempo.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TESTIMONIALS -->
+        <section class="lp-section lp-testimonials">
+            <div class="lp-container">
+                <h2 class="lp-section-title">Das sagen Eltern</h2>
+                <p class="lp-section-subtitle">Stimmen von Testfamilien</p>
+                <div class="lp-testimonial-grid">
+                    <div class="lp-testimonial">
+                        <div class="lp-testimonial-quote-icon">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="#e8f5f3" stroke="none">
+                                <path d="M3 21c3 0 7-1 7-8V5c0-1.25-.756-2.017-2-2H4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2 1 0 1 0 1 1v1c0 1-1 2-2 2s-1 .008-1 1.031V20c0 1 0 1 1 1z"/>
+                                <path d="M15 21c3 0 7-1 7-8V5c0-1.25-.757-2.017-2-2h-4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2h.75c0 2.25.25 4-2.75 5v3c0 1 0 1 1 1z"/>
+                            </svg>
+                        </div>
+                        <div class="lp-testimonial-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+                        <blockquote>&bdquo;Endlich eine App ohne Werbung! Mein Sohn liest jetzt freiwillig, weil die Geschichten Themen haben, die ihn wirklich interessieren.&ldquo;</blockquote>
+                        <div class="lp-testimonial-author">Mama aus Berlin, Sohn (8)</div>
+                    </div>
+                    <div class="lp-testimonial">
+                        <div class="lp-testimonial-quote-icon">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="#e8f5f3" stroke="none">
+                                <path d="M3 21c3 0 7-1 7-8V5c0-1.25-.756-2.017-2-2H4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2 1 0 1 0 1 1v1c0 1-1 2-2 2s-1 .008-1 1.031V20c0 1 0 1 1 1z"/>
+                                <path d="M15 21c3 0 7-1 7-8V5c0-1.25-.757-2.017-2-2h-4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2h.75c0 2.25.25 4-2.75 5v3c0 1 0 1 1 1z"/>
+                            </svg>
+                        </div>
+                        <div class="lp-testimonial-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+                        <blockquote>&bdquo;Als mehrsprachige Familie war es schwer, passende Lesetexte zu finden. Lesekumpel macht es leicht &ndash; f&uuml;r mein Kind und f&uuml;r mich.&ldquo;</blockquote>
+                        <div class="lp-testimonial-author">Papa aus Schwerin, Tochter (8)</div>
+                    </div>
+                    <div class="lp-testimonial">
+                        <div class="lp-testimonial-quote-icon">
+                            <svg width="32" height="32" viewBox="0 0 24 24" fill="#e8f5f3" stroke="none">
+                                <path d="M3 21c3 0 7-1 7-8V5c0-1.25-.756-2.017-2-2H4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2 1 0 1 0 1 1v1c0 1-1 2-2 2s-1 .008-1 1.031V20c0 1 0 1 1 1z"/>
+                                <path d="M15 21c3 0 7-1 7-8V5c0-1.25-.757-2.017-2-2h-4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2h.75c0 2.25.25 4-2.75 5v3c0 1 0 1 1 1z"/>
+                            </svg>
+                        </div>
+                        <div class="lp-testimonial-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
+                        <blockquote>&bdquo;Der Dyslexie-Modus und die Silbentrennung sind Gold wert. Endlich ein Angebot, das unser Kind nicht &uuml;berfordert.&ldquo;</blockquote>
+                        <div class="lp-testimonial-author">Eltern aus MV, Sohn (10)</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- FINAL CTA -->
+        <section class="lp-cta">
+            <div class="lp-container">
+                <h2>Bereit f&uuml;r den ersten Lesespa&szlig;?</h2>
+                <p>Keine Anmeldung n&ouml;tig. Einfach eine Geschichte ausw&auml;hlen und loslegen.</p>
+                <a href="index.html" class="lp-btn-cta-white">Zur Geschichtenbibliothek</a>
+                <a href="https://rala84.app.n8n.cloud/form/d934fee1-a67d-4146-8b19-1e3c8a1a8967" class="lp-cta-secondary">Oder: Eigene Geschichte erstellen lassen</a>
+            </div>
+        </section>
+
+    </main>
+
+    <footer>
+        <p>Erstellt von deinem KI-Lesekumpel</p>
+        <div class="footer-links"><a href="#">Impressum</a> &bull; <a href="#">Datenschutz</a> &bull; <a href="#">&Uuml;ber uns</a></div>
+    </footer>
+
+    <script>
+        function toggleMenu() {
+            document.getElementById('mobile-menu').classList.toggle('open');
+        }
+    </script>
+
+</body>
+</html>
