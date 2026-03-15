@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lesekumpel — Knowledge Snacks</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;500;600;700&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --coral: #D67171;
+            --coral-light: #e8a3a3;
+            --yellow: #FFD54F;
+            --yellow-light: #fff0b8;
+            --bg: #FFF9E5;
+            --bg-card: #ffffff;
+            --text: #333333;
+            --text-light: #666666;
+            --shadow: 0 2px 8px rgba(0,0,0,0.08);
+            --shadow-hover: 0 4px 16px rgba(0,0,0,0.12);
+            --radius: 16px;
+            --radius-sm: 8px;
+            /* Snack-Typ-Farben */
+            --fakt: #4A90D9;
+            --fakt-bg: #EBF3FB;
+            --tipp: #2A9D8F;
+            --tipp-bg: #E6F5F3;
+            --zahl: #E6A817;
+            --zahl-bg: #FFF8E1;
+            --mythos: #D64545;
+            --mythos-bg: #FDECEC;
+            --glossar: #7B61C2;
+            --glossar-bg: #F3F0FA;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Quicksand', sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            min-height: 100vh;
+        }
+
+        header {
+            background: linear-gradient(135deg, var(--coral) 0%, var(--coral-light) 100%);
+            color: white;
+            padding: 2rem 1rem;
+            text-align: center;
+        }
+
+        header h1 {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        header p {
+            font-size: 1rem;
+            opacity: 0.9;
+        }
+
+        .stats {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .stat {
+            background: rgba(255,255,255,0.2);
+            padding: 0.4rem 1rem;
+            border-radius: 20px;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .controls {
+            max-width: 1200px;
+            margin: 1.5rem auto;
+            padding: 0 1rem;
+        }
+
+        .search-box {
+            width: 100%;
+            padding: 0.8rem 1.2rem;
+            border: 2px solid #ddd;
+            border-radius: var(--radius);
+            font-family: 'Quicksand', sans-serif;
+            font-size: 1rem;
+            background: white;
+            transition: border-color 0.2s;
+        }
+
+        .search-box:focus {
+            outline: none;
+            border-color: var(--coral);
+        }
+
+        .filters {
+            display: flex;
+            gap: 0.5rem;
+            margin-top: 1rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-group {
+            display: flex;
+            gap: 0.3rem;
+            flex-wrap: wrap;
+        }
+
+        .filter-label {
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: var(--text-light);
+            align-self: center;
+            margin-right: 0.3rem;
+        }
+
+        .filter-btn {
+            padding: 0.4rem 0.8rem;
+            border: 2px solid #ddd;
+            border-radius: 20px;
+            background: white;
+            font-family: 'Quicksand', sans-serif;
+            font-size: 0.8rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+            white-space: nowrap;
+        }
+
+        .filter-btn:hover { border-color: var(--coral); }
+        .filter-btn.active { background: var(--coral); color: white; border-color: var(--coral); }
+
+        .filter-btn[data-typ="fakt"].active { background: var(--fakt); border-color: var(--fakt); }
+        .filter-btn[data-typ="tipp"].active { background: var(--tipp); border-color: var(--tipp); }
+        .filter-btn[data-typ="zahl"].active { background: var(--zahl); border-color: var(--zahl); }
+        .filter-btn[data-typ="mythos"].active { background: var(--mythos); border-color: var(--mythos); }
+        .filter-btn[data-typ="glossar"].active { background: var(--glossar); border-color: var(--glossar); }
+
+        .result-count {
+            text-align: center;
+            margin: 1rem 0;
+            color: var(--text-light);
+            font-size: 0.9rem;
+        }
+
+        .grid {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 0 1rem 3rem;
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            gap: 1rem;
+        }
+
+        .card {
+            background: var(--bg-card);
+            border-radius: var(--radius);
+            box-shadow: var(--shadow);
+            padding: 1.2rem;
+            transition: all 0.2s;
+            cursor: default;
+            display: flex;
+            flex-direction: column;
+            border-left: 5px solid var(--fakt);
+        }
+
+        .card:hover {
+            box-shadow: var(--shadow-hover);
+            transform: translateY(-2px);
+        }
+
+        .card[data-typ="fakt"] { border-left-color: var(--fakt); }
+        .card[data-typ="tipp"] { border-left-color: var(--tipp); }
+        .card[data-typ="zahl"] { border-left-color: var(--zahl); }
+        .card[data-typ="mythos"] { border-left-color: var(--mythos); }
+        .card[data-typ="glossar"] { border-left-color: var(--glossar); }
+
+        .card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 0.6rem;
+            gap: 0.5rem;
+        }
+
+        .card-typ {
+            font-size: 0.7rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            padding: 0.2rem 0.6rem;
+            border-radius: 10px;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .card[data-typ="fakt"] .card-typ { color: var(--fakt); background: var(--fakt-bg); }
+        .card[data-typ="tipp"] .card-typ { color: var(--tipp); background: var(--tipp-bg); }
+        .card[data-typ="zahl"] .card-typ { color: var(--zahl); background: var(--zahl-bg); }
+        .card[data-typ="mythos"] .card-typ { color: var(--mythos); background: var(--mythos-bg); }
+        .card[data-typ="glossar"] .card-typ { color: var(--glossar); background: var(--glossar-bg); }
+
+        .card-kategorie {
+            font-size: 0.75rem;
+            color: var(--text-light);
+            font-weight: 600;
+        }
+
+        .card-titel {
+            font-family: 'Fredoka', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 600;
+            margin-bottom: 0.6rem;
+            line-height: 1.3;
+        }
+
+        .card-body {
+            font-size: 0.9rem;
+            line-height: 1.6;
+            color: var(--text);
+            flex-grow: 1;
+            margin-bottom: 0.8rem;
+        }
+
+        .card-footer {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 0.3rem;
+            padding-top: 0.6rem;
+            border-top: 1px solid #eee;
+        }
+
+        .card-quelle {
+            font-size: 0.7rem;
+            color: var(--text-light);
+            font-style: italic;
+            max-width: 70%;
+        }
+
+        .card-evidenz {
+            font-size: 0.65rem;
+            font-weight: 700;
+            color: var(--coral);
+            background: var(--yellow-light);
+            padding: 0.15rem 0.5rem;
+            border-radius: 8px;
+        }
+
+        .card-tags {
+            display: flex;
+            gap: 0.3rem;
+            flex-wrap: wrap;
+            margin-top: 0.4rem;
+        }
+
+        .tag {
+            font-size: 0.65rem;
+            color: var(--text-light);
+            background: #f0f0f0;
+            padding: 0.1rem 0.5rem;
+            border-radius: 8px;
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 3rem 1rem;
+            color: var(--text-light);
+            font-size: 1.1rem;
+            grid-column: 1 / -1;
+        }
+
+        @media (max-width: 768px) {
+            header h1 { font-size: 1.5rem; }
+            .grid { grid-template-columns: 1fr; }
+            .stats { gap: 0.5rem; }
+            .stat { font-size: 0.8rem; padding: 0.3rem 0.7rem; }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Lesekumpel Knowledge Snacks</h1>
+        <p>Evidenzbasiertes Wissen in kleinen Häppchen</p>
+        <div class="stats">
+            <span class="stat" id="stat-total">0 Snacks</span>
+            <span class="stat" id="stat-quellen">0 Quellen</span>
+            <span class="stat" id="stat-themen">6 Themen</span>
+        </div>
+    </header>
+
+    <div class="controls">
+        <input type="text" class="search-box" id="search" placeholder="Suche nach Stichwort, Thema oder Fachbegriff...">
+
+        <div class="filters">
+            <span class="filter-label">Typ:</span>
+            <div class="filter-group" id="filter-typ">
+                <button class="filter-btn active" data-typ="alle">Alle</button>
+                <button class="filter-btn" data-typ="fakt">Fakt</button>
+                <button class="filter-btn" data-typ="tipp">Tipp</button>
+                <button class="filter-btn" data-typ="zahl">Zahl</button>
+                <button class="filter-btn" data-typ="mythos">Mythos</button>
+                <button class="filter-btn" data-typ="glossar">Glossar</button>
+            </div>
+        </div>
+
+        <div class="filters">
+            <span class="filter-label">Thema:</span>
+            <div class="filter-group" id="filter-kategorie">
+                <button class="filter-btn active" data-kategorie="alle">Alle</button>
+                <button class="filter-btn" data-kategorie="LRS / Legasthenie">LRS</button>
+                <button class="filter-btn" data-kategorie="ADHS & Lesen">ADHS</button>
+                <button class="filter-btn" data-kategorie="Autismus & Lesen">Autismus</button>
+                <button class="filter-btn" data-kategorie="DaZ & Lesen">DaZ</button>
+                <button class="filter-btn" data-kategorie="Hörbehinderung & Lesen">Hören</button>
+                <button class="filter-btn" data-kategorie="Sehbehinderung & Lesen">Sehen</button>
+                <button class="filter-btn" data-kategorie="Praxistipps">Tipps</button>
+                <button class="filter-btn" data-kategorie="Glossar">Glossar</button>
+            </div>
+        </div>
+
+        <div class="filters">
+            <span class="filter-label">Zielgruppe:</span>
+            <div class="filter-group" id="filter-zielgruppe">
+                <button class="filter-btn active" data-zielgruppe="alle">Alle</button>
+                <button class="filter-btn" data-zielgruppe="Eltern">Eltern</button>
+                <button class="filter-btn" data-zielgruppe="Lehrkräfte">Lehrkräfte</button>
+                <button class="filter-btn" data-zielgruppe="Therapeuten">Therapeuten</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="result-count" id="result-count"></div>
+    <div class="grid" id="grid"></div>
+
+    <script>
+    // Snacks data will be embedded here
+    let SNACKS = [];
+
+    // Load snacks from JSON file or inline data
+    async function loadSnacks() {
+        try {
+            const response = await fetch('snacks.json');
+            if (response.ok) {
+                SNACKS = await response.json();
+            }
+        } catch (e) {
+            console.log('snacks.json not found, using inline data if available');
+        }
+
+        if (SNACKS.length === 0 && typeof INLINE_SNACKS !== 'undefined') {
+            SNACKS = INLINE_SNACKS;
+        }
+
+        updateStats();
+        render();
+    }
+
+    // State
+    let activeTyp = 'alle';
+    let activeKategorie = 'alle';
+    let activeZielgruppe = 'alle';
+    let searchQuery = '';
+
+    // Update stats
+    function updateStats() {
+        document.getElementById('stat-total').textContent = SNACKS.length + ' Snacks';
+        const quellen = new Set(SNACKS.map(s => s.quelle)).size;
+        document.getElementById('stat-quellen').textContent = quellen + ' Quellen';
+    }
+
+    // Filter snacks
+    function getFiltered() {
+        return SNACKS.filter(s => {
+            if (activeTyp !== 'alle' && s.typ !== activeTyp) return false;
+            if (activeKategorie !== 'alle' && s.kategorie !== activeKategorie) return false;
+            if (activeZielgruppe !== 'alle' && !s.zielgruppe.includes(activeZielgruppe)) return false;
+            if (searchQuery) {
+                const q = searchQuery.toLowerCase();
+                const searchable = [s.titel, s.body, s.kategorie, ...(s.tags || [])].join(' ').toLowerCase();
+                if (!searchable.includes(q)) return false;
+            }
+            return true;
+        });
+    }
+
+    // Render cards
+    function render() {
+        const filtered = getFiltered();
+        const grid = document.getElementById('grid');
+        const countEl = document.getElementById('result-count');
+
+        countEl.textContent = filtered.length === SNACKS.length
+            ? `${filtered.length} Knowledge Snacks`
+            : `${filtered.length} von ${SNACKS.length} Snacks`;
+
+        if (filtered.length === 0) {
+            grid.innerHTML = '<div class="no-results">Keine Snacks gefunden. Probiere andere Filter oder Suchbegriffe.</div>';
+            return;
+        }
+
+        grid.innerHTML = filtered.map(s => `
+            <div class="card" data-typ="${s.typ}">
+                <div class="card-header">
+                    <span class="card-kategorie">${s.kategorie}</span>
+                    <span class="card-typ">${s.typ.toUpperCase()}</span>
+                </div>
+                <div class="card-titel">${s.titel}</div>
+                <div class="card-body">${s.body}</div>
+                <div class="card-footer">
+                    <span class="card-quelle">${s.quelle}</span>
+                    <span class="card-evidenz">${s.evidenzgrad}</span>
+                </div>
+                ${s.tags ? `<div class="card-tags">${s.tags.map(t => `<span class="tag">#${t}</span>`).join('')}</div>` : ''}
+            </div>
+        `).join('');
+    }
+
+    // Event listeners
+    document.getElementById('search').addEventListener('input', (e) => {
+        searchQuery = e.target.value;
+        render();
+    });
+
+    document.getElementById('filter-typ').addEventListener('click', (e) => {
+        if (!e.target.classList.contains('filter-btn')) return;
+        activeTyp = e.target.dataset.typ;
+        document.querySelectorAll('#filter-typ .filter-btn').forEach(b => b.classList.remove('active'));
+        e.target.classList.add('active');
+        render();
+    });
+
+    document.getElementById('filter-kategorie').addEventListener('click', (e) => {
+        if (!e.target.classList.contains('filter-btn')) return;
+        activeKategorie = e.target.dataset.kategorie;
+        document.querySelectorAll('#filter-kategorie .filter-btn').forEach(b => b.classList.remove('active'));
+        e.target.classList.add('active');
+        render();
+    });
+
+    document.getElementById('filter-zielgruppe').addEventListener('click', (e) => {
+        if (!e.target.classList.contains('filter-btn')) return;
+        activeZielgruppe = e.target.dataset.zielgruppe;
+        document.querySelectorAll('#filter-zielgruppe .filter-btn').forEach(b => b.classList.remove('active'));
+        e.target.classList.add('active');
+        render();
+    });
+
+    // Initialize
+    loadSnacks();
+    </script>
+</body>
+</html>
