@@ -5,23 +5,25 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Impressum – Lesekumpel</title>
     <meta name="robots" content="noindex">
-    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Quicksand:wght@400;500;600&display=swap" rel="stylesheet">
     <style>
         :root {
-            --bg-body: #fafafa;
-            --accent-teal: #2a9d8f;
-            --accent-teal-light: #e8f5f3;
-            --text-dark: #1a1a2e;
-            --text-muted: #6b7280;
+            --bg-body: #FFF9E5;
+            --primary-yellow: #FFD54F;
+            --accent-coral: #D67171;
+            --accent-coral-light: #FDEAEA;
+            --accent-coral-dark: #B85555;
+            --text-dark: #2D3436;
+            --text-muted: #5a6368;
             --font-heading: 'Fredoka', sans-serif;
-            --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            --font-body: 'Quicksand', sans-serif;
         }
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body { font-family: var(--font-body); background: var(--bg-body); color: var(--text-dark); }
 
         .main-navbar {
             background-color: #fff; padding: 12px 24px;
-            border-bottom: 1px solid #e5e7eb; box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+            border-bottom: 2px solid var(--primary-yellow); box-shadow: 0 1px 3px rgba(0,0,0,0.04);
             display: flex; justify-content: space-between; align-items: center;
             position: sticky; top: 0; z-index: 1000;
         }
@@ -29,21 +31,21 @@
         .nav-logo { height: 40px; width: auto; }
         .brand-name {
             font-family: var(--font-heading); font-size: 1.2rem;
-            color: var(--accent-teal); font-weight: 600; text-decoration: none;
+            color: var(--accent-coral); font-weight: 600; text-decoration: none;
         }
         .nav-links-desktop { display: none; gap: 20px; align-items: center; margin-left: 16px; }
         .nav-btn {
             text-decoration: none; color: var(--text-dark); font-weight: 600;
             font-size: 0.95rem; transition: color 0.2s;
         }
-        .nav-btn:hover { color: var(--accent-teal); }
+        .nav-btn:hover { color: var(--accent-coral); }
         .btn-cta-nav {
-            background: var(--accent-teal); color: #fff; padding: 11px 26px;
+            background: var(--accent-coral); color: #fff; padding: 11px 26px;
             border-radius: 10px; font-weight: 600; text-decoration: none;
             font-family: var(--font-body); font-size: 0.9rem; border: none;
             transition: background 0.2s;
         }
-        .btn-cta-nav:hover { background: #248f82; }
+        .btn-cta-nav:hover { background: var(--accent-coral-dark); }
         .nav-right { display: flex; align-items: center; gap: 15px; }
         .burger-icon { font-size: 1.8rem; cursor: pointer; display: block; color: var(--text-dark); }
         .mobile-menu {
@@ -71,7 +73,7 @@
         }
         .legal-content h2 {
             font-family: var(--font-heading); font-size: 1.2rem; margin-top: 36px; margin-bottom: 12px;
-            color: var(--accent-teal);
+            color: var(--accent-coral);
         }
         .legal-content p, .legal-content li {
             color: var(--text-muted); line-height: 1.8; font-size: 0.95rem; margin-bottom: 12px;
@@ -88,7 +90,7 @@
         }
         .footer-links { margin-top: 6px; }
         .footer-links a { color: var(--text-muted); text-decoration: none; margin: 0 6px; }
-        .footer-links a:hover { color: var(--accent-teal); }
+        .footer-links a:hover { color: var(--accent-coral); }
     </style>
 </head>
 <body>
@@ -98,8 +100,8 @@
             <img src="logo1.png" alt="Lesekumpel Logo" class="nav-logo">
             <a href="landingpage.html" class="brand-name">Lesekumpel</a>
             <div class="nav-links-desktop">
-                <a href="landingpage.html#mission" class="nav-btn">Unsere Mission</a>
-                <a href="landingpage.html#features" class="nav-btn">So hilft Lesekumpel</a>
+                <a href="landingpage.html#mission" class="nav-btn">F&uuml;r euch</a>
+                <a href="landingpage.html#features" class="nav-btn">So funktioniert&rsquo;s</a>
                 <a href="ueber-uns.html" class="nav-btn">&Uuml;ber uns</a>
                 <a href="demo.html" class="nav-btn">Demo</a>
             </div>
@@ -109,8 +111,8 @@
             <span class="burger-icon" onclick="toggleMenu()">&#9776;</span>
         </div>
         <div id="mobile-menu" class="mobile-menu">
-            <a href="landingpage.html#mission" class="nav-btn" onclick="toggleMenu()">Unsere Mission</a>
-            <a href="landingpage.html#features" class="nav-btn" onclick="toggleMenu()">So hilft Lesekumpel</a>
+            <a href="landingpage.html#mission" class="nav-btn" onclick="toggleMenu()">F&uuml;r euch</a>
+            <a href="landingpage.html#features" class="nav-btn" onclick="toggleMenu()">So funktioniert&rsquo;s</a>
             <a href="ueber-uns.html" class="nav-btn" onclick="toggleMenu()">&Uuml;ber uns</a>
             <a href="demo.html" class="nav-btn" onclick="toggleMenu()">Demo</a>
             <a href="landingpage.html#registrieren" class="nav-btn" onclick="toggleMenu()">Jetzt registrieren</a>

@@ -58,8 +58,55 @@ Four fictional AI author personas, each with a distinct style:
 
 ## Design System
 
-- Primary yellow: `#f4d03f`, Salmon accent: `#f08080`, Teal accent: `#2a9d8f`
-- Background: `#f0f8ff` (light blue)
-- Fonts: Fredoka, Quicksand, Lexend (via Google Fonts)
+Das vollständige Design System ist in `design-system.md` dokumentiert.
+
+Kurzübersicht:
+- Primary coral: `#D67171`, Secondary yellow: `#FFD54F`, Background: `#FFF9E5`
+- Fonts: Fredoka (headings), Quicksand (body) via Google Fonts
 - Responsive breakpoint at 768px, mobile-first
 - Accessibility: dyslexia-friendly font mode, high contrast option, font resizing
+
+## Knowledge Base (RAG-Chatbot)
+
+Das Verzeichnis `knowledge-base/` enthält eine evidenzbasierte Wissensdatenbank über Lesenlernen bei Kindern (5–10 Jahre) mit besonderen Bedürfnissen. Ziel ist ein RAG-basierter Chatbot, der Eltern und Fachpersonal berät.
+
+**Grundsatz: Kein Fakt ohne Quelle.**
+
+### Verzeichnisstruktur
+
+```
+knowledge-base/
+├── PROJEKT.md              # Gesamtdokumentation, RAG-Architektur, Fortschritt
+├── README.md               # Kurzübersicht
+├── quellen/
+│   ├── experten.md          # 40+ Experten mit Profilen und Publikationen
+│   └── quellenregister.md   # Alle Quellen mit DOI/ISBN/URL
+├── themen/                  # RAG-kompatible Fakten-Chunks pro Thema
+│   ├── lrs-legasthenie.md
+│   ├── adhs-lesen.md
+│   ├── autismus-lesen.md
+│   ├── daz-lesen.md
+│   ├── hoerbehinderung-lesen.md
+│   └── sehbehinderung-lesen.md
+├── praxis/
+│   ├── tipps-eltern.md      # Alltagstipps für Eltern
+│   └── tipps-lehrkraefte.md # Methoden für Fachpersonal
+└── meta/
+    ├── schema.md            # Dokumentformat-Spezifikation
+    └── glossar.md           # Fachbegriffe erklärt
+```
+
+### Dokumentformat
+
+- YAML-Frontmatter (thema, zielgruppe, altersgruppe, letzte_aktualisierung)
+- Jeder `##`-Abschnitt = 1 RAG-Chunk (100–500 Wörter, in sich verständlich)
+- Jeder Chunk endet mit `**Quelle:**` und `**Evidenzgrad:**`
+- Details: `knowledge-base/meta/schema.md`
+
+### Geplanter RAG-Stack
+
+- **LLM:** Claude API
+- **Embedding:** OpenAI text-embedding-3-large
+- **Vektor-DB:** Supabase pgvector
+- **Backend:** Next.js API Routes
+- **Retrieval:** Hybrid (Semantic + BM25)
