@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Datenschutzerkl&auml;rung – Lesekumpel</title>
+    <meta name="robots" content="noindex">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-body: #fafafa;
+            --accent-teal: #2a9d8f;
+            --accent-teal-light: #e8f5f3;
+            --text-dark: #1a1a2e;
+            --text-muted: #6b7280;
+            --font-heading: 'Fredoka', sans-serif;
+            --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: var(--font-body); background: var(--bg-body); color: var(--text-dark); }
+
+        .main-navbar {
+            background-color: #fff; padding: 12px 24px;
+            border-bottom: 1px solid #e5e7eb; box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+            display: flex; justify-content: space-between; align-items: center;
+            position: sticky; top: 0; z-index: 1000;
+        }
+        .nav-left { display: flex; align-items: center; gap: 10px; }
+        .nav-logo { height: 40px; width: auto; }
+        .brand-name {
+            font-family: var(--font-heading); font-size: 1.2rem;
+            color: var(--accent-teal); font-weight: 600; text-decoration: none;
+        }
+        .nav-links-desktop { display: none; gap: 20px; align-items: center; margin-left: 16px; }
+        .nav-btn {
+            text-decoration: none; color: var(--text-dark); font-weight: 600;
+            font-size: 0.95rem; transition: color 0.2s;
+        }
+        .nav-btn:hover { color: var(--accent-teal); }
+        .btn-cta-nav {
+            background: var(--accent-teal); color: #fff; padding: 11px 26px;
+            border-radius: 10px; font-weight: 600; text-decoration: none;
+            font-family: var(--font-body); font-size: 0.9rem; border: none;
+            transition: background 0.2s;
+        }
+        .btn-cta-nav:hover { background: #248f82; }
+        .nav-right { display: flex; align-items: center; gap: 15px; }
+        .burger-icon { font-size: 1.8rem; cursor: pointer; display: block; color: var(--text-dark); }
+        .mobile-menu {
+            display: none; background: white; padding: 15px 24px;
+            position: absolute; top: 100%; left: 0; width: 100%;
+            border-bottom: 1px solid #e5e7eb; box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            flex-direction: column; gap: 12px; z-index: 999;
+        }
+        .mobile-menu.open { display: flex; }
+        @media (min-width: 768px) {
+            .burger-icon { display: none; }
+            .nav-links-desktop { display: flex; }
+            .nav-logo { height: 50px; }
+            .brand-name { font-size: 1.5rem; }
+        }
+
+        .legal-content {
+            max-width: 720px; margin: 0 auto; padding: 60px 20px 80px;
+        }
+        .legal-content h1 {
+            font-family: var(--font-heading); font-size: 2rem; margin-bottom: 8px;
+        }
+        .legal-content .legal-note {
+            color: var(--text-muted); font-size: 0.9rem; margin-bottom: 40px;
+        }
+        .legal-content h2 {
+            font-family: var(--font-heading); font-size: 1.2rem; margin-top: 36px; margin-bottom: 12px;
+            color: var(--accent-teal);
+        }
+        .legal-content h3 {
+            font-family: var(--font-heading); font-size: 1.05rem; margin-top: 24px; margin-bottom: 8px;
+        }
+        .legal-content p, .legal-content li {
+            color: var(--text-muted); line-height: 1.8; font-size: 0.95rem; margin-bottom: 12px;
+        }
+        .legal-content ul { padding-left: 20px; margin-bottom: 12px; }
+        .legal-content .placeholder {
+            background: #fef9e7; color: #92400e; padding: 2px 6px; border-radius: 4px;
+            font-weight: 600;
+        }
+
+        footer {
+            text-align: center; color: var(--text-muted); font-size: 0.85rem;
+            padding: 24px; border-top: 1px solid #e5e7eb; background: #fff;
+        }
+        .footer-links { margin-top: 6px; }
+        .footer-links a { color: var(--text-muted); text-decoration: none; margin: 0 6px; }
+        .footer-links a:hover { color: var(--accent-teal); }
+    </style>
+</head>
+<body>
+
+    <nav class="main-navbar">
+        <div class="nav-left">
+            <img src="logo1.png" alt="Lesekumpel Logo" class="nav-logo">
+            <a href="landingpage.html" class="brand-name">Lesekumpel</a>
+            <div class="nav-links-desktop">
+                <a href="landingpage.html#mission" class="nav-btn">Unsere Mission</a>
+                <a href="landingpage.html#features" class="nav-btn">So hilft Lesekumpel</a>
+                <a href="ueber-uns.html" class="nav-btn">&Uuml;ber uns</a>
+                <a href="demo.html" class="nav-btn">Demo</a>
+            </div>
+        </div>
+        <div class="nav-right">
+            <a href="landingpage.html#registrieren" class="btn-cta-nav">Jetzt registrieren</a>
+            <span class="burger-icon" onclick="toggleMenu()">&#9776;</span>
+        </div>
+        <div id="mobile-menu" class="mobile-menu">
+            <a href="landingpage.html#mission" class="nav-btn" onclick="toggleMenu()">Unsere Mission</a>
+            <a href="landingpage.html#features" class="nav-btn" onclick="toggleMenu()">So hilft Lesekumpel</a>
+            <a href="ueber-uns.html" class="nav-btn" onclick="toggleMenu()">&Uuml;ber uns</a>
+            <a href="demo.html" class="nav-btn" onclick="toggleMenu()">Demo</a>
+            <a href="landingpage.html#registrieren" class="nav-btn" onclick="toggleMenu()">Jetzt registrieren</a>
+        </div>
+    </nav>
+
+    <main class="legal-content">
+        <h1>Datenschutzerkl&auml;rung</h1>
+        <p class="legal-note">Stand: M&auml;rz 2026</p>
+
+        <h2>1. Verantwortlicher</h2>
+        <p>
+            <span class="placeholder">[Vor- und Nachname]</span><br>
+            <span class="placeholder">[Stra&szlig;e Hausnummer]</span><br>
+            <span class="placeholder">[PLZ Ort]</span><br>
+            E-Mail: <span class="placeholder">[E-Mail-Adresse]</span>
+        </p>
+
+        <h2>2. &Uuml;berblick</h2>
+        <p>Lesekumpel ist ein nicht-kommerzielles Hobby-Projekt. Der Schutz deiner pers&ouml;nlichen Daten ist uns wichtig. Wir erheben so wenig Daten wie m&ouml;glich &ndash; aktuell gar keine.</p>
+
+        <h2>3. Hosting</h2>
+        <p>Diese Website wird &uuml;ber <strong>GitHub Pages</strong> (GitHub Inc., 88 Colin P Kelly Jr St, San Francisco, CA 94107, USA) gehostet. Beim Aufruf der Seite werden automatisch technische Daten (z.&thinsp;B. IP-Adresse, Browsertyp, Zeitpunkt des Zugriffs) in Server-Logfiles gespeichert. Dies geschieht durch GitHub und liegt au&szlig;erhalb unserer Kontrolle.</p>
+        <p>Weitere Informationen: <a href="https://docs.github.com/en/pages/getting-started-with-github-pages/about-github-pages#data-collection" style="color: var(--accent-teal);">GitHub Pages Privacy</a></p>
+
+        <h2>4. Datenerfassung auf dieser Website</h2>
+
+        <h3>Registrierungsformular</h3>
+        <p>Auf der Startseite befindet sich ein Registrierungsformular (Name und E-Mail-Adresse). <strong>Aktuell werden keine Daten &uuml;bertragen oder gespeichert.</strong> Das Formular ist ein visueller Platzhalter ohne Backend-Anbindung.</p>
+        <p>Sobald das Formular aktiviert wird, gilt: Die Angabe von Name und E-Mail erfolgt freiwillig auf Grundlage deiner Einwilligung (Art.&thinsp;6 Abs.&thinsp;1 lit.&thinsp;a DSGVO). Die Daten werden ausschlie&szlig;lich verwendet, um dich &uuml;ber den Start von Lesekumpel zu informieren. Du kannst deine Einwilligung jederzeit widerrufen.</p>
+
+        <h3>Cookies</h3>
+        <p>Diese Website verwendet <strong>keine Cookies</strong>.</p>
+
+        <h3>Analyse- und Tracking-Tools</h3>
+        <p>Wir setzen <strong>keine Analyse- oder Tracking-Tools</strong> ein (kein Google Analytics, kein Matomo, keine Pixel).</p>
+
+        <h2>5. Externe Dienste</h2>
+
+        <h3>Google Fonts</h3>
+        <p>Diese Website nutzt Schriftarten von Google Fonts (Google Ireland Limited, Gordon House, Barrow Street, Dublin 4, Irland). Beim Laden der Seite wird eine Verbindung zu Google-Servern hergestellt, wodurch deine IP-Adresse an Google &uuml;bermittelt wird.</p>
+        <p>Rechtsgrundlage: Berechtigtes Interesse (Art.&thinsp;6 Abs.&thinsp;1 lit.&thinsp;f DSGVO) an einer einheitlichen Darstellung der Schriftarten.</p>
+        <p>Weitere Informationen: <a href="https://policies.google.com/privacy" style="color: var(--accent-teal);">Google Datenschutzerkl&auml;rung</a></p>
+
+        <h2>6. Deine Rechte</h2>
+        <p>Du hast jederzeit das Recht auf:</p>
+        <ul>
+            <li><strong>Auskunft</strong> &uuml;ber deine bei uns gespeicherten Daten (Art.&thinsp;15 DSGVO)</li>
+            <li><strong>Berichtigung</strong> unrichtiger Daten (Art.&thinsp;16 DSGVO)</li>
+            <li><strong>L&ouml;schung</strong> deiner Daten (Art.&thinsp;17 DSGVO)</li>
+            <li><strong>Einschr&auml;nkung</strong> der Verarbeitung (Art.&thinsp;18 DSGVO)</li>
+            <li><strong>Widerspruch</strong> gegen die Verarbeitung (Art.&thinsp;21 DSGVO)</li>
+            <li><strong>Daten&uuml;bertragbarkeit</strong> (Art.&thinsp;20 DSGVO)</li>
+        </ul>
+        <p>Wende dich dazu an: <span class="placeholder">[E-Mail-Adresse]</span></p>
+
+        <h2>7. Beschwerderecht</h2>
+        <p>Du hast das Recht, dich bei einer Datenschutz-Aufsichtsbeh&ouml;rde zu beschweren, wenn du der Meinung bist, dass die Verarbeitung deiner Daten gegen die DSGVO verst&ouml;&szlig;t.</p>
+    </main>
+
+    <footer>
+        <p>Erstellt von deinem KI-Lesekumpel</p>
+        <div class="footer-links"><a href="impressum.html">Impressum</a> &bull; <a href="datenschutz.html">Datenschutz</a> &bull; <a href="ueber-uns.html">&Uuml;ber uns</a></div>
+    </footer>
+
+    <script>
+        function toggleMenu() {
+            document.getElementById('mobile-menu').classList.toggle('open');
+        }
+    </script>
+</body>
+</html>

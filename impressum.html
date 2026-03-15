@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Impressum – Lesekumpel</title>
+    <meta name="robots" content="noindex">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-body: #fafafa;
+            --accent-teal: #2a9d8f;
+            --accent-teal-light: #e8f5f3;
+            --text-dark: #1a1a2e;
+            --text-muted: #6b7280;
+            --font-heading: 'Fredoka', sans-serif;
+            --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: var(--font-body); background: var(--bg-body); color: var(--text-dark); }
+
+        .main-navbar {
+            background-color: #fff; padding: 12px 24px;
+            border-bottom: 1px solid #e5e7eb; box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+            display: flex; justify-content: space-between; align-items: center;
+            position: sticky; top: 0; z-index: 1000;
+        }
+        .nav-left { display: flex; align-items: center; gap: 10px; }
+        .nav-logo { height: 40px; width: auto; }
+        .brand-name {
+            font-family: var(--font-heading); font-size: 1.2rem;
+            color: var(--accent-teal); font-weight: 600; text-decoration: none;
+        }
+        .nav-links-desktop { display: none; gap: 20px; align-items: center; margin-left: 16px; }
+        .nav-btn {
+            text-decoration: none; color: var(--text-dark); font-weight: 600;
+            font-size: 0.95rem; transition: color 0.2s;
+        }
+        .nav-btn:hover { color: var(--accent-teal); }
+        .btn-cta-nav {
+            background: var(--accent-teal); color: #fff; padding: 11px 26px;
+            border-radius: 10px; font-weight: 600; text-decoration: none;
+            font-family: var(--font-body); font-size: 0.9rem; border: none;
+            transition: background 0.2s;
+        }
+        .btn-cta-nav:hover { background: #248f82; }
+        .nav-right { display: flex; align-items: center; gap: 15px; }
+        .burger-icon { font-size: 1.8rem; cursor: pointer; display: block; color: var(--text-dark); }
+        .mobile-menu {
+            display: none; background: white; padding: 15px 24px;
+            position: absolute; top: 100%; left: 0; width: 100%;
+            border-bottom: 1px solid #e5e7eb; box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            flex-direction: column; gap: 12px; z-index: 999;
+        }
+        .mobile-menu.open { display: flex; }
+        @media (min-width: 768px) {
+            .burger-icon { display: none; }
+            .nav-links-desktop { display: flex; }
+            .nav-logo { height: 50px; }
+            .brand-name { font-size: 1.5rem; }
+        }
+
+        .legal-content {
+            max-width: 720px; margin: 0 auto; padding: 60px 20px 80px;
+        }
+        .legal-content h1 {
+            font-family: var(--font-heading); font-size: 2rem; margin-bottom: 8px;
+        }
+        .legal-content .legal-note {
+            color: var(--text-muted); font-size: 0.9rem; margin-bottom: 40px;
+        }
+        .legal-content h2 {
+            font-family: var(--font-heading); font-size: 1.2rem; margin-top: 36px; margin-bottom: 12px;
+            color: var(--accent-teal);
+        }
+        .legal-content p, .legal-content li {
+            color: var(--text-muted); line-height: 1.8; font-size: 0.95rem; margin-bottom: 12px;
+        }
+        .legal-content ul { padding-left: 20px; }
+        .legal-content .placeholder {
+            background: #fef9e7; color: #92400e; padding: 2px 6px; border-radius: 4px;
+            font-weight: 600;
+        }
+
+        footer {
+            text-align: center; color: var(--text-muted); font-size: 0.85rem;
+            padding: 24px; border-top: 1px solid #e5e7eb; background: #fff;
+        }
+        .footer-links { margin-top: 6px; }
+        .footer-links a { color: var(--text-muted); text-decoration: none; margin: 0 6px; }
+        .footer-links a:hover { color: var(--accent-teal); }
+    </style>
+</head>
+<body>
+
+    <nav class="main-navbar">
+        <div class="nav-left">
+            <img src="logo1.png" alt="Lesekumpel Logo" class="nav-logo">
+            <a href="landingpage.html" class="brand-name">Lesekumpel</a>
+            <div class="nav-links-desktop">
+                <a href="landingpage.html#mission" class="nav-btn">Unsere Mission</a>
+                <a href="landingpage.html#features" class="nav-btn">So hilft Lesekumpel</a>
+                <a href="ueber-uns.html" class="nav-btn">&Uuml;ber uns</a>
+                <a href="demo.html" class="nav-btn">Demo</a>
+            </div>
+        </div>
+        <div class="nav-right">
+            <a href="landingpage.html#registrieren" class="btn-cta-nav">Jetzt registrieren</a>
+            <span class="burger-icon" onclick="toggleMenu()">&#9776;</span>
+        </div>
+        <div id="mobile-menu" class="mobile-menu">
+            <a href="landingpage.html#mission" class="nav-btn" onclick="toggleMenu()">Unsere Mission</a>
+            <a href="landingpage.html#features" class="nav-btn" onclick="toggleMenu()">So hilft Lesekumpel</a>
+            <a href="ueber-uns.html" class="nav-btn" onclick="toggleMenu()">&Uuml;ber uns</a>
+            <a href="demo.html" class="nav-btn" onclick="toggleMenu()">Demo</a>
+            <a href="landingpage.html#registrieren" class="nav-btn" onclick="toggleMenu()">Jetzt registrieren</a>
+        </div>
+    </nav>
+
+    <main class="legal-content">
+        <h1>Impressum</h1>
+        <p class="legal-note">Angaben gem&auml;&szlig; &sect;5 TMG</p>
+
+        <h2>Verantwortlich</h2>
+        <p>
+            <span class="placeholder">[Vor- und Nachname]</span><br>
+            <span class="placeholder">[Stra&szlig;e Hausnummer]</span><br>
+            <span class="placeholder">[PLZ Ort]</span><br>
+            E-Mail: <span class="placeholder">[E-Mail-Adresse]</span>
+        </p>
+
+        <h2>Projekthinweis</h2>
+        <p>Lesekumpel ist ein nicht-kommerzielles Hobby-Projekt. Es werden keine Einnahmen erzielt und keine Waren oder Dienstleistungen verkauft.</p>
+
+        <h2>Haftung f&uuml;r Inhalte</h2>
+        <p>Die Inhalte dieser Seite wurden mit gr&ouml;&szlig;ter Sorgfalt erstellt. F&uuml;r die Richtigkeit, Vollst&auml;ndigkeit und Aktualit&auml;t der Inhalte k&ouml;nnen wir jedoch keine Gew&auml;hr &uuml;bernehmen. Als Diensteanbieter sind wir gem&auml;&szlig; &sect;7 Abs.1 TMG f&uuml;r eigene Inhalte auf diesen Seiten nach den allgemeinen Gesetzen verantwortlich.</p>
+
+        <h2>Haftung f&uuml;r Links</h2>
+        <p>Unsere Seite enth&auml;lt Links zu externen Websites Dritter, auf deren Inhalte wir keinen Einfluss haben. F&uuml;r die Inhalte der verlinkten Seiten ist stets der jeweilige Anbieter verantwortlich. Die verlinkten Seiten wurden zum Zeitpunkt der Verlinkung auf m&ouml;gliche Rechtsverst&ouml;&szlig;e &uuml;berpr&uuml;ft. Bei Bekanntwerden von Rechtsverletzungen werden wir derartige Links umgehend entfernen.</p>
+
+        <h2>Urheberrecht</h2>
+        <p>Die Geschichten auf Lesekumpel werden mithilfe von K&uuml;nstlicher Intelligenz (KI) generiert. Die Illustrationen und Comic-Bilder werden ebenfalls KI-gest&uuml;tzt erstellt. Alle Inhalte stehen unter der redaktionellen Verantwortung des Betreibers.</p>
+        <p>Soweit die Inhalte auf dieser Seite nicht vom Betreiber erstellt wurden, werden die Urheberrechte Dritter beachtet. Solltest du auf eine Urheberrechtsverletzung aufmerksam werden, bitten wir um einen entsprechenden Hinweis.</p>
+    </main>
+
+    <footer>
+        <p>Erstellt von deinem KI-Lesekumpel</p>
+        <div class="footer-links"><a href="impressum.html">Impressum</a> &bull; <a href="datenschutz.html">Datenschutz</a> &bull; <a href="ueber-uns.html">&Uuml;ber uns</a></div>
+    </footer>
+
+    <script>
+        function toggleMenu() {
+            document.getElementById('mobile-menu').classList.toggle('open');
+        }
+    </script>
+</body>
+</html>
