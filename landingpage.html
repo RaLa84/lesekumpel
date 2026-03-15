@@ -167,22 +167,30 @@
         @media (min-width: 768px) { .section-divider { height: 80px; } }
 
         /* ========== HERO ========== */
+        /* ========== MOBILE / DESKTOP UTILITY ========== */
+        .mobile-only { display: block; }
+        .desktop-only { display: none; }
+        @media (min-width: 768px) {
+            .mobile-only { display: none; }
+            .desktop-only { display: block; }
+        }
+
         .lp-hero {
             background: linear-gradient(180deg, #FFF9E5 0%, #FFF3D0 100%);
             overflow: hidden;
             min-height: 100vh;
             display: flex;
             align-items: center;
-            padding-top: 40px;
+            padding-top: 24px;
         }
         .lp-hero-inner {
-            display: flex; flex-direction: column; align-items: center; text-align: center; gap: 40px;
+            display: flex; flex-direction: column; align-items: center; text-align: center; gap: 20px;
             position: relative; z-index: 2; max-width: 100%;
         }
         .lp-hero-text { max-width: 100%; position: relative; z-index: 2; }
         .lp-hero h1 {
-            font-family: var(--font-heading); font-size: 2rem; color: var(--text-dark);
-            line-height: 1.15; margin-bottom: 20px;
+            font-family: var(--font-heading); font-size: 1.75rem; color: var(--text-dark);
+            line-height: 1.15; margin-bottom: 14px;
         }
         .lp-hero h1 span { color: var(--accent-coral); font-weight: 700; }
         .scribble-underline {
@@ -271,7 +279,7 @@
             .lp-hero { padding-top: 48px; }
             .lp-hero-inner { flex-direction: row; text-align: left; gap: 60px; }
             .lp-hero-text { max-width: 560px; }
-            .lp-hero h1 { font-size: 2.8rem; }
+            .lp-hero h1 { font-size: 2.8rem; margin-bottom: 20px; }
             .lp-hero-sub { font-size: 1.15rem; }
             .lp-btn-primary { display: inline-block; width: auto; }
             .lp-btn-secondary { display: inline-block; width: auto; margin-left: 12px; margin-top: 0; }
@@ -405,18 +413,19 @@
             position: relative;
             max-width: 900px; margin: 0 auto;
             min-height: 480px;
+            padding-left: 44px;
         }
         .lp-steps-map svg.map-svg {
-            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            pointer-events: none; z-index: 0;
+            position: absolute; top: 0; left: 0; width: 40px; height: 100%;
+            pointer-events: none; z-index: 1;
         }
         .map-path {
             fill: none;
             stroke: var(--primary-yellow);
-            stroke-width: 4;
-            stroke-dasharray: 12 10;
+            stroke-width: 4.5;
+            stroke-dasharray: 10 8;
             stroke-linecap: round;
-            opacity: 0.7;
+            opacity: 0.8;
             /* dasharray & dashoffset set by JS for scroll-reactive drawing */
         }
         .map-path-desktop { display: none; }
@@ -424,21 +433,25 @@
         .lp-step-waypoint {
             position: relative; z-index: 2;
             display: flex; flex-direction: column; align-items: center;
-            text-align: center; max-width: 260px;
-            margin: 0 auto; padding: 20px 0;
+            text-align: center; max-width: 300px;
+            margin: 0 0 28px 0; padding: 24px 20px;
+            background: #fff;
+            border-radius: 20px;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.06);
         }
+        .lp-step-waypoint:last-of-type { margin-bottom: 0; }
         .lp-step-number {
-            width: 64px; height: 64px; border-radius: 50%; background: var(--primary-yellow);
+            width: 56px; height: 56px; border-radius: 50%; background: var(--primary-yellow);
             display: flex; align-items: center; justify-content: center;
-            font-family: var(--font-heading); font-size: 1.6rem; font-weight: 600; color: var(--text-dark);
-            margin-bottom: 16px; box-shadow: 0 4px 12px rgba(255,213,79,0.4);
+            font-family: var(--font-heading); font-size: 1.5rem; font-weight: 600; color: var(--text-dark);
+            margin-bottom: 14px; box-shadow: 0 4px 12px rgba(255,213,79,0.4);
             border: 3px solid #fff;
             position: relative; z-index: 2;
         }
         .lp-step-waypoint h3 {
-            font-family: var(--font-heading); font-size: 1.05rem; margin-bottom: 8px; color: var(--text-dark);
+            font-family: var(--font-heading); font-size: 1.1rem; margin-bottom: 8px; color: var(--accent-coral);
         }
-        .lp-step-waypoint p { color: var(--text-muted); line-height: 1.6; font-size: 0.95rem; }
+        .lp-step-waypoint p { color: var(--text-muted); line-height: 1.6; font-size: 0.92rem; }
 
         .map-character {
             position: absolute; z-index: 3;
@@ -446,14 +459,15 @@
             animation: float 4s ease-in-out infinite;
         }
         .map-character-mobile {
-            top: -10px; left: calc(50% + 40px);
+            top: -10px; left: 0px;
         }
         .map-character-desktop {
             display: none;
         }
 
         @media (min-width: 768px) {
-            .lp-steps-map { min-height: 420px; padding-top: 20px; }
+            .lp-steps-map { min-height: 420px; padding-top: 20px; padding-left: 0; }
+            .lp-steps-map svg.map-svg { width: 100%; height: 100%; }
             .map-path-mobile { display: none; }
             .map-path-desktop { display: block; }
 
@@ -608,8 +622,71 @@
             width: 10px; height: 10px; border-radius: 50%;
             animation: float 7s ease-in-out infinite;
         }
+        /* Mobile hero frame (hidden by default, shown on mobile) */
+        .mobile-hero-frame {
+            position: relative;
+            width: 250px;
+            height: 250px;
+            margin: 8px auto 20px;
+            display: none;
+        }
+        .mobile-hero-frame::before {
+            content: '';
+            position: absolute;
+            inset: -4px;
+            background: #FFD54F;
+            border-radius: 50%;
+            z-index: 0;
+        }
+        .mobile-hero-star {
+            position: absolute;
+            top: -8px;
+            right: -4px;
+            width: 36px;
+            height: 36px;
+            z-index: 2;
+            animation: hero-breakout-bob 3s ease-in-out infinite;
+            filter: drop-shadow(0 2px 4px rgba(0,0,0,0.15));
+        }
+
         @media (max-width: 767px) {
             .deco-hide-mobile { display: none; }
+            .lp-hero { align-items: flex-start; padding-top: 36px; min-height: 0; }
+            .lp-hero-inner { gap: 12px; }
+            .lp-hero-sub { margin-bottom: 16px; }
+            .lp-btn-primary { padding: 16px 52px; }
+            .lp-btn-secondary { padding: 14px 48px; }
+            .lp-alpha-badge { font-size: 0.75rem; padding: 5px 12px; margin-bottom: 8px; }
+            .lp-hero-note { margin-top: 10px; }
+            .neuro-banner { gap: 16px; margin-top: 10px; }
+            .neuro-icon { width: 28px; height: 20px; }
+            .neuro-badge span { font-size: 0.75rem; }
+            /* Hide desktop hero image on mobile, show inline mobile version */
+            .lp-hero-visual { display: none; }
+            .mobile-hero-frame { display: block; }
+            .lp-hero-img-mobile {
+                width: 250px;
+                height: 250px;
+                object-fit: cover;
+                object-position: center 20%;
+                display: block;
+                border-radius: 50%;
+                position: relative;
+                z-index: 1;
+            }
+            /* Scroll hint */
+            .scroll-hint {
+                display: block;
+                position: absolute; bottom: 20px; left: 50%; transform: translateX(-50%);
+                z-index: 4; opacity: 0.6;
+                animation: scroll-bounce 2s ease-in-out infinite;
+            }
+        }
+        /* Hide scroll hint by default (shown on mobile via media query above) */
+        .scroll-hint { display: none; }
+        @keyframes scroll-bounce {
+            0%, 100% { transform: translateX(-50%) translateY(0); }
+            50% { transform: translateX(-50%) translateY(8px); }
         }
 
         /* ========== HERO SPLIT-TEXT ========== */
@@ -642,7 +719,12 @@
         /* ========== HERO CTA BUTTONS ========== */
         .lp-hero .lp-btn-primary, .lp-hero .lp-btn-secondary {
             opacity: 0;
-            animation: hero-fade-in 0.6s ease-out 0.55s forwards;
+            animation: hero-fade-in 0.6s ease-out 0.55s forwards, btn-pulse 5s ease-in-out 2s infinite;
+        }
+        @keyframes btn-pulse {
+            0%, 85%, 100% { transform: scale(1); box-shadow: 0 4px 14px rgba(214,113,113,0.3); }
+            90% { transform: scale(1.04); box-shadow: 0 4px 24px rgba(214,113,113,0.5); }
+            95% { transform: scale(1); box-shadow: 0 4px 14px rgba(214,113,113,0.3); }
         }
 
         /* ========== NEURO ICON STAGGER POP ========== */
@@ -670,6 +752,43 @@
         }
         .lp-step-waypoint.visible .lp-step-number {
             animation: pulse-in 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
+        }
+
+        /* ========== STEP CARD ANIMATIONS ========== */
+        /* Step 1: Book flip open */
+        .lp-step-waypoint:nth-of-type(1) {
+            transform: perspective(600px) rotateY(25deg); opacity: 0;
+            transition: transform 0.6s ease-out, opacity 0.5s;
+        }
+        .lp-step-waypoint:nth-of-type(1).visible {
+            transform: perspective(600px) rotateY(0deg); opacity: 1;
+        }
+        /* Step 2: Pulse glow on number */
+        .lp-step-waypoint:nth-of-type(2) { opacity: 0; transform: translateY(20px); transition: opacity 0.5s, transform 0.5s; }
+        .lp-step-waypoint:nth-of-type(2).visible { opacity: 1; transform: translateY(0); }
+        .lp-step-waypoint:nth-of-type(2).visible .lp-step-number {
+            animation: pulse-in 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) forwards, step-pulse 2.5s ease-in-out 1s infinite;
+        }
+        @keyframes step-pulse {
+            0%, 100% { box-shadow: 0 4px 12px rgba(255,213,79,0.4); }
+            50% { box-shadow: 0 4px 24px rgba(255,213,79,0.7), 0 0 0 8px rgba(255,213,79,0.15); }
+        }
+        /* Step 3: Fade-in + sparkle celebration */
+        .lp-step-waypoint:nth-of-type(3) { opacity: 0; transform: translateY(20px); transition: opacity 0.5s, transform 0.5s; }
+        .lp-step-waypoint:nth-of-type(3).visible { opacity: 1; transform: translateY(0); }
+        .step-sparkle {
+            position: absolute; opacity: 0; transform: scale(0); pointer-events: none;
+        }
+        .lp-step-waypoint:nth-of-type(3).visible .step-sparkle {
+            animation: sparkle-burst 0.7s ease-out forwards;
+        }
+        .step-sparkle:nth-of-type(2) { animation-delay: 0.1s; }
+        .step-sparkle:nth-of-type(3) { animation-delay: 0.2s; }
+        .step-sparkle:nth-of-type(4) { animation-delay: 0.3s; }
+        @keyframes sparkle-burst {
+            0% { opacity: 0; transform: scale(0) rotate(0deg); }
+            50% { opacity: 1; transform: scale(1.4) rotate(15deg); }
+            100% { opacity: 0.7; transform: scale(1) rotate(0deg); }
         }
 
         /* ========== BACKGROUND BLOBS ========== */
@@ -733,6 +852,8 @@
             .neuro-badge { opacity: 0.8 !important; transform: none !important; }
             .hero-breakout { animation: none !important; }
             .lp-step-waypoint .lp-step-number { opacity: 1 !important; transform: none !important; }
+            .lp-step-waypoint { opacity: 1 !important; transform: none !important; transition: none !important; }
+            .step-sparkle { opacity: 0.7 !important; transform: scale(1) !important; animation: none !important; }
             .lp-hero-sunburst { display: none !important; }
             .bg-blob { display: none !important; }
             .map-path { stroke-dashoffset: 0 !important; transition: none !important; }
@@ -782,12 +903,22 @@
             <svg class="floating-deco deco-sparkle deco-hide-mobile" style="top:30%;right:15%;animation-delay:-2s;" viewBox="0 0 16 16"><circle cx="8" cy="8" r="3" fill="#FFD54F" opacity="0.6"/></svg>
             <div class="floating-deco deco-circle" style="top:70%;right:20%;background:var(--accent-coral-light);animation-delay:-4s;"></div>
             <div class="floating-deco deco-dot deco-hide-mobile" style="top:25%;left:12%;background:var(--primary-yellow);opacity:0.4;animation-delay:-2s;"></div>
+            <!-- Asymmetric sparkle visible on mobile -->
+            <svg class="floating-deco deco-sparkle" style="top:42%;left:6%;animation-delay:-1.5s;" viewBox="0 0 24 24"><path d="M12,2 L14,10 L22,12 L14,14 L12,22 L10,14 L2,12 L10,10 Z" fill="#FFD54F" opacity="0.5"/></svg>
 
             <div class="lp-container lp-hero-inner">
                 <div class="lp-hero-text">
                     <div class="lp-alpha-badge reveal">&#128640; Alpha-Phase &ndash; Gemeinsam f&uuml;r inklusives Lesen!</div>
                     <h1>Wenn Lesen endlich &bdquo;Klick&ldquo; macht &ndash;<br><span>f&uuml;r <span class="scribble-underline">jedes Gehirn</span>.</span></h1>
-                    <p class="lp-hero-sub">Lesekumpel ist der sichere Hafen f&uuml;r kleine Entdecker, die ihren eigenen Weg gehen. Wir kombinieren KI-Geschichten, die sich an <strong>ADHS, Autismus und Legasthenie</strong> anpassen, mit einer Gemeinschaft, die sich gegenseitig st&auml;rkt. Ohne Druck, voller kleiner Erfolgserlebnisse &ndash; und mit dem R&uuml;ckhalt unserer <strong>Discord-Familie</strong>.</p>
+                    <p class="lp-hero-sub mobile-only">Die erste inklusive Lese-App, die <strong>ADHS und Legasthenie</strong> als St&auml;rke feiert. KI-Geschichten, die dein Kind wirklich liebt &ndash; ohne Druck, mit 100&nbsp;% Erfolg.</p>
+                    <p class="lp-hero-sub desktop-only">Lesekumpel ist der sichere Hafen f&uuml;r kleine Entdecker, die ihren eigenen Weg gehen. Wir kombinieren KI-Geschichten, die sich an <strong>ADHS, Autismus und Legasthenie</strong> anpassen, mit einer Gemeinschaft, die sich gegenseitig st&auml;rkt. Ohne Druck, voller kleiner Erfolgserlebnisse &ndash; und mit dem R&uuml;ckhalt unserer <strong>Discord-Familie</strong>.</p>
+                    <div class="mobile-hero-frame mobile-only">
+                        <img src="kinddasliest.png" alt="Kind liest begeistert" class="lp-hero-img-mobile">
+                        <svg class="mobile-hero-star" viewBox="0 0 36 36" fill="none">
+                            <polygon points="18,2 21,13 32,10 25,18 34,26 23,23 18,34 13,23 2,26 11,18 4,10 15,13" fill="#FFD54F" stroke="#F5C842" stroke-width="1.2" stroke-linejoin="round"/>
+                            <circle cx="18" cy="17" r="3" fill="#fff" opacity="0.5"/>
+                        </svg>
+                    </div>
                     <a href="#registrieren" class="lp-btn-primary">Kostenlos starten</a>
                     <a href="demo.html" class="lp-btn-secondary">Demo ansehen</a>
                     <p class="lp-hero-note">Lesen ist kostenlos &middot; Neurodivers gestaltet &middot; Gemeinsam st&auml;rker</p>
@@ -849,6 +980,10 @@
                     </svg>
                     <img src="kinddasliest.png" alt="Kind liest begeistert eine Lesekumpel-Geschichte auf dem Tablet" class="lp-hero-img">
                 </div>
+            </div>
+            <!-- Scroll hint (mobile only) -->
+            <div class="scroll-hint">
+                <svg viewBox="0 0 24 24" width="28" height="28" fill="none" stroke="#D67171" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="6,9 12,15 18,9"/></svg>
             </div>
         </section>
 
@@ -1134,8 +1269,8 @@
                 <h2 class="lp-section-title reveal">So einfach geht Lesefreude</h2>
                 <div class="lp-steps-map">
                     <!-- Mobile: vertical dotted path -->
-                    <svg class="map-svg map-path-mobile" viewBox="0 0 40 480" preserveAspectRatio="xMidYMid meet">
-                        <path class="map-path" d="M20,33 C26,80 14,140 20,188 C26,240 14,300 20,358" />
+                    <svg class="map-svg map-path-mobile" viewBox="0 0 40 600" preserveAspectRatio="none">
+                        <path class="map-path" d="M20,20 C28,80 12,130 20,180 C28,230 12,280 20,330 C28,380 12,430 20,480 C28,530 20,560 20,580" />
                     </svg>
                     <!-- Desktop: S-curve snake path -->
                     <svg class="map-svg map-path-desktop" viewBox="0 0 1000 380" preserveAspectRatio="xMidYMid meet">
@@ -1179,6 +1314,11 @@
                     </div>
                     <div class="lp-step-waypoint">
                         <div class="lp-step-number">3</div>
+                        <!-- Celebration sparkles -->
+                        <svg class="step-sparkle" style="top:-8px;right:10px;width:20px;height:20px;" viewBox="0 0 24 24"><polygon points="12,2 14,9 21,9 15,14 17,21 12,17 7,21 9,14 3,9 10,9" fill="#FFD54F"/></svg>
+                        <svg class="step-sparkle" style="top:4px;left:6px;width:16px;height:16px;" viewBox="0 0 24 24"><polygon points="12,2 14,9 21,9 15,14 17,21 12,17 7,21 9,14 3,9 10,9" fill="#D67171" opacity="0.7"/></svg>
+                        <svg class="step-sparkle" style="bottom:12px;right:4px;width:14px;height:14px;" viewBox="0 0 24 24"><polygon points="12,2 14,9 21,9 15,14 17,21 12,17 7,21 9,14 3,9 10,9" fill="#2a9d8f" opacity="0.6"/></svg>
+                        <svg class="step-sparkle" style="bottom:4px;left:16px;width:12px;height:12px;" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5" fill="#FFD54F" opacity="0.5"/></svg>
                         <h3>Stolz sein &ndash; zusammen</h3>
                         <p>Mit jeder Geschichte w&auml;chst das Selbstvertrauen. Dein Kind erlebt: &bdquo;Ich kann das!&ldquo; &ndash; und du siehst es strahlen.</p>
                     </div>
@@ -1348,8 +1488,7 @@
         }, { threshold: 0.3 });
         document.querySelectorAll('.lp-step-waypoint').forEach(el => stepObserver.observe(el));
 
-        // ========== TREASURE MAP — SCROLL-REACTIVE PATH DRAWING ==========
-        // Treasure map paths — static, no animation
+        // ========== TREASURE MAP — STATIC PATH ==========
         document.querySelectorAll('.map-path').forEach(path => {
             path.style.strokeDashoffset = '0';
         });
