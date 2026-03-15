@@ -11,16 +11,20 @@
         :root {
             --coral: #D67171;
             --coral-light: #e8a3a3;
+            --coral-dark: #B85555;
             --yellow: #FFD54F;
             --yellow-light: #fff0b8;
             --bg: #FFF9E5;
             --bg-card: #ffffff;
-            --text: #333333;
-            --text-light: #666666;
+            --text: #2D3436;
+            --text-light: #5a6368;
+            --text-muted: #5a6368;
             --shadow: 0 2px 8px rgba(0,0,0,0.08);
             --shadow-hover: 0 4px 16px rgba(0,0,0,0.12);
             --radius: 16px;
             --radius-sm: 8px;
+            --font-heading: 'Fredoka', sans-serif;
+            --font-body: 'Quicksand', sans-serif;
             /* Snack-Typ-Farben */
             --fakt: #4A90D9;
             --fakt-bg: #EBF3FB;
@@ -43,21 +47,21 @@
             min-height: 100vh;
         }
 
-        header {
+        .snacks-hero {
             background: linear-gradient(135deg, var(--coral) 0%, var(--coral-light) 100%);
             color: white;
             padding: 2rem 1rem;
             text-align: center;
         }
 
-        header h1 {
-            font-family: 'Fredoka', sans-serif;
+        .snacks-hero h1 {
+            font-family: var(--font-heading);
             font-size: 2rem;
             font-weight: 700;
             margin-bottom: 0.5rem;
         }
 
-        header p {
+        .snacks-hero p {
             font-size: 1rem;
             opacity: 0.9;
         }
@@ -279,23 +283,107 @@
         }
 
         @media (max-width: 768px) {
-            header h1 { font-size: 1.5rem; }
+            .snacks-hero h1 { font-size: 1.5rem; }
             .grid { grid-template-columns: 1fr; }
             .stats { gap: 0.5rem; }
             .stat { font-size: 0.8rem; padding: 0.3rem 0.7rem; }
         }
+
+        /* --- NAVBAR --- */
+        .main-navbar {
+            background-color: #fff;
+            padding: 12px 24px;
+            border-bottom: 2px solid var(--yellow);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+            display: flex; justify-content: space-between; align-items: center;
+            position: sticky; top: 0; z-index: 1000;
+        }
+        .nav-left { display: flex; align-items: center; gap: 10px; }
+        .nav-logo { height: 40px; width: auto; }
+        .brand-name {
+            font-family: var(--font-heading); font-size: 1.2rem;
+            color: var(--coral); font-weight: 600; text-decoration: none;
+        }
+        .nav-links-desktop { display: none; gap: 20px; align-items: center; margin-left: 16px; }
+        .nav-btn {
+            text-decoration: none; color: var(--text); font-weight: 600;
+            font-size: 0.95rem; display: flex; align-items: center; gap: 5px;
+            transition: color 0.2s;
+        }
+        .nav-btn:hover { color: var(--coral); }
+        .btn-cta-nav {
+            background: var(--coral); color: #fff; padding: 11px 26px;
+            border-radius: 28px; font-weight: 600; transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            text-decoration: none; font-family: var(--font-body); font-size: 0.9rem;
+            border: none; box-shadow: 0 4px 14px rgba(214,113,113,0.3);
+        }
+        .btn-cta-nav:hover { background: var(--coral-dark); transform: translateY(-2px); }
+        .nav-right { display: flex; align-items: center; gap: 15px; }
+        .burger-icon { font-size: 1.8rem; cursor: pointer; display: block; color: var(--text); }
+        .mobile-menu {
+            display: none; background: white; padding: 15px 24px;
+            position: absolute; top: 100%; left: 0; width: 100%;
+            border-bottom: 2px solid var(--yellow); box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            flex-direction: column; gap: 12px; z-index: 999;
+        }
+        .mobile-menu.open { display: flex; }
+
+        @media (min-width: 768px) {
+            .burger-icon { display: none; }
+            .nav-links-desktop { display: flex; }
+            .nav-logo { height: 50px; }
+            .brand-name { font-size: 1.5rem; }
+            .nav-left { gap: 15px; }
+        }
+
+        /* --- FOOTER --- */
+        .site-footer {
+            text-align: center; color: var(--text-muted); font-size: 0.85rem;
+            padding: 24px; border-top: 1px solid #e5e7eb; background: #fff;
+        }
+        .footer-links { margin-top: 6px; }
+        .footer-links a { color: var(--text-muted); text-decoration: none; margin: 0 6px; }
+        .footer-links a:hover { color: var(--coral); }
     </style>
 </head>
 <body>
-    <header>
-        <h1>Lesekumpel Knowledge Snacks</h1>
-        <p>Evidenzbasiertes Wissen in kleinen Häppchen</p>
+    <!-- NAVBAR -->
+    <nav class="main-navbar">
+        <div class="nav-left">
+            <img src="../../logo1.png" alt="Lesekumpel Logo" class="nav-logo">
+            <a href="../../landingpage.html" class="brand-name">Lesekumpel</a>
+            <div class="nav-links-desktop">
+                <a href="../../landingpage.html#mission" class="nav-btn">F&uuml;r euch</a>
+                <a href="../../landingpage.html#features" class="nav-btn">So funktioniert&rsquo;s</a>
+                <a href="../../ueber-uns.html" class="nav-btn">&Uuml;ber uns</a>
+                <a href="../../demo.html" class="nav-btn">Demo</a>
+                <a href="../../knowledge-base/snacks/index.html" class="nav-btn" style="color: var(--coral);">Wissen</a>
+            </div>
+        </div>
+        <div class="nav-right">
+            <a href="../../landingpage.html#registrieren" class="btn-cta-nav">Jetzt registrieren</a>
+            <span class="burger-icon" onclick="toggleMenu()">&#9776;</span>
+        </div>
+        <div id="mobile-menu" class="mobile-menu">
+            <a href="../../landingpage.html#mission" class="nav-btn" onclick="toggleMenu()">F&uuml;r euch</a>
+            <a href="../../landingpage.html#features" class="nav-btn" onclick="toggleMenu()">So funktioniert&rsquo;s</a>
+            <a href="../../ueber-uns.html" class="nav-btn" onclick="toggleMenu()">&Uuml;ber uns</a>
+            <a href="../../demo.html" class="nav-btn" onclick="toggleMenu()">Demo</a>
+            <a href="../../knowledge-base/snacks/index.html" class="nav-btn" onclick="toggleMenu()">Wissen</a>
+            <a href="../../landingpage.html#registrieren" class="nav-btn" onclick="toggleMenu()">Jetzt registrieren</a>
+        </div>
+    </nav>
+
+    <!-- HERO -->
+    <div class="snacks-hero">
+        <h1>Knowledge Snacks</h1>
+        <p>Evidenzbasiertes Wissen in kleinen H&auml;ppchen</p>
         <div class="stats">
             <span class="stat" id="stat-total">0 Snacks</span>
             <span class="stat" id="stat-quellen">0 Quellen</span>
             <span class="stat" id="stat-themen">6 Themen</span>
         </div>
-    </header>
+    </div>
 
     <div class="controls">
         <input type="text" class="search-box" id="search" placeholder="Suche nach Stichwort, Thema oder Fachbegriff...">
@@ -456,6 +544,15 @@
 
     // Initialize
     loadSnacks();
+
+    function toggleMenu() {
+        document.getElementById('mobile-menu').classList.toggle('open');
+    }
     </script>
+
+    <footer class="site-footer">
+        <p>Erstellt von deinem KI-Lesekumpel</p>
+        <div class="footer-links"><a href="../../impressum.html">Impressum</a> &bull; <a href="../../datenschutz.html">Datenschutz</a> &bull; <a href="../../ueber-uns.html">&Uuml;ber uns</a></div>
+    </footer>
 </body>
 </html>
