@@ -1,0 +1,654 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lesekumpel Demo – 10 Geschichten für jedes Kind</title>
+    <meta name="description" content="Entdecke 10 handverlesene Geschichten – für jedes Kind, jedes Leseniveau, jede Art zu lernen.">
+
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        :root {
+            --bg-body: #fafafa;
+            --bg-card: #ffffff;
+            --primary-yellow: #f4d03f;
+            --accent-teal: #2a9d8f;
+            --accent-teal-light: #e8f5f3;
+            --accent-salmon: #f08080;
+            --text-dark: #1a1a2e;
+            --text-muted: #6b7280;
+            --shadow-card: 0 2px 12px rgba(0,0,0,0.06);
+            --shadow-card-hover: 0 8px 24px rgba(0,0,0,0.1);
+            --radius-card: 16px;
+            --font-heading: 'Fredoka', sans-serif;
+            --font-body: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        h1, h2, h3 { letter-spacing: -0.02em; }
+
+        body {
+            font-family: var(--font-body);
+            background-color: var(--bg-body);
+            color: var(--text-dark);
+        }
+
+        /* --- NAVBAR --- */
+        .main-navbar {
+            background-color: #fff;
+            padding: 12px 24px;
+            border-bottom: 1px solid #e5e7eb;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+            display: flex; justify-content: space-between; align-items: center;
+            position: sticky; top: 0; z-index: 1000;
+        }
+        .nav-left { display: flex; align-items: center; gap: 10px; }
+        .nav-logo { height: 40px; width: auto; }
+        .brand-name {
+            font-family: var(--font-heading); font-size: 1.2rem;
+            color: var(--accent-teal); font-weight: 600; text-decoration: none;
+        }
+        .nav-links-desktop { display: none; gap: 20px; align-items: center; margin-left: 16px; }
+        .nav-btn {
+            text-decoration: none; color: var(--text-dark); font-weight: 600;
+            font-size: 0.95rem; display: flex; align-items: center; gap: 5px;
+            transition: color 0.2s;
+        }
+        .nav-btn:hover { color: var(--accent-teal); }
+        .btn-cta-nav {
+            background: var(--accent-teal); color: #fff; padding: 11px 26px;
+            border-radius: 10px; font-weight: 600; transition: background 0.2s, transform 0.2s;
+            text-decoration: none; font-family: var(--font-body); font-size: 0.9rem;
+            border: none;
+        }
+        .btn-cta-nav:hover { background: #248f82; }
+        .nav-right { display: flex; align-items: center; gap: 15px; }
+        .burger-icon { font-size: 1.8rem; cursor: pointer; display: block; color: var(--text-dark); }
+        .mobile-menu {
+            display: none; background: white; padding: 15px 24px;
+            position: absolute; top: 100%; left: 0; width: 100%;
+            border-bottom: 1px solid #e5e7eb; box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            flex-direction: column; gap: 12px; z-index: 999;
+        }
+        .mobile-menu.open { display: flex; }
+
+        @media (min-width: 768px) {
+            .burger-icon { display: none; }
+            .nav-links-desktop { display: flex; }
+            .nav-logo { height: 50px; }
+            .brand-name { font-size: 1.5rem; }
+            .nav-left { gap: 15px; }
+        }
+
+        /* --- HERO --- */
+        .demo-hero {
+            background: #ffffff;
+            padding: 60px 20px 40px;
+            text-align: center;
+        }
+        .demo-hero h1 {
+            font-family: var(--font-heading);
+            font-size: 2rem;
+            color: var(--text-dark);
+            line-height: 1.2;
+            margin-bottom: 16px;
+        }
+        .demo-hero h1 span { color: var(--accent-teal); }
+        .demo-hero-sub {
+            font-size: 1.05rem;
+            color: var(--text-muted);
+            line-height: 1.7;
+            max-width: 600px;
+            margin: 0 auto 24px;
+        }
+        .demo-badges {
+            display: flex;
+            justify-content: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        .demo-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            background: var(--accent-teal-light);
+            color: var(--accent-teal);
+            font-size: 0.85rem;
+            font-weight: 600;
+            padding: 8px 16px;
+            border-radius: 40px;
+        }
+
+        @media (min-width: 768px) {
+            .demo-hero { padding: 80px 40px 48px; }
+            .demo-hero h1 { font-size: 2.6rem; }
+        }
+
+        /* --- FILTER BAR --- */
+        .filter-section {
+            background: #fff;
+            border-top: 1px solid #e5e7eb;
+            border-bottom: 1px solid #e5e7eb;
+            padding: 24px 20px;
+            position: sticky;
+            top: 65px;
+            z-index: 900;
+        }
+        .filter-container {
+            max-width: 1080px;
+            margin: 0 auto;
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+        }
+        .filter-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+        .filter-label {
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            min-width: 90px;
+        }
+        .filter-pills {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+        }
+        .filter-pill {
+            padding: 8px 18px;
+            border-radius: 40px;
+            border: 2px solid #e5e7eb;
+            background: #fff;
+            font-family: var(--font-body);
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        .filter-pill:hover {
+            border-color: var(--accent-teal);
+            color: var(--accent-teal);
+        }
+        .filter-pill.active {
+            background: var(--accent-teal);
+            border-color: var(--accent-teal);
+            color: #fff;
+        }
+
+        /* Author filter */
+        .author-filter {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+        .author-chip {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 16px 6px 6px;
+            border-radius: 40px;
+            border: 2px solid #e5e7eb;
+            background: #fff;
+            cursor: pointer;
+            transition: all 0.2s;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-muted);
+        }
+        .author-chip:hover {
+            border-color: var(--accent-salmon);
+            color: var(--accent-salmon);
+        }
+        .author-chip.active {
+            border-color: var(--accent-salmon);
+            background: #fef2f2;
+            color: var(--accent-salmon);
+        }
+        .author-chip img {
+            width: 32px;
+            height: 32px;
+            border-radius: 50%;
+            object-fit: cover;
+        }
+        .author-chip.all-chip {
+            padding: 6px 16px;
+        }
+
+        /* --- STORY GRID --- */
+        .stories-section {
+            padding: 40px 20px 80px;
+        }
+        .stories-container {
+            max-width: 1080px;
+            margin: 0 auto;
+        }
+        .stories-count {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-bottom: 24px;
+            font-weight: 500;
+        }
+        .stories-grid {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 24px;
+        }
+        .story-card {
+            background: #fff;
+            border-radius: var(--radius-card);
+            overflow: hidden;
+            box-shadow: var(--shadow-card);
+            transition: box-shadow 0.2s, transform 0.2s;
+            text-decoration: none;
+            color: var(--text-dark);
+            display: flex;
+            flex-direction: column;
+        }
+        .story-card:hover {
+            box-shadow: var(--shadow-card-hover);
+            transform: translateY(-3px);
+        }
+        .story-card-header {
+            padding: 28px 24px 20px;
+            flex-grow: 1;
+        }
+        .story-card-tags {
+            display: flex;
+            gap: 8px;
+            flex-wrap: wrap;
+            margin-bottom: 14px;
+        }
+        .tag {
+            font-size: 0.75rem;
+            font-weight: 600;
+            padding: 4px 12px;
+            border-radius: 20px;
+        }
+        .tag-level-starter { background: #e8f5f3; color: var(--accent-teal); }
+        .tag-level-entdecker { background: #fef9e7; color: #92400e; }
+        .tag-level-profi { background: #fef2f2; color: #b91c1c; }
+        .tag-neurotype { background: #f0f4f8; color: #475569; }
+        .tag-topic { background: #faf5ff; color: #7c3aed; }
+
+        .story-card-title {
+            font-family: var(--font-heading);
+            font-size: 1.2rem;
+            line-height: 1.3;
+            margin-bottom: 12px;
+            color: var(--text-dark);
+        }
+        .story-card-excerpt {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+            margin-bottom: 16px;
+        }
+        .story-card-footer {
+            padding: 16px 24px;
+            border-top: 1px solid #f3f4f6;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .story-card-author {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .story-card-author img {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--primary-yellow);
+        }
+        .story-card-author-name {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-dark);
+        }
+        .story-card-cta {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--accent-teal);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+
+        /* Empty state */
+        .empty-state {
+            text-align: center;
+            padding: 60px 20px;
+            color: var(--text-muted);
+        }
+        .empty-state-icon { font-size: 3rem; margin-bottom: 16px; }
+        .empty-state h3 {
+            font-family: var(--font-heading);
+            font-size: 1.3rem;
+            margin-bottom: 8px;
+            color: var(--text-dark);
+        }
+
+        @media (min-width: 600px) {
+            .stories-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+        @media (min-width: 960px) {
+            .stories-grid { grid-template-columns: repeat(3, 1fr); }
+        }
+
+        /* --- FOOTER --- */
+        footer {
+            text-align: center; color: var(--text-muted); font-size: 0.85rem;
+            padding: 24px; border-top: 1px solid #e5e7eb; background: #fff;
+        }
+        .footer-links { margin-top: 6px; }
+        .footer-links a { color: var(--text-muted); text-decoration: none; margin: 0 6px; }
+        .footer-links a:hover { color: var(--accent-teal); }
+
+        /* --- ANIMATIONS --- */
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .story-card {
+            animation: fadeInUp 0.4s ease-out both;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="main-navbar">
+        <div class="nav-left">
+            <img src="logo1.png" alt="Lesekumpel Logo" class="nav-logo">
+            <a href="landingpage.html" class="brand-name">Lesekumpel</a>
+            <div class="nav-links-desktop">
+                <a href="landingpage.html" class="nav-btn">Startseite</a>
+                <a href="index.html" class="nav-btn">Bibliothek</a>
+            </div>
+        </div>
+        <div class="nav-right">
+            <a href="landingpage.html#registrieren" class="btn-cta-nav">Jetzt registrieren</a>
+            <span class="burger-icon" onclick="toggleMenu()">&#9776;</span>
+        </div>
+        <div id="mobile-menu" class="mobile-menu">
+            <a href="landingpage.html" class="nav-btn" onclick="toggleMenu()">Startseite</a>
+            <a href="index.html" class="nav-btn" onclick="toggleMenu()">Bibliothek</a>
+            <a href="landingpage.html#registrieren" class="nav-btn" onclick="toggleMenu()">Jetzt registrieren</a>
+        </div>
+    </nav>
+
+    <!-- HERO -->
+    <section class="demo-hero">
+        <h1>10 Geschichten. <span>Jedes Kind. Jedes Niveau.</span></h1>
+        <p class="demo-hero-sub">Entdecke handverlesene Geschichten — angepasst an verschiedene Leseniveaus, Lerntypen und Interessen. So macht Lesen jedem Kind Freude.</p>
+        <div class="demo-badges">
+            <span class="demo-badge">3 Leseniveaus</span>
+            <span class="demo-badge">4 Neurotypen</span>
+            <span class="demo-badge">4 Autoren</span>
+            <span class="demo-badge">10 Themen</span>
+        </div>
+    </section>
+
+    <!-- FILTER BAR -->
+    <section class="filter-section">
+        <div class="filter-container">
+            <div class="filter-row">
+                <span class="filter-label">Niveau</span>
+                <div class="filter-pills" id="level-filters">
+                    <button class="filter-pill active" data-filter="all" onclick="setFilter('level', 'all', this)">Alle</button>
+                    <button class="filter-pill" data-filter="Starter" onclick="setFilter('level', 'Starter', this)">Starter</button>
+                    <button class="filter-pill" data-filter="Entdecker" onclick="setFilter('level', 'Entdecker', this)">Entdecker</button>
+                    <button class="filter-pill" data-filter="Profi" onclick="setFilter('level', 'Profi', this)">Profi</button>
+                </div>
+            </div>
+            <div class="filter-row">
+                <span class="filter-label">Lerntyp</span>
+                <div class="filter-pills" id="neurotype-filters">
+                    <button class="filter-pill active" data-filter="all" onclick="setFilter('neurotype', 'all', this)">Alle</button>
+                    <button class="filter-pill" data-filter="Neurotypisch" onclick="setFilter('neurotype', 'Neurotypisch', this)">Neurotypisch</button>
+                    <button class="filter-pill" data-filter="ADHS" onclick="setFilter('neurotype', 'ADHS', this)">ADHS</button>
+                    <button class="filter-pill" data-filter="Autismus" onclick="setFilter('neurotype', 'Autismus', this)">Autismus</button>
+                    <button class="filter-pill" data-filter="Dyslexie" onclick="setFilter('neurotype', 'Dyslexie', this)">Dyslexie</button>
+                </div>
+            </div>
+            <div class="filter-row">
+                <span class="filter-label">Autor</span>
+                <div class="author-filter" id="author-filters">
+                    <button class="author-chip all-chip active" data-filter="all" onclick="setFilter('author', 'all', this)">Alle</button>
+                    <button class="author-chip" data-filter="Samira Wissensfreund" onclick="setFilter('author', 'Samira Wissensfreund', this)">
+                        <img src="https://rala84.github.io/lesekumpel/Samira-min-compressed2.webp" alt="Samira">
+                        Samira
+                    </button>
+                    <button class="author-chip" data-filter="Holzi Pixelkopf" onclick="setFilter('author', 'Holzi Pixelkopf', this)">
+                        <img src="https://rala84.github.io/lesekumpel/Holzi-min-compressed.webp" alt="Holzi">
+                        Holzi
+                    </button>
+                    <button class="author-chip" data-filter="Deniz Traumfänger" onclick="setFilter('author', 'Deniz Traumfänger', this)">
+                        <img src="https://rala84.github.io/lesekumpel/Deniz-min-compressed2.webp" alt="Deniz">
+                        Deniz
+                    </button>
+                    <button class="author-chip" data-filter="Jonas Entdecker" onclick="setFilter('author', 'Jonas Entdecker', this)">
+                        <img src="https://rala84.github.io/lesekumpel/Jonas-min-compressed2.webp" alt="Jonas">
+                        Jonas
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- STORIES GRID -->
+    <section class="stories-section">
+        <div class="stories-container">
+            <p class="stories-count" id="stories-count"></p>
+            <div class="stories-grid" id="stories-grid"></div>
+        </div>
+    </section>
+
+    <footer>
+        <p>Erstellt von deinem KI-Lesekumpel</p>
+        <div class="footer-links"><a href="#">Impressum</a> &bull; <a href="#">Datenschutz</a> &bull; <a href="#">&Uuml;ber uns</a></div>
+    </footer>
+
+    <script>
+        const demoStories = [
+            {
+                title: "Der Planet, der rülpste",
+                file: "texte/demo-der-planet-der-ruelpste.html",
+                author: "Samira Wissensfreund",
+                authorImg: "https://rala84.github.io/lesekumpel/Samira-min-compressed2.webp",
+                level: "Starter",
+                neurotype: "Neurotypisch",
+                topic: "Weltraum",
+                excerpt: "Jupiter ist riesig. Und er macht ganz schön viel Krach! Entdecke den Planeten, der Gas-Stürme rülpst."
+            },
+            {
+                title: "Turbo-Tatzen: Das schnellste Tier der Welt",
+                file: "texte/demo-turbo-tatzen.html",
+                author: "Samira Wissensfreund",
+                authorImg: "https://rala84.github.io/lesekumpel/Samira-min-compressed2.webp",
+                level: "Entdecker",
+                neurotype: "ADHS",
+                topic: "Tiere",
+                excerpt: "120 km/h in 3 Sekunden! Der Gepard ist das schnellste Tier an Land. Aber wie schafft er das?"
+            },
+            {
+                title: "Level Up: Wenn der Bildschirm dich reinzieht",
+                file: "texte/demo-level-up.html",
+                author: "Holzi Pixelkopf",
+                authorImg: "https://rala84.github.io/lesekumpel/Holzi-min-compressed.webp",
+                level: "Profi",
+                neurotype: "Neurotypisch",
+                topic: "Gaming",
+                excerpt: "Was passiert, wenn du plötzlich IN deinem Lieblingsspiel landest? Ein Abenteuer durch Pixel-Welten."
+            },
+            {
+                title: "Zwei wie Pech und Schwefel",
+                file: "texte/demo-zwei-wie-pech-und-schwefel.html",
+                author: "Deniz Traumfänger",
+                authorImg: "https://rala84.github.io/lesekumpel/Deniz-min-compressed2.webp",
+                level: "Entdecker",
+                neurotype: "Autismus",
+                topic: "Freundschaft",
+                excerpt: "Milo ist ruhig. Ayla ist laut. Zusammen sind sie unschlagbar. Eine Geschichte über echte Freundschaft."
+            },
+            {
+                title: "Der Fall der verschwundenen Pausenbrote",
+                file: "texte/demo-der-fall-der-pausenbrote.html",
+                author: "Jonas Entdecker",
+                authorImg: "https://rala84.github.io/lesekumpel/Jonas-min-compressed2.webp",
+                level: "Entdecker",
+                neurotype: "ADHS",
+                topic: "Detektiv",
+                excerpt: "Jeden Tag fehlen Pausenbrote! Wer steckt dahinter? Folge den Spuren in diesem spannenden Schulkrimi."
+            },
+            {
+                title: "Ramen, Tacos, Döner: Eine Reise auf dem Teller",
+                file: "texte/demo-ramen-tacos-doener.html",
+                author: "Jonas Entdecker",
+                authorImg: "https://rala84.github.io/lesekumpel/Jonas-min-compressed2.webp",
+                level: "Starter",
+                neurotype: "Neurotypisch",
+                topic: "Essen",
+                excerpt: "Von Japan über Mexiko bis zur Türkei — entdecke, was Kinder auf der ganzen Welt am liebsten essen!"
+            },
+            {
+                title: "Wer hat das Rad erfunden?",
+                file: "texte/demo-wer-hat-das-rad-erfunden.html",
+                author: "Samira Wissensfreund",
+                authorImg: "https://rala84.github.io/lesekumpel/Samira-min-compressed2.webp",
+                level: "Profi",
+                neurotype: "Autismus",
+                topic: "Erfindungen",
+                excerpt: "Vor 5.500 Jahren hatte jemand eine geniale Idee. Die Geschichte des Rads — von Mesopotamien bis heute."
+            },
+            {
+                title: "Die Nacht, in der ich mutig wurde",
+                file: "texte/demo-die-nacht-in-der-ich-mutig-wurde.html",
+                author: "Deniz Traumfänger",
+                authorImg: "https://rala84.github.io/lesekumpel/Deniz-min-compressed2.webp",
+                level: "Starter",
+                neurotype: "Dyslexie",
+                topic: "Mut",
+                excerpt: "Es ist dunkel. Da ist ein Geräusch. Traust du dich nachzusehen? Eine Geschichte über Mut."
+            },
+            {
+                title: "Elfmeter in der letzten Sekunde",
+                file: "texte/demo-elfmeter-in-der-letzten-sekunde.html",
+                author: "Jonas Entdecker",
+                authorImg: "https://rala84.github.io/lesekumpel/Jonas-min-compressed2.webp",
+                level: "Entdecker",
+                neurotype: "ADHS",
+                topic: "Sport",
+                excerpt: "Letzte Minute. 0:1 hinten. Ein Elfmeter. Alles hängt von einem Schuss ab. Schafft er es?"
+            },
+            {
+                title: "Der Drache, der nicht fliegen konnte",
+                file: "texte/demo-der-drache-der-nicht-fliegen-konnte.html",
+                author: "Deniz Traumfänger",
+                authorImg: "https://rala84.github.io/lesekumpel/Deniz-min-compressed2.webp",
+                level: "Profi",
+                neurotype: "Dyslexie",
+                topic: "Fantasy",
+                excerpt: "Funke ist ein Drache. Aber er kann nicht fliegen. Dafür kann er etwas, das kein anderer Drache kann."
+            }
+        ];
+
+        let filters = {
+            level: 'all',
+            neurotype: 'all',
+            author: 'all'
+        };
+
+        function setFilter(type, value, element) {
+            filters[type] = value;
+
+            let containerId;
+            if (type === 'level') containerId = 'level-filters';
+            else if (type === 'neurotype') containerId = 'neurotype-filters';
+            else containerId = 'author-filters';
+
+            const container = document.getElementById(containerId);
+            container.querySelectorAll('.filter-pill, .author-chip').forEach(btn => btn.classList.remove('active'));
+            element.classList.add('active');
+
+            renderStories();
+        }
+
+        function getFilteredStories() {
+            return demoStories.filter(story => {
+                if (filters.level !== 'all' && story.level !== filters.level) return false;
+                if (filters.neurotype !== 'all' && story.neurotype !== filters.neurotype) return false;
+                if (filters.author !== 'all' && story.author !== filters.author) return false;
+                return true;
+            });
+        }
+
+        function getLevelTagClass(level) {
+            if (level === 'Starter') return 'tag-level-starter';
+            if (level === 'Entdecker') return 'tag-level-entdecker';
+            return 'tag-level-profi';
+        }
+
+        function renderStories() {
+            const filtered = getFilteredStories();
+            const grid = document.getElementById('stories-grid');
+            const count = document.getElementById('stories-count');
+
+            count.textContent = filtered.length === 10
+                ? '10 Geschichten'
+                : filtered.length + ' von 10 Geschichten';
+
+            if (filtered.length === 0) {
+                grid.innerHTML = `
+                    <div class="empty-state" style="grid-column: 1 / -1;">
+                        <div class="empty-state-icon">📚</div>
+                        <h3>Keine Geschichten gefunden</h3>
+                        <p>Versuche eine andere Filterkombination.</p>
+                    </div>
+                `;
+                return;
+            }
+
+            grid.innerHTML = filtered.map((story, i) => `
+                <a href="${story.file}" class="story-card" style="animation-delay: ${i * 0.06}s">
+                    <div class="story-card-header">
+                        <div class="story-card-tags">
+                            <span class="tag ${getLevelTagClass(story.level)}">${story.level}</span>
+                            <span class="tag tag-neurotype">${story.neurotype}</span>
+                            <span class="tag tag-topic">${story.topic}</span>
+                        </div>
+                        <h3 class="story-card-title">${story.title}</h3>
+                        <p class="story-card-excerpt">${story.excerpt}</p>
+                    </div>
+                    <div class="story-card-footer">
+                        <div class="story-card-author">
+                            <img src="${story.authorImg}" alt="${story.author}">
+                            <span class="story-card-author-name">${story.author}</span>
+                        </div>
+                        <span class="story-card-cta">Lesen &#8594;</span>
+                    </div>
+                </a>
+            `).join('');
+        }
+
+        function toggleMenu() {
+            document.getElementById('mobile-menu').classList.toggle('open');
+        }
+
+        renderStories();
+    </script>
+
+</body>
+</html>

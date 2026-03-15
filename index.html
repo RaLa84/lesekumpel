@@ -251,7 +251,7 @@
                 .then(response => response.ok ? response.json() : [])
                 .then(data => {
                     return data
-                        .filter(file => file.name.endsWith('.html'))
+                        .filter(file => file.name.endsWith('.html') && !file.name.startsWith('demo-'))
                         .map(file => ({
                             name: file.name,
                             path: `${folderName}/${file.name}`,

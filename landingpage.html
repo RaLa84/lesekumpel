@@ -3,13 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Lesekumpel – Kinder lesen mit Freude | Kostenlose Leseförderung</title>
-    <meta name="description" content="Lesekumpel macht Lesen lernen zum Abenteuer. Werbefreie Geschichten, angepasst an die Interessen deines Kindes. Kostenlos, inklusiv und ohne Druck.">
+    <title>Lesekumpel – Inklusives Lesenlernen f&uuml;r jedes Kind | Kostenlos &amp; Barrierefrei</title>
+    <meta name="description" content="Lesekumpel ist die inklusive, KI-gest&uuml;tzte Lernplattform, die Lesenlernen leicht, individuell und spielerisch macht. Kostenlos, werbefrei und barrierefrei &ndash; f&uuml;r jedes Kind.">
     <meta name="keywords" content="Kinder Lesen lernen, Leseförderung Grundschule, kostenlose Leseapp Kinder, Lesen üben online, barrierefreie Leseapp, Lesekumpel">
 
     <!-- Open Graph -->
-    <meta property="og:title" content="Lesekumpel – Kinder lesen mit Freude">
-    <meta property="og:description" content="Werbefreie Geschichten, angepasst an die Interessen deines Kindes. Kostenlos, inklusiv und ohne Druck.">
+    <meta property="og:title" content="Lesekumpel &ndash; Inklusives Lesenlernen f&uuml;r jedes Kind">
+    <meta property="og:description" content="Die inklusive, KI-gest&uuml;tzte Lernplattform, die Lesenlernen leicht, individuell und spielerisch macht. Kostenlos und barrierefrei.">
     <meta property="og:image" content="https://rala84.github.io/lesekumpel/bilder/lesekumpel_logo.png">
     <meta property="og:url" content="https://rala84.github.io/lesekumpel/landingpage.html">
     <meta property="og:type" content="website">
@@ -34,7 +34,7 @@
     </script>
 
     <link rel="canonical" href="https://rala84.github.io/lesekumpel/landingpage.html">
-    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 
     <style>
         :root {
@@ -79,18 +79,18 @@
         }
         .nav-links-desktop { display: none; gap: 20px; align-items: center; margin-left: 16px; }
         .nav-btn {
-            text-decoration: none; color: var(--text-muted); font-weight: 500;
+            text-decoration: none; color: var(--text-dark); font-weight: 600;
             font-size: 0.95rem; display: flex; align-items: center; gap: 5px;
             transition: color 0.2s;
         }
         .nav-btn:hover { color: var(--accent-teal); }
         .btn-cta-nav {
-            background: var(--accent-teal); color: #fff; padding: 10px 22px;
-            border-radius: 10px; font-weight: 600; transition: opacity 0.2s;
+            background: var(--accent-teal); color: #fff; padding: 11px 26px;
+            border-radius: 10px; font-weight: 600; transition: background 0.2s, transform 0.2s;
             text-decoration: none; font-family: var(--font-body); font-size: 0.9rem;
             border: none;
         }
-        .btn-cta-nav:hover { opacity: 0.9; }
+        .btn-cta-nav:hover { background: #248f82; }
         .nav-right { display: flex; align-items: center; gap: 15px; }
         .burger-icon { font-size: 1.8rem; cursor: pointer; display: block; color: var(--text-dark); }
         .mobile-menu {
@@ -127,28 +127,35 @@
             font-family: var(--font-heading); font-size: 2rem; color: var(--text-dark);
             line-height: 1.15; margin-bottom: 20px;
         }
-        .lp-hero h1 span { color: var(--accent-teal); }
+        .lp-hero h1 span { color: var(--accent-teal); font-weight: 700; }
         .lp-hero-sub {
             font-size: 1.05rem; color: var(--text-muted); line-height: 1.7; margin-bottom: 32px;
         }
         .lp-btn-primary {
             display: inline-block; background: var(--accent-teal); color: #fff;
-            padding: 16px 40px; border-radius: 12px; font-family: var(--font-body); font-size: 1rem;
-            font-weight: 600; text-decoration: none; transition: opacity 0.2s, transform 0.2s;
+            padding: 18px 48px; border-radius: 12px; font-family: var(--font-body); font-size: 1rem;
+            font-weight: 600; text-decoration: none; transition: background 0.2s, transform 0.2s;
             box-shadow: 0 4px 14px rgba(42,157,143,0.3);
         }
-        .lp-btn-primary:hover { opacity: 0.9; transform: translateY(-1px); }
+        .lp-btn-primary:hover { background: #248f82; transform: translateY(-1px); }
+        .lp-btn-secondary {
+            display: inline-block; margin-left: 12px; padding: 18px 48px;
+            border-radius: 12px; font-family: var(--font-body); font-size: 1rem;
+            font-weight: 600; text-decoration: none; color: var(--accent-teal);
+            border: 2px solid var(--accent-teal); transition: background 0.2s, transform 0.2s;
+        }
+        .lp-btn-secondary:hover { background: var(--accent-teal-light); transform: translateY(-1px); }
         .lp-hero-note { font-size: 0.85rem; color: var(--text-muted); margin-top: 16px; }
+        .lp-hero-trust { font-size: 0.8rem; color: #9ca3af; margin-top: 8px; }
         .lp-hero-visual {
             width: 100%; max-width: 420px; aspect-ratio: 4/3;
+            transform: rotate(2deg); transition: transform 0.3s;
         }
-        .lp-hero-placeholder {
-            width: 100%; height: 100%;
-            background: linear-gradient(135deg, var(--accent-teal-light), #f0f4f8);
+        .lp-hero-visual:hover { transform: rotate(0deg); }
+        .lp-hero-img {
+            width: 100%; height: 100%; object-fit: cover;
             border-radius: var(--radius-card);
-            display: flex; flex-direction: column;
-            align-items: center; justify-content: center;
-            gap: 12px; color: var(--text-muted); font-size: 0.85rem;
+            box-shadow: var(--shadow-card);
         }
 
         @media (min-width: 768px) {
@@ -158,23 +165,31 @@
             .lp-hero-visual { flex-shrink: 0; max-width: 420px; }
         }
 
-        /* --- SOCIAL PROOF BAR --- */
-        .lp-proof {
-            background: #fff; padding: 28px 20px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+        /* --- FAKTEN-BAR --- */
+        .lp-facts {
+            background: var(--accent-teal-light); padding: 36px 20px;
+            border-top: 1px solid #d1ede8; border-bottom: 1px solid #d1ede8;
         }
-        .lp-proof-inner {
-            display: flex; justify-content: center; align-items: center; gap: 24px; flex-wrap: wrap;
-            max-width: 700px; margin: 0 auto;
+        .lp-facts-inner {
+            display: flex; justify-content: center; align-items: stretch; gap: 32px; flex-wrap: wrap;
+            max-width: 900px; margin: 0 auto;
         }
-        .lp-proof-item {
-            display: flex; align-items: center; gap: 8px;
-            font-weight: 500; font-size: 0.95rem; color: var(--text-dark);
+        .lp-fact {
+            display: flex; flex-direction: column; align-items: center; text-align: center;
+            flex: 1; min-width: 200px;
         }
-        .lp-proof-item svg { flex-shrink: 0; }
+        .lp-fact-number {
+            font-family: var(--font-heading); font-size: 1.8rem; font-weight: 700;
+            color: var(--accent-teal); line-height: 1.1;
+        }
+        .lp-fact-text {
+            font-size: 0.85rem; color: var(--text-muted); line-height: 1.5; margin-top: 4px;
+        }
+        .lp-fact-text em { font-style: normal; color: #9ca3af; }
 
         @media (min-width: 768px) {
-            .lp-proof-inner { gap: 50px; }
+            .lp-facts-inner { gap: 56px; }
+            .lp-fact-number { font-size: 2.2rem; }
         }
 
         /* --- PROBLEM SECTION --- */
@@ -207,7 +222,7 @@
         .lp-pain-card p { color: var(--text-muted); line-height: 1.7; font-size: 0.95rem; }
 
         @media (min-width: 768px) {
-            .lp-card-grid { grid-template-columns: repeat(3, 1fr); }
+            .lp-card-grid { grid-template-columns: repeat(2, 1fr); }
             .lp-section-title { font-size: 2rem; }
         }
 
@@ -236,6 +251,9 @@
         }
         .lp-feature-text p { color: var(--text-muted); line-height: 1.7; font-size: 0.95rem; }
 
+        @media (max-width: 767px) {
+            .lp-feature-grid { grid-template-columns: 1fr !important; }
+        }
         @media (min-width: 768px) {
             .lp-feature-grid { grid-template-columns: 1fr 1fr; gap: 28px; }
         }
@@ -264,57 +282,59 @@
             .lp-steps { flex-direction: row; justify-content: center; align-items: flex-start; gap: 56px; }
         }
 
-        /* --- TESTIMONIALS --- */
-        .lp-testimonials { background: #ffffff; }
-        .lp-testimonial-grid {
-            display: grid; grid-template-columns: 1fr; gap: 24px;
-        }
-        .lp-testimonial {
-            background: #fff; border-radius: var(--radius-card); padding: 36px 30px;
-            box-shadow: var(--shadow-card);
-            transition: box-shadow 0.2s;
-        }
-        .lp-testimonial:hover { box-shadow: var(--shadow-card-hover); }
-        .lp-testimonial-quote-icon { margin-bottom: 16px; line-height: 1; }
-        .lp-testimonial-stars {
-            color: var(--primary-yellow); font-size: 0.95rem; letter-spacing: 2px; margin-bottom: 8px;
-        }
-        .lp-testimonial blockquote {
-            font-style: normal; color: var(--text-dark); line-height: 1.7;
-            font-size: 0.95rem; margin-bottom: 16px;
-        }
-        .lp-testimonial-author {
-            font-weight: 600; font-size: 0.85rem; color: var(--text-muted);
+        /* --- ALPHA BADGE --- */
+        .lp-alpha-badge {
+            display: inline-block; background: #fef9e7; color: #92400e;
+            font-size: 0.85rem; font-weight: 600; padding: 8px 18px;
+            border-radius: 40px; margin-bottom: 20px;
+            border: 1px solid #f4d03f;
         }
 
-        @media (min-width: 768px) {
-            .lp-testimonial-grid { grid-template-columns: repeat(3, 1fr); }
-        }
-
-        /* --- FINAL CTA --- */
-        .lp-cta {
+        /* --- REGISTRATION --- */
+        .lp-register {
             background: linear-gradient(135deg, #2a9d8f, #238b80);
-            padding: 80px 20px; text-align: center;
+            padding: 80px 20px;
         }
-        .lp-cta h2 {
+        .lp-register-title {
             font-family: var(--font-heading); font-size: 1.8rem; color: #fff; margin-bottom: 12px;
         }
-        .lp-cta p { color: rgba(255,255,255,0.85); font-size: 1.05rem; margin-bottom: 32px; }
+        .lp-register-sub {
+            color: rgba(255,255,255,0.85); font-size: 1.05rem; margin-bottom: 32px;
+            max-width: 520px; margin-left: auto; margin-right: auto;
+        }
+        .lp-register-form { max-width: 480px; margin: 0 auto; }
+        .lp-register-fields {
+            display: flex; flex-direction: column; gap: 12px; margin-bottom: 20px;
+        }
+        .lp-input {
+            width: 100%; padding: 16px 20px; border-radius: 12px; border: none;
+            font-family: var(--font-body); font-size: 1rem; outline: none;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        .lp-input:focus { box-shadow: 0 0 0 3px rgba(244,208,63,0.4); }
         .lp-btn-cta-white {
             display: inline-block; background: #ffffff; color: var(--accent-teal);
-            padding: 16px 40px; border-radius: 12px; font-family: var(--font-body); font-size: 1rem;
-            font-weight: 600; text-decoration: none; transition: opacity 0.2s, transform 0.2s;
-            box-shadow: 0 4px 14px rgba(0,0,0,0.15);
+            padding: 18px 48px; border-radius: 12px; font-family: var(--font-body); font-size: 1rem;
+            font-weight: 600; text-decoration: none; transition: background 0.2s, transform 0.2s;
+            box-shadow: 0 4px 14px rgba(0,0,0,0.15); border: none; cursor: pointer;
         }
-        .lp-btn-cta-white:hover { transform: translateY(-1px); opacity: 0.95; }
-        .lp-cta-secondary {
-            display: block; margin-top: 20px; color: rgba(255,255,255,0.7); font-size: 0.9rem; text-decoration: underline;
+        .lp-btn-cta-white:hover { background: #f0f0f0; transform: translateY(-1px); }
+        .lp-register-hint {
+            color: rgba(255,255,255,0.6); font-size: 0.8rem; margin-top: 14px;
         }
-        .lp-cta-secondary:hover { color: #fff; }
+        .lp-text-center { text-align: center; }
+        .lp-register-success {
+            display: none; color: #fff; padding: 20px 0;
+        }
+        .lp-register-success h3 {
+            font-family: var(--font-heading); font-size: 1.4rem; margin: 12px 0 8px;
+        }
+        .lp-register-success p { color: rgba(255,255,255,0.85); }
 
         @media (min-width: 768px) {
-            .lp-cta { padding: 120px 40px; }
-            .lp-cta h2 { font-size: 2.2rem; }
+            .lp-register { padding: 120px 40px; }
+            .lp-register-title { font-size: 2.2rem; }
+            .lp-register-fields { flex-direction: row; }
         }
 
         /* --- FOOTER --- */
@@ -335,18 +355,22 @@
             <img src="logo1.png" alt="Lesekumpel Logo" class="nav-logo">
             <a href="landingpage.html" class="brand-name">Lesekumpel</a>
             <div class="nav-links-desktop">
+                <a href="#mission" class="nav-btn">Unsere Mission</a>
                 <a href="#features" class="nav-btn">So hilft Lesekumpel</a>
-                <a href="#how-it-works" class="nav-btn">So funktioniert's</a>
+                <a href="ueber-uns.html" class="nav-btn">&Uuml;ber uns</a>
+                <a href="demo.html" class="nav-btn">Demo</a>
             </div>
         </div>
         <div class="nav-right">
-            <a href="index.html" class="btn-cta-nav">Jetzt loslesen</a>
+            <a href="#registrieren" class="btn-cta-nav">Jetzt registrieren</a>
             <span class="burger-icon" onclick="toggleMenu()">&#9776;</span>
         </div>
         <div id="mobile-menu" class="mobile-menu">
+            <a href="#mission" class="nav-btn" onclick="toggleMenu()">Unsere Mission</a>
             <a href="#features" class="nav-btn" onclick="toggleMenu()">So hilft Lesekumpel</a>
-            <a href="#how-it-works" class="nav-btn" onclick="toggleMenu()">So funktioniert's</a>
-            <a href="index.html" class="nav-btn">Zur Bibliothek</a>
+            <a href="ueber-uns.html" class="nav-btn" onclick="toggleMenu()">&Uuml;ber uns</a>
+            <a href="demo.html" class="nav-btn" onclick="toggleMenu()">Demo</a>
+            <a href="#registrieren" class="nav-btn" onclick="toggleMenu()">Jetzt registrieren</a>
         </div>
     </nav>
 
@@ -356,77 +380,88 @@
         <section class="lp-section lp-hero">
             <div class="lp-container lp-hero-inner">
                 <div class="lp-hero-text">
-                    <h1>Dein Kind liest nicht gerne?<br><span>Das &auml;ndern wir.</span></h1>
-                    <p class="lp-hero-sub">Lesekumpel bietet werbefreie Geschichten, die sich an die Interessen deines Kindes anpassen &ndash; damit Lesen endlich Spa&szlig; macht statt Stress.</p>
-                    <a href="index.html" class="lp-btn-primary">Kostenlos ausprobieren</a>
-                    <p class="lp-hero-note">Komplett kostenlos &middot; Keine Werbung &middot; Keine Installation</p>
+                    <div class="lp-alpha-badge">&#128640; Alpha-Phase &ndash; sei von Anfang an dabei!</div>
+                    <h1>Lesen ist der Schl&uuml;ssel zur Welt &ndash;<br><span>aber viele Kinder finden die T&uuml;r nicht.</span></h1>
+                    <p class="lp-hero-sub">Lesekumpel ist die inklusive, KI-gest&uuml;tzte Lernplattform, die Lesenlernen leicht, individuell und spielerisch macht. Denn Lesenlernen darf keine Frage von Gl&uuml;ck, Geld oder Voraussetzungen sein.</p>
+                    <a href="#registrieren" class="lp-btn-primary">Jetzt registrieren</a>
+                    <a href="demo.html" class="lp-btn-secondary">Demo ansehen</a>
+                    <p class="lp-hero-note">Kostenlos &middot; Werbefrei &middot; Inklusiv &middot; F&uuml;r jedes Kind</p>
+                    <p class="lp-hero-trust">Werde Teil der ersten Testfamilien</p>
                 </div>
                 <div class="lp-hero-visual">
-                    <div class="lp-hero-placeholder">
-                        <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="#2a9d8f" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                            <rect x="2" y="3" width="20" height="14" rx="2"/>
-                            <path d="M8 21h8"/>
-                            <path d="M12 17v4"/>
-                        </svg>
-                        <span>Lifestyle-Foto Platzhalter</span>
-                    </div>
+                    <img src="kinddasliest.png" alt="Kind liest begeistert eine Lesekumpel-Geschichte auf dem Tablet" class="lp-hero-img">
                 </div>
             </div>
         </section>
 
-        <!-- SOCIAL PROOF BAR -->
-        <section class="lp-proof">
-            <div class="lp-proof-inner">
-                <div class="lp-proof-item">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2a9d8f" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
-                    <span>50+ Geschichten</span>
+        <!-- FAKTEN-BAR -->
+        <section class="lp-facts">
+            <div class="lp-facts-inner">
+                <div class="lp-fact">
+                    <span class="lp-fact-number">25%</span>
+                    <span class="lp-fact-text">der Viertkl&auml;ssler verfehlen den Mindeststandard im Lesen <em>(IQB 2021)</em></span>
                 </div>
-                <div class="lp-proof-item">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2a9d8f" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
-                    <span>100% werbefrei</span>
+                <div class="lp-fact">
+                    <span class="lp-fact-number">6,2 Mio.</span>
+                    <span class="lp-fact-text">Erwachsene in Deutschland sind funktionale Analphabeten</span>
                 </div>
-                <div class="lp-proof-item">
-                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#2a9d8f" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
-                    <span>F&uuml;r Kinder von 5&ndash;10</span>
+                <div class="lp-fact">
+                    <span class="lp-fact-number">Mio.</span>
+                    <span class="lp-fact-text">Kinder haben keinen fairen Zugang zum Lesenlernen</span>
                 </div>
             </div>
         </section>
 
-        <!-- PROBLEM SECTION -->
-        <section class="lp-section lp-problem">
+        <!-- MISSION / ZIELGRUPPEN -->
+        <section class="lp-section lp-problem" id="mission">
             <div class="lp-container">
-                <h2 class="lp-section-title">Kommt dir das bekannt vor?</h2>
-                <p class="lp-section-subtitle">Viele Eltern kennen diese Situationen &ndash; du bist nicht allein.</p>
+                <h2 class="lp-section-title">Wen das System im Stich l&auml;sst</h2>
+                <p class="lp-section-subtitle">Lesenlernen ist kein Privileg &ndash; aber f&uuml;r zu viele Kinder f&uuml;hlt es sich so an.</p>
                 <div class="lp-card-grid">
                     <div class="lp-pain-card">
                         <div class="lp-pain-icon">
                             <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#2a9d8f" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/>
-                                <path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/>
+                                <path d="M12 2a4 4 0 014 4v1a2 2 0 01-2 2h-4a2 2 0 01-2-2V6a4 4 0 014-4z"/>
+                                <path d="M6 21v-2a4 4 0 014-4h4a4 4 0 014 4v2"/>
+                                <path d="M15 11l4 4m0-4l-4 4"/>
                             </svg>
                         </div>
-                        <h3>Lesen f&uuml;hlt sich wie Pflicht an</h3>
-                        <p>Jeden Abend der gleiche Kampf: Dein Kind soll lesen, aber es fehlt die Lust. Klassische Lese&uuml;bungen f&uuml;hlen sich nach Schule an &ndash; nicht nach Spa&szlig;.</p>
+                        <h3>Neurodivergente Kinder</h3>
+                        <p>Autismus, ADHS, Dyslexie: Standardmaterialien &uuml;berfordern oder langweilen. Diese Kinder brauchen Texte, die sich an sie anpassen &ndash; nicht umgekehrt.</p>
+                    </div>
+                    <div class="lp-pain-card">
+                        <div class="lp-pain-icon">
+                            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#2a9d8f" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                <rect x="2" y="4" width="20" height="16" rx="2"/>
+                                <path d="M12 8v4"/>
+                                <path d="M12 16h.01"/>
+                            </svg>
+                        </div>
+                        <h3>Einkommensschwache Familien</h3>
+                        <p>Teure Apps, Nachhilfe und Lernmaterialien sind keine Option. Lesef&ouml;rderung darf nicht vom Geldbeutel der Eltern abh&auml;ngen.</p>
                     </div>
                     <div class="lp-pain-card">
                         <div class="lp-pain-icon">
                             <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#2a9d8f" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                                 <circle cx="12" cy="12" r="10"/>
-                                <path d="M12 6v6l4 2"/>
+                                <path d="M2 12h20"/>
+                                <path d="M12 2a15.3 15.3 0 014 10 15.3 15.3 0 01-4 10 15.3 15.3 0 01-4-10 15.3 15.3 0 014-10z"/>
                             </svg>
                         </div>
-                        <h3>Keine Zeit, keine Ideen</h3>
-                        <p>Du willst dein Kind f&ouml;rdern, aber nach einem langen Tag fehlt die Energie, passende Texte zu suchen oder &Uuml;bungen vorzubereiten.</p>
+                        <h3>Kinder mit Migrationshintergrund</h3>
+                        <p>Deutsch als Fremdsprache, Eltern die beim Vorlesen unsicher sind, fehlende altersgerechte Materialien &ndash; der Einstieg ins Lesen wird zur H&uuml;rde.</p>
                     </div>
                     <div class="lp-pain-card">
                         <div class="lp-pain-icon">
                             <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#2a9d8f" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-                                <line x1="4.5" y1="4.5" x2="19.5" y2="19.5"/>
+                                <circle cx="12" cy="12" r="10"/>
+                                <path d="M18 13a6 6 0 01-6 5 6 6 0 01-6-5"/>
+                                <line x1="9" y1="9" x2="9.01" y2="9"/>
+                                <line x1="15" y1="9" x2="15.01" y2="9"/>
                             </svg>
                         </div>
-                        <h3>Das Angebot passt nicht</h3>
-                        <p>Andere Apps sind voller Werbung, zu teuer oder bieten nur Einheitsgeschichten. Inklusive, barrierefreie Angebote? Fehlanzeige.</p>
+                        <h3>Kinder mit Behinderungen</h3>
+                        <p>Sehbehinderung, motorische Einschr&auml;nkungen: Barrierefreie Leseangebote f&uuml;r Kinder sind fast nicht existent.</p>
                     </div>
                 </div>
             </div>
@@ -435,53 +470,54 @@
         <!-- FEATURES SECTION -->
         <section class="lp-section lp-features" id="features">
             <div class="lp-container">
-                <h2 class="lp-section-title">So hilft Lesekumpel deinem Kind</h2>
-                <p class="lp-section-subtitle">Geschichten, die begeistern &ndash; und Funktionen, die wirklich helfen.</p>
+                <h2 class="lp-section-title">Unsere Antwort: Lesekumpel</h2>
+                <p class="lp-section-subtitle">Eine Plattform, die sich an jedes Kind anpasst &ndash; nicht umgekehrt.</p>
                 <div class="lp-feature-grid">
                     <div class="lp-feature">
-                        <div class="lp-feature-icon yellow">
+                        <div class="lp-feature-icon teal">
                             <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#2a9d8f" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/>
-                                <path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/>
+                                <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 000-7.78z"/>
                             </svg>
                         </div>
                         <div class="lp-feature-text">
-                            <h3>Geschichten, die begeistern</h3>
-                            <p>Vier einzigartige Autoren-Pers&ouml;nlichkeiten schreiben Geschichten &uuml;ber Themen, die dein Kind wirklich liebt &ndash; von D&ouml;nern &uuml;ber Dinosaurier bis Raumfahrt.</p>
+                            <h3>Barrierefrei von Grund auf</h3>
+                            <p>Dyslexie-Modus, Silbentrennung, anpassbare Schriftgr&ouml;&szlig;e, Screenreader-kompatibel. Gebaut f&uuml;r Kinder, die woanders durchs Raster fallen.</p>
                         </div>
                     </div>
                     <div class="lp-feature">
-                        <div class="lp-feature-icon teal">
+                        <div class="lp-feature-icon yellow">
+                            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#2a9d8f" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M12 2a4 4 0 014 4v1a2 2 0 01-2 2h-4a2 2 0 01-2-2V6a4 4 0 014-4z"/>
+                                <path d="M6 21v-2a4 4 0 014-4h4a4 4 0 014 4v2"/>
+                            </svg>
+                        </div>
+                        <div class="lp-feature-text">
+                            <h3>Individuell statt Einheitsbrei</h3>
+                            <p>KI-generierte Geschichten zu Themen, die dein Kind wirklich liebt &ndash; von Dinosauriern &uuml;ber D&ouml;ner bis Raumfahrt. Vier Autoren-Pers&ouml;nlichkeiten, unendliche Vielfalt.</p>
+                        </div>
+                    </div>
+                    <div class="lp-feature">
+                        <div class="lp-feature-icon neutral">
                             <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#2a9d8f" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
                                 <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
                                 <path d="M9 12l2 2 4-4"/>
                             </svg>
                         </div>
                         <div class="lp-feature-text">
-                            <h3>Null Werbung. Null Kosten.</h3>
-                            <p>Lesekumpel ist komplett kostenlos und werbefrei. Keine versteckten Abos, keine In-App-K&auml;ufe, keine Datensammlung.</p>
-                        </div>
-                    </div>
-                    <div class="lp-feature">
-                        <div class="lp-feature-icon neutral">
-                            <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#2a9d8f" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                                <path d="M20.84 4.61a5.5 5.5 0 00-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 00-7.78 7.78L12 21.23l8.84-8.84a5.5 5.5 0 000-7.78z"/>
-                            </svg>
-                        </div>
-                        <div class="lp-feature-text">
-                            <h3>F&uuml;r jedes Kind gemacht</h3>
-                            <p>Silbentrennung, Dyslexie-Modus, anpassbare Schriftgr&ouml;&szlig;e. Egal ob Leseanf&auml;nger, neurodivergent oder mehrsprachig aufwachsend.</p>
+                            <h3>Kostenlos. F&uuml;r immer.</h3>
+                            <p>Keine Abos, keine Werbung, keine In-App-K&auml;ufe, keine Datensammlung. Bildung darf kein Gesch&auml;ftsmodell sein.</p>
                         </div>
                     </div>
                     <div class="lp-feature">
                         <div class="lp-feature-icon yellow">
                             <svg width="26" height="26" viewBox="0 0 24 24" fill="none" stroke="#2a9d8f" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-                                <polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>
+                                <rect x="5" y="2" width="14" height="20" rx="2" ry="2"/>
+                                <line x1="12" y1="18" x2="12.01" y2="18"/>
                             </svg>
                         </div>
                         <div class="lp-feature-text">
-                            <h3>Einfach loslegen</h3>
-                            <p>Keine Installation, keine Registrierung. &Ouml;ffne den Browser, w&auml;hle eine Geschichte &ndash; fertig. Funktioniert auf Handy, Tablet und Computer.</p>
+                            <h3>F&uuml;r jedes Ger&auml;t, &uuml;berall</h3>
+                            <p>Browser-basiert, kein Download n&ouml;tig. Funktioniert auf Handy, Tablet und Computer &ndash; auch auf &auml;lteren Ger&auml;ten.</p>
                         </div>
                     </div>
                 </div>
@@ -512,56 +548,24 @@
             </div>
         </section>
 
-        <!-- TESTIMONIALS -->
-        <section class="lp-section lp-testimonials">
-            <div class="lp-container">
-                <h2 class="lp-section-title">Das sagen Eltern</h2>
-                <p class="lp-section-subtitle">Stimmen von Testfamilien</p>
-                <div class="lp-testimonial-grid">
-                    <div class="lp-testimonial">
-                        <div class="lp-testimonial-quote-icon">
-                            <svg width="32" height="32" viewBox="0 0 24 24" fill="#e8f5f3" stroke="none">
-                                <path d="M3 21c3 0 7-1 7-8V5c0-1.25-.756-2.017-2-2H4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2 1 0 1 0 1 1v1c0 1-1 2-2 2s-1 .008-1 1.031V20c0 1 0 1 1 1z"/>
-                                <path d="M15 21c3 0 7-1 7-8V5c0-1.25-.757-2.017-2-2h-4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2h.75c0 2.25.25 4-2.75 5v3c0 1 0 1 1 1z"/>
-                            </svg>
-                        </div>
-                        <div class="lp-testimonial-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
-                        <blockquote>&bdquo;Endlich eine App ohne Werbung! Mein Sohn liest jetzt freiwillig, weil die Geschichten Themen haben, die ihn wirklich interessieren.&ldquo;</blockquote>
-                        <div class="lp-testimonial-author">Mama aus Berlin, Sohn (8)</div>
+        <!-- REGISTRIERUNG -->
+        <section class="lp-register" id="registrieren">
+            <div class="lp-container lp-text-center">
+                <h2 class="lp-register-title">Sei von Anfang an dabei</h2>
+                <p class="lp-register-sub">Lesekumpel befindet sich in der Alpha-Phase. Registriere dich jetzt und wir benachrichtigen dich, sobald es losgeht.</p>
+                <form class="lp-register-form" onsubmit="handleRegister(event)">
+                    <div class="lp-register-fields">
+                        <input type="text" name="name" placeholder="Dein Vorname" required class="lp-input">
+                        <input type="email" name="email" placeholder="Deine E-Mail-Adresse" required class="lp-input">
                     </div>
-                    <div class="lp-testimonial">
-                        <div class="lp-testimonial-quote-icon">
-                            <svg width="32" height="32" viewBox="0 0 24 24" fill="#e8f5f3" stroke="none">
-                                <path d="M3 21c3 0 7-1 7-8V5c0-1.25-.756-2.017-2-2H4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2 1 0 1 0 1 1v1c0 1-1 2-2 2s-1 .008-1 1.031V20c0 1 0 1 1 1z"/>
-                                <path d="M15 21c3 0 7-1 7-8V5c0-1.25-.757-2.017-2-2h-4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2h.75c0 2.25.25 4-2.75 5v3c0 1 0 1 1 1z"/>
-                            </svg>
-                        </div>
-                        <div class="lp-testimonial-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
-                        <blockquote>&bdquo;Als mehrsprachige Familie war es schwer, passende Lesetexte zu finden. Lesekumpel macht es leicht &ndash; f&uuml;r mein Kind und f&uuml;r mich.&ldquo;</blockquote>
-                        <div class="lp-testimonial-author">Papa aus Schwerin, Tochter (8)</div>
-                    </div>
-                    <div class="lp-testimonial">
-                        <div class="lp-testimonial-quote-icon">
-                            <svg width="32" height="32" viewBox="0 0 24 24" fill="#e8f5f3" stroke="none">
-                                <path d="M3 21c3 0 7-1 7-8V5c0-1.25-.756-2.017-2-2H4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2 1 0 1 0 1 1v1c0 1-1 2-2 2s-1 .008-1 1.031V20c0 1 0 1 1 1z"/>
-                                <path d="M15 21c3 0 7-1 7-8V5c0-1.25-.757-2.017-2-2h-4c-1.25 0-2 .75-2 1.972V11c0 1.25.75 2 2 2h.75c0 2.25.25 4-2.75 5v3c0 1 0 1 1 1z"/>
-                            </svg>
-                        </div>
-                        <div class="lp-testimonial-stars">&#9733;&#9733;&#9733;&#9733;&#9733;</div>
-                        <blockquote>&bdquo;Der Dyslexie-Modus und die Silbentrennung sind Gold wert. Endlich ein Angebot, das unser Kind nicht &uuml;berfordert.&ldquo;</blockquote>
-                        <div class="lp-testimonial-author">Eltern aus MV, Sohn (10)</div>
-                    </div>
+                    <button type="submit" class="lp-btn-cta-white">Jetzt registrieren</button>
+                    <p class="lp-register-hint">Kein Spam. Nur eine Nachricht, wenn wir starten.</p>
+                </form>
+                <div class="lp-register-success" id="register-success">
+                    <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+                    <h3>Danke f&uuml;r deine Registrierung!</h3>
+                    <p>Wir melden uns, sobald Lesekumpel startet.</p>
                 </div>
-            </div>
-        </section>
-
-        <!-- FINAL CTA -->
-        <section class="lp-cta">
-            <div class="lp-container">
-                <h2>Bereit f&uuml;r den ersten Lesespa&szlig;?</h2>
-                <p>Keine Anmeldung n&ouml;tig. Einfach eine Geschichte ausw&auml;hlen und loslegen.</p>
-                <a href="index.html" class="lp-btn-cta-white">Zur Geschichtenbibliothek</a>
-                <a href="https://rala84.app.n8n.cloud/form/d934fee1-a67d-4146-8b19-1e3c8a1a8967" class="lp-cta-secondary">Oder: Eigene Geschichte erstellen lassen</a>
             </div>
         </section>
 
@@ -569,12 +573,18 @@
 
     <footer>
         <p>Erstellt von deinem KI-Lesekumpel</p>
-        <div class="footer-links"><a href="#">Impressum</a> &bull; <a href="#">Datenschutz</a> &bull; <a href="#">&Uuml;ber uns</a></div>
+        <div class="footer-links"><a href="#">Impressum</a> &bull; <a href="#">Datenschutz</a> &bull; <a href="ueber-uns.html">&Uuml;ber uns</a></div>
     </footer>
 
     <script>
         function toggleMenu() {
             document.getElementById('mobile-menu').classList.toggle('open');
+        }
+
+        function handleRegister(e) {
+            e.preventDefault();
+            e.target.style.display = 'none';
+            document.getElementById('register-success').style.display = 'block';
         }
     </script>
 
