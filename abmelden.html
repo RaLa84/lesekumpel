@@ -1,0 +1,393 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Abmelden – Lesekumpel | Von der Warteliste austragen</title>
+    <meta name="description" content="Trage dich von der Lesekumpel-Warteliste aus. Deine Daten werden umgehend gelöscht.">
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="Abmelden – Lesekumpel">
+    <meta property="og:description" content="Von der Lesekumpel-Warteliste austragen.">
+    <meta property="og:image" content="https://rala84.github.io/lesekumpel/bilder/lesekumpel_logo.png">
+    <meta property="og:url" content="https://rala84.github.io/lesekumpel/abmelden.html">
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="de_DE">
+    <meta name="robots" content="noindex">
+
+    <link rel="canonical" href="https://rala84.github.io/lesekumpel/abmelden.html">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Quicksand:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        /* ========== LOCAL FONTS (DSGVO-konform) ========== */
+        @font-face {
+            font-family: 'Atkinson Hyperlegible';
+            src: url('fonts/atkinson-hyperlegible-400-latin-ext.woff2') format('woff2');
+            font-weight: 400; font-style: normal; font-display: swap;
+            unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+        }
+        @font-face {
+            font-family: 'Atkinson Hyperlegible';
+            src: url('fonts/atkinson-hyperlegible-400-latin.woff2') format('woff2');
+            font-weight: 400; font-style: normal; font-display: swap;
+            unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+        }
+        @font-face {
+            font-family: 'Atkinson Hyperlegible';
+            src: url('fonts/atkinson-hyperlegible-700-latin-ext.woff2') format('woff2');
+            font-weight: 700; font-style: normal; font-display: swap;
+            unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+        }
+        @font-face {
+            font-family: 'Atkinson Hyperlegible';
+            src: url('fonts/atkinson-hyperlegible-700-latin.woff2') format('woff2');
+            font-weight: 700; font-style: normal; font-display: swap;
+            unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+        }
+
+        /* ========== VARIABLES ========== */
+        :root {
+            --bg-body: #FFF9E5;
+            --bg-card: #ffffff;
+            --bg-warm-light: #FFF3D0;
+            --primary-yellow: #FFD54F;
+            --accent-coral: #D67171;
+            --accent-coral-light: #FDEAEA;
+            --accent-coral-dark: #B85555;
+            --text-dark: #2D3436;
+            --text-muted: #5a6368;
+            --shadow-card: 0 4px 20px rgba(214,113,113,0.08), 0 1px 6px rgba(0,0,0,0.03);
+            --radius-card: 24px;
+            --radius-button: 28px;
+            --font-heading: 'Fredoka', sans-serif;
+            --font-body: 'Atkinson Hyperlegible', 'Quicksand', sans-serif;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        h1, h2, h3 { letter-spacing: -0.02em; }
+
+        body {
+            font-family: var(--font-body);
+            background-color: var(--bg-body);
+            color: var(--text-dark);
+            overflow-x: hidden;
+        }
+
+        /* ========== SKIP LINK ========== */
+        .skip-link {
+            position: absolute; left: -9999px;
+            background: var(--accent-coral); color: #fff;
+            padding: 8px 16px; border-radius: 0 0 8px 8px;
+            font-weight: 600; font-size: 0.9rem; z-index: 10000;
+            text-decoration: none;
+        }
+        .skip-link:focus {
+            position: fixed; left: 50%; top: 0;
+            transform: translateX(-50%);
+        }
+
+        /* ========== FOCUS RINGS ========== */
+        a:focus-visible, button:focus-visible, input:focus-visible {
+            outline: 3px solid var(--accent-coral);
+            outline-offset: 2px;
+        }
+
+        /* ========== NAVBAR ========== */
+        .main-navbar {
+            background: rgba(255, 255, 255, 0.78);
+            -webkit-backdrop-filter: blur(14px);
+            backdrop-filter: blur(14px);
+            padding: 12px 24px;
+            border-bottom: 3px solid rgba(255, 213, 79, 0.5);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+            display: flex; justify-content: space-between; align-items: center;
+            position: sticky; top: 0; z-index: 1000;
+        }
+        .nav-left { display: flex; align-items: center; gap: 10px; }
+        .nav-logo { height: 40px; width: auto; }
+        .brand-name {
+            font-family: var(--font-heading); font-size: 1.2rem;
+            color: var(--accent-coral); font-weight: 600; text-decoration: none;
+        }
+        .nav-links-desktop { display: none; gap: 20px; align-items: center; margin-left: 16px; }
+        .nav-btn {
+            text-decoration: none; color: var(--text-dark); font-weight: 600;
+            font-size: 0.95rem; display: flex; align-items: center; gap: 5px;
+            transition: color 0.2s;
+        }
+        .nav-btn:hover { color: var(--accent-coral); }
+        .btn-cta-nav {
+            background: var(--accent-coral); color: #fff; padding: 11px 26px;
+            border-radius: var(--radius-button); font-weight: 600;
+            transition: background 0.2s, transform 0.3s cubic-bezier(0.34,1.56,0.64,1);
+            text-decoration: none; font-family: var(--font-body); font-size: 0.9rem;
+            border: none; display: none;
+        }
+        .btn-cta-nav:hover { background: var(--accent-coral-dark); transform: translateY(-2px); }
+        .nav-right { display: flex; align-items: center; gap: 15px; }
+        .burger-btn {
+            font-size: 1.8rem; cursor: pointer; display: block; color: var(--text-dark);
+            background: none; border: none; padding: 4px; line-height: 1;
+        }
+        .mobile-menu {
+            display: none; background: white; padding: 15px 24px;
+            position: absolute; top: 100%; left: 0; width: 100%;
+            border-bottom: 1px solid #e5e7eb; box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            flex-direction: column; gap: 12px; z-index: 999;
+        }
+        .mobile-menu.open { display: flex; }
+
+        @media (min-width: 768px) {
+            .burger-btn { display: none; }
+            .nav-links-desktop { display: flex; }
+            .btn-cta-nav { display: inline-block; }
+            .nav-logo { height: 50px; }
+            .brand-name { font-size: 1.5rem; }
+            .nav-left { gap: 15px; }
+        }
+
+        /* ========== SECTIONS ========== */
+        .lp-section { padding: 100px 24px; }
+        .lp-container { max-width: 1080px; margin: 0 auto; }
+
+        @media (min-width: 768px) {
+            .lp-section { padding: 120px 48px; }
+        }
+
+        /* ========== FLOATING DECORATIONS ========== */
+        .floating-deco { position: absolute; pointer-events: none; z-index: 0; will-change: transform; }
+        .deco-star { width: 32px; height: 32px; animation: float 6s ease-in-out infinite; }
+        .deco-sparkle { width: 16px; height: 16px; animation: sparkle 4s ease-in-out infinite; }
+        @media (max-width: 767px) { .deco-hide-mobile { display: none; } }
+
+        /* ========== WAVE DIVIDERS ========== */
+        .section-divider { display: block; width: 100%; height: 50px; margin: -1px 0; position: relative; z-index: 1; }
+        @media (min-width: 768px) { .section-divider { height: 80px; } }
+
+        /* ========== KEYFRAMES ========== */
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(5deg); }
+        }
+        @keyframes sparkle {
+            0%, 100% { opacity: 0.3; transform: scale(0.8); }
+            50% { opacity: 1; transform: scale(1.2); }
+        }
+        @keyframes reveal-up {
+            from { opacity: 0; transform: translateY(40px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* ========== SCROLL REVEAL ========== */
+        .reveal { opacity: 0; }
+        .reveal.visible { animation: reveal-up 0.7s cubic-bezier(0.22, 1, 0.36, 1) forwards; }
+
+        /* ========== HERO (with integrated form) ========== */
+        .unsub-hero {
+            background: linear-gradient(180deg, #FFF9E5 0%, #FFF3D0 100%);
+            position: relative; overflow: hidden;
+            min-height: 70vh; display: flex; align-items: center;
+        }
+        .unsub-hero-inner {
+            text-align: center; max-width: 480px; margin: 0 auto;
+            position: relative; z-index: 1; width: 100%;
+        }
+        .unsub-hero h1 {
+            font-family: var(--font-heading); font-size: 1.8rem; color: var(--text-dark);
+            line-height: 1.2; margin-bottom: 12px;
+        }
+        .unsub-hero h1 span { color: var(--accent-coral); }
+        .unsub-hero-sub { font-size: 1rem; color: var(--text-muted); line-height: 1.7; margin-bottom: 32px; }
+
+        @media (min-width: 768px) {
+            .unsub-hero h1 { font-size: 2.2rem; }
+        }
+        .unsub-form {
+            display: flex; flex-direction: column; gap: 14px;
+        }
+        .unsub-input {
+            width: 100%; padding: 16px 20px;
+            border: 2px solid var(--accent-coral-light);
+            border-radius: 14px; font-size: 1rem;
+            font-family: var(--font-body); color: var(--text-dark);
+            background: #fff; transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        .unsub-input:focus {
+            border-color: var(--accent-coral);
+            box-shadow: 0 0 0 3px rgba(214,113,113,0.2);
+            outline: none;
+        }
+        .unsub-input[aria-invalid="true"] {
+            border-color: #e74c3c;
+        }
+        .unsub-btn {
+            background: var(--accent-coral); color: #fff;
+            border: none; padding: 16px 32px;
+            border-radius: var(--radius-button);
+            font-family: var(--font-body); font-size: 1rem; font-weight: 700;
+            cursor: pointer;
+            transition: background 0.2s, transform 0.3s cubic-bezier(0.34,1.56,0.64,1);
+        }
+        .unsub-btn:hover {
+            background: var(--accent-coral-dark);
+            transform: translateY(-2px);
+        }
+        .unsub-btn:active {
+            transform: translateY(0);
+        }
+
+        /* Success message */
+        .unsub-success {
+            display: none; text-align: center;
+            max-width: 480px; margin: 0 auto;
+        }
+        .unsub-success svg { margin-bottom: 16px; }
+        .unsub-success h3 {
+            font-family: var(--font-heading); font-size: 1.4rem;
+            color: var(--text-dark); margin-bottom: 12px;
+        }
+        .unsub-success p {
+            color: var(--text-muted); line-height: 1.7; font-size: 0.95rem;
+        }
+        .unsub-success .back-link {
+            display: inline-block; margin-top: 24px;
+            color: var(--accent-coral); font-weight: 600;
+            text-decoration: none; transition: color 0.2s;
+        }
+        .unsub-success .back-link:hover { color: var(--accent-coral-dark); }
+
+        /* ========== FOOTER ========== */
+        footer {
+            text-align: center; color: var(--text-muted); font-size: 0.85rem;
+            padding: 24px; border-top: 2px solid var(--primary-yellow); background: #fff;
+        }
+        .footer-links { margin-top: 6px; }
+        .footer-links a { color: var(--text-muted); text-decoration: none; margin: 0 6px; transition: color 0.2s; }
+        .footer-links a:hover { color: var(--accent-coral); }
+
+        /* ========== REDUCED MOTION ========== */
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+            .floating-deco { display: none !important; }
+            .reveal { opacity: 1 !important; }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Skip link -->
+    <a href="#main-content" class="skip-link">Zum Inhalt springen</a>
+
+    <!-- NAVBAR -->
+    <nav class="main-navbar" aria-label="Hauptnavigation">
+        <div class="nav-left">
+            <img src="logo1.png" alt="Lesekumpel Logo" class="nav-logo">
+            <a href="landingpage.html" class="brand-name">Lesekumpel</a>
+            <div class="nav-links-desktop">
+                <a href="landingpage.html#mission" class="nav-btn">F&uuml;r euch</a>
+                <a href="landingpage.html#how-it-works" class="nav-btn">So funktioniert&rsquo;s</a>
+                <a href="ueber-uns.html" class="nav-btn">&Uuml;ber uns</a>
+                <a href="demo.html" class="nav-btn">Demo</a>
+                <a href="knowledge-base/snacks/index.html" class="nav-btn">Wissen</a>
+            </div>
+        </div>
+        <div class="nav-right">
+            <a href="landingpage.html#registrieren" class="btn-cta-nav">Jetzt registrieren</a>
+            <button type="button" class="burger-btn" onclick="toggleMenu()" aria-label="Men&uuml; &ouml;ffnen" aria-expanded="false">&#9776;</button>
+        </div>
+        <div id="mobile-menu" class="mobile-menu">
+            <a href="landingpage.html#mission" class="nav-btn" onclick="toggleMenu()">F&uuml;r euch</a>
+            <a href="landingpage.html#how-it-works" class="nav-btn" onclick="toggleMenu()">So funktioniert&rsquo;s</a>
+            <a href="ueber-uns.html" class="nav-btn" onclick="toggleMenu()">&Uuml;ber uns</a>
+            <a href="demo.html" class="nav-btn" onclick="toggleMenu()">Demo</a>
+            <a href="knowledge-base/snacks/index.html" class="nav-btn" onclick="toggleMenu()">Wissen</a>
+            <a href="landingpage.html#registrieren" class="nav-btn" onclick="toggleMenu()">Jetzt registrieren</a>
+        </div>
+    </nav>
+
+    <main id="main-content">
+
+        <!-- ============ HERO ============ -->
+        <section class="lp-section unsub-hero">
+            <svg aria-hidden="true" class="floating-deco deco-star deco-hide-mobile" style="top:15%;right:10%;animation-delay:-1s;" viewBox="0 0 32 32"><polygon points="16,2 20,12 30,12 22,19 25,30 16,23 7,30 10,19 2,12 12,12" fill="#FFD54F" opacity="0.5"/></svg>
+            <svg aria-hidden="true" class="floating-deco deco-sparkle deco-hide-mobile" style="top:40%;left:8%;animation-delay:-2.5s;" viewBox="0 0 24 24"><path d="M12,2 L14,10 L22,12 L14,14 L12,22 L10,14 L2,12 L10,10 Z" fill="#D67171" opacity="0.2"/></svg>
+
+            <div class="lp-container unsub-hero-inner">
+                <h1 class="reveal">Von der <span>Warteliste</span> austragen</h1>
+                <p class="unsub-hero-sub reveal">Gib die E-Mail-Adresse ein, mit der du dich registriert hast. Wir l&ouml;schen deine Daten umgehend.</p>
+
+                <div id="unsub-form-container" class="reveal">
+                    <form class="unsub-form" onsubmit="handleUnsubscribe(event)">
+                        <input type="email" name="email" placeholder="Deine E-Mail-Adresse" required class="unsub-input" aria-label="E-Mail-Adresse zum Austragen">
+                        <button type="submit" class="unsub-btn">Jetzt austragen</button>
+                    </form>
+                </div>
+
+                <div class="unsub-success" id="unsub-success">
+                    <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="var(--accent-coral)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6L9 17l-5-5"/></svg>
+                    <h3>Du wurdest ausgetragen.</h3>
+                    <p>Deine E-Mail-Adresse wurde von der Warteliste entfernt. Falls du es dir anders &uuml;berlegst, bist du jederzeit willkommen.</p>
+                    <a href="landingpage.html" class="back-link">&larr; Zur&uuml;ck zur Startseite</a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Wave: Hero → Footer -->
+        <svg aria-hidden="true" class="section-divider" viewBox="0 0 1440 80" preserveAspectRatio="none">
+            <path d="M0,40 C360,10 720,70 1080,30 C1260,15 1380,55 1440,35 L1440,80 L0,80 Z" fill="#ffffff"/>
+        </svg>
+
+    </main>
+
+    <footer>
+        <div class="footer-links"><a href="impressum.html">Impressum</a> &bull; <a href="datenschutz.html">Datenschutz</a> &bull; <a href="ueber-uns.html">&Uuml;ber uns</a></div>
+    </footer>
+
+    <script>
+        /* ========== Mobile Menu ========== */
+        function toggleMenu() {
+            var menu = document.getElementById('mobile-menu');
+            var btn = document.querySelector('.burger-btn');
+            menu.classList.toggle('open');
+            btn.setAttribute('aria-expanded', menu.classList.contains('open'));
+        }
+
+        /* ========== Scroll Reveal ========== */
+        var revealObserver = new IntersectionObserver(function(entries) {
+            entries.forEach(function(entry) {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    revealObserver.unobserve(entry.target);
+                }
+            });
+        }, { threshold: 0.15, rootMargin: '0px 0px -50px 0px' });
+
+        document.querySelectorAll('.reveal').forEach(function(el) {
+            revealObserver.observe(el);
+        });
+
+        /* ========== Unsubscribe Handler ========== */
+        function handleUnsubscribe(e) {
+            e.preventDefault();
+            var emailInput = e.target.querySelector('input[name="email"]');
+
+            if (!emailInput.checkValidity()) {
+                emailInput.setAttribute('aria-invalid', 'true');
+                return;
+            }
+
+            emailInput.removeAttribute('aria-invalid');
+
+            // Client-side only — no backend yet
+            document.getElementById('unsub-form-container').style.display = 'none';
+            document.getElementById('unsub-success').style.display = 'block';
+        }
+    </script>
+
+</body>
+</html>
