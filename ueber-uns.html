@@ -70,7 +70,7 @@
             background: var(--accent-coral); color: #fff; padding: 11px 26px;
             border-radius: 10px; font-weight: 600; transition: background 0.2s, transform 0.2s;
             text-decoration: none; font-family: var(--font-body); font-size: 0.9rem;
-            border: none;
+            border: none; display: none;
         }
         .btn-cta-nav:hover { background: var(--accent-coral-dark); }
         .nav-right { display: flex; align-items: center; gap: 15px; }
@@ -86,6 +86,7 @@
         @media (min-width: 768px) {
             .burger-icon { display: none; }
             .nav-links-desktop { display: flex; }
+            .btn-cta-nav { display: inline-block; }
             .nav-logo { height: 50px; }
             .brand-name { font-size: 1.5rem; }
             .nav-left { gap: 15px; }
@@ -233,7 +234,7 @@
             <a href="landingpage.html" class="brand-name">Lesekumpel</a>
             <div class="nav-links-desktop">
                 <a href="landingpage.html#mission" class="nav-btn">F&uuml;r euch</a>
-                <a href="landingpage.html#features" class="nav-btn">So funktioniert&rsquo;s</a>
+                <a href="landingpage.html#how-it-works" class="nav-btn">So funktioniert&rsquo;s</a>
                 <a href="ueber-uns.html" class="nav-btn" style="color: var(--accent-coral);">&Uuml;ber uns</a>
                 <a href="demo.html" class="nav-btn">Demo</a>
                 <a href="knowledge-base/snacks/index.html" class="nav-btn">Wissen</a>
@@ -245,7 +246,7 @@
         </div>
         <div id="mobile-menu" class="mobile-menu">
             <a href="landingpage.html#mission" class="nav-btn" onclick="toggleMenu()">F&uuml;r euch</a>
-            <a href="landingpage.html#features" class="nav-btn" onclick="toggleMenu()">So funktioniert&rsquo;s</a>
+            <a href="landingpage.html#how-it-works" class="nav-btn" onclick="toggleMenu()">So funktioniert&rsquo;s</a>
             <a href="ueber-uns.html" class="nav-btn" onclick="toggleMenu()">&Uuml;ber uns</a>
             <a href="demo.html" class="nav-btn" onclick="toggleMenu()">Demo</a>
             <a href="knowledge-base/snacks/index.html" class="nav-btn" onclick="toggleMenu()">Wissen</a>

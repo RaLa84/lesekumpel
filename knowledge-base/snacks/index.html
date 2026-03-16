@@ -315,7 +315,7 @@
             background: var(--coral); color: #fff; padding: 11px 26px;
             border-radius: 28px; font-weight: 600; transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
             text-decoration: none; font-family: var(--font-body); font-size: 0.9rem;
-            border: none; box-shadow: 0 4px 14px rgba(214,113,113,0.3);
+            border: none; box-shadow: 0 4px 14px rgba(214,113,113,0.3); display: none;
         }
         .btn-cta-nav:hover { background: var(--coral-dark); transform: translateY(-2px); }
         .nav-right { display: flex; align-items: center; gap: 15px; }
@@ -331,6 +331,7 @@
         @media (min-width: 768px) {
             .burger-icon { display: none; }
             .nav-links-desktop { display: flex; }
+            .btn-cta-nav { display: inline-block; }
             .nav-logo { height: 50px; }
             .brand-name { font-size: 1.5rem; }
             .nav-left { gap: 15px; }
@@ -354,7 +355,7 @@
             <a href="../../landingpage.html" class="brand-name">Lesekumpel</a>
             <div class="nav-links-desktop">
                 <a href="../../landingpage.html#mission" class="nav-btn">F&uuml;r euch</a>
-                <a href="../../landingpage.html#features" class="nav-btn">So funktioniert&rsquo;s</a>
+                <a href="../../landingpage.html#how-it-works" class="nav-btn">So funktioniert&rsquo;s</a>
                 <a href="../../ueber-uns.html" class="nav-btn">&Uuml;ber uns</a>
                 <a href="../../demo.html" class="nav-btn">Demo</a>
                 <a href="../../knowledge-base/snacks/index.html" class="nav-btn" style="color: var(--coral);">Wissen</a>
@@ -366,7 +367,7 @@
         </div>
         <div id="mobile-menu" class="mobile-menu">
             <a href="../../landingpage.html#mission" class="nav-btn" onclick="toggleMenu()">F&uuml;r euch</a>
-            <a href="../../landingpage.html#features" class="nav-btn" onclick="toggleMenu()">So funktioniert&rsquo;s</a>
+            <a href="../../landingpage.html#how-it-works" class="nav-btn" onclick="toggleMenu()">So funktioniert&rsquo;s</a>
             <a href="../../ueber-uns.html" class="nav-btn" onclick="toggleMenu()">&Uuml;ber uns</a>
             <a href="../../demo.html" class="nav-btn" onclick="toggleMenu()">Demo</a>
             <a href="../../knowledge-base/snacks/index.html" class="nav-btn" onclick="toggleMenu()">Wissen</a>

@@ -133,7 +133,7 @@
         .btn-cta-nav:hover { background: var(--accent-coral-dark); transform: translateY(-2px) scaleX(1.04) scaleY(0.97); }
         .btn-cta-nav:active { transform: translateY(0) scaleX(0.97) scaleY(1.03); transition-duration: 0.1s; }
         .nav-right { display: flex; align-items: center; gap: 15px; }
-        .burger-icon { font-size: 1.8rem; cursor: pointer; display: block; color: var(--text-dark); }
+        .burger-icon { font-size: 1.8rem; cursor: pointer; display: block; color: var(--text-dark); background: none; border: none; padding: 0; }
         .mobile-menu {
             display: none; background: white; padding: 15px 24px;
             position: absolute; top: 100%; left: 0; width: 100%;
@@ -222,7 +222,7 @@
         .lp-btn-secondary:hover { background: var(--accent-coral-light); transform: translateY(-3px) scaleX(1.04) scaleY(0.97); }
         .lp-btn-secondary:active { transform: translateY(0) scaleX(0.97) scaleY(1.03); transition-duration: 0.1s; }
         .lp-hero-note { font-size: 0.85rem; color: var(--text-muted); margin-top: 16px; }
-        .lp-hero-trust { font-size: 0.8rem; color: #9ca3af; margin-top: 8px; }
+        .lp-hero-trust { font-size: 0.8rem; color: #6b7280; margin-top: 8px; }
         .neuro-banner { display: flex; justify-content: center; gap: 32px; margin-top: 28px; }
         .neuro-badge { display: flex; align-items: center; gap: 8px; opacity: 0.8; transition: opacity 0.3s, transform 0.3s, filter 0.3s; cursor: default; border-radius: 12px; padding: 6px 12px; }
         .neuro-badge:hover { opacity: 1; transform: scale(1.08); }
@@ -410,36 +410,19 @@
         /* ========== TREASURE MAP (HOW-IT-WORKS) ========== */
         .lp-how { background: var(--bg-warm-light); position: relative; overflow: hidden; }
         .lp-steps-map {
-            position: relative;
             max-width: 900px; margin: 0 auto;
-            min-height: 480px;
-            padding-left: 44px;
+            display: flex; flex-direction: column; align-items: center; gap: 20px;
         }
-        .lp-steps-map svg.map-svg {
-            position: absolute; top: 0; left: 0; width: 40px; height: 100%;
-            pointer-events: none; z-index: 1;
-        }
-        .map-path {
-            fill: none;
-            stroke: var(--primary-yellow);
-            stroke-width: 4.5;
-            stroke-dasharray: 10 8;
-            stroke-linecap: round;
-            opacity: 0.8;
-            /* dasharray & dashoffset set by JS for scroll-reactive drawing */
-        }
-        .map-path-desktop { display: none; }
 
         .lp-step-waypoint {
-            position: relative; z-index: 2;
+            position: relative;
             display: flex; flex-direction: column; align-items: center;
-            text-align: center; max-width: 300px;
-            margin: 0 0 28px 0; padding: 24px 20px;
+            text-align: center; max-width: 300px; width: 100%;
+            padding: 24px 20px;
             background: #fff;
             border-radius: 20px;
             box-shadow: 0 2px 12px rgba(0,0,0,0.06);
         }
-        .lp-step-waypoint:last-of-type { margin-bottom: 0; }
         .lp-step-number {
             width: 56px; height: 56px; border-radius: 50%; background: var(--primary-yellow);
             display: flex; align-items: center; justify-content: center;
@@ -452,47 +435,56 @@
             font-family: var(--font-heading); font-size: 1.1rem; margin-bottom: 8px; color: var(--accent-coral);
         }
         .lp-step-waypoint p { color: var(--text-muted); line-height: 1.6; font-size: 0.92rem; }
-
-        .map-character {
-            position: absolute; z-index: 3;
-            width: 48px; height: 48px;
-            animation: float 4s ease-in-out infinite;
+        .step-img-wrap {
+            height: 280px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 12px;
+            overflow: hidden;
+            border-radius: 16px;
         }
-        .map-character-mobile {
-            top: -10px; left: 0px;
+        .step-screenshot {
+            width: 150px;
+            border-radius: 12px;
+            border: none;
+            box-shadow: none;
+            max-height: 100%;
+            object-fit: contain;
         }
-        .map-character-desktop {
-            display: none;
+        .lp-step-waypoint:nth-child(3) .step-screenshot {
+            width: 250px;
+            height: 250px;
+            object-fit: contain;
         }
 
         @media (min-width: 768px) {
-            .lp-steps-map { min-height: 420px; padding-top: 20px; padding-left: 0; }
-            .lp-steps-map svg.map-svg { width: 100%; height: 100%; }
-            .map-path-mobile { display: none; }
-            .map-path-desktop { display: block; }
-
-            .lp-step-waypoint {
-                position: absolute;
-                margin: 0;
+            .lp-steps-map {
+                flex-direction: row;
+                align-items: stretch;
+                gap: 24px;
             }
-            .lp-step-waypoint:nth-of-type(1) { left: 2%; top: 15%; }
-            .lp-step-waypoint:nth-of-type(2) { left: 36%; top: 50%; }
-            .lp-step-waypoint:nth-of-type(3) { left: 70%; top: 12%; }
-
-            .map-character-mobile { display: none; }
-            .map-character-desktop {
-                display: block;
-                top: 10%; left: 8%;
-            }
+            .lp-step-waypoint { flex: 1; }
+            .step-screenshot { width: 170px; }
         }
 
         /* ========== ALPHA BADGE ========== */
         .lp-alpha-badge {
-            display: inline-block; background: #fef9e7; color: #92400e;
-            font-size: 0.85rem; font-weight: 600; padding: 8px 18px;
-            border-radius: 40px; margin-bottom: 20px;
-            border: 2px solid var(--primary-yellow);
-            box-shadow: 0 0 16px rgba(255,213,79,0.25);
+            display: inline-block;
+            background: var(--primary-yellow);
+            color: #1a1a2e;
+            font-family: 'Atkinson Hyperlegible', var(--font-body);
+            font-size: 0.85rem; font-weight: 500;
+            padding: 8px 20px;
+            border-radius: 40px; margin-bottom: 24px;
+            border: 2px solid #f0c430;
+            box-shadow: 0 2px 12px rgba(255,213,79,0.35);
+            animation: badge-breathe 3s ease-in-out infinite;
+        }
+        .lp-alpha-badge strong { font-weight: 700; }
+        @keyframes badge-breathe {
+            0%, 100% { box-shadow: 0 2px 12px rgba(255,213,79,0.35); }
+            50% { box-shadow: 0 2px 20px rgba(255,213,79,0.55); }
         }
 
         /* ========== REGISTRATION ========== */
@@ -656,7 +648,7 @@
             .lp-hero-sub { margin-bottom: 16px; }
             .lp-btn-primary { padding: 16px 52px; }
             .lp-btn-secondary { padding: 14px 48px; }
-            .lp-alpha-badge { font-size: 0.75rem; padding: 5px 12px; margin-bottom: 8px; }
+            .lp-alpha-badge { font-size: 0.75rem; padding: 6px 14px; margin-bottom: 12px; }
             .lp-hero-note { margin-top: 10px; }
             .neuro-banner { gap: 16px; margin-top: 10px; }
             .neuro-icon { width: 28px; height: 20px; }
@@ -838,6 +830,25 @@
         .reveal-stagger.visible > *:nth-child(3) { animation-delay: 240ms; }
         .reveal-stagger.visible > *:nth-child(4) { animation-delay: 360ms; }
 
+        /* ========== ACCESSIBILITY ========== */
+        .skip-link {
+            position: absolute; left: -9999px; top: auto;
+            width: 1px; height: 1px; overflow: hidden;
+            background: var(--accent-coral); color: #fff;
+            padding: 12px 24px; border-radius: 0 0 12px 12px;
+            font-family: var(--font-heading); font-weight: 600;
+            z-index: 10000; text-decoration: none;
+        }
+        .skip-link:focus {
+            position: fixed; left: 50%; top: 0;
+            transform: translateX(-50%);
+            width: auto; height: auto;
+        }
+        a:focus-visible, button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible, [tabindex]:focus-visible {
+            outline: 3px solid var(--accent-coral);
+            outline-offset: 2px;
+        }
+
         /* ========== REDUCED MOTION ========== */
         @media (prefers-reduced-motion: reduce) {
             *, *::before, *::after {
@@ -856,7 +867,7 @@
             .step-sparkle { opacity: 0.7 !important; transform: scale(1) !important; animation: none !important; }
             .lp-hero-sunburst { display: none !important; }
             .bg-blob { display: none !important; }
-            .map-path { stroke-dashoffset: 0 !important; transition: none !important; }
+
             .bento-price { animation: none !important; }
             .scribble-circle path { stroke-dashoffset: 0 !important; transition: none !important; }
             .bento-icon-svg svg path { stroke-dashoffset: 0 !important; transition: none !important; }
@@ -866,14 +877,17 @@
 </head>
 <body>
 
+    <!-- SKIP LINK (WCAG 2.4.1) -->
+    <a href="#main-content" class="skip-link">Zum Inhalt springen</a>
+
     <!-- NAVBAR -->
-    <nav class="main-navbar">
+    <nav class="main-navbar" aria-label="Hauptnavigation">
         <div class="nav-left">
             <img src="logo1.png" alt="Lesekumpel Logo" class="nav-logo">
             <a href="landingpage.html" class="brand-name">Lesekumpel</a>
             <div class="nav-links-desktop">
                 <a href="#mission" class="nav-btn">F&uuml;r euch</a>
-                <a href="#features" class="nav-btn">So funktioniert&rsquo;s</a>
+                <a href="#how-it-works" class="nav-btn">So funktioniert&rsquo;s</a>
                 <a href="ueber-uns.html" class="nav-btn">&Uuml;ber uns</a>
                 <a href="demo.html" class="nav-btn">Demo</a>
                 <a href="knowledge-base/snacks/index.html" class="nav-btn">Wissen</a>
@@ -881,11 +895,11 @@
         </div>
         <div class="nav-right">
             <a href="#registrieren" class="btn-cta-nav">Jetzt registrieren</a>
-            <span class="burger-icon" onclick="toggleMenu()">&#9776;</span>
+            <button type="button" class="burger-icon" aria-label="Navigationsmenü öffnen" aria-expanded="false" aria-controls="mobile-menu" onclick="toggleMenu()">&#9776;</button>
         </div>
         <div id="mobile-menu" class="mobile-menu">
             <a href="#mission" class="nav-btn" onclick="toggleMenu()">F&uuml;r euch</a>
-            <a href="#features" class="nav-btn" onclick="toggleMenu()">So funktioniert&rsquo;s</a>
+            <a href="#how-it-works" class="nav-btn" onclick="toggleMenu()">So funktioniert&rsquo;s</a>
             <a href="ueber-uns.html" class="nav-btn" onclick="toggleMenu()">&Uuml;ber uns</a>
             <a href="demo.html" class="nav-btn" onclick="toggleMenu()">Demo</a>
             <a href="knowledge-base/snacks/index.html" class="nav-btn" onclick="toggleMenu()">Wissen</a>
@@ -893,22 +907,22 @@
         </div>
     </nav>
 
-    <main>
+    <main id="main-content">
 
         <!-- HERO -->
         <section class="lp-section lp-hero">
             <!-- Floating decorations -->
-            <svg class="floating-deco deco-star" style="top:15%;right:8%;animation-delay:-1s;" viewBox="0 0 32 32"><polygon points="16,2 20,12 30,12 22,19 25,30 16,23 7,30 10,19 2,12 12,12" fill="#FFD54F" opacity="0.5"/></svg>
-            <svg class="floating-deco deco-star deco-hide-mobile" style="top:60%;left:5%;animation-delay:-3s;" viewBox="0 0 32 32"><polygon points="16,2 20,12 30,12 22,19 25,30 16,23 7,30 10,19 2,12 12,12" fill="#D67171" opacity="0.25"/></svg>
-            <svg class="floating-deco deco-sparkle deco-hide-mobile" style="top:30%;right:15%;animation-delay:-2s;" viewBox="0 0 16 16"><circle cx="8" cy="8" r="3" fill="#FFD54F" opacity="0.6"/></svg>
-            <div class="floating-deco deco-circle" style="top:70%;right:20%;background:var(--accent-coral-light);animation-delay:-4s;"></div>
-            <div class="floating-deco deco-dot deco-hide-mobile" style="top:25%;left:12%;background:var(--primary-yellow);opacity:0.4;animation-delay:-2s;"></div>
+            <svg aria-hidden="true" class="floating-deco deco-star" style="top:15%;right:8%;animation-delay:-1s;" viewBox="0 0 32 32"><polygon points="16,2 20,12 30,12 22,19 25,30 16,23 7,30 10,19 2,12 12,12" fill="#FFD54F" opacity="0.5"/></svg>
+            <svg aria-hidden="true" class="floating-deco deco-star deco-hide-mobile" style="top:60%;left:5%;animation-delay:-3s;" viewBox="0 0 32 32"><polygon points="16,2 20,12 30,12 22,19 25,30 16,23 7,30 10,19 2,12 12,12" fill="#D67171" opacity="0.25"/></svg>
+            <svg aria-hidden="true" class="floating-deco deco-sparkle deco-hide-mobile" style="top:30%;right:15%;animation-delay:-2s;" viewBox="0 0 16 16"><circle cx="8" cy="8" r="3" fill="#FFD54F" opacity="0.6"/></svg>
+            <div aria-hidden="true" class="floating-deco deco-circle" style="top:70%;right:20%;background:var(--accent-coral-light);animation-delay:-4s;"></div>
+            <div aria-hidden="true" class="floating-deco deco-dot deco-hide-mobile" style="top:25%;left:12%;background:var(--primary-yellow);opacity:0.4;animation-delay:-2s;"></div>
             <!-- Asymmetric sparkle visible on mobile -->
-            <svg class="floating-deco deco-sparkle" style="top:42%;left:6%;animation-delay:-1.5s;" viewBox="0 0 24 24"><path d="M12,2 L14,10 L22,12 L14,14 L12,22 L10,14 L2,12 L10,10 Z" fill="#FFD54F" opacity="0.5"/></svg>
+            <svg aria-hidden="true" class="floating-deco deco-sparkle" style="top:42%;left:6%;animation-delay:-1.5s;" viewBox="0 0 24 24"><path d="M12,2 L14,10 L22,12 L14,14 L12,22 L10,14 L2,12 L10,10 Z" fill="#FFD54F" opacity="0.5"/></svg>
 
             <div class="lp-container lp-hero-inner">
                 <div class="lp-hero-text">
-                    <div class="lp-alpha-badge reveal">&#128640; Alpha-Phase &ndash; Gemeinsam f&uuml;r inklusives Lesen!</div>
+                    <div class="lp-alpha-badge reveal">&#128640; <strong>Alpha-Phase</strong> &ndash; Gemeinsam f&uuml;r inklusives Lesen!</div>
                     <h1>Wenn Lesen endlich &bdquo;Klick&ldquo; macht &ndash;<br><span>f&uuml;r <span class="scribble-underline">jedes Gehirn</span>.</span></h1>
                     <p class="lp-hero-sub mobile-only">Die erste inklusive Lese-App, die <strong>ADHS und Legasthenie</strong> als St&auml;rke feiert. KI-Geschichten, die dein Kind wirklich liebt &ndash; ohne Druck, mit 100&nbsp;% Erfolg.</p>
                     <p class="lp-hero-sub desktop-only">Lesekumpel ist der sichere Hafen f&uuml;r kleine Entdecker, die ihren eigenen Weg gehen. Wir kombinieren KI-Geschichten, die sich an <strong>ADHS, Autismus und Legasthenie</strong> anpassen, mit einer Gemeinschaft, die sich gegenseitig st&auml;rkt. Ohne Druck, voller kleiner Erfolgserlebnisse &ndash; und mit dem R&uuml;ckhalt unserer <strong>Discord-Familie</strong>.</p>
@@ -988,7 +1002,7 @@
         </section>
 
         <!-- WAVE: Hero → Facts -->
-        <svg class="section-divider" viewBox="0 0 1440 80" preserveAspectRatio="none">
+        <svg aria-hidden="true" class="section-divider" viewBox="0 0 1440 80" preserveAspectRatio="none">
             <path d="M0,20 C240,65 480,5 720,40 C960,75 1200,15 1440,45 L1440,80 L0,80 Z" fill="#FFF3D0"/>
         </svg>
 
@@ -1055,7 +1069,7 @@
         </section>
 
         <!-- WAVE: Facts → Problem -->
-        <svg class="section-divider" viewBox="0 0 1440 80" preserveAspectRatio="none">
+        <svg aria-hidden="true" class="section-divider" viewBox="0 0 1440 80" preserveAspectRatio="none">
             <path d="M0,50 C360,10 720,70 1080,30 C1260,15 1380,50 1440,35 L1440,80 L0,80 Z" fill="#FFF9E5"/>
         </svg>
 
@@ -1140,7 +1154,7 @@
         </section>
 
         <!-- WAVE: Problem → Features (accent line) -->
-        <svg class="section-divider" viewBox="0 0 1440 80" preserveAspectRatio="none">
+        <svg aria-hidden="true" class="section-divider" viewBox="0 0 1440 80" preserveAspectRatio="none">
             <path d="M0,60 C480,20 960,70 1440,30 L1440,80 L0,80 Z" fill="#FFF9E5"/>
             <path d="M0,58 C480,18 960,68 1440,28" fill="none" stroke="#F5E6A3" stroke-width="2"/>
         </svg>
@@ -1149,7 +1163,7 @@
         <section class="lp-section lp-features" id="features" style="position:relative;overflow:hidden;">
             <div class="bg-blob" style="width:600px;height:600px;background:#E8F5E9;opacity:0.25;bottom:-200px;left:-200px;"></div>
             <div class="lp-container">
-                <h2 class="lp-section-title reveal">St&auml;rkenorientiertes Lesen &ndash; so funktioniert&rsquo;s</h2>
+                <h2 class="lp-section-title reveal">Was Lesekumpel besonders macht</h2>
                 <p class="lp-section-subtitle reveal">Nicht dein Kind passt sich an &ndash; Lesekumpel passt sich an dein Kind.</p>
                 <div class="lp-zigzag-list">
                     <div class="lp-zigzag-item reveal">
@@ -1229,9 +1243,42 @@
             </div>
         </section>
 
-        <!-- WAVE: Features → Testimonials -->
-        <svg class="section-divider" viewBox="0 0 1440 80" preserveAspectRatio="none">
+        <!-- WAVE: Features → How-It-Works -->
+        <svg aria-hidden="true" class="section-divider" viewBox="0 0 1440 80" preserveAspectRatio="none">
             <path d="M0,40 C360,10 720,70 1080,30 C1260,15 1380,55 1440,35 L1440,80 L0,80 Z" fill="#FFF3D0"/>
+        </svg>
+
+        <!-- HOW IT WORKS — TREASURE MAP -->
+        <section class="lp-section lp-how" id="how-it-works">
+            <div class="lp-container">
+                <h2 class="lp-section-title reveal">So einfach geht Lesefreude</h2>
+                <div class="lp-steps-map">
+                    <!-- Step waypoints -->
+                    <div class="lp-step-waypoint">
+                        <div class="lp-step-number">1</div>
+                        <div class="step-img-wrap"><img src="bibo.png" alt="Lesekumpel Bibliothek mit vielen Geschichten" class="step-screenshot"></div>
+                        <h3>Entdecken, was begeistert</h3>
+                        <p>St&ouml;bert gemeinsam durch die Bibliothek &ndash; oder lasst die KI Geschichten vorschlagen, die zu den Interessen eures Kindes passen.</p>
+                    </div>
+                    <div class="lp-step-waypoint">
+                        <div class="lp-step-number">2</div>
+                        <div class="step-img-wrap"><img src="picknick2.png" alt="Lesekumpel App: Geschichte mit Silbentrennung und Vorlese-Funktion" class="step-screenshot"></div>
+                        <h3>Lesen im eigenen Tempo</h3>
+                        <p>Dein Kind liest allein oder mit dir zusammen. Schwieriges Wort? Einmal tippen &ndash; es wird vorgelesen, in Silben zerlegt und kindgerecht erkl&auml;rt. Kein Stress, kein Zeitdruck.</p>
+                    </div>
+                    <div class="lp-step-waypoint">
+                        <div class="lp-step-number">3</div>
+                        <div class="step-img-wrap"><img src="lesechampion.png" alt="Lese-Champion Pokal - Stolz auf jede geschaffte Geschichte" class="step-screenshot"></div>
+                        <h3>Stolz sein &ndash; zusammen</h3>
+                        <p>Mit jeder Geschichte w&auml;chst das Selbstvertrauen. Dein Kind erlebt: &bdquo;Ich kann das!&ldquo; &ndash; und du siehst es strahlen.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- WAVE: How-It-Works → Testimonials -->
+        <svg aria-hidden="true" class="section-divider" viewBox="0 0 1440 80" preserveAspectRatio="none">
+            <path d="M0,30 C360,70 720,10 1080,50 C1260,65 1380,25 1440,40 L1440,80 L0,80 Z" fill="#FFF3D0"/>
         </svg>
 
         <!-- TESTIMONIALS -->
@@ -1258,99 +1305,31 @@
             </div>
         </section>
 
-        <!-- WAVE: Testimonials → How-It-Works -->
-        <svg class="section-divider" viewBox="0 0 1440 80" preserveAspectRatio="none">
-            <path d="M0,30 C360,70 720,10 1080,50 C1260,65 1380,25 1440,40 L1440,80 L0,80 Z" fill="#FFF3D0"/>
-        </svg>
-
-        <!-- HOW IT WORKS — TREASURE MAP -->
-        <section class="lp-section lp-how" id="how-it-works">
-            <div class="lp-container">
-                <h2 class="lp-section-title reveal">So einfach geht Lesefreude</h2>
-                <div class="lp-steps-map">
-                    <!-- Mobile: vertical dotted path -->
-                    <svg class="map-svg map-path-mobile" viewBox="0 0 40 600" preserveAspectRatio="none">
-                        <path class="map-path" d="M20,20 C28,80 12,130 20,180 C28,230 12,280 20,330 C28,380 12,430 20,480 C28,530 20,560 20,580" />
-                    </svg>
-                    <!-- Desktop: S-curve snake path -->
-                    <svg class="map-svg map-path-desktop" viewBox="0 0 1000 380" preserveAspectRatio="xMidYMid meet">
-                        <path class="map-path" d="M150,110 C280,320 380,310 500,240 C620,170 720,30 830,100" />
-                    </svg>
-
-                    <!-- Character icon (reading bird) -->
-                    <svg class="floating-deco map-character map-character-mobile" viewBox="0 0 48 48" fill="none">
-                        <circle cx="24" cy="20" r="12" fill="#FFD54F" opacity="0.9"/>
-                        <circle cx="20" cy="17" r="2" fill="#2D3436"/>
-                        <circle cx="28" cy="17" r="2" fill="#2D3436"/>
-                        <path d="M20 24 Q24 28 28 24" stroke="#D67171" stroke-width="2" fill="none" stroke-linecap="round"/>
-                        <path d="M14 14 Q10 8 16 10" stroke="#FFD54F" stroke-width="2" fill="none"/>
-                        <path d="M34 14 Q38 8 32 10" stroke="#FFD54F" stroke-width="2" fill="none"/>
-                        <rect x="17" y="30" width="14" height="10" rx="3" fill="#FFF9E5" stroke="#F5E6A3" stroke-width="1.5"/>
-                        <line x1="20" y1="34" x2="28" y2="34" stroke="#D67171" stroke-width="1" opacity="0.5"/>
-                        <line x1="20" y1="37" x2="26" y2="37" stroke="#D67171" stroke-width="1" opacity="0.5"/>
-                    </svg>
-                    <svg class="floating-deco map-character map-character-desktop" viewBox="0 0 48 48" fill="none">
-                        <circle cx="24" cy="20" r="12" fill="#FFD54F" opacity="0.9"/>
-                        <circle cx="20" cy="17" r="2" fill="#2D3436"/>
-                        <circle cx="28" cy="17" r="2" fill="#2D3436"/>
-                        <path d="M20 24 Q24 28 28 24" stroke="#D67171" stroke-width="2" fill="none" stroke-linecap="round"/>
-                        <path d="M14 14 Q10 8 16 10" stroke="#FFD54F" stroke-width="2" fill="none"/>
-                        <path d="M34 14 Q38 8 32 10" stroke="#FFD54F" stroke-width="2" fill="none"/>
-                        <rect x="17" y="30" width="14" height="10" rx="3" fill="#FFF9E5" stroke="#F5E6A3" stroke-width="1.5"/>
-                        <line x1="20" y1="34" x2="28" y2="34" stroke="#D67171" stroke-width="1" opacity="0.5"/>
-                        <line x1="20" y1="37" x2="26" y2="37" stroke="#D67171" stroke-width="1" opacity="0.5"/>
-                    </svg>
-
-                    <!-- Step waypoints -->
-                    <div class="lp-step-waypoint">
-                        <div class="lp-step-number">1</div>
-                        <h3>Entdecken, was begeistert</h3>
-                        <p>St&ouml;bert gemeinsam durch die Bibliothek &ndash; oder lasst die KI Geschichten vorschlagen, die zu den Interessen eures Kindes passen.</p>
-                    </div>
-                    <div class="lp-step-waypoint">
-                        <div class="lp-step-number">2</div>
-                        <h3>Lesen im eigenen Tempo</h3>
-                        <p>Dein Kind liest allein oder mit dir zusammen. Schwieriges Wort? Einmal tippen &ndash; es wird vorgelesen, in Silben zerlegt und kindgerecht erkl&auml;rt. Kein Stress, kein Zeitdruck.</p>
-                    </div>
-                    <div class="lp-step-waypoint">
-                        <div class="lp-step-number">3</div>
-                        <!-- Celebration sparkles -->
-                        <svg class="step-sparkle" style="top:-8px;right:10px;width:20px;height:20px;" viewBox="0 0 24 24"><polygon points="12,2 14,9 21,9 15,14 17,21 12,17 7,21 9,14 3,9 10,9" fill="#FFD54F"/></svg>
-                        <svg class="step-sparkle" style="top:4px;left:6px;width:16px;height:16px;" viewBox="0 0 24 24"><polygon points="12,2 14,9 21,9 15,14 17,21 12,17 7,21 9,14 3,9 10,9" fill="#D67171" opacity="0.7"/></svg>
-                        <svg class="step-sparkle" style="bottom:12px;right:4px;width:14px;height:14px;" viewBox="0 0 24 24"><polygon points="12,2 14,9 21,9 15,14 17,21 12,17 7,21 9,14 3,9 10,9" fill="#2a9d8f" opacity="0.6"/></svg>
-                        <svg class="step-sparkle" style="bottom:4px;left:16px;width:12px;height:12px;" viewBox="0 0 24 24"><circle cx="12" cy="12" r="5" fill="#FFD54F" opacity="0.5"/></svg>
-                        <h3>Stolz sein &ndash; zusammen</h3>
-                        <p>Mit jeder Geschichte w&auml;chst das Selbstvertrauen. Dein Kind erlebt: &bdquo;Ich kann das!&ldquo; &ndash; und du siehst es strahlen.</p>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- WAVE: How-It-Works → Registration -->
-        <svg class="section-divider" viewBox="0 0 1440 80" preserveAspectRatio="none">
+        <!-- WAVE: Testimonials → Registration -->
+        <svg aria-hidden="true" class="section-divider" viewBox="0 0 1440 80" preserveAspectRatio="none">
             <path d="M0,25 C360,65 720,5 1080,45 C1260,60 1380,30 1440,40 L1440,80 L0,80 Z" fill="#D67171"/>
         </svg>
 
         <!-- REGISTRIERUNG -->
         <section class="lp-register" id="registrieren">
             <!-- Floating decorations -->
-            <svg class="floating-deco deco-star" style="top:10%;left:8%;animation-delay:0s;" viewBox="0 0 32 32"><polygon points="16,2 20,12 30,12 22,19 25,30 16,23 7,30 10,19 2,12 12,12" fill="#fff" opacity="0.15"/></svg>
-            <svg class="floating-deco deco-star deco-hide-mobile" style="top:20%;right:12%;animation-delay:-2s;" viewBox="0 0 32 32"><polygon points="16,2 20,12 30,12 22,19 25,30 16,23 7,30 10,19 2,12 12,12" fill="#fff" opacity="0.1"/></svg>
-            <div class="floating-deco deco-circle deco-hide-mobile" style="bottom:15%;left:15%;background:rgba(255,255,255,0.1);animation-delay:-3s;"></div>
-            <svg class="floating-deco deco-sparkle" style="bottom:30%;right:8%;animation-delay:-1s;" viewBox="0 0 16 16"><circle cx="8" cy="8" r="3" fill="#fff" opacity="0.2"/></svg>
+            <svg aria-hidden="true" class="floating-deco deco-star" style="top:10%;left:8%;animation-delay:0s;" viewBox="0 0 32 32"><polygon points="16,2 20,12 30,12 22,19 25,30 16,23 7,30 10,19 2,12 12,12" fill="#fff" opacity="0.15"/></svg>
+            <svg aria-hidden="true" class="floating-deco deco-star deco-hide-mobile" style="top:20%;right:12%;animation-delay:-2s;" viewBox="0 0 32 32"><polygon points="16,2 20,12 30,12 22,19 25,30 16,23 7,30 10,19 2,12 12,12" fill="#fff" opacity="0.1"/></svg>
+            <div aria-hidden="true" class="floating-deco deco-circle deco-hide-mobile" style="bottom:15%;left:15%;background:rgba(255,255,255,0.1);animation-delay:-3s;"></div>
+            <svg aria-hidden="true" class="floating-deco deco-sparkle" style="bottom:30%;right:8%;animation-delay:-1s;" viewBox="0 0 16 16"><circle cx="8" cy="8" r="3" fill="#fff" opacity="0.2"/></svg>
 
             <div class="lp-container lp-text-center">
                 <h2 class="lp-register-title reveal">Bereit f&uuml;r Lernen ohne Tr&auml;nen?</h2>
                 <p class="lp-register-sub reveal">Lesekumpel startet bald &ndash; und die ersten Familien sind als Erstes dabei. Trag dich ein und wir melden uns, sobald dein Kind loslegen kann.</p>
                 <form class="lp-register-form" onsubmit="handleRegister(event)">
                     <div class="lp-register-fields">
-                        <input type="text" name="name" placeholder="Dein Vorname" required class="lp-input">
-                        <input type="email" name="email" placeholder="Deine E-Mail-Adresse" required class="lp-input">
+                        <input type="text" name="name" placeholder="Dein Vorname" required class="lp-input" aria-label="Dein Vorname">
+                        <input type="email" name="email" placeholder="Deine E-Mail-Adresse" required class="lp-input" aria-label="Deine E-Mail-Adresse">
                     </div>
                     <button type="submit" class="lp-btn-cta-white" id="cta-btn">Jetzt registrieren</button>
                     <p class="lp-register-hint">Kein Spam, versprochen. Nur eine Nachricht, wenn es losgeht.</p>
                     <p class="lp-register-privacy">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: -2px; margin-right: 4px;"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+                        <svg aria-hidden="true" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: -2px; margin-right: 4px;"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
                         DSGVO-konform &middot; Keine Daten an Dritte &middot; Speziell f&uuml;r Kinderdatenschutz entwickelt
                     </p>
                 </form>
@@ -1379,12 +1358,38 @@
     <script>
         // ========== MENU ==========
         function toggleMenu() {
-            document.getElementById('mobile-menu').classList.toggle('open');
+            const menu = document.getElementById('mobile-menu');
+            const btn = document.querySelector('.burger-icon');
+            menu.classList.toggle('open');
+            const isOpen = menu.classList.contains('open');
+            btn.setAttribute('aria-expanded', isOpen);
+            btn.setAttribute('aria-label', isOpen ? 'Navigationsmenü schließen' : 'Navigationsmenü öffnen');
         }
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                const menu = document.getElementById('mobile-menu');
+                if (menu.classList.contains('open')) {
+                    toggleMenu();
+                    document.querySelector('.burger-icon').focus();
+                }
+            }
+        });
 
         // ========== REGISTRATION ==========
         function handleRegister(e) {
             e.preventDefault();
+            const nameInput = e.target.querySelector('input[name="name"]');
+            const emailInput = e.target.querySelector('input[name="email"]');
+            let valid = true;
+            [nameInput, emailInput].forEach(input => {
+                if (!input.checkValidity()) {
+                    input.setAttribute('aria-invalid', 'true');
+                    valid = false;
+                } else {
+                    input.removeAttribute('aria-invalid');
+                }
+            });
+            if (!valid) return;
             e.target.style.display = 'none';
             document.getElementById('register-success').style.display = 'block';
         }
@@ -1488,10 +1493,6 @@
         }, { threshold: 0.3 });
         document.querySelectorAll('.lp-step-waypoint').forEach(el => stepObserver.observe(el));
 
-        // ========== TREASURE MAP — STATIC PATH ==========
-        document.querySelectorAll('.map-path').forEach(path => {
-            path.style.strokeDashoffset = '0';
-        });
 
         // ========== MAGNETIC BUTTONS (Desktop only) ==========
         if (!prefersReducedMotion && window.matchMedia('(pointer: fine)').matches) {
