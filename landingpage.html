@@ -143,12 +143,14 @@
         .mobile-menu.open { display: flex; }
 
         @media (min-width: 768px) {
-            .burger-icon { display: none; }
-            .nav-links-desktop { display: flex; }
-            .btn-cta-nav { display: inline-block; }
             .nav-logo { height: 50px; }
             .brand-name { font-size: 1.5rem; }
             .nav-left { gap: 15px; }
+        }
+        @media (min-width: 1024px) {
+            .burger-icon { display: none; }
+            .nav-links-desktop { display: flex; }
+            .btn-cta-nav { display: inline-block; }
         }
 
         /* ========== SECTIONS ========== */
@@ -170,7 +172,7 @@
         /* ========== MOBILE / DESKTOP UTILITY ========== */
         .mobile-only { display: block; }
         .desktop-only { display: none; }
-        @media (min-width: 768px) {
+        @media (min-width: 1024px) {
             .mobile-only { display: none; }
             .desktop-only { display: block; }
         }
@@ -277,13 +279,20 @@
         }
         @media (min-width: 768px) {
             .lp-hero { padding-top: 48px; }
-            .lp-hero-inner { flex-direction: row; text-align: left; gap: 60px; }
-            .lp-hero-text { max-width: 560px; }
-            .lp-hero h1 { font-size: 2.8rem; margin-bottom: 20px; }
-            .lp-hero-sub { font-size: 1.15rem; }
+            .lp-hero-inner { flex-direction: column; text-align: center; gap: 32px; }
+            .lp-hero-text { max-width: 600px; margin: 0 auto; }
+            .lp-hero h1 { font-size: 2.2rem; margin-bottom: 20px; }
+            .lp-hero-sub { font-size: 1.1rem; }
             .lp-btn-primary { display: inline-block; width: auto; }
             .lp-btn-secondary { display: inline-block; width: auto; margin-left: 12px; margin-top: 0; }
-            .lp-hero-visual { flex-shrink: 0; max-width: 420px; margin-bottom: -80px; }
+            .lp-hero-visual { display: none; }
+        }
+        @media (min-width: 1024px) {
+            .lp-hero-inner { flex-direction: row; text-align: left; gap: 60px; }
+            .lp-hero-text { max-width: 560px; margin: 0; }
+            .lp-hero h1 { font-size: 2.8rem; }
+            .lp-hero-sub { font-size: 1.15rem; }
+            .lp-hero-visual { display: block; flex-shrink: 0; max-width: 420px; margin-bottom: -80px; }
         }
 
         /* ========== FAKTEN-BAR ========== */
@@ -647,6 +656,15 @@
             z-index: 2;
             animation: hero-breakout-bob 3s ease-in-out infinite;
             filter: drop-shadow(0 2px 4px rgba(0,0,0,0.15));
+        }
+
+        /* Tablet: show mobile hero frame at larger size */
+        @media (min-width: 768px) {
+            .mobile-hero-frame { display: block; width: 240px; height: 240px; }
+            .lp-hero-img-mobile { width: 240px; height: 240px; object-fit: cover; object-position: center 20%; display: block; border-radius: 50%; position: relative; z-index: 1; }
+        }
+        @media (min-width: 1024px) {
+            .mobile-hero-frame { display: none; }
         }
 
         @media (max-width: 767px) {
