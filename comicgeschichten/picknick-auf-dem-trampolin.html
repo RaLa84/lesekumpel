@@ -6,10 +6,6 @@
     <meta name="date" content="2026-03-08">  
     <title>Picknick auf dem Trampolin</title>
     
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&family=Lexend:wght@300;400;500;600&display=swap" rel="stylesheet">
-
     <style>
         /* --- GRUNDDESIGN & VARIABLEN --- */
         :root {
@@ -146,6 +142,7 @@
             padding: 0 4px; 
             transition: background-color 0.2s;
         }
+        /* Hover nur, wenn man nicht gerade tippt (Desktop) */
         .word-interactive:hover { background-color: #e3f2fd; }
         
         .syl-blue { color: var(--syl-blue); }
@@ -194,6 +191,7 @@
             h1#book-title { font-size: 1.8rem; }
         }
     </style>
+    <link rel="stylesheet" href="../fonts/fonts.css">
 </head>
 <body>
 
@@ -286,7 +284,7 @@
 
         let currentPageIndex = 0;
         const pages = [];
-        let state = { tts: false, wordReader: false, syllables: false };
+        let state = { tts: false, wordReader: false, syllables: false }; // Variable magnifier zu wordReader geändert
 
         // Daten verarbeiten
         if (inputData.content) {
@@ -382,20 +380,25 @@
             window.speechSynthesis.speak(u);
         }
 
+        // --- NEUE FUNKTION: WORT VORLESER ---
         function toggleWordReader() {
             state.wordReader = !state.wordReader;
             document.getElementById('btn-word-reader').className = state.wordReader ? "tool-btn active" : "tool-btn";
         }
 
         function handleWordClick(el, cleanWord) {
+            // Nur vorlesen, wenn der Modus aktiv ist
             if (state.wordReader) {
+                // Stoppt eventuelles anderes Geplapper sofort
                 window.speechSynthesis.cancel();
+                
                 let u = new SpeechSynthesisUtterance(cleanWord);
                 u.lang = "de-DE";
-                u.rate = 0.8; 
+                u.rate = 0.9; // Etwas langsamer für einzelne Wörter
                 window.speechSynthesis.speak(u);
             }
         }
+        // -------------------------------------
 
         function toggleSyllables() {
             state.syllables = !state.syllables;
@@ -420,98 +423,97 @@
             }
         }
 
-        // --- VERBESSERTE SILBENLOGIK (DER FLICKEN) ---
-function colorizeSyllables(word) {
-    const m = word.match(/^(.*?)([.,!?:;()]+)$/);
-    const clean = m ? m[1] : word;
-    const punct = m ? m[2] : '';
-    if (!clean) return word;
-    const syllables = splitGermanSyllables(clean);
-    const html = syllables.map((syl, i) =>
-        `<span class="${i % 2 === 0 ? 'syl-blue' : 'syl-red'}">${syl}</span>`
-    ).join('');
-    return html + punct;
-}
+        function colorizeSyllables(word) {
+            const m = word.match(/^(.*?)([.,!?:;()]+)$/);
+            const clean = m ? m[1] : word;
+            const punct = m ? m[2] : '';
+            if (!clean) return word;
+            const syllables = splitGermanSyllables(clean);
+            const html = syllables.map((syl, i) =>
+                `<span class="${i % 2 === 0 ? 'syl-blue' : 'syl-red'}">${syl}</span>`
+            ).join('');
+            return html + punct;
+        }
 
-function splitGermanSyllables(word) {
-    if (!word || word.length <= 2) return [word || ''];
-    const isVowel = c => /[aeiouäöüyAEIOUÄÖÜY]/.test(c);
+        function splitGermanSyllables(word) {
+            if (!word || word.length <= 2) return [word || ''];
+            const isVowel = c => /[aeiouäöüyAEIOUÄÖÜY]/.test(c);
 
-    // Tokenize: vowel groups (diphthongs as one) + consonant groups (digraphs as one)
-    const tokens = [];
-    let i = 0;
-    while (i < word.length) {
-        const c = word[i];
-        const lower = word.slice(i).toLowerCase();
-        if (isVowel(c)) {
-            const next = word[i + 1] || '';
-            const pair = (c + next).toLowerCase();
-            if (['ei', 'eu', 'au', 'äu', 'ie'].includes(pair)) {
-                tokens.push({ type: 'V', chars: c + next }); i += 2;
-            } else {
-                tokens.push({ type: 'V', chars: c }); i++;
+            // Tokenize: vowel groups (diphthongs as one) + consonant groups (digraphs as one)
+            const tokens = [];
+            let i = 0;
+            while (i < word.length) {
+                const c = word[i];
+                const lower = word.slice(i).toLowerCase();
+                if (isVowel(c)) {
+                    const next = word[i + 1] || '';
+                    const pair = (c + next).toLowerCase();
+                    if (['ei', 'eu', 'au', 'äu', 'ie'].includes(pair)) {
+                        tokens.push({ type: 'V', chars: c + next }); i += 2;
+                    } else {
+                        tokens.push({ type: 'V', chars: c }); i++;
+                    }
+                } else {
+                    if (lower.startsWith('sch')) {
+                        tokens.push({ type: 'C', chars: word.slice(i, i + 3) }); i += 3;
+                    } else if (['ch', 'ck', 'ph', 'th', 'qu', 'ng', 'nk'].some(d => lower.startsWith(d))) {
+                        tokens.push({ type: 'C', chars: word.slice(i, i + 2) }); i += 2;
+                    } else {
+                        tokens.push({ type: 'C', chars: c }); i++;
+                    }
+                }
             }
-        } else {
-            if (lower.startsWith('sch')) {
-                tokens.push({ type: 'C', chars: word.slice(i, i + 3) }); i += 3;
-            } else if (['ch', 'ck', 'ph', 'th', 'qu', 'ng', 'nk'].some(d => lower.startsWith(d))) {
-                tokens.push({ type: 'C', chars: word.slice(i, i + 2) }); i += 2;
-            } else {
-                tokens.push({ type: 'C', chars: c }); i++;
+
+            if (!tokens.some(t => t.type === 'V')) return [word];
+
+            // Valid German syllable onsets (consonant clusters that can start a syllable)
+            const validOnsets = new Set([
+                'br', 'bl', 'dr', 'fl', 'fr', 'gl', 'gr', 'kl', 'kr', 'kn',
+                'pf', 'pl', 'pr', 'ps', 'sp', 'st', 'tr', 'zw', 'gn',
+                'spr', 'str', 'schr', 'schl', 'schm', 'schn', 'schw'
+            ]);
+
+            const syllables = [];
+            let current = '';
+
+            for (let j = 0; j < tokens.length; j++) {
+                const tok = tokens[j];
+                if (tok.type === 'C') { current += tok.chars; continue; }
+
+                current += tok.chars; // vowel
+                const consonants = [];
+                let k = j + 1;
+                while (k < tokens.length && tokens[k].type === 'C') { consonants.push(tokens[k].chars); k++; }
+                const hasNextVowel = k < tokens.length;
+
+                if (!hasNextVowel || consonants.length === 0) {
+                    for (const c of consonants) current += c;
+                    syllables.push(current); current = ''; j = k - 1; continue;
+                }
+
+                // Determine split: how many consonants stay with current syllable
+                let splitIdx;
+                if (consonants.length === 1) {
+                    splitIdx = 0; // single consonant starts next syllable (sa-gen)
+                } else if (consonants.length >= 3) {
+                    const lastTwo = (consonants[consonants.length - 2] + consonants[consonants.length - 1]).toLowerCase();
+                    splitIdx = validOnsets.has(lastTwo) ? consonants.length - 2 : consonants.length - 1;
+                } else {
+                    splitIdx = 1; // N=2: first stays (coda), second starts next (Äp-fel)
+                }
+
+                for (let ci = 0; ci < splitIdx; ci++) current += consonants[ci];
+                syllables.push(current); current = '';
+                for (let ci = splitIdx; ci < consonants.length; ci++) current += consonants[ci];
+                j = k - 1;
             }
+
+            if (current) {
+                if (syllables.length > 0) syllables[syllables.length - 1] += current;
+                else syllables.push(current);
+            }
+            return syllables.length > 0 ? syllables : [word];
         }
-    }
-
-    if (!tokens.some(t => t.type === 'V')) return [word];
-
-    // Valid German syllable onsets (consonant clusters that can start a syllable)
-    const validOnsets = new Set([
-        'br', 'bl', 'dr', 'fl', 'fr', 'gl', 'gr', 'kl', 'kr', 'kn',
-        'pf', 'pl', 'pr', 'ps', 'sp', 'st', 'tr', 'zw', 'gn',
-        'spr', 'str', 'schr', 'schl', 'schm', 'schn', 'schw'
-    ]);
-
-    const syllables = [];
-    let current = '';
-
-    for (let j = 0; j < tokens.length; j++) {
-        const tok = tokens[j];
-        if (tok.type === 'C') { current += tok.chars; continue; }
-
-        current += tok.chars; // vowel
-        const consonants = [];
-        let k = j + 1;
-        while (k < tokens.length && tokens[k].type === 'C') { consonants.push(tokens[k].chars); k++; }
-        const hasNextVowel = k < tokens.length;
-
-        if (!hasNextVowel || consonants.length === 0) {
-            for (const c of consonants) current += c;
-            syllables.push(current); current = ''; j = k - 1; continue;
-        }
-
-        // Determine split: how many consonants stay with current syllable
-        let splitIdx;
-        if (consonants.length === 1) {
-            splitIdx = 0; // single consonant starts next syllable (sa-gen)
-        } else if (consonants.length >= 3) {
-            const lastTwo = (consonants[consonants.length - 2] + consonants[consonants.length - 1]).toLowerCase();
-            splitIdx = validOnsets.has(lastTwo) ? consonants.length - 2 : consonants.length - 1;
-        } else {
-            splitIdx = 1; // N=2: first stays (coda), second starts next (Äp-fel)
-        }
-
-        for (let ci = 0; ci < splitIdx; ci++) current += consonants[ci];
-        syllables.push(current); current = '';
-        for (let ci = splitIdx; ci < consonants.length; ci++) current += consonants[ci];
-        j = k - 1;
-    }
-
-    if (current) {
-        if (syllables.length > 0) syllables[syllables.length - 1] += current;
-        else syllables.push(current);
-    }
-    return syllables.length > 0 ? syllables : [word];
-}
 
         updateView();
     </script>
