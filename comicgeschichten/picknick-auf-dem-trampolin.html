@@ -146,7 +146,6 @@
             padding: 0 4px; 
             transition: background-color 0.2s;
         }
-        /* Hover nur, wenn man nicht gerade tippt (Desktop) */
         .word-interactive:hover { background-color: #e3f2fd; }
         
         .syl-blue { color: var(--syl-blue); }
@@ -287,7 +286,7 @@
 
         let currentPageIndex = 0;
         const pages = [];
-        let state = { tts: false, wordReader: false, syllables: false }; // Variable magnifier zu wordReader geändert
+        let state = { tts: false, wordReader: false, syllables: false };
 
         // Daten verarbeiten
         if (inputData.content) {
@@ -383,25 +382,20 @@
             window.speechSynthesis.speak(u);
         }
 
-        // --- NEUE FUNKTION: WORT VORLESER ---
         function toggleWordReader() {
             state.wordReader = !state.wordReader;
             document.getElementById('btn-word-reader').className = state.wordReader ? "tool-btn active" : "tool-btn";
         }
 
         function handleWordClick(el, cleanWord) {
-            // Nur vorlesen, wenn der Modus aktiv ist
             if (state.wordReader) {
-                // Stoppt eventuelles anderes Geplapper sofort
                 window.speechSynthesis.cancel();
-                
                 let u = new SpeechSynthesisUtterance(cleanWord);
                 u.lang = "de-DE";
-                u.rate = 0.9; // Etwas langsamer für einzelne Wörter
+                u.rate = 0.8; 
                 window.speechSynthesis.speak(u);
             }
         }
-        // -------------------------------------
 
         function toggleSyllables() {
             state.syllables = !state.syllables;
@@ -426,8 +420,20 @@
             }
         }
 
+        // --- VERBESSERTE SILBENLOGIK (DER FLICKEN) ---
         function colorizeSyllables(word) {
-            const parts = word.match(/[^aeiouäöüAEIOUÄÖÜ]*[aeiouäöüAEIOUÄÖÜ]+(?:[^aeiouäöüAEIOUÄÖÜ]*$|[^aeiouäöüAEIOUÄÖÜ](?=[^aeiouäöüAEIOUÄÖÜ]))?/gi) || [word];
+            if (word.length <= 3) return `<span class="syl-blue">${word}</span>`;
+
+            // Verbesserter Regex für V-V und V-C-C-V Trennungen
+            const syllableRegex = /[^aeiouäöü]*[aeiouäöü]+(?:[^aeiouäöü](?=[^aeiouäöü])|(?=[aeiouäöü]))?/gi;
+            
+            let parts = word.match(syllableRegex) || [word];
+            
+            let fullMatchedLength = parts.join('').length;
+            if (fullMatchedLength < word.length) {
+                parts[parts.length - 1] += word.substring(fullMatchedLength);
+            }
+
             return parts.map((part, i) => {
                 let cls = (i % 2 === 0) ? 'syl-blue' : 'syl-red';
                 return `<span class="${cls}">${part}</span>`;
