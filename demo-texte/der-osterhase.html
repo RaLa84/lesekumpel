@@ -80,6 +80,7 @@
         }
 
         .hero-image { width: 100%; border-radius: 15px; margin-bottom: 30px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        .story-inline-img { width: 100%; border-radius: 15px; margin: 20px 0; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
 
         /* --- TOOLBAR --- */
         .toolbar-container {
@@ -339,30 +340,57 @@
         }
 
         let state = { syllables: false, summary: false, chunkIndex: 0, chunks: [], magnifier: false };
+        let inlineImages = [];
+
+        // Bilder einsammeln: Erstes bleibt Hero, restliche werden inline verteilt
+        (function collectImages() {
+            const allHeroImgs = document.querySelectorAll('.hero-image');
+            for (let i = 1; i < allHeroImgs.length; i++) {
+                inlineImages.push(allHeroImgs[i].src);
+                allHeroImgs[i].remove();
+            }
+        })();
 
         function renderText() {
             let txt = state.summary ? summaryRaw : storyRaw;
-            let paragraphs = txt.split('<br>');
-            let html = paragraphs.map(p => {
-                if(!p.trim()) return "";
-                return p.split(' ').map(w => processWord(w)).join(' ');
-            }).join('<br>');
-            document.getElementById('full-text-view').innerHTML = html;
 
-            let cleanText = txt.replace(/<br\s*\/?>/gi, " ");
-            let sentences = cleanText.match(/[^\.!\?]+[\.!\?]+(\s+|$)/g);
-            if (!sentences) sentences = [cleanText];
+            // Text in Sätze aufteilen
+            let cleanForSplit = txt.replace(/<br\s*\/?>/gi, " ").replace(/\n/g, " ");
+            let sentences = cleanForSplit.match(/[^\.!\?]+[\.!\?]+(\s+|$)/g);
+            if (!sentences) sentences = [cleanForSplit];
 
-            state.chunks = [];
-            let tempChunk = "", sentenceCount = 0;
+            // Sätze zu Gruppen bündeln (je 2-3 Sätze)
+            let groups = [];
+            let tempGroup = "", sentCount = 0;
             sentences.forEach((sent, index) => {
-                tempChunk += sent; sentenceCount++;
-                if (sentenceCount >= 2 || index === sentences.length - 1) {
-                    let processed = tempChunk.trim().split(/\s+/).map(w => processWord(w)).join(' ');
-                    state.chunks.push(processed);
-                    tempChunk = ""; sentenceCount = 0;
+                tempGroup += sent; sentCount++;
+                if (sentCount >= 2 || index === sentences.length - 1) {
+                    groups.push(tempGroup.trim());
+                    tempGroup = ""; sentCount = 0;
                 }
             });
+
+            // Bilder gleichmäßig zwischen Gruppen verteilen
+            let imgPositions = {};
+            if (inlineImages.length > 0 && !state.summary) {
+                let interval = Math.max(1, Math.floor(groups.length / (inlineImages.length + 1)));
+                inlineImages.forEach((url, i) => {
+                    let pos = interval * (i + 1);
+                    if (pos >= groups.length) pos = groups.length - 1;
+                    imgPositions[pos] = url;
+                });
+            }
+
+            // HTML zusammenbauen: Text-Gruppen mit Bildern dazwischen
+            let html = groups.map((group, i) => {
+                let processed = group.split(/\s+/).map(w => processWord(w)).join(' ');
+                let imgTag = imgPositions[i] ? `<img src="${imgPositions[i]}" alt="Illustration" class="story-inline-img" onerror="this.style.display='none'">` : '';
+                return imgTag + '<p style="margin:0 0 0.8em 0;">' + processed + '</p>';
+            }).join('');
+            document.getElementById('full-text-view').innerHTML = html;
+
+            // Chunks für Häppchen-Modus (ohne Bilder)
+            state.chunks = groups.map(g => g.trim().split(/\s+/).map(w => processWord(w)).join(' '));
             updateChunkDisplay();
             updateButtons();
         }
