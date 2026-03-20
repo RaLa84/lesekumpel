@@ -1,0 +1,486 @@
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="date" content="2026-03-20">
+    <meta name="author" content="Lea Lesestark">
+    <meta name="reading-level" content="Stufe 3">
+    <meta name="neurotype" content="Neurotypisch">
+    <meta name="topic" content="Humor">
+    <meta name="demo" content="true">
+    <title>Der lustige Biber im Supermarkt</title>
+
+    <style>
+        /* --- GRUNDLAGEN --- */
+        :root {
+            --bg-body: #FFF9E5; --bg-card: #ffffff;
+            --primary-yellow: #FFD54F; --accent-coral: #D67171; --accent-teal: #2a9d8f;
+            --text-dark: #2D3436; --font-heading: 'Fredoka', cursive, sans-serif;
+            --font-body: 'Quicksand', sans-serif; --font-dyslexic: 'Comic Sans MS', 'Chalkboard SE', sans-serif;
+            --syl-blue: #00509d; --syl-red: #c1121f; --trans-color: #7209b7;
+        }
+
+        body {
+            font-family: var(--font-body); background-color: var(--bg-body); color: var(--text-dark);
+            line-height: 1.7; margin: 0; padding-bottom: 50px; transition: all 0.3s ease; font-size: 22px;
+        }
+        body.dyslexia-mode { font-family: var(--font-dyslexic) !important; letter-spacing: 0.05em; line-height: 2.1; }
+
+        .highlight-active {
+            background-color: #ffeb3b !important; border-radius: 4px;
+            box-shadow: 0 0 5px rgba(255, 235, 59, 0.8); transition: background-color 0.1s;
+        }
+
+        /* --- NAVIGATION --- */
+        .main-navbar {
+            background: rgba(255,255,255,0.78); -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px);
+            padding: 12px 24px; border-bottom: 3px solid rgba(255,213,79,0.5);
+            display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000;
+        }
+        .nav-left { display: flex; align-items: center; gap: 10px; }
+        .nav-logo { height: 40px; width: auto; }
+        .brand-name { font-family: var(--font-heading); font-size: 1.2rem; color: var(--accent-coral); font-weight: 600; text-decoration: none; }
+        .nav-links-desktop { display: none; gap: 15px; align-items: center; }
+        .nav-btn { text-decoration: none; color: var(--text-dark); font-weight: 600; font-size: 1rem; display: flex; align-items: center; gap: 5px; }
+        .btn-new-story {
+            border: 2px solid var(--primary-yellow); background: #fff; padding: 8px 15px;
+            border-radius: 28px; color: var(--text-dark); font-weight: bold; transition: transform 0.2s; text-decoration: none;
+        }
+        .btn-new-story:hover { transform: scale(1.05); background: #fffbe6; }
+        .nav-right { display: flex; align-items: center; gap: 15px; }
+        .burger-icon { font-size: 1.8rem; cursor: pointer; display: block; color: var(--text-dark); }
+        .mobile-menu {
+            display: none; background: white; padding: 10px; position: absolute; top: 100%; left: 0; width: 100%;
+            border-bottom: 2px solid var(--primary-yellow); flex-direction: column; gap: 10px; z-index: 999;
+        }
+        .mobile-menu.open { display: flex; }
+
+        /* --- MAIN CARD --- */
+        .main-card {
+            max-width: 800px; margin: 40px auto; background: var(--bg-card);
+            border: 4px solid var(--primary-yellow); border-radius: 25px; padding: 40px;
+            position: relative; box-shadow: 0 10px 0 rgba(0,0,0,0.05);
+        }
+
+        h1#main-title {
+            font-family: var(--font-heading); color: var(--accent-coral); font-size: 3rem;
+            text-align: center; line-height: 1.1; margin-bottom: 10px; margin-top: 0; text-transform: uppercase;
+            overflow-wrap: break-word; word-wrap: break-word; hyphens: auto; -webkit-hyphens: auto; max-width: 100%;
+        }
+
+        .quality-badge {
+            display: block; text-align: center; background: #fffbe6; color: #d4ac0d;
+            border: 1px solid var(--primary-yellow); border-radius: 20px; padding: 4px 12px;
+            width: fit-content; margin: 0 auto 10px auto; font-weight: bold;
+        }
+        .neurotype-badge {
+            display: block; text-align: center; background: #f0f8ff; color: #2a9d8f;
+            border: 1px solid #2a9d8f; border-radius: 20px; padding: 4px 12px;
+            width: fit-content; margin: 0 auto 30px auto; font-weight: bold; font-size: 0.85rem;
+        }
+
+        .hero-image { width: 100%; border-radius: 15px; margin-bottom: 30px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+
+        /* --- TOOLBAR --- */
+        .toolbar-container {
+            border: 2px dashed var(--primary-yellow); border-radius: 15px; padding: 15px;
+            margin-bottom: 20px; display: flex; flex-wrap: wrap; justify-content: center; gap: 10px;
+            background: #fff; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        .tool-btn {
+            background: #fff; border: 2px solid #ddd; border-radius: 12px; padding: 8px 15px;
+            font-family: var(--font-body); font-weight: 600; color: var(--text-dark); cursor: pointer;
+            display: flex; align-items: center; gap: 6px; transition: all 0.2s; font-size: 0.9em;
+        }
+        .tool-btn:hover { border-color: var(--accent-teal); color: var(--accent-teal); }
+        .tool-btn.active { background: var(--accent-teal); color: #fff; border-color: var(--accent-teal); }
+        .btn-coral { border-color: var(--accent-coral); color: var(--accent-coral); }
+        .btn-coral.active { background: var(--accent-coral); color: white; }
+
+        .fab-tools {
+            display: none; position: fixed; bottom: 20px; right: 20px;
+            width: 60px; height: 60px; background-color: var(--accent-coral); color: white;
+            border-radius: 50%; border: none; box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+            font-size: 1.8rem; cursor: pointer; z-index: 5000; justify-content: center; align-items: center;
+            transition: transform 0.2s;
+        }
+        .fab-tools:active { transform: scale(0.9); }
+
+        @media (max-width: 767px) {
+            .brand-name { display: none; }
+            .hidden-mobile { display: none !important; }
+            .toolbar-container {
+                position: fixed; bottom: -100%; left: 0; width: 100%; border: none;
+                border-top: 4px solid var(--primary-yellow); border-radius: 20px 20px 0 0;
+                box-shadow: 0 -5px 20px rgba(0,0,0,0.2); z-index: 4000; box-sizing: border-box;
+                margin: 0; padding-bottom: 30px; flex-direction: row; align-content: flex-start;
+                height: auto; max-height: 50vh; overflow-y: auto;
+            }
+            .toolbar-container.open { bottom: 0; }
+            .fab-tools { display: flex; }
+            body { padding-bottom: 100px; }
+            h1#main-title { font-size: 2.0rem; }
+            .quality-badge { font-size: 0.8rem; padding: 3px 10px; }
+        }
+        @media (min-width: 768px) {
+            .burger-icon { display: none; }
+            .nav-links-desktop { display: flex; }
+            .nav-logo { height: 50px; }
+            .brand-name { font-size: 1.5rem; display: block; }
+            .nav-left { gap: 15px; }
+            .fab-tools { display: none !important; }
+        }
+
+        /* --- CONTENT --- */
+        .story-text { font-size: 1.2em; color: #444; margin-bottom: 40px; }
+        .syl-blue { color: var(--syl-blue); }
+        .syl-red { color: var(--syl-red); }
+        .translated-word { color: var(--trans-color); font-weight: bold; font-style: italic; }
+        .word-interactive:hover { background-color: #fffbe6; cursor: pointer; border-radius: 4px; }
+
+        .chunk-controls { display: flex; justify-content: space-between; align-items: center; margin-top: 30px; padding: 0 10px; }
+        #chunk-display { min-height: 150px; display: block; text-align: center; line-height: 1.8; padding: 40px 20px; }
+
+        .progress-ring {
+            width: 60px; height: 60px; border-radius: 50%;
+            background: conic-gradient(var(--primary-yellow) var(--p), #f0f0f0 0deg);
+            display: flex; align-items: center; justify-content: center;
+            font-family: var(--font-heading); font-weight: bold; font-size: 1rem;
+            color: var(--text-dark); border: 4px solid #fff; box-shadow: 0 0 0 2px #eee;
+        }
+
+        /* --- SECTIONS --- */
+        .author-box, .quiz-section, .survey-section, .comments-section, .related-section { margin-bottom: 40px; }
+        .section-title { text-align: center; font-family: var(--font-heading); color: var(--accent-coral); font-size: 1.5rem; margin-bottom: 20px; }
+
+        .vote-wrapper { display: flex; justify-content: center; gap: 20px; }
+        .vote-card { width: 60px; height: 60px; display: flex; justify-content: center; align-items: center; background: #fff; border: 2px solid #eee; border-radius: 15px; font-size: 2rem; cursor: pointer; box-shadow: 0 4px 0 #eee; }
+        .vote-card:active { transform: translateY(4px); box-shadow: none; }
+
+        .author-card { border: 2px solid #eee; border-left: 5px solid var(--accent-coral); border-radius: 15px; padding: 20px; display: flex; align-items: center; gap: 20px; background: #fff; }
+        .author-img { width: 70px; height: 70px; border-radius: 50%; border: 3px solid var(--primary-yellow); padding: 2px; }
+        .author-name { font-family: var(--font-heading); color: var(--accent-coral); font-size: 1.3rem; margin: 0; }
+
+        .quiz-card { border: 2px solid #eee; border-radius: 15px; padding: 20px; background: #fff; }
+
+        @keyframes gentleShake {
+            0% { transform: translateX(0); } 25% { transform: translateX(-5px); }
+            50% { transform: translateX(5px); } 75% { transform: translateX(-5px); }
+            100% { transform: translateX(0); }
+        }
+        .quiz-option {
+            display: flex; align-items: center; justify-content: space-between;
+            border: 2px solid var(--primary-yellow); border-radius: 10px; padding: 12px; margin-bottom: 10px;
+            cursor: pointer; font-weight: 600; background: #fff; transition: all 0.3s ease;
+        }
+        .quiz-option.correct { background: #fffbe6; border-color: #f1c40f; color: #b7950b; box-shadow: 0 0 10px rgba(241,196,15,0.3); pointer-events: none; }
+        .quiz-option.try-again { opacity: 0.6; background-color: #f4f4f4; border-color: #ddd; color: #999; animation: gentleShake 0.4s ease-in-out; cursor: default; }
+
+        .comments-box { border: 2px solid #eee; border-radius: 15px; padding: 20px; }
+        .comment-input { width: 100%; border: 2px solid var(--primary-yellow); border-radius: 10px; padding: 15px; font-family: var(--font-body); font-size: 1rem; box-sizing: border-box; outline: none; }
+        .btn-send { background-color: var(--accent-coral); color: white; border: none; padding: 10px 30px; border-radius: 10px; font-weight: bold; font-size: 1rem; float: right; margin-top: 10px; cursor: pointer; box-shadow: 0 4px 0 #b85c5c; }
+        .single-comment { background-color: #f9f9f9; border-radius: 10px; padding: 15px; margin-bottom: 15px; }
+
+        .related-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; }
+        .related-card { background: #fff; border: 2px solid #eee; border-radius: 15px; overflow: hidden; text-decoration: none; color: var(--text-dark); transition: transform 0.2s, box-shadow 0.2s; display: flex; flex-direction: column; }
+        .related-card:hover { transform: translateY(-5px); box-shadow: 0 5px 15px rgba(0,0,0,0.1); border-color: var(--primary-yellow); }
+        .related-img { width: 100%; height: 140px; object-fit: cover; border-bottom: 2px solid #eee; }
+        .related-content { padding: 15px; flex-grow: 1; display: flex; flex-direction: column; justify-content: space-between; }
+        .related-title { font-family: var(--font-heading); font-size: 1.1rem; line-height: 1.3; margin-bottom: 10px; color: var(--accent-teal); }
+        .related-meta { display: flex; justify-content: space-between; font-size: 0.85rem; color: #777; font-weight: 600; }
+
+        .clearfix::after { content: ""; display: table; clear: both; }
+        footer { text-align: center; margin-top: 50px; color: #888; font-size: 0.9rem; padding-top: 20px; border-top: 1px solid #eee; }
+        .footer-links a { color: #888; text-decoration: none; margin: 0 5px; }
+        .magnifier-overlay { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: #fff; border: 4px solid var(--primary-yellow); padding: 20px; border-radius: 20px; font-size: 2rem; box-shadow: 0 10px 20px rgba(0,0,0,0.2); z-index: 6000; display: none; text-align: center; font-family: var(--font-heading); }
+        .hidden { display: none; }
+    </style>
+    <link rel="stylesheet" href="../fonts/fonts.css">
+</head>
+<body>
+
+    <button class="fab-tools" onclick="toggleMobileToolbar()" aria-label="Werkzeuge öffnen">🛠️</button>
+
+    <nav class="main-navbar">
+        <div class="nav-left">
+            <img src="https://github.com/RaLa84/lesekumpel/blob/main/logo1.png?raw=true" alt="Logo" class="nav-logo">
+            <a href="../index.html" class="brand-name">Lesekumpel</a>
+            <div class="nav-links-desktop"><a href="../index.html" class="nav-btn">📚 Bibliothek</a></div>
+        </div>
+        <div class="nav-right">
+            <a href="https://rala84.app.n8n.cloud/form/d934fee1-a67d-4146-8b19-1e3c8a1a8967" class="btn-new-story hidden-mobile">✨ Neue Geschichte</a>
+            <span class="burger-icon" onclick="toggleMenu()">☰</span>
+        </div>
+        <div id="mobile-menu" class="mobile-menu">
+            <a href="../index.html" class="nav-btn">📚 Bibliothek</a>
+            <a href="https://rala84.app.n8n.cloud/form/d934fee1-a67d-4146-8b19-1e3c8a1a8967" class="nav-btn">✨ Neue Geschichte</a>
+        </div>
+    </nav>
+
+    <div class="main-card">
+        <h1 id="main-title">Der lustige Biber im Supermarkt</h1>
+        <div class="quality-badge">📖 Stufe 3</div>
+        <div class="neurotype-badge">🧠 Neurotypisch</div>
+        <img src="https://rala84.github.io/lesekumpel/bilder/der-lustige-biber-im-supermarkt-1.png" alt="Der lustige Biber im Supermarkt" class="hero-image" onerror="this.style.display='none'">
+
+        <div class="toolbar-container" id="toolbar">
+            <div style="width:100%; text-align:right; display:none;" id="toolbar-close-btn">
+                <button onclick="toggleMobileToolbar()" style="background:none; border:none; font-size:1.5rem;">❌</button>
+            </div>
+            <button class="tool-btn" onclick="toggleTTS()" id="btn-tts">🔊 Vorlesen</button>
+            <button class="tool-btn" onclick="toggleMagnifier()" id="magnifier-btn">🔍 Lupe</button>
+            <span style="width:1px; background:#ddd; margin:0 5px;"></span>
+            <button class="tool-btn btn-coral" onclick="toggleSummaryMode()" id="btn-summary">📖 Einfach</button>
+            <button class="tool-btn" onclick="toggleSyllables()" id="btn-syllables">🔴🔵 Silben</button>
+            <span style="width:1px; background:#ddd; margin:0 5px;"></span>
+            <button class="tool-btn" onclick="changeFontSize(-2)">A-</button>
+            <button class="tool-btn" onclick="changeFontSize(2)">A+</button>
+            <button class="tool-btn" onclick="toggleViewMode()" id="view-toggle-btn">🧩 Häppchen</button>
+        </div>
+
+        <div id="full-text-view" class="story-text"></div>
+        <div id="chunk-view" class="story-text hidden" style="text-align:left; font-size:1.4em;">
+            <div id="chunk-display"></div>
+            <div class="chunk-controls">
+                <button class="tool-btn" onclick="prevChunk()">← Zurück</button>
+                <div id="chunk-progress" class="progress-ring" style="--p: 20%;">1/5</div>
+                <button class="tool-btn" onclick="nextChunk()">Weiter →</button>
+            </div>
+        </div>
+
+        <div class="author-box">
+            <div class="author-card">
+                <img src="https://rala84.github.io/lesekumpel/avatars/lea-lesestark.webp" alt="Lea Lesestark" class="author-img">
+                <div>
+                    <h3 class="author-name">Lea Lesestark</h3>
+                    <p style="margin:5px 0 0 0; font-size:0.9rem;">Lea erzählt Geschichten die dich sofort mitreißen. Warm, neugierig, und immer auf Augenhöhe.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="quiz-section">
+            <div class="section-title">🧠 Quiz-Zeit! Hast du gut aufgepasst?</div>
+            <div id="quiz-wrapper" class="quiz-card"></div>
+        </div>
+
+        <div class="survey-section">
+            <div class="section-title">Hat dir die Geschichte gefallen?</div>
+            <div class="vote-wrapper">
+                <div class="vote-card" onclick="alert('Yay!')">👍</div>
+                <div class="vote-card" onclick="alert('Oh nein!')">👎</div>
+            </div>
+        </div>
+
+        <div class="related-section">
+            <div class="section-title">Das könnte dir auch gefallen</div>
+            <div class="related-grid"></div>
+        </div>
+
+        <div class="comments-section">
+            <div class="section-title" style="justify-content:flex-start;">💬 Dein Kommentar</div>
+            <div class="comments-box">
+                <div class="comment-input-wrapper">
+                    <textarea class="comment-input" placeholder="Was denkst du über die Geschichte?"></textarea>
+                    <button class="btn-send" onclick="alert('Gesendet!')">Senden</button>
+                    <div class="clearfix"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <p>Erstellt von deinem KI-Lesekumpel 🤖</p>
+        <div class="footer-links"><a href="#">Impressum</a> • <a href="../datenschutz.html">Datenschutz</a> • <a href="../ueber-uns.html">Über uns</a></div>
+    </footer>
+
+    <div id="magnifier-overlay" class="magnifier-overlay">
+        <span id="magnifier-text">Wort</span>
+        <div style="margin-top:10px; font-size:1rem;">
+            <button class="tool-btn" onclick="speakMagnifiedWord()">🔊 Hören</button>
+            <button class="tool-btn btn-coral" onclick="closeMagnifier()">Schließen</button>
+        </div>
+    </div>
+
+    <script>
+        /* ============================================================
+         * DYNAMISCHE INJEKTION — diese Werte werden von N8N befüllt
+         * ============================================================ */
+        let rawStory = "Bi-bi, der klei-ne Bi-ber, hat-te gro-ßen Hun-ger. Er schlich in den Su-per-markt, denn er hoff-te auf frisches Holz. Schnell fand er die Holz-ab-tei-lung. Die Bal-ken wa-ren für Bi-bi wie ein Fest-mahl. Er schnapp-te ein klei-nes Brett und na-g-te da-ran. Die Kun-den staun-ten. Eine Ver-käu-fe-rin kam und lä-chel-te. „Bi-bi“, sag-te sie, „hier kauft man, man isst nicht das Re-gal!“ Bi-bi zuck-te mit den Ach-seln. Er ging ent-täuscht, aber satt.";
+        let rawSummary = "Bi-bi, der Bi-ber, such-te im Su-per-markt Holz zum Es-sen. Er na-g-te an ei-nem Brett in der Holz-ab-tei-lung. Eine Ver-käu-fe-rin er-klär-te ihm, dass man Holz dort nicht isst.";
+        const quizData = [{"q":"Was wollte Bi-bi der Biber im Supermarkt finden?","a":["Frisches Holz","Leckere Früchte","Neue Spielsachen"],"correct":0},{"q":"Was hat Bi-bi mit dem kleinen Brett gemacht?","a":["Er hat es versteckt.","Er hat es angenagt.","Er hat es gekauft."],"correct":1},{"q":"Wie hat sich Bi-bi gefühlt, als er den Supermarkt verlassen hat?","a":["Er war hungrig und sauer.","Er war satt, aber enttäuscht.","Er war froh und wollte tanzen."],"correct":1}];
+        const rawDictionaryEntry = [{"wort":"schlich","silben":"schlich","bedeutung":"Bewegte sich leise und vorsichtig, um nicht gesehen zu werden."},{"wort":"Holzabteilung","silben":"Holz-ab-tei-lung","bedeutung":"Der Bereich in einem Geschäft, wo man Holz kaufen kann."},{"wort":"Festmahl","silben":"Fest-mahl","bedeutung":"Eine sehr große und besondere Mahlzeit, oft zu einem Fest."},{"wort":"staunten","silben":"staun-ten","bedeutung":"Waren sehr überrascht und blickten erstaunt."},{"wort":"zuckte mit den Achseln","silben":"zuck-te (mit den Ach-seln)","bedeutung":"Bewegte die Schultern kurz hoch und wieder runter, um zu zeigen, dass es ihm egal war oder er es nicht wusste."},{"wort":"enttäuscht","silben":"ent-täuscht","bedeutung":"Traurig, weil etwas nicht so war, wie man es sich gewünscht hat."}];
+        /* ============================================================ */
+
+        const storyRaw = rawStory.replace(/\n/g, "<br>");
+        const summaryRaw = rawSummary.replace(/\n/g, "<br>");
+
+        // Dictionary Parser
+        let dictionary = {};
+        if (Array.isArray(rawDictionaryEntry)) {
+            rawDictionaryEntry.forEach(item => {
+                let key = "", value = "";
+                if (typeof item === 'object' && item.wort) {
+                    key = item.wort.replace(/-/g, "");
+                    value = item.bedeutung || "";
+                } else if (typeof item === 'string' && item.includes('(') && item.includes(')')) {
+                    let parts = item.split('(');
+                    key = parts[0].trim().replace(/-/g, "");
+                    value = parts[1].replace(')', '').trim();
+                } else if (typeof item === 'string' && item.includes(':')) {
+                    let parts = item.split(':');
+                    key = parts[0].trim().replace(/-/g, "");
+                    value = parts.slice(1).join(':').trim();
+                }
+                if (key && value) dictionary[key] = value;
+            });
+        } else {
+            dictionary = rawDictionaryEntry;
+        }
+
+        let state = { syllables: false, summary: false, chunkIndex: 0, chunks: [], magnifier: false };
+
+        function renderText() {
+            let txt = state.summary ? summaryRaw : storyRaw;
+            let paragraphs = txt.split('<br>');
+            let html = paragraphs.map(p => {
+                if(!p.trim()) return "";
+                return p.split(' ').map(w => processWord(w)).join(' ');
+            }).join('<br>');
+            document.getElementById('full-text-view').innerHTML = html;
+
+            let cleanText = txt.replace(/<br\s*\/?>/gi, " ");
+            let sentences = cleanText.match(/[^\.!\?]+[\.!\?]+(\s+|$)/g);
+            if (!sentences) sentences = [cleanText];
+
+            state.chunks = [];
+            let tempChunk = "", sentenceCount = 0;
+            sentences.forEach((sent, index) => {
+                tempChunk += sent; sentenceCount++;
+                if (sentenceCount >= 2 || index === sentences.length - 1) {
+                    let processed = tempChunk.trim().split(/\s+/).map(w => processWord(w)).join(' ');
+                    state.chunks.push(processed);
+                    tempChunk = ""; sentenceCount = 0;
+                }
+            });
+            updateChunkDisplay();
+            updateButtons();
+        }
+
+        function processWord(raw) {
+            let isBold = false;
+            if (raw.includes('**')) { isBold = true; raw = raw.replace(/\*\*/g, ""); }
+            let clean = raw.replace(/-/g, "").replace(/[.,!?:;„"()]/g, "");
+            let display = raw.replace(/-/g, "");
+            let cleanLower = clean.toLowerCase();
+            let dictKey = Object.keys(dictionary).find(k => k.toLowerCase() === cleanLower);
+            if(state.syllables) {
+                let parts = raw.split('-');
+                if(parts.length > 1) display = parts.map((p,i) => `<span class="${i%2===0?'syl-blue':'syl-red'}">${p}</span>`).join('');
+            }
+            let style = isBold ? "font-weight:bold;" : "";
+            return `<span class="word-interactive" style="${style}" onclick="clickWord(this, '${clean}')">${display}</span>`;
+        }
+
+        function renderQuiz() {
+            let qHTML = "";
+            quizData.forEach((item, i) => {
+                qHTML += `<div style="margin-bottom:30px; border-bottom:1px dashed #eee; padding-bottom:20px;">
+                            <div style="font-weight:bold; margin-bottom:15px; color:var(--accent-teal);">${i+1}. ${item.q}</div>`;
+                item.a.forEach((ans, j) => {
+                    const isCorrect = (j === item.correct);
+                    qHTML += `<div class="quiz-option" onclick="checkQuizAnswer(this, ${isCorrect})"><span>${ans}</span></div>`;
+                });
+                qHTML += `</div>`;
+            });
+            const quizWrapper = document.getElementById('quiz-wrapper');
+            const quizSection = document.querySelector('.quiz-section');
+            if(quizData.length > 0) { quizWrapper.innerHTML = qHTML; quizSection.style.display = 'block'; }
+            else { quizSection.style.display = 'none'; }
+        }
+
+        function updateButtons() {
+            document.getElementById('btn-syllables').className = state.syllables ? "tool-btn active" : "tool-btn";
+            document.getElementById('btn-summary').className = state.summary ? "tool-btn btn-coral active" : "tool-btn btn-coral";
+        }
+
+        function updateChunkDisplay() {
+            if(state.chunkIndex >= state.chunks.length) state.chunkIndex = 0;
+            document.getElementById('chunk-display').innerHTML = state.chunks[state.chunkIndex] || "";
+            let current = state.chunkIndex + 1, total = state.chunks.length;
+            let ring = document.getElementById('chunk-progress');
+            ring.innerText = current + "/" + total;
+            ring.style.setProperty('--p', ((current / total) * 100) + '%');
+        }
+
+        function toggleSyllables() { state.syllables = !state.syllables; renderText(); renderQuiz(); }
+        function toggleSummaryMode() { state.summary = !state.summary; state.chunkIndex=0; renderText(); }
+
+        function toggleTTS() {
+            const btn = document.getElementById('btn-tts');
+            if (window.speechSynthesis.speaking) {
+                window.speechSynthesis.cancel(); btn.classList.remove('active'); clearHighlights();
+            } else {
+                let container = document.getElementById('chunk-view').classList.contains('hidden')
+                    ? document.getElementById('full-text-view') : document.getElementById('chunk-display');
+                let spans = container.querySelectorAll('.word-interactive');
+                let speechText = "", wordMap = [];
+                spans.forEach(span => {
+                    let word = span.innerText, start = speechText.length;
+                    speechText += word + " ";
+                    wordMap.push({ start, end: speechText.length - 1, el: span });
+                });
+                let u = new SpeechSynthesisUtterance(speechText);
+                u.lang = "de-DE"; u.rate = 0.9;
+                u.onboundary = function(event) {
+                    if (event.name === 'word') {
+                        let current = wordMap.find(w => event.charIndex >= w.start && event.charIndex < w.end);
+                        clearHighlights();
+                        if (current) current.el.classList.add('highlight-active');
+                    }
+                };
+                u.onend = function() { btn.classList.remove('active'); clearHighlights(); };
+                window.speechSynthesis.speak(u);
+                btn.classList.add('active');
+            }
+        }
+
+        function clearHighlights() { document.querySelectorAll('.highlight-active').forEach(el => el.classList.remove('highlight-active')); }
+        function toggleMagnifier() { state.magnifier = !state.magnifier; document.getElementById('magnifier-btn').className = state.magnifier ? "tool-btn active" : "tool-btn"; }
+        function clickWord(el, word) {
+            if(!state.magnifier) return;
+            document.getElementById('magnifier-text').innerText = el.innerText;
+            document.getElementById('magnifier-text').setAttribute('data-s', word);
+            document.getElementById('magnifier-overlay').style.display = 'block';
+        }
+        function speakMagnifiedWord() {
+            let t = document.getElementById('magnifier-text').innerText;
+            let u = new SpeechSynthesisUtterance(t); u.lang = 'de-DE';
+            window.speechSynthesis.speak(u);
+        }
+        function closeMagnifier() { document.getElementById('magnifier-overlay').style.display = 'none'; }
+        function toggleViewMode() {
+            let full = document.getElementById('full-text-view'), chunk = document.getElementById('chunk-view'), btn = document.getElementById('view-toggle-btn');
+            if(full.classList.contains('hidden')) { full.classList.remove('hidden'); chunk.classList.add('hidden'); btn.className = "tool-btn"; }
+            else { full.classList.add('hidden'); chunk.classList.remove('hidden'); btn.className = "tool-btn active"; state.chunkIndex = 0; updateChunkDisplay(); }
+        }
+        function nextChunk() { if(state.chunkIndex < state.chunks.length-1) { state.chunkIndex++; updateChunkDisplay(); } }
+        function prevChunk() { if(state.chunkIndex > 0) { state.chunkIndex--; updateChunkDisplay(); } }
+        function changeFontSize(d) {
+            let s = parseFloat(window.getComputedStyle(document.body).fontSize);
+            let n = Math.max(12, Math.min(40, s + d)); document.body.style.fontSize = n + "px";
+        }
+        function toggleMenu() { document.getElementById('mobile-menu').classList.toggle('open'); }
+        function toggleMobileToolbar() {
+            const tb = document.getElementById('toolbar'); tb.classList.toggle('open');
+            if(window.innerWidth < 768) document.getElementById('toolbar-close-btn').style.display = tb.classList.contains('open') ? 'block' : 'none';
+        }
+        function checkQuizAnswer(element, isCorrect) {
+            if(element.classList.contains('correct') || element.classList.contains('try-again')) return;
+            if (isCorrect) { element.classList.add('correct'); element.innerHTML += " 🌟"; }
+            else { element.classList.add('try-again'); }
+        }
+
+        window.onload = function() { renderText(); renderQuiz(); };
+    </script>
+</body>
+</html>
