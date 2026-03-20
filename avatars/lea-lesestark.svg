@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <circle cx="100" cy="100" r="100" fill="#FDEAEA"/>
+  <circle cx="100" cy="85" r="45" fill="#F5CBA7"/>
+  <ellipse cx="100" cy="155" rx="55" ry="40" fill="#D67171"/>
+  <circle cx="82" cy="78" r="6" fill="#2D3436"/>
+  <circle cx="118" cy="78" r="6" fill="#2D3436"/>
+  <circle cx="84" cy="76" r="2" fill="#fff"/>
+  <circle cx="120" cy="76" r="2" fill="#fff"/>
+  <path d="M90 95 Q100 105 110 95" stroke="#2D3436" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+  <ellipse cx="72" cy="88" rx="8" ry="5" fill="#F5B7B1" opacity="0.5"/>
+  <ellipse cx="128" cy="88" rx="8" ry="5" fill="#F5B7B1" opacity="0.5"/>
+  <path d="M55 65 Q60 30 100 25 Q140 30 145 65 Q140 55 100 50 Q60 55 55 65Z" fill="#8B4513"/>
+  <path d="M55 65 Q55 55 65 50" stroke="#6B3410" stroke-width="2" fill="none"/>
+  <rect x="80" y="130" width="40" height="8" rx="4" fill="#FFD54F"/>
+  <text x="100" y="138" text-anchor="middle" font-size="7" font-weight="bold" fill="#2D3436">📖</text>
+</svg>

@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <circle cx="100" cy="100" r="100" fill="#E8F5E9"/>
+  <circle cx="100" cy="85" r="45" fill="#FDDCB5"/>
+  <ellipse cx="100" cy="155" rx="55" ry="40" fill="#66BB6A"/>
+  <circle cx="82" cy="78" r="6" fill="#2D3436"/>
+  <circle cx="118" cy="78" r="6" fill="#2D3436"/>
+  <circle cx="84" cy="76" r="2" fill="#fff"/>
+  <circle cx="120" cy="76" r="2" fill="#fff"/>
+  <path d="M88 96 Q100 103 112 96" stroke="#2D3436" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+  <path d="M50 60 Q55 25 100 20 Q145 25 150 60 Q145 50 100 45 Q55 50 50 60Z" fill="#D4A04A"/>
+  <rect x="68" y="68" width="18" height="14" rx="3" fill="none" stroke="#2D3436" stroke-width="2"/>
+  <rect x="114" y="68" width="18" height="14" rx="3" fill="none" stroke="#2D3436" stroke-width="2"/>
+  <line x1="86" y1="75" x2="114" y2="75" stroke="#2D3436" stroke-width="2"/>
+  <circle cx="75" cy="75" r="5" fill="rgba(173,216,230,0.3)"/>
+  <circle cx="125" cy="75" r="5" fill="rgba(173,216,230,0.3)"/>
+  <text x="100" y="148" text-anchor="middle" font-size="18">🎵</text>
+</svg>

@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <circle cx="100" cy="100" r="100" fill="#F3E5F5"/>
+  <circle cx="100" cy="85" r="45" fill="#C68642"/>
+  <ellipse cx="100" cy="155" rx="55" ry="40" fill="#AB47BC"/>
+  <circle cx="82" cy="78" r="6" fill="#2D3436"/>
+  <circle cx="118" cy="78" r="6" fill="#2D3436"/>
+  <circle cx="84" cy="76" r="2" fill="#fff"/>
+  <circle cx="120" cy="76" r="2" fill="#fff"/>
+  <path d="M88 95 Q100 106 112 95" stroke="#2D3436" stroke-width="2.5" fill="none" stroke-linecap="round"/>
+  <ellipse cx="72" cy="88" rx="8" ry="5" fill="#D4A06A" opacity="0.5"/>
+  <ellipse cx="128" cy="88" rx="8" ry="5" fill="#D4A06A" opacity="0.5"/>
+  <path d="M48 70 Q50 25 100 18 Q150 25 152 70" fill="none"/>
+  <path d="M48 70 Q50 25 100 18 Q150 25 152 70 Q148 58 100 52 Q52 58 48 70Z" fill="#1A1A1A"/>
+  <path d="M55 68 Q55 55 70 52 Q65 60 55 68Z" fill="#1A1A1A"/>
+  <path d="M145 68 Q145 55 130 52 Q135 60 145 68Z" fill="#1A1A1A"/>
+  <circle cx="68" cy="60" r="4" fill="#FF7043" opacity="0.8"/>
+  <circle cx="132" cy="60" r="4" fill="#FFD54F" opacity="0.8"/>
+  <text x="100" y="148" text-anchor="middle" font-size="18">🌍</text>
+</svg>

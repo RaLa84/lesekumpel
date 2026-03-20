@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200">
+  <circle cx="100" cy="100" r="100" fill="#FFF3E0"/>
+  <circle cx="100" cy="85" r="45" fill="#D2B48C"/>
+  <ellipse cx="100" cy="155" rx="55" ry="40" fill="#FF7043"/>
+  <circle cx="80" cy="76" r="7" fill="#2D3436"/>
+  <circle cx="120" cy="76" r="7" fill="#2D3436"/>
+  <circle cx="82" cy="74" r="2.5" fill="#fff"/>
+  <circle cx="122" cy="74" r="2.5" fill="#fff"/>
+  <path d="M85 94 Q100 108 115 94" stroke="#2D3436" stroke-width="3" fill="none" stroke-linecap="round"/>
+  <path d="M50 55 Q60 15 100 12 Q140 15 150 55" fill="none" stroke="#1A1A2E" stroke-width="0"/>
+  <path d="M50 55 Q55 20 100 15 Q145 20 150 55 Q140 45 100 40 Q60 45 50 55Z" fill="#1A1A2E"/>
+  <path d="M60 52 Q65 40 80 38" stroke="#1A1A2E" stroke-width="8" fill="none" stroke-linecap="round"/>
+  <path d="M140 52 Q135 40 120 38" stroke="#1A1A2E" stroke-width="8" fill="none" stroke-linecap="round"/>
+  <polygon points="155,35 170,20 160,45" fill="#FFD54F"/>
+  <polygon points="165,25 175,15 168,38" fill="#FF7043"/>
+  <text x="100" y="148" text-anchor="middle" font-size="18">⚡</text>
+</svg>
