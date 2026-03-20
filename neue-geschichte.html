@@ -1,0 +1,529 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Neue Geschichte erstellen — Lesekumpel</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Quicksand:wght@400;500;600;700&display=swap">
+    <link rel="stylesheet" href="fonts/fonts.css">
+    <style>
+        :root {
+            --bg-body: #FFF9E5; --bg-card: #ffffff;
+            --primary-yellow: #FFD54F; --accent-coral: #D67171;
+            --accent-coral-light: #FDEAEA; --accent-coral-dark: #B85555;
+            --text-dark: #2D3436; --text-muted: #5a6368;
+            --border-card: #F5E6A3;
+            --font-heading: 'Fredoka', cursive, sans-serif;
+            --font-body: 'Quicksand', sans-serif;
+            --phase-1: #FF8A65; --phase-2: #FFD54F; --phase-3: #FFF176;
+            --phase-4: #81C784; --phase-5: #66BB6A;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: var(--font-body); background: var(--bg-body); color: var(--text-dark); line-height: 1.6; }
+
+        /* --- NAVBAR --- */
+        .main-navbar {
+            background: rgba(255,255,255,0.78); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
+            padding: 12px 24px; border-bottom: 3px solid rgba(255,213,79,0.5);
+            display: flex; justify-content: space-between; align-items: center;
+            position: sticky; top: 0; z-index: 1000;
+        }
+        .nav-left { display: flex; align-items: center; gap: 10px; }
+        .nav-logo { height: 40px; }
+        .brand-name { font-family: var(--font-heading); font-size: 1.2rem; color: var(--accent-coral); font-weight: 600; text-decoration: none; }
+        .nav-links { display: none; gap: 15px; align-items: center; }
+        .nav-btn { text-decoration: none; color: var(--text-dark); font-weight: 600; font-size: 0.95rem; }
+        .nav-btn:hover { color: var(--accent-coral); }
+        .burger-btn { font-size: 1.8rem; cursor: pointer; background: none; border: none; color: var(--text-dark); }
+        .mobile-menu { display: none; position: absolute; top: 100%; left: 0; width: 100%; background: #fff; padding: 15px 24px; border-bottom: 2px solid var(--primary-yellow); flex-direction: column; gap: 12px; }
+        .mobile-menu.open { display: flex; }
+        @media (min-width: 768px) {
+            .burger-btn { display: none; } .nav-links { display: flex; }
+            .nav-logo { height: 50px; } .brand-name { font-size: 1.5rem; }
+        }
+
+        /* --- MAIN --- */
+        .main-container { max-width: 700px; margin: 0 auto; padding: 30px 20px 60px; }
+        .page-title { font-family: var(--font-heading); color: var(--accent-coral); font-size: 2rem; text-align: center; margin-bottom: 8px; }
+        .page-sub { text-align: center; color: var(--text-muted); margin-bottom: 30px; font-size: 1rem; }
+
+        /* --- FORM SECTIONS --- */
+        .form-section { margin-bottom: 28px; }
+        .section-label { font-family: var(--font-heading); font-size: 1.1rem; color: var(--text-dark); margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
+        .step-num { background: var(--accent-coral); color: #fff; width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.85rem; font-weight: 700; flex-shrink: 0; }
+
+        /* --- INPUTS --- */
+        .text-input, .textarea-input {
+            width: 100%; padding: 14px 18px; border: 2px solid var(--accent-coral-light);
+            border-radius: 14px; font-family: var(--font-body); font-size: 1rem;
+            color: var(--text-dark); background: #fff; transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        .text-input:focus, .textarea-input:focus { border-color: var(--accent-coral); box-shadow: 0 0 0 3px rgba(214,113,113,0.15); outline: none; }
+        .textarea-input { min-height: 80px; resize: vertical; }
+
+        /* --- TOGGLE BUTTONS (Genre) --- */
+        .toggle-group { display: flex; flex-wrap: wrap; gap: 8px; }
+        .toggle-btn {
+            padding: 10px 18px; border: 2px solid #eee; border-radius: 20px; background: #fff;
+            font-family: var(--font-body); font-weight: 600; font-size: 0.9rem; cursor: pointer;
+            transition: all 0.2s; color: var(--text-dark);
+        }
+        .toggle-btn:hover { border-color: var(--accent-coral); color: var(--accent-coral); }
+        .toggle-btn.active { background: var(--primary-yellow); border-color: var(--primary-yellow); color: var(--text-dark); box-shadow: 0 3px 8px rgba(255,213,79,0.3); }
+
+        /* --- PHASE CARDS --- */
+        .phase-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 10px; }
+        .phase-card {
+            padding: 16px 12px; border-radius: 16px; text-align: center; cursor: pointer;
+            border: 3px solid transparent; transition: all 0.25s; font-weight: 600; font-size: 0.85rem;
+        }
+        .phase-card:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.08); }
+        .phase-card.active { border-color: var(--text-dark); transform: scale(1.03); }
+        .phase-card .phase-emoji { font-size: 1.8rem; display: block; margin-bottom: 6px; }
+        .phase-card .phase-num { font-family: var(--font-heading); font-size: 1rem; }
+        .phase-1-bg { background: #FFE0B2; } .phase-2-bg { background: #FFF9C4; }
+        .phase-3-bg { background: #FFF59D; } .phase-4-bg { background: #C8E6C9; } .phase-5-bg { background: #A5D6A7; }
+
+        /* --- STUFE BUTTONS --- */
+        .stufe-container { display: none; margin-top: 12px; }
+        .stufe-container.visible { display: block; }
+        .stufe-grid { display: flex; flex-wrap: wrap; gap: 8px; }
+        .stufe-btn {
+            padding: 10px 16px; border: 2px solid #eee; border-radius: 14px; background: #fff;
+            cursor: pointer; transition: all 0.2s; text-align: left; min-width: 140px;
+        }
+        .stufe-btn:hover { border-color: var(--accent-coral); }
+        .stufe-btn.active { background: var(--accent-coral-light); border-color: var(--accent-coral); }
+        .stufe-num { font-family: var(--font-heading); font-weight: 700; font-size: 1rem; color: var(--accent-coral); }
+        .stufe-fokus { font-size: 0.8rem; color: var(--text-muted); margin-top: 2px; }
+
+        /* --- PERSONA CARDS --- */
+        .persona-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 10px; }
+        .persona-card {
+            background: #fff; border: 2px solid #eee; border-radius: 18px; padding: 16px 10px;
+            text-align: center; cursor: pointer; transition: all 0.25s;
+        }
+        .persona-card:hover:not(.disabled) { border-color: var(--accent-coral); transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.06); }
+        .persona-card.active { border-color: var(--accent-coral); background: var(--accent-coral-light); }
+        .persona-card.disabled { opacity: 0.35; cursor: not-allowed; filter: grayscale(0.5); }
+        .persona-avatar { width: 60px; height: 60px; border-radius: 50%; border: 3px solid var(--primary-yellow); margin: 0 auto 8px; display: block; object-fit: cover; }
+        .persona-name { font-family: var(--font-heading); font-size: 0.9rem; color: var(--accent-coral); }
+        .persona-type { font-size: 0.7rem; color: var(--text-muted); margin-top: 2px; }
+
+        /* --- BILDSTIL CARDS --- */
+        .stil-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 10px; }
+        @media (min-width: 500px) { .stil-grid { grid-template-columns: repeat(4, 1fr); } }
+        .stil-card {
+            background: #fff; border: 2px solid #eee; border-radius: 16px; padding: 12px;
+            text-align: center; cursor: pointer; transition: all 0.25s;
+        }
+        .stil-card:hover { border-color: var(--accent-coral); transform: translateY(-2px); }
+        .stil-card.active { border-color: var(--accent-coral); background: var(--accent-coral-light); }
+        .stil-emoji { font-size: 2rem; display: block; margin-bottom: 6px; }
+        .stil-name { font-family: var(--font-heading); font-size: 0.85rem; }
+
+        /* --- SUBMIT --- */
+        .submit-section { text-align: center; margin-top: 30px; }
+        .btn-submit {
+            background: var(--accent-coral); color: #fff; border: none; border-radius: 28px;
+            padding: 18px 52px; font-family: var(--font-body); font-weight: 700; font-size: 1.1rem;
+            cursor: pointer; transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 4px 14px rgba(214,113,113,0.3);
+        }
+        .btn-submit:hover:not(:disabled) { background: var(--accent-coral-dark); transform: translateY(-3px) scale(1.02); }
+        .btn-submit:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+        .validation-hint { color: var(--accent-coral); font-size: 0.85rem; margin-top: 10px; display: none; }
+        .validation-hint.visible { display: block; }
+
+        /* --- LOADING OVERLAY --- */
+        .loading-overlay {
+            display: none; position: fixed; inset: 0; background: rgba(255,249,229,0.95);
+            z-index: 9000; flex-direction: column; align-items: center; justify-content: center;
+        }
+        .loading-overlay.visible { display: flex; }
+        .loading-card { background: #fff; border: 4px solid var(--primary-yellow); border-radius: 24px; padding: 40px; text-align: center; max-width: 400px; width: 90%; }
+        .loading-title { font-family: var(--font-heading); font-size: 1.5rem; color: var(--accent-coral); margin-bottom: 10px; }
+        .loading-bar-bg { width: 100%; height: 16px; background: #f0f0f0; border-radius: 10px; margin: 20px 0; overflow: hidden; }
+        .loading-bar { height: 100%; background: linear-gradient(90deg, var(--accent-coral), var(--primary-yellow)); width: 0%; transition: width 1s linear; border-radius: 10px; }
+        .loading-status { color: var(--text-muted); font-size: 0.95rem; }
+        @keyframes wackel { 0%{transform:rotate(0)} 25%{transform:rotate(-10deg)} 75%{transform:rotate(10deg)} 100%{transform:rotate(0)} }
+        .wackel { display: inline-block; animation: wackel 2s infinite; font-size: 3rem; margin-bottom: 15px; }
+
+        /* --- FOOTER --- */
+        footer { text-align: center; color: var(--text-muted); font-size: 0.85rem; padding: 24px; border-top: 2px solid var(--primary-yellow); background: #fff; }
+        footer a { color: var(--text-muted); text-decoration: none; margin: 0 6px; } footer a:hover { color: var(--accent-coral); }
+    </style>
+</head>
+<body>
+
+<nav class="main-navbar">
+    <div class="nav-left">
+        <img src="logo1.png" alt="Lesekumpel Logo" class="nav-logo">
+        <a href="index.html" class="brand-name">Lesekumpel</a>
+        <div class="nav-links">
+            <a href="index.html" class="nav-btn">📚 Bibliothek</a>
+            <a href="ueber-uns.html" class="nav-btn">Über uns</a>
+        </div>
+    </div>
+    <div>
+        <button class="burger-btn" onclick="document.getElementById('mobile-menu').classList.toggle('open')">☰</button>
+    </div>
+    <div id="mobile-menu" class="mobile-menu">
+        <a href="index.html" class="nav-btn">📚 Bibliothek</a>
+        <a href="ueber-uns.html" class="nav-btn">Über uns</a>
+    </div>
+</nav>
+
+<main class="main-container">
+    <h1 class="page-title">Neue Geschichte erstellen</h1>
+    <p class="page-sub">Wähle Phase, Stufe, Autor und Bildstil — deine Geschichte wird in wenigen Minuten erstellt.</p>
+
+    <!-- STEP 1: Titel + Genre -->
+    <div class="form-section">
+        <div class="section-label"><span class="step-num">1</span> Deine Geschichte</div>
+        <input type="text" class="text-input" id="titel" placeholder="Titel — z.B. Die mutige Maus im Supermarkt" style="margin-bottom:10px;">
+        <div class="toggle-group" id="genre-group">
+            <button class="toggle-btn" data-val="Humor">😄 Humor</button>
+            <button class="toggle-btn" data-val="Abenteuer">🗺️ Abenteuer</button>
+            <button class="toggle-btn" data-val="Natur">🌿 Natur</button>
+            <button class="toggle-btn" data-val="Gaming">🎮 Gaming</button>
+            <button class="toggle-btn" data-val="Familie">👨‍👩‍👧 Familie</button>
+            <button class="toggle-btn" data-val="Wissen">🔬 Wissen</button>
+        </div>
+        <textarea class="textarea-input" id="beschreibung" placeholder="Kurzbeschreibung (optional) — Worum geht es? Wer ist die Hauptfigur?" style="margin-top:10px;"></textarea>
+    </div>
+
+    <!-- STEP 2: Phase -->
+    <div class="form-section">
+        <div class="section-label"><span class="step-num">2</span> Lesephase</div>
+        <div class="phase-grid" id="phase-grid">
+            <div class="phase-card phase-1-bg" data-phase="1" onclick="selectPhase(1)">
+                <span class="phase-emoji">🟠</span>
+                <span class="phase-num">Phase 1</span><br>Der Start
+            </div>
+            <div class="phase-card phase-2-bg" data-phase="2" onclick="selectPhase(2)">
+                <span class="phase-emoji">🟡</span>
+                <span class="phase-num">Phase 2</span><br>Der Ausbau
+            </div>
+            <div class="phase-card phase-3-bg" data-phase="3" onclick="selectPhase(3)">
+                <span class="phase-emoji">🟨</span>
+                <span class="phase-num">Phase 3</span><br>Der Fluss
+            </div>
+            <div class="phase-card phase-4-bg" data-phase="4" onclick="selectPhase(4)">
+                <span class="phase-emoji">🟩</span>
+                <span class="phase-num">Phase 4</span><br>Die Geschichte
+            </div>
+            <div class="phase-card phase-5-bg" data-phase="5" onclick="selectPhase(5)">
+                <span class="phase-emoji">🟢</span>
+                <span class="phase-num">Phase 5</span><br>Der Profi
+            </div>
+        </div>
+    </div>
+
+    <!-- STEP 3: Stufe -->
+    <div class="form-section">
+        <div class="section-label"><span class="step-num">3</span> Lesestufe</div>
+        <div id="stufe-hint" style="color:var(--text-muted); font-size:0.9rem;">Wähle zuerst eine Phase.</div>
+        <div class="stufe-container" id="stufe-container"></div>
+    </div>
+
+    <!-- STEP 4: Persona -->
+    <div class="form-section">
+        <div class="section-label"><span class="step-num">4</span> Wer schreibt?</div>
+        <div class="persona-grid" id="persona-grid">
+            <div class="persona-card" data-persona="lea" onclick="selectPersona('lea')">
+                <img src="https://rala84.github.io/lesekumpel/avatars/lea-lesestark.webp" alt="Lea" class="persona-avatar">
+                <div class="persona-name">Lea Lesestark</div>
+                <div class="persona-type">Neurotypisch</div>
+            </div>
+            <div class="persona-card" data-persona="timo" onclick="selectPersona('timo')">
+                <img src="https://rala84.github.io/lesekumpel/avatars/timo-taktschritt.webp" alt="Timo" class="persona-avatar">
+                <div class="persona-name">Timo Taktschritt</div>
+                <div class="persona-type">LRS / Legasthenie</div>
+            </div>
+            <div class="persona-card" data-persona="zara" onclick="selectPersona('zara')">
+                <img src="https://rala84.github.io/lesekumpel/avatars/zara-zapp.webp" alt="Zara" class="persona-avatar">
+                <div class="persona-name">Zara Zapp</div>
+                <div class="persona-type">ADHS</div>
+            </div>
+            <div class="persona-card" data-persona="leo" onclick="selectPersona('leo')">
+                <img src="https://rala84.github.io/lesekumpel/avatars/leo-klartext.webp" alt="Leo" class="persona-avatar">
+                <div class="persona-name">Leo Klartext</div>
+                <div class="persona-type">Autismus-Spektrum</div>
+            </div>
+            <div class="persona-card" data-persona="mia" onclick="selectPersona('mia')">
+                <img src="https://rala84.github.io/lesekumpel/avatars/mia-bruecke.webp" alt="Mia" class="persona-avatar">
+                <div class="persona-name">Mia Brücke</div>
+                <div class="persona-type">Deutsch als Zweitsprache</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- STEP 5: Bildstil -->
+    <div class="form-section">
+        <div class="section-label"><span class="step-num">5</span> Bildstil</div>
+        <div class="stil-grid" id="stil-grid">
+            <div class="stil-card" data-stil="Aquarell" onclick="selectStil('Aquarell')">
+                <span class="stil-emoji">🎨</span>
+                <div class="stil-name">Aquarell</div>
+            </div>
+            <div class="stil-card" data-stil="Cartoon" onclick="selectStil('Cartoon')">
+                <span class="stil-emoji">🖍️</span>
+                <div class="stil-name">Cartoon</div>
+            </div>
+            <div class="stil-card" data-stil="Buntstift" onclick="selectStil('Buntstift')">
+                <span class="stil-emoji">✏️</span>
+                <div class="stil-name">Buntstift</div>
+            </div>
+            <div class="stil-card" data-stil="Pixel-Art" onclick="selectStil('Pixel-Art')">
+                <span class="stil-emoji">👾</span>
+                <div class="stil-name">Pixel-Art</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- SUBMIT -->
+    <div class="submit-section">
+        <button class="btn-submit" id="btn-submit" onclick="submitStory()">✨ Geschichte erstellen</button>
+        <div class="validation-hint" id="validation-hint"></div>
+    </div>
+</main>
+
+<!-- LOADING OVERLAY -->
+<div class="loading-overlay" id="loading-overlay">
+    <div class="loading-card">
+        <span class="wackel">📖</span>
+        <div class="loading-title">Deine Geschichte wird geschrieben...</div>
+        <div class="loading-bar-bg"><div class="loading-bar" id="loading-bar"></div></div>
+        <div class="loading-status" id="loading-status">Die Autorin spitzt den Bleistift...</div>
+        <p style="margin-top:15px; font-size:0.8rem; color:var(--text-muted);">Das dauert ca. 1-2 Minuten. Bitte schließe das Fenster nicht.</p>
+    </div>
+</div>
+
+<footer>
+    <a href="impressum.html">Impressum</a> &bull; <a href="datenschutz.html">Datenschutz</a> &bull; <a href="ueber-uns.html">Über uns</a>
+</footer>
+
+<script>
+// ============================================================
+// DATA
+// ============================================================
+const STUFEN = {
+    1: [{ id: '1.0', name: 'Top-100-Wörter', fokus: 'Häufigste Grundwörter' }],
+    2: [
+        { id: '2.1', name: 'Sonderlaute', fokus: 'sch, ch, pf, ei, au, eu' },
+        { id: '2.2', name: 'Stolpersteine', fokus: 'str, pfl, schr, spr' },
+        { id: '2.3', name: 'Endungen', fokus: '-en, -er, -el' },
+        { id: '2.4', name: 'Komposita', fokus: 'Zusammengesetzte Wörter' }
+    ],
+    3: [
+        { id: '3.1', name: 'Präteritum', fokus: 'Erzählzeit (lief, sah)' },
+        { id: '3.2', name: 'Vorsilben', fokus: 'ver-, be-, ent-, ge-' },
+        { id: '3.3', name: 'Suffixe', fokus: '-ung, -heit, -keit' },
+        { id: '3.4', name: 'Konjunktionen', fokus: 'weil, obwohl, damit' }
+    ],
+    4: [
+        { id: '4.1', name: 'Satzklammer', fokus: 'Trennbare Verben' },
+        { id: '4.2', name: 'Dialoge', fokus: 'Wörtliche Rede' },
+        { id: '4.3', name: 'Relativsätze', fokus: 'der, die, das, welcher' },
+        { id: '4.4', name: 'Vergleiche', fokus: 'schneller als, am besten' }
+    ],
+    5: [
+        { id: '5.1', name: 'Synonyme', fokus: 'Schleichen statt gehen' },
+        { id: '5.2', name: 'Redewendungen', fokus: 'Metaphern & Idiome' },
+        { id: '5.3', name: 'Abstrakta', fokus: 'Mut, Neid, Freiheit' },
+        { id: '5.4', name: 'Sachtext', fokus: 'Fakten & Erklärungen' }
+    ]
+};
+
+const VALID_PERSONAS = {
+    lea:  ['1.0','2.1','2.2','2.3','2.4','3.1','3.2','3.3','3.4','4.1','4.2','4.3','4.4','5.1','5.2','5.3','5.4'],
+    mia:  ['1.0','2.1','2.2','2.3','2.4','3.1','3.2','3.3','3.4'],
+    timo: ['2.1','2.2','2.3','2.4','3.1','3.2','3.3','3.4','4.1','4.2','4.3','4.4'],
+    zara: ['2.1','2.2','2.3','2.4','3.1','3.2','3.3','3.4','4.1','4.2','4.3','4.4'],
+    leo:  ['3.1','3.2','3.3','3.4','4.1','4.2','4.3','4.4','5.1','5.2','5.3','5.4']
+};
+
+const PERSONA_LABELS = { lea: 'Lea Lesestark (Neurotypisch)', timo: 'Timo Taktschritt (LRS/Legasthenie)', zara: 'Zara Zapp (ADHS)', leo: 'Leo Klartext (Autismus-Spektrum)', mia: 'Mia Brücke (Deutsch als Zweitsprache)' };
+const PHASE_LABELS = { 1: 'Phase 1 — Der Start', 2: 'Phase 2 — Der Ausbau', 3: 'Phase 3 — Der Fluss', 4: 'Phase 4 — Die Geschichte', 5: 'Phase 5 — Der Profi' };
+const BILDSTIL_LABELS = { 'Aquarell': 'Aquarell — Weiche Pastellfarben', 'Cartoon': 'Cartoon — Bunte moderne Illustration', 'Buntstift': 'Buntstift — Handgezeichneter Look', 'Pixel-Art': 'Pixel-Art — Retro-Gaming-Stil' };
+
+const WEBHOOK_URL = 'https://rala84.app.n8n.cloud/webhook/lesekumpel-story';
+
+// ============================================================
+// STATE
+// ============================================================
+let state = { genre: null, phase: null, stufe: null, persona: null, stil: null };
+
+// ============================================================
+// TOGGLE GROUP (Genre)
+// ============================================================
+document.querySelectorAll('#genre-group .toggle-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+        document.querySelectorAll('#genre-group .toggle-btn').forEach(b => b.classList.remove('active'));
+        btn.classList.add('active');
+        state.genre = btn.dataset.val;
+    });
+});
+
+// ============================================================
+// PHASE SELECTION
+// ============================================================
+function selectPhase(phase) {
+    state.phase = phase;
+    state.stufe = null;
+    state.persona = null;
+
+    document.querySelectorAll('.phase-card').forEach(c => c.classList.remove('active'));
+    document.querySelector(`.phase-card[data-phase="${phase}"]`).classList.add('active');
+
+    // Show stufen for this phase
+    const container = document.getElementById('stufe-container');
+    const stufen = STUFEN[phase];
+    container.innerHTML = '<div class="stufe-grid">' + stufen.map(s =>
+        `<div class="stufe-btn" data-stufe="${s.id}" onclick="selectStufe('${s.id}')">
+            <div class="stufe-num">${s.id}</div>
+            <div class="stufe-fokus">${s.name} — ${s.fokus}</div>
+        </div>`
+    ).join('') + '</div>';
+    container.classList.add('visible');
+    document.getElementById('stufe-hint').style.display = 'none';
+
+    updatePersonas();
+}
+
+// ============================================================
+// STUFE SELECTION
+// ============================================================
+function selectStufe(stufe) {
+    state.stufe = stufe;
+    state.persona = null;
+    document.querySelectorAll('.stufe-btn').forEach(b => b.classList.remove('active'));
+    document.querySelector(`.stufe-btn[data-stufe="${stufe}"]`).classList.add('active');
+    updatePersonas();
+}
+
+// ============================================================
+// PERSONA SELECTION
+// ============================================================
+function updatePersonas() {
+    document.querySelectorAll('.persona-card').forEach(card => {
+        const p = card.dataset.persona;
+        const available = state.stufe ? VALID_PERSONAS[p].includes(state.stufe) : true;
+        card.classList.toggle('disabled', !available);
+        if (!available && state.persona === p) { state.persona = null; card.classList.remove('active'); }
+    });
+}
+
+function selectPersona(persona) {
+    const card = document.querySelector(`.persona-card[data-persona="${persona}"]`);
+    if (card.classList.contains('disabled')) return;
+    state.persona = persona;
+    document.querySelectorAll('.persona-card').forEach(c => c.classList.remove('active'));
+    card.classList.add('active');
+}
+
+// ============================================================
+// BILDSTIL SELECTION
+// ============================================================
+function selectStil(stil) {
+    state.stil = stil;
+    document.querySelectorAll('.stil-card').forEach(c => c.classList.remove('active'));
+    document.querySelector(`.stil-card[data-stil="${stil}"]`).classList.add('active');
+}
+
+// ============================================================
+// SUBMIT
+// ============================================================
+async function submitStory() {
+    const titel = document.getElementById('titel').value.trim();
+    const beschreibung = document.getElementById('beschreibung').value.trim();
+    const hint = document.getElementById('validation-hint');
+
+    // Validation
+    const missing = [];
+    if (!titel) missing.push('Titel');
+    if (!state.genre) missing.push('Genre');
+    if (!state.phase) missing.push('Phase');
+    if (!state.stufe) missing.push('Stufe');
+    if (!state.persona) missing.push('Persona');
+    if (!state.stil) missing.push('Bildstil');
+
+    if (missing.length > 0) {
+        hint.textContent = 'Bitte noch ausfüllen: ' + missing.join(', ');
+        hint.classList.add('visible');
+        return;
+    }
+    hint.classList.remove('visible');
+
+    // Build payload (matching n8n field names)
+    const payload = {
+        Titel: titel,
+        Genre: state.genre,
+        Phase: PHASE_LABELS[state.phase],
+        Stufe: state.stufe + ' — ' + STUFEN[state.phase].find(s => s.id === state.stufe).name,
+        Persona: PERSONA_LABELS[state.persona],
+        Bildstil: BILDSTIL_LABELS[state.stil],
+        Kurzbeschreibung: beschreibung
+    };
+
+    // Show loading
+    showLoading();
+
+    try {
+        const response = await fetch(WEBHOOK_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(payload)
+        });
+
+        const result = await response.json();
+        if (result.storyUrl) {
+            document.getElementById('loading-status').textContent = 'Fertig! Du wirst weitergeleitet...';
+            document.getElementById('loading-bar').style.width = '100%';
+            setTimeout(() => { window.location.href = result.storyUrl; }, 1500);
+        } else {
+            hideLoading();
+            hint.textContent = 'Fehler: ' + (result.message || 'Unbekannter Fehler');
+            hint.classList.add('visible');
+        }
+    } catch (err) {
+        hideLoading();
+        hint.textContent = 'Verbindungsfehler — bitte versuche es erneut.';
+        hint.classList.add('visible');
+    }
+}
+
+function showLoading() {
+    const overlay = document.getElementById('loading-overlay');
+    overlay.classList.add('visible');
+    let elapsed = 0;
+    const total = 90;
+    const messages = [
+        [0, 'Die Autorin spitzt den Bleistift...'],
+        [10, 'Erfinde lustige Figuren...'],
+        [25, 'Schreibe die Geschichte...'],
+        [45, 'Male bunte Bilder...'],
+        [65, 'Erstelle ein Quiz...'],
+        [80, 'Fast fertig! Klebe den Buchrücken...']
+    ];
+    const timer = setInterval(() => {
+        elapsed++;
+        const pct = Math.min((elapsed / total) * 100, 95);
+        document.getElementById('loading-bar').style.width = pct + '%';
+        const msg = messages.filter(m => m[0] <= pct).pop();
+        if (msg) document.getElementById('loading-status').textContent = msg[1];
+        if (elapsed >= total) clearInterval(timer);
+    }, 1000);
+    overlay._timer = timer;
+}
+
+function hideLoading() {
+    const overlay = document.getElementById('loading-overlay');
+    overlay.classList.remove('visible');
+    if (overlay._timer) clearInterval(overlay._timer);
+}
+</script>
+</body>
+</html>
