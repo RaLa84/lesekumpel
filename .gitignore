@@ -1,2 +1,18 @@
+# Secrets
 n8n-config/.env
 .mcp.json
+
+# Playwright MCP (logs, screenshots, artifacts)
+.playwright-mcp/
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+*.swp
+*.swo
+
+# Node (falls spaeter relevant)
+node_modules/
