@@ -1,0 +1,64 @@
+name: Generate Thumbnails
+
+on:
+  push:
+    branches: [main]
+    paths: ['bilder/**-1.png']
+
+jobs:
+  thumbnails:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install Pillow
+        run: pip install Pillow
+
+      - name: Generate missing thumbnails
+        run: |
+          python - <<'SCRIPT'
+          import os
+          from PIL import Image
+
+          src_dir = 'bilder'
+          dst_dir = 'bilder/thumbs'
+          os.makedirs(dst_dir, exist_ok=True)
+
+          count = 0
+          for f in sorted(os.listdir(src_dir)):
+              if f.endswith('-1.png'):
+                  dst = os.path.join(dst_dir, f.replace('.png', '.webp'))
+                  if os.path.exists(dst):
+                      continue
+                  src = os.path.join(src_dir, f)
+                  img = Image.open(src)
+                  w, h = img.size
+                  new_w = 400
+                  new_h = int(h * new_w / w)
+                  img = img.resize((new_w, new_h), Image.LANCZOS)
+                  img.save(dst, 'WEBP', quality=80)
+                  size_kb = os.path.getsize(dst) / 1024
+                  print(f'{f} -> {os.path.basename(dst)} ({size_kb:.0f} KB)')
+                  count += 1
+
+          print(f'{count} neue Thumbnails generiert')
+          SCRIPT
+
+      - name: Commit thumbnails
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add bilder/thumbs/
+          if git diff --cached --quiet; then
+            echo "Keine neuen Thumbnails"
+          else
+            git commit -m "Auto: Thumbnails generiert"
+            git push
+          fi
