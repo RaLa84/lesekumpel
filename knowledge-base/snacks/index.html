@@ -17,7 +17,7 @@
             --text-light: #5a6368;
             --text-muted: #5a6368;
             --shadow: 0 2px 8px rgba(0,0,0,0.08);
-            --shadow-hover: 0 4px 16px rgba(0,0,0,0.12);
+            --shadow-hover: 0 8px 24px rgba(0,0,0,0.1);
             --radius: 20px;
             --radius-sm: 8px;
             --font-heading: 'Fredoka', sans-serif;
@@ -33,6 +33,16 @@
             --mythos-bg: #FDECEC;
             --glossar: #7B61C2;
             --glossar-bg: #F3F0FA;
+            /* Pastell-Karten-Hintergruende */
+            --fakt-card-bg: #e8f0fa;
+            --tipp-card-bg: #ddf0ed;
+            --zahl-card-bg: #fff5d6;
+            --mythos-card-bg: #fce4e4;
+            --glossar-card-bg: #ede8f7;
+            /* Glassmorphism */
+            --glass-bg: rgba(255,255,255,0.6);
+            --glass-blur: blur(12px);
+            --glass-border: 1.5px solid rgba(255,255,255,0.7);
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -44,91 +54,259 @@
             min-height: 100vh;
         }
 
+        /* --- HERO --- */
         .snacks-hero {
             background: linear-gradient(135deg, var(--coral) 0%, var(--coral-light) 100%);
             color: white;
-            padding: 2rem 1rem;
+            padding: 3rem 1.5rem 2rem;
             text-align: center;
+        }
+
+        .hero-inner {
+            max-width: 720px;
+            margin: 0 auto;
         }
 
         .snacks-hero h1 {
             font-family: var(--font-heading);
-            font-size: 2rem;
+            font-size: 2.2rem;
             font-weight: 700;
-            margin-bottom: 0.5rem;
+            margin-bottom: 0.4rem;
         }
 
-        .snacks-hero p {
-            font-size: 1rem;
-            opacity: 0.9;
+        .snacks-hero .hero-subtitle {
+            font-size: 1.05rem;
+            opacity: 0.92;
+            margin-bottom: 1rem;
         }
 
         .stats {
             display: flex;
             justify-content: center;
-            gap: 1.5rem;
-            margin-top: 1rem;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
             flex-wrap: wrap;
         }
 
         .stat {
             background: rgba(255,255,255,0.2);
-            padding: 0.4rem 1rem;
+            padding: 0.35rem 0.9rem;
             border-radius: 20px;
             font-weight: 600;
-            font-size: 0.9rem;
+            font-size: 0.85rem;
         }
 
-        .controls {
+        /* Hero Search */
+        .hero-search {
+            position: relative;
+            max-width: 560px;
+            margin: 0 auto;
+        }
+
+        .hero-search-icon {
+            position: absolute;
+            left: 1.1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 20px;
+            height: 20px;
+            color: var(--text-light);
+            pointer-events: none;
+        }
+
+        .hero-search input {
+            width: 100%;
+            padding: 0.95rem 1.2rem 0.95rem 3rem;
+            border-radius: 28px;
+            border: var(--glass-border);
+            font-family: var(--font-body);
+            font-size: 1rem;
+            font-weight: 500;
+            background: var(--glass-bg);
+            -webkit-backdrop-filter: var(--glass-blur);
+            backdrop-filter: var(--glass-blur);
+            color: var(--text);
+            transition: all 0.2s;
+        }
+
+        .hero-search input::placeholder {
+            color: var(--text-light);
+            opacity: 0.8;
+        }
+
+        .hero-search input:focus {
+            outline: none;
+            background: rgba(255,255,255,0.85);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+        }
+
+        /* Trend Tags */
+        .trend-tags {
+            display: flex;
+            gap: 0.5rem;
+            justify-content: center;
+            flex-wrap: wrap;
+            margin-top: 1rem;
+        }
+
+        .trend-tag {
+            background: rgba(255,255,255,0.22);
+            color: white;
+            border: 1.5px solid rgba(255,255,255,0.45);
+            border-radius: 20px;
+            padding: 0.3rem 0.85rem;
+            font-family: var(--font-body);
+            font-size: 0.82rem;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .trend-tag:hover {
+            background: rgba(255,255,255,0.4);
+            transform: translateY(-1px);
+        }
+
+        /* Chatbot Teaser */
+        .chatbot-teaser {
+            font-size: 0.78rem;
+            opacity: 0.82;
+            margin-top: 0.9rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.4rem;
+        }
+
+        .chatbot-teaser svg {
+            width: 14px;
+            height: 14px;
+        }
+
+        /* --- FILTER SYSTEM --- */
+        .filter-section {
             max-width: 1200px;
-            margin: 1.5rem auto;
+            margin: 0 auto;
             padding: 0 1rem;
         }
 
-        .search-box {
-            width: 100%;
-            padding: 0.8rem 1.2rem;
-            border: 2px solid #ddd;
-            border-radius: var(--radius);
-            font-family: 'Quicksand', sans-serif;
-            font-size: 1rem;
-            background: white;
-            transition: border-color 0.2s;
-        }
-
-        .search-box:focus {
-            outline: none;
-            border-color: var(--coral);
-        }
-
-        .filters {
+        /* Themen-Pill-Bar */
+        .filter-pills {
             display: flex;
             gap: 0.5rem;
-            margin-top: 1rem;
-            flex-wrap: wrap;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
+            padding: 1rem 0 0.5rem;
         }
 
-        .filter-group {
-            display: flex;
-            gap: 0.3rem;
-            flex-wrap: wrap;
-        }
+        .filter-pills::-webkit-scrollbar { display: none; }
 
-        .filter-label {
+        .filter-pill {
+            padding: 0.45rem 1rem;
+            border: 2px solid #ddd;
+            border-radius: 24px;
+            background: white;
+            font-family: var(--font-body);
+            font-size: 0.82rem;
             font-weight: 600;
-            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.2s;
+            white-space: nowrap;
+            flex-shrink: 0;
+        }
+
+        .filter-pill:hover { border-color: var(--coral); }
+        .filter-pill.active { background: var(--coral); color: white; border-color: var(--coral); }
+
+        .filter-pill .pill-count {
+            font-size: 0.72rem;
+            opacity: 0.75;
+            margin-left: 0.2rem;
+        }
+
+        .filter-pill.active .pill-count { opacity: 0.9; }
+
+        /* Filter Toggle + Panel */
+        .filter-toggle-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin: 0.3rem 0;
+        }
+
+        .filter-toggle {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            background: white;
+            border: 2px solid #ddd;
+            border-radius: 20px;
+            padding: 0.4rem 1rem;
+            cursor: pointer;
+            font-family: var(--font-body);
+            font-size: 0.82rem;
+            font-weight: 600;
+            color: var(--text);
+            transition: all 0.2s;
+        }
+
+        .filter-toggle:hover { border-color: var(--coral); }
+
+        .filter-toggle svg {
+            width: 14px;
+            height: 14px;
+            transition: transform 0.3s;
+        }
+
+        .filter-toggle.open svg { transform: rotate(180deg); }
+
+        .filter-toggle .active-dot {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--coral);
+            display: none;
+        }
+
+        .filter-toggle .active-dot.show { display: inline-block; }
+
+        .filter-panel {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+
+        .filter-panel.open { max-height: 200px; }
+
+        .filter-panel-inner {
+            padding: 0.5rem 0 0.8rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.6rem;
+        }
+
+        .filter-row {
+            display: flex;
+            gap: 0.5rem;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .filter-row-label {
+            font-weight: 600;
+            font-size: 0.8rem;
             color: var(--text-light);
-            align-self: center;
-            margin-right: 0.3rem;
+            min-width: 70px;
         }
 
         .filter-btn {
-            padding: 0.4rem 0.8rem;
+            padding: 0.35rem 0.75rem;
             border: 2px solid #ddd;
             border-radius: 20px;
             background: white;
-            font-family: 'Quicksand', sans-serif;
-            font-size: 0.8rem;
+            font-family: var(--font-body);
+            font-size: 0.78rem;
             font-weight: 600;
             cursor: pointer;
             transition: all 0.2s;
@@ -144,51 +322,105 @@
         .filter-btn[data-typ="mythos"].active { background: var(--mythos); border-color: var(--mythos); }
         .filter-btn[data-typ="glossar"].active { background: var(--glossar); border-color: var(--glossar); }
 
-        .result-count {
-            text-align: center;
-            margin: 1rem 0;
-            color: var(--text-light);
-            font-size: 0.9rem;
+        .filter-btn-group {
+            display: flex;
+            gap: 0.3rem;
+            flex-wrap: wrap;
         }
 
+        /* --- RESULT COUNT --- */
+        .result-count {
+            text-align: center;
+            margin: 0.8rem 0;
+            color: var(--text-light);
+            font-size: 0.88rem;
+        }
+
+        /* --- MASONRY GRID --- */
         .grid {
             max-width: 1200px;
             margin: 0 auto;
             padding: 0 1rem 3rem;
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
-            gap: 1rem;
+            column-count: 3;
+            column-gap: 1rem;
         }
 
+        /* --- CARDS --- */
         .card {
-            background: var(--bg-card);
             border-radius: var(--radius);
             box-shadow: var(--shadow);
             padding: 1.2rem;
-            transition: all 0.2s;
             cursor: default;
-            display: flex;
-            flex-direction: column;
-            border-left: 5px solid var(--fakt);
+            display: inline-block;
+            width: 100%;
+            margin-bottom: 1rem;
+            break-inside: avoid;
+            border-left: 4px solid var(--fakt);
+            /* Lazy-loading fade-in */
+            opacity: 0;
+            transform: translateY(16px);
+            transition: opacity 0.4s ease, transform 0.4s ease, box-shadow 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .card.visible {
+            opacity: 1;
+            transform: translateY(0);
         }
 
         .card:hover {
             box-shadow: var(--shadow-hover);
-            transform: translateY(-2px);
+            transform: scale(1.02);
         }
 
-        .card[data-typ="fakt"] { border-left-color: var(--fakt); }
-        .card[data-typ="tipp"] { border-left-color: var(--tipp); }
-        .card[data-typ="zahl"] { border-left-color: var(--zahl); }
-        .card[data-typ="mythos"] { border-left-color: var(--mythos); }
-        .card[data-typ="glossar"] { border-left-color: var(--glossar); }
+        .card.visible:hover {
+            transform: scale(1.02);
+        }
+
+        /* Pastell-Hintergruende + Akzent-Rand pro Typ */
+        .card[data-typ="fakt"]    { background: var(--fakt-card-bg); border-left-color: var(--fakt); }
+        .card[data-typ="tipp"]    { background: var(--tipp-card-bg); border-left-color: var(--tipp); }
+        .card[data-typ="zahl"]    { background: var(--zahl-card-bg); border-left-color: var(--zahl); }
+        .card[data-typ="mythos"]  { background: var(--mythos-card-bg); border-left-color: var(--mythos); }
+        .card[data-typ="glossar"] { background: var(--glossar-card-bg); border-left-color: var(--glossar); }
+
+        /* Featured Card */
+        .card.featured {
+            column-span: all;
+            background: linear-gradient(135deg, var(--yellow-light) 0%, #fff 100%) !important;
+            border: 2px solid var(--yellow);
+            border-left: 4px solid var(--yellow);
+            padding: 1.5rem;
+        }
 
         .card-header {
             display: flex;
             justify-content: space-between;
             align-items: flex-start;
-            margin-bottom: 0.6rem;
+            margin-bottom: 0.5rem;
             gap: 0.5rem;
+        }
+
+        .card-header-left {
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            min-width: 0;
+        }
+
+        .card-kategorie-icon {
+            width: 18px;
+            height: 18px;
+            flex-shrink: 0;
+            opacity: 0.6;
+        }
+
+        .card-kategorie {
+            font-size: 0.75rem;
+            color: var(--text-light);
+            font-weight: 600;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
 
         .card-typ {
@@ -208,25 +440,18 @@
         .card[data-typ="mythos"] .card-typ { color: var(--mythos); background: var(--mythos-bg); }
         .card[data-typ="glossar"] .card-typ { color: var(--glossar); background: var(--glossar-bg); }
 
-        .card-kategorie {
-            font-size: 0.75rem;
-            color: var(--text-light);
-            font-weight: 600;
-        }
-
         .card-titel {
-            font-family: 'Fredoka', sans-serif;
-            font-size: 1.1rem;
-            font-weight: 600;
+            font-family: var(--font-heading);
+            font-size: 1.15rem;
+            font-weight: 700;
             margin-bottom: 0.6rem;
-            line-height: 1.3;
+            line-height: 1.35;
         }
 
         .card-body {
-            font-size: 0.9rem;
-            line-height: 1.6;
+            font-size: 0.92rem;
+            line-height: 1.75;
             color: var(--text);
-            flex-grow: 1;
             margin-bottom: 0.8rem;
         }
 
@@ -237,7 +462,7 @@
             flex-wrap: wrap;
             gap: 0.3rem;
             padding-top: 0.6rem;
-            border-top: 1px solid #eee;
+            border-top: 1px solid rgba(0,0,0,0.06);
         }
 
         .card-quelle {
@@ -254,6 +479,15 @@
             background: var(--yellow-light);
             padding: 0.15rem 0.5rem;
             border-radius: 8px;
+            display: flex;
+            align-items: center;
+            gap: 0.25rem;
+        }
+
+        .card-evidenz svg {
+            width: 12px;
+            height: 12px;
+            flex-shrink: 0;
         }
 
         .card-tags {
@@ -266,24 +500,68 @@
         .tag {
             font-size: 0.65rem;
             color: var(--text-light);
-            background: #f0f0f0;
+            background: rgba(0,0,0,0.04);
             padding: 0.1rem 0.5rem;
             border-radius: 8px;
         }
 
-        .no-results {
+        /* --- EMPTY STATE --- */
+        .empty-state {
             text-align: center;
-            padding: 3rem 1rem;
+            padding: 4rem 2rem;
+        }
+
+        .empty-state svg {
+            width: 80px;
+            height: 80px;
+            color: var(--coral-light);
+        }
+
+        .empty-state h3 {
+            font-family: var(--font-heading);
+            font-size: 1.3rem;
+            margin: 1rem 0 0.4rem;
+            color: var(--text);
+        }
+
+        .empty-state p {
             color: var(--text-light);
-            font-size: 1.1rem;
-            grid-column: 1 / -1;
+            margin-bottom: 1.5rem;
+            font-size: 0.95rem;
+        }
+
+        .reset-btn {
+            background: var(--coral);
+            color: white;
+            border: none;
+            border-radius: 28px;
+            padding: 0.7rem 2rem;
+            font-family: var(--font-body);
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 4px 14px rgba(214,113,113,0.3);
+        }
+
+        .reset-btn:hover {
+            background: var(--coral-dark);
+            transform: translateY(-2px);
+        }
+
+        /* --- RESPONSIVE --- */
+        @media (max-width: 1024px) {
+            .grid { column-count: 2; }
         }
 
         @media (max-width: 768px) {
-            .snacks-hero h1 { font-size: 1.5rem; }
-            .grid { grid-template-columns: 1fr; }
+            .snacks-hero { padding: 2rem 1rem 1.5rem; }
+            .snacks-hero h1 { font-size: 1.6rem; }
+            .grid { column-count: 1; }
             .stats { gap: 0.5rem; }
-            .stat { font-size: 0.8rem; padding: 0.3rem 0.7rem; }
+            .stat { font-size: 0.78rem; padding: 0.3rem 0.7rem; }
+            .hero-search input { font-size: 0.92rem; padding: 0.8rem 1rem 0.8rem 2.8rem; }
+            .card.featured { column-span: none; }
         }
 
         /* --- NAVBAR --- */
@@ -369,7 +647,7 @@
         </div>
         <div class="nav-right">
             <a href="../../landingpage.html#registrieren" class="btn-cta-nav">Jetzt registrieren</a>
-            <button type="button" class="burger-icon" aria-label="Navigationsmenü öffnen" aria-expanded="false" aria-controls="mobile-menu" onclick="toggleMenu()">&#9776;</button>
+            <button type="button" class="burger-icon" aria-label="Navigationsmen&uuml; &ouml;ffnen" aria-expanded="false" aria-controls="mobile-menu" onclick="toggleMenu()">&#9776;</button>
         </div>
         <div id="mobile-menu" class="mobile-menu">
             <a href="../../landingpage.html#mission" class="nav-btn" onclick="toggleMenu()">F&uuml;r euch</a>
@@ -385,52 +663,67 @@
 
     <!-- HERO -->
     <div class="snacks-hero">
-        <h1>Knowledge Snacks</h1>
-        <p>Evidenzbasiertes Wissen in kleinen H&auml;ppchen</p>
-        <div class="stats">
-            <span class="stat" id="stat-total">0 Snacks</span>
-            <span class="stat" id="stat-quellen">0 Quellen</span>
-            <span class="stat" id="stat-themen">6 Themen</span>
+        <div class="hero-inner">
+            <h1>Knowledge Snacks</h1>
+            <p class="hero-subtitle">Evidenzbasiertes Wissen in kleinen H&auml;ppchen</p>
+            <div class="stats">
+                <span class="stat" id="stat-total">0 Snacks</span>
+                <span class="stat" id="stat-quellen">0 Quellen</span>
+                <span class="stat" id="stat-themen">6 Themen</span>
+            </div>
+            <div class="hero-search">
+                <svg class="hero-search-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                <input type="text" id="search" placeholder="Suche nach Stichwort, Thema oder Fachbegriff...">
+            </div>
+            <div class="trend-tags" id="trend-tags">
+                <button type="button" class="trend-tag" data-search="LRS">#LRS-Tricks</button>
+                <button type="button" class="trend-tag" data-search="ADHS">#ADHS-Alltag</button>
+                <button type="button" class="trend-tag" data-search="Tipp">#Praxis-Tipps</button>
+                <button type="button" class="trend-tag" data-search="Mythos">#Mythen-Check</button>
+            </div>
+            <div class="chatbot-teaser">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26z"/></svg>
+                Bald: Dein pers&ouml;nlicher Wissens-Assistent
+            </div>
         </div>
     </div>
 
-    <div class="controls">
-        <input type="text" class="search-box" id="search" placeholder="Suche nach Stichwort, Thema oder Fachbegriff...">
+    <!-- FILTER SYSTEM -->
+    <div class="filter-section">
+        <!-- Themen-Pills -->
+        <div class="filter-pills" id="filter-kategorie"></div>
 
-        <div class="filters">
-            <span class="filter-label">Typ:</span>
-            <div class="filter-group" id="filter-typ">
-                <button class="filter-btn active" data-typ="alle">Alle</button>
-                <button class="filter-btn" data-typ="fakt">Fakt</button>
-                <button class="filter-btn" data-typ="tipp">Tipp</button>
-                <button class="filter-btn" data-typ="zahl">Zahl</button>
-                <button class="filter-btn" data-typ="mythos">Mythos</button>
-                <button class="filter-btn" data-typ="glossar">Glossar</button>
-            </div>
+        <!-- Filter Toggle + Panel -->
+        <div class="filter-toggle-row">
+            <button type="button" class="filter-toggle" id="filter-toggle" onclick="toggleFilterPanel()">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg>
+                Filter anpassen
+                <span class="active-dot" id="filter-dot"></span>
+            </button>
         </div>
 
-        <div class="filters">
-            <span class="filter-label">Thema:</span>
-            <div class="filter-group" id="filter-kategorie">
-                <button class="filter-btn active" data-kategorie="alle">Alle</button>
-                <button class="filter-btn" data-kategorie="LRS / Legasthenie">LRS</button>
-                <button class="filter-btn" data-kategorie="ADHS & Lesen">ADHS</button>
-                <button class="filter-btn" data-kategorie="Autismus & Lesen">Autismus</button>
-                <button class="filter-btn" data-kategorie="DaZ & Lesen">DaZ</button>
-                <button class="filter-btn" data-kategorie="Hörbehinderung & Lesen">Hören</button>
-                <button class="filter-btn" data-kategorie="Sehbehinderung & Lesen">Sehen</button>
-                <button class="filter-btn" data-kategorie="Praxistipps">Tipps</button>
-                <button class="filter-btn" data-kategorie="Glossar">Glossar</button>
-            </div>
-        </div>
-
-        <div class="filters">
-            <span class="filter-label">Zielgruppe:</span>
-            <div class="filter-group" id="filter-zielgruppe">
-                <button class="filter-btn active" data-zielgruppe="alle">Alle</button>
-                <button class="filter-btn" data-zielgruppe="Eltern">Eltern</button>
-                <button class="filter-btn" data-zielgruppe="Lehrkräfte">Lehrkräfte</button>
-                <button class="filter-btn" data-zielgruppe="Therapeuten">Therapeuten</button>
+        <div class="filter-panel" id="filter-panel">
+            <div class="filter-panel-inner">
+                <div class="filter-row">
+                    <span class="filter-row-label">Typ:</span>
+                    <div id="filter-typ" class="filter-btn-group">
+                        <button type="button" class="filter-btn active" data-typ="alle">Alle</button>
+                        <button type="button" class="filter-btn" data-typ="fakt">Fakt</button>
+                        <button type="button" class="filter-btn" data-typ="tipp">Tipp</button>
+                        <button type="button" class="filter-btn" data-typ="zahl">Zahl</button>
+                        <button type="button" class="filter-btn" data-typ="mythos">Mythos</button>
+                        <button type="button" class="filter-btn" data-typ="glossar">Glossar</button>
+                    </div>
+                </div>
+                <div class="filter-row">
+                    <span class="filter-row-label">Zielgruppe:</span>
+                    <div id="filter-zielgruppe" class="filter-btn-group">
+                        <button type="button" class="filter-btn active" data-zielgruppe="alle">Alle</button>
+                        <button type="button" class="filter-btn" data-zielgruppe="Eltern">Eltern</button>
+                        <button type="button" class="filter-btn" data-zielgruppe="Lehrkr&auml;fte">Lehrkr&auml;fte</button>
+                        <button type="button" class="filter-btn" data-zielgruppe="Therapeuten">Therapeuten</button>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -439,10 +732,42 @@
     <div class="grid" id="grid"></div>
 
     <script>
-    // Snacks data will be embedded here
-    let SNACKS = [];
+    // --- Kategorie Icons (inline SVG) ---
+    const KATEGORIE_ICONS = {
+        'LRS / Legasthenie': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 7V4h16v3"/><path d="M9 20h6"/><path d="M12 4v16"/></svg>',
+        'ADHS & Lesen': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/></svg>',
+        'Autismus & Lesen': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19.439 5.85A5.003 5.003 0 0 0 16 4c-1.74 0-3.27.9-4.15 2.25A5.003 5.003 0 0 0 3 10c0 2.76 2.24 5 5 5h8c2.76 0 5-2.24 5-5a4.99 4.99 0 0 0-1.561-3.65z"/><path d="M9 12l2 2 4-4"/></svg>',
+        'DaZ & Lesen': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>',
+        'H\u00f6rbehinderung & Lesen': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8a6 6 0 0 0-9.33-5"/><path d="M2 11a6 6 0 0 0 9.33 5"/><path d="M15 19a3 3 0 0 1-3-3v-2"/><path d="M9 5a3 3 0 0 1 3 3v2"/></svg>',
+        'Sehbehinderung & Lesen': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>',
+        'Praxistipps': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="9" y1="18" x2="15" y2="18"/><line x1="10" y1="22" x2="14" y2="22"/><path d="M15.09 14c.18-.98.65-1.74 1.41-2.5A4.65 4.65 0 0 0 18 8 6 6 0 0 0 6 8c0 1 .23 2.23 1.5 3.5A4.61 4.61 0 0 1 8.91 14"/></svg>',
+        'Glossar': '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/></svg>'
+    };
 
-    // Load snacks from JSON file or inline data
+    // Evidenz-Siegel SVG
+    const EVIDENZ_ICON = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>';
+
+    // Kategorie-Kurzlabels fuer Pills
+    const KATEGORIE_LABELS = {
+        'LRS / Legasthenie': 'LRS',
+        'ADHS & Lesen': 'ADHS',
+        'Autismus & Lesen': 'Autismus',
+        'DaZ & Lesen': 'DaZ',
+        'H\u00f6rbehinderung & Lesen': 'H\u00f6ren',
+        'Sehbehinderung & Lesen': 'Sehen',
+        'Praxistipps': 'Tipps',
+        'Glossar': 'Glossar'
+    };
+
+    // --- State ---
+    let SNACKS = [];
+    let activeTyp = 'alle';
+    let activeKategorie = 'alle';
+    let activeZielgruppe = 'alle';
+    let searchQuery = '';
+    let searchTimeout;
+
+    // --- Load ---
     async function loadSnacks() {
         try {
             const response = await fetch('snacks.json');
@@ -457,24 +782,37 @@
             SNACKS = INLINE_SNACKS;
         }
 
+        buildKategoriePills();
         updateStats();
         render();
     }
 
-    // State
-    let activeTyp = 'alle';
-    let activeKategorie = 'alle';
-    let activeZielgruppe = 'alle';
-    let searchQuery = '';
-
-    // Update stats
+    // --- Stats ---
     function updateStats() {
         document.getElementById('stat-total').textContent = SNACKS.length + ' Snacks';
         const quellen = new Set(SNACKS.map(s => s.quelle)).size;
         document.getElementById('stat-quellen').textContent = quellen + ' Quellen';
     }
 
-    // Filter snacks
+    // --- Build Kategorie Pills with counts ---
+    function buildKategoriePills() {
+        const counts = {};
+        SNACKS.forEach(s => { counts[s.kategorie] = (counts[s.kategorie] || 0) + 1; });
+
+        const container = document.getElementById('filter-kategorie');
+        let html = '<button class="filter-pill active" data-kategorie="alle">Alle <span class="pill-count">(' + SNACKS.length + ')</span></button>';
+
+        Object.keys(KATEGORIE_LABELS).forEach(kat => {
+            const count = counts[kat] || 0;
+            if (count > 0) {
+                html += '<button class="filter-pill" data-kategorie="' + kat + '">' + KATEGORIE_LABELS[kat] + ' <span class="pill-count">(' + count + ')</span></button>';
+            }
+        });
+
+        container.innerHTML = html;
+    }
+
+    // --- Filter ---
     function getFiltered() {
         return SNACKS.filter(s => {
             if (activeTyp !== 'alle' && s.typ !== activeTyp) return false;
@@ -482,78 +820,162 @@
             if (activeZielgruppe !== 'alle' && !s.zielgruppe.includes(activeZielgruppe)) return false;
             if (searchQuery) {
                 const q = searchQuery.toLowerCase();
-                const searchable = [s.titel, s.body, s.kategorie, ...(s.tags || [])].join(' ').toLowerCase();
+                const searchable = [s.titel, s.body, s.kategorie, s.quelle, ...(s.tags || [])].join(' ').toLowerCase();
                 if (!searchable.includes(q)) return false;
             }
             return true;
         });
     }
 
-    // Render cards
+    // --- Render ---
     function render() {
         const filtered = getFiltered();
         const grid = document.getElementById('grid');
         const countEl = document.getElementById('result-count');
 
         countEl.textContent = filtered.length === SNACKS.length
-            ? `${filtered.length} Knowledge Snacks`
-            : `${filtered.length} von ${SNACKS.length} Snacks`;
+            ? filtered.length + ' Knowledge Snacks'
+            : filtered.length + ' von ' + SNACKS.length + ' Snacks';
 
         if (filtered.length === 0) {
-            grid.innerHTML = '<div class="no-results">Keine Snacks gefunden. Probiere andere Filter oder Suchbegriffe.</div>';
+            grid.innerHTML = '<div class="empty-state">' +
+                '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/><line x1="8" y1="8" x2="14" y2="14"/><line x1="14" y1="8" x2="8" y2="14"/></svg>' +
+                '<h3>Keine Snacks gefunden</h3>' +
+                '<p>Probiere andere Filter oder Suchbegriffe.</p>' +
+                '<button class="reset-btn" onclick="resetFilters()">Filter zur\u00fccksetzen</button>' +
+                '</div>';
             return;
         }
 
-        grid.innerHTML = filtered.map(s => `
-            <div class="card" data-typ="${s.typ}">
-                <div class="card-header">
-                    <span class="card-kategorie">${s.kategorie}</span>
-                    <span class="card-typ">${s.typ.toUpperCase()}</span>
-                </div>
-                <div class="card-titel">${s.titel}</div>
-                <div class="card-body">${s.body}</div>
-                <div class="card-footer">
-                    <span class="card-quelle">${s.quelle}</span>
-                    <span class="card-evidenz">${s.evidenzgrad}</span>
-                </div>
-                ${s.tags ? `<div class="card-tags">${s.tags.map(t => `<span class="tag">#${t}</span>`).join('')}</div>` : ''}
-            </div>
-        `).join('');
+        grid.innerHTML = filtered.map(function(s, i) {
+            var featuredClass = (i % 10 === 9) ? ' featured' : '';
+            var icon = KATEGORIE_ICONS[s.kategorie] || '';
+            var tagsHtml = s.tags ? '<div class="card-tags">' + s.tags.map(function(t) { return '<span class="tag">#' + t + '</span>'; }).join('') + '</div>' : '';
+
+            return '<div class="card' + featuredClass + '" data-typ="' + s.typ + '">' +
+                '<div class="card-header">' +
+                    '<div class="card-header-left">' +
+                        (icon ? '<span class="card-kategorie-icon">' + icon + '</span>' : '') +
+                        '<span class="card-kategorie">' + s.kategorie + '</span>' +
+                    '</div>' +
+                    '<span class="card-typ">' + s.typ.toUpperCase() + '</span>' +
+                '</div>' +
+                '<div class="card-titel">' + s.titel + '</div>' +
+                '<div class="card-body">' + s.body + '</div>' +
+                '<div class="card-footer">' +
+                    '<span class="card-quelle">' + s.quelle + '</span>' +
+                    '<span class="card-evidenz">' + EVIDENZ_ICON + ' ' + s.evidenzgrad + '</span>' +
+                '</div>' +
+                tagsHtml +
+            '</div>';
+        }).join('');
+
+        observeCards();
+        updateFilterDot();
     }
 
-    // Event listeners
-    document.getElementById('search').addEventListener('input', (e) => {
-        searchQuery = e.target.value;
+    // --- Lazy Loading ---
+    function observeCards() {
+        var observer = new IntersectionObserver(function(entries) {
+            entries.forEach(function(entry) {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, { rootMargin: '50px', threshold: 0.1 });
+
+        document.querySelectorAll('.card').forEach(function(card) {
+            observer.observe(card);
+        });
+    }
+
+    // --- Reset Filters ---
+    function resetFilters() {
+        activeTyp = 'alle';
+        activeKategorie = 'alle';
+        activeZielgruppe = 'alle';
+        searchQuery = '';
+        document.getElementById('search').value = '';
+
+        document.querySelectorAll('#filter-typ .filter-btn').forEach(function(b) {
+            b.classList.toggle('active', b.dataset.typ === 'alle');
+        });
+        document.querySelectorAll('#filter-zielgruppe .filter-btn').forEach(function(b) {
+            b.classList.toggle('active', b.dataset.zielgruppe === 'alle');
+        });
+        document.querySelectorAll('#filter-kategorie .filter-pill').forEach(function(b) {
+            b.classList.toggle('active', b.dataset.kategorie === 'alle');
+        });
+
+        render();
+    }
+
+    // --- Filter Panel Toggle ---
+    function toggleFilterPanel() {
+        var panel = document.getElementById('filter-panel');
+        var toggle = document.getElementById('filter-toggle');
+        panel.classList.toggle('open');
+        toggle.classList.toggle('open');
+    }
+
+    // --- Filter Dot Indicator ---
+    function updateFilterDot() {
+        var dot = document.getElementById('filter-dot');
+        var hasActiveFilter = (activeTyp !== 'alle' || activeZielgruppe !== 'alle');
+        dot.classList.toggle('show', hasActiveFilter);
+    }
+
+    // --- Event Listeners ---
+
+    // Search with debounce
+    document.getElementById('search').addEventListener('input', function(e) {
+        clearTimeout(searchTimeout);
+        searchTimeout = setTimeout(function() {
+            searchQuery = e.target.value;
+            render();
+        }, 150);
+    });
+
+    // Trend Tags
+    document.getElementById('trend-tags').addEventListener('click', function(e) {
+        var tag = e.target.closest('.trend-tag');
+        if (!tag) return;
+        var term = tag.dataset.search;
+        document.getElementById('search').value = term;
+        searchQuery = term;
         render();
     });
 
-    document.getElementById('filter-typ').addEventListener('click', (e) => {
+    // Kategorie Pills (event delegation)
+    document.getElementById('filter-kategorie').addEventListener('click', function(e) {
+        var pill = e.target.closest('.filter-pill');
+        if (!pill) return;
+        activeKategorie = pill.dataset.kategorie;
+        document.querySelectorAll('#filter-kategorie .filter-pill').forEach(function(b) { b.classList.remove('active'); });
+        pill.classList.add('active');
+        render();
+    });
+
+    // Typ Filter
+    document.getElementById('filter-typ').addEventListener('click', function(e) {
         if (!e.target.classList.contains('filter-btn')) return;
         activeTyp = e.target.dataset.typ;
-        document.querySelectorAll('#filter-typ .filter-btn').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('#filter-typ .filter-btn').forEach(function(b) { b.classList.remove('active'); });
         e.target.classList.add('active');
         render();
     });
 
-    document.getElementById('filter-kategorie').addEventListener('click', (e) => {
-        if (!e.target.classList.contains('filter-btn')) return;
-        activeKategorie = e.target.dataset.kategorie;
-        document.querySelectorAll('#filter-kategorie .filter-btn').forEach(b => b.classList.remove('active'));
-        e.target.classList.add('active');
-        render();
-    });
-
-    document.getElementById('filter-zielgruppe').addEventListener('click', (e) => {
+    // Zielgruppe Filter
+    document.getElementById('filter-zielgruppe').addEventListener('click', function(e) {
         if (!e.target.classList.contains('filter-btn')) return;
         activeZielgruppe = e.target.dataset.zielgruppe;
-        document.querySelectorAll('#filter-zielgruppe .filter-btn').forEach(b => b.classList.remove('active'));
+        document.querySelectorAll('#filter-zielgruppe .filter-btn').forEach(function(b) { b.classList.remove('active'); });
         e.target.classList.add('active');
         render();
     });
 
-    // Initialize
-    loadSnacks();
-
+    // --- Nav Toggle ---
     function toggleMenu() {
         var menu = document.getElementById('mobile-menu');
         var btn = document.querySelector('.burger-icon');
@@ -561,6 +983,9 @@
         var isOpen = menu.classList.contains('open');
         btn.setAttribute('aria-expanded', isOpen);
     }
+
+    // --- Init ---
+    loadSnacks();
     </script>
 
     <footer>
