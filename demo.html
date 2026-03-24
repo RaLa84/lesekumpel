@@ -89,7 +89,8 @@
     /* Author Buttons */
     .author-btn { display: flex; align-items: center; gap: 10px; width: 100%; background: #f8f8f8; border: 2px solid #eee; border-radius: 12px; padding: 10px 12px; margin-bottom: 8px; cursor: pointer; text-align: left; font-family: var(--font-body); font-size: 0.88rem; color: var(--text-dark); transition: all 0.15s; }
     .author-btn:last-child { margin-bottom: 0; }
-    .author-avatar { width: 34px; height: 34px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1rem; flex-shrink: 0; background: #eee; }
+    .author-avatar { width: 34px; height: 34px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1rem; flex-shrink: 0; background: #eee; overflow: hidden; }
+    .author-avatar img { width: 100%; height: 100%; object-fit: cover; }
     .author-info { flex: 1; }
     .author-name { font-weight: 700; display: block; font-size: 0.85rem; }
     .author-trait { font-size: 0.74rem; color: #aaa; }
@@ -127,6 +128,7 @@
     .action-bar { display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 10px; margin-bottom: 16px; }
     .compare-btn { background: white; border: 2px solid #eee; border-radius: 20px; padding: 7px 16px; font-family: var(--font-body); font-size: 0.83rem; font-weight: 600; color: var(--text-dark); cursor: pointer; transition: all 0.15s; }
     .compare-btn:hover { border-color: var(--accent-coral); color: var(--accent-coral); }
+    .compare-avatar { width: 20px; height: 20px; border-radius: 50%; vertical-align: middle; margin-right: 4px; }
     .compare-btn.active { border-color: var(--accent-coral); background: #fff0ee; color: var(--accent-coral); }
     .toggle-bar { display: flex; align-items: center; gap: 8px; }
     .toggle-label { font-size: 0.83rem; color: #888; font-weight: 600; }
@@ -141,7 +143,8 @@
     .text-display { background: white; border-radius: 20px; padding: 26px 30px; box-shadow: 0 4px 16px rgba(0,0,0,0.07); border: 2px solid #f0f0f0; min-height: 260px; }
 
     .text-header { display: flex; align-items: center; gap: 12px; margin-bottom: 20px; padding-bottom: 16px; border-bottom: 2px solid #f5f5f5; flex-wrap: wrap; }
-    .text-author-avatar { width: 42px; height: 42px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; flex-shrink: 0; }
+    .text-author-avatar { width: 42px; height: 42px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; flex-shrink: 0; overflow: hidden; }
+    .text-author-avatar img { width: 100%; height: 100%; object-fit: cover; }
     .text-author-name { font-family: var(--font-heading); font-size: 1.1rem; font-weight: 600; display: block; }
     .text-stufe-label { font-size: 0.78rem; color: #aaa; }
     .neurotyp-chip { display: none; font-size: 0.72rem; font-weight: 700; padding: 3px 10px; border-radius: 20px; color: white; margin-left: auto; }
@@ -245,14 +248,14 @@
 
         <div class="tooltip-wrapper">
           <button type="button" class="author-btn active" data-author="lea" onclick="selectAuthor(this)">
-            <div class="author-avatar">🦊</div>
+            <div class="author-avatar"><img src="avatars/lea-lesestark.webp" alt="Lea"></div>
             <div class="author-info"><span class="author-name">Lea Lesestark</span><span class="author-trait">warm &amp; neugierig</span></div>
           </button>
         </div>
 
         <div class="tooltip-wrapper">
           <button type="button" class="author-btn" data-author="timo" data-unlock="3" onclick="selectAuthor(this)">
-            <div class="author-avatar">🎵</div>
+            <div class="author-avatar"><img src="avatars/timo-taktschritt.webp" alt="Timo"></div>
             <div class="author-info"><span class="author-name">Timo Taktschritt</span><span class="author-trait">rhythmisch &amp; klar</span></div>
             <span class="lock-badge" id="lock-timo">🔒 Stufe 3</span>
           </button>
@@ -261,7 +264,7 @@
 
         <div class="tooltip-wrapper">
           <button type="button" class="author-btn" data-author="zara" data-unlock="3" onclick="selectAuthor(this)">
-            <div class="author-avatar">⚡</div>
+            <div class="author-avatar"><img src="avatars/zara-zapp.webp" alt="Zara"></div>
             <div class="author-info"><span class="author-name">Zara Zapp</span><span class="author-trait">schnell &amp; aufregend</span></div>
             <span class="lock-badge" id="lock-zara">🔒 Stufe 3</span>
           </button>
@@ -270,7 +273,7 @@
 
         <div class="tooltip-wrapper">
           <button type="button" class="author-btn" data-author="leo" data-unlock="5" onclick="selectAuthor(this)">
-            <div class="author-avatar">🔍</div>
+            <div class="author-avatar"><img src="avatars/leo-klartext.webp" alt="Leo"></div>
             <div class="author-info"><span class="author-name">Leo Klartext</span><span class="author-trait">präzise &amp; ehrlich</span></div>
             <span class="lock-badge" id="lock-leo">🔒 Stufe 5</span>
           </button>
@@ -279,7 +282,7 @@
 
         <div class="tooltip-wrapper">
           <button type="button" class="author-btn" data-author="mia" onclick="selectAuthor(this)">
-            <div class="author-avatar">🌍</div>
+            <div class="author-avatar"><img src="avatars/mia-bruecke.webp" alt="Mia"></div>
             <div class="author-info"><span class="author-name">Mia Brücke</span><span class="author-trait">geduldig &amp; bildhaft</span></div>
           </button>
         </div>
@@ -303,7 +306,7 @@
     <div id="display-normal">
       <div class="text-display">
         <div class="text-header">
-          <div class="text-author-avatar author-bg-lea" id="display-avatar">🦊</div>
+          <div class="text-author-avatar author-bg-lea" id="display-avatar"><img src="avatars/lea-lesestark.webp" alt="Lea"></div>
           <div>
             <span class="text-author-name" id="display-name">Lea Lesestark</span>
             <span class="text-stufe-label" id="display-stufe">Stufe 1 · Anfänger</span>
@@ -324,7 +327,7 @@
     <div id="display-compare" style="display:none;">
       <div class="compare-grid">
         <div class="compare-pane">
-          <p class="compare-pane-title">🦊 <strong>Lea Lesestark</strong> · Standard</p>
+          <p class="compare-pane-title"><img src="avatars/lea-lesestark.webp" alt="Lea" class="compare-avatar"> <strong>Lea Lesestark</strong> · Standard</p>
           <div id="compare-lea"></div>
         </div>
         <div class="compare-pane">
@@ -344,11 +347,11 @@
     const state = { story: 'katze-doener', stufe: 1, author: 'lea', compare: false };
 
     const authors = {
-      lea:  { name: 'Lea Lesestark',    avatar: '🦊', avatarBg: '#ffe0dc', neurotyp: 'Standard',                 color: '#D67171', unlock: 1, info: 'Lea schreibt für alle Kinder — ausgewogene Satzlänge, lebendige Handlung, altersgerecht.' },
-      timo: { name: 'Timo Taktschritt', avatar: '🎵', avatarBg: '#d8eaff', neurotyp: 'LRS / Legasthenie',        color: '#5B9BD5', unlock: 3, info: 'Timo schreibt rhythmisch: kurze Wörter, gleichmäßige Sätze, klangvolle Satzenden. Entlastet das Dekodieren beim Lesen.' },
-      zara: { name: 'Zara Zapp',        avatar: '⚡', avatarBg: '#ffe8c0', neurotyp: 'ADHS',                     color: '#E8950A', unlock: 3, info: 'Zara startet sofort mit Action. Kurze Absätze, Mini-Cliffhanger — hält die Aufmerksamkeit hoch, kein langer Aufbau.' },
-      leo:  { name: 'Leo Klartext',     avatar: '🔍', avatarBg: '#e4d8ff', neurotyp: 'Autismus-Spektrum (ASS)',  color: '#6B5B9E', unlock: 5, info: 'Leo schreibt wortwörtlich: keine Metaphern, Gefühle immer explizit benannt ("Er war wütend, weil..."), klare Kausalität. Sinnvoll erst ab Stufe 5, wo Ironie und Idiome im Standard-Text auftauchen.' },
-      mia:  { name: 'Mia Brücke',       avatar: '🌍', avatarBg: '#c8ece9', neurotyp: 'Deutsch als Zweitsprache', color: '#2a9d8f', unlock: 1, info: 'Mia erklärt schwierige Wörter direkt im Text, vermeidet Komposita, kulturspezifische Begriffe und Passivkonstruktionen.' }
+      lea:  { name: 'Lea Lesestark',    avatar: 'avatars/lea-lesestark.webp',    avatarBg: '#ffe0dc', neurotyp: 'Standard',                 color: '#D67171', unlock: 1, info: 'Lea schreibt für alle Kinder — ausgewogene Satzlänge, lebendige Handlung, altersgerecht.' },
+      timo: { name: 'Timo Taktschritt', avatar: 'avatars/timo-taktschritt.webp', avatarBg: '#d8eaff', neurotyp: 'LRS / Legasthenie',        color: '#5B9BD5', unlock: 3, info: 'Timo schreibt rhythmisch: kurze Wörter, gleichmäßige Sätze, klangvolle Satzenden. Entlastet das Dekodieren beim Lesen.' },
+      zara: { name: 'Zara Zapp',        avatar: 'avatars/zara-zapp.webp',       avatarBg: '#ffe8c0', neurotyp: 'ADHS',                     color: '#E8950A', unlock: 3, info: 'Zara startet sofort mit Action. Kurze Absätze, Mini-Cliffhanger — hält die Aufmerksamkeit hoch, kein langer Aufbau.' },
+      leo:  { name: 'Leo Klartext',     avatar: 'avatars/leo-klartext.webp',    avatarBg: '#e4d8ff', neurotyp: 'Autismus-Spektrum (ASS)',  color: '#6B5B9E', unlock: 5, info: 'Leo schreibt wortwörtlich: keine Metaphern, Gefühle immer explizit benannt ("Er war wütend, weil..."), klare Kausalität. Sinnvoll erst ab Stufe 5, wo Ironie und Idiome im Standard-Text auftauchen.' },
+      mia:  { name: 'Mia Brücke',       avatar: 'avatars/mia-bruecke.webp',    avatarBg: '#c8ece9', neurotyp: 'Deutsch als Zweitsprache', color: '#2a9d8f', unlock: 1, info: 'Mia erklärt schwierige Wörter direkt im Text, vermeidet Komposita, kulturspezifische Begriffe und Passivkonstruktionen.' }
     };
 
     const stufeLabels = { 1: 'Stufe 1 · Anfänger', 3: 'Stufe 3 · Mittelstufe', 5: 'Stufe 5 · Profi' };
@@ -423,7 +426,7 @@
       const a = authors[state.author];
       document.body.dataset.author = state.author;
       const avatarEl = document.getElementById('display-avatar');
-      avatarEl.textContent = a.avatar;
+      avatarEl.innerHTML = `<img src="${a.avatar}" alt="${a.name}">`;
       avatarEl.className = 'text-author-avatar author-bg-' + state.author;
       document.getElementById('display-name').textContent = a.name;
       document.getElementById('display-stufe').textContent = stufeLabels[state.stufe];
@@ -447,7 +450,7 @@
 
     async function loadCompare() {
       const a = authors[state.author];
-      document.getElementById('compare-other-title').innerHTML = `${a.avatar} <strong>${a.name}</strong> · ${a.neurotyp}`;
+      document.getElementById('compare-other-title').innerHTML = `<img src="${a.avatar}" alt="${a.name}" class="compare-avatar"> <strong>${a.name}</strong> · ${a.neurotyp}`;
       const [leaRes, otherRes] = await Promise.all([
         fetch(`demo-texte/${state.story}-stufe${state.stufe}-lea.html`),
         fetch(`demo-texte/${state.story}-stufe${state.stufe}-${state.author}.html`)
