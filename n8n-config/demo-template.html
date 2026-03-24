@@ -80,7 +80,7 @@
         }
 
         .hero-image { width: 100%; border-radius: 15px; margin-bottom: 30px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
-        .story-inline-img { width: 100%; border-radius: 15px; margin: 20px 0; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        .story-inline-img { width: 100%; border-radius: 15px; margin: 20px 0 10px 0; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
 
         /* --- TOOLBAR --- */
         .toolbar-container {
@@ -338,7 +338,7 @@
             dictionary = rawDictionaryEntry;
         }
 
-        let state = { syllables: false, summary: false, chunkIndex: 0, chunks: [], magnifier: false };
+        let state = { syllables: false, summary: false, chunkIndex: 0, chunks: [], chunkImages: [], magnifier: false };
         let inlineImages = [];
 
         // Bilder einsammeln: Erstes bleibt Hero, restliche werden inline verteilt
@@ -388,8 +388,9 @@
             }).join('');
             document.getElementById('full-text-view').innerHTML = html;
 
-            // Chunks für Häppchen-Modus (ohne Bilder)
+            // Chunks für Häppchen-Modus (mit Bildzuordnung)
             state.chunks = groups.map(g => g.trim().split(/\s+/).map(w => processWord(w)).join(' '));
+            state.chunkImages = groups.map((_, i) => imgPositions[i] || null);
             updateChunkDisplay();
             updateButtons();
         }
@@ -433,7 +434,11 @@
 
         function updateChunkDisplay() {
             if(state.chunkIndex >= state.chunks.length) state.chunkIndex = 0;
-            document.getElementById('chunk-display').innerHTML = state.chunks[state.chunkIndex] || "";
+            let imgHtml = '';
+            if (state.chunkImages && state.chunkImages[state.chunkIndex]) {
+                imgHtml = `<img src="${state.chunkImages[state.chunkIndex]}" alt="Illustration" class="story-inline-img" onerror="this.style.display='none'">`;
+            }
+            document.getElementById('chunk-display').innerHTML = imgHtml + (state.chunks[state.chunkIndex] || "");
             let current = state.chunkIndex + 1, total = state.chunks.length;
             let ring = document.getElementById('chunk-progress');
             ring.innerText = current + "/" + total;
