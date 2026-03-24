@@ -72,8 +72,27 @@
         .footer-social a { color: var(--text-dark); transition: color 0.2s, transform 0.2s; display: flex; align-items: center; }
         .footer-social a:hover { color: var(--accent-coral); transform: translateY(-2px); }
 
+        /* --- FLOATING DECORATIONS --- */
+        .floating-deco { position: absolute; pointer-events: none; z-index: 0; will-change: transform; }
+        .deco-star { width: 32px; height: 32px; animation: float 6s ease-in-out infinite; }
+        .deco-circle { width: 20px; height: 20px; border-radius: 50%; animation: float-slow 8s ease-in-out infinite; }
+        .deco-sparkle { width: 16px; height: 16px; animation: decoSparkle 4s ease-in-out infinite; }
+        @media (max-width: 767px) { .deco-hide-mobile { display: none; } }
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(5deg); }
+        }
+        @keyframes float-slow {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-12px) rotate(-3deg); }
+        }
+        @keyframes decoSparkle {
+            0%, 100% { opacity: 0.3; transform: scale(0.8); }
+            50% { opacity: 1; transform: scale(1.2); }
+        }
+
         /* --- CONTAINER --- */
-        .container { max-width: 1100px; margin: 40px auto; padding: 0 20px; }
+        .container { max-width: 1100px; margin: 40px auto; padding: 0 20px; position: relative; overflow: visible; }
         h1 { font-family: var(--font-heading); color: var(--accent-coral); margin-bottom: 8px; text-transform: uppercase; font-size: 2rem; }
         .page-subtitle { color: #888; font-size: 1.05rem; margin-bottom: 30px; }
 
@@ -268,6 +287,13 @@
     </nav>
 
     <div class="container">
+        <!-- Floating decorations -->
+        <svg aria-hidden="true" class="floating-deco deco-star" style="top:2%;right:5%;animation-delay:-1s;" viewBox="0 0 32 32"><polygon points="16,2 20,12 30,12 22,19 25,30 16,23 7,30 10,19 2,12 12,12" fill="#FFD54F" opacity="0.5"/></svg>
+        <svg aria-hidden="true" class="floating-deco deco-sparkle deco-hide-mobile" style="top:15%;left:3%;animation-delay:-2s;" viewBox="0 0 24 24"><path d="M12,2 L14,10 L22,12 L14,14 L12,22 L10,14 L2,12 L10,10 Z" fill="#FFD54F" opacity="0.4"/></svg>
+        <div aria-hidden="true" class="floating-deco deco-circle deco-hide-mobile" style="top:40%;right:2%;background:rgba(214,113,113,0.15);animation-delay:-3s;"></div>
+        <svg aria-hidden="true" class="floating-deco deco-star deco-hide-mobile" style="top:65%;left:1%;animation-delay:-4s;" viewBox="0 0 32 32"><polygon points="16,2 20,12 30,12 22,19 25,30 16,23 7,30 10,19 2,12 12,12" fill="#D67171" opacity="0.2"/></svg>
+        <svg aria-hidden="true" class="floating-deco deco-sparkle" style="top:85%;right:8%;animation-delay:-0.5s;" viewBox="0 0 24 24"><path d="M12,2 L14,10 L22,12 L14,14 L12,22 L10,14 L2,12 L10,10 Z" fill="#D67171" opacity="0.2"/></svg>
+
         <h1>Demo-Texte</h1>
         <p class="page-subtitle">Entdecke Geschichten unserer KI-Autoren &mdash; f&uuml;r jede Lesestufe.</p>
 
