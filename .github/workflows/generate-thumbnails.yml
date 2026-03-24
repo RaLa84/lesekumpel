@@ -4,6 +4,7 @@ on:
   push:
     branches: [main]
     paths: ['bilder/**-1.png']
+  workflow_dispatch:
 
 jobs:
   thumbnails:
@@ -60,5 +61,6 @@ jobs:
             echo "Keine neuen Thumbnails"
           else
             git commit -m "Auto: Thumbnails generiert"
+            git pull --rebase
             git push
           fi

@@ -67,7 +67,7 @@ Kinder starten mit Lea Lesestark. Weitere Autoren werden durch Lesefortschritt f
 ## Die Matrix: 3 Stufen × 5 Personas
 
 ### Stufe 1 — "Der Start" (Phase 1.0, Klasse 1 Anfang)
-Textregeln: Max. 5 Wörter/Satz · Top-100-Wörter · Präsens · SPO
+Textregeln: Max. 7 Wörter/Satz · Top-100 + Themen-Wörter · Präsens · natürliche Wortstellung
 
 | Persona | Verfügbar | Hinweis |
 |---|---|---|

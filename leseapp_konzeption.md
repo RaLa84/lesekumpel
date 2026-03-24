@@ -1218,22 +1218,26 @@ Die App nutzt ein **wissenschaftlich fundiertes 5-Phasen-Modell** zur systematis
 - Stockt bei jedem "und"
 
 #### Text-Metriken
-- **Wörter**: 20-30 pro Seite
+- **Wörter**: 20-40 pro Seite
 - **Sätze**: 4-6 pro Seite
-- **Ø Wortlänge**: 3-5 Wörter
+- **Ø Satzlänge**: 4-6 Wörter
 
 #### Regel für KI-Prompt (System Instruction)
 - **Zeit**: Präsens
-- **Syntax**: Nur Hauptsätze (SPO)
-- **Länge**: Max. 5 Wörter/Satz
-- **Verbot**: Keine Wörter außerhalb der Liste
+- **Syntax**: Hauptsätze bevorzugt, natürliche Wortstellung wichtiger als striktes SPO
+- **Länge**: Max. 7 Wörter/Satz
+- **Wortschatz**: Top-100-Wörter + themenrelevante Wörter (Titel-Wörter sind immer erlaubt)
+- **Natürlichkeit**: Jeder Satz muss klingen, wie eine Erzieherin zum Kind sprechen würde. Natürlichkeit geht vor Kürze — ein Satz darf 1-2 Wörter länger sein, wenn er dadurch natürlicher klingt.
 
 #### Beispiel-Sätze
-- "Mama ist da."
-- "Der Ball ist rot."
+- ✅ "Lilith und ihr Bruder spielen."
+- ✅ "Sie haben viel Spaß."
+- ✅ "Mama ist da."
+- ❌ "Viel Spaß ist da." (unnatürlich)
+- ❌ "Es ist Domino." (kein Kind sagt das so)
 
 #### Story-Datenbank Filter
-Fokus auf **Top 100 Wörter** (Basis-Wortschatz)
+Fokus auf **Top 100 Wörter** (Basis-Wortschatz) + themenrelevante Wörter
 
 ---
 
