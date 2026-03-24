@@ -374,7 +374,10 @@
 
             // Text in Sätze aufteilen
             let cleanForSplit = txt.replace(/<br\s*\/?>/gi, " ").replace(/\n/g, " ");
-            let sentences = cleanForSplit.match(/[^\.!\?]+[\.!\?]+(\s+|$)/g);
+            // Anführungszeichen entfernen (stören Satz-Splitting)
+            cleanForSplit = cleanForSplit.replace(/["""„]/g, "");
+            // Satzende: .!? gefolgt von Leerzeichen+Großbuchstabe oder Textende (nicht bei !, vor Komma = Redebegleitsatz)
+            let sentences = cleanForSplit.match(/[^.!?]*[.!?]+(?:\s*,\s*[^.!?]*[.!?]+)*(?:\s+|$)/g);
             if (!sentences) sentences = [cleanForSplit];
 
             // Sätze zu Gruppen bündeln (je 2-3 Sätze)
