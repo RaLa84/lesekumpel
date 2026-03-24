@@ -42,11 +42,14 @@
         .brand-name { font-family: var(--font-heading); font-size: 1.2rem; color: var(--accent-coral); font-weight: 600; text-decoration: none; }
         .nav-links-desktop { display: none; gap: 15px; align-items: center; }
         .nav-btn { text-decoration: none; color: var(--text-dark); font-weight: 600; font-size: 1rem; display: flex; align-items: center; gap: 5px; }
-        .btn-new-story {
-            border: 2px solid var(--primary-yellow); background: #fff; padding: 8px 15px;
-            border-radius: 28px; color: var(--text-dark); font-weight: bold; transition: transform 0.2s; text-decoration: none;
+        .btn-cta-nav {
+            display: none; background: var(--accent-coral); color: #fff; padding: 11px 26px;
+            border-radius: 28px; font-weight: 600; transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            text-decoration: none; font-family: var(--font-body); font-size: 0.9rem;
+            border: none; box-shadow: 0 4px 14px rgba(214,113,113,0.3);
         }
-        .btn-new-story:hover { transform: scale(1.05); background: #fffbe6; }
+        .btn-cta-nav:hover { background: #B85555; transform: translateY(-2px) scaleX(1.04) scaleY(0.97); }
+        .nav-btn:hover { color: var(--accent-coral); }
         .nav-right { display: flex; align-items: center; gap: 15px; }
         .burger-icon { font-size: 1.8rem; cursor: pointer; display: block; color: var(--text-dark); }
         .mobile-menu {
@@ -126,6 +129,7 @@
         @media (min-width: 768px) {
             .burger-icon { display: none; }
             .nav-links-desktop { display: flex; }
+            .btn-cta-nav { display: inline-block; }
             .nav-logo { height: 50px; }
             .brand-name { font-size: 1.5rem; display: block; }
             .nav-left { gap: 15px; }
@@ -202,19 +206,34 @@
 
     <button class="fab-tools" onclick="toggleMobileToolbar()" aria-label="Werkzeuge öffnen">🛠️</button>
 
-    <nav class="main-navbar">
+    <nav class="main-navbar" aria-label="Hauptnavigation">
         <div class="nav-left">
-            <img src="https://github.com/RaLa84/lesekumpel/blob/main/bilder/marketing/logo1.png?raw=true" alt="Logo" class="nav-logo">
-            <a href="../index.html" class="brand-name">Lesekumpel</a>
-            <div class="nav-links-desktop"><a href="../index.html" class="nav-btn">📚 Bibliothek</a></div>
+            <img src="../bilder/marketing/logo1.png" alt="Lesekumpel Logo" class="nav-logo">
+            <a href="../landingpage.html" class="brand-name">Lesekumpel</a>
+            <div class="nav-links-desktop">
+                <a href="../landingpage.html#mission" class="nav-btn">F&uuml;r euch</a>
+                <a href="../landingpage.html#how-it-works" class="nav-btn">So funktioniert&rsquo;s</a>
+                <a href="../ueber-uns.html" class="nav-btn">&Uuml;ber uns</a>
+                <a href="../demo.html" class="nav-btn">Demo</a>
+                <a href="../preise.html" class="nav-btn">Preise</a>
+                <a href="../knowledge-base/snacks/index.html" class="nav-btn">Wissen</a>
+                <a href="../mein-konto.html" class="nav-btn">Mein Konto</a>
+            </div>
         </div>
         <div class="nav-right">
-            <a href="https://rala84.app.n8n.cloud/form/d934fee1-a67d-4146-8b19-1e3c8a1a8967" class="btn-new-story hidden-mobile">✨ Neue Geschichte</a>
-            <span class="burger-icon" onclick="toggleMenu()">☰</span>
+            <a href="../landingpage.html#registrieren" class="btn-cta-nav">Jetzt registrieren</a>
+            <button type="button" class="burger-icon" aria-label="Navigationsmen&uuml; &ouml;ffnen" aria-expanded="false" aria-controls="mobile-menu" onclick="toggleMenu()">&#9776;</button>
         </div>
         <div id="mobile-menu" class="mobile-menu">
-            <a href="../index.html" class="nav-btn">📚 Bibliothek</a>
-            <a href="https://rala84.app.n8n.cloud/form/d934fee1-a67d-4146-8b19-1e3c8a1a8967" class="nav-btn">✨ Neue Geschichte</a>
+            <a href="../landingpage.html#mission" class="nav-btn" onclick="toggleMenu()">F&uuml;r euch</a>
+            <a href="../landingpage.html#how-it-works" class="nav-btn" onclick="toggleMenu()">So funktioniert&rsquo;s</a>
+            <a href="../ueber-uns.html" class="nav-btn" onclick="toggleMenu()">&Uuml;ber uns</a>
+            <a href="../demo.html" class="nav-btn" onclick="toggleMenu()">Demo</a>
+            <a href="../preise.html" class="nav-btn" onclick="toggleMenu()">Preise</a>
+            <a href="../knowledge-base/snacks/index.html" class="nav-btn" onclick="toggleMenu()">Wissen</a>
+            <a href="../mein-konto.html" class="nav-btn" onclick="toggleMenu()">Mein Konto</a>
+            <a href="../neue-geschichte.html" class="nav-btn" onclick="toggleMenu()">&#10024; Neue Geschichte</a>
+            <a href="../landingpage.html#registrieren" class="nav-btn" onclick="toggleMenu()">Jetzt registrieren</a>
         </div>
     </nav>
 
