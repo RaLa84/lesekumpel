@@ -6,7 +6,7 @@
     <title>Demo-Texte – Lesekumpel</title>
 
     <style>
-        /* --- GRUNDLAGEN & STYLES --- */
+        /* --- GRUNDLAGEN --- */
         :root {
             --bg-body: #FFF9E5; --bg-card: #ffffff;
             --primary-yellow: #FFD54F; --accent-coral: #D67171; --accent-teal: #2a9d8f;
@@ -72,80 +72,148 @@
         .footer-social a { color: var(--text-dark); transition: color 0.2s, transform 0.2s; display: flex; align-items: center; }
         .footer-social a:hover { color: var(--accent-coral); transform: translateY(-2px); }
 
-        /* --- KATALOG STYLES --- */
-        .container { max-width: 800px; margin: 40px auto; padding: 0 20px; }
-        h1 { font-family: var(--font-heading); color: var(--accent-coral); margin-bottom: 20px; text-transform: uppercase; }
+        /* --- CONTAINER --- */
+        .container { max-width: 1100px; margin: 40px auto; padding: 0 20px; }
+        h1 { font-family: var(--font-heading); color: var(--accent-coral); margin-bottom: 8px; text-transform: uppercase; font-size: 2rem; }
+        .page-subtitle { color: #888; font-size: 1.05rem; margin-bottom: 30px; }
 
         /* --- STEUERELEMENTE --- */
         .controls {
-            background: white; padding: 20px; border-radius: 20px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.05); margin-bottom: 30px; border: 2px solid #eee;
+            background: white; padding: 24px; border-radius: 24px;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.04); margin-bottom: 30px; border: 2px solid #eee;
         }
 
         /* AUTOREN FILTER */
         .author-filter-container {
-            display: flex; justify-content: center; gap: 15px; margin-bottom: 25px; flex-wrap: wrap;
+            display: flex; justify-content: center; gap: 18px; margin-bottom: 10px; flex-wrap: wrap;
         }
         .author-item {
-            display: flex; flex-direction: column; align-items: center; gap: 5px; cursor: pointer;
-            transition: transform 0.2s;
+            display: flex; flex-direction: column; align-items: center; gap: 6px; cursor: pointer;
+            transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
-        .author-item:hover { transform: translateY(-3px); }
+        .author-item:hover { transform: translateY(-4px) scale(1.05); }
 
         .author-img-wrapper {
-            width: 60px; height: 60px; border-radius: 50%; overflow: hidden;
-            border: 3px solid transparent; box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            transition: all 0.2s; background: #f9f9f9; display: flex; align-items: center; justify-content: center;
+            width: 64px; height: 64px; border-radius: 50%; overflow: hidden;
+            border: 3px solid transparent; box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+            transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1); background: #f9f9f9;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .author-item:hover .author-img-wrapper {
+            transform: scale(1.15);
+            box-shadow: 0 6px 18px rgba(0,0,0,0.15);
         }
         .author-img { width: 100%; height: 100%; object-fit: cover; }
         .author-placeholder { font-size: 1.5rem; }
-        .author-name { font-size: 0.8rem; font-weight: bold; color: #777; }
+        .author-name { font-size: 0.8rem; font-weight: bold; color: #777; transition: color 0.2s; }
 
-        /* Active State */
         .author-item.active .author-img-wrapper {
             border-color: var(--accent-coral);
-            box-shadow: 0 0 0 2px rgba(214, 113, 113, 0.3);
+            box-shadow: 0 0 0 3px rgba(214, 113, 113, 0.25);
             transform: scale(1.1);
         }
         .author-item.active .author-name { color: var(--accent-coral); }
 
-        /* Filter Buttons (Lesestufe) */
+        /* BIO CARD */
+        .author-bio-card {
+            max-height: 0; overflow: hidden; opacity: 0;
+            transition: max-height 0.4s ease, opacity 0.3s ease, margin 0.3s ease;
+            margin: 0 auto; text-align: left;
+        }
+        .author-bio-card.visible {
+            max-height: 120px; opacity: 1; margin: 16px auto 20px;
+        }
+        .bio-inner {
+            display: flex; align-items: center; gap: 14px; padding: 14px 18px;
+            border-radius: 16px; background: #fef9f0;
+        }
+        .bio-avatar { width: 44px; height: 44px; border-radius: 50%; object-fit: cover; flex-shrink: 0; }
+        .bio-text { flex: 1; }
+        .bio-name { font-family: var(--font-heading); font-weight: 600; font-size: 0.95rem; margin-bottom: 2px; }
+        .bio-quote {
+            font-style: italic; font-size: 0.9rem; color: #555;
+            position: relative; padding-left: 16px;
+        }
+        .bio-quote::before {
+            content: "\201E"; position: absolute; left: 0; top: -2px;
+            font-size: 1.4rem; color: #ccc; font-style: normal;
+        }
+
+        /* LESESTUFE FILTER */
         .filter-btn-group { display: flex; justify-content: center; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
         .filter-btn {
             background: #eee; border: none; padding: 8px 16px; border-radius: 20px;
             cursor: pointer; font-family: inherit; font-weight: bold; color: #555; transition: all 0.2s;
+            font-size: 0.9rem;
         }
         .filter-btn:hover { background: #ddd; }
         .filter-btn.active { background: var(--primary-yellow); color: var(--text-dark); box-shadow: 0 3px 5px rgba(244, 208, 63, 0.4); }
 
-        /* Suche & Info */
+        /* SUCHE */
         #searchInput {
-            width: 100%; padding: 12px; font-size: 1.1em; border: 2px solid var(--primary-yellow);
-            border-radius: 15px; outline: none; box-sizing: border-box; font-family: var(--font-body);
+            width: 100%; padding: 12px 16px; font-size: 1.05em; border: 2px solid #eee;
+            border-radius: 16px; outline: none; box-sizing: border-box; font-family: var(--font-body);
+            transition: border-color 0.2s, box-shadow 0.2s;
         }
-        #searchInput:focus { border-color: var(--accent-coral); }
-        .sort-info { font-size: 0.9em; color: #888; margin-top: 10px; font-style: italic; }
+        #searchInput:focus { border-color: var(--accent-coral); box-shadow: 0 0 0 3px rgba(214,113,113,0.1); }
+        .sort-info { font-size: 0.85em; color: #aaa; margin-top: 10px; }
 
-        /* --- LISTE --- */
-        #bookList { list-style: none; padding: 0; }
-        .book-item {
-            background: white; margin-bottom: 15px; border-radius: 20px;
-            box-shadow: 0 4px 6px rgba(0,0,0,0.05); transition: transform 0.2s, opacity 0.3s;
-            border-left: 10px solid var(--accent-teal); opacity: 0; animation: fadeIn 0.5s forwards; text-align: left;
+        /* --- STORY GRID --- */
+        #bookGrid {
+            display: grid; grid-template-columns: 1fr; gap: 24px;
+            list-style: none; padding: 0; margin: 0;
         }
-        @keyframes fadeIn { to { opacity: 1; } }
-        .book-item:hover { transform: scale(1.02); box-shadow: 0 8px 15px rgba(0,0,0,0.1); }
-        .book-link { display: flex; align-items: center; padding: 15px 20px; text-decoration: none; color: #333; text-align: left; }
-        .book-content { flex-grow: 1; }
-        .book-title { font-size: 1.2em; font-weight: bold; display: block; font-family: var(--font-heading); }
-        .book-meta { font-size: 0.85em; color: #777; margin-top: 4px; display: flex; gap: 10px; align-items: center; flex-wrap: wrap; }
-        .icon { font-size: 2em; margin-right: 15px; }
-        .badge { background: #eee; padding: 2px 8px; border-radius: 8px; font-size: 0.8em; }
-        .level-badge { background: #e8f5e9; color: #2e7d32; font-weight: 600; }
-        .author-badge { color: var(--accent-coral); font-weight: 600; }
+        @media (min-width: 580px) { #bookGrid { grid-template-columns: repeat(2, 1fr); } }
+        @media (min-width: 900px) { #bookGrid { grid-template-columns: repeat(3, 1fr); } }
 
-        .loading { color: #888; font-style: italic; margin: 20px 0; }
+        /* STORY CARD */
+        .story-card {
+            background: white; border-radius: 20px; overflow: hidden;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.05);
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.3s ease;
+            opacity: 0; animation: cardFadeIn 0.5s forwards;
+            text-align: left;
+        }
+        .story-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 32px rgba(0,0,0,0.1);
+        }
+        @keyframes cardFadeIn { to { opacity: 1; } }
+
+        .story-card a { text-decoration: none; color: inherit; display: block; }
+
+        /* Cover */
+        .card-cover {
+            height: 100px; position: relative; overflow: hidden;
+            display: flex; align-items: center; justify-content: center;
+        }
+        .card-cover svg { opacity: 0.15; position: absolute; width: 100%; height: 100%; }
+        .card-cover-icon { font-size: 2.5rem; position: relative; z-index: 1; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.15)); }
+
+        /* Body */
+        .card-body { padding: 16px 18px 18px; }
+        .card-title {
+            font-family: var(--font-heading); font-size: 1.1rem; font-weight: 600;
+            margin-bottom: 8px; line-height: 1.3; color: var(--text-dark);
+            display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+        }
+        .card-badges { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 10px; }
+        .badge {
+            padding: 3px 10px; border-radius: 10px; font-size: 0.75rem; font-weight: 600;
+        }
+        .level-badge { background: #e8f5e9; color: #2e7d32; }
+        .card-meta {
+            display: flex; justify-content: space-between; align-items: center;
+            font-size: 0.8rem; color: #999; flex-wrap: wrap; gap: 6px;
+        }
+        .card-author { color: var(--accent-coral); font-weight: 600; }
+        .card-stats { display: flex; gap: 12px; align-items: center; }
+        .stat { display: flex; align-items: center; gap: 3px; }
+        .stat svg { width: 14px; height: 14px; }
+
+        .loading { color: #888; font-style: italic; margin: 30px 0; }
         .error { color: red; }
+        .no-results { color: #999; font-size: 1.1rem; margin: 40px 0; }
     </style>
     <link rel="stylesheet" href="fonts/fonts.css">
 </head>
@@ -183,61 +251,70 @@
 
     <div class="container">
         <h1>Demo-Texte</h1>
+        <p class="page-subtitle">Entdecke Geschichten unserer KI-Autoren &mdash; f&uuml;r jede Lesestufe.</p>
 
         <div class="controls">
+            <!-- Autoren-Filter -->
             <div class="author-filter-container">
                 <div class="author-item active" onclick="setAuthorFilter('all', this)">
                     <div class="author-img-wrapper" style="background:#eee;"><span class="author-placeholder">&#x1F465;</span></div>
                     <span class="author-name">Alle</span>
                 </div>
-
-                <div class="author-item" onclick="setAuthorFilter('Lea Lesestark', this)">
+                <div class="author-item" onclick="setAuthorFilter('Lea Lesestark', this)" data-author="Lea Lesestark">
                     <div class="author-img-wrapper">
                         <img src="avatars/lea-lesestark.webp" class="author-img" alt="Lea Lesestark">
                     </div>
-                    <span class="author-name">Lea Lesestark</span>
+                    <span class="author-name">Lea</span>
                 </div>
-
-                <div class="author-item" onclick="setAuthorFilter('Timo Taktschritt', this)">
+                <div class="author-item" onclick="setAuthorFilter('Timo Taktschritt', this)" data-author="Timo Taktschritt">
                     <div class="author-img-wrapper">
                         <img src="avatars/timo-taktschritt.webp" class="author-img" alt="Timo Taktschritt">
                     </div>
-                    <span class="author-name">Timo Taktschritt</span>
+                    <span class="author-name">Timo</span>
                 </div>
-
-                <div class="author-item" onclick="setAuthorFilter('Zara Zapp', this)">
+                <div class="author-item" onclick="setAuthorFilter('Zara Zapp', this)" data-author="Zara Zapp">
                     <div class="author-img-wrapper">
                         <img src="avatars/zara-zapp.webp" class="author-img" alt="Zara Zapp">
                     </div>
-                    <span class="author-name">Zara Zapp</span>
+                    <span class="author-name">Zara</span>
                 </div>
-
-                <div class="author-item" onclick="setAuthorFilter('Leo Klartext', this)">
+                <div class="author-item" onclick="setAuthorFilter('Leo Klartext', this)" data-author="Leo Klartext">
                     <div class="author-img-wrapper">
                         <img src="avatars/leo-klartext.webp" class="author-img" alt="Leo Klartext">
                     </div>
-                    <span class="author-name">Leo Klartext</span>
+                    <span class="author-name">Leo</span>
                 </div>
-
-                <div class="author-item" onclick="setAuthorFilter('Mia Br\u00fccke', this)">
+                <div class="author-item" onclick="setAuthorFilter('Mia Br\u00fccke', this)" data-author="Mia Br&uuml;cke">
                     <div class="author-img-wrapper">
                         <img src="avatars/mia-bruecke.webp" class="author-img" alt="Mia Br&uuml;cke">
                     </div>
-                    <span class="author-name">Mia Br&uuml;cke</span>
+                    <span class="author-name">Mia</span>
                 </div>
             </div>
 
-            <div class="filter-btn-group" id="levelFilterGroup">
-                <button class="filter-btn active" onclick="setLevelFilter('all', this)">Alle Stufen</button>
+            <!-- Bio Card -->
+            <div class="author-bio-card" id="authorBio">
+                <div class="bio-inner" id="bioInner">
+                    <img src="" alt="" class="bio-avatar" id="bioAvatar">
+                    <div class="bio-text">
+                        <div class="bio-name" id="bioName"></div>
+                        <div class="bio-quote" id="bioQuote"></div>
+                    </div>
+                </div>
             </div>
 
-            <input type="text" id="searchInput" placeholder="Suche nach Titel...">
+            <!-- Lesestufe-Filter -->
+            <div class="filter-btn-group" id="levelFilterGroup">
+                <button type="button" class="filter-btn active" onclick="setLevelFilter('all', this)">Alle Stufen</button>
+            </div>
 
-            <div class="sort-info" id="sortStatus">Sortierung: Wird geladen...</div>
+            <!-- Suche -->
+            <input type="text" id="searchInput" placeholder="&#x1F50D; Geschichte suchen...">
+            <div class="sort-info" id="sortStatus">Wird geladen...</div>
         </div>
 
         <div id="loadingMsg" class="loading">Lade Demo-Texte...</div>
-        <ul id="bookList"></ul>
+        <div id="bookGrid"></div>
     </div>
 
     <footer>
@@ -257,24 +334,64 @@
             const menu = document.getElementById('mobile-menu');
             const btn = document.querySelector('.burger-icon');
             menu.classList.toggle('open');
-            const isOpen = menu.classList.contains('open');
-            btn.setAttribute('aria-expanded', isOpen);
+            btn.setAttribute('aria-expanded', menu.classList.contains('open'));
         }
 
+        // --- DATEN ---
         const user = 'RaLa84';
         const repo = 'lesekumpel';
+
+        const authorColors = {
+            'Lea Lesestark': '#D67171',
+            'Timo Taktschritt': '#5B9BD5',
+            'Zara Zapp': '#E8950A',
+            'Leo Klartext': '#6B5B9E',
+            'Mia Br\u00fccke': '#2a9d8f'
+        };
+
+        const authorBios = {
+            'Lea Lesestark': { quote: 'Ich liebe mutige Helden und gro\u00dfe Abenteuer!', avatar: 'avatars/lea-lesestark.webp' },
+            'Timo Taktschritt': { quote: 'Bei mir wird es rhythmisch, lustig und musikalisch.', avatar: 'avatars/timo-taktschritt.webp' },
+            'Zara Zapp': { quote: 'Action! Bei meinen Geschichten passiert immer etwas Spannendes.', avatar: 'avatars/zara-zapp.webp' },
+            'Leo Klartext': { quote: 'Ich erkl\u00e4re dir die Welt \u2013 einfach und verst\u00e4ndlich.', avatar: 'avatars/leo-klartext.webp' },
+            'Mia Br\u00fccke': { quote: 'Ich schreibe sanfte Geschichten, die verbinden.', avatar: 'avatars/mia-bruecke.webp' }
+        };
+
+        function getLevelLabel(readingLevel) {
+            const num = parseFloat(readingLevel.replace(/[^0-9.]/g, ''));
+            if (num <= 2) return 'Lesestarter';
+            if (num <= 4) return 'Wort-Entdecker';
+            return 'Lese-Profis';
+        }
+
+        function getLevelTooltip(readingLevel) {
+            const num = parseFloat(readingLevel.replace(/[^0-9.]/g, ''));
+            if (num <= 2) return 'Kurze S\u00e4tze, einfache W\u00f6rter';
+            if (num <= 4) return 'Erste spannende Kapitel';
+            return 'Komplexere Welten & Vokabular';
+        }
+
+        function hashCode(str) {
+            let hash = 0;
+            for (let i = 0; i < str.length; i++) {
+                hash = ((hash << 5) - hash) + str.charCodeAt(i);
+                hash |= 0;
+            }
+            return Math.abs(hash);
+        }
 
         let allStoriesData = [];
         let currentAuthorFilter = 'all';
         let currentLevelFilter = 'all';
 
-        const listElement = document.getElementById('bookList');
+        const gridElement = document.getElementById('bookGrid');
         const searchInput = document.getElementById('searchInput');
         const loadingMsg = document.getElementById('loadingMsg');
         const sortStatus = document.getElementById('sortStatus');
         const levelFilterGroup = document.getElementById('levelFilterGroup');
+        const authorBioCard = document.getElementById('authorBio');
 
-        // 1. Dateien aus demo-texte/ laden
+        // 1. Dateien laden
         fetch(`https://api.github.com/repos/${user}/${repo}/contents/demo-texte`)
             .then(response => response.ok ? response.json() : [])
             .then(data => {
@@ -298,7 +415,7 @@
                 loadingMsg.className = "error";
             });
 
-        // 2. Metadaten laden (Datum, Autor, Lesestufe)
+        // 2. Metadaten laden
         async function fetchStoryMetadata() {
             sortStatus.innerText = "Lade Metadaten...";
 
@@ -307,31 +424,20 @@
                     const response = await fetch(story.path);
                     const text = await response.text();
 
-                    // Datum
                     const metaDate = text.match(/<meta\s+name=["']date["']\s+content=["'](.*?)["']/i);
                     if (metaDate && metaDate[1]) {
                         story.date = new Date(metaDate[1]);
                         story.isValid = true;
                     }
-
                     if (story.date.getTime() > 0) {
-                        story.dateString = story.date.toLocaleDateString('de-DE', {
-                            day: '2-digit', month: '2-digit', year: 'numeric'
-                        });
+                        story.dateString = story.date.toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit', year: 'numeric' });
                     }
 
-                    // Autor
                     const metaAuthor = text.match(/<meta\s+name=["']author["']\s+content=["'](.*?)["']/i);
-                    if (metaAuthor && metaAuthor[1]) {
-                        story.author = metaAuthor[1];
-                    }
+                    if (metaAuthor && metaAuthor[1]) story.author = metaAuthor[1];
 
-                    // Lesestufe
                     const metaLevel = text.match(/<meta\s+name=["']reading-level["']\s+content=["'](.*?)["']/i);
-                    if (metaLevel && metaLevel[1]) {
-                        story.readingLevel = metaLevel[1];
-                    }
-
+                    if (metaLevel && metaLevel[1]) story.readingLevel = metaLevel[1];
                 } catch (e) {
                     console.log("Fehler bei", story.name);
                 }
@@ -339,43 +445,30 @@
             });
 
             await Promise.all(updates);
-
-            // Alte Fragmente entfernen (ohne date Meta-Tag)
             allStoriesData = allStoriesData.filter(s => s.isValid);
-
-            // Sortierung
             allStoriesData.sort((a, b) => b.date - a.date);
-            sortStatus.innerText = "Sortierung: Neueste zuerst";
-
-            // Dynamische Lesestufe-Buttons generieren
+            sortStatus.innerText = "Neueste zuerst";
             buildLevelFilter();
             updateUI();
         }
 
-        // 3. Lesestufe-Filter dynamisch aufbauen
+        // 3. Lesestufe-Filter
         function buildLevelFilter() {
             const levels = [...new Set(allStoriesData.map(s => s.readingLevel).filter(Boolean))];
+            levels.sort((a, b) => parseFloat(a.replace(/[^0-9.]/g, '')) - parseFloat(b.replace(/[^0-9.]/g, '')));
 
-            // Numerisch sortieren
-            levels.sort((a, b) => {
-                const numA = parseFloat(a.replace(/[^0-9.]/g, ''));
-                const numB = parseFloat(b.replace(/[^0-9.]/g, ''));
-                return numA - numB;
-            });
-
-            // Bestehende Buttons (außer "Alle") entfernen
-            levelFilterGroup.innerHTML = '<button class="filter-btn active" onclick="setLevelFilter(\'all\', this)">Alle Stufen</button>';
-
+            levelFilterGroup.innerHTML = '<button type="button" class="filter-btn active" onclick="setLevelFilter(\'all\', this)">Alle Stufen</button>';
             levels.forEach(level => {
                 const btn = document.createElement('button');
+                btn.type = 'button';
                 btn.className = 'filter-btn';
                 btn.textContent = level;
+                btn.title = getLevelLabel(level) + ' \u2013 ' + getLevelTooltip(level);
                 btn.onclick = function() { setLevelFilter(level, this); };
                 levelFilterGroup.appendChild(btn);
             });
         }
 
-        // 4. Lesestufe-Filter setzen
         function setLevelFilter(level, element) {
             currentLevelFilter = level;
             levelFilterGroup.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
@@ -383,73 +476,100 @@
             updateUI();
         }
 
-        // 5. Autoren-Filter setzen
+        // 4. Autoren-Filter + Bio
         function setAuthorFilter(authorName, element) {
             currentAuthorFilter = authorName;
             document.querySelectorAll('.author-item').forEach(el => el.classList.remove('active'));
             element.classList.add('active');
+
+            // Bio Card
+            const bio = authorBios[authorName];
+            if (bio) {
+                document.getElementById('bioAvatar').src = bio.avatar;
+                document.getElementById('bioAvatar').alt = authorName;
+                document.getElementById('bioName').textContent = authorName;
+                document.getElementById('bioQuote').textContent = bio.quote;
+                document.getElementById('bioInner').style.borderLeft = '4px solid ' + (authorColors[authorName] || '#ccc');
+                authorBioCard.classList.add('visible');
+            } else {
+                authorBioCard.classList.remove('visible');
+            }
+
             updateUI();
         }
 
         searchInput.addEventListener('input', updateUI);
 
-        // 6. UI aktualisieren
+        // 5. UI aktualisieren
         function updateUI() {
             const searchTerm = searchInput.value.toLowerCase();
 
             let filtered = allStoriesData.filter(story => {
-                // Autoren-Filter
                 if (currentAuthorFilter !== 'all') {
                     if (!story.author) return false;
                     if (story.author.toLowerCase() !== currentAuthorFilter.toLowerCase()) return false;
                 }
-
-                // Lesestufe-Filter
                 if (currentLevelFilter !== 'all') {
                     if (story.readingLevel !== currentLevelFilter) return false;
                 }
-
                 return true;
             });
 
-            // Suche
             filtered = filtered.filter(story =>
                 formatName(story.name).toLowerCase().includes(searchTerm)
             );
 
-            renderList(filtered);
+            renderGrid(filtered);
         }
 
-        // 7. Liste rendern
-        function renderList(files) {
-            listElement.innerHTML = '';
+        // 6. Grid rendern
+        function renderGrid(files) {
+            gridElement.innerHTML = '';
             if (files.length === 0) {
-                listElement.innerHTML = '<p style="color:#777">Keine Geschichten f&uuml;r diese Auswahl gefunden.</p>';
+                gridElement.innerHTML = '<p class="no-results">Keine Geschichten f\u00fcr diese Auswahl gefunden.</p>';
                 return;
             }
 
-            files.forEach(file => {
-                const li = document.createElement('li');
-                li.className = 'book-item';
+            files.forEach((file, index) => {
+                const card = document.createElement('div');
+                card.className = 'story-card';
+                card.style.animationDelay = (index * 50) + 'ms';
 
-                const dateDisplay = file.dateString ? `&#x1F4C5; ${file.dateString}` : '';
-                const authorDisplay = file.author ? `&#x270D;&#xFE0F; ${file.author}` : '';
-                const levelDisplay = file.readingLevel ? file.readingLevel : '';
+                const color = authorColors[file.author] || '#ccc';
+                const hearts = 47 + (hashCode(file.name) % 143);
+                const levelLabel = file.readingLevel ? getLevelLabel(file.readingLevel) : '';
+                const levelBadgeText = file.readingLevel ? file.readingLevel + ' \u00b7 ' + levelLabel : '';
 
-                li.innerHTML = `
-                    <a href="${file.path}" class="book-link">
-                        <span class="icon">&#x1F4D6;</span>
-                        <div class="book-content">
-                            <span class="book-title">${formatName(file.name)}</span>
-                            <div class="book-meta">
-                                ${levelDisplay ? `<span class="badge level-badge">${levelDisplay}</span>` : ''}
-                                <span class="author-badge">${authorDisplay}</span>
-                                <span>${dateDisplay}</span>
+                card.innerHTML = `
+                    <a href="${file.path}">
+                        <div class="card-cover" style="background: linear-gradient(135deg, ${color}22 0%, ${color}44 100%);">
+                            <svg viewBox="0 0 400 100" preserveAspectRatio="none">
+                                <path d="M0,60 C100,100 200,20 400,60 L400,100 L0,100 Z" fill="${color}" opacity="0.15"/>
+                                <path d="M0,80 C150,50 250,90 400,70 L400,100 L0,100 Z" fill="${color}" opacity="0.1"/>
+                            </svg>
+                            <span class="card-cover-icon">\uD83D\uDCD6</span>
+                        </div>
+                        <div class="card-body">
+                            <div class="card-title">${formatName(file.name)}</div>
+                            ${levelBadgeText ? `<div class="card-badges"><span class="badge level-badge">${levelBadgeText}</span></div>` : ''}
+                            <div class="card-meta">
+                                <span class="card-author">${file.author || ''}</span>
+                                <span class="card-stats">
+                                    <span class="stat">
+                                        <svg viewBox="0 0 24 24" fill="${color}" stroke="none"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>
+                                        ${hearts}
+                                    </span>
+                                    <span class="stat">
+                                        <svg viewBox="0 0 24 24" fill="none" stroke="#bbb" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+                                        ~5 Min.
+                                    </span>
+                                </span>
                             </div>
+                            <div style="font-size:0.75rem;color:#bbb;margin-top:6px;">${file.dateString || ''}</div>
                         </div>
                     </a>
                 `;
-                listElement.appendChild(li);
+                gridElement.appendChild(card);
             });
         }
 
