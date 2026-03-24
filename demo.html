@@ -199,8 +199,11 @@
 
         /* Cover */
         .card-cover {
-            height: 100px; position: relative; overflow: hidden;
+            height: 150px; position: relative; overflow: hidden;
             display: flex; align-items: center; justify-content: center;
+        }
+        .card-cover img {
+            width: 100%; height: 100%; object-fit: cover;
         }
         .card-cover svg { opacity: 0.15; position: absolute; width: 100%; height: 100%; }
         .card-cover-icon { font-size: 2.5rem; position: relative; z-index: 1; filter: drop-shadow(0 2px 4px rgba(0,0,0,0.15)); }
@@ -537,10 +540,9 @@
             const bio = authorBios[authorName];
             if (bio) {
                 const color = authorColors[authorName] || '#ccc';
-                document.getElementById('bioAvatar').src = bio.avatar;
-                document.getElementById('bioAvatar').alt = authorName;
-                document.getElementById('bioInner').style.borderLeft = '4px solid ' + color;
-                document.getElementById('bioInner').innerHTML = `
+                const bioInner = document.getElementById('bioInner');
+                bioInner.style.borderLeft = '4px solid ' + color;
+                bioInner.innerHTML = `
                     <img src="${bio.avatar}" alt="${authorName}" class="bio-avatar">
                     <div class="bio-text">
                         <div class="bio-header">
@@ -600,14 +602,15 @@
                 const levelLabel = file.readingLevel ? getLevelLabel(file.readingLevel) : '';
                 const levelBadgeText = file.readingLevel ? file.readingLevel + ' \u00b7 ' + levelLabel : '';
 
+                const slug = file.name.replace('.html', '');
+                const thumbUrl = `bilder/thumbs/${slug}-1.webp`;
+                const fallbackBg = `background: linear-gradient(135deg, ${color}22 0%, ${color}44 100%)`;
+
                 card.innerHTML = `
                     <a href="${file.path}">
-                        <div class="card-cover" style="background: linear-gradient(135deg, ${color}22 0%, ${color}44 100%);">
-                            <svg viewBox="0 0 400 100" preserveAspectRatio="none">
-                                <path d="M0,60 C100,100 200,20 400,60 L400,100 L0,100 Z" fill="${color}" opacity="0.15"/>
-                                <path d="M0,80 C150,50 250,90 400,70 L400,100 L0,100 Z" fill="${color}" opacity="0.1"/>
-                            </svg>
-                            <span class="card-cover-icon">\uD83D\uDCD6</span>
+                        <div class="card-cover" style="${fallbackBg};">
+                            <img src="${thumbUrl}" alt="${formatName(file.name)}" loading="lazy"
+                                 onerror="this.remove(); this.parentElement.innerHTML='<span class=card-cover-icon>\uD83D\uDCD6</span>';">
                         </div>
                         <div class="card-body">
                             <div class="card-title">${formatName(file.name)}</div>
