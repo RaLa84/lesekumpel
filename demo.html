@@ -117,26 +117,41 @@
         /* BIO CARD */
         .author-bio-card {
             max-height: 0; overflow: hidden; opacity: 0;
-            transition: max-height 0.4s ease, opacity 0.3s ease, margin 0.3s ease;
+            transition: max-height 0.45s ease, opacity 0.3s ease, margin 0.3s ease;
             margin: 0 auto; text-align: left;
         }
         .author-bio-card.visible {
-            max-height: 120px; opacity: 1; margin: 16px auto 20px;
+            max-height: 200px; opacity: 1; margin: 16px auto 20px;
         }
         .bio-inner {
-            display: flex; align-items: center; gap: 14px; padding: 14px 18px;
+            display: flex; align-items: flex-start; gap: 14px; padding: 16px 18px;
             border-radius: 16px; background: #fef9f0;
         }
-        .bio-avatar { width: 44px; height: 44px; border-radius: 50%; object-fit: cover; flex-shrink: 0; }
+        .bio-avatar { width: 48px; height: 48px; border-radius: 50%; object-fit: cover; flex-shrink: 0; margin-top: 2px; }
         .bio-text { flex: 1; }
-        .bio-name { font-family: var(--font-heading); font-weight: 600; font-size: 0.95rem; margin-bottom: 2px; }
-        .bio-quote {
-            font-style: italic; font-size: 0.9rem; color: #555;
-            position: relative; padding-left: 16px;
+        .bio-header { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; margin-bottom: 4px; }
+        .bio-name { font-family: var(--font-heading); font-weight: 600; font-size: 0.95rem; }
+        .bio-neurotype {
+            font-size: 0.7rem; font-weight: 700; padding: 2px 8px; border-radius: 10px;
+            color: white; letter-spacing: 0.02em;
         }
-        .bio-quote::before {
-            content: "\201E"; position: absolute; left: 0; top: -2px;
-            font-size: 1.4rem; color: #ccc; font-style: normal;
+        .bio-desc { font-size: 0.85rem; color: #555; line-height: 1.5; }
+
+        /* STUFEN LEGENDE */
+        .level-legend {
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;
+            margin-bottom: 18px;
+        }
+        .level-legend-item {
+            background: #f7f7f2; border-radius: 12px; padding: 10px 12px;
+            text-align: center; font-size: 0.78rem; color: #666;
+        }
+        .level-legend-label {
+            font-family: var(--font-heading); font-weight: 600; font-size: 0.85rem;
+            color: var(--text-dark); margin-bottom: 2px;
+        }
+        @media (max-width: 580px) {
+            .level-legend { grid-template-columns: 1fr; }
         }
 
         /* LESESTUFE FILTER */
@@ -303,6 +318,22 @@
                 </div>
             </div>
 
+            <!-- Lesestufe-Legende -->
+            <div class="level-legend">
+                <div class="level-legend-item">
+                    <div class="level-legend-label">Lesestarter</div>
+                    Stufe 1&ndash;2 &middot; Klasse 1 &middot; max. 5 W&ouml;rter pro Satz
+                </div>
+                <div class="level-legend-item">
+                    <div class="level-legend-label">Wort-Entdecker</div>
+                    Stufe 3&ndash;4 &middot; Klasse 2 &middot; erste Nebens&auml;tze
+                </div>
+                <div class="level-legend-item">
+                    <div class="level-legend-label">Lese-Profis</div>
+                    Stufe 5+ &middot; Klasse 3&ndash;4 &middot; abstrakte Begriffe
+                </div>
+            </div>
+
             <!-- Lesestufe-Filter -->
             <div class="filter-btn-group" id="levelFilterGroup">
                 <button type="button" class="filter-btn active" onclick="setLevelFilter('all', this)">Alle Stufen</button>
@@ -350,11 +381,31 @@
         };
 
         const authorBios = {
-            'Lea Lesestark': { quote: 'Ich liebe mutige Helden und gro\u00dfe Abenteuer!', avatar: 'avatars/lea-lesestark.webp' },
-            'Timo Taktschritt': { quote: 'Bei mir wird es rhythmisch, lustig und musikalisch.', avatar: 'avatars/timo-taktschritt.webp' },
-            'Zara Zapp': { quote: 'Action! Bei meinen Geschichten passiert immer etwas Spannendes.', avatar: 'avatars/zara-zapp.webp' },
-            'Leo Klartext': { quote: 'Ich erkl\u00e4re dir die Welt \u2013 einfach und verst\u00e4ndlich.', avatar: 'avatars/leo-klartext.webp' },
-            'Mia Br\u00fccke': { quote: 'Ich schreibe sanfte Geschichten, die verbinden.', avatar: 'avatars/mia-bruecke.webp' }
+            'Lea Lesestark': {
+                neurotype: 'Neurotypisch',
+                description: 'Warmherzige, bildhafte Sprache mit klassischem Erz\u00e4hlfluss. Ausgewogene Satzl\u00e4ngen, lebendige Verben und kindgerechte Metaphern \u2014 der Einstiegsautor f\u00fcr alle Kinder.',
+                avatar: 'avatars/lea-lesestark.webp'
+            },
+            'Timo Taktschritt': {
+                neurotype: 'LRS / Legasthenie',
+                description: 'Rhythmische, gleichm\u00e4\u00dfige S\u00e4tze zum Mitklatschen. Kurze W\u00f6rter (1\u20132 Silben), keine Komposita, keine verwechselbaren Buchstaben (b/d, p/q) \u2014 optimiert f\u00fcr fl\u00fcssiges Lesen bei Lese-Rechtschreib-Schw\u00e4che.',
+                avatar: 'avatars/timo-taktschritt.webp'
+            },
+            'Zara Zapp': {
+                neurotype: 'ADHS',
+                description: 'Sofortige Action, ultrakurze Abs\u00e4tze und Mini-Cliffhanger. Kein Leerlauf \u2014 jeder Satz treibt die Handlung voran. Geschrieben f\u00fcr Kinder, die schnell die Aufmerksamkeit verlieren.',
+                avatar: 'avatars/zara-zapp.webp'
+            },
+            'Leo Klartext': {
+                neurotype: 'Autismus-Spektrum',
+                description: 'Keine Metaphern, keine Ironie, keine Doppeldeutigkeiten. Emotionen werden immer benannt und begr\u00fcndet, die Handlung ist streng chronologisch \u2014 klar und vorhersehbar.',
+                avatar: 'avatars/leo-klartext.webp'
+            },
+            'Mia Br\u00fccke': {
+                neurotype: 'Deutsch als Zweitsprache',
+                description: 'Nur Aktivs\u00e4tze, keine Komposita, kein Genitiv. Schwierige W\u00f6rter werden direkt im Text erkl\u00e4rt. Konkrete, zeichenbare Sprache \u2014 ideal f\u00fcr Kinder mit anderer Erstsprache.',
+                avatar: 'avatars/mia-bruecke.webp'
+            }
         };
 
         function getLevelLabel(readingLevel) {
@@ -485,11 +536,20 @@
             // Bio Card
             const bio = authorBios[authorName];
             if (bio) {
+                const color = authorColors[authorName] || '#ccc';
                 document.getElementById('bioAvatar').src = bio.avatar;
                 document.getElementById('bioAvatar').alt = authorName;
-                document.getElementById('bioName').textContent = authorName;
-                document.getElementById('bioQuote').textContent = bio.quote;
-                document.getElementById('bioInner').style.borderLeft = '4px solid ' + (authorColors[authorName] || '#ccc');
+                document.getElementById('bioInner').style.borderLeft = '4px solid ' + color;
+                document.getElementById('bioInner').innerHTML = `
+                    <img src="${bio.avatar}" alt="${authorName}" class="bio-avatar">
+                    <div class="bio-text">
+                        <div class="bio-header">
+                            <span class="bio-name">${authorName}</span>
+                            <span class="bio-neurotype" style="background:${color}">${bio.neurotype}</span>
+                        </div>
+                        <div class="bio-desc">${bio.description}</div>
+                    </div>
+                `;
                 authorBioCard.classList.add('visible');
             } else {
                 authorBioCard.classList.remove('visible');
