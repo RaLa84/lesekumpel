@@ -126,7 +126,7 @@
         }
         .btn-cta-nav:hover { background: var(--accent-coral-dark); transform: translateY(-2px); }
         .nav-right { display: flex; align-items: center; gap: 15px; }
-        .burger-btn {
+        .burger-icon {
             font-size: 1.8rem; cursor: pointer; display: block; color: var(--text-dark);
             background: none; border: none; padding: 4px; line-height: 1;
         }
@@ -139,12 +139,14 @@
         .mobile-menu.open { display: flex; }
 
         @media (min-width: 768px) {
-            .burger-btn { display: none; }
-            .nav-links-desktop { display: flex; }
-            .btn-cta-nav { display: inline-block; }
             .nav-logo { height: 50px; }
             .brand-name { font-size: 1.5rem; }
             .nav-left { gap: 15px; }
+        }
+        @media (min-width: 1024px) {
+            .burger-icon { display: none; }
+            .nav-links-desktop { display: flex; }
+            .btn-cta-nav { display: inline-block; }
         }
 
         /* ========== PRICING HERO ========== */
@@ -309,7 +311,7 @@
         </div>
         <div class="nav-right">
             <a href="landingpage.html#registrieren" class="btn-cta-nav">Jetzt registrieren</a>
-            <button type="button" class="burger-btn" onclick="toggleMenu()" aria-label="Men&uuml; &ouml;ffnen" aria-expanded="false">&#9776;</button>
+            <button type="button" class="burger-icon" aria-label="Navigationsmenü öffnen" aria-expanded="false" aria-controls="mobile-menu" onclick="toggleMenu()">&#9776;</button>
         </div>
         <div id="mobile-menu" class="mobile-menu">
             <a href="landingpage.html#mission" class="nav-btn" onclick="toggleMenu()">F&uuml;r euch</a>
@@ -394,7 +396,7 @@
     <script>
         function toggleMenu() {
             var menu = document.getElementById('mobile-menu');
-            var btn = document.querySelector('.burger-btn');
+            var btn = document.querySelector('.burger-icon');
             menu.classList.toggle('open');
             var isOpen = menu.classList.contains('open');
             btn.setAttribute('aria-expanded', isOpen);
