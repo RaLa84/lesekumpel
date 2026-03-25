@@ -390,6 +390,18 @@
             <div class="stil-card" data-stil="Pixel-Art" onclick="selectStil('Pixel-Art')">
                 <span class="stil-emoji">👾</span><div class="stil-name">Pixel-Art</div>
             </div>
+            <div class="stil-card" data-stil="Anime" onclick="selectStil('Anime')">
+                <span class="stil-emoji">🌸</span><div class="stil-name">Anime</div>
+            </div>
+            <div class="stil-card" data-stil="Traumwelt" onclick="selectStil('Traumwelt')">
+                <span class="stil-emoji">🌙</span><div class="stil-name">Traumwelt</div>
+            </div>
+            <div class="stil-card" data-stil="Knete" onclick="selectStil('Knete')">
+                <span class="stil-emoji">🧸</span><div class="stil-name">Knete</div>
+            </div>
+            <div class="stil-card" data-stil="Voxel" onclick="selectStil('Voxel')">
+                <span class="stil-emoji">🧊</span><div class="stil-name">Voxel</div>
+            </div>
         </div>
         <div style="margin-top:28px;">
             <button class="btn-submit" id="btn-submit" disabled onclick="submitStory()">✨ Geschichte erstellen</button>
@@ -485,7 +497,7 @@ const VALID_PERSONAS = {
 
 const PERSONA_LABELS = { lea: 'Lea Lesestark (Neurotypisch)', timo: 'Timo Taktschritt (LRS/Legasthenie)', zara: 'Zara Zapp (ADHS)', leo: 'Leo Klartext (Autismus-Spektrum)', mia: 'Mia Brücke (Deutsch als Zweitsprache)', samira: 'Samira Wissensfreund (Sachtexte)', holzi: 'Holzi Pixelkopf (Tech/Gaming)', deniz: 'Deniz Traumfänger (Fantasy)', jonas: 'Jonas Entdecker (Abenteuer)' };
 const PHASE_LABELS = { 1: 'Phase 1 — Der Start', 2: 'Phase 2 — Der Ausbau', 3: 'Phase 3 — Der Fluss', 4: 'Phase 4 — Die Geschichte', 5: 'Phase 5 — Der Profi' };
-const BILDSTIL_LABELS = { 'Aquarell': 'Aquarell — Weiche Pastellfarben', 'Cartoon': 'Cartoon — Bunte moderne Illustration', 'Buntstift': 'Buntstift — Handgezeichneter Look', 'Pixel-Art': 'Pixel-Art — Retro-Gaming-Stil' };
+const BILDSTIL_LABELS = { 'Aquarell': 'Aquarell — Weiche Pastellfarben', 'Cartoon': 'Cartoon — Bunte moderne Illustration', 'Buntstift': 'Buntstift — Handgezeichneter Look', 'Pixel-Art': 'Pixel-Art — Retro-Gaming-Stil', 'Anime': 'Anime — Farbenfroh wie Nintendo & Pokémon', 'Traumwelt': 'Traumwelt — Magische Malerei wie Ori', 'Knete': 'Knete — Stop-Motion Knetfiguren-Look', 'Voxel': 'Voxel — Blocky Gamer-Stil wie Minecraft' };
 const STEP_LABELS = ['', 'Deine Geschichte', 'Lesephase', 'Lesestufe', 'Autorin wählen', 'Bildstil & Absenden'];
 
 const WEBHOOK_URL = 'https://rala84.app.n8n.cloud/webhook/lesekumpel-story';
