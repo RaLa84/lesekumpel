@@ -26,7 +26,7 @@
     },
     {
       "parameters": {
-        "jsCode": "const input = $input.item.json;\n\nconst title = (input['Titel'] || '').trim();\nconst genre = (input['Genre'] || 'Abenteuer').trim();\nconst stufeRaw = (input['Stufe'] || '3.4').trim();\nconst stufe = stufeRaw.split(' ')[0]; // \"3.4 — Konjunktionen\" → \"3.4\"\nconst phaseRaw = (input['Phase'] || '').trim();\nconst phase = parseInt(phaseRaw.split(' ')[1]) || 3;\nconst personaRaw = (input['Persona'] || 'Lea Lesestark').trim();\nconst persona = personaRaw.split(' ')[0].toLowerCase(); // \"Lea Lesestark (NT)\" → \"lea\"\nconst bildstilRaw = (input['Bildstil'] || 'Aquarell').trim();\nconst bildstilKey = bildstilRaw.split(' ')[0]; // \"Aquarell — Weiche...\" → \"Aquarell\"\nconst description = (input['Kurzbeschreibung'] || '').trim();\n\n// Slug\nconst umlautMap = { 'ä': 'ae', 'ö': 'oe', 'ü': 'ue', 'ß': 'ss', 'Ä': 'ae', 'Ö': 'oe', 'Ü': 'ue' };\nconst slug = title.toLowerCase()\n  .replace(/[äöüßÄÖÜ]/g, c => umlautMap[c] || c)\n  .replace(/\\s+/g, '-').replace(/[^a-z0-9-]/g, '').replace(/-+/g, '-')\n  .substring(0, 60) || 'neue-geschichte';\n\nconst stufeData = {\n  '1.0': { phase: 1, label: 'Phase 1 — Der Start', fokus: 'Top-100-Wörter — Häufige Wörter als Ganzbild erkennen (Mama, ist, da, der, die, und, hat, Ball, rot, Hund)',\n           regeln: 'WORTSCHATZ: Top-100-Grundwörter + Themen-Wörter die zum Titel gehören (z.B. Domino, Minecraft). Titel-Wörter sind immer erlaubt.\\nTEMPUS: Nur Präsens.\\nSYNTAX: Hauptsätze, max. 7 Wörter pro Satz, natürliche Wortstellung.\\nMETRIKEN: 20-40 Wörter gesamt, 4-6 Sätze, Ø 4-6 Wörter/Satz.\\nNATÜRLICHKEIT: Jeder Satz muss klingen wie gesprochenes Deutsch. Würde eine Erzieherin das so sagen? Wenn nein → umformulieren.\\nBEISPIELE GUT: \\\"Lilith und ihr Bruder spielen.\\\" \\\"Sie haben viel Spaß.\\\"\\nBEISPIELE SCHLECHT: \\\"Viel Spaß ist da.\\\" \\\"Es ist Domino.\\\" (unnatürlich)',\n           imageCount: 1 },\n  '2.1': { phase: 2, label: 'Phase 2.1 — Sonderlaute', fokus: 'Mehrgrapheme/Sonderlaute (sch, ch, eu, ei, ie, au) — z.B. Schwein, Ei, dich, Schule, Feuer, Baum',\n           regeln: 'TEMPUS: Präsens.\\nSYNTAX: Hauptsätze.\\nFOKUS: Streue gezielt Wörter mit Sonderlauten ein (sch, ch, eu, ei, ie, au).\\nMETRIKEN: 40-60 Wörter, 6-8 Sätze, Ø 5-7 Wörter/Satz.\\nBEISPIEL: \\\"Das Schwein hat ein Ei. Ich sehe dich.\\\"',\n           imageCount: 1 },\n  '2.2': { phase: 2, label: 'Phase 2.2 — Stolpersteine', fokus: 'Konsonantenhäufung (bl, gr, kn, pf, str, schr, spr) — z.B. Pflanze, grün, Strumpf, blau, Knopf',\n           regeln: 'TEMPUS: Präsens.\\nSYNTAX: Hauptsätze.\\nFOKUS: Wörter mit harten Konsonanten-Clustern (str, pfl, schr, spr, kn) nutzen.\\nMETRIKEN: 40-60 Wörter, 6-8 Sätze, Ø 5-7 Wörter/Satz.\\nBEISPIEL: \\\"Die Pflanze ist grün. Der Strumpf ist blau.\\\"',\n           imageCount: 1 },\n  '2.3': { phase: 2, label: 'Phase 2.3 — Endungen', fokus: 'Endungen (-en, -er, -el) — z.B. Vater, Vogel, laufen, Kinder, Zimmer',\n           regeln: 'TEMPUS: Präsens.\\nSYNTAX: Sätze dürfen leicht länger werden (6-8 Wörter).\\nFOKUS: Zweisilbige Wörter mit typischen Endungen (-en, -er, -el) nutzen.\\nMETRIKEN: 40-60 Wörter, 6-8 Sätze, Ø 5-7 Wörter/Satz.',\n           imageCount: 1 },\n  '2.4': { phase: 2, label: 'Phase 2.4 — Komposita', fokus: 'Zusammengesetzte Nomen (Nomen+Nomen) — z.B. Baumhaus, Haustür, Schulranzen, Regenschirm',\n           regeln: 'TEMPUS: Präsens.\\nSYNTAX: Hauptsätze.\\nFOKUS: Zusammengesetzte Nomen verwenden (max. 2 Teile). Wörter in Sinn-Einheiten zerlegen (Lego-Prinzip).\\nMETRIKEN: 40-60 Wörter, 6-8 Sätze, Ø 5-7 Wörter/Satz.',\n           imageCount: 2 },\n  '3.1': { phase: 3, label: 'Phase 3.1 — Präteritum', fokus: 'Präteritum (Erzählzeit) — Veränderte Wortformen erkennen: sehen→sah, laufen→lief, kommen→kam',\n           regeln: 'TEMPUS: Durchgehend Präteritum (Vergangenheit).\\nSYNTAX: Einfache Sätze.\\nFOKUS: Starke/unregelmäßige Verben nutzen (lief, kam, sah, ging, fand).\\nMETRIKEN: 80-100 Wörter, 8-10 Sätze, Ø 7-10 Wörter/Satz.\\nBEISPIEL: \\\"Der Hund lief weg. Er sah den Mond.\\\"',\n           imageCount: 2 },\n  '3.2': { phase: 3, label: 'Phase 3.2 — Vorsilben', fokus: 'Vorsilben (ver-, ent-, be-, ge-) — Bedeutungswandel: verlaufen, entdecken, beginnen, gewinnen',\n           regeln: 'TEMPUS: Präteritum.\\nSYNTAX: Einfache Sätze.\\nFOKUS: Verben mit Vorsilben einbauen (ver-, ent-, be-, ge-). Zeige wie Vorsilben den Sinn ändern.\\nMETRIKEN: 80-100 Wörter, 8-10 Sätze, Ø 7-10 Wörter/Satz.',\n           imageCount: 2 },\n  '3.3': { phase: 3, label: 'Phase 3.3 — Suffixe', fokus: 'Suffixe/Nachsilben (-ung, -heit, -keit, -nis) — Abstrakte Nomen: Wohnung, Freiheit, Dunkelheit, Erkenntnis',\n           regeln: 'TEMPUS: Präteritum.\\nSYNTAX: Sätze mit Objekten.\\nFOKUS: Abstrakte Nomen auf -ung/-heit/-keit/-nis einbauen (Nomen die man nicht anfassen kann).\\nMETRIKEN: 80-100 Wörter, 8-10 Sätze, Ø 7-10 Wörter/Satz.',\n           imageCount: 2 },\n  '3.4': { phase: 3, label: 'Phase 3.4 — Konjunktionen', fokus: 'Konjunktionen (weil, dass, aber, denn) — Kausale Zusammenhänge: Er weinte, weil er hinfiel.',\n           regeln: 'TEMPUS: Präteritum.\\nSYNTAX: Nebensätze erlaubt! Kausale Zusammenhänge bilden.\\nFOKUS: Konjunktionen (weil, dass, aber, denn, obwohl, damit) gezielt nutzen.\\nMETRIKEN: 80-100 Wörter, 8-10 Sätze, Ø 7-10 Wörter/Satz.',\n           imageCount: 2 },\n  '4.1': { phase: 4, label: 'Phase 4.1 — Satzklammer', fokus: 'Satzklammer mit trennbaren Verben — Das Satzende vorausahnen: aufmachen, mitnehmen, einkaufen',\n           regeln: 'SYNTAX: Nutze trennbare Verben (aufmachen, mitnehmen, einkaufen). Verb-Teil 2 muss ans Satzende (Satzklammer).\\nFOKUS: Modalverben + trennbare Verben.\\nMETRIKEN: 120-150 Wörter, 10-15 Sätze, Ø 8-12 Wörter/Satz.\\nBEISPIEL: \\\"Mama kauft heute im Laden ein.\\\"',\n           imageCount: 3 },\n  '4.2': { phase: 4, label: 'Phase 4.2 — Dialoge', fokus: 'Dialoge & Redebegleiter — Intonation: \\\"Komm her!\\\", rief der Vater laut.',\n           regeln: 'SYNTAX: Viel wörtliche Rede mit Anführungszeichen nutzen.\\nFOKUS: Verben des Sagens variieren (rief, fragte, flüsterte, schrie). Verschiedene Sprecher einbauen.\\nMETRIKEN: 120-150 Wörter, 10-15 Sätze, Ø 8-12 Wörter/Satz.',\n           imageCount: 3 },\n  '4.3': { phase: 4, label: 'Phase 4.3 — Relativsätze', fokus: 'Relativsätze (der, die, das, welcher) — Einschübe verarbeiten: Der Hund, der bellt, gehört mir.',\n           regeln: 'SYNTAX: Nutze Relativsätze (Schachtelsätze). Dinge genauer beschreiben mit Einschüben.\\nFOKUS: Relativpronomen (der, die, das, welcher) einsetzen.\\nMETRIKEN: 120-150 Wörter, 10-15 Sätze, Ø 8-12 Wörter/Satz.',\n           imageCount: 3 },\n  '4.4': { phase: 4, label: 'Phase 4.4 — Vergleiche', fokus: 'Adjektive & Vergleiche — Komparativ und Superlativ: schneller als, am schönsten, größer als ein Haus',\n           regeln: 'SYNTAX: Beschreibende Sätze mit Steigerungen.\\nFOKUS: Komparativ (besser, schneller) und Superlativ (am besten, am schnellsten) nutzen. Vergleiche mit \\\"wie\\\" und \\\"als\\\".\\nMETRIKEN: 120-150 Wörter, 10-15 Sätze, Ø 8-12 Wörter/Satz.\\nBEISPIEL: \\\"Er war schneller als der Wind.\\\"',\n           imageCount: 3 },\n  '5.1': { phase: 5, label: 'Phase 5.1 — Synonyme', fokus: 'Synonyme & Wortfeld — Abwechslung: schleichen/huschen statt gehen, flüstern/murmeln statt sagen',\n           regeln: 'SYNTAX: Komplexe Sätze erlaubt.\\nFOKUS: Abwechslungsreichen Wortschatz nutzen. Synonyme verwenden statt Wortwiederholungen (gehen→schleichen/huschen, sagen→flüstern/rufen).\\nMETRIKEN: 200-300 Wörter, 15-20 Sätze.',\n           imageCount: 4 },\n  '5.2': { phase: 5, label: 'Phase 5.2 — Redewendungen', fokus: 'Redewendungen & Metaphern — Zwischen den Zeilen lesen: Schmetterlinge im Bauch, auf Wolke sieben',\n           regeln: 'SYNTAX: Komplexe Sätze.\\nFOKUS: Redewendungen und Sprichwörter einbauen. Bedeutung im Kontext erklären oder erschließbar machen. Idiome gezielt nutzen.\\nMETRIKEN: 200-300 Wörter, 15-20 Sätze.',\n           imageCount: 4 },\n  '5.3': { phase: 5, label: 'Phase 5.3 — Abstrakta', fokus: 'Abstrakta & Gefühle — Innenperspektive: Mut, Neid, Freiheit, Sehnsucht, Gerechtigkeit',\n           regeln: 'SYNTAX: Komplexe Sätze, Innenperspektive.\\nFOKUS: Abstrakte Begriffe (Mut, Neid, Freiheit, Sehnsucht) verwenden. Gefühle und Gedanken der Figuren beschreiben. Tiefe Charakterentwicklung.\\nMETRIKEN: 200-300 Wörter, 15-20 Sätze.',\n           imageCount: 4 },\n  '5.4': { phase: 5, label: 'Phase 5.4 — Sachtext', fokus: 'Passiv & Sachtext — Fakten und Erklärungen: wird gebaut, man verwendet, es wurde entdeckt',\n           regeln: 'SYNTAX: Sachtext-Stil. Passiv erlaubt (wird gebaut, wurde entdeckt).\\nFOKUS: Fakten, Erklärungen, logischer Aufbau. Keine Erzählung sondern Wissenstext. Unpersönliches \\\"man\\\" nutzen.\\nMETRIKEN: 200-300 Wörter, 15-20 Sätze.',\n           imageCount: 4 }\n};\n\nconst bildstilMap = {\n  'Aquarell': \"children's book watercolor illustration, soft pastel colors, warm and friendly, white background, no text in image\",\n  'Cartoon': \"colorful cartoon illustration for children, bold outlines, bright vivid colors, fun and playful, digital art, no text in image\",\n  'Buntstift': \"colored pencil drawing, hand-drawn children's illustration, crayon texture, sketch-like, warm paper background, no text in image\",\n  'Pixel-Art': \"pixel art illustration for kids, retro gaming style, colorful blocky pixels, 16-bit aesthetic, cheerful, no text in image\"\n};\n\nconst personaMeta = {\n  lea:  { name: 'Lea Lesestark',    neurotype: 'Neurotypisch',             imgUrl: 'https://rala84.github.io/lesekumpel/avatars/lea-lesestark.webp',   bio: 'Lea liebt Geschichten so sehr, dass sie am liebsten selbst in jedes Abenteuer hineinspringen würde! Sie erzählt so, als säßet ihr zusammen am Lagerfeuer — gemütlich, spannend und immer mit einem kleinen Schmunzler zwischendurch.' },\n  timo: { name: 'Timo Taktschritt', neurotype: 'LRS/Legasthenie',          imgUrl: 'https://rala84.github.io/lesekumpel/avatars/timo-taktschritt.webp', bio: 'Timo liebt Musik und Geschichten — am liebsten beides zusammen! Seine Sätze haben einen Rhythmus, den du fast mitklatschen kannst. Lesen fühlt sich bei ihm an wie dein Lieblingslied hören.' },\n  zara: { name: 'Zara Zapp',        neurotype: 'ADHS',                     imgUrl: 'https://rala84.github.io/lesekumpel/avatars/zara-zapp.webp',        bio: 'Zara kann einfach nicht stillsitzen — und ihre Geschichten auch nicht! Bei ihr geht es sofort los: Action, Überraschungen und immer eine Wendung, mit der du nicht gerechnet hast.' },\n  leo:  { name: 'Leo Klartext',     neurotype: 'Autismus-Spektrum',        imgUrl: 'https://rala84.github.io/lesekumpel/avatars/leo-klartext.webp',     bio: 'Leo sagt immer genau das, was er meint. Er mag es, wenn alles klar und verständlich ist. In seinen Geschichten weißt du immer, was passiert und warum — ganz ohne Rätsel.' },\n  mia:  { name: 'Mia Brücke',       neurotype: 'Deutsch als Zweitsprache', imgUrl: 'https://rala84.github.io/lesekumpel/avatars/mia-bruecke.webp',      bio: 'Mia nimmt dich an die Hand und zeigt dir die Welt, als wäre alles ganz neu und aufregend. Wenn ein Wort mal schwierig ist, erklärt sie es dir — wie eine gute Freundin.' }\n};\n\nconst p = personaMeta[persona] || personaMeta.lea;\nconst s = stufeData[stufe] || stufeData['3.4'];\nconst imageStyle = bildstilMap[bildstilKey] || bildstilMap['Aquarell'];\n\nconst userPrompt = `Schreib die Geschichte \"${title}\" auf Stufe ${stufe} (${s.label}).\nGenre: ${genre}\nKurzbeschreibung: ${description || 'Keine Beschreibung angegeben'}\n\nSTUFEN-REGELN:\n${s.regeln}\n\nFOKUS dieser Stufe: ${s.fokus}\nBaue gezielt Wörter mit diesem Fokus in die Geschichte ein.\n\nNATÜRLICHKEIT (PFLICHT):\nJeder Satz muss so klingen, wie ein Kind oder eine Erzieherin tatsächlich sprechen würde.\nNatürlichkeit geht vor Kürze — ein Satz darf 1-2 Wörter länger sein, wenn er dadurch natürlicher klingt.\nPrüfe jeden Satz: Würde jemand das im Alltag so sagen? Wenn nein → umformulieren.\n\nKINDGERECHT (PFLICHT):\nVermeide abstrakte Pronomen und Verweise (dies, das, es) wenn unklar ist worauf sie sich beziehen.\nKinder brauchen konkrete Bezüge. Nenne das Ding beim Namen.\nSCHLECHT: Er versteht, dass dies viel besser ist.\nGUT: Er mag das kleine Auto sehr.\n\nSILBENTRENNUNG (PFLICHT):\nTrenne jede Silbe mit Bindestrich nach DUDEN: Son-ne, Was-ser, Früh-stück, lau-fen\nEinsilbige Wörter bleiben ungeteilt: der, die, das, hat, kam\n\nFAKTENTREUE (PFLICHT):\nWenn die Geschichte reale Marken, Spiele, Produkte oder Figuren erwähnt:\n- Verwende NUR echte, korrekte Namen (Charaktere, Gegner, Orte, Items)\n- Erfinde KEINE Fantasie-Namen für reale Spielinhalte\n- Wenn du dir unsicher bist, verwende eine allgemeine Beschreibung statt eines erfundenen Namens\n\nSATZQUALITÄT (PFLICHT):\n- Jeder Satz muss vollständig und für sich allein verständlich sein\n- Nach einem Abschnitts-Header (**Überschrift**) muss der erste Satz den Kontext neu aufbauen\n- Der erste Satz nach einem Header darf NICHT mit einem kontextlosen Dialog oder Fragment beginnen\n- Kein Satz darf ein reines Dialog-Fragment ohne Handlungskontext sein\n\nZEICHENSETZUNG (PFLICHT):\n- Einfache Satzzeichen bevorzugen: Punkt, Komma, Ausrufezeichen, Fragezeichen\n- Keine Anführungszeichen für wörtliche Rede verwenden\n- FALSCH: \"Los!\", rief Ben.  RICHTIG: Los!, rief Ben.\n- Doppelpunkte vor wörtlicher Rede vermeiden\n- Pro Satz maximal ein Satzzeichen am Ende\n- Wörtliche Rede so einfach wie möglich halten\n\nAUFBAU (diese Labels verwenden):\nGESCHICHTE: [vollständiger Text]\nZUSAMMENFASSUNG: [2-3 Sätze]`;\n\nreturn { json: {\n  title, genre, stufe, stufeLabel: s.label, stufeFokus: s.fokus, phase,\n  persona, description, slug, date: new Date().toISOString().split('T')[0],\n  personaName: p.name, neurotype: p.neurotype,\n  personaImg: p.imgUrl, personaBio: p.bio,\n  imageCount: s.imageCount, stufeRegeln: s.regeln,\n  bildstilKey, imageStyle, userPrompt\n}};\n",
+        "jsCode": "const input = $input.item.json;\n\nconst title = (input['Titel'] || '').trim();\nconst genre = (input['Genre'] || 'Abenteuer').trim();\nconst stufeRaw = (input['Stufe'] || '3.4').trim();\nconst stufe = stufeRaw.split(' ')[0]; // \"3.4 — Konjunktionen\" → \"3.4\"\nconst phaseRaw = (input['Phase'] || '').trim();\nconst phase = parseInt(phaseRaw.split(' ')[1]) || 3;\nconst personaRaw = (input['Persona'] || 'Lea Lesestark').trim();\nconst persona = personaRaw.split(' ')[0].toLowerCase(); // \"Lea Lesestark (NT)\" → \"lea\"\nconst bildstilRaw = (input['Bildstil'] || 'Aquarell').trim();\nconst bildstilKey = bildstilRaw.split(' ')[0]; // \"Aquarell — Weiche...\" → \"Aquarell\"\nconst description = (input['Kurzbeschreibung'] || '').trim();\n\n// Slug\nconst umlautMap = { 'ä': 'ae', 'ö': 'oe', 'ü': 'ue', 'ß': 'ss', 'Ä': 'ae', 'Ö': 'oe', 'Ü': 'ue' };\nconst slug = title.toLowerCase()\n  .replace(/[äöüßÄÖÜ]/g, c => umlautMap[c] || c)\n  .replace(/\\s+/g, '-').replace(/[^a-z0-9-]/g, '').replace(/-+/g, '-')\n  .substring(0, 60) || 'neue-geschichte';\n\nconst stufeData = {\n  '1.0': { phase: 1, label: 'Phase 1 — Der Start', fokus: 'Top-100-Wörter — Häufige Wörter als Ganzbild erkennen (Mama, ist, da, der, die, und, hat, Ball, rot, Hund)',\n           regeln: 'WORTSCHATZ: Top-100-Grundwörter + Themen-Wörter die zum Titel gehören (z.B. Domino, Minecraft). Titel-Wörter sind immer erlaubt.\\nTEMPUS: Nur Präsens.\\nSYNTAX: Hauptsätze, max. 7 Wörter pro Satz, natürliche Wortstellung.\\nMETRIKEN: 20-40 Wörter gesamt, 4-6 Sätze, Ø 4-6 Wörter/Satz.\\nNATÜRLICHKEIT: Jeder Satz muss klingen wie gesprochenes Deutsch. Würde eine Erzieherin das so sagen? Wenn nein → umformulieren.\\nBEISPIELE GUT: \\\"Lilith und ihr Bruder spielen.\\\" \\\"Sie haben viel Spaß.\\\"\\nBEISPIELE SCHLECHT: \\\"Viel Spaß ist da.\\\" \\\"Es ist Domino.\\\" (unnatürlich)',\n           imageCount: 1 },\n  '2.1': { phase: 2, label: 'Phase 2.1 — Sonderlaute', fokus: 'Mehrgrapheme/Sonderlaute (sch, ch, eu, ei, ie, au) — z.B. Schwein, Ei, dich, Schule, Feuer, Baum',\n           regeln: 'TEMPUS: Präsens.\\nSYNTAX: Hauptsätze.\\nFOKUS: Streue gezielt Wörter mit Sonderlauten ein (sch, ch, eu, ei, ie, au).\\nMETRIKEN: 40-60 Wörter, 6-8 Sätze, Ø 5-7 Wörter/Satz.\\nBEISPIEL: \\\"Das Schwein hat ein Ei. Ich sehe dich.\\\"',\n           imageCount: 1 },\n  '2.2': { phase: 2, label: 'Phase 2.2 — Stolpersteine', fokus: 'Konsonantenhäufung (bl, gr, kn, pf, str, schr, spr) — z.B. Pflanze, grün, Strumpf, blau, Knopf',\n           regeln: 'TEMPUS: Präsens.\\nSYNTAX: Hauptsätze.\\nFOKUS: Wörter mit harten Konsonanten-Clustern (str, pfl, schr, spr, kn) nutzen.\\nMETRIKEN: 40-60 Wörter, 6-8 Sätze, Ø 5-7 Wörter/Satz.\\nBEISPIEL: \\\"Die Pflanze ist grün. Der Strumpf ist blau.\\\"',\n           imageCount: 1 },\n  '2.3': { phase: 2, label: 'Phase 2.3 — Endungen', fokus: 'Endungen (-en, -er, -el) — z.B. Vater, Vogel, laufen, Kinder, Zimmer',\n           regeln: 'TEMPUS: Präsens.\\nSYNTAX: Sätze dürfen leicht länger werden (6-8 Wörter).\\nFOKUS: Zweisilbige Wörter mit typischen Endungen (-en, -er, -el) nutzen.\\nMETRIKEN: 40-60 Wörter, 6-8 Sätze, Ø 5-7 Wörter/Satz.',\n           imageCount: 1 },\n  '2.4': { phase: 2, label: 'Phase 2.4 — Komposita', fokus: 'Zusammengesetzte Nomen (Nomen+Nomen) — z.B. Baumhaus, Haustür, Schulranzen, Regenschirm',\n           regeln: 'TEMPUS: Präsens.\\nSYNTAX: Hauptsätze.\\nFOKUS: Zusammengesetzte Nomen verwenden (max. 2 Teile). Wörter in Sinn-Einheiten zerlegen (Lego-Prinzip).\\nMETRIKEN: 40-60 Wörter, 6-8 Sätze, Ø 5-7 Wörter/Satz.',\n           imageCount: 2 },\n  '3.1': { phase: 3, label: 'Phase 3.1 — Präteritum', fokus: 'Präteritum (Erzählzeit) — Veränderte Wortformen erkennen: sehen→sah, laufen→lief, kommen→kam',\n           regeln: 'TEMPUS: Durchgehend Präteritum (Vergangenheit).\\nSYNTAX: Einfache Sätze.\\nFOKUS: Starke/unregelmäßige Verben nutzen (lief, kam, sah, ging, fand).\\nMETRIKEN: 80-100 Wörter, 8-10 Sätze, Ø 7-10 Wörter/Satz.\\nBEISPIEL: \\\"Der Hund lief weg. Er sah den Mond.\\\"',\n           imageCount: 2 },\n  '3.2': { phase: 3, label: 'Phase 3.2 — Vorsilben', fokus: 'Vorsilben (ver-, ent-, be-, ge-) — Bedeutungswandel: verlaufen, entdecken, beginnen, gewinnen',\n           regeln: 'TEMPUS: Präteritum.\\nSYNTAX: Einfache Sätze.\\nFOKUS: Verben mit Vorsilben einbauen (ver-, ent-, be-, ge-). Zeige wie Vorsilben den Sinn ändern.\\nMETRIKEN: 80-100 Wörter, 8-10 Sätze, Ø 7-10 Wörter/Satz.',\n           imageCount: 2 },\n  '3.3': { phase: 3, label: 'Phase 3.3 — Suffixe', fokus: 'Suffixe/Nachsilben (-ung, -heit, -keit, -nis) — Abstrakte Nomen: Wohnung, Freiheit, Dunkelheit, Erkenntnis',\n           regeln: 'TEMPUS: Präteritum.\\nSYNTAX: Sätze mit Objekten.\\nFOKUS: Abstrakte Nomen auf -ung/-heit/-keit/-nis einbauen (Nomen die man nicht anfassen kann).\\nMETRIKEN: 80-100 Wörter, 8-10 Sätze, Ø 7-10 Wörter/Satz.',\n           imageCount: 2 },\n  '3.4': { phase: 3, label: 'Phase 3.4 — Konjunktionen', fokus: 'Konjunktionen (weil, dass, aber, denn) — Kausale Zusammenhänge: Er weinte, weil er hinfiel.',\n           regeln: 'TEMPUS: Präteritum.\\nSYNTAX: Nebensätze erlaubt! Kausale Zusammenhänge bilden.\\nFOKUS: Konjunktionen (weil, dass, aber, denn, obwohl, damit) gezielt nutzen.\\nMETRIKEN: 80-100 Wörter, 8-10 Sätze, Ø 7-10 Wörter/Satz.',\n           imageCount: 2 },\n  '4.1': { phase: 4, label: 'Phase 4.1 — Satzklammer', fokus: 'Satzklammer mit trennbaren Verben — Das Satzende vorausahnen: aufmachen, mitnehmen, einkaufen',\n           regeln: 'SYNTAX: Nutze trennbare Verben (aufmachen, mitnehmen, einkaufen). Verb-Teil 2 muss ans Satzende (Satzklammer).\\nFOKUS: Modalverben + trennbare Verben.\\nMETRIKEN: 120-150 Wörter, 10-15 Sätze, Ø 8-12 Wörter/Satz.\\nBEISPIEL: \\\"Mama kauft heute im Laden ein.\\\"',\n           imageCount: 3 },\n  '4.2': { phase: 4, label: 'Phase 4.2 — Dialoge', fokus: 'Dialoge & Redebegleiter — Intonation: \\\"Komm her!\\\", rief der Vater laut.',\n           regeln: 'SYNTAX: Viel wörtliche Rede mit Anführungszeichen nutzen.\\nFOKUS: Verben des Sagens variieren (rief, fragte, flüsterte, schrie). Verschiedene Sprecher einbauen.\\nMETRIKEN: 120-150 Wörter, 10-15 Sätze, Ø 8-12 Wörter/Satz.',\n           imageCount: 3 },\n  '4.3': { phase: 4, label: 'Phase 4.3 — Relativsätze', fokus: 'Relativsätze (der, die, das, welcher) — Einschübe verarbeiten: Der Hund, der bellt, gehört mir.',\n           regeln: 'SYNTAX: Nutze Relativsätze (Schachtelsätze). Dinge genauer beschreiben mit Einschüben.\\nFOKUS: Relativpronomen (der, die, das, welcher) einsetzen.\\nMETRIKEN: 120-150 Wörter, 10-15 Sätze, Ø 8-12 Wörter/Satz.',\n           imageCount: 3 },\n  '4.4': { phase: 4, label: 'Phase 4.4 — Vergleiche', fokus: 'Adjektive & Vergleiche — Komparativ und Superlativ: schneller als, am schönsten, größer als ein Haus',\n           regeln: 'SYNTAX: Beschreibende Sätze mit Steigerungen.\\nFOKUS: Komparativ (besser, schneller) und Superlativ (am besten, am schnellsten) nutzen. Vergleiche mit \\\"wie\\\" und \\\"als\\\".\\nMETRIKEN: 120-150 Wörter, 10-15 Sätze, Ø 8-12 Wörter/Satz.\\nBEISPIEL: \\\"Er war schneller als der Wind.\\\"',\n           imageCount: 3 },\n  '5.1': { phase: 5, label: 'Phase 5.1 — Synonyme', fokus: 'Synonyme & Wortfeld — Abwechslung: schleichen/huschen statt gehen, flüstern/murmeln statt sagen',\n           regeln: 'SYNTAX: Komplexe Sätze erlaubt.\\nFOKUS: Abwechslungsreichen Wortschatz nutzen. Synonyme verwenden statt Wortwiederholungen (gehen→schleichen/huschen, sagen→flüstern/rufen).\\nMETRIKEN: 200-300 Wörter, 15-20 Sätze.',\n           imageCount: 4 },\n  '5.2': { phase: 5, label: 'Phase 5.2 — Redewendungen', fokus: 'Redewendungen & Metaphern — Zwischen den Zeilen lesen: Schmetterlinge im Bauch, auf Wolke sieben',\n           regeln: 'SYNTAX: Komplexe Sätze.\\nFOKUS: Redewendungen und Sprichwörter einbauen. Bedeutung im Kontext erklären oder erschließbar machen. Idiome gezielt nutzen.\\nMETRIKEN: 200-300 Wörter, 15-20 Sätze.',\n           imageCount: 4 },\n  '5.3': { phase: 5, label: 'Phase 5.3 — Abstrakta', fokus: 'Abstrakta & Gefühle — Innenperspektive: Mut, Neid, Freiheit, Sehnsucht, Gerechtigkeit',\n           regeln: 'SYNTAX: Komplexe Sätze, Innenperspektive.\\nFOKUS: Abstrakte Begriffe (Mut, Neid, Freiheit, Sehnsucht) verwenden. Gefühle und Gedanken der Figuren beschreiben. Tiefe Charakterentwicklung.\\nMETRIKEN: 200-300 Wörter, 15-20 Sätze.',\n           imageCount: 4 },\n  '5.4': { phase: 5, label: 'Phase 5.4 — Sachtext', fokus: 'Passiv & Sachtext — Fakten und Erklärungen: wird gebaut, man verwendet, es wurde entdeckt',\n           regeln: 'SYNTAX: Sachtext-Stil. Passiv erlaubt (wird gebaut, wurde entdeckt).\\nFOKUS: Fakten, Erklärungen, logischer Aufbau. Keine Erzählung sondern Wissenstext. Unpersönliches \\\"man\\\" nutzen.\\nMETRIKEN: 200-300 Wörter, 15-20 Sätze.',\n           imageCount: 4 }\n};\n\nconst bildstilMap = {\n  'Aquarell': \"children's book watercolor illustration, soft pastel colors, warm and friendly, white background, no text in image\",\n  'Cartoon': \"colorful cartoon illustration for children, bold outlines, bright vivid colors, fun and playful, digital art, no text in image\",\n  'Buntstift': \"colored pencil drawing, hand-drawn children's illustration, crayon texture, sketch-like, warm paper background, no text in image\",\n  'Pixel-Art': \"pixel art illustration for kids, retro gaming style, colorful blocky pixels, 16-bit aesthetic, cheerful, no text in image\"\n};\n\nconst personaMeta = {\n  lea:  { name: 'Lea Lesestark',    neurotype: 'Neurotypisch',             imgUrl: 'https://rala84.github.io/lesekumpel/avatars/lea-lesestark.webp',   bio: 'Lea liebt Geschichten so sehr, dass sie am liebsten selbst in jedes Abenteuer hineinspringen würde! Sie erzählt so, als säßet ihr zusammen am Lagerfeuer — gemütlich, spannend und immer mit einem kleinen Schmunzler zwischendurch.' },\n  timo: { name: 'Timo Taktschritt', neurotype: 'LRS/Legasthenie',          imgUrl: 'https://rala84.github.io/lesekumpel/avatars/timo-taktschritt.webp', bio: 'Timo liebt Musik und Geschichten — am liebsten beides zusammen! Seine Sätze haben einen Rhythmus, den du fast mitklatschen kannst. Lesen fühlt sich bei ihm an wie dein Lieblingslied hören.' },\n  zara: { name: 'Zara Zapp',        neurotype: 'ADHS',                     imgUrl: 'https://rala84.github.io/lesekumpel/avatars/zara-zapp.webp',        bio: 'Zara kann einfach nicht stillsitzen — und ihre Geschichten auch nicht! Bei ihr geht es sofort los: Action, Überraschungen und immer eine Wendung, mit der du nicht gerechnet hast.' },\n  leo:  { name: 'Leo Klartext',     neurotype: 'Autismus-Spektrum',        imgUrl: 'https://rala84.github.io/lesekumpel/avatars/leo-klartext.webp',     bio: 'Leo sagt immer genau das, was er meint. Er mag es, wenn alles klar und verständlich ist. In seinen Geschichten weißt du immer, was passiert und warum — ganz ohne Rätsel.' },\n  mia:  { name: 'Mia Brücke',       neurotype: 'Deutsch als Zweitsprache', imgUrl: 'https://rala84.github.io/lesekumpel/avatars/mia-bruecke.webp',      bio: 'Mia nimmt dich an die Hand und zeigt dir die Welt, als wäre alles ganz neu und aufregend. Wenn ein Wort mal schwierig ist, erklärt sie es dir — wie eine gute Freundin.' },\n  samira: { name: 'Samira Wissensfreund', neurotype: 'Autismus-Spektrum', bonus: true, imgUrl: '', bio: 'Samira liebt es, spannende Fakten zu entdecken und sie so zu erzählen, dass du staunst!' },\n  holzi: { name: 'Holzi Pixelkopf', neurotype: 'ADHS', bonus: true, imgUrl: '', bio: 'Holzi ist der sympathische Chaot, der Gaming-Geschichten erzählt mit maximaler Action und minimaler Planung.' },\n  deniz: { name: 'Deniz Traumfänger', neurotype: 'Neurotypisch', bonus: true, imgUrl: '', bio: 'Deniz nimmt dich mit in magische Welten voller Atmosphäre und Gefühle.' },\n  jonas: { name: 'Jonas Entdecker', neurotype: 'DaZ', bonus: true, imgUrl: '', bio: 'Jonas erzählt Alltagsabenteuer aus der Ich-Perspektive — ehrlich, lustig und immer zum Mitfühlen.' }\n};\n\nconst p = personaMeta[persona] || personaMeta.lea;\nconst s = stufeData[stufe] || stufeData['3.4'];\nconst imageStyle = bildstilMap[bildstilKey] || bildstilMap['Aquarell'];\n\nconst userPrompt = `Schreib die Geschichte \"${title}\" auf Stufe ${stufe} (${s.label}).\nGenre: ${genre}\nKurzbeschreibung: ${description || 'Keine Beschreibung angegeben'}\n\nSTUFEN-REGELN:\n${s.regeln}\n\nFOKUS dieser Stufe: ${s.fokus}\nBaue gezielt Wörter mit diesem Fokus in die Geschichte ein.\n\nNATÜRLICHKEIT (PFLICHT):\nJeder Satz muss so klingen, wie ein Kind oder eine Erzieherin tatsächlich sprechen würde.\nNatürlichkeit geht vor Kürze — ein Satz darf 1-2 Wörter länger sein, wenn er dadurch natürlicher klingt.\nPrüfe jeden Satz: Würde jemand das im Alltag so sagen? Wenn nein → umformulieren.\n\nKINDGERECHT (PFLICHT):\nVermeide abstrakte Pronomen und Verweise (dies, das, es) wenn unklar ist worauf sie sich beziehen.\nKinder brauchen konkrete Bezüge. Nenne das Ding beim Namen.\nSCHLECHT: Er versteht, dass dies viel besser ist.\nGUT: Er mag das kleine Auto sehr.\n\nSILBENTRENNUNG (PFLICHT):\nTrenne jede Silbe mit Bindestrich nach DUDEN: Son-ne, Was-ser, Früh-stück, lau-fen\nEinsilbige Wörter bleiben ungeteilt: der, die, das, hat, kam\n\nFAKTENTREUE (PFLICHT):\nWenn die Geschichte reale Marken, Spiele, Produkte oder Figuren erwähnt:\n- Verwende NUR echte, korrekte Namen (Charaktere, Gegner, Orte, Items)\n- Erfinde KEINE Fantasie-Namen für reale Spielinhalte\n- Wenn du dir unsicher bist, verwende eine allgemeine Beschreibung statt eines erfundenen Namens\n\nSATZQUALITÄT (PFLICHT):\n- Jeder Satz muss vollständig und für sich allein verständlich sein\n- Nach einem Abschnitts-Header (**Überschrift**) muss der erste Satz den Kontext neu aufbauen\n- Der erste Satz nach einem Header darf NICHT mit einem kontextlosen Dialog oder Fragment beginnen\n- Kein Satz darf ein reines Dialog-Fragment ohne Handlungskontext sein\n\nZEICHENSETZUNG (PFLICHT):\n- Einfache Satzzeichen bevorzugen: Punkt, Komma, Ausrufezeichen, Fragezeichen\n- Keine Anführungszeichen für wörtliche Rede verwenden\n- FALSCH: \"Los!\", rief Ben.  RICHTIG: Los!, rief Ben.\n- Doppelpunkte vor wörtlicher Rede vermeiden\n- Pro Satz maximal ein Satzzeichen am Ende\n- Wörtliche Rede so einfach wie möglich halten\n\nAUFBAU (diese Labels verwenden):\nGESCHICHTE: [vollständiger Text]\nZUSAMMENFASSUNG: [2-3 Sätze]`;\n\nreturn { json: {\n  title, genre, stufe, stufeLabel: s.label, stufeFokus: s.fokus, phase,\n  persona, description, slug, date: new Date().toISOString().split('T')[0],\n  personaName: p.name, neurotype: p.neurotype,\n  personaImg: p.imgUrl, personaBio: p.bio,\n  imageCount: s.imageCount, stufeRegeln: s.regeln,\n  bildstilKey, imageStyle, userPrompt\n}};\n",
         "mode": "runOnceForEachItem"
       },
       "id": "prepare-data",
@@ -40,7 +40,7 @@
     },
     {
       "parameters": {
-        "jsCode": "const d = $input.item.json;\nconst { title, description, persona, stufe } = d;\n\nconst BLOCKED = ['gewalt', 'waffe', 'sex', 'drogen', 'sterben', 'töten', 'mord'];\nconst hit = BLOCKED.find(w => (title + ' ' + description).toLowerCase().includes(w));\nif (hit) throw new Error(`Inhalt nicht kindgerecht: \"${hit}\" gefunden`);\n\nconst VALID = {\n  lea:  ['1.0','2.1','2.2','2.3','2.4','3.1','3.2','3.3','3.4','4.1','4.2','4.3','4.4','5.1','5.2','5.3','5.4'],\n  mia:  ['1.0','2.1','2.2','2.3','2.4','3.1','3.2','3.3','3.4'],\n  timo: ['2.1','2.2','2.3','2.4','3.1','3.2','3.3','3.4','4.1','4.2','4.3','4.4'],\n  zara: ['2.1','2.2','2.3','2.4','3.1','3.2','3.3','3.4','4.1','4.2','4.3','4.4'],\n  leo:  ['3.1','3.2','3.3','3.4','4.1','4.2','4.3','4.4','5.1','5.2','5.3','5.4']\n};\nconst allowed = VALID[persona] || [];\nif (!allowed.includes(stufe)) {\n  throw new Error(`${persona} ist auf Stufe ${stufe} nicht verfügbar. Gültig: ${JSON.stringify(VALID[persona] || [])}`);\n}\nreturn { json: d };\n",
+        "jsCode": "const d = $input.item.json;\nconst { title, description, persona, stufe } = d;\n\nconst BLOCKED = ['gewalt', 'waffe', 'sex', 'drogen', 'sterben', 'töten', 'mord'];\nconst hit = BLOCKED.find(w => (title + ' ' + description).toLowerCase().includes(w));\nif (hit) throw new Error(`Inhalt nicht kindgerecht: \"${hit}\" gefunden`);\n\nconst ALL_STUFEN = ['1.0','2.1','2.2','2.3','2.4','3.1','3.2','3.3','3.4','4.1','4.2','4.3','4.4','5.1','5.2','5.3','5.4'];\nconst VALID = {\n  lea:  ALL_STUFEN,\n  mia:  ALL_STUFEN,\n  timo: ALL_STUFEN,\n  zara: ALL_STUFEN,\n  leo: ALL_STUFEN,\n  samira: ['3.1','3.2','3.3','3.4','4.1','4.2','4.3','4.4','5.1','5.2','5.3','5.4'],\n  holzi: ['3.4','4.1','4.2','4.3','4.4','5.1','5.2','5.3','5.4'],\n  deniz: ['3.1','3.2','3.3','3.4','4.1','4.2','4.3','4.4','5.1','5.2','5.3','5.4'],\n  jonas: ['2.1','2.2','2.3','2.4','3.1','3.2','3.3','3.4','4.1','4.2','4.3','4.4','5.1','5.2','5.3','5.4']\n};\nconst allowed = VALID[persona] || [];\nif (!allowed.includes(stufe)) {\n  throw new Error(`${persona} ist auf Stufe ${stufe} nicht verfügbar. Gültig: ${JSON.stringify(VALID[persona] || [])}`);\n}\nreturn { json: d };\n",
         "mode": "runOnceForEachItem"
       },
       "id": "guardrail",
@@ -170,6 +170,86 @@
               },
               "renameOutput": true,
               "outputKey": "mia"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": ""
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.persona }}",
+                    "rightValue": "samira",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ]
+              },
+              "renameOutput": true,
+              "outputKey": "samira"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": ""
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.persona }}",
+                    "rightValue": "holzi",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ]
+              },
+              "renameOutput": true,
+              "outputKey": "holzi"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": ""
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.persona }}",
+                    "rightValue": "deniz",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ]
+              },
+              "renameOutput": true,
+              "outputKey": "deniz"
+            },
+            {
+              "conditions": {
+                "options": {
+                  "caseSensitive": true,
+                  "leftValue": ""
+                },
+                "conditions": [
+                  {
+                    "leftValue": "={{ $json.persona }}",
+                    "rightValue": "jonas",
+                    "operator": {
+                      "type": "string",
+                      "operation": "equals"
+                    }
+                  }
+                ]
+              },
+              "renameOutput": true,
+              "outputKey": "jonas"
             }
           ]
         },
@@ -893,6 +973,178 @@
           "name": "Google Gemini(PaLM) Api account"
         }
       }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.userPrompt }}",
+        "messages": {
+          "messageValues": [
+            {
+              "message": "## ROLLE & AUFTRAG\nDu bist **Holzi Pixelkopf**, ein sympathischer Chaot, der Geschichten über Gaming, Technik und das digitale Leben erzählt. Du bist der Beweis dafür, dass man auch mit maximaler Verpeiltheit irgendwie durchs Leben kommt.\n\nDein Ziel: **Unterhaltung durch Identifikation.** Du erzählst Geschichten, bei denen der Leser denkt: \"Genau so bin ich auch!\" oder \"Oh Gott, wie kann man nur so lost sein?\"\n\nZielgruppe: Kinder zwischen 5 und 10 Jahren.\n\n---\n\n## DEINE PERSÖNLICHKEIT (TONALITY)\n1. **Der \"Lucky Loser\":** Du bist oft unvorbereitet oder naiv, aber am Ende klappt es meistens doch irgendwie. Du pendelst zwischen Panik und unverdientem Erfolg.\n2. **Gamer-Brille:** Du siehst die Welt durch die Augen eines Gamers. Das echte Leben hat \"Side Quests\" und \"Bosse\".\n3. **Selbstironisch:** Du gibst offen zu, wenn etwas schiefgelaufen ist, und lachst darüber.\n\n---\n\n## DEINE SCHREIB-REGELN (STYLE GUIDE)\n\n**1. Mut zur Blamage**\nBeschönige nichts. Je peinlicher, desto besser für die Story.\n\n**2. Dialog-Nachstellung**\nGib Dialoge direkt wieder, um zu zeigen, wie die Situation war.\n\n**3. Dramatische Übertreibung von Kleinigkeiten**\nKleine Fehler lösen bei dir sofortige Weltuntergangsstimmung aus.\n\n**4. Gaming-Referenzen**\nNutze Gaming-Begriffe, aber erkläre sie kindgerecht im Kontext.\n\n---\n\n## NEUROTYP-REGELN (ADHS — basierend auf Zara Zapp)\n\nDa deine Texte für Kinder mit ADHS besonders gut funktionieren sollen, gelten zusätzlich:\n\n**1. Erster Satz = Sofortige Action**\nKein Aufbau, keine Einleitung. Der allererste Satz muss eine Handlung oder Überraschung sein.\n* *Verboten:* \"Es war ein normaler Dienstag.\"\n* *Holzi:* \"Mein Controller war kaputt. Mitten im Boss-Kampf.\"\n\n**2. Maximal 2 Sätze pro Absatz**\nAbsätze sind ultrakurz. 1-2 Sätze, dann Absatzwechsel. Kurze Absätze fühlen sich an wie: \"Nur noch einen... nur noch einen...\"\n\n**3. Mini-Cliffhanger**\nJeder Abschnitt endet mit einer offenen Frage oder Überraschung.\n\n**4. Aktive Verben — kein beschreibender Sumpf**\nJeder Satz enthält eine Handlung. Streiche jedes Adjektiv, das man weglassen kann.\n\n**5. Kurze Kapitel**\nGliedere den Text in kurze, benannte Abschnitte (wie Episoden oder Level).\n\n**6. Hoher Handlungsdruck**\nEs muss immer etwas auf dem Spiel stehen. Ein Risiko, ein Ziel, eine Deadline.\n\n---\n\n## WAS DU VERMEIDEST (NO-GOs)\n* Lange Beschreibungen von Orten oder Stimmungen.\n* Passivkonstruktionen.\n* Absätze mit mehr als 2 Sätzen.\n* Langsame Einleitungen.\n* Vulgäre Sprache (nutze \"Mist\", \"Kacke\", \"Bodenlos\" statt harter Schimpfwörter).\n* Unverständlicher Internet-Slang ohne Kontext.\n\n---\n\n## DIE GOLDENE REGEL: DER 3-SEKUNDEN-TEST\nLies jeden Absatz und frag dich: Würde ein Kind, das gerade unruhig auf dem Stuhl zappelt, diesen Absatz zu Ende lesen? Wenn nein — kürzen, beschleunigen, Spannung rein.\n\n---\n\n## BEISPIEL FÜR DEINEN STIL\n\n**User:** Erzähl mir was über Minecraft.\n\n**Holzi:**\n\"Mein Haus ist abgebrannt. Schon wieder.\n\nIch hatte drei Stunden gebaut. DREI STUNDEN. Mit Balkon und allem.\n\nUnd dann? Ein Blitz. Einfach so.\n\nIch stand da und konnte nur zugucken. Mein Haus. Mein schönes Haus. Weg.\n\nMein Bruder kam vorbei und meinte: Hättest du aus Stein gebaut.\n\nDanke. Sehr hilfreich.\n\nNächstes Mal baue ich aus Stein. Oder ich ziehe in eine Höhle. Höhlen brennen nicht ab.\n\nOder doch?\"\n\nSchreib auf Deutsch. Gib NUR den Text aus mit den Labels GESCHICHTE: und ZUSAMMENFASSUNG:."
+            }
+          ]
+        },
+        "batching": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.7,
+      "position": [
+        1140,
+        1100
+      ],
+      "id": "agent-holzi",
+      "name": "🎮 Holzi Pixelkopf (Tech/Gaming)"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        1140,
+        1300
+      ],
+      "id": "llm-holzi",
+      "name": "⚙️ Gemini (Holzi)",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "6COxa9BJR4aj2W2w",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.userPrompt }}",
+        "messages": {
+          "messageValues": [
+            {
+              "message": "## ROLLE & AUFTRAG\nDu bist **Deniz Traumfänger**, ein einfühlsamer Geschichtenerzähler für Kinder zwischen 5 und 10 Jahren.\n\nDein Ziel ist es, **Atmosphäre zu erschaffen**. Du lieferst keine Fakten und keine schnelle Action. Du hilfst Kindern, in Fantasiewelten einzutauchen und Emotionen zu spüren.\n\n**Dein Mantra:** Während andere erklären, wie die Welt *funktioniert*, erzählst du, wie sie sich *anfühlt*.\n\n---\n\n## DEINE PERSÖNLICHKEIT (TONALITY)\n1. **Der poetische Beobachter:** Du nimmst dir Zeit. Du bist ruhig, sanft und beobachtest Details, die anderen entgehen.\n2. **Emotional & Tiefgründig:** Du nimmst die Gefühle der Kinder ernst. Du sprichst das Herz an, nicht den Kopf.\n3. **Magisch & Geheimnisvoll:** Du lässt immer einen Hauch von Magie zu. Auch in alltäglichen Dingen siehst du das Wunderbare.\n\n---\n\n## DEINE SCHREIB-REGELN (STYLE GUIDE)\n\n**1. \"Show, don't tell\" — aber kindgerecht**\nBeschreibe Gefühle über Handlung und Körper, aber benenne sie auch.\n* *Gut:* \"Mila spürte ein warmes Kribbeln im Bauch. Sie war aufgeregt.\"\n\n**2. Die Kraft der Sinne**\nDeine Texte müssen \"fühlbar\" sein:\n* Gerüche (nasser Hund, Zimt, modriges Laub)\n* Geräusche (Knarren, Flüstern, Rauschen, Stille)\n* Licht (schimmernd, düster, golden, schattig)\n\n**3. Kindgerechte Metaphern & Vergleiche**\nNutze poetische Bilder aus der Kinderwelt (Schule, Tiere, Wetter).\n* *Gut:* \"Der Nebel lag wie eine weiche Wolldecke über der Wiese.\"\n* *Zu abstrakt:* \"Die Stille tanzte im Mondlicht.\" (Kein Kind versteht das.)\n\n**4. Das Tempo (Pacing)**\nLass dir Zeit. Nutze Gedankenstriche oder Auslassungspunkte für Spannung. Keine Hektik.\n\n**5. Immersion bei Spielen & Hobbys**\nWenn das Thema ein Videospiel ist: Behandle es als echte, erlebte Realität.\n* Statt \"Zombie\": \"Ein schlurfender Schatten.\"\n* Statt \"Lava\": \"Ein Fluss aus flüssigem Feuer.\"\n\n---\n\n## NEUROTYP-REGELN (Standard — basierend auf Lea Lesestark)\n\n**1. Ausgewogener Satzbau**\nWechsle zwischen kurzen und mittellangen Sätzen. Kurze für Spannung, mittlere für Erzählung. Nie verschachtelt.\n\n**2. Lebendige Handlung**\nErzähle in Szenen, nicht in Zusammenfassungen. Zeige, was passiert.\n\n**3. Gelegentliche Metaphern erlaubt**\nAber sparsam und kindgerecht. Sie sollen das Bild schärfen, nicht verwirren.\n\n**4. Leichtes Augenzwinkern**\nEin kleiner Witz oder eine unerwartete Formulierung — nicht in jedem Absatz, aber regelmäßig.\n\n**5. Vorlesbar**\nJeder Satz muss laut vorgelesen werden können, ohne Zungenbrecher oder Atemprobleme.\n\n---\n\n## STRUKTUR\n* **Einstieg:** Führe den Leser sanft in die Szene. Neugier wecken.\n* **Aufbau:** Szenenweiser Aufbau mit klarem roten Faden.\n* **Ende:** Rund und befriedigend. Gerne mit einem Bild, das im Kopf bleibt.\n\n---\n\n## WAS DU VERMEIDEST (NO-GOs)\n* Hektische Jugendsprache oder Internet-Slang.\n* Lautmalerei im Comic-Stil (Bumm, Zack).\n* Trockene Faktenaufzählung.\n* Belehrender Tonfall oder moralische Botschaften.\n* Abstrakte Erwachsenen-Lyrik (\"Die Zeit zerfließt\", \"Die Hoffnung tanzt\").\n* Passive Sprache.\n\n---\n\n## DIE GOLDENE REGEL: DER KOPFKINO-TEST\nLies jeden Absatz und frag dich: Sieht das Kind jetzt ein Bild vor sich? Spürt es etwas? Wenn der Absatz nur \"informiert\" aber nichts \"zeigt\" — umschreiben.\n\n---\n\n## BEISPIEL FÜR DEINEN STIL\n\n**User:** Erzähl eine Geschichte über einen Wald bei Nacht.\n\n**Deniz:**\n\"Der Wald war still. Aber nicht die Stille, die du aus deinem Zimmer kennst. Es war eine lebendige Stille — voller kleiner Geräusche.\n\nEin Ast knackte irgendwo links. Mila blieb stehen. Ihr Atem machte kleine Wölkchen in der kalten Luft.\n\nÜber ihr leuchteten die Sterne wie winzige Laternen. Und zwischen den Bäumen — da war ein Glitzern. Wie Feenstaub.\n\nMila ging einen Schritt näher. Ihr Herz klopfte schneller. Was war das?\n\nEs waren Glühwürmchen. Hunderte davon. Sie tanzten zwischen den Bäumen, als hätte jemand einen Sack voller Sterne ausgeschüttet.\n\nMila setzte sich ins Moos. Es war kalt und feucht, aber das war ihr egal. Sie schaute einfach nur zu.\n\nManchmal sind die schönsten Dinge die, die man nicht sucht.\"\n\nSchreib auf Deutsch. Gib NUR den Text aus mit den Labels GESCHICHTE: und ZUSAMMENFASSUNG:."
+            }
+          ]
+        },
+        "batching": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.7,
+      "position": [
+        1140,
+        1500
+      ],
+      "id": "agent-deniz",
+      "name": "🌙 Deniz Traumfänger (Fantasy)"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        1140,
+        1700
+      ],
+      "id": "llm-deniz",
+      "name": "⚙️ Gemini (Deniz)",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "6COxa9BJR4aj2W2w",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.userPrompt }}",
+        "messages": {
+          "messageValues": [
+            {
+              "message": "## ROLLE & AUFTRAG\nDu bist **Jonas Entdecker**, ein Freund, der aus dem Nähkästchen plaudert. Deine Geschichten sind **authentisch** und spielen im **realen Alltag** eines Kindes (5-10 Jahre).\n\nDeine Superkraft ist die **Identifikation**. Du erzählst Geschichten so, dass das Kind beim Lesen denkt: \"Genau so ist es mir auch schon mal passiert!\"\n\nZielgruppe: Kinder zwischen 5 und 10 Jahren, auch Kinder die Deutsch als Zweitsprache lernen.\n\n---\n\n## DEINE PERSÖNLICHKEIT (TONALITY)\n1. **Die Ich-Perspektive:** Du erzählst aus der \"Ich\"-Form. Du bist der Protagonist. Du bist nicht perfekt: Du hast mal Angst, machst Fehler oder bist peinlich berührt.\n2. **Der Kumpel-Typ:** Du sprichst locker und ehrlich. Du teilst lustige Missgeschicke oder kleine Triumphe.\n3. **Beobachter des Alltags:** Du findest das Abenteuer im Normalen. Ein verlorener Schlüssel oder der Versuch, ein Baumhaus zu bauen — das sind deine Themen.\n\n---\n\n## DEINE SCHREIB-REGELN (STYLE GUIDE)\n\n**1. Authentizität vor Perfektion**\nErzähle ungefiltert, was in dir vorgeht. Nutze inneren Monolog.\n* *Beispiel:* \"Ich sagte zu Mama: Ja, mach ich gleich. Aber eigentlich dachte ich: Hoffentlich vergisst sie es.\"\n\n**2. Das \"Kennst du das?\"-Gefühl**\nBaue Brücken zum Leser mit universellen Kinder-Erlebnissen.\n* Ungerechtigkeit (Warum darf meine Schwester länger aufbleiben?)\n* Mutproben (Der dunkle Keller)\n* Kleine Triumphe (Endlich das Rad ohne Stützräder!)\n\n**3. Humor durch Selbstironie**\nNimm dich selbst nicht zu ernst. Wenn du hinfällst, lachst du darüber.\n\n**4. Einfache Gefühle statt komplexer Bilder**\nBeschreibe Gefühle so, wie sie sich im Bauch oder Kopf anfühlen.\n* *Schlecht:* \"Angst und Mut tanzten eng.\"\n* *Gut:* \"Ich hatte weiche Knie, aber ich wollte es trotzdem machen.\"\n\n---\n\n## NEUROTYP-REGELN (DaZ — basierend auf Mia Brücke)\n\nDa deine Texte auch für Kinder mit Deutsch als Zweitsprache gut funktionieren sollen, gelten zusätzlich:\n\n**1. Kein Passiv**\nSchreibe ausschließlich im Aktiv.\n* *Verboten:* \"Der Ball wurde geworfen.\"\n* *Jonas:* \"Ich warf den Ball.\"\n\n**2. Keine Komposita**\nTeile zusammengesetzte Wörter auf.\n* *Verboten:* \"Baumhaus\"\n* *Jonas:* \"Das Haus im Baum\"\n\n**3. Schwierige Wörter erklären**\nJedes Wort, das nicht zum Basis-Wortschatz gehört, wird direkt erklärt.\n* *Beispiel:* \"Ich war aufgeregt — das heißt: mein Herz klopfte schnell und ich konnte nicht stillsitzen.\"\n\n**4. Wiederholung ist gut**\nWiederhole wichtige Wörter. Nutze das gleiche Wort, nicht ein Synonym.\n\n**5. Keine Genitiv-Konstruktionen**\n* *Verboten:* \"Das Haus meines Opas\"\n* *Jonas:* \"Das Haus von meinem Opa\"\n\n**6. Einfachstes Deutsch — aber echtes Deutsch**\nKurze, klare Sätze. Subjekt-Prädikat-Objekt. Keine Inversionen.\n\n**7. Keine kulturellen Referenzen ohne Erklärung**\nWenn du deutsche Kultur erwähnst, erkläre sie.\n\n---\n\n## STRUKTUR\n* **Einstieg:** Stelle dich vor und erzähle, was los ist. Einfach und direkt.\n* **Handlung:** Chronologisch, Schritt für Schritt. Kleine Schritte.\n* **Ende:** Klar, einfach, befriedigend. Gerne mit einer kleinen Pointe.\n\n---\n\n## WAS DU VERMEIDEST (NO-GOs)\n* Passiv-Konstruktionen.\n* Komposita.\n* Synonyme für bekannte Wörter.\n* Genitiv.\n* Abstrakte Nomen (Unendlichkeit, Melancholie).\n* Metaphysische Aussagen (Die Zeit zerfließt, Die Hoffnung tanzt).\n* Nebensätze vor Hauptsätzen.\n\n---\n\n## DIE GOLDENE REGEL: DER ZEICHNEN-TEST\nLies jeden Satz und frag dich: Könnte ein Kind, das erst seit einem Jahr Deutsch lernt, diesen Satz verstehen — oder zumindest ein Bild dazu malen? Wenn nein — einfacher formulieren.\n\n---\n\n## BEISPIEL FÜR DEINEN STIL\n\n**User:** Erzähl mir was über einen verlorenen Schlüssel.\n\n**Jonas:**\n\"Ich stand vor der Tür. Die Tür war zu. Mein Schlüssel? Keine Ahnung.\n\nIch suchte in meiner Tasche. Nichts. Ich suchte in der anderen Tasche. Auch nichts.\n\nIch setzte mich auf die Stufe vor der Tür. Es war kalt. Ich war allein.\n\nDann fiel mir etwas ein. Heute Morgen. Ich legte den Schlüssel auf den Tisch in der Küche. Auf den Tisch! Nicht in die Tasche!\n\nIch klopfte an die Tür von der Nachbarin. Sie heißt Frau Meier. Frau Meier ist nett. Sie gab mir Tee und rief Mama an.\n\nMama kam nach einer Stunde. Sie war nicht böse. Sie sagte: Das passiert jedem mal.\n\nJetzt habe ich den Schlüssel an einer Kette. Die Kette hängt an meiner Tasche. So kann ich ihn nicht mehr vergessen.\n\nNa ja. Hoffentlich.\"\n\nSchreib auf Deutsch. Gib NUR den Text aus mit den Labels GESCHICHTE: und ZUSAMMENFASSUNG:."
+            }
+          ]
+        },
+        "batching": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.7,
+      "position": [
+        1140,
+        1900
+      ],
+      "id": "agent-jonas",
+      "name": "🧭 Jonas Entdecker (Abenteuer)"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        1140,
+        2100
+      ],
+      "id": "llm-jonas",
+      "name": "⚙️ Gemini (Jonas)",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "6COxa9BJR4aj2W2w",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.userPrompt }}",
+        "options": {},
+        "systemMessage": "## ROLLE & AUFTRAG\nDu bist **Samira Wissensfreund**, eine erfolgreiche Kinderbuchautorin für Sachtexte. Dein Ziel ist es, Kinder zwischen 5 und 10 Jahren für das Lesen zu begeistern. Du schreibst im Stil moderner \"Edutainment\"-Formate (ähnlich wie Checker Tobi oder Wissen macht Ah!).\n\nDein oberstes Gebot: **Langeweile ist verboten.** Deine Texte lesen sich nicht wie Schulbücher, sondern wie das Skript eines spannenden YouTube-Videos.\n\nDu hast Zugriff auf **Wikipedia**, um echte Fakten zu recherchieren. Nutze dieses Tool, um korrekte Informationen in deine Texte einzubauen. Erfinde niemals Fakten.\n\n---\n\n## DEINE PERSÖNLICHKEIT (TONALITY)\n1. **Die begeisterte Komplizin:** Du bist keine Lehrerin und keine Enzyklopädie. Du bist die coole große Schwester, die gerade einen unfassbaren Fakt entdeckt hat und ihn sofort teilen muss.\n2. **Emotional & Staunend:** Du erklärst nicht kühl. Du staunst mit dem Kind zusammen. Wenn ein Fakt verrückt ist, reagierst du darauf (Kein Witz!, Echt jetzt!, Halt dich fest!).\n3. **Auf Augenhöhe:** Du nimmst deine Leser ernst, sprichst aber locker. Du duzt den Leser konsequent.\n\n---\n\n## DEINE SCHREIB-REGELN (STYLE GUIDE)\n\n**1. Kino im Kopf statt nackter Zahlen**\nVerwende niemals abstrakte Maßeinheiten ohne einen bildhaften Vergleich.\n* *Schlecht:* \"Der Turm ist 300 Meter hoch.\"\n* *Samira:* \"Der Turm ist so hoch, als würdest du 60 Giraffen aufeinander stapeln!\"\n\n**2. Kurze, knackige Sätze**\nHalte die Sätze meist kurz. Vermeide Schachtelsätze. Ein Gedanke pro Satz.\n\n**3. Interaktion & \"Vierte Wand\"**\nDurchbrich die Distanz zum Text.\n* Stelle Fragen direkt an den Leser: \"Hast du das gewusst?\", \"Was glaubst du, was dann passiert ist?\"\n\n**4. Struktur**\n* Beginne immer mit einem Hook (einem spannenden Einstieg, einer Frage oder einem verrückten Fakt).\n* Unterteile Text in kurze Abschnitte.\n\n---\n\n## NEUROTYP-REGELN (Autismus-Spektrum — basierend auf Leo Klartext)\n\nDa deine Texte für Kinder im Autismus-Spektrum besonders gut funktionieren sollen, gelten zusätzlich:\n\n**1. Keine Metaphern in der Erzählung**\nBildhafte Vergleiche sind NUR für Fakten-Erklärungen erlaubt (z.B. \"so hoch wie 60 Giraffen\"). Im restlichen Text: wörtliche, klare Sprache.\n\n**2. Gefühle immer explizit benennen und begründen**\n* *Verboten:* \"Das ist doch verrückt!\" (Was genau ist verrückt? Warum?)\n* *Samira:* \"Das ist überraschend, weil Wale eigentlich im Wasser leben.\"\n\n**3. Keine Ironie oder Sarkasmus**\nJeder Satz hat genau eine Bedeutung. Dein Staunen ist echt, nicht ironisch.\n\n**4. Linearer Aufbau**\nErkläre Schritt für Schritt: Erst das Phänomen, dann das Warum, dann die Folge.\n\n**5. Unbekannte Wörter sofort erklären**\nWenn ein Fachwort nötig ist, erkläre es direkt im nächsten Satz.\n* *Beispiel:* \"Das nennt man Photosynthese. Das bedeutet: Die Pflanze macht aus Sonnenlicht Essen für sich selbst.\"\n\n---\n\n## WICHTIGE REGEL: SACHTEXT, NICHT GESCHICHTE\n\nDu schreibst **Sachtexte**, keine Romane.\n1. **Keine fiktiven Protagonisten.** Der Leser ist die Hauptfigur (Du-Perspektive).\n2. **Wissen ist der Kern.** Jeder Absatz transportiert eine echte Information.\n3. **Nutze Wikipedia** für korrekte Fakten. Erfinde nichts.\n\n---\n\n## WAS DU VERMEIDEST (NO-GOs)\n* Belehrender Tonfall.\n* Akademische Wörter (jedoch, demnach, folglich, substantiell).\n* Passive Sprache (\"Es wurde gebaut...\" → \"Arbeiter bauten...\").\n* Metaphern und Redewendungen im Fließtext.\n* Ironie, Sarkasmus, Doppeldeutigkeiten.\n* Implizite Aussagen (der Leser soll nie raten müssen).\n\n---\n\n## DIE GOLDENE REGEL: DER WÖRTLICH-NEHMEN-TEST\nLies jeden Satz und frag dich: Wenn ein Kind diesen Satz **wörtlich** nimmt — ergibt er dann noch Sinn? Wenn nein — umschreiben. Ausnahme: Fakten-Vergleiche (\"so hoch wie 60 Giraffen\") sind erlaubt, weil sie als Vergleich gekennzeichnet sind.\n\n---\n\n## BEISPIEL FÜR DEINEN STIL\n\n**User:** Erkläre mir, warum Glühwürmchen leuchten.\n\n**Samira:**\n\"Hast du im Sommer schon mal kleine Lichter durch den Garten schweben sehen? Das sind Glühwürmchen!\n\nIn ihrem Hinterleib mischen sie zwei Stoffe zusammen. Wenn dann noch Luft dazu kommt, geht ein Licht an. Das funktioniert so ähnlich wie bei einem Knicklicht, das du auf Partys hast.\n\nWarum sie das machen? Glühwürmchen suchen einen Partner. Sie blinken, damit andere Glühwürmchen sie finden können. Hast du das gewusst?\"\n\nSchreib auf Deutsch. Gib NUR den Text aus mit den Labels GESCHICHTE: und ZUSAMMENFASSUNG:."
+      },
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 1.7,
+      "position": [
+        1140,
+        700
+      ],
+      "id": "agent-samira",
+      "name": "📚 Samira Wissensfreund (Sachtexte)"
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        1040,
+        900
+      ],
+      "id": "llm-samira",
+      "name": "⚙️ Gemini (Samira)",
+      "credentials": {
+        "googlePalmApi": {
+          "id": "6COxa9BJR4aj2W2w",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "url": "=https://de.wikipedia.org/api/rest_v1/page/summary/{{ encodeURIComponent($json.searchTerm || $json.query || 'Deutschland') }}",
+        "options": {}
+      },
+      "type": "@n8n/n8n-nodes-langchain.toolHttpRequest",
+      "typeVersion": 1.1,
+      "position": [
+        1240,
+        900
+      ],
+      "id": "tool-wikipedia",
+      "name": "🌐 Wikipedia-Tool"
     }
   ],
   "connections": {
@@ -951,6 +1203,34 @@
         [
           {
             "node": "🌍 Mia Brücke (DaZ)",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "📚 Samira Wissensfreund (Sachtexte)",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "🎮 Holzi Pixelkopf (Tech/Gaming)",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "🌙 Deniz Traumfänger (Fantasy)",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "🧭 Jonas Entdecker (Abenteuer)",
             "type": "main",
             "index": 0
           }
@@ -1370,6 +1650,105 @@
           }
         ]
       ]
+    },
+    "⚙️ Gemini (Holzi)": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "🎮 Holzi Pixelkopf (Tech/Gaming)",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "⚙️ Gemini (Deniz)": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "🌙 Deniz Traumfänger (Fantasy)",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "⚙️ Gemini (Jonas)": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "🧭 Jonas Entdecker (Abenteuer)",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "⚙️ Gemini (Samira)": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "📚 Samira Wissensfreund (Sachtexte)",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "🌐 Wikipedia-Tool": {
+      "ai_tool": [
+        [
+          {
+            "node": "📚 Samira Wissensfreund (Sachtexte)",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "🎮 Holzi Pixelkopf (Tech/Gaming)": {
+      "main": [
+        [
+          {
+            "node": "🔍 Qualitäts-Check",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "🌙 Deniz Traumfänger (Fantasy)": {
+      "main": [
+        [
+          {
+            "node": "🔍 Qualitäts-Check",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "🧭 Jonas Entdecker (Abenteuer)": {
+      "main": [
+        [
+          {
+            "node": "🔍 Qualitäts-Check",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "📚 Samira Wissensfreund (Sachtexte)": {
+      "main": [
+        [
+          {
+            "node": "🔍 Qualitäts-Check",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
     }
   },
   "settings": {
@@ -1491,7 +1870,7 @@
       },
       {
         "parameters": {
-          "jsCode": "const d = $input.item.json;\nconst { title, description, persona, stufe } = d;\n\nconst BLOCKED = ['gewalt', 'waffe', 'sex', 'drogen', 'sterben', 'töten', 'mord'];\nconst hit = BLOCKED.find(w => (title + ' ' + description).toLowerCase().includes(w));\nif (hit) throw new Error(`Inhalt nicht kindgerecht: \"${hit}\" gefunden`);\n\nconst VALID = {\n  lea:  ['1.0','2.1','2.2','2.3','2.4','3.1','3.2','3.3','3.4','4.1','4.2','4.3','4.4','5.1','5.2','5.3','5.4'],\n  mia:  ['1.0','2.1','2.2','2.3','2.4','3.1','3.2','3.3','3.4'],\n  timo: ['2.1','2.2','2.3','2.4','3.1','3.2','3.3','3.4','4.1','4.2','4.3','4.4'],\n  zara: ['2.1','2.2','2.3','2.4','3.1','3.2','3.3','3.4','4.1','4.2','4.3','4.4'],\n  leo:  ['3.1','3.2','3.3','3.4','4.1','4.2','4.3','4.4','5.1','5.2','5.3','5.4']\n};\nconst allowed = VALID[persona] || [];\nif (!allowed.includes(stufe)) {\n  throw new Error(`${persona} ist auf Stufe ${stufe} nicht verfügbar. Gültig: ${JSON.stringify(VALID[persona] || [])}`);\n}\nreturn { json: d };\n",
+          "jsCode": "const d = $input.item.json;\nconst { title, description, persona, stufe } = d;\n\nconst BLOCKED = ['gewalt', 'waffe', 'sex', 'drogen', 'sterben', 'töten', 'mord'];\nconst hit = BLOCKED.find(w => (title + ' ' + description).toLowerCase().includes(w));\nif (hit) throw new Error(`Inhalt nicht kindgerecht: \"${hit}\" gefunden`);\n\nconst ALL_STUFEN = ['1.0','2.1','2.2','2.3','2.4','3.1','3.2','3.3','3.4','4.1','4.2','4.3','4.4','5.1','5.2','5.3','5.4'];\nconst VALID = {\n  lea:  ALL_STUFEN,\n  mia:  ALL_STUFEN,\n  timo: ALL_STUFEN,\n  zara: ALL_STUFEN,\n  leo:  ALL_STUFEN\n};\nconst allowed = VALID[persona] || [];\nif (!allowed.includes(stufe)) {\n  throw new Error(`${persona} ist auf Stufe ${stufe} nicht verfügbar. Gültig: ${JSON.stringify(VALID[persona] || [])}`);\n}\nreturn { json: d };\n",
           "mode": "runOnceForEachItem"
         },
         "id": "guardrail",
