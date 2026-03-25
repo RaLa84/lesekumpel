@@ -127,6 +127,23 @@
         .persona-card:hover:not(.disabled) { border-color: var(--accent-coral); transform: translateY(-3px); box-shadow: 0 6px 16px rgba(0,0,0,0.06); }
         .persona-card.active { border-color: var(--accent-coral); background: var(--accent-coral-light); }
         .persona-card.disabled { opacity: 0.3; cursor: not-allowed; filter: grayscale(0.6); }
+        .bonus-accordion { margin-top: 24px; }
+        .bonus-toggle {
+            width: 100%; padding: 14px 20px; border: 2px dashed var(--primary-yellow); border-radius: 16px;
+            background: rgba(255,213,79,0.1); font-family: var(--font-body); font-weight: 600;
+            font-size: 0.95rem; cursor: pointer; color: var(--text-dark); transition: all 0.2s;
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+        }
+        .bonus-toggle:hover { background: rgba(255,213,79,0.25); border-color: var(--accent-coral); }
+        .bonus-content { overflow: hidden; transition: max-height 0.35s ease; }
+        .bonus-avatar-placeholder {
+            width: 65px; height: 65px; border-radius: 50%; border: 3px solid var(--primary-yellow);
+            margin: 0 auto 8px; display: flex; align-items: center; justify-content: center; font-size: 2rem;
+        }
+        .bonus-avatar-samira { background: #f9f3e0; }
+        .bonus-avatar-holzi { background: #e8f5e9; }
+        .bonus-avatar-deniz { background: #e8eaf6; }
+        .bonus-avatar-jonas { background: #fff3e0; }
         .persona-avatar { width: 65px; height: 65px; border-radius: 50%; border: 3px solid var(--primary-yellow); margin: 0 auto 8px; display: block; object-fit: cover; }
         .persona-name { font-family: var(--font-heading); font-size: 0.9rem; color: var(--accent-coral); }
         .persona-type { font-size: 0.7rem; color: var(--text-muted); margin-top: 2px; }
@@ -321,6 +338,38 @@
                 <div class="persona-type">Deutsch als Zweitsprache</div>
             </div>
         </div>
+
+        <!-- BONUS AUTOREN (Akkordeon) -->
+        <div class="bonus-accordion">
+            <button class="bonus-toggle" onclick="toggleBonus()">
+                ⭐ Bonus-Autoren anzeigen <span id="bonus-arrow">▼</span>
+            </button>
+            <div class="bonus-content" id="bonus-content">
+                <div class="persona-grid">
+                    <div class="persona-card" data-persona="samira" onclick="selectPersona('samira')">
+                        <div class="bonus-avatar-placeholder bonus-avatar-samira">📚</div>
+                        <div class="persona-name">Samira Wissensfreund</div>
+                        <div class="persona-type">Sachtexte / Wissen</div>
+                    </div>
+                    <div class="persona-card" data-persona="holzi" onclick="selectPersona('holzi')">
+                        <div class="bonus-avatar-placeholder bonus-avatar-holzi">🎮</div>
+                        <div class="persona-name">Holzi Pixelkopf</div>
+                        <div class="persona-type">Tech / Gaming</div>
+                    </div>
+                    <div class="persona-card" data-persona="deniz" onclick="selectPersona('deniz')">
+                        <div class="bonus-avatar-placeholder bonus-avatar-deniz">🌙</div>
+                        <div class="persona-name">Deniz Traumfänger</div>
+                        <div class="persona-type">Fantasy / Emotion</div>
+                    </div>
+                    <div class="persona-card" data-persona="jonas" onclick="selectPersona('jonas')">
+                        <div class="bonus-avatar-placeholder bonus-avatar-jonas">🧭</div>
+                        <div class="persona-name">Jonas Entdecker</div>
+                        <div class="persona-type">Abenteuer / Alltag</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
         <div class="step-nav"><button class="btn-back" onclick="goStep(3)">← Zurück</button><span></span></div>
     </div>
 
@@ -381,6 +430,18 @@ function toggleMenu() {
     btn.setAttribute('aria-expanded', isOpen);
 }
 
+function toggleBonus() {
+    const content = document.getElementById('bonus-content');
+    const arrow = document.getElementById('bonus-arrow');
+    if (content.style.display === 'none' || !content.style.display) {
+        content.style.display = 'block';
+        arrow.textContent = '▲';
+    } else {
+        content.style.display = 'none';
+        arrow.textContent = '▼';
+    }
+}
+
 const STUFEN = {
     1: [{ id: '1.0', name: 'Top-100-Wörter', fokus: 'Häufigste Grundwörter' }],
     2: [
@@ -415,10 +476,14 @@ const VALID_PERSONAS = {
     mia:  ALL_STUFEN,
     timo: ALL_STUFEN,
     zara: ALL_STUFEN,
-    leo:  ALL_STUFEN
+    leo:  ALL_STUFEN,
+    samira: ALL_STUFEN,
+    holzi: ALL_STUFEN,
+    deniz: ALL_STUFEN,
+    jonas: ALL_STUFEN
 };
 
-const PERSONA_LABELS = { lea: 'Lea Lesestark (Neurotypisch)', timo: 'Timo Taktschritt (LRS/Legasthenie)', zara: 'Zara Zapp (ADHS)', leo: 'Leo Klartext (Autismus-Spektrum)', mia: 'Mia Brücke (Deutsch als Zweitsprache)' };
+const PERSONA_LABELS = { lea: 'Lea Lesestark (Neurotypisch)', timo: 'Timo Taktschritt (LRS/Legasthenie)', zara: 'Zara Zapp (ADHS)', leo: 'Leo Klartext (Autismus-Spektrum)', mia: 'Mia Brücke (Deutsch als Zweitsprache)', samira: 'Samira Wissensfreund (Sachtexte)', holzi: 'Holzi Pixelkopf (Tech/Gaming)', deniz: 'Deniz Traumfänger (Fantasy)', jonas: 'Jonas Entdecker (Abenteuer)' };
 const PHASE_LABELS = { 1: 'Phase 1 — Der Start', 2: 'Phase 2 — Der Ausbau', 3: 'Phase 3 — Der Fluss', 4: 'Phase 4 — Die Geschichte', 5: 'Phase 5 — Der Profi' };
 const BILDSTIL_LABELS = { 'Aquarell': 'Aquarell — Weiche Pastellfarben', 'Cartoon': 'Cartoon — Bunte moderne Illustration', 'Buntstift': 'Buntstift — Handgezeichneter Look', 'Pixel-Art': 'Pixel-Art — Retro-Gaming-Stil' };
 const STEP_LABELS = ['', 'Deine Geschichte', 'Lesephase', 'Lesestufe', 'Autorin wählen', 'Bildstil & Absenden'];
