@@ -685,6 +685,11 @@
                     const metaAuthor = text.match(/<meta\s+name=["']author["']\s+content=["'](.*?)["']/i);
                     if (metaAuthor && metaAuthor[1]) story.author = metaAuthor[1];
 
+                    const titleMatch = text.match(/<title>([^<]+)<\/title>/i);
+                    if (titleMatch && titleMatch[1]) {
+                        story.displayTitle = titleMatch[1].replace(/\s*[—–-]\s*Lesekumpel$/, '').trim();
+                    }
+
                     const metaLevel = text.match(/<meta\s+name=["']reading-level["']\s+content=["'](.*?)["']/i);
                     if (metaLevel && metaLevel[1]) story.readingLevel = metaLevel[1];
                 } catch (e) {
@@ -808,7 +813,7 @@
                                  onerror="var p=this.parentElement;this.remove();p.innerHTML='<span class=card-cover-icon>\uD83D\uDCD6</span>';">
                         </div>
                         <div class="card-body">
-                            <div class="card-title">${formatName(file.name)}</div>
+                            <div class="card-title">${file.displayTitle || formatName(file.name)}</div>
                             ${levelBadgeText ? `<div class="card-badges"><span class="badge level-badge">${levelBadgeText}</span></div>` : ''}
                             <div class="card-meta">
                                 <span class="card-author">${file.author || ''}</span>
