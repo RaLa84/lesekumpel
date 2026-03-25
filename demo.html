@@ -124,8 +124,9 @@
 
         /* AUTOREN FILTER */
         .author-filter-container {
-            display: flex; justify-content: center; gap: 18px; margin-bottom: 10px; flex-wrap: wrap;
+            display: flex; justify-content: center; gap: 18px; margin-bottom: 10px; flex-wrap: wrap; align-items: center;
         }
+        .author-divider { width: 1px; height: 36px; background: #ddd; flex-shrink: 0; }
         .author-item {
             display: flex; flex-direction: column; align-items: center; gap: 6px; cursor: pointer;
             transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
@@ -416,6 +417,31 @@
                         </div>
                         <span class="author-name">Mia</span>
                     </div>
+                    <div class="author-divider"></div>
+                    <div class="author-item" onclick="setAuthorFilter('Samira Wissensfreund', this)" data-author="Samira Wissensfreund">
+                        <div class="author-img-wrapper">
+                            <img src="avatars/samira-wissensfreund.webp" class="author-img" alt="Samira Wissensfreund">
+                        </div>
+                        <span class="author-name">Samira</span>
+                    </div>
+                    <div class="author-item" onclick="setAuthorFilter('Holzi Pixelkopf', this)" data-author="Holzi Pixelkopf">
+                        <div class="author-img-wrapper">
+                            <img src="avatars/holzi-pixelkopf.webp" class="author-img" alt="Holzi Pixelkopf">
+                        </div>
+                        <span class="author-name">Holzi</span>
+                    </div>
+                    <div class="author-item" onclick="setAuthorFilter('Deniz Traumf&auml;nger', this)" data-author="Deniz Traumf&auml;nger">
+                        <div class="author-img-wrapper">
+                            <img src="avatars/deniz-traumfaenger.webp" class="author-img" alt="Deniz Traumf&auml;nger">
+                        </div>
+                        <span class="author-name">Deniz</span>
+                    </div>
+                    <div class="author-item" onclick="setAuthorFilter('Jonas Entdecker', this)" data-author="Jonas Entdecker">
+                        <div class="author-img-wrapper">
+                            <img src="avatars/jonas-entdecker.webp" class="author-img" alt="Jonas Entdecker">
+                        </div>
+                        <span class="author-name">Jonas</span>
+                    </div>
                 </div>
 
                 <!-- Bio Card -->
@@ -525,7 +551,11 @@
             'Timo Taktschritt': '#5B9BD5',
             'Zara Zapp': '#E8950A',
             'Leo Klartext': '#6B5B9E',
-            'Mia Br\u00fccke': '#2a9d8f'
+            'Mia Br\u00fccke': '#2a9d8f',
+            'Samira Wissensfreund': '#E07B39',
+            'Holzi Pixelkopf': '#4CAF50',
+            'Deniz Traumf\u00e4nger': '#7E57C2',
+            'Jonas Entdecker': '#FF8A65'
         };
 
         const authorBios = {
@@ -553,6 +583,26 @@
                 neurotype: 'Deutsch als Zweitsprache',
                 description: 'Nur Aktivs\u00e4tze, keine Komposita, kein Genitiv. Schwierige W\u00f6rter werden direkt im Text erkl\u00e4rt. Konkrete, zeichenbare Sprache \u2014 ideal f\u00fcr Kinder mit anderer Erstsprache.',
                 avatar: 'avatars/mia-bruecke.webp'
+            },
+            'Samira Wissensfreund': {
+                neurotype: 'Sachtexte / Wissen',
+                description: 'Spannende Fakten im Edutainment-Stil \u2014 wie ein YouTube-Video zum Lesen. Kino im Kopf statt nackter Zahlen, klare Struktur und echtes Staunen.',
+                avatar: 'avatars/samira-wissensfreund.webp'
+            },
+            'Holzi Pixelkopf': {
+                neurotype: 'Tech / Gaming',
+                description: 'Der sympathische Chaot erz\u00e4hlt Gaming-Geschichten mit maximaler Action und minimaler Planung. Ultrakurze Abs\u00e4tze, Cliffhanger und Selbstironie.',
+                avatar: 'avatars/holzi-pixelkopf.webp'
+            },
+            'Deniz Traumf\u00e4nger': {
+                neurotype: 'Fantasy / Emotion',
+                description: 'Atmosph\u00e4rische Erz\u00e4hlungen voller Sinneseindr\u00fccke. Deniz nimmt sich Zeit, nutzt poetische Bilder aus der Kinderwelt und l\u00e4dt zum Tr\u00e4umen ein.',
+                avatar: 'avatars/deniz-traumfaenger.webp'
+            },
+            'Jonas Entdecker': {
+                neurotype: 'Abenteuer / Alltag',
+                description: 'Authentische Alltagsgeschichten aus der Ich-Perspektive. Ehrlich, lustig und immer zum Mitf\u00fchlen \u2014 in einfacher Sprache, die jedes Kind versteht.',
+                avatar: 'avatars/jonas-entdecker.webp'
             }
         };
 
