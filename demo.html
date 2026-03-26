@@ -14,6 +14,8 @@
             --primary-yellow: #FFD54F; --accent-coral: #D67171; --accent-teal: #2a9d8f;
             --text-dark: #2D3436; --font-heading: 'Fredoka', cursive, sans-serif;
             --font-body: 'Quicksand', sans-serif;
+            --filter-bg-sticky: rgba(255, 255, 255, 0.95);
+            --category-bg: #f2f0e8;
         }
 
         body {
@@ -109,17 +111,43 @@
         /* --- FILTER SECTION --- */
         .filter-section {
             background: #ffffff;
-            padding: 40px 24px;
+            padding: 40px 24px 56px;
+            position: sticky; top: 55px; z-index: 500;
+            transition: padding 0.3s ease;
         }
-        @media (min-width: 768px) { .filter-section { padding: 50px 48px; } }
+        .filter-section.is-sticky {
+            padding: 12px 24px 16px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
+        }
+        @media (min-width: 768px) {
+            .filter-section { padding: 50px 48px 64px; }
+            .filter-section.is-sticky { padding: 12px 48px 16px; }
+        }
 
         /* --- CONTAINER --- */
         .container { max-width: 1100px; margin: 0 auto; padding: 0; position: relative; overflow: visible; }
 
-        /* --- STEUERELEMENTE --- */
-        .controls {
+        /* --- FILTER CARD --- */
+        .filter-card {
             background: white; padding: 24px; border-radius: 24px;
             box-shadow: 0 6px 24px rgba(0,0,0,0.06); margin-bottom: 0; border: 2px solid #F5E6A3;
+            transition: padding 0.3s ease, box-shadow 0.3s ease, border-radius 0.3s ease;
+        }
+        .filter-section.is-sticky .filter-card {
+            border-radius: 0; box-shadow: none; border: none; padding: 0;
+            background: transparent;
+        }
+
+        /* Author Row — collapsible in sticky */
+        .filter-row-authors {
+            transition: max-height 0.4s ease, opacity 0.3s ease, margin 0.3s ease;
+            max-height: 400px; opacity: 1; overflow: hidden;
+        }
+        .filter-section.is-sticky .filter-row-authors {
+            max-height: 0; opacity: 0; margin: 0 !important;
+        }
+        .filter-section.is-sticky .sort-info {
+            display: none;
         }
 
         /* AUTOREN FILTER */
@@ -148,11 +176,11 @@
         .author-name { font-size: 0.8rem; font-weight: bold; color: #777; transition: color 0.2s; }
 
         .author-item.active .author-img-wrapper {
-            border-color: var(--accent-coral);
-            box-shadow: 0 0 0 3px rgba(214, 113, 113, 0.25);
+            border-color: var(--author-color, var(--accent-coral));
+            box-shadow: 0 0 0 3px color-mix(in srgb, var(--author-color, var(--accent-coral)) 25%, transparent);
             transform: scale(1.1);
         }
-        .author-item.active .author-name { color: var(--accent-coral); }
+        .author-item.active .author-name { color: var(--author-color, var(--accent-coral)); }
 
         /* BIO CARD */
         .author-bio-card {
@@ -177,32 +205,67 @@
         }
         .bio-desc { font-size: 0.85rem; color: #555; line-height: 1.5; }
 
-        /* STUFEN LEGENDE */
-        .level-legend {
-            display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px;
-            margin-bottom: 18px;
+        /* CATEGORY SEGMENTED CONTROL */
+        .filter-row-categories {
+            display: flex; align-items: center; gap: 12px;
         }
-        .level-legend-item {
-            background: #f7f7f2; border-radius: 12px; padding: 10px 12px;
-            text-align: center; font-size: 0.78rem; color: #666;
+        .category-segmented {
+            display: flex; flex: 1;
+            background: var(--category-bg); border-radius: 14px;
+            padding: 4px; gap: 4px;
         }
-        .level-legend-label {
-            font-family: var(--font-heading); font-weight: 600; font-size: 0.85rem;
-            color: var(--text-dark); margin-bottom: 2px;
+        .category-btn {
+            flex: 1; padding: 10px 16px; border: none; border-radius: 12px;
+            background: transparent; cursor: pointer;
+            font-family: var(--font-heading); font-weight: 600; font-size: 0.9rem;
+            color: #777; transition: all 0.25s ease; min-height: 44px; white-space: nowrap;
         }
-        @media (max-width: 580px) {
-            .level-legend { grid-template-columns: 1fr; }
+        .category-btn:hover { color: var(--text-dark); }
+        .category-btn.active {
+            background: white; color: var(--text-dark);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+        }
+        .category-subtitle {
+            display: block; font-family: var(--font-body);
+            font-size: 0.72rem; font-weight: 400; color: #999; margin-top: 2px;
+        }
+        .category-btn.active .category-subtitle { color: #777; }
+
+        .filter-row-categories #searchInput {
+            width: 220px; flex-shrink: 0;
         }
 
-        /* LESESTUFE FILTER */
-        .filter-btn-group { display: flex; justify-content: center; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
-        .filter-btn {
-            background: #eee; border: none; padding: 8px 16px; border-radius: 20px;
-            cursor: pointer; font-family: inherit; font-weight: bold; color: #555; transition: all 0.2s;
-            font-size: 0.9rem;
+        @media (max-width: 767px) {
+            .filter-row-categories { flex-direction: column; }
+            .filter-row-categories #searchInput { width: 100%; }
+            .category-segmented {
+                overflow-x: auto; -webkit-overflow-scrolling: touch;
+                scrollbar-width: none; flex-wrap: nowrap;
+            }
+            .category-segmented::-webkit-scrollbar { display: none; }
+            .category-btn { flex: 0 0 auto; min-width: 110px; }
         }
-        .filter-btn:hover { background: #ddd; }
-        .filter-btn.active { background: var(--primary-yellow); color: var(--text-dark); box-shadow: 0 3px 5px rgba(244, 208, 63, 0.4); }
+
+        /* SUBLEVEL PILLS (conditional) */
+        .sublevel-pills {
+            display: flex; justify-content: center; gap: 8px; flex-wrap: wrap;
+            max-height: 0; opacity: 0; overflow: hidden;
+            transition: max-height 0.35s ease, opacity 0.25s ease, margin 0.25s ease;
+            margin: 0;
+        }
+        .sublevel-pills.visible {
+            max-height: 80px; opacity: 1; margin: 14px 0;
+        }
+        .sublevel-btn {
+            background: #f0ede4; border: none; padding: 6px 14px; border-radius: 16px;
+            cursor: pointer; font-family: inherit; font-weight: 600;
+            color: #888; font-size: 0.8rem; transition: all 0.2s; min-height: 36px;
+        }
+        .sublevel-btn:hover { background: #e5e0d4; }
+        .sublevel-btn.active {
+            background: var(--primary-yellow); color: var(--text-dark);
+            box-shadow: 0 2px 4px rgba(244, 208, 63, 0.3);
+        }
 
         /* SUCHE */
         #searchInput {
@@ -216,9 +279,9 @@
         /* --- STORIES SECTION --- */
         .stories-section {
             background: var(--bg-body);
-            padding: 40px 24px 60px;
+            padding: 48px 24px 60px;
         }
-        @media (min-width: 768px) { .stories-section { padding: 50px 48px 80px; } }
+        @media (min-width: 768px) { .stories-section { padding: 56px 48px 80px; } }
 
         /* --- STORY GRID --- */
         #bookGrid {
@@ -380,104 +443,109 @@
     <!-- ===== FILTER SECTION ===== -->
     <section class="filter-section">
         <div class="container">
-            <div class="controls">
-                <!-- Autoren-Filter -->
-                <div class="author-filter-container">
-                    <div class="author-item active" onclick="setAuthorFilter('all', this)">
-                        <div class="author-img-wrapper" style="background:#eee;"><span class="author-placeholder">&#x1F465;</span></div>
-                        <span class="author-name">Alle</span>
-                    </div>
-                    <div class="author-item" onclick="setAuthorFilter('Lea Lesestark', this)" data-author="Lea Lesestark">
-                        <div class="author-img-wrapper">
-                            <img src="avatars/lea-lesestark.webp" class="author-img" alt="Lea Lesestark">
+            <div class="filter-card" id="filterCard">
+                <!-- Row 1: Autoren-Avatare (collapsible in sticky) -->
+                <div class="filter-row-authors">
+                    <div class="author-filter-container">
+                        <div class="author-item active" onclick="setAuthorFilter('all', this)" style="--author-color: var(--accent-coral)">
+                            <div class="author-img-wrapper" style="background:#eee;"><span class="author-placeholder">&#x1F465;</span></div>
+                            <span class="author-name">Alle</span>
                         </div>
-                        <span class="author-name">Lea</span>
-                    </div>
-                    <div class="author-item" onclick="setAuthorFilter('Timo Taktschritt', this)" data-author="Timo Taktschritt">
-                        <div class="author-img-wrapper">
-                            <img src="avatars/timo-taktschritt.webp" class="author-img" alt="Timo Taktschritt">
+                        <div class="author-item" onclick="setAuthorFilter('Lea Lesestark', this)" data-author="Lea Lesestark" style="--author-color: #D67171">
+                            <div class="author-img-wrapper">
+                                <img src="avatars/lea-lesestark.webp" class="author-img" alt="Lea Lesestark">
+                            </div>
+                            <span class="author-name">Lea</span>
                         </div>
-                        <span class="author-name">Timo</span>
-                    </div>
-                    <div class="author-item" onclick="setAuthorFilter('Zara Zapp', this)" data-author="Zara Zapp">
-                        <div class="author-img-wrapper">
-                            <img src="avatars/zara-zapp.webp" class="author-img" alt="Zara Zapp">
+                        <div class="author-item" onclick="setAuthorFilter('Timo Taktschritt', this)" data-author="Timo Taktschritt" style="--author-color: #5B9BD5">
+                            <div class="author-img-wrapper">
+                                <img src="avatars/timo-taktschritt.webp" class="author-img" alt="Timo Taktschritt">
+                            </div>
+                            <span class="author-name">Timo</span>
                         </div>
-                        <span class="author-name">Zara</span>
-                    </div>
-                    <div class="author-item" onclick="setAuthorFilter('Leo Klartext', this)" data-author="Leo Klartext">
-                        <div class="author-img-wrapper">
-                            <img src="avatars/leo-klartext.webp" class="author-img" alt="Leo Klartext">
+                        <div class="author-item" onclick="setAuthorFilter('Zara Zapp', this)" data-author="Zara Zapp" style="--author-color: #E8950A">
+                            <div class="author-img-wrapper">
+                                <img src="avatars/zara-zapp.webp" class="author-img" alt="Zara Zapp">
+                            </div>
+                            <span class="author-name">Zara</span>
                         </div>
-                        <span class="author-name">Leo</span>
-                    </div>
-                    <div class="author-item" onclick="setAuthorFilter('Mia Br\u00fccke', this)" data-author="Mia Br&uuml;cke">
-                        <div class="author-img-wrapper">
-                            <img src="avatars/mia-bruecke.webp" class="author-img" alt="Mia Br&uuml;cke">
+                        <div class="author-item" onclick="setAuthorFilter('Leo Klartext', this)" data-author="Leo Klartext" style="--author-color: #6B5B9E">
+                            <div class="author-img-wrapper">
+                                <img src="avatars/leo-klartext.webp" class="author-img" alt="Leo Klartext">
+                            </div>
+                            <span class="author-name">Leo</span>
                         </div>
-                        <span class="author-name">Mia</span>
-                    </div>
-                    <div class="author-divider"></div>
-                    <div class="author-item" onclick="setAuthorFilter('Samira Wissensfreund', this)" data-author="Samira Wissensfreund">
-                        <div class="author-img-wrapper">
-                            <img src="avatars/samira-wissensfreund.webp" class="author-img" alt="Samira Wissensfreund">
+                        <div class="author-item" onclick="setAuthorFilter('Mia Br\u00fccke', this)" data-author="Mia Br&uuml;cke" style="--author-color: #2a9d8f">
+                            <div class="author-img-wrapper">
+                                <img src="avatars/mia-bruecke.webp" class="author-img" alt="Mia Br&uuml;cke">
+                            </div>
+                            <span class="author-name">Mia</span>
                         </div>
-                        <span class="author-name">Samira</span>
-                    </div>
-                    <div class="author-item" onclick="setAuthorFilter('Holzi Pixelkopf', this)" data-author="Holzi Pixelkopf">
-                        <div class="author-img-wrapper">
-                            <img src="avatars/holzi-pixelkopf.webp" class="author-img" alt="Holzi Pixelkopf">
+                        <div class="author-divider"></div>
+                        <div class="author-item" onclick="setAuthorFilter('Samira Wissensfreund', this)" data-author="Samira Wissensfreund" style="--author-color: #E07B39">
+                            <div class="author-img-wrapper">
+                                <img src="avatars/samira-wissensfreund.webp" class="author-img" alt="Samira Wissensfreund">
+                            </div>
+                            <span class="author-name">Samira</span>
                         </div>
-                        <span class="author-name">Holzi</span>
-                    </div>
-                    <div class="author-item" onclick="setAuthorFilter('Deniz Traumf&auml;nger', this)" data-author="Deniz Traumf&auml;nger">
-                        <div class="author-img-wrapper">
-                            <img src="avatars/deniz-traumfaenger.webp" class="author-img" alt="Deniz Traumf&auml;nger">
+                        <div class="author-item" onclick="setAuthorFilter('Holzi Pixelkopf', this)" data-author="Holzi Pixelkopf" style="--author-color: #4CAF50">
+                            <div class="author-img-wrapper">
+                                <img src="avatars/holzi-pixelkopf.webp" class="author-img" alt="Holzi Pixelkopf">
+                            </div>
+                            <span class="author-name">Holzi</span>
                         </div>
-                        <span class="author-name">Deniz</span>
-                    </div>
-                    <div class="author-item" onclick="setAuthorFilter('Jonas Entdecker', this)" data-author="Jonas Entdecker">
-                        <div class="author-img-wrapper">
-                            <img src="avatars/jonas-entdecker.webp" class="author-img" alt="Jonas Entdecker">
+                        <div class="author-item" onclick="setAuthorFilter('Deniz Traumf&auml;nger', this)" data-author="Deniz Traumf&auml;nger" style="--author-color: #7E57C2">
+                            <div class="author-img-wrapper">
+                                <img src="avatars/deniz-traumfaenger.webp" class="author-img" alt="Deniz Traumf&auml;nger">
+                            </div>
+                            <span class="author-name">Deniz</span>
                         </div>
-                        <span class="author-name">Jonas</span>
+                        <div class="author-item" onclick="setAuthorFilter('Jonas Entdecker', this)" data-author="Jonas Entdecker" style="--author-color: #FF8A65">
+                            <div class="author-img-wrapper">
+                                <img src="avatars/jonas-entdecker.webp" class="author-img" alt="Jonas Entdecker">
+                            </div>
+                            <span class="author-name">Jonas</span>
+                        </div>
+                    </div>
+
+                    <!-- Bio Card -->
+                    <div class="author-bio-card" id="authorBio">
+                        <div class="bio-inner" id="bioInner">
+                            <img src="" alt="" class="bio-avatar" id="bioAvatar">
+                            <div class="bio-text">
+                                <div class="bio-name" id="bioName"></div>
+                                <div class="bio-quote" id="bioQuote"></div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
-                <!-- Bio Card -->
-                <div class="author-bio-card" id="authorBio">
-                    <div class="bio-inner" id="bioInner">
-                        <img src="" alt="" class="bio-avatar" id="bioAvatar">
-                        <div class="bio-text">
-                            <div class="bio-name" id="bioName"></div>
-                            <div class="bio-quote" id="bioQuote"></div>
-                        </div>
+                <!-- Row 2: Kategorie Segmented Control + Suche -->
+                <div class="filter-row-categories">
+                    <div class="category-segmented" id="categorySegmented">
+                        <button type="button" class="category-btn active" onclick="setCategoryFilter('all', this)">
+                            Alle
+                            <span class="category-subtitle">Alle Stufen</span>
+                        </button>
+                        <button type="button" class="category-btn" onclick="setCategoryFilter('lesestarter', this)">
+                            Lesestarter
+                            <span class="category-subtitle">Stufe 1&ndash;2 &middot; Klasse 1</span>
+                        </button>
+                        <button type="button" class="category-btn" onclick="setCategoryFilter('wort-entdecker', this)">
+                            Wort-Entdecker
+                            <span class="category-subtitle">Stufe 3&ndash;4 &middot; Klasse 2</span>
+                        </button>
+                        <button type="button" class="category-btn" onclick="setCategoryFilter('lese-profis', this)">
+                            Lese-Profis
+                            <span class="category-subtitle">Stufe 5+ &middot; Klasse 3&ndash;4</span>
+                        </button>
                     </div>
+                    <input type="text" id="searchInput" placeholder="&#x1F50D; Suchen...">
                 </div>
 
-                <!-- Lesestufe-Legende -->
-                <div class="level-legend">
-                    <div class="level-legend-item">
-                        <div class="level-legend-label">Lesestarter</div>
-                        Stufe 1&ndash;2 &middot; Klasse 1 &middot; max. 5 W&ouml;rter pro Satz
-                    </div>
-                    <div class="level-legend-item">
-                        <div class="level-legend-label">Wort-Entdecker</div>
-                        Stufe 3&ndash;4 &middot; Klasse 2 &middot; erste Nebens&auml;tze
-                    </div>
-                    <div class="level-legend-item">
-                        <div class="level-legend-label">Lese-Profis</div>
-                        Stufe 5+ &middot; Klasse 3&ndash;4 &middot; abstrakte Begriffe
-                    </div>
-                </div>
+                <!-- Row 3: Sub-Level Pills (conditional) -->
+                <div class="sublevel-pills" id="sublevelPills"></div>
 
-                <!-- Lesestufe-Filter -->
-                <div class="filter-btn-group" id="levelFilterGroup">
-                    <button type="button" class="filter-btn active" onclick="setLevelFilter('all', this)">Alle Stufen</button>
-                </div>
-
-                <!-- Suche -->
-                <input type="text" id="searchInput" placeholder="&#x1F50D; Geschichte suchen...">
                 <div class="sort-info" id="sortStatus">Wird geladen...</div>
             </div>
         </div>
@@ -631,14 +699,16 @@
 
         let allStoriesData = [];
         let currentAuthorFilter = 'all';
+        let currentCategoryFilter = 'all';
         let currentLevelFilter = 'all';
 
         const gridElement = document.getElementById('bookGrid');
         const searchInput = document.getElementById('searchInput');
         const loadingMsg = document.getElementById('loadingMsg');
         const sortStatus = document.getElementById('sortStatus');
-        const levelFilterGroup = document.getElementById('levelFilterGroup');
+        const sublevelPills = document.getElementById('sublevelPills');
         const authorBioCard = document.getElementById('authorBio');
+        const filterCard = document.getElementById('filterCard');
 
         // 1. Dateien laden
         fetch(`https://api.github.com/repos/${user}/${repo}/contents/demo-texte`)
@@ -702,30 +772,58 @@
             allStoriesData = allStoriesData.filter(s => s.isValid);
             allStoriesData.sort((a, b) => b.date - a.date);
             sortStatus.innerText = "Neueste zuerst";
-            buildLevelFilter();
             updateUI();
         }
 
-        // 3. Lesestufe-Filter
-        function buildLevelFilter() {
-            const levels = [...new Set(allStoriesData.map(s => s.readingLevel).filter(Boolean))];
-            levels.sort((a, b) => parseFloat(a.replace(/[^0-9.]/g, '')) - parseFloat(b.replace(/[^0-9.]/g, '')));
+        // 3. Kategorie-Filter (Segmented Control)
+        function setCategoryFilter(category, element) {
+            currentCategoryFilter = category;
+            currentLevelFilter = 'all';
 
-            levelFilterGroup.innerHTML = '<button type="button" class="filter-btn active" onclick="setLevelFilter(\'all\', this)">Alle Stufen</button>';
-            levels.forEach(level => {
+            document.querySelectorAll('.category-btn').forEach(btn => btn.classList.remove('active'));
+            element.classList.add('active');
+
+            if (category === 'all') {
+                sublevelPills.classList.remove('visible');
+            } else {
+                buildSublevelPills(category);
+                sublevelPills.classList.add('visible');
+            }
+            updateUI();
+        }
+
+        function buildSublevelPills(category) {
+            const categoryLevels = allStoriesData
+                .filter(s => s.readingLevel)
+                .filter(s => {
+                    const num = parseFloat(s.readingLevel.replace(/[^0-9.]/g, ''));
+                    if (category === 'lesestarter') return num <= 2;
+                    if (category === 'wort-entdecker') return num > 2 && num <= 4;
+                    if (category === 'lese-profis') return num > 4;
+                    return false;
+                })
+                .map(s => s.readingLevel);
+
+            const uniqueLevels = [...new Set(categoryLevels)];
+            uniqueLevels.sort((a, b) =>
+                parseFloat(a.replace(/[^0-9.]/g, '')) - parseFloat(b.replace(/[^0-9.]/g, ''))
+            );
+
+            sublevelPills.innerHTML = '<button type="button" class="sublevel-btn active" onclick="setSublevelFilter(\'all\', this)">Alle</button>';
+            uniqueLevels.forEach(level => {
                 const btn = document.createElement('button');
                 btn.type = 'button';
-                btn.className = 'filter-btn';
+                btn.className = 'sublevel-btn';
                 btn.textContent = level;
                 btn.title = getLevelLabel(level) + ' \u2013 ' + getLevelTooltip(level);
-                btn.onclick = function() { setLevelFilter(level, this); };
-                levelFilterGroup.appendChild(btn);
+                btn.onclick = function() { setSublevelFilter(level, this); };
+                sublevelPills.appendChild(btn);
             });
         }
 
-        function setLevelFilter(level, element) {
+        function setSublevelFilter(level, element) {
             currentLevelFilter = level;
-            levelFilterGroup.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
+            sublevelPills.querySelectorAll('.sublevel-btn').forEach(btn => btn.classList.remove('active'));
             element.classList.add('active');
             updateUI();
         }
@@ -770,6 +868,12 @@
                 if (currentAuthorFilter !== 'all') {
                     if (!story.author) return false;
                     if (story.author.toLowerCase() !== currentAuthorFilter.toLowerCase()) return false;
+                }
+                if (currentCategoryFilter !== 'all' && story.readingLevel) {
+                    const num = parseFloat(story.readingLevel.replace(/[^0-9.]/g, ''));
+                    if (currentCategoryFilter === 'lesestarter' && num > 2) return false;
+                    if (currentCategoryFilter === 'wort-entdecker' && (num <= 2 || num > 4)) return false;
+                    if (currentCategoryFilter === 'lese-profis' && num <= 4) return false;
                 }
                 if (currentLevelFilter !== 'all') {
                     if (story.readingLevel !== currentLevelFilter) return false;
@@ -842,6 +946,18 @@
                 .replace(/-/g, ' ')
                 .replace(/\b\w/g, l => l.toUpperCase());
         }
+
+        // 7. Sticky Observer
+        const filterSection = document.querySelector('.filter-section');
+        const heroSection = document.querySelector('.hero-section');
+
+        const stickyObserver = new IntersectionObserver(
+            ([entry]) => {
+                filterSection.classList.toggle('is-sticky', !entry.isIntersecting);
+            },
+            { threshold: 0, rootMargin: '0px 0px 0px 0px' }
+        );
+        stickyObserver.observe(heroSection);
     </script>
 
 </body>
