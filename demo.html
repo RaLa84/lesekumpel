@@ -152,14 +152,19 @@
 
         /* AUTOREN FILTER */
         .author-filter-container {
-            display: flex; justify-content: center; gap: 18px; margin-bottom: 10px; flex-wrap: wrap; align-items: center;
+            display: flex; justify-content: center; gap: 16px; margin-bottom: 16px; align-items: center;
+            overflow-x: auto; -webkit-overflow-scrolling: touch;
+            scrollbar-width: none; padding: 4px 0;
         }
+        .author-filter-container::-webkit-scrollbar { display: none; }
         .author-divider { width: 1px; height: 36px; background: #ddd; flex-shrink: 0; }
         .author-item {
             display: flex; flex-direction: column; align-items: center; gap: 6px; cursor: pointer;
-            transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+            transition: transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1), opacity 0.25s ease, filter 0.25s ease;
+            flex-shrink: 0; opacity: 0.55; filter: grayscale(30%);
         }
-        .author-item:hover { transform: translateY(-4px) scale(1.05); }
+        .author-item:hover { transform: translateY(-4px) scale(1.05); opacity: 0.85; filter: grayscale(0%); }
+        .author-item.active { opacity: 1; filter: grayscale(0%); }
 
         .author-img-wrapper {
             width: 64px; height: 64px; border-radius: 50%; overflow: hidden;
@@ -168,12 +173,12 @@
             display: flex; align-items: center; justify-content: center;
         }
         .author-item:hover .author-img-wrapper {
-            transform: scale(1.15);
+            transform: scale(1.1);
             box-shadow: 0 6px 18px rgba(0,0,0,0.15);
         }
         .author-img { width: 100%; height: 100%; object-fit: cover; }
         .author-placeholder { font-size: 1.5rem; }
-        .author-name { font-size: 0.8rem; font-weight: bold; color: #777; transition: color 0.2s; }
+        .author-name { font-size: 0.78rem; font-weight: 600; color: #999; transition: color 0.25s; font-family: var(--font-body); }
 
         .author-item.active .author-img-wrapper {
             border-color: var(--author-color, var(--accent-coral));
@@ -206,44 +211,34 @@
         .bio-desc { font-size: 0.85rem; color: #555; line-height: 1.5; }
 
         /* CATEGORY SEGMENTED CONTROL */
-        .filter-row-categories {
-            display: flex; align-items: center; gap: 12px;
-        }
         .category-segmented {
-            display: flex; flex: 1;
+            display: flex;
             background: var(--category-bg); border-radius: 14px;
             padding: 4px; gap: 4px;
+            overflow-x: auto; -webkit-overflow-scrolling: touch;
+            scrollbar-width: none;
         }
+        .category-segmented::-webkit-scrollbar { display: none; }
         .category-btn {
             flex: 1; padding: 10px 16px; border: none; border-radius: 12px;
             background: transparent; cursor: pointer;
             font-family: var(--font-heading); font-weight: 600; font-size: 0.9rem;
             color: #777; transition: all 0.25s ease; min-height: 44px; white-space: nowrap;
         }
-        .category-btn:hover { color: var(--text-dark); }
+        .category-btn:hover { color: var(--text-dark); background: rgba(255, 213, 79, 0.2); }
         .category-btn.active {
-            background: white; color: var(--text-dark);
-            box-shadow: 0 2px 8px rgba(0,0,0,0.08);
+            background: var(--primary-yellow); color: var(--text-dark);
+            box-shadow: 0 2px 8px rgba(255, 213, 79, 0.35);
         }
         .category-subtitle {
             display: block; font-family: var(--font-body);
             font-size: 0.72rem; font-weight: 400; color: #999; margin-top: 2px;
         }
-        .category-btn.active .category-subtitle { color: #777; }
-
-        .filter-row-categories #searchInput {
-            width: 220px; flex-shrink: 0;
-        }
+        .category-btn.active .category-subtitle { color: var(--text-dark); opacity: 0.7; }
 
         @media (max-width: 767px) {
-            .filter-row-categories { flex-direction: column; }
-            .filter-row-categories #searchInput { width: 100%; }
-            .category-segmented {
-                overflow-x: auto; -webkit-overflow-scrolling: touch;
-                scrollbar-width: none; flex-wrap: nowrap;
-            }
-            .category-segmented::-webkit-scrollbar { display: none; }
-            .category-btn { flex: 0 0 auto; min-width: 110px; }
+            .category-segmented { flex-wrap: nowrap; }
+            .category-btn { flex: 0 0 auto; min-width: 120px; }
         }
 
         /* SUBLEVEL PILLS (conditional) */
@@ -267,14 +262,35 @@
             box-shadow: 0 2px 4px rgba(244, 208, 63, 0.3);
         }
 
-        /* SUCHE */
-        #searchInput {
-            width: 100%; padding: 12px 16px; font-size: 1.05em; border: 2px solid #eee;
-            border-radius: 16px; outline: none; box-sizing: border-box; font-family: var(--font-body);
-            transition: border-color 0.2s, box-shadow 0.2s;
+        /* SEARCH & SORT ROW */
+        .filter-row-search {
+            display: flex; align-items: center; gap: 12px;
+            margin-top: 16px; padding-top: 16px;
+            border-top: 1px solid #f0ede4;
         }
-        #searchInput:focus { border-color: var(--accent-coral); box-shadow: 0 0 0 3px rgba(214,113,113,0.1); }
-        .sort-info { font-size: 0.85em; color: #aaa; margin-top: 10px; }
+        .search-wrapper {
+            flex: 1; position: relative; display: flex; align-items: center;
+        }
+        .search-icon {
+            position: absolute; left: 14px; top: 50%; transform: translateY(-50%);
+            width: 18px; height: 18px; color: #aaa; pointer-events: none;
+            transition: color 0.2s;
+        }
+        .search-wrapper:focus-within .search-icon { color: var(--accent-coral); }
+        #searchInput {
+            width: 100%; padding: 11px 16px 11px 42px; font-size: 0.95em; border: 2px solid #eee;
+            border-radius: 12px; outline: none; box-sizing: border-box; font-family: var(--font-body);
+            transition: border-color 0.2s, box-shadow 0.2s; background: #fafaf7;
+        }
+        #searchInput:focus { border-color: var(--accent-coral); box-shadow: 0 0 0 3px rgba(214,113,113,0.1); background: #fff; }
+        #sortSelect {
+            padding: 11px 14px; border: 2px solid #eee; border-radius: 12px;
+            font-family: var(--font-body); font-size: 0.88em; font-weight: 600;
+            color: #777; background: #fafaf7; cursor: pointer; outline: none;
+            transition: border-color 0.2s; white-space: nowrap; min-height: 44px;
+        }
+        #sortSelect:focus { border-color: var(--accent-coral); }
+        .sort-info { display: none; }
 
         /* --- STORIES SECTION --- */
         .stories-section {
@@ -520,32 +536,41 @@
                     </div>
                 </div>
 
-                <!-- Row 2: Kategorie Segmented Control + Suche -->
-                <div class="filter-row-categories">
-                    <div class="category-segmented" id="categorySegmented">
-                        <button type="button" class="category-btn active" onclick="setCategoryFilter('all', this)">
-                            Alle
-                            <span class="category-subtitle">Alle Stufen</span>
-                        </button>
-                        <button type="button" class="category-btn" onclick="setCategoryFilter('lesestarter', this)">
-                            Lesestarter
-                            <span class="category-subtitle">Stufe 1&ndash;2 &middot; Klasse 1</span>
-                        </button>
-                        <button type="button" class="category-btn" onclick="setCategoryFilter('wort-entdecker', this)">
-                            Wort-Entdecker
-                            <span class="category-subtitle">Stufe 3&ndash;4 &middot; Klasse 2</span>
-                        </button>
-                        <button type="button" class="category-btn" onclick="setCategoryFilter('lese-profis', this)">
-                            Lese-Profis
-                            <span class="category-subtitle">Stufe 5+ &middot; Klasse 3&ndash;4</span>
-                        </button>
-                    </div>
-                    <input type="text" id="searchInput" placeholder="&#x1F50D; Suchen...">
+                <!-- Row 2: Kategorie Segmented Control -->
+                <div class="category-segmented" id="categorySegmented">
+                    <button type="button" class="category-btn active" onclick="setCategoryFilter('all', this)">
+                        Alle
+                        <span class="category-subtitle">Alle Stufen</span>
+                    </button>
+                    <button type="button" class="category-btn" onclick="setCategoryFilter('lesestarter', this)">
+                        Lesestarter
+                        <span class="category-subtitle">Stufe 1&ndash;2 &middot; Klasse 1</span>
+                    </button>
+                    <button type="button" class="category-btn" onclick="setCategoryFilter('wort-entdecker', this)">
+                        Wort-Entdecker
+                        <span class="category-subtitle">Stufe 3&ndash;4 &middot; Klasse 2</span>
+                    </button>
+                    <button type="button" class="category-btn" onclick="setCategoryFilter('lese-profis', this)">
+                        Lese-Profis
+                        <span class="category-subtitle">Stufe 5+ &middot; Klasse 3&ndash;4</span>
+                    </button>
                 </div>
 
                 <!-- Row 3: Sub-Level Pills (conditional) -->
                 <div class="sublevel-pills" id="sublevelPills"></div>
 
+                <!-- Row 4: Suche & Sortierung -->
+                <div class="filter-row-search">
+                    <div class="search-wrapper">
+                        <svg class="search-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+                        <input type="text" id="searchInput" placeholder="Geschichte suchen...">
+                    </div>
+                    <select id="sortSelect" aria-label="Sortierung" title="Sortierung">
+                        <option value="newest">Neueste zuerst</option>
+                        <option value="oldest">&Auml;lteste zuerst</option>
+                        <option value="title">A &ndash; Z</option>
+                    </select>
+                </div>
                 <div class="sort-info" id="sortStatus">Wird geladen...</div>
             </div>
         </div>
@@ -704,6 +729,7 @@
 
         const gridElement = document.getElementById('bookGrid');
         const searchInput = document.getElementById('searchInput');
+        const sortSelect = document.getElementById('sortSelect');
         const loadingMsg = document.getElementById('loadingMsg');
         const sortStatus = document.getElementById('sortStatus');
         const sublevelPills = document.getElementById('sublevelPills');
@@ -859,10 +885,12 @@
         }
 
         searchInput.addEventListener('input', updateUI);
+        sortSelect.addEventListener('change', updateUI);
 
         // 5. UI aktualisieren
         function updateUI() {
             const searchTerm = searchInput.value.toLowerCase();
+            const sortMode = sortSelect.value;
 
             let filtered = allStoriesData.filter(story => {
                 if (currentAuthorFilter !== 'all') {
@@ -884,6 +912,14 @@
             filtered = filtered.filter(story =>
                 formatName(story.name).toLowerCase().includes(searchTerm)
             );
+
+            if (sortMode === 'newest') {
+                filtered.sort((a, b) => b.date - a.date);
+            } else if (sortMode === 'oldest') {
+                filtered.sort((a, b) => a.date - b.date);
+            } else if (sortMode === 'title') {
+                filtered.sort((a, b) => (a.displayTitle || formatName(a.name)).localeCompare(b.displayTitle || formatName(b.name), 'de'));
+            }
 
             renderGrid(filtered);
         }
