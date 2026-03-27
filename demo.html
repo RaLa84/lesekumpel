@@ -129,8 +129,8 @@
 
         /* --- FILTER CARD --- */
         .filter-card {
-            background: white; padding: 24px; border-radius: 24px;
-            box-shadow: 0 6px 24px rgba(0,0,0,0.06); margin-bottom: 0; border: 2px solid #F5E6A3;
+            background: white; padding: 28px 24px; border-radius: 24px;
+            box-shadow: 0 2px 16px rgba(0,0,0,0.04); margin-bottom: 0; border: 1.5px solid rgba(245, 230, 163, 0.5);
             transition: padding 0.3s ease, box-shadow 0.3s ease, border-radius 0.3s ease;
         }
         .filter-section.is-sticky .filter-card {
@@ -157,6 +157,12 @@
             scrollbar-width: none; padding: 4px 0;
         }
         .author-filter-container::-webkit-scrollbar { display: none; }
+        @media (max-width: 767px) {
+            .author-filter-container {
+                -webkit-mask-image: linear-gradient(to right, transparent 0%, black 3%, black 92%, transparent 100%);
+                mask-image: linear-gradient(to right, transparent 0%, black 3%, black 92%, transparent 100%);
+            }
+        }
         .author-divider { width: 1px; height: 36px; background: #ddd; flex-shrink: 0; }
         .author-item {
             display: flex; flex-direction: column; align-items: center; gap: 6px; cursor: pointer;
@@ -178,7 +184,7 @@
         }
         .author-img { width: 100%; height: 100%; object-fit: cover; }
         .author-placeholder { font-size: 1.5rem; }
-        .author-name { font-size: 0.78rem; font-weight: 600; color: #999; transition: color 0.25s; font-family: var(--font-body); }
+        .author-name { font-size: 0.75rem; font-weight: 600; color: #999; transition: color 0.25s; font-family: var(--font-body); letter-spacing: 0.01em; }
 
         .author-item.active .author-img-wrapper {
             border-color: var(--author-color, var(--accent-coral));
@@ -198,7 +204,7 @@
         }
         .bio-inner {
             display: flex; align-items: flex-start; gap: 14px; padding: 16px 18px;
-            border-radius: 16px; background: #fef9f0;
+            border-radius: 16px; background: var(--bg-warm-light); border: 1.5px solid rgba(245, 230, 163, 0.4);
         }
         .bio-avatar { width: 48px; height: 48px; border-radius: 50%; object-fit: cover; flex-shrink: 0; margin-top: 2px; }
         .bio-text { flex: 1; }
@@ -213,7 +219,7 @@
         /* CATEGORY SEGMENTED CONTROL */
         .category-segmented {
             display: flex;
-            background: var(--category-bg); border-radius: 14px;
+            background: var(--category-bg); border-radius: 16px;
             padding: 4px; gap: 4px;
             overflow-x: auto; -webkit-overflow-scrolling: touch;
             scrollbar-width: none;
@@ -223,12 +229,12 @@
             flex: 1; padding: 10px 16px; border: none; border-radius: 12px;
             background: transparent; cursor: pointer;
             font-family: var(--font-heading); font-weight: 600; font-size: 0.9rem;
-            color: #777; transition: all 0.25s ease; min-height: 44px; white-space: nowrap;
+            color: #777; transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1); min-height: 44px; white-space: nowrap;
         }
         .category-btn:hover { color: var(--text-dark); background: rgba(255, 213, 79, 0.2); }
         .category-btn.active {
             background: var(--primary-yellow); color: var(--text-dark);
-            box-shadow: 0 2px 8px rgba(255, 213, 79, 0.35);
+            box-shadow: 0 2px 8px rgba(255, 213, 79, 0.25);
         }
         .category-subtitle {
             display: block; font-family: var(--font-body);
@@ -245,7 +251,7 @@
         .sublevel-pills {
             display: flex; justify-content: center; gap: 8px; flex-wrap: wrap;
             max-height: 0; opacity: 0; overflow: hidden;
-            transition: max-height 0.35s ease, opacity 0.25s ease, margin 0.25s ease;
+            transition: max-height 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94), opacity 0.3s ease 0.1s, margin 0.3s ease;
             margin: 0;
         }
         .sublevel-pills.visible {
@@ -279,12 +285,12 @@
         .search-wrapper:focus-within .search-icon { color: var(--accent-coral); }
         #searchInput {
             width: 100%; padding: 11px 16px 11px 42px; font-size: 0.95em; border: 2px solid #eee;
-            border-radius: 12px; outline: none; box-sizing: border-box; font-family: var(--font-body);
+            border-radius: 20px; outline: none; box-sizing: border-box; font-family: var(--font-body);
             transition: border-color 0.2s, box-shadow 0.2s; background: #fafaf7;
         }
         #searchInput:focus { border-color: var(--accent-coral); box-shadow: 0 0 0 3px rgba(214,113,113,0.1); background: #fff; }
         #sortSelect {
-            padding: 11px 14px; border: 2px solid #eee; border-radius: 12px;
+            padding: 11px 14px; border: 2px solid #eee; border-radius: 20px;
             font-family: var(--font-body); font-size: 0.88em; font-weight: 600;
             color: #777; background: #fafaf7; cursor: pointer; outline: none;
             transition: border-color 0.2s; white-space: nowrap; min-height: 44px;
