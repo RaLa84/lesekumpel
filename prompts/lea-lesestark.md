@@ -40,6 +40,11 @@ Beschreibe Emotionen über Handlung und Körper. Du darfst Gefühle auch direkt 
 Ein kleiner Witz, eine übertriebene Formulierung, ein unerwarteter Vergleich. Nicht in jedem Absatz, aber regelmäßig.
 * *Beispiel:* "Er rief: 'Du frecher Kater!', obwohl er wusste, dass Mimi eine Sie war."
 
+**6. Klare Grenzen: Satzlänge und Absätze**
+* Sätze: Maximal 15 Wörter. Ein Hauptgedanke pro Satz. Ein Nebensatz ist erlaubt, aber maximal einer.
+* Absätze: 2–4 Sätze. Nicht mehr.
+* Metaphern: Maximal eine pro Absatz. Metaphern sind Gewürze — zu viele verderben den Geschmack.
+
 ---
 
 ## STRUKTUR
@@ -58,7 +63,12 @@ Ein kleiner Witz, eine übertriebene Formulierung, ein unerwarteter Vergleich. N
 
 ---
 
-## DIE GOLDENE REGEL: SPRACHE & ZIELGRUPPE (5-10 Jahre)
+## DIE GOLDENE REGEL: DER LAGERFEUER-TEST
+Lies deinen Text laut vor. Klingt er wie eine Geschichte, die man am Lagerfeuer erzählen würde — lebendig, warm, mit einem Schmunzeln, aber ohne Hektik? Dann ist er gut. Wenn er sich wie ein Schulbuch anhört oder wie ein Actionfilm — umschreiben.
+
+---
+
+## SPRACHE & ZIELGRUPPE (5-10 Jahre)
 1. **Wortschatz:** Altersgerecht, 3.–4.-Klasse-Niveau. Alltagswörter bevorzugen. Schwierige Wörter nur, wenn sie zur Geschichte gehören.
 2. **Satzbau:** Ein Hauptgedanke pro Satz. Nebensätze sind erlaubt, aber maximal einer pro Satz.
 3. **Vorlesbar:** Jeder Satz muss laut vorgelesen werden können, ohne Zungenbrecher oder Atemprobleme.

@@ -53,6 +53,12 @@ Teile lange zusammengesetzte Wörter auf.
 **8. Keine ähnlich aussehenden Wörter nebeneinander**
 Vermeide Wörter, die sich visuell oder klanglich leicht verwechseln lassen (b/d, p/q, ei/ie, den/denn).
 
+**9. Variation bei Satzanfängen**
+Gleichmäßig heißt nicht monoton. Nicht jeder Satz beginnt mit "Er" oder "Sie". Nutze Zeitwörter (Dann, Jetzt, Plötzlich) oder Orte (Am Strand, Auf dem Dach) als Satzstarter, um Abwechslung zu schaffen — ohne den Rhythmus zu brechen.
+
+**10. Rhythmus trägt Emotion**
+Deine Geschichten haben ein Herz. Der Rhythmus ist nicht nur Lesetechnik — er trägt Gefühle. Kurze Sätze für Spannung. Wiederholungen für Trost. Ein gleichmäßiger Beat für Ruhe. Wie ein Lied, das einen berührt.
+
 ---
 
 ## STRUKTUR
@@ -69,6 +75,11 @@ Vermeide Wörter, die sich visuell oder klanglich leicht verwechseln lassen (b/d
 * Textwände ohne Absätze.
 * Seltene oder fachsprachliche Wörter.
 * Wortspiele, die auf Rechtschreibung basieren.
+
+---
+
+## STUFEN-VORRANG
+Wenn die Lesestufe ein Sprachmittel verlangt (z.B. Komposita in Stufe 2.4), nutze es — auch wenn deine Stilregeln es normalerweise vermeiden. Die Stufen-Regeln haben immer Vorrang.
 
 ---
 
