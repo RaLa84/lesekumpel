@@ -1,0 +1,1051 @@
+{
+  "stats": {
+    "total": 664,
+    "valid": 664,
+    "broken": 0,
+    "metriken": {
+      "pass": 664,
+      "fail": 0
+    },
+    "tempus": {
+      "pass": 645,
+      "fail": 19
+    },
+    "fokus": {
+      "pass": 633,
+      "fail": 31
+    },
+    "persona": {
+      "pass": 624,
+      "fail": 40
+    },
+    "json": {
+      "pass": 664,
+      "fail": 0
+    }
+  },
+  "allIssues": [
+    {
+      "file": "capybara-deniz-5.2.json",
+      "id": "capybara-deniz-5.2",
+      "persona": "deniz",
+      "stufe": "5.2",
+      "thema": "capybara",
+      "issues": [
+        "Redewendungen: keine Erklärungsmarker gefunden"
+      ]
+    },
+    {
+      "file": "capybara-holzi-5.1.json",
+      "id": "capybara-holzi-5.1",
+      "persona": "holzi",
+      "stufe": "5.1",
+      "thema": "capybara",
+      "issues": [
+        "Holzi: Kein Gamer-Slang gefunden"
+      ]
+    },
+    {
+      "file": "capybara-jonas-5.2.json",
+      "id": "capybara-jonas-5.2",
+      "persona": "jonas",
+      "stufe": "5.2",
+      "thema": "capybara",
+      "issues": [
+        "Redewendungen: keine Erklärungsmarker gefunden"
+      ]
+    },
+    {
+      "file": "capybara-leo-5.3.json",
+      "id": "capybara-leo-5.3",
+      "persona": "leo",
+      "stufe": "5.3",
+      "thema": "capybara",
+      "issues": [
+        "Abstrakta: nur 0 Gefühlswörter (min 2)"
+      ]
+    },
+    {
+      "file": "capybara-mia-4.3.json",
+      "id": "capybara-mia-4.3",
+      "persona": "mia",
+      "stufe": "4.3",
+      "thema": "capybara",
+      "issues": [
+        "Mia: Keine Wort-Erklärungen gefunden (ab Stufe 4 erwartet)"
+      ]
+    },
+    {
+      "file": "capybara-mia-5.3.json",
+      "id": "capybara-mia-5.3",
+      "persona": "mia",
+      "stufe": "5.3",
+      "thema": "capybara",
+      "issues": [
+        "Abstrakta: nur 0 Gefühlswörter (min 2)"
+      ]
+    },
+    {
+      "file": "capybara-samira-5.3.json",
+      "id": "capybara-samira-5.3",
+      "persona": "samira",
+      "stufe": "5.3",
+      "thema": "capybara",
+      "issues": [
+        "Abstrakta: nur 0 Gefühlswörter (min 2)"
+      ]
+    },
+    {
+      "file": "capybara-timo-3.3.json",
+      "id": "capybara-timo-3.3",
+      "persona": "timo",
+      "stufe": "3.3",
+      "thema": "capybara",
+      "issues": [
+        "Timo: Lange Komposita: Gemütlichkeit., Zufriedenheit"
+      ]
+    },
+    {
+      "file": "capybara-timo-5.1.json",
+      "id": "capybara-timo-5.1",
+      "persona": "timo",
+      "stufe": "5.1",
+      "thema": "capybara",
+      "issues": [
+        "Timo: Lange Komposita: Blubberblasen"
+      ]
+    },
+    {
+      "file": "doener-katze-deniz-5.2.json",
+      "id": "doener-katze-deniz-5.2",
+      "persona": "deniz",
+      "stufe": "5.2",
+      "thema": "doener-katze",
+      "issues": [
+        "Redewendungen: keine Erklärungsmarker gefunden"
+      ]
+    },
+    {
+      "file": "doener-katze-holzi-5.3.json",
+      "id": "doener-katze-holzi-5.3",
+      "persona": "holzi",
+      "stufe": "5.3",
+      "thema": "doener-katze",
+      "issues": [
+        "Abstrakta: nur 1 Gefühlswörter (min 2)",
+        "Holzi: Kein Gamer-Slang gefunden"
+      ]
+    },
+    {
+      "file": "doener-katze-jonas-5.2.json",
+      "id": "doener-katze-jonas-5.2",
+      "persona": "jonas",
+      "stufe": "5.2",
+      "thema": "doener-katze",
+      "issues": [
+        "Redewendungen: keine Erklärungsmarker gefunden"
+      ]
+    },
+    {
+      "file": "doener-katze-leo-5.3.json",
+      "id": "doener-katze-leo-5.3",
+      "persona": "leo",
+      "stufe": "5.3",
+      "thema": "doener-katze",
+      "issues": [
+        "Abstrakta: nur 1 Gefühlswörter (min 2)"
+      ]
+    },
+    {
+      "file": "doener-katze-leo-5.4.json",
+      "id": "doener-katze-leo-5.4",
+      "persona": "leo",
+      "stufe": "5.4",
+      "thema": "doener-katze",
+      "issues": [
+        "Leo: Kein \"weil\" für Gefühlsbegründung"
+      ]
+    },
+    {
+      "file": "doener-katze-mia-4.3.json",
+      "id": "doener-katze-mia-4.3",
+      "persona": "mia",
+      "stufe": "4.3",
+      "thema": "doener-katze",
+      "issues": [
+        "Mia: Keine Wort-Erklärungen gefunden (ab Stufe 4 erwartet)"
+      ]
+    },
+    {
+      "file": "doener-katze-mia-5.4.json",
+      "id": "doener-katze-mia-5.4",
+      "persona": "mia",
+      "stufe": "5.4",
+      "thema": "doener-katze",
+      "issues": [
+        "Tempus: Soll Präteritum, aber 4 Präs. vs 0 Prät. Marker"
+      ]
+    },
+    {
+      "file": "doener-katze-samira-5.3.json",
+      "id": "doener-katze-samira-5.3",
+      "persona": "samira",
+      "stufe": "5.3",
+      "thema": "doener-katze",
+      "issues": [
+        "Abstrakta: nur 1 Gefühlswörter (min 2)"
+      ]
+    },
+    {
+      "file": "doener-katze-timo-3.3.json",
+      "id": "doener-katze-timo-3.3",
+      "persona": "timo",
+      "stufe": "3.3",
+      "thema": "doener-katze",
+      "issues": [
+        "Timo: Lange Komposita: Verbundenheit, Großzügigkeit., Zufriedenheit"
+      ]
+    },
+    {
+      "file": "doener-katze-timo-5.1.json",
+      "id": "doener-katze-timo-5.1",
+      "persona": "timo",
+      "stufe": "5.1",
+      "thema": "doener-katze",
+      "issues": [
+        "Timo: Möglicher Genitiv gefunden"
+      ]
+    },
+    {
+      "file": "familie-deniz-5.2.json",
+      "id": "familie-deniz-5.2",
+      "persona": "deniz",
+      "stufe": "5.2",
+      "thema": "familie",
+      "issues": [
+        "Redewendungen: keine Erklärungsmarker gefunden"
+      ]
+    },
+    {
+      "file": "familie-holzi-5.2.json",
+      "id": "familie-holzi-5.2",
+      "persona": "holzi",
+      "stufe": "5.2",
+      "thema": "familie",
+      "issues": [
+        "Holzi: Kein Gamer-Slang gefunden"
+      ]
+    },
+    {
+      "file": "familie-jonas-5.2.json",
+      "id": "familie-jonas-5.2",
+      "persona": "jonas",
+      "stufe": "5.2",
+      "thema": "familie",
+      "issues": [
+        "Redewendungen: keine Erklärungsmarker gefunden"
+      ]
+    },
+    {
+      "file": "familie-leo-5.3.json",
+      "id": "familie-leo-5.3",
+      "persona": "leo",
+      "stufe": "5.3",
+      "thema": "familie",
+      "issues": [
+        "Leo: Mögliche Metaphern: als ob "
+      ]
+    },
+    {
+      "file": "familie-mia-4.3.json",
+      "id": "familie-mia-4.3",
+      "persona": "mia",
+      "stufe": "4.3",
+      "thema": "familie",
+      "issues": [
+        "Mia: Keine Wort-Erklärungen gefunden (ab Stufe 4 erwartet)"
+      ]
+    },
+    {
+      "file": "familie-mia-4.4.json",
+      "id": "familie-mia-4.4",
+      "persona": "mia",
+      "stufe": "4.4",
+      "thema": "familie",
+      "issues": [
+        "Mia: Keine Wort-Erklärungen gefunden (ab Stufe 4 erwartet)"
+      ]
+    },
+    {
+      "file": "familie-timo-3.3.json",
+      "id": "familie-timo-3.3",
+      "persona": "timo",
+      "stufe": "3.3",
+      "thema": "familie",
+      "issues": [
+        "Timo: Lange Komposita: Verbundenheit"
+      ]
+    },
+    {
+      "file": "familie-timo-5.4.json",
+      "id": "familie-timo-5.4",
+      "persona": "timo",
+      "stufe": "5.4",
+      "thema": "familie",
+      "issues": [
+        "Tempus: Soll Präteritum, aber 4 Präs. vs 0 Prät. Marker"
+      ]
+    },
+    {
+      "file": "freundschaft-deniz-5.2.json",
+      "id": "freundschaft-deniz-5.2",
+      "persona": "deniz",
+      "stufe": "5.2",
+      "thema": "freundschaft",
+      "issues": [
+        "Redewendungen: keine Erklärungsmarker gefunden"
+      ]
+    },
+    {
+      "file": "freundschaft-deniz-5.3.json",
+      "id": "freundschaft-deniz-5.3",
+      "persona": "deniz",
+      "stufe": "5.3",
+      "thema": "freundschaft",
+      "issues": [
+        "Abstrakta: nur 1 Gefühlswörter (min 2)"
+      ]
+    },
+    {
+      "file": "freundschaft-jonas-5.2.json",
+      "id": "freundschaft-jonas-5.2",
+      "persona": "jonas",
+      "stufe": "5.2",
+      "thema": "freundschaft",
+      "issues": [
+        "Redewendungen: keine Erklärungsmarker gefunden"
+      ]
+    },
+    {
+      "file": "freundschaft-jonas-5.3.json",
+      "id": "freundschaft-jonas-5.3",
+      "persona": "jonas",
+      "stufe": "5.3",
+      "thema": "freundschaft",
+      "issues": [
+        "Abstrakta: nur 1 Gefühlswörter (min 2)"
+      ]
+    },
+    {
+      "file": "freundschaft-mia-4.2.json",
+      "id": "freundschaft-mia-4.2",
+      "persona": "mia",
+      "stufe": "4.2",
+      "thema": "freundschaft",
+      "issues": [
+        "Mia: Keine Wort-Erklärungen gefunden (ab Stufe 4 erwartet)"
+      ]
+    },
+    {
+      "file": "freundschaft-mia-4.4.json",
+      "id": "freundschaft-mia-4.4",
+      "persona": "mia",
+      "stufe": "4.4",
+      "thema": "freundschaft",
+      "issues": [
+        "Mia: Keine Wort-Erklärungen gefunden (ab Stufe 4 erwartet)"
+      ]
+    },
+    {
+      "file": "freundschaft-samira-5.3.json",
+      "id": "freundschaft-samira-5.3",
+      "persona": "samira",
+      "stufe": "5.3",
+      "thema": "freundschaft",
+      "issues": [
+        "Tempus: Soll Präteritum, aber 4 Präs. vs 0 Prät. Marker"
+      ]
+    },
+    {
+      "file": "freundschaft-timo-3.3.json",
+      "id": "freundschaft-timo-3.3",
+      "persona": "timo",
+      "stufe": "3.3",
+      "thema": "freundschaft",
+      "issues": [
+        "Suffixe (-ung/-heit/-keit/-nis): nur 1 (min 2)"
+      ]
+    },
+    {
+      "file": "freundschaft-timo-5.1.json",
+      "id": "freundschaft-timo-5.1",
+      "persona": "timo",
+      "stufe": "5.1",
+      "thema": "freundschaft",
+      "issues": [
+        "Timo: Lange Komposita: Klettergerüst."
+      ]
+    },
+    {
+      "file": "freundschaft-timo-5.4.json",
+      "id": "freundschaft-timo-5.4",
+      "persona": "timo",
+      "stufe": "5.4",
+      "thema": "freundschaft",
+      "issues": [
+        "Tempus: Soll Präteritum, aber 4 Präs. vs 0 Prät. Marker",
+        "Timo: Lange Komposita: herausgefunden."
+      ]
+    },
+    {
+      "file": "fussball-deniz-5.2.json",
+      "id": "fussball-deniz-5.2",
+      "persona": "deniz",
+      "stufe": "5.2",
+      "thema": "fussball",
+      "issues": [
+        "Redewendungen: keine Erklärungsmarker gefunden"
+      ]
+    },
+    {
+      "file": "fussball-holzi-5.1.json",
+      "id": "fussball-holzi-5.1",
+      "persona": "holzi",
+      "stufe": "5.1",
+      "thema": "fussball",
+      "issues": [
+        "Holzi: Kein Gamer-Slang gefunden"
+      ]
+    },
+    {
+      "file": "fussball-holzi-5.3.json",
+      "id": "fussball-holzi-5.3",
+      "persona": "holzi",
+      "stufe": "5.3",
+      "thema": "fussball",
+      "issues": [
+        "Holzi: Kein Gamer-Slang gefunden"
+      ]
+    },
+    {
+      "file": "fussball-jonas-5.2.json",
+      "id": "fussball-jonas-5.2",
+      "persona": "jonas",
+      "stufe": "5.2",
+      "thema": "fussball",
+      "issues": [
+        "Redewendungen: keine Erklärungsmarker gefunden"
+      ]
+    },
+    {
+      "file": "fussball-leo-5.4.json",
+      "id": "fussball-leo-5.4",
+      "persona": "leo",
+      "stufe": "5.4",
+      "thema": "fussball",
+      "issues": [
+        "Tempus: Soll Präteritum, aber 5 Präs. vs 0 Prät. Marker"
+      ]
+    },
+    {
+      "file": "fussball-mia-4.1.json",
+      "id": "fussball-mia-4.1",
+      "persona": "mia",
+      "stufe": "4.1",
+      "thema": "fussball",
+      "issues": [
+        "Mia: Keine Wort-Erklärungen gefunden (ab Stufe 4 erwartet)"
+      ]
+    },
+    {
+      "file": "fussball-mia-5.4.json",
+      "id": "fussball-mia-5.4",
+      "persona": "mia",
+      "stufe": "5.4",
+      "thema": "fussball",
+      "issues": [
+        "Tempus: Soll Präteritum, aber 5 Präs. vs 1 Prät. Marker",
+        "Mia: Keine Wort-Erklärungen gefunden (ab Stufe 4 erwartet)"
+      ]
+    },
+    {
+      "file": "fussball-samira-5.2.json",
+      "id": "fussball-samira-5.2",
+      "persona": "samira",
+      "stufe": "5.2",
+      "thema": "fussball",
+      "issues": [
+        "Tempus: Soll Präteritum, aber 8 Präs. vs 1 Prät. Marker"
+      ]
+    },
+    {
+      "file": "meerschweinchen-deniz-5.2.json",
+      "id": "meerschweinchen-deniz-5.2",
+      "persona": "deniz",
+      "stufe": "5.2",
+      "thema": "meerschweinchen",
+      "issues": [
+        "Redewendungen: keine Erklärungsmarker gefunden"
+      ]
+    },
+    {
+      "file": "meerschweinchen-holzi-5.2.json",
+      "id": "meerschweinchen-holzi-5.2",
+      "persona": "holzi",
+      "stufe": "5.2",
+      "thema": "meerschweinchen",
+      "issues": [
+        "Holzi: Kein Gamer-Slang gefunden"
+      ]
+    },
+    {
+      "file": "meerschweinchen-jonas-5.2.json",
+      "id": "meerschweinchen-jonas-5.2",
+      "persona": "jonas",
+      "stufe": "5.2",
+      "thema": "meerschweinchen",
+      "issues": [
+        "Redewendungen: keine Erklärungsmarker gefunden"
+      ]
+    },
+    {
+      "file": "meerschweinchen-mia-4.3.json",
+      "id": "meerschweinchen-mia-4.3",
+      "persona": "mia",
+      "stufe": "4.3",
+      "thema": "meerschweinchen",
+      "issues": [
+        "Mia: Keine Wort-Erklärungen gefunden (ab Stufe 4 erwartet)"
+      ]
+    },
+    {
+      "file": "meerschweinchen-timo-3.3.json",
+      "id": "meerschweinchen-timo-3.3",
+      "persona": "timo",
+      "stufe": "3.3",
+      "thema": "meerschweinchen",
+      "issues": [
+        "Suffixe (-ung/-heit/-keit/-nis): nur 1 (min 2)",
+        "Timo: Lange Komposita: Verbundenheit."
+      ]
+    },
+    {
+      "file": "meerschweinchen-timo-5.3.json",
+      "id": "meerschweinchen-timo-5.3",
+      "persona": "timo",
+      "stufe": "5.3",
+      "thema": "meerschweinchen",
+      "issues": [
+        "Timo: Lange Komposita: Erleichterung."
+      ]
+    },
+    {
+      "file": "meerschweinchen-zara-5.4.json",
+      "id": "meerschweinchen-zara-5.4",
+      "persona": "zara",
+      "stufe": "5.4",
+      "thema": "meerschweinchen",
+      "issues": [
+        "Tempus: Soll Präteritum, aber 5 Präs. vs 0 Prät. Marker"
+      ]
+    },
+    {
+      "file": "minecraft-deniz-5.2.json",
+      "id": "minecraft-deniz-5.2",
+      "persona": "deniz",
+      "stufe": "5.2",
+      "thema": "minecraft",
+      "issues": [
+        "Redewendungen: keine Erklärungsmarker gefunden"
+      ]
+    },
+    {
+      "file": "minecraft-deniz-5.4.json",
+      "id": "minecraft-deniz-5.4",
+      "persona": "deniz",
+      "stufe": "5.4",
+      "thema": "minecraft",
+      "issues": [
+        "Tempus: Soll Präteritum, aber 4 Präs. vs 0 Prät. Marker"
+      ]
+    },
+    {
+      "file": "minecraft-holzi-5.3.json",
+      "id": "minecraft-holzi-5.3",
+      "persona": "holzi",
+      "stufe": "5.3",
+      "thema": "minecraft",
+      "issues": [
+        "Holzi: Kein Gamer-Slang gefunden"
+      ]
+    },
+    {
+      "file": "minecraft-holzi-5.4.json",
+      "id": "minecraft-holzi-5.4",
+      "persona": "holzi",
+      "stufe": "5.4",
+      "thema": "minecraft",
+      "issues": [
+        "Tempus: Soll Präteritum, aber 4 Präs. vs 0 Prät. Marker"
+      ]
+    },
+    {
+      "file": "minecraft-jonas-5.2.json",
+      "id": "minecraft-jonas-5.2",
+      "persona": "jonas",
+      "stufe": "5.2",
+      "thema": "minecraft",
+      "issues": [
+        "Redewendungen: keine Erklärungsmarker gefunden"
+      ]
+    },
+    {
+      "file": "minecraft-leo-5.4.json",
+      "id": "minecraft-leo-5.4",
+      "persona": "leo",
+      "stufe": "5.4",
+      "thema": "minecraft",
+      "issues": [
+        "Tempus: Soll Präteritum, aber 5 Präs. vs 0 Prät. Marker"
+      ]
+    },
+    {
+      "file": "minecraft-mia-4.3.json",
+      "id": "minecraft-mia-4.3",
+      "persona": "mia",
+      "stufe": "4.3",
+      "thema": "minecraft",
+      "issues": [
+        "Mia: Keine Wort-Erklärungen gefunden (ab Stufe 4 erwartet)"
+      ]
+    },
+    {
+      "file": "minecraft-mia-4.4.json",
+      "id": "minecraft-mia-4.4",
+      "persona": "mia",
+      "stufe": "4.4",
+      "thema": "minecraft",
+      "issues": [
+        "Mia: Keine Wort-Erklärungen gefunden (ab Stufe 4 erwartet)"
+      ]
+    },
+    {
+      "file": "minecraft-timo-3.3.json",
+      "id": "minecraft-timo-3.3",
+      "persona": "timo",
+      "stufe": "3.3",
+      "thema": "minecraft",
+      "issues": [
+        "Timo: Lange Komposita: Zufriedenheit"
+      ]
+    },
+    {
+      "file": "schnee-deniz-5.2.json",
+      "id": "schnee-deniz-5.2",
+      "persona": "deniz",
+      "stufe": "5.2",
+      "thema": "schnee",
+      "issues": [
+        "Redewendungen: keine Erklärungsmarker gefunden"
+      ]
+    },
+    {
+      "file": "schnee-deniz-5.4.json",
+      "id": "schnee-deniz-5.4",
+      "persona": "deniz",
+      "stufe": "5.4",
+      "thema": "schnee",
+      "issues": [
+        "Tempus: Soll Präteritum, aber 5 Präs. vs 1 Prät. Marker"
+      ]
+    },
+    {
+      "file": "schnee-holzi-5.3.json",
+      "id": "schnee-holzi-5.3",
+      "persona": "holzi",
+      "stufe": "5.3",
+      "thema": "schnee",
+      "issues": [
+        "Holzi: Kein Gamer-Slang gefunden"
+      ]
+    },
+    {
+      "file": "schnee-jonas-5.2.json",
+      "id": "schnee-jonas-5.2",
+      "persona": "jonas",
+      "stufe": "5.2",
+      "thema": "schnee",
+      "issues": [
+        "Redewendungen: keine Erklärungsmarker gefunden"
+      ]
+    },
+    {
+      "file": "schnee-mia-4.1.json",
+      "id": "schnee-mia-4.1",
+      "persona": "mia",
+      "stufe": "4.1",
+      "thema": "schnee",
+      "issues": [
+        "Mia: Keine Wort-Erklärungen gefunden (ab Stufe 4 erwartet)"
+      ]
+    },
+    {
+      "file": "schnee-mia-5.4.json",
+      "id": "schnee-mia-5.4",
+      "persona": "mia",
+      "stufe": "5.4",
+      "thema": "schnee",
+      "issues": [
+        "Tempus: Soll Präteritum, aber 4 Präs. vs 0 Prät. Marker"
+      ]
+    },
+    {
+      "file": "schnee-timo-5.4.json",
+      "id": "schnee-timo-5.4",
+      "persona": "timo",
+      "stufe": "5.4",
+      "thema": "schnee",
+      "issues": [
+        "Tempus: Soll Präteritum, aber 4 Präs. vs 0 Prät. Marker"
+      ]
+    },
+    {
+      "file": "schnee-zara-5.3.json",
+      "id": "schnee-zara-5.3",
+      "persona": "zara",
+      "stufe": "5.3",
+      "thema": "schnee",
+      "issues": [
+        "Abstrakta: nur 1 Gefühlswörter (min 2)"
+      ]
+    },
+    {
+      "file": "schule-deniz-5.4.json",
+      "id": "schule-deniz-5.4",
+      "persona": "deniz",
+      "stufe": "5.4",
+      "thema": "schule",
+      "issues": [
+        "Tempus: Soll Präteritum, aber 5 Präs. vs 0 Prät. Marker"
+      ]
+    },
+    {
+      "file": "schule-jonas-5.2.json",
+      "id": "schule-jonas-5.2",
+      "persona": "jonas",
+      "stufe": "5.2",
+      "thema": "schule",
+      "issues": [
+        "Redewendungen: keine Erklärungsmarker gefunden"
+      ]
+    },
+    {
+      "file": "schule-mia-4.4.json",
+      "id": "schule-mia-4.4",
+      "persona": "mia",
+      "stufe": "4.4",
+      "thema": "schule",
+      "issues": [
+        "Mia: Keine Wort-Erklärungen gefunden (ab Stufe 4 erwartet)"
+      ]
+    },
+    {
+      "file": "schule-mia-5.4.json",
+      "id": "schule-mia-5.4",
+      "persona": "mia",
+      "stufe": "5.4",
+      "thema": "schule",
+      "issues": [
+        "Mia: Keine Wort-Erklärungen gefunden (ab Stufe 4 erwartet)"
+      ]
+    },
+    {
+      "file": "schule-samira-5.2.json",
+      "id": "schule-samira-5.2",
+      "persona": "samira",
+      "stufe": "5.2",
+      "thema": "schule",
+      "issues": [
+        "Tempus: Soll Präteritum, aber 7 Präs. vs 0 Prät. Marker"
+      ]
+    },
+    {
+      "file": "schule-timo-3.3.json",
+      "id": "schule-timo-3.3",
+      "persona": "timo",
+      "stufe": "3.3",
+      "thema": "schule",
+      "issues": [
+        "Timo: Lange Komposita: Freundlichkeit., Erleichterung."
+      ]
+    },
+    {
+      "file": "schule-timo-5.3.json",
+      "id": "schule-timo-5.3",
+      "persona": "timo",
+      "stufe": "5.3",
+      "thema": "schule",
+      "issues": [
+        "Timo: Lange Komposita: Erleichterung."
+      ]
+    },
+    {
+      "file": "schule-zara-5.4.json",
+      "id": "schule-zara-5.4",
+      "persona": "zara",
+      "stufe": "5.4",
+      "thema": "schule",
+      "issues": [
+        "Tempus: Soll Präteritum, aber 5 Präs. vs 0 Prät. Marker"
+      ]
+    },
+    {
+      "file": "tiere-deniz-5.2.json",
+      "id": "tiere-deniz-5.2",
+      "persona": "deniz",
+      "stufe": "5.2",
+      "thema": "tiere",
+      "issues": [
+        "Redewendungen: keine Erklärungsmarker gefunden"
+      ]
+    },
+    {
+      "file": "tiere-deniz-5.4.json",
+      "id": "tiere-deniz-5.4",
+      "persona": "deniz",
+      "stufe": "5.4",
+      "thema": "tiere",
+      "issues": [
+        "Tempus: Soll Präteritum, aber 4 Präs. vs 0 Prät. Marker"
+      ]
+    },
+    {
+      "file": "tiere-jonas-5.2.json",
+      "id": "tiere-jonas-5.2",
+      "persona": "jonas",
+      "stufe": "5.2",
+      "thema": "tiere",
+      "issues": [
+        "Redewendungen: keine Erklärungsmarker gefunden"
+      ]
+    },
+    {
+      "file": "tiere-leo-4.1.json",
+      "id": "tiere-leo-4.1",
+      "persona": "leo",
+      "stufe": "4.1",
+      "thema": "tiere",
+      "issues": [
+        "Trennbare Verben: nur 2 Treffer (min 3)"
+      ]
+    },
+    {
+      "file": "tiere-leo-5.3.json",
+      "id": "tiere-leo-5.3",
+      "persona": "leo",
+      "stufe": "5.3",
+      "thema": "tiere",
+      "issues": [
+        "Leo: Mögliche Metaphern: als wäre ",
+        "Leo: Kein \"weil\" für Gefühlsbegründung"
+      ]
+    },
+    {
+      "file": "tiere-leo-5.4.json",
+      "id": "tiere-leo-5.4",
+      "persona": "leo",
+      "stufe": "5.4",
+      "thema": "tiere",
+      "issues": [
+        "Leo: Kein \"weil\" für Gefühlsbegründung"
+      ]
+    },
+    {
+      "file": "tiere-mia-4.3.json",
+      "id": "tiere-mia-4.3",
+      "persona": "mia",
+      "stufe": "4.3",
+      "thema": "tiere",
+      "issues": [
+        "Mia: Keine Wort-Erklärungen gefunden (ab Stufe 4 erwartet)"
+      ]
+    },
+    {
+      "file": "tiere-samira-5.2.json",
+      "id": "tiere-samira-5.2",
+      "persona": "samira",
+      "stufe": "5.2",
+      "thema": "tiere",
+      "issues": [
+        "Tempus: Soll Präteritum, aber 4 Präs. vs 0 Prät. Marker"
+      ]
+    },
+    {
+      "file": "tiere-timo-3.3.json",
+      "id": "tiere-timo-3.3",
+      "persona": "timo",
+      "stufe": "3.3",
+      "thema": "tiere",
+      "issues": [
+        "Timo: Lange Komposita: Freundlichkeit., Erleichterung."
+      ]
+    }
+  ],
+  "dupes": [],
+  "namesDiversity": {
+    "deniz": [
+      "Kofi(26)",
+      "Katze(24)",
+      "Yuki(23)",
+      "Wolke(22)",
+      "Sofia(21)",
+      "Welt(21)",
+      "Ben(21)",
+      "Ball(21)",
+      "Augen(20)",
+      "Amira(20)",
+      "Wasser(18)",
+      "Angst(18)",
+      "Mila(18)",
+      "Tomek(17)",
+      "Lena(17)"
+    ],
+    "holzi": [
+      "Leute(40)",
+      "Not(40)",
+      "Gefühl(37)",
+      "Karl(27)",
+      "Amir(27)",
+      "Amira(25)",
+      "Katze(23)",
+      "Pummel(22)",
+      "Tomek(22)",
+      "Kopf(20)",
+      "Ben(20)",
+      "Kofi(20)",
+      "Ball(20)",
+      "Yuki(20)",
+      "Elif(19)"
+    ],
+    "jonas": [
+      "Mein(27)",
+      "Barkley(19)",
+      "Kennst(18)",
+      "Leon(17)",
+      "Amira(16)",
+      "Meine(15)",
+      "Wolke(15)",
+      "Katze(12)",
+      "Augen(11)",
+      "Finn(11)",
+      "Kopf(9)",
+      "Ball(9)",
+      "Hund(9)",
+      "Blitz(8)",
+      "Mila(8)"
+    ],
+    "lea": [
+      "Yuki(17)",
+      "Amira(16)",
+      "Tomek(16)",
+      "Ben(15)",
+      "Katze(15)",
+      "Amir(15)",
+      "Sofia(13)",
+      "Elif(13)",
+      "Lena(13)",
+      "Kofi(12)",
+      "Hund(12)",
+      "Mila(11)",
+      "Ball(10)",
+      "Meerschweinchen(9)",
+      "Augen(7)"
+    ],
+    "leo": [
+      "Amir(105)",
+      "Pepe(96)",
+      "Amira(93)",
+      "Tomek(92)",
+      "Kofi(88)",
+      "Ben(78)",
+      "Sofia(75)",
+      "Lena(75)",
+      "Yuki(73)",
+      "Elif(69)",
+      "Ball(64)",
+      "Mila(62)",
+      "Bello(55)",
+      "Kinder(51)",
+      "Hund(49)"
+    ],
+    "mia": [
+      "Yuki(106)",
+      "Ball(99)",
+      "Kofi(97)",
+      "Amira(97)",
+      "Amir(97)",
+      "Lena(78)",
+      "Sofia(75)",
+      "Tomek(72)",
+      "Mila(71)",
+      "Ben(70)",
+      "Katze(70)",
+      "Elif(69)",
+      "Pummel(68)",
+      "Hund(66)",
+      "Mama(63)"
+    ],
+    "samira": [
+      "Forscher(44)",
+      "Gehirn(40)",
+      "Gefühl(39)",
+      "Hast(37)",
+      "Menschen(36)",
+      "Dein(28)",
+      "Meerschweinchen(26)",
+      "Körper(22)",
+      "Kinder(21)",
+      "Schnee(19)",
+      "Tiere(17)",
+      "Katzen(17)",
+      "Katze(16)",
+      "Hunde(16)",
+      "Man(15)"
+    ],
+    "timo": [
+      "Amir(86)",
+      "Kofi(76)",
+      "Ben(74)",
+      "Amira(72)",
+      "Lena(63)",
+      "Ball(62)",
+      "Ama(61)",
+      "Elif(58)",
+      "Sofia(55)",
+      "Tomek(55)",
+      "Yuki(49)",
+      "Schnee(49)",
+      "Katze(46)",
+      "Mila(45)",
+      "Mann(43)"
+    ],
+    "zara": [
+      "Amir(88)",
+      "Katze(80)",
+      "Kofi(67)",
+      "Amira(67)",
+      "Ben(65)",
+      "Lena(63)",
+      "Yuki(62)",
+      "Mila(58)",
+      "Tomek(57)",
+      "Ball(56)",
+      "Pummel(56)",
+      "Sofia(53)",
+      "Elif(52)",
+      "Schneemann(37)",
+      "Hund(32)"
+    ]
+  },
+  "timestamp": "2026-03-28T08:05:03.504Z"
+}

@@ -25,6 +25,9 @@ This is a **static site with no build step** — pure vanilla HTML, CSS, and Jav
 - `comicgeschichten/` — Comic/picture stories (HTML files)
 - `comics/` — Comic panel images (PNG)
 - `bilder/` — Story illustration images (PNG)
+- `prompts/` — Systemprompts der 9 Autor-Personas (je 1 Markdown-Datei)
+- `avatars/` — Avatar-Bilder der Personas (WEBP)
+- `tests/` — Textqualitäts-Tests: Prompts, Ergebnisse pro Modell, Vergleichsanalysen
 - `leseapp_konzeption.md` — Full project vision document (German)
 
 ### Data Flow
@@ -44,11 +47,22 @@ Each story HTML file must include these meta tags for the catalog to work:
 
 ### Authors/Personas
 
-Four fictional AI author personas, each with a distinct style:
-- **Samira Wissensfreund** — educational/knowledge stories
-- **Holzi Pixelkopf** — tech/digital stories
-- **Deniz Traumfänger** — fantasy/emotion stories
-- **Jonas Entdecker** — adventure/discovery stories
+Nine fictional AI author personas with individuellen Systemprompts in `prompts/`. Avatare in `avatars/`.
+
+**Basis-Stimme:**
+- **Lea Lesestark** — Basis-Referenz, ausgewogen und altersgerecht (5–10 J.)
+
+**Genre-Personas (Stil-Differenzierung):**
+- **Samira Wissensfreund** — Edutainment/Sachtexte (Checker-Tobi-Stil)
+- **Holzi Pixelkopf** — Tech/Digital-Geschichten
+- **Deniz Traumfänger** — Fantasy/Emotion (8–12 J.)
+- **Jonas Entdecker** — Abenteuer/Alltag, authentisch (8–12 J.)
+- **Zara Zapp** — Action/Spannung, hohes Tempo
+
+**Neuroinclusive Personas (Barrierefreiheit-Fokus):**
+- **Leo Klartext** — Autismus-Spektrum: keine Metaphern, explizite Gefühle, absolute Eindeutigkeit
+- **Timo Taktschritt** — LRS/Dyslexie: Rhythmus, kurze Silben, keine Komposita, Lesefluss
+- **Mia Brücke** — DaZ (Deutsch als Zweitsprache): einfache Sprache, Welt-Erklärungen
 
 ## Deployment
 

@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lesekumpel Story-Viewer</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Segoe UI', system-ui, sans-serif; background: #f5f5f5; color: #333; }
+
+  .header { background: #D67171; color: white; padding: 16px 24px; position: sticky; top: 0; z-index: 10; }
+  .header h1 { font-size: 20px; margin-bottom: 8px; }
+  .filters { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+  .filters select, .filters input { padding: 6px 10px; border: none; border-radius: 6px; font-size: 14px; }
+  .filters select { background: white; min-width: 140px; }
+  .filters input { flex: 1; min-width: 200px; }
+  .count { color: rgba(255,255,255,0.8); font-size: 13px; margin-left: 8px; }
+
+  .container { max-width: 900px; margin: 20px auto; padding: 0 16px; }
+
+  .story-card {
+    background: white; border-radius: 12px; padding: 20px; margin-bottom: 16px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1); border-left: 4px solid #D67171;
+  }
+  .story-card.persona-lea { border-left-color: #FFD54F; }
+  .story-card.persona-zara { border-left-color: #FF7043; }
+  .story-card.persona-deniz { border-left-color: #AB47BC; }
+  .story-card.persona-jonas { border-left-color: #42A5F5; }
+  .story-card.persona-holzi { border-left-color: #66BB6A; }
+  .story-card.persona-samira { border-left-color: #FFA726; }
+  .story-card.persona-leo { border-left-color: #78909C; }
+  .story-card.persona-timo { border-left-color: #26A69A; }
+  .story-card.persona-mia { border-left-color: #EC407A; }
+
+  .meta { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
+  .badge {
+    display: inline-block; padding: 2px 8px; border-radius: 10px;
+    font-size: 11px; font-weight: 600; background: #eee; color: #555;
+  }
+  .badge.persona { background: #D67171; color: white; }
+  .badge.stufe { background: #FFD54F; color: #333; }
+  .badge.thema { background: #E3F2FD; color: #1565C0; }
+  .badge.wc { background: #f0f0f0; color: #666; }
+
+  .story-title { font-size: 18px; font-weight: 700; margin-bottom: 8px; color: #222; }
+  .story-text { font-size: 15px; line-height: 1.7; white-space: pre-wrap; margin-bottom: 10px; }
+  .story-summary { font-size: 13px; color: #777; font-style: italic; border-top: 1px solid #eee; padding-top: 8px; }
+  .story-file { font-size: 11px; color: #aaa; margin-top: 4px; }
+
+  .no-results { text-align: center; padding: 60px 20px; color: #999; font-size: 18px; }
+
+  @media (max-width: 600px) {
+    .filters { flex-direction: column; }
+    .filters select, .filters input { width: 100%; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <h1>Lesekumpel Story-Viewer <span class="count" id="count"></span></h1>
+  <div class="filters">
+    <select id="filterPersona"><option value="">Alle Personas</option></select>
+    <select id="filterStufe"><option value="">Alle Stufen</option></select>
+    <select id="filterThema"><option value="">Alle Themen</option></select>
+    <input type="text" id="search" placeholder="Suche im Text...">
+  </div>
+</div>
+
+<div class="container" id="stories"></div>
+
+<script src="stories-data.js"></script>
+<script>
+  // Build filter options
+  const personas = [...new Set(STORIES.map(s => s.persona))].sort();
+  const stufen = [...new Set(STORIES.map(s => s.stufe))].sort((a,b) => parseFloat(a)-parseFloat(b));
+  const themen = [...new Set(STORIES.map(s => s.thema))].sort();
+
+  const personaNames = {
+    lea: 'Lea Lesestark', zara: 'Zara Zapp', deniz: 'Deniz Traumfaenger',
+    jonas: 'Jonas Entdecker', holzi: 'Holzi Pixelkopf', samira: 'Samira Wissensfreund',
+    leo: 'Leo Klartext', timo: 'Timo Taktschritt', mia: 'Mia Bruecke'
+  };
+
+  const fp = document.getElementById('filterPersona');
+  const fs = document.getElementById('filterStufe');
+  const ft = document.getElementById('filterThema');
+
+  personas.forEach(p => { const o = document.createElement('option'); o.value = p; o.textContent = personaNames[p] || p; fp.appendChild(o); });
+  stufen.forEach(s => { const o = document.createElement('option'); o.value = s; o.textContent = 'Stufe ' + s; fs.appendChild(o); });
+  themen.forEach(t => { const o = document.createElement('option'); o.value = t; o.textContent = t; ft.appendChild(o); });
+
+  function render() {
+    const pf = fp.value;
+    const sf = fs.value;
+    const tf = ft.value;
+    const q = document.getElementById('search').value.toLowerCase();
+
+    const filtered = STORIES.filter(s => {
+      if (pf && s.persona !== pf) return false;
+      if (sf && s.stufe !== sf) return false;
+      if (tf && s.thema !== tf) return false;
+      if (q && !s.text.toLowerCase().includes(q) && !s.titel.toLowerCase().includes(q)) return false;
+      return true;
+    });
+
+    document.getElementById('count').textContent = filtered.length + ' / ' + STORIES.length + ' Texte';
+
+    const container = document.getElementById('stories');
+    if (filtered.length === 0) {
+      container.innerHTML = '<div class="no-results">Keine Texte gefunden</div>';
+      return;
+    }
+
+    container.innerHTML = filtered.map(s => `
+      <div class="story-card persona-${s.persona}">
+        <div class="meta">
+          <span class="badge persona">${personaNames[s.persona] || s.persona}</span>
+          <span class="badge stufe">Stufe ${s.stufe}</span>
+          <span class="badge thema">${s.thema}</span>
+          <span class="badge wc">${s._wc} Woerter</span>
+        </div>
+        <div class="story-title">${s.titel}</div>
+        <div class="story-text">${s.text.replace(/</g, '&lt;')}</div>
+        <div class="story-summary">${s.zusammenfassung}</div>
+        <div class="story-file">${s._file}</div>
+      </div>
+    `).join('');
+  }
+
+  fp.addEventListener('change', render);
+  fs.addEventListener('change', render);
+  ft.addEventListener('change', render);
+  document.getElementById('search').addEventListener('input', render);
+
+  render();
+</script>
+</body>
+</html>
