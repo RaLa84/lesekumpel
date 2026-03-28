@@ -121,6 +121,14 @@
             padding: 8px 24px 10px;
             box-shadow: 0 4px 20px rgba(0,0,0,0.08);
         }
+        @media (max-width: 767px) {
+            .filter-section { top: 48px; }
+            .filter-section.is-sticky { padding: 6px 12px 8px; }
+            .filter-section.is-sticky .category-subtitle { display: none; }
+            .filter-section.is-sticky .category-btn { padding: 7px 10px; font-size: 0.82rem; min-height: 36px; }
+            .filter-section.is-sticky .filter-row-search { display: none; }
+            .filter-section.is-sticky .filter-card { padding: 0; }
+        }
         @media (min-width: 768px) {
             .filter-section { padding: 50px 48px 64px; }
             .filter-section.is-sticky { padding: 8px 48px 10px; }
@@ -139,12 +147,15 @@
             background: transparent;
         }
 
-        /* Author Row — collapsible in sticky */
+        /* Author Row — collapsible in sticky (GPU-only, no reflow) */
         .filter-row-authors {
-            max-height: 400px; opacity: 1; overflow: hidden;
+            transform: scaleY(1); transform-origin: top; opacity: 1;
+            will-change: transform, opacity;
+            transition: transform 0.25s ease, opacity 0.2s ease;
         }
         .filter-section.is-sticky .filter-row-authors {
-            max-height: 0; opacity: 0; margin: 0 !important;
+            transform: scaleY(0); opacity: 0; height: 0; margin: 0 !important;
+            pointer-events: none;
         }
         .filter-section.is-sticky .sort-info {
             display: none;
@@ -996,7 +1007,7 @@
             ([entry]) => {
                 filterSection.classList.toggle('is-sticky', !entry.isIntersecting);
             },
-            { threshold: 0, rootMargin: '0px 0px 0px 0px' }
+            { threshold: 0, rootMargin: '-55px 0px 0px 0px' }
         );
         stickyObserver.observe(heroSection);
     </script>
