@@ -7,14 +7,25 @@ Jede Stufe definiert Wortanzahl, Tempus und einen linguistischen Fokus.
 ## Stufe 1.0 — Top 100 Wörter
 - **TEMPUS:** Präsens
 - **SYNTAX:** Hauptsätze, natürliche Wortstellung
-- **WORTSCHATZ:** Top-100-Grundwörter + Themen-Wörter (Titel-Wörter immer erlaubt)
+- **WORTSCHATZ:** Mindestens 75 % der Wörter im Text sollen aus der folgenden Top-100-Liste stammen. Weitere einfache Wörter sind erlaubt, solange sie zum Thema passen und altersgerecht sind. Titel-/Themen-Wörter sind immer erlaubt.
 - **WORTANZAHL:** 20–40 Wörter
 - **NATÜRLICHKEIT:** Jeder Satz muss klingen wie gesprochenes Deutsch
+
+### Top-100-Grundwortschatz
+
+**Funktionswörter:** ich, du, er, sie, es, wir, und, ist, sind, der, die, das, ein, eine, im, in, mit, zu, auf, nicht, da, hier, kann, will, aber, ja, nein, wo
+**Verben:** haben, hat, lesen, malen, schreiben, spielen, singen, lachen, weinen, gehen, laufen, rennen, kommen, rufen, essen, trinken, schlafen, sehen, sagen, machen
+**Personen & Familie:** Mama, Papa, Oma, Opa, Kind, Baby, Bruder, Schwester
+**Nomen:** Schule, Klasse, Buch, Heft, Stift, Tisch, Haus, Bett, Auto, Ball, Hund, Katze, Maus, Vogel, Fisch, Pferd, Kuh, Schwein, Sofa, Sonne, Mond, Baum, Blume, Wasser, Wald
+**Adjektive & Farben:** rot, blau, grün, gelb, groß, klein, gut, lieb, schön, kalt, warm, laut, leise, schnell, viel, alle, neu, alt
+
+> **Flexion:** Flektierte Formen der obigen Wörter sind erlaubt (spielt, laufe, großer, kleine).
+> **Sonderlaute:** Einige Top-100-Wörter enthalten bereits Sonderlaute (sch, ch, ei, au). Das ist unvermeidbar — Stufe 2.1 fokussiert auf deren gezielte Übung, nicht auf erstes Vorkommen.
 
 ## Stufe 2.1 — Mehrgrapheme (Sonderlaute)
 - **TEMPUS:** Präsens
 - **SYNTAX:** Hauptsätze
-- **FOKUS:** Wörter mit Sonderlauten einstreuen: sch, ch, eu, ei, ie, au
+- **FOKUS:** Wörter mit Sonderlauten **gezielt und häufig** einstreuen: sch, ch, eu, ei, ie, au (Sonderlaute kommen in Top-100-Wörtern bereits vor; hier werden sie bewusst geübt)
 - **WORTANZAHL:** 40–60 Wörter
 
 ## Stufe 2.2 — Konsonantenhäufung (Stolpersteine)
