@@ -14,7 +14,7 @@
             --primary-yellow: #FFD54F; --accent-coral: #D67171; --accent-teal: #2a9d8f;
             --text-dark: #2D3436; --font-heading: 'Fredoka', cursive, sans-serif;
             --font-body: 'Quicksand', sans-serif;
-            --filter-bg-sticky: rgba(255, 255, 255, 0.95);
+
             --category-bg: #f2f0e8;
         }
 
@@ -115,23 +115,9 @@
         .filter-section {
             background: #ffffff;
             padding: 40px 24px 56px;
-            position: sticky; top: 55px; z-index: 500;
-        }
-        .filter-section.is-sticky {
-            padding: 8px 24px 10px;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.08);
-        }
-        @media (max-width: 767px) {
-            .filter-section { top: 48px; }
-            .filter-section.is-sticky { padding: 6px 12px 8px; }
-            .filter-section.is-sticky .category-subtitle { display: none; }
-            .filter-section.is-sticky .category-btn { padding: 7px 10px; font-size: 0.82rem; min-height: 36px; }
-            .filter-section.is-sticky .filter-row-search { display: none; }
-            .filter-section.is-sticky .filter-card { padding: 0; }
         }
         @media (min-width: 768px) {
             .filter-section { padding: 50px 48px 64px; }
-            .filter-section.is-sticky { padding: 8px 48px 10px; }
         }
 
         /* --- CONTAINER --- */
@@ -142,23 +128,9 @@
             background: white; padding: 28px 24px; border-radius: 24px;
             box-shadow: 0 2px 16px rgba(0,0,0,0.04); margin-bottom: 0; border: 1.5px solid rgba(245, 230, 163, 0.5);
         }
-        .filter-section.is-sticky .filter-card {
-            border-radius: 0; box-shadow: none; border: none; padding: 0;
-            background: transparent;
-        }
-
-        /* Author Row — collapsible in sticky (GPU-only, no reflow) */
+        /* Author Row */
         .filter-row-authors {
-            transform: scaleY(1); transform-origin: top; opacity: 1;
-            will-change: transform, opacity;
-            transition: transform 0.25s ease, opacity 0.2s ease;
-        }
-        .filter-section.is-sticky .filter-row-authors {
-            transform: scaleY(0); opacity: 0; height: 0; margin: 0 !important;
-            pointer-events: none;
-        }
-        .filter-section.is-sticky .sort-info {
-            display: none;
+            overflow: hidden;
         }
 
         /* AUTOREN FILTER */
@@ -999,17 +971,6 @@
                 .replace(/\b\w/g, l => l.toUpperCase());
         }
 
-        // 7. Sticky Observer
-        const filterSection = document.querySelector('.filter-section');
-        const heroSection = document.querySelector('.hero-section');
-
-        const stickyObserver = new IntersectionObserver(
-            ([entry]) => {
-                filterSection.classList.toggle('is-sticky', !entry.isIntersecting);
-            },
-            { threshold: 0, rootMargin: '-55px 0px 0px 0px' }
-        );
-        stickyObserver.observe(heroSection);
     </script>
 
 </body>
