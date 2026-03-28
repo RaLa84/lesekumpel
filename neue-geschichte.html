@@ -47,33 +47,22 @@
         @media (min-width: 768px) { .nav-logo { height: 50px; } .brand-name { font-size: 1.5rem; } .nav-left { gap: 15px; } }
         @media (min-width: 1024px) { .burger-icon { display: none; } .nav-links-desktop { display: flex; } .btn-cta-nav { display: inline-block; } }
 
-        /* --- PROGRESS BAR --- */
-        .progress-bar {
-            background: #fff; padding: 20px 24px 16px; position: sticky; top: 58px; z-index: 900;
-            border-bottom: 2px solid rgba(255,213,79,0.3);
-        }
-        .progress-steps { display: flex; align-items: center; justify-content: center; max-width: 500px; margin: 0 auto; }
-        .progress-step {
-            width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
-            font-family: var(--font-heading); font-weight: 700; font-size: 0.85rem;
-            border: 3px solid #ddd; background: #fff; color: #bbb; transition: all 0.3s; flex-shrink: 0;
-        }
-        .progress-step.active { border-color: var(--accent-coral); background: var(--accent-coral); color: #fff; transform: scale(1.1); }
-        .progress-step.done { border-color: var(--success-green); background: var(--success-green); color: #fff; }
-        .progress-line { flex: 1; height: 3px; background: #ddd; margin: 0 6px; transition: background 0.3s; }
-        .progress-line.done { background: var(--success-green); }
-        .progress-label { text-align: center; margin-top: 8px; font-size: 0.8rem; color: var(--text-muted); font-weight: 600; }
-
         /* --- MAIN --- */
         .main-container { max-width: 700px; margin: 0 auto; padding: 30px 20px 60px; }
 
-        /* --- WIZARD STEP --- */
-        .wizard-step { display: none; animation: fadeIn 0.35s ease; }
-        .wizard-step.active { display: block; }
+        /* --- PAGE TRANSITIONS --- */
+        .page { display: none; animation: fadeIn 0.35s ease; }
+        .page.active { display: block; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
 
-        .step-title { font-family: var(--font-heading); color: var(--accent-coral); font-size: 1.6rem; text-align: center; margin-bottom: 6px; }
-        .step-sub { text-align: center; color: var(--text-muted); font-size: 0.95rem; margin-bottom: 24px; }
+        /* --- SECTIONS --- */
+        .form-section { margin-bottom: 32px; }
+        .form-section.hidden { display: none; }
+        .form-section.reveal { animation: fadeIn 0.35s ease; }
+
+        .section-title { font-family: var(--font-heading); color: var(--accent-coral); font-size: 1.3rem; margin-bottom: 6px; }
+        .section-sub { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 16px; }
+        .section-divider { border: none; border-top: 2px solid rgba(255,213,79,0.3); margin: 28px 0; }
 
         /* --- INPUTS --- */
         .text-input, .textarea-input {
@@ -84,7 +73,7 @@
         .text-input:focus, .textarea-input:focus { border-color: var(--accent-coral); box-shadow: 0 0 0 3px rgba(214,113,113,0.15); outline: none; }
         .textarea-input { min-height: 80px; resize: vertical; }
 
-        /* --- TOGGLE BUTTONS (Genre) --- */
+        /* --- TOGGLE BUTTONS (Kategorie) --- */
         .toggle-group { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
         .toggle-btn {
             padding: 10px 18px; border: 2px solid #eee; border-radius: 20px; background: #fff;
@@ -108,7 +97,7 @@
         .phase-3-bg { background: #FFF59D; } .phase-4-bg { background: #C8E6C9; } .phase-5-bg { background: #A5D6A7; }
 
         /* --- STUFE BUTTONS --- */
-        .stufe-grid { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
+        .stufe-grid { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-top: 16px; }
         .stufe-btn {
             padding: 14px 18px; border: 2px solid #eee; border-radius: 14px; background: #fff;
             cursor: pointer; transition: all 0.2s; text-align: center; min-width: 140px;
@@ -119,17 +108,41 @@
         .stufe-fokus { font-size: 0.8rem; color: var(--text-muted); margin-top: 3px; }
 
         /* --- PERSONA CARDS --- */
+        .persona-group-title {
+            font-family: var(--font-heading); font-size: 1rem; color: var(--text-muted);
+            margin: 16px 0 10px; padding-left: 4px;
+        }
+        .persona-group-title:first-of-type { margin-top: 0; }
         .persona-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 12px; }
         .persona-card {
             background: #fff; border: 2px solid #eee; border-radius: 18px; padding: 18px 10px;
-            text-align: center; cursor: pointer; transition: all 0.25s;
+            text-align: center; cursor: pointer; transition: all 0.25s; position: relative;
         }
         .persona-card:hover:not(.disabled) { border-color: var(--accent-coral); transform: translateY(-3px); box-shadow: 0 6px 16px rgba(0,0,0,0.06); }
         .persona-card.active { border-color: var(--accent-coral); background: var(--accent-coral-light); }
         .persona-card.disabled { opacity: 0.3; cursor: not-allowed; filter: grayscale(0.6); }
+        .persona-card.disabled:hover { transform: none; box-shadow: none; border-color: #eee; }
         .persona-avatar { width: 65px; height: 65px; border-radius: 50%; border: 3px solid var(--primary-yellow); margin: 0 auto 8px; display: block; object-fit: cover; }
         .persona-name { font-family: var(--font-heading); font-size: 0.9rem; color: var(--accent-coral); }
         .persona-type { font-size: 0.7rem; color: var(--text-muted); margin-top: 2px; }
+        .persona-tooltip {
+            display: none; position: absolute; bottom: calc(100% + 8px); left: 50%; transform: translateX(-50%);
+            background: var(--text-dark); color: #fff; padding: 8px 12px; border-radius: 10px;
+            font-size: 0.75rem; white-space: nowrap; z-index: 10; pointer-events: none;
+        }
+        .persona-tooltip::after {
+            content: ''; position: absolute; top: 100%; left: 50%; transform: translateX(-50%);
+            border: 6px solid transparent; border-top-color: var(--text-dark);
+        }
+        .persona-card.disabled:hover .persona-tooltip { display: block; }
+
+        /* --- AUTO-KATEGORIE BADGE --- */
+        .auto-kategorie-badge {
+            background: var(--accent-coral-light); border: 2px solid var(--accent-coral);
+            border-radius: 14px; padding: 16px 20px; text-align: center;
+            font-weight: 600; font-size: 0.95rem; color: var(--text-dark);
+        }
+        .auto-kategorie-badge .badge-emoji { font-size: 1.4rem; margin-right: 6px; }
 
         /* --- BILDSTIL CARDS --- */
         .stil-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
@@ -145,27 +158,21 @@
 
         /* --- NAV BUTTONS --- */
         .step-nav { display: flex; justify-content: space-between; align-items: center; margin-top: 28px; }
-        .btn-next {
+        .btn-next, .btn-submit {
             background: var(--accent-coral); color: #fff; border: none; border-radius: 28px;
             padding: 14px 36px; font-family: var(--font-body); font-weight: 700; font-size: 1rem;
             cursor: pointer; transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-            box-shadow: 0 4px 14px rgba(214,113,113,0.3); margin-left: auto;
+            box-shadow: 0 4px 14px rgba(214,113,113,0.3);
         }
-        .btn-next:hover:not(:disabled) { background: var(--accent-coral-dark); transform: translateY(-2px) scale(1.02); }
-        .btn-next:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+        .btn-next { margin-left: auto; }
+        .btn-next:hover:not(:disabled), .btn-submit:hover:not(:disabled) { background: var(--accent-coral-dark); transform: translateY(-2px) scale(1.02); }
+        .btn-next:disabled, .btn-submit:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+        .btn-submit { width: 100%; padding: 18px 52px; font-size: 1.1rem; }
         .btn-back {
             background: none; border: none; color: var(--text-muted); font-family: var(--font-body);
             font-weight: 600; font-size: 0.95rem; cursor: pointer; padding: 10px 0;
         }
         .btn-back:hover { color: var(--accent-coral); }
-        .btn-submit {
-            background: var(--accent-coral); color: #fff; border: none; border-radius: 28px;
-            padding: 18px 52px; font-family: var(--font-body); font-weight: 700; font-size: 1.1rem;
-            cursor: pointer; transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-            box-shadow: 0 4px 14px rgba(214,113,113,0.3); width: 100%;
-        }
-        .btn-submit:hover:not(:disabled) { background: var(--accent-coral-dark); transform: translateY(-3px) scale(1.02); }
-        .btn-submit:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
 
         /* --- LOADING OVERLAY --- */
         .loading-overlay {
@@ -202,8 +209,8 @@
             <a href="landingpage.html#how-it-works" class="nav-btn">So funktioniert&rsquo;s</a>
             <a href="ueber-uns.html" class="nav-btn">&Uuml;ber uns</a>
             <a href="demo.html" class="nav-btn">Demo-Texte</a>
+            <a href="neue-geschichte.html" class="nav-btn">Neue Geschichte</a>
             <a href="preise.html" class="nav-btn">Preise</a>
-            <a href="knowledge-base/snacks/index.html" class="nav-btn">Wissen</a>
             <a href="mein-konto.html" class="nav-btn">Mein Konto</a>
         </div>
     </div>
@@ -216,170 +223,125 @@
         <a href="landingpage.html#how-it-works" class="nav-btn" onclick="toggleMenu()">So funktioniert&rsquo;s</a>
         <a href="ueber-uns.html" class="nav-btn" onclick="toggleMenu()">&Uuml;ber uns</a>
         <a href="demo.html" class="nav-btn" onclick="toggleMenu()">Demo-Texte</a>
+        <a href="neue-geschichte.html" class="nav-btn" onclick="toggleMenu()">Neue Geschichte</a>
         <a href="preise.html" class="nav-btn" onclick="toggleMenu()">Preise</a>
-        <a href="knowledge-base/snacks/index.html" class="nav-btn" onclick="toggleMenu()">Wissen</a>
         <a href="mein-konto.html" class="nav-btn" onclick="toggleMenu()">Mein Konto</a>
         <a href="landingpage.html#registrieren" class="nav-btn" onclick="toggleMenu()">Jetzt registrieren</a>
     </div>
 </nav>
 
-<!-- PROGRESS BAR -->
-<div class="progress-bar">
-    <div class="progress-steps">
-        <div class="progress-step active" id="ps-1">1</div>
-        <div class="progress-line" id="pl-1"></div>
-        <div class="progress-step" id="ps-2">2</div>
-        <div class="progress-line" id="pl-2"></div>
-        <div class="progress-step" id="ps-3">3</div>
-        <div class="progress-line" id="pl-3"></div>
-        <div class="progress-step" id="ps-4">4</div>
-        <div class="progress-line" id="pl-4"></div>
-        <div class="progress-step" id="ps-5">5</div>
-    </div>
-    <div class="progress-label" id="progress-label">Schritt 1 von 5 — Deine Geschichte</div>
-</div>
-
 <main class="main-container">
 
-    <!-- STEP 1: Titel + Genre -->
-    <div class="wizard-step active" data-step="1">
-        <div class="step-title">Deine Geschichte</div>
-        <div class="step-sub">Gib deiner Geschichte einen Titel und wähle ein Genre.</div>
-        <input type="text" class="text-input" id="titel" placeholder="Titel — z.B. Die mutige Maus im Supermarkt" style="margin-bottom:14px;">
-        <div class="toggle-group" id="genre-group">
-            <button class="toggle-btn" data-val="Humor">😄 Humor</button>
-            <button class="toggle-btn" data-val="Abenteuer">🗺️ Abenteuer</button>
-            <button class="toggle-btn" data-val="Natur">🌿 Natur</button>
-            <button class="toggle-btn" data-val="Gaming">🎮 Gaming</button>
-            <button class="toggle-btn" data-val="Familie">👨‍👩‍👧 Familie</button>
-            <button class="toggle-btn" data-val="Wissen">🔬 Wissen</button>
-        </div>
-        <textarea class="textarea-input" id="beschreibung" placeholder="Kurzbeschreibung (optional) — Worum geht es?" style="margin-top:14px;"></textarea>
-        <div class="step-nav"><span></span><button class="btn-next" id="btn-next-1" disabled onclick="goStep(2)">Weiter →</button></div>
-    </div>
+    <!-- ==================== PAGE 1: Auswahl ==================== -->
+    <div class="page active" id="page-1">
 
-    <!-- STEP 2: Phase -->
-    <div class="wizard-step" data-step="2">
-        <div class="step-title">Lesephase wählen</div>
-        <div class="step-sub">In welcher Phase befindet sich das Kind?</div>
-        <div class="phase-grid">
-            <div class="phase-card phase-1-bg" data-phase="1" onclick="selectPhase(1)">
-                <span class="phase-emoji">🟠</span><span class="phase-num">Phase 1</span><br>Der Start
-            </div>
-            <div class="phase-card phase-2-bg" data-phase="2" onclick="selectPhase(2)">
-                <span class="phase-emoji">🟡</span><span class="phase-num">Phase 2</span><br>Der Ausbau
-            </div>
-            <div class="phase-card phase-3-bg" data-phase="3" onclick="selectPhase(3)">
-                <span class="phase-emoji">🟨</span><span class="phase-num">Phase 3</span><br>Der Fluss
-            </div>
-            <div class="phase-card phase-4-bg" data-phase="4" onclick="selectPhase(4)">
-                <span class="phase-emoji">🟩</span><span class="phase-num">Phase 4</span><br>Die Geschichte
-            </div>
-            <div class="phase-card phase-5-bg" data-phase="5" onclick="selectPhase(5)">
-                <span class="phase-emoji">🟢</span><span class="phase-num">Phase 5</span><br>Der Profi
-            </div>
-        </div>
-        <div class="step-nav"><button class="btn-back" onclick="goStep(1)">← Zurück</button><span></span></div>
-    </div>
-
-    <!-- STEP 3: Stufe -->
-    <div class="wizard-step" data-step="3">
-        <div class="step-title">Lesestufe wählen</div>
-        <div class="step-sub" id="stufe-sub">Welchen Fokus soll die Geschichte haben?</div>
-        <div class="stufe-grid" id="stufe-grid"></div>
-        <div class="step-nav"><button class="btn-back" onclick="goStep(2)">← Zurück</button><span></span></div>
-    </div>
-
-    <!-- STEP 4: Persona -->
-    <div class="wizard-step" data-step="4">
-        <div class="step-title">Wer schreibt die Geschichte?</div>
-        <div class="step-sub">Jede Autorin hat einen eigenen Stil. Ausgegraute Personas sind für diese Stufe nicht verfügbar.</div>
-        <div class="persona-grid" id="persona-grid">
-            <div class="persona-card" data-persona="lea" onclick="selectPersona('lea')">
-                <img src="avatars/lea-lesestark.webp" alt="Lea" class="persona-avatar">
-                <div class="persona-name">Lea Lesestark</div>
-                <div class="persona-type">Neurotypisch</div>
-            </div>
-            <div class="persona-card" data-persona="timo" onclick="selectPersona('timo')">
-                <img src="avatars/timo-taktschritt.webp" alt="Timo" class="persona-avatar">
-                <div class="persona-name">Timo Taktschritt</div>
-                <div class="persona-type">LRS / Legasthenie</div>
-            </div>
-            <div class="persona-card" data-persona="zara" onclick="selectPersona('zara')">
-                <img src="avatars/zara-zapp.webp" alt="Zara" class="persona-avatar">
-                <div class="persona-name">Zara Zapp</div>
-                <div class="persona-type">ADHS</div>
-            </div>
-            <div class="persona-card" data-persona="leo" onclick="selectPersona('leo')">
-                <img src="avatars/leo-klartext.webp" alt="Leo" class="persona-avatar">
-                <div class="persona-name">Leo Klartext</div>
-                <div class="persona-type">Autismus-Spektrum</div>
-            </div>
-            <div class="persona-card" data-persona="mia" onclick="selectPersona('mia')">
-                <img src="avatars/mia-bruecke.webp" alt="Mia" class="persona-avatar">
-                <div class="persona-name">Mia Brücke</div>
-                <div class="persona-type">Deutsch als Zweitsprache</div>
-            </div>
-            <div class="persona-card" data-persona="samira" onclick="selectPersona('samira')">
-                <img src="avatars/samira-wissensfreund.webp" alt="Samira" class="persona-avatar">
-                <div class="persona-name">Samira Wissensfreund</div>
-                <div class="persona-type">Sachtexte / Wissen</div>
-            </div>
-            <div class="persona-card" data-persona="holzi" onclick="selectPersona('holzi')">
-                <img src="avatars/holzi-pixelkopf.webp" alt="Holzi" class="persona-avatar">
-                <div class="persona-name">Holzi Pixelkopf</div>
-                <div class="persona-type">Tech / Gaming</div>
-            </div>
-            <div class="persona-card" data-persona="deniz" onclick="selectPersona('deniz')">
-                <img src="avatars/deniz-traumfaenger.webp" alt="Deniz" class="persona-avatar">
-                <div class="persona-name">Deniz Traumfänger</div>
-                <div class="persona-type">Fantasy / Emotion</div>
-            </div>
-            <div class="persona-card" data-persona="jonas" onclick="selectPersona('jonas')">
-                <img src="avatars/jonas-entdecker.webp" alt="Jonas" class="persona-avatar">
-                <div class="persona-name">Jonas Entdecker</div>
-                <div class="persona-type">Abenteuer / Alltag</div>
-            </div>
+        <!-- Sektion A: Story-Basics -->
+        <div class="form-section">
+            <div class="section-title">Deine Geschichte</div>
+            <div class="section-sub">Gib deiner Geschichte einen Titel.</div>
+            <input type="text" class="text-input" id="titel" placeholder="Titel — z.B. Die mutige Maus im Supermarkt" style="margin-bottom:14px;">
+            <textarea class="textarea-input" id="beschreibung" placeholder="Kurzbeschreibung (optional) — Worum geht es?"></textarea>
         </div>
 
-        <div class="step-nav"><button class="btn-back" onclick="goStep(3)">← Zurück</button><span></span></div>
+        <hr class="section-divider">
+
+        <!-- Sektion B: Lesestufe -->
+        <div class="form-section">
+            <div class="section-title">Lesephase</div>
+            <div class="section-sub">In welcher Phase befindet sich das Kind?</div>
+            <div class="phase-grid">
+                <div class="phase-card phase-1-bg" data-phase="1" onclick="selectPhase(1)">
+                    <span class="phase-emoji">🟠</span><span class="phase-num">Phase 1</span><br>Der Start
+                </div>
+                <div class="phase-card phase-2-bg" data-phase="2" onclick="selectPhase(2)">
+                    <span class="phase-emoji">🟡</span><span class="phase-num">Phase 2</span><br>Der Ausbau
+                </div>
+                <div class="phase-card phase-3-bg" data-phase="3" onclick="selectPhase(3)">
+                    <span class="phase-emoji">🟨</span><span class="phase-num">Phase 3</span><br>Der Fluss
+                </div>
+                <div class="phase-card phase-4-bg" data-phase="4" onclick="selectPhase(4)">
+                    <span class="phase-emoji">🟩</span><span class="phase-num">Phase 4</span><br>Die Geschichte
+                </div>
+                <div class="phase-card phase-5-bg" data-phase="5" onclick="selectPhase(5)">
+                    <span class="phase-emoji">🟢</span><span class="phase-num">Phase 5</span><br>Der Profi
+                </div>
+            </div>
+            <div class="stufe-grid" id="stufe-grid"></div>
+        </div>
+
+        <hr class="section-divider">
+
+        <!-- Sektion C: Autor -->
+        <div class="form-section hidden" id="section-autor">
+            <div class="section-title">Wer schreibt die Geschichte?</div>
+            <div class="section-sub">Ausgegraute Autoren sind für diese Stufe nicht verfügbar.</div>
+
+            <div class="persona-group-title">Stil-Autoren</div>
+            <div class="persona-grid" id="persona-grid-stil"></div>
+
+            <div class="persona-group-title">Genre-Autoren</div>
+            <div class="persona-grid" id="persona-grid-genre"></div>
+        </div>
+
+        <hr class="section-divider">
+
+        <!-- Sektion D: Kategorie -->
+        <div class="form-section hidden" id="section-kategorie">
+            <div class="section-title">Kategorie</div>
+            <div class="section-sub" id="kategorie-sub">Worum soll es in der Geschichte gehen?</div>
+            <div id="kategorie-container"></div>
+        </div>
+
+        <!-- Weiter-Button -->
+        <div class="step-nav">
+            <span></span>
+            <button class="btn-next" id="btn-next-page2" disabled onclick="goPage(2)">Weiter zum Bildstil &rarr;</button>
+        </div>
     </div>
 
-    <!-- STEP 5: Bildstil + Submit -->
-    <div class="wizard-step" data-step="5">
-        <div class="step-title">Bildstil wählen</div>
-        <div class="step-sub">Wie sollen die Illustrationen aussehen?</div>
-        <div class="stil-grid">
-            <div class="stil-card" data-stil="Aquarell" onclick="selectStil('Aquarell')">
-                <span class="stil-emoji">🎨</span><div class="stil-name">Aquarell</div>
-            </div>
-            <div class="stil-card" data-stil="Cartoon" onclick="selectStil('Cartoon')">
-                <span class="stil-emoji">🖍️</span><div class="stil-name">Cartoon</div>
-            </div>
-            <div class="stil-card" data-stil="Buntstift" onclick="selectStil('Buntstift')">
-                <span class="stil-emoji">✏️</span><div class="stil-name">Buntstift</div>
-            </div>
-            <div class="stil-card" data-stil="Pixel-Art" onclick="selectStil('Pixel-Art')">
-                <span class="stil-emoji">👾</span><div class="stil-name">Pixel-Art</div>
-            </div>
-            <div class="stil-card" data-stil="Anime" onclick="selectStil('Anime')">
-                <span class="stil-emoji">🌸</span><div class="stil-name">Anime</div>
-            </div>
-            <div class="stil-card" data-stil="Traumwelt" onclick="selectStil('Traumwelt')">
-                <span class="stil-emoji">🌙</span><div class="stil-name">Traumwelt</div>
-            </div>
-            <div class="stil-card" data-stil="Knete" onclick="selectStil('Knete')">
-                <span class="stil-emoji">🧸</span><div class="stil-name">Knete</div>
-            </div>
-            <div class="stil-card" data-stil="Voxel" onclick="selectStil('Voxel')">
-                <span class="stil-emoji">🧊</span><div class="stil-name">Voxel</div>
+    <!-- ==================== PAGE 2: Bildstil + Submit ==================== -->
+    <div class="page" id="page-2">
+
+        <div class="form-section">
+            <div class="section-title">Bildstil wählen</div>
+            <div class="section-sub">Wie sollen die Illustrationen aussehen?</div>
+            <div class="stil-grid">
+                <div class="stil-card" data-stil="Aquarell" onclick="selectStil('Aquarell')">
+                    <span class="stil-emoji">🎨</span><div class="stil-name">Aquarell</div>
+                </div>
+                <div class="stil-card" data-stil="Cartoon" onclick="selectStil('Cartoon')">
+                    <span class="stil-emoji">🖍️</span><div class="stil-name">Cartoon</div>
+                </div>
+                <div class="stil-card" data-stil="Buntstift" onclick="selectStil('Buntstift')">
+                    <span class="stil-emoji">✏️</span><div class="stil-name">Buntstift</div>
+                </div>
+                <div class="stil-card" data-stil="Pixel-Art" onclick="selectStil('Pixel-Art')">
+                    <span class="stil-emoji">👾</span><div class="stil-name">Pixel-Art</div>
+                </div>
+                <div class="stil-card" data-stil="Anime" onclick="selectStil('Anime')">
+                    <span class="stil-emoji">🌸</span><div class="stil-name">Anime</div>
+                </div>
+                <div class="stil-card" data-stil="Traumwelt" onclick="selectStil('Traumwelt')">
+                    <span class="stil-emoji">🌙</span><div class="stil-name">Traumwelt</div>
+                </div>
+                <div class="stil-card" data-stil="Knete" onclick="selectStil('Knete')">
+                    <span class="stil-emoji">🧸</span><div class="stil-name">Knete</div>
+                </div>
+                <div class="stil-card" data-stil="Voxel" onclick="selectStil('Voxel')">
+                    <span class="stil-emoji">🧊</span><div class="stil-name">Voxel</div>
+                </div>
             </div>
         </div>
+
         <div style="margin-top:28px;">
             <button class="btn-submit" id="btn-submit" disabled onclick="submitStory()">✨ Geschichte erstellen</button>
         </div>
-        <div class="step-nav" style="margin-top:10px;"><button class="btn-back" onclick="goStep(4)">← Zurück</button><span></span></div>
+        <div class="step-nav" style="margin-top:10px;">
+            <button class="btn-back" onclick="goPage(1)">&larr; Zurück zur Auswahl</button>
+            <span></span>
+        </div>
     </div>
+
 </main>
 
 <!-- LOADING OVERLAY -->
@@ -402,7 +364,7 @@
             <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.095 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.095 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg>
         </a>
     </div>
-    <div class="footer-links"><a href="impressum.html">Impressum</a> &bull; <a href="datenschutz.html">Datenschutz</a> &bull; <a href="ueber-uns.html">&Uuml;ber uns</a> &bull; <a href="blog-warum-lesekumpel.html">Blog</a></div>
+    <div class="footer-links"><a href="impressum.html">Impressum</a> &bull; <a href="datenschutz.html">Datenschutz</a> &bull; <a href="ueber-uns.html">&Uuml;ber uns</a> &bull; <a href="blog-warum-lesekumpel.html">Blog</a> &bull; <a href="knowledge-base/snacks/index.html">Wissen</a></div>
 </footer>
 
 <script>
@@ -414,6 +376,9 @@ function toggleMenu() {
     btn.setAttribute('aria-expanded', isOpen);
 }
 
+// ============================================================
+// DATA
+// ============================================================
 const STUFEN = {
     1: [{ id: '1.0', name: 'Top-100-Wörter', fokus: 'Häufigste Grundwörter' }],
     2: [
@@ -442,95 +407,116 @@ const STUFEN = {
     ]
 };
 
-const ALL_STUFEN = ['1.0','2.1','2.2','2.3','2.4','3.1','3.2','3.3','3.4','4.1','4.2','4.3','4.4','5.1','5.2','5.3','5.4'];
-const VALID_PERSONAS = {
-    lea:  ALL_STUFEN,
-    mia:  ALL_STUFEN,
-    timo: ALL_STUFEN,
-    zara: ALL_STUFEN,
-    leo:  ALL_STUFEN,
-    samira: ALL_STUFEN,
-    holzi: ALL_STUFEN,
-    deniz: ALL_STUFEN,
-    jonas: ALL_STUFEN
+const PERSONAS = {
+    lea:    { name: 'Lea Lesestark',        type: 'stil',  label: 'Neurotypisch',             avatar: 'avatars/lea-lesestark.webp' },
+    timo:   { name: 'Timo Taktschritt',     type: 'stil',  label: 'LRS / Legasthenie',       avatar: 'avatars/timo-taktschritt.webp' },
+    zara:   { name: 'Zara Zapp',            type: 'stil',  label: 'ADHS',                    avatar: 'avatars/zara-zapp.webp' },
+    leo:    { name: 'Leo Klartext',         type: 'stil',  label: 'Autismus-Spektrum',        avatar: 'avatars/leo-klartext.webp' },
+    mia:    { name: 'Mia Brücke',           type: 'stil',  label: 'Deutsch als Zweitsprache', avatar: 'avatars/mia-bruecke.webp' },
+    samira: { name: 'Samira Wissensfreund', type: 'genre', label: 'Sachtexte / Wissen',      avatar: 'avatars/samira-wissensfreund.webp' },
+    holzi:  { name: 'Holzi Pixelkopf',     type: 'genre', label: 'Tech / Gaming',            avatar: 'avatars/holzi-pixelkopf.webp' },
+    deniz:  { name: 'Deniz Traumfänger',    type: 'genre', label: 'Fantasy / Emotion',       avatar: 'avatars/deniz-traumfaenger.webp' },
+    jonas:  { name: 'Jonas Entdecker',      type: 'genre', label: 'Abenteuer / Alltag',      avatar: 'avatars/jonas-entdecker.webp' }
+};
+
+const PERSONA_EXCLUSIONS = {
+    lea:    [],
+    timo:   ['1.0'],
+    zara:   ['1.0'],
+    leo:    ['1.0'],
+    mia:    ['1.0'],
+    samira: ['1.0','2.1','2.2','2.3','2.4'],
+    holzi:  ['1.0','2.1','2.2','2.3','2.4'],
+    deniz:  ['1.0','2.1','2.2','2.3','2.4'],
+    jonas:  ['1.0','2.1','2.2','2.3','2.4']
+};
+
+const EXCLUSION_REASONS = {
+    timo:   { '1.0': 'Zu wenig Text für Stil-Differenzierung' },
+    zara:   { '1.0': 'Zu wenig Text für Stil-Differenzierung' },
+    leo:    { '1.0': 'Zu wenig Text für Stil-Differenzierung' },
+    mia:    { '1.0': 'Zu wenig Text für Stil-Differenzierung' },
+    samira: { '1.0': 'Zu wenig Platz für Sachtext', '2.1': 'Zu wenig Platz für Sachtext', '2.2': 'Zu wenig Platz für Sachtext', '2.3': 'Zu wenig Platz für Sachtext', '2.4': 'Zu wenig Platz für Sachtext' },
+    holzi:  { '1.0': 'Zu komplex für diese Stufe', '2.1': 'Zu komplex für diese Stufe', '2.2': 'Zu komplex für diese Stufe', '2.3': 'Zu komplex für diese Stufe', '2.4': 'Zu komplex für diese Stufe' },
+    deniz:  { '1.0': 'Braucht mehr Platz für Atmosphäre', '2.1': 'Braucht mehr Platz für Atmosphäre', '2.2': 'Braucht mehr Platz für Atmosphäre', '2.3': 'Braucht mehr Platz für Atmosphäre', '2.4': 'Braucht mehr Platz für Atmosphäre' },
+    jonas:  { '1.0': 'Zu reif für diese Stufe', '2.1': 'Zu reif für diese Stufe', '2.2': 'Zu reif für diese Stufe', '2.3': 'Zu reif für diese Stufe', '2.4': 'Zu reif für diese Stufe' }
+};
+
+const ALL_KATEGORIEN = [
+    { id: 'Humor',     emoji: '😄' },
+    { id: 'Abenteuer', emoji: '🗺️' },
+    { id: 'Natur',     emoji: '🌿' },
+    { id: 'Gaming',    emoji: '🎮' },
+    { id: 'Familie',   emoji: '👨‍👩‍👧' },
+    { id: 'Wissen',    emoji: '🔬' }
+];
+
+// null = alle Kategorien
+const PERSONA_KATEGORIEN = {
+    lea: null, timo: null, zara: null, leo: null, mia: null,
+    samira: ['Wissen'],
+    holzi:  ['Humor','Abenteuer','Gaming'],
+    deniz:  ['Humor','Abenteuer','Natur','Familie'],
+    jonas:  ['Humor','Abenteuer','Natur','Familie']
 };
 
 const PERSONA_LABELS = { lea: 'Lea Lesestark (Neurotypisch)', timo: 'Timo Taktschritt (LRS/Legasthenie)', zara: 'Zara Zapp (ADHS)', leo: 'Leo Klartext (Autismus-Spektrum)', mia: 'Mia Brücke (Deutsch als Zweitsprache)', samira: 'Samira Wissensfreund (Sachtexte)', holzi: 'Holzi Pixelkopf (Tech/Gaming)', deniz: 'Deniz Traumfänger (Fantasy)', jonas: 'Jonas Entdecker (Abenteuer)' };
 const PHASE_LABELS = { 1: 'Phase 1 — Der Start', 2: 'Phase 2 — Der Ausbau', 3: 'Phase 3 — Der Fluss', 4: 'Phase 4 — Die Geschichte', 5: 'Phase 5 — Der Profi' };
 const BILDSTIL_LABELS = { 'Aquarell': 'Aquarell — Weiche Pastellfarben', 'Cartoon': 'Cartoon — Bunte moderne Illustration', 'Buntstift': 'Buntstift — Handgezeichneter Look', 'Pixel-Art': 'Pixel-Art — Retro-Gaming-Stil', 'Anime': 'Anime — Farbenfroh wie Nintendo & Pokémon', 'Traumwelt': 'Traumwelt — Magische Malerei wie Ori', 'Knete': 'Knete — Stop-Motion Knetfiguren-Look', 'Voxel': 'Voxel — Blocky Gamer-Stil wie Minecraft' };
-const STEP_LABELS = ['', 'Deine Geschichte', 'Lesephase', 'Lesestufe', 'Autorin wählen', 'Bildstil & Absenden'];
 
 const WEBHOOK_URL = 'https://rala84.app.n8n.cloud/webhook/lesekumpel-story';
 
-let currentStep = 1;
-let state = { genre: null, phase: null, stufe: null, persona: null, stil: null };
+let state = { phase: null, stufe: null, persona: null, kategorie: null, stil: null };
 
 // ============================================================
-// WIZARD NAVIGATION
+// PAGE NAVIGATION
 // ============================================================
-function goStep(step) {
-    currentStep = step;
-    document.querySelectorAll('.wizard-step').forEach(s => s.classList.remove('active'));
-    document.querySelector(`.wizard-step[data-step="${step}"]`).classList.add('active');
-    updateProgress();
+function goPage(num) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.getElementById('page-' + num).classList.add('active');
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-function updateProgress() {
-    for (let i = 1; i <= 5; i++) {
-        const dot = document.getElementById('ps-' + i);
-        dot.classList.remove('active', 'done');
-        if (i < currentStep) { dot.classList.add('done'); dot.textContent = '✓'; }
-        else if (i === currentStep) { dot.classList.add('active'); dot.textContent = i; }
-        else { dot.textContent = i; }
-
-        if (i < 5) {
-            const line = document.getElementById('pl-' + i);
-            line.classList.toggle('done', i < currentStep);
-        }
+// ============================================================
+// SECTION VISIBILITY
+// ============================================================
+function showSection(id) {
+    const el = document.getElementById(id);
+    if (el.classList.contains('hidden')) {
+        el.classList.remove('hidden');
+        el.classList.add('reveal');
     }
-    document.getElementById('progress-label').textContent = `Schritt ${currentStep} von 5 — ${STEP_LABELS[currentStep]}`;
+}
+
+function hideSection(id) {
+    const el = document.getElementById(id);
+    el.classList.add('hidden');
+    el.classList.remove('reveal');
 }
 
 // ============================================================
-// STEP 1: Genre + Titel validation
-// ============================================================
-document.querySelectorAll('#genre-group .toggle-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-        document.querySelectorAll('#genre-group .toggle-btn').forEach(b => b.classList.remove('active'));
-        btn.classList.add('active');
-        state.genre = btn.dataset.val;
-        validateStep1();
-    });
-});
-
-document.getElementById('titel').addEventListener('input', validateStep1);
-
-function validateStep1() {
-    const valid = document.getElementById('titel').value.trim().length > 0 && state.genre;
-    document.getElementById('btn-next-1').disabled = !valid;
-}
-
-// ============================================================
-// STEP 2: Phase → auto-advance to step 3
+// PHASE SELECTION
 // ============================================================
 function selectPhase(phase) {
     state.phase = phase;
     state.stufe = null;
     state.persona = null;
+    state.kategorie = null;
 
     document.querySelectorAll('.phase-card').forEach(c => c.classList.remove('active'));
     document.querySelector(`.phase-card[data-phase="${phase}"]`).classList.add('active');
 
-    // Build stufe grid for step 3
+    hideSection('section-autor');
+    hideSection('section-kategorie');
+    updateNextButton();
+
     const grid = document.getElementById('stufe-grid');
     const stufen = STUFEN[phase];
 
     if (stufen.length === 1) {
-        // Phase 1: only one stufe, auto-select and skip to step 4
+        grid.innerHTML = '';
         state.stufe = stufen[0].id;
-        updatePersonas();
-        setTimeout(() => goStep(4), 300);
+        onStufeSelected();
         return;
     }
 
@@ -540,46 +526,131 @@ function selectPhase(phase) {
             <div class="stufe-fokus">${s.name} — ${s.fokus}</div>
         </div>`
     ).join('');
-
-    setTimeout(() => goStep(3), 300);
 }
 
 // ============================================================
-// STEP 3: Stufe → auto-advance to step 4
+// STUFE SELECTION
 // ============================================================
 function selectStufe(stufe) {
     state.stufe = stufe;
     state.persona = null;
+    state.kategorie = null;
+
     document.querySelectorAll('.stufe-btn').forEach(b => b.classList.remove('active'));
     document.querySelector(`.stufe-btn[data-stufe="${stufe}"]`).classList.add('active');
-    updatePersonas();
-    setTimeout(() => goStep(4), 300);
+
+    hideSection('section-kategorie');
+    updateNextButton();
+    onStufeSelected();
+}
+
+function onStufeSelected() {
+    renderPersonaCards();
+    showSection('section-autor');
+    setTimeout(() => {
+        document.getElementById('section-autor').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 100);
 }
 
 // ============================================================
-// STEP 4: Persona → auto-advance to step 5
+// PERSONA RENDERING & SELECTION
 // ============================================================
-function updatePersonas() {
-    document.querySelectorAll('.persona-card').forEach(card => {
-        const p = card.dataset.persona;
-        const available = state.stufe ? VALID_PERSONAS[p].includes(state.stufe) : true;
-        card.classList.toggle('disabled', !available);
-        card.classList.remove('active');
-        if (!available && state.persona === p) state.persona = null;
-    });
+function renderPersonaCards() {
+    const stilGrid = document.getElementById('persona-grid-stil');
+    const genreGrid = document.getElementById('persona-grid-genre');
+
+    stilGrid.innerHTML = '';
+    genreGrid.innerHTML = '';
+
+    for (const [pid, p] of Object.entries(PERSONAS)) {
+        const excluded = PERSONA_EXCLUSIONS[pid].includes(state.stufe);
+        const reason = EXCLUSION_REASONS[pid]?.[state.stufe] || '';
+
+        const card = document.createElement('div');
+        card.className = 'persona-card' + (excluded ? ' disabled' : '');
+        card.dataset.persona = pid;
+        if (!excluded) card.onclick = () => selectPersona(pid);
+
+        card.innerHTML = `
+            <img src="${p.avatar}" alt="${p.name}" class="persona-avatar">
+            <div class="persona-name">${p.name}</div>
+            <div class="persona-type">${p.label}</div>
+            ${excluded ? `<div class="persona-tooltip">${reason}</div>` : ''}
+        `;
+
+        if (p.type === 'stil') {
+            stilGrid.appendChild(card);
+        } else {
+            genreGrid.appendChild(card);
+        }
+    }
 }
 
 function selectPersona(persona) {
-    const card = document.querySelector(`.persona-card[data-persona="${persona}"]`);
-    if (card.classList.contains('disabled')) return;
     state.persona = persona;
+    state.kategorie = null;
+
     document.querySelectorAll('.persona-card').forEach(c => c.classList.remove('active'));
-    card.classList.add('active');
-    setTimeout(() => goStep(5), 300);
+    document.querySelector(`.persona-card[data-persona="${persona}"]`).classList.add('active');
+
+    renderKategorien();
+    showSection('section-kategorie');
+    updateNextButton();
+
+    setTimeout(() => {
+        document.getElementById('section-kategorie').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 100);
 }
 
 // ============================================================
-// STEP 5: Bildstil
+// KATEGORIE RENDERING & SELECTION
+// ============================================================
+function renderKategorien() {
+    const container = document.getElementById('kategorie-container');
+    const allowed = PERSONA_KATEGORIEN[state.persona];
+    const kategorien = allowed ? ALL_KATEGORIEN.filter(k => allowed.includes(k.id)) : ALL_KATEGORIEN;
+
+    // Auto-set for single kategorie (Samira)
+    if (kategorien.length === 1) {
+        const k = kategorien[0];
+        state.kategorie = k.id;
+        container.innerHTML = `<div class="auto-kategorie-badge">
+            <span class="badge-emoji">${k.emoji}</span>
+            ${PERSONAS[state.persona].name} schreibt ${k.id === 'Wissen' ? 'Sachtexte' : k.id} — Kategorie: ${k.emoji} ${k.id}
+        </div>`;
+        document.getElementById('kategorie-sub').textContent = 'Kategorie automatisch gewählt.';
+        updateNextButton();
+        return;
+    }
+
+    document.getElementById('kategorie-sub').textContent = 'Worum soll es in der Geschichte gehen?';
+    container.innerHTML = `<div class="toggle-group" id="kategorie-group">
+        ${kategorien.map(k => `<button class="toggle-btn" data-val="${k.id}">${k.emoji} ${k.id}</button>`).join('')}
+    </div>`;
+
+    container.querySelectorAll('.toggle-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+            container.querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            state.kategorie = btn.dataset.val;
+            updateNextButton();
+        });
+    });
+}
+
+// ============================================================
+// NEXT BUTTON VALIDATION
+// ============================================================
+function updateNextButton() {
+    const titel = document.getElementById('titel').value.trim();
+    const valid = titel.length > 0 && state.stufe && state.persona && state.kategorie;
+    document.getElementById('btn-next-page2').disabled = !valid;
+}
+
+document.getElementById('titel').addEventListener('input', updateNextButton);
+
+// ============================================================
+// BILDSTIL SELECTION
 // ============================================================
 function selectStil(stil) {
     state.stil = stil;
@@ -597,7 +668,7 @@ async function submitStory() {
 
     const payload = {
         Titel: titel,
-        Genre: state.genre,
+        Genre: state.kategorie,
         Phase: PHASE_LABELS[state.phase],
         Stufe: state.stufe + ' — ' + (STUFEN[state.phase].find(s => s.id === state.stufe)?.name || ''),
         Persona: PERSONA_LABELS[state.persona],
