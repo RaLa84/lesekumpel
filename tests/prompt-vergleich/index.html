@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prompt-Vergleich: Alt vs. Neu</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600&family=Quicksand:wght@400;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg-body: #FFF9E5;
+            --bg-card: #ffffff;
+            --primary-yellow: #FFD54F;
+            --accent-coral: #D67171;
+            --accent-teal: #2a9d8f;
+            --text-dark: #2D3436;
+            --font-heading: 'Fredoka', cursive, sans-serif;
+            --font-body: 'Quicksand', sans-serif;
+        }
+        body {
+            font-family: var(--font-body);
+            background-color: var(--bg-body);
+            color: var(--text-dark);
+            margin: 0;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        h1 {
+            font-family: var(--font-heading);
+            color: var(--accent-coral);
+            text-align: center;
+            font-size: 2rem;
+            margin-bottom: 5px;
+        }
+        .subtitle {
+            text-align: center;
+            color: #888;
+            font-size: 0.95rem;
+            margin-bottom: 30px;
+        }
+        .autor-section {
+            max-width: 700px;
+            margin: 0 auto 25px auto;
+            background: var(--bg-card);
+            border: 3px solid var(--primary-yellow);
+            border-radius: 20px;
+            padding: 20px 25px;
+            box-shadow: 0 6px 0 rgba(0,0,0,0.04);
+        }
+        .autor-name {
+            font-family: var(--font-heading);
+            color: var(--accent-coral);
+            font-size: 1.3rem;
+            margin: 0 0 5px 0;
+        }
+        .autor-desc {
+            font-size: 0.85rem;
+            color: #888;
+            margin: 0 0 15px 0;
+        }
+        .thema-row {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 10px;
+            flex-wrap: wrap;
+        }
+        .thema-label {
+            font-weight: 600;
+            min-width: 110px;
+            font-size: 0.95rem;
+        }
+        .link-btn {
+            display: inline-block;
+            padding: 6px 16px;
+            border-radius: 12px;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.85rem;
+            transition: all 0.2s;
+        }
+        .link-alt {
+            background: #f0f0f0;
+            color: #666;
+            border: 2px solid #ddd;
+        }
+        .link-alt:hover {
+            background: #e0e0e0;
+            border-color: #bbb;
+        }
+        .link-neu {
+            background: #e8f5e9;
+            color: var(--accent-teal);
+            border: 2px solid var(--accent-teal);
+        }
+        .link-neu:hover {
+            background: var(--accent-teal);
+            color: white;
+        }
+        .legend {
+            text-align: center;
+            margin-bottom: 25px;
+            font-size: 0.9rem;
+        }
+        .legend span {
+            display: inline-block;
+            padding: 4px 12px;
+            border-radius: 10px;
+            margin: 0 5px;
+            font-weight: 600;
+        }
+        .legend .leg-alt { background: #f0f0f0; color: #666; }
+        .legend .leg-neu { background: #e8f5e9; color: var(--accent-teal); }
+    </style>
+</head>
+<body>
+    <h1>Prompt-Vergleich</h1>
+    <p class="subtitle">Alt vs. Neu — 9 Personas × 2 Themen × Stufe 5</p>
+    <div class="legend">
+        <span class="leg-alt">Alt</span> = Bisheriger Prompt
+        <span class="leg-neu">Neu</span> = Optimierter Prompt
+    </div>
+
+    <div class="autor-section">
+        <h2 class="autor-name">Lea Lesestark</h2>
+        <p class="autor-desc">Basis-Referenz — warm, Augenzwinkern, Lagerfeuer-Erzählerin</p>
+        <div class="thema-row">
+            <span class="thema-label">Schwimmbad</span>
+            <a href="alt/lea-schwimmbad.html" class="link-btn link-alt">Alt</a>
+            <a href="neu/lea-schwimmbad.html" class="link-btn link-neu">Neu</a>
+        </div>
+        <div class="thema-row">
+            <span class="thema-label">Schultag</span>
+            <a href="alt/lea-schultag.html" class="link-btn link-alt">Alt</a>
+            <a href="neu/lea-schultag.html" class="link-btn link-neu">Neu</a>
+        </div>
+    </div>
+
+    <div class="autor-section">
+        <h2 class="autor-name">Samira Wissensfreund</h2>
+        <p class="autor-desc">Edutainment-Sachtext — Checker-Tobi-Stil, Du-Perspektive</p>
+        <div class="thema-row">
+            <span class="thema-label">Schwimmbad</span>
+            <a href="alt/samira-schwimmbad.html" class="link-btn link-alt">Alt</a>
+            <a href="neu/samira-schwimmbad.html" class="link-btn link-neu">Neu</a>
+        </div>
+        <div class="thema-row">
+            <span class="thema-label">Schultag</span>
+            <a href="alt/samira-schultag.html" class="link-btn link-alt">Alt</a>
+            <a href="neu/samira-schultag.html" class="link-btn link-neu">Neu</a>
+        </div>
+    </div>
+
+    <div class="autor-section">
+        <h2 class="autor-name">Holzi Pixelkopf</h2>
+        <p class="autor-desc">Lucky Loser — Denglisch, Cringe, Gamer-Brille (ab Stufe 4)</p>
+        <div class="thema-row">
+            <span class="thema-label">Schwimmbad</span>
+            <a href="alt/holzi-schwimmbad.html" class="link-btn link-alt">Alt</a>
+            <a href="neu/holzi-schwimmbad.html" class="link-btn link-neu">Neu</a>
+        </div>
+        <div class="thema-row">
+            <span class="thema-label">Schultag</span>
+            <a href="alt/holzi-schultag.html" class="link-btn link-alt">Alt</a>
+            <a href="neu/holzi-schultag.html" class="link-btn link-neu">Neu</a>
+        </div>
+    </div>
+
+    <div class="autor-section">
+        <h2 class="autor-name">Deniz Traumfänger</h2>
+        <p class="autor-desc">Atmosphäre & Fantasy — poetisch, Sinneseindrücke (ab Stufe 4)</p>
+        <div class="thema-row">
+            <span class="thema-label">Schwimmbad</span>
+            <a href="alt/deniz-schwimmbad.html" class="link-btn link-alt">Alt</a>
+            <a href="neu/deniz-schwimmbad.html" class="link-btn link-neu">Neu</a>
+        </div>
+        <div class="thema-row">
+            <span class="thema-label">Schultag</span>
+            <a href="alt/deniz-schultag.html" class="link-btn link-alt">Alt</a>
+            <a href="neu/deniz-schultag.html" class="link-btn link-neu">Neu</a>
+        </div>
+    </div>
+
+    <div class="autor-section">
+        <h2 class="autor-name">Jonas Entdecker</h2>
+        <p class="autor-desc">Ich-Perspektive — Kinderalltag, Kumpel-Ton, Selbstironie</p>
+        <div class="thema-row">
+            <span class="thema-label">Schwimmbad</span>
+            <a href="alt/jonas-schwimmbad.html" class="link-btn link-alt">Alt</a>
+            <a href="neu/jonas-schwimmbad.html" class="link-btn link-neu">Neu</a>
+        </div>
+        <div class="thema-row">
+            <span class="thema-label">Schultag</span>
+            <a href="alt/jonas-schultag.html" class="link-btn link-alt">Alt</a>
+            <a href="neu/jonas-schultag.html" class="link-btn link-neu">Neu</a>
+        </div>
+    </div>
+
+    <div class="autor-section">
+        <h2 class="autor-name">Zara Zapp</h2>
+        <p class="autor-desc">Action & Tempo — ADHS-optimiert, Cliffhanger, max 2 Sätze/Absatz</p>
+        <div class="thema-row">
+            <span class="thema-label">Schwimmbad</span>
+            <a href="alt/zara-schwimmbad.html" class="link-btn link-alt">Alt</a>
+            <a href="neu/zara-schwimmbad.html" class="link-btn link-neu">Neu</a>
+        </div>
+        <div class="thema-row">
+            <span class="thema-label">Schultag</span>
+            <a href="alt/zara-schultag.html" class="link-btn link-alt">Alt</a>
+            <a href="neu/zara-schultag.html" class="link-btn link-neu">Neu</a>
+        </div>
+    </div>
+
+    <div class="autor-section">
+        <h2 class="autor-name">Leo Klartext</h2>
+        <p class="autor-desc">Autismus-optimiert — keine Metaphern, Gefühle explizit, eindeutig</p>
+        <div class="thema-row">
+            <span class="thema-label">Schwimmbad</span>
+            <a href="alt/leo-schwimmbad.html" class="link-btn link-alt">Alt</a>
+            <a href="neu/leo-schwimmbad.html" class="link-btn link-neu">Neu</a>
+        </div>
+        <div class="thema-row">
+            <span class="thema-label">Schultag</span>
+            <a href="alt/leo-schultag.html" class="link-btn link-alt">Alt</a>
+            <a href="neu/leo-schultag.html" class="link-btn link-neu">Neu</a>
+        </div>
+    </div>
+
+    <div class="autor-section">
+        <h2 class="autor-name">Timo Taktschritt</h2>
+        <p class="autor-desc">LRS-optimiert — Rhythmus, Beat, kurze gleichmäßige Sätze</p>
+        <div class="thema-row">
+            <span class="thema-label">Schwimmbad</span>
+            <a href="alt/timo-schwimmbad.html" class="link-btn link-alt">Alt</a>
+            <a href="neu/timo-schwimmbad.html" class="link-btn link-neu">Neu</a>
+        </div>
+        <div class="thema-row">
+            <span class="thema-label">Schultag</span>
+            <a href="alt/timo-schultag.html" class="link-btn link-alt">Alt</a>
+            <a href="neu/timo-schultag.html" class="link-btn link-neu">Neu</a>
+        </div>
+    </div>
+
+    <div class="autor-section">
+        <h2 class="autor-name">Mia Brücke</h2>
+        <p class="autor-desc">DaZ-optimiert — Kulturbrücke, Alltagskonzepte erklären, SPO-Satzbau</p>
+        <div class="thema-row">
+            <span class="thema-label">Schwimmbad</span>
+            <a href="alt/mia-schwimmbad.html" class="link-btn link-alt">Alt</a>
+            <a href="neu/mia-schwimmbad.html" class="link-btn link-neu">Neu</a>
+        </div>
+        <div class="thema-row">
+            <span class="thema-label">Schultag</span>
+            <a href="alt/mia-schultag.html" class="link-btn link-alt">Alt</a>
+            <a href="neu/mia-schultag.html" class="link-btn link-neu">Neu</a>
+        </div>
+    </div>
+</body>
+</html>
