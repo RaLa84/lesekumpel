@@ -233,6 +233,26 @@
 
         /* Zara – ADHS */
         body.nt-adhs .story-text { font-size: 1.3em; }
+        body.nt-adhs .chunk-controls { display: none; }
+        body.nt-adhs #chunk-display { min-height: 0; padding: 20px 10px; cursor: grab; -webkit-user-select: none; user-select: none; }
+        body.nt-adhs #chunk-view { touch-action: pan-y; }
+
+        .adhs-progress-bar {
+            width: 100%; height: 6px; background: #f0f0f0; border-radius: 3px;
+            margin-bottom: 10px; overflow: hidden; display: none;
+        }
+        .adhs-progress-bar-fill {
+            height: 100%; background: var(--primary-yellow); border-radius: 3px;
+            transition: width 0.3s ease;
+        }
+        body.nt-adhs .adhs-progress-bar { display: block; }
+
+        .swipe-hint {
+            text-align: center; color: #bbb; font-size: 0.8rem;
+            font-family: var(--font-body); margin-top: 10px;
+            animation: fadeOut 3s ease forwards; animation-delay: 2s;
+        }
+        @keyframes fadeOut { to { opacity: 0; } }
 
         /* Konfetti */
         @keyframes confettiFall {
@@ -294,7 +314,9 @@
 
         <div id="full-text-view" class="story-text"></div>
         <div id="chunk-view" class="story-text hidden" style="text-align:left; font-size:1.4em;">
+            <div class="adhs-progress-bar"><div class="adhs-progress-bar-fill" id="adhs-progress-fill" style="width:0%"></div></div>
             <div id="chunk-display"></div>
+            <div id="swipe-hint" class="swipe-hint" style="display:none;">← wischen zum Blättern →</div>
             <div class="chunk-controls">
                 <button class="tool-btn" onclick="prevChunk()">← Zurück</button>
                 <div id="chunk-progress" class="progress-ring" style="--p: 20%;">1/5</div>
@@ -518,6 +540,9 @@
             let ring = document.getElementById('chunk-progress');
             ring.innerText = current + "/" + total;
             ring.style.setProperty('--p', ((current / total) * 100) + '%');
+            // ADHS Progress-Leiste
+            let bar = document.getElementById('adhs-progress-fill');
+            if (bar) bar.style.width = ((current / total) * 100) + '%';
         }
 
         function toggleSyllables() { state.syllables = !state.syllables; renderText(); renderQuiz(); }
@@ -651,6 +676,25 @@
             if (ntClass === 'nt-adhs') {
                 renderText(); renderQuiz();
                 toggleViewMode(); // Häppchen-Modus als Default
+                // Swipe-Hint anzeigen
+                document.getElementById('swipe-hint').style.display = 'block';
+                // Swipe-Gesten
+                let chunkEl = document.getElementById('chunk-display');
+                let startX = 0, startY = 0, dragging = false;
+                chunkEl.addEventListener('touchstart', function(e) { startX = e.touches[0].clientX; startY = e.touches[0].clientY; dragging = true; }, {passive: true});
+                chunkEl.addEventListener('touchend', function(e) {
+                    if (!dragging) return; dragging = false;
+                    let dx = e.changedTouches[0].clientX - startX;
+                    let dy = e.changedTouches[0].clientY - startY;
+                    if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) { dx < 0 ? nextChunk() : prevChunk(); }
+                }, {passive: true});
+                // Mouse-Swipe (Laptop)
+                chunkEl.addEventListener('mousedown', function(e) { startX = e.clientX; dragging = true; });
+                chunkEl.addEventListener('mouseup', function(e) {
+                    if (!dragging) return; dragging = false;
+                    let dx = e.clientX - startX;
+                    if (Math.abs(dx) > 50) { dx < 0 ? nextChunk() : prevChunk(); }
+                });
                 return;
             }
             renderText(); renderQuiz();
