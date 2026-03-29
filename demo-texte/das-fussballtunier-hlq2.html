@@ -575,7 +575,7 @@
                 }
             }
             if (imgUrl) {
-                imgHtml = ;
+                imgHtml = `<img src="${imgUrl}" alt="Illustration" class="story-inline-img" onerror="this.style.display='none'">`;
             }
             document.getElementById('chunk-display').innerHTML = imgHtml + (state.chunks[state.chunkIndex] || "");
             let current = state.chunkIndex + 1, total = state.chunks.length;
