@@ -230,6 +230,7 @@
 
         /* Zara – ADHS */
         body.nt-adhs .story-text { font-size: 1.3em; }
+        body.nt-adhs .hero-image { display: none; }
         body.nt-adhs .chunk-controls { display: none; }
         body.nt-adhs #chunk-display { min-height: 0; padding: 20px 10px; cursor: grab; -webkit-user-select: none; user-select: none; }
         body.nt-adhs #chunk-view { touch-action: pan-y; }
@@ -623,8 +624,9 @@
         function closeMagnifier() { document.getElementById('magnifier-overlay').style.display = 'none'; }
         function toggleViewMode() {
             let full = document.getElementById('full-text-view'), chunk = document.getElementById('chunk-view'), btn = document.getElementById('view-toggle-btn');
-            if(full.classList.contains('hidden')) { full.classList.remove('hidden'); chunk.classList.add('hidden'); btn.className = "tool-btn"; }
-            else { full.classList.add('hidden'); chunk.classList.remove('hidden'); btn.className = "tool-btn active"; state.chunkIndex = 0; updateChunkDisplay(); }
+            let heroImgs = document.querySelectorAll('.hero-image');
+            if(full.classList.contains('hidden')) { full.classList.remove('hidden'); chunk.classList.add('hidden'); btn.className = "tool-btn"; heroImgs.forEach(img => img.style.display = ''); }
+            else { full.classList.add('hidden'); chunk.classList.remove('hidden'); btn.className = "tool-btn active"; state.chunkIndex = 0; updateChunkDisplay(); heroImgs.forEach(img => img.style.display = 'none'); }
         }
         function nextChunk() {
             if(state.chunkIndex < state.chunks.length-1) {
