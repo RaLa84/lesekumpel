@@ -208,7 +208,14 @@
             letter-spacing: 0.05em; line-height: 2.1; font-size: 24px;
         }
         body.nt-lrs .story-text { max-width: 600px; margin-left: auto; margin-right: auto; }
-        body.nt-lrs .story-text p { margin-bottom: 1.2em !important; }
+        body.nt-lrs .story-text p {
+            margin-bottom: 1.2em !important;
+            background-image: repeating-linear-gradient(
+                transparent, transparent calc(2.1em - 1px), #e0d6c2 calc(2.1em - 1px), #e0d6c2 2.1em
+            );
+            background-size: 100% 2.1em;
+            padding-top: 0.05em;
+        }
 
         /* Leo – Autismus-Spektrum */
         body.nt-autismus { line-height: 1.9; }
