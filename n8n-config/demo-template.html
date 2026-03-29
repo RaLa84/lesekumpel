@@ -220,13 +220,6 @@
         /* Zara – ADHS */
         body.nt-adhs .story-text { font-size: 1.3em; }
 
-        /* ADHS Gamification */
-        .chunk-encouragement {
-            text-align: center; font-family: var(--font-heading); color: var(--accent-coral);
-            font-size: 1.1rem; margin-top: 8px; opacity: 0; transition: opacity 0.3s ease;
-        }
-        .chunk-encouragement.visible { opacity: 1; }
-
         /* Konfetti */
         @keyframes confettiFall {
             0% { transform: translateY(-100vh) rotate(0deg); opacity: 1; }
@@ -302,7 +295,6 @@
         <div id="full-text-view" class="story-text"></div>
         <div id="chunk-view" class="story-text hidden" style="text-align:left; font-size:1.4em;">
             <div id="chunk-display"></div>
-            <div class="chunk-encouragement" id="chunk-encouragement"></div>
             <div class="chunk-controls">
                 <button class="tool-btn" onclick="prevChunk()">← Zurück</button>
                 <div id="chunk-progress" class="progress-ring" style="--p: 20%;">1/5</div>
@@ -599,20 +591,10 @@
             if(full.classList.contains('hidden')) { full.classList.remove('hidden'); chunk.classList.add('hidden'); btn.className = "tool-btn"; }
             else { full.classList.add('hidden'); chunk.classList.remove('hidden'); btn.className = "tool-btn active"; state.chunkIndex = 0; updateChunkDisplay(); }
         }
-        const adhdEncouragements = ['Super! 💪', 'Weiter so! 🚀', 'Stark! ⭐', 'Mega! 🔥', 'Klasse! ✨', 'Toll! 👏'];
-        const adhdButtonTexts = ['Weiter! 💪', 'Nächstes! 🚀', 'Los! ⭐', "Auf geht's! 🔥", 'Go! ✨', 'Weiter! 👍'];
-
         function nextChunk() {
             if(state.chunkIndex < state.chunks.length-1) {
                 state.chunkIndex++; updateChunkDisplay();
                 if (ntClass === 'nt-adhs') {
-                    // Ermutigungstext
-                    let enc = document.getElementById('chunk-encouragement');
-                    enc.textContent = adhdEncouragements[Math.floor(Math.random() * adhdEncouragements.length)];
-                    enc.classList.add('visible');
-                    setTimeout(() => enc.classList.remove('visible'), 2000);
-                    // Button-Text wechseln
-                    document.getElementById('btn-next-chunk').textContent = adhdButtonTexts[Math.floor(Math.random() * adhdButtonTexts.length)];
                     // Tick-Sound
                     playTickSound();
                     // Konfetti am Ende
