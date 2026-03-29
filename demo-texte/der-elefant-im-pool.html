@@ -194,6 +194,57 @@
         .footer-links a { color: #888; text-decoration: none; margin: 0 5px; }
         .magnifier-overlay { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: #fff; border: 4px solid var(--primary-yellow); padding: 20px; border-radius: 20px; font-size: 2rem; box-shadow: 0 10px 20px rgba(0,0,0,0.2); z-index: 6000; display: none; text-align: center; font-family: var(--font-heading); }
         .hidden { display: none; }
+
+        /* --- NEUROTYP-SPEZIFISCH --- */
+
+        /* Timo – LRS/Legasthenie */
+        body.nt-lrs {
+            font-family: 'Lexend', var(--font-body), sans-serif;
+            letter-spacing: 0.05em; line-height: 2.1; font-size: 24px;
+        }
+        body.nt-lrs .story-text { max-width: 600px; margin-left: auto; margin-right: auto; }
+        body.nt-lrs .story-text p {
+            margin-bottom: 1.2em !important;
+            background-image: repeating-linear-gradient(
+                transparent, transparent calc(2.1em - 1px), #e0d6c2 calc(2.1em - 1px), #e0d6c2 2.1em
+            );
+            background-size: 100% 2.1em;
+            padding-top: 0.05em;
+        }
+
+        /* Leo – Autismus-Spektrum */
+        body.nt-autismus { line-height: 1.9; }
+        body.nt-autismus .story-text p {
+            border-left: 3px solid var(--primary-yellow); padding-left: 15px; margin-bottom: 1.5em !important;
+        }
+        body.nt-autismus .toolbar-container { border-style: solid; }
+
+        /* Mia – DaZ */
+        body.nt-daz .word-has-definition { border-bottom: 2px dotted var(--trans-color); cursor: help; }
+        .vocab-tooltip {
+            position: absolute; background: #fff; border: 2px solid var(--trans-color);
+            border-radius: 12px; padding: 10px 15px; font-size: 0.85rem;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.15); z-index: 3000; max-width: 250px;
+            bottom: 100%; left: 50%; transform: translateX(-50%); margin-bottom: 5px;
+            white-space: normal; line-height: 1.4;
+        }
+
+        /* Zara – ADHS */
+        body.nt-adhs .story-text { font-size: 1.3em; }
+
+        /* Konfetti */
+        @keyframes confettiFall {
+            0% { transform: translateY(-100vh) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+        }
+        .confetti-container {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none; z-index: 9999; overflow: hidden;
+        }
+        .confetti-piece {
+            position: absolute; width: 10px; height: 10px; top: -10px;
+            animation: confettiFall 3s ease-in forwards;
+        }
     </style>
     <link rel="stylesheet" href="../fonts/fonts.css">
 </head>
@@ -337,6 +388,16 @@
         } else {
             dictionary = rawDictionaryEntry;
         }
+        // Neurotyp-Erkennung (vor allen Funktionen, da ntClass überall referenziert wird)
+        const ntMeta = document.querySelector('meta[name="neurotype"]');
+        const ntValue = ntMeta ? ntMeta.content.trim() : 'Neurotypisch';
+        const ntMap = {
+            'LRS/Legasthenie': 'nt-lrs', 'Autismus-Spektrum': 'nt-autismus',
+            'Deutsch als Zweitsprache': 'nt-daz', 'ADHS': 'nt-adhs', 'Neurotypisch': 'nt-standard'
+        };
+        const ntClass = ntMap[ntValue] || 'nt-standard';
+        document.body.classList.add(ntClass);
+
 
         let state = { syllables: false, summary: false, chunkIndex: 0, chunks: [], magnifier: false };
 
@@ -348,6 +409,16 @@
                 return p.split(' ').map(w => processWord(w)).join(' ');
             }).join('<br>');
             document.getElementById('full-text-view').innerHTML = html;
+
+            // Absatz-Nummern für Autismus-Spektrum
+            if (ntClass === 'nt-autismus') {
+                document.querySelectorAll('#full-text-view p').forEach((p, i) => {
+                    let marker = document.createElement('span');
+                    marker.style.cssText = 'color:#bbb; font-size:0.7em; margin-right:8px; font-family:var(--font-heading); user-select:none;';
+                    marker.textContent = (i + 1);
+                    p.prepend(marker);
+                });
+            }
 
             let cleanText = txt.replace(/<br\s*\/?>/gi, " ");
             let sentences = cleanText.match(/[^\.!\?]+[\.!\?]+(\s+|$)/g);
@@ -379,7 +450,9 @@
                 if(parts.length > 1) display = parts.map((p,i) => `<span class="${i%2===0?'syl-blue':'syl-red'}">${p}</span>`).join('');
             }
             let style = isBold ? "font-weight:bold;" : "";
-            return `<span class="word-interactive" style="${style}" onclick="clickWord(this, '${clean}')">${display}</span>`;
+            let defAttr = dictKey ? ` data-def="${dictionary[dictKey].replace(/"/g, '&quot;')}"` : '';
+            let defClass = dictKey ? ' word-has-definition' : '';
+            return `<span class="word-interactive${defClass}" style="${style}"${defAttr} onclick="clickWord(this, '${clean}')">${display}</span>`;
         }
 
         function renderQuiz() {
@@ -448,10 +521,28 @@
         function clearHighlights() { document.querySelectorAll('.highlight-active').forEach(el => el.classList.remove('highlight-active')); }
         function toggleMagnifier() { state.magnifier = !state.magnifier; document.getElementById('magnifier-btn').className = state.magnifier ? "tool-btn active" : "tool-btn"; }
         function clickWord(el, word) {
+            // Vokabel-Tooltip (visuell markiert nur bei nt-daz, aber für alle klickbar)
+            let def = el.getAttribute('data-def');
+            if (def) { showVocabTooltip(el, def); return; }
             if(!state.magnifier) return;
             document.getElementById('magnifier-text').innerText = el.innerText;
             document.getElementById('magnifier-text').setAttribute('data-s', word);
             document.getElementById('magnifier-overlay').style.display = 'block';
+        }
+        
+        function showVocabTooltip(el, definition) {
+            document.querySelectorAll('.vocab-tooltip').forEach(t => t.remove());
+            let tooltip = document.createElement('div');
+            tooltip.className = 'vocab-tooltip';
+            tooltip.innerHTML = '<strong>' + el.innerText + '</strong><br>' + definition;
+            el.style.position = 'relative';
+            el.appendChild(tooltip);
+            setTimeout(() => { if (tooltip.parentNode) tooltip.remove(); }, 4000);
+            setTimeout(() => {
+                document.addEventListener('click', function handler(e) {
+                    if (!el.contains(e.target)) { if (tooltip.parentNode) tooltip.remove(); document.removeEventListener('click', handler); }
+                });
+            }, 10);
         }
         function speakMagnifiedWord() {
             let t = document.getElementById('magnifier-text').innerText;
@@ -464,8 +555,47 @@
             if(full.classList.contains('hidden')) { full.classList.remove('hidden'); chunk.classList.add('hidden'); btn.className = "tool-btn"; }
             else { full.classList.add('hidden'); chunk.classList.remove('hidden'); btn.className = "tool-btn active"; state.chunkIndex = 0; updateChunkDisplay(); }
         }
-        function nextChunk() { if(state.chunkIndex < state.chunks.length-1) { state.chunkIndex++; updateChunkDisplay(); } }
+        function nextChunk() {
+            if(state.chunkIndex < state.chunks.length-1) {
+                state.chunkIndex++; updateChunkDisplay();
+                if (ntClass === 'nt-adhs') {
+                    // Tick-Sound
+                    playTickSound();
+                    // Konfetti am Ende
+                    if (state.chunkIndex === state.chunks.length - 1) { setTimeout(showConfetti, 500); }
+                }
+            }
+        }
         function prevChunk() { if(state.chunkIndex > 0) { state.chunkIndex--; updateChunkDisplay(); } }
+
+        function playTickSound() {
+            try {
+                let ctx = new (window.AudioContext || window.webkitAudioContext)();
+                let osc = ctx.createOscillator(); let gain = ctx.createGain();
+                osc.connect(gain); gain.connect(ctx.destination);
+                osc.frequency.value = 880; osc.type = 'sine';
+                gain.gain.value = 0.08;
+                osc.start(); osc.stop(ctx.currentTime + 0.05);
+            } catch(e) {}
+        }
+        function showConfetti() {
+            let container = document.createElement('div');
+            container.className = 'confetti-container';
+            let colors = ['#D67171', '#FFD54F', '#2a9d8f', '#7209b7', '#00509d', '#f1c40f'];
+            for (let i = 0; i < 40; i++) {
+                let piece = document.createElement('div');
+                piece.className = 'confetti-piece';
+                piece.style.left = Math.random() * 100 + '%';
+                piece.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                piece.style.animationDelay = Math.random() * 2 + 's';
+                piece.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
+                piece.style.width = (6 + Math.random() * 8) + 'px';
+                piece.style.height = (6 + Math.random() * 8) + 'px';
+                container.appendChild(piece);
+            }
+            document.body.appendChild(container);
+            setTimeout(() => container.remove(), 4000);
+        }
         function changeFontSize(d) {
             let s = parseFloat(window.getComputedStyle(document.body).fontSize);
             let n = Math.max(12, Math.min(40, s + d)); document.body.style.fontSize = n + "px";
@@ -481,7 +611,16 @@
             else { element.classList.add('try-again'); }
         }
 
-        window.onload = function() { renderText(); renderQuiz(); };
+        window.onload = function() {
+            // Toolbar-Defaults per Neurotyp
+            if (ntClass === 'nt-lrs') { state.syllables = true; }
+            if (ntClass === 'nt-adhs') {
+                renderText(); renderQuiz();
+                toggleViewMode(); // Häppchen-Modus als Default
+                return;
+            }
+            renderText(); renderQuiz();
+        };
     </script>
 </body>
 </html>
