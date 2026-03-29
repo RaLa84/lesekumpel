@@ -2,7 +2,7 @@
 
 Jede Stufe definiert Wortanzahl, Tempus und einen linguistischen Fokus.
 
-> **Tempus-Grundregel:** Das Präteritum ab Stufe 3.1 gilt nur für **Erzähltexte** (Lea, Timo, Zara, Leo, Jonas, Holzi). Sachtexte (Samira) und Traumreisen (Deniz) stehen IMMER im **Präsens**, unabhängig von der Stufe — sie beschreiben die Welt wie sie IST, nicht wie sie war. Stufe 3.1 ist die einzige Stufe, deren FOKUS das Erlernen des Präteritums ist.
+> **Tempus-Regel:** Nur Stufe 3.1 gibt Präteritum als Tempus vor (Lernziel). Ab Stufe 3.2 ist das Tempus **frei wählbar** — der Autor entscheidet je nach Textformat (Erzählung → Präteritum, Sachtext → Präsens, Traumreise → Präsens).
 
 ---
 
@@ -57,19 +57,16 @@ Jede Stufe definiert Wortanzahl, Tempus und einen linguistischen Fokus.
 - **WORTANZAHL:** 80–100 Wörter
 
 ## Stufe 3.2 — Vorsilben (ver-, ent-, be-, ge-)
-- **TEMPUS:** Präteritum
 - **FOKUS:** Verben mit Vorsilben: verlieren, entdecken, bemerken, vergessen, beginnen, gewinnen
 - **SYNTAX:** Einfache Sätze
 - **WORTANZAHL:** 80–100 Wörter
 
 ## Stufe 3.3 — Suffixe/Nachsilben (-ung, -heit, -keit, -nis)
-- **TEMPUS:** Präteritum
 - **FOKUS:** Abstrakte Nomen mit Suffixen: Wohnung, Dunkelheit, Möglichkeit, Ergebnis, Erleichterung
 - **SYNTAX:** Sätze mit Objekten
 - **WORTANZAHL:** 80–100 Wörter
 
 ## Stufe 3.4 — Konjunktionen (weil, dass, aber, denn)
-- **TEMPUS:** Präteritum
 - **SYNTAX:** Nebensätze erlaubt! Kausale Zusammenhänge bilden
 - **FOKUS:** Konjunktionen gezielt nutzen: weil, dass, aber, denn, obwohl, damit
 - **WORTANZAHL:** 80–100 Wörter
@@ -77,25 +74,21 @@ Jede Stufe definiert Wortanzahl, Tempus und einen linguistischen Fokus.
 ---
 
 ## Stufe 4.1 — Satzklammer (Trennbare Verben)
-- **TEMPUS:** Präteritum
 - **FOKUS:** Trennbare Verben: aufschließen, mitnehmen, hereinkommen, zurückbringen, aufmachen, einkaufen
 - **SYNTAX:** Verb-Teil 2 muss ans Satzende (Satzklammer)
 - **WORTANZAHL:** 120–150 Wörter
 
 ## Stufe 4.2 — Dialoge & Redebegleiter
-- **TEMPUS:** Präteritum
 - **FOKUS:** Wörtliche Rede mit verschiedenen Verben des Sagens: rief, fragte, flüsterte, antwortete, erklärte, murmelte
 - **SYNTAX:** Redebegleitsätze korrekt einsetzen
 - **WORTANZAHL:** 120–150 Wörter
 
 ## Stufe 4.3 — Relativsätze (der, die, das, welcher)
-- **TEMPUS:** Präteritum
 - **SYNTAX:** Relativsätze nutzen, um Dinge genauer zu beschreiben
 - **FOKUS:** Einschübe mit Relativpronomen: der, die, das, den, dem, welcher
 - **WORTANZAHL:** 120–150 Wörter
 
 ## Stufe 4.4 — Adjektive & Vergleiche
-- **TEMPUS:** Präteritum
 - **FOKUS:** Komparativ (besser, schneller) und Superlativ (am besten, am schnellsten)
 - **SYNTAX:** Beschreibende Sätze mit Adjektiven, Vergleiche mit "als" und "wie"
 - **WORTANZAHL:** 120–150 Wörter
@@ -103,19 +96,16 @@ Jede Stufe definiert Wortanzahl, Tempus und einen linguistischen Fokus.
 ---
 
 ## Stufe 5.1 — Synonyme & Wortfeld
-- **TEMPUS:** Präteritum
 - **FOKUS:** Präzise Verben statt "sagen" oder "gehen" — flüstern, rufen, erklären, schlendern, eilen, marschieren
 - **SYNTAX:** Variabel, komplexe Sätze erlaubt
 - **WORTANZAHL:** 200–300 Wörter
 
 ## Stufe 5.2 — Redewendungen (Metaphern)
-- **TEMPUS:** Präteritum
 - **FOKUS:** 2–3 Sprichwörter/Redewendungen einbauen, Bedeutung im Kontext erklären
 - **SYNTAX:** Variabel
 - **WORTANZAHL:** 200–300 Wörter
 
 ## Stufe 5.3 — Abstrakta & Gefühle (Mut, Neid, Freiheit)
-- **TEMPUS:** Präteritum
 - **FOKUS:** Innere Monologe, komplexe Gefühle: Mut, Angst, Vertrauen, Stolz, Scham, Neid, Eifersucht
 - **SYNTAX:** Anspruchsvoll, Innenperspektive
 - **WORTANZAHL:** 200–300 Wörter
