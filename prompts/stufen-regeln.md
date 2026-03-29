@@ -2,6 +2,8 @@
 
 Jede Stufe definiert Wortanzahl, Tempus und einen linguistischen Fokus.
 
+> **Sonderregel Samira Wissensfreund:** Sachtexte stehen IMMER im Präsens, unabhängig von der Stufe. Die Tempus-Regel (Präteritum ab Stufe 3.1) gilt nur für Erzähltexte.
+
 ---
 
 ## Stufe 1.0 — Top 100 Wörter

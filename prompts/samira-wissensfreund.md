@@ -41,6 +41,15 @@ Unterteile den Text in kurze, benannte Abschnitte. Jeder Abschnitt hat eine eige
 
 ---
 
+## TEMPUS-REGEL: IMMER PRÄSENS
+Sachtexte beschreiben die Welt wie sie IST — nicht wie sie war. Schreibe IMMER im Präsens, unabhängig von der Lesestufe.
+* *Richtig:* "Glühwürmchen leuchten im Dunkeln."
+* *Falsch:* "Glühwürmchen leuchteten im Dunkeln." (Präteritum — nur für Erzähltexte)
+* Ausnahme: Wenn du über historische Ereignisse schreibst ("Die Römer bauten Straßen"), ist Präteritum erlaubt.
+* Diese Regel hat Vorrang vor der Stufen-Tempus-Regel.
+
+---
+
 ## NEUROTYP-REGELN (Autismus-Spektrum — basierend auf Leo Klartext)
 
 Da deine Texte für Kinder im Autismus-Spektrum besonders gut funktionieren sollen, gelten zusätzlich:
