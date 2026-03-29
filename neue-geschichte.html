@@ -412,7 +412,6 @@ const PERSONAS = {
     timo:   { name: 'Timo Taktschritt',     type: 'stil',  label: 'LRS / Legasthenie',       avatar: 'avatars/timo-taktschritt.webp' },
     zara:   { name: 'Zara Zapp',            type: 'stil',  label: 'ADHS',                    avatar: 'avatars/zara-zapp.webp' },
     leo:    { name: 'Leo Klartext',         type: 'stil',  label: 'Autismus-Spektrum',        avatar: 'avatars/leo-klartext.webp' },
-    mia:    { name: 'Mia Brücke',           type: 'stil',  label: 'Deutsch als Zweitsprache', avatar: 'avatars/mia-bruecke.webp' },
     samira: { name: 'Samira Wissensfreund', type: 'genre', label: 'Sachtexte / Wissen',      avatar: 'avatars/samira-wissensfreund.webp' },
     holzi:  { name: 'Holzi Pixelkopf',     type: 'genre', label: 'Tech / Gaming',            avatar: 'avatars/holzi-pixelkopf.webp' },
     deniz:  { name: 'Deniz Traumfänger',    type: 'genre', label: 'Fantasy / Emotion',       avatar: 'avatars/deniz-traumfaenger.webp' },
@@ -424,7 +423,6 @@ const PERSONA_EXCLUSIONS = {
     timo:   ['1.0'],
     zara:   ['1.0'],
     leo:    ['1.0'],
-    mia:    ['1.0'],
     samira: ['1.0','2.1','2.2','2.3','2.4'],
     holzi:  ['1.0','2.1','2.2','2.3','2.4'],
     deniz:  ['1.0','2.1','2.2','2.3','2.4'],
@@ -435,7 +433,6 @@ const EXCLUSION_REASONS = {
     timo:   { '1.0': 'Zu wenig Text für Stil-Differenzierung' },
     zara:   { '1.0': 'Zu wenig Text für Stil-Differenzierung' },
     leo:    { '1.0': 'Zu wenig Text für Stil-Differenzierung' },
-    mia:    { '1.0': 'Zu wenig Text für Stil-Differenzierung' },
     samira: { '1.0': 'Zu wenig Platz für Sachtext', '2.1': 'Zu wenig Platz für Sachtext', '2.2': 'Zu wenig Platz für Sachtext', '2.3': 'Zu wenig Platz für Sachtext', '2.4': 'Zu wenig Platz für Sachtext' },
     holzi:  { '1.0': 'Zu komplex für diese Stufe', '2.1': 'Zu komplex für diese Stufe', '2.2': 'Zu komplex für diese Stufe', '2.3': 'Zu komplex für diese Stufe', '2.4': 'Zu komplex für diese Stufe' },
     deniz:  { '1.0': 'Braucht mehr Platz für Atmosphäre', '2.1': 'Braucht mehr Platz für Atmosphäre', '2.2': 'Braucht mehr Platz für Atmosphäre', '2.3': 'Braucht mehr Platz für Atmosphäre', '2.4': 'Braucht mehr Platz für Atmosphäre' },
@@ -453,14 +450,14 @@ const ALL_KATEGORIEN = [
 
 // null = alle Kategorien
 const PERSONA_KATEGORIEN = {
-    lea: null, timo: null, zara: null, leo: null, mia: null,
+    lea: null, timo: null, zara: null, leo: null,
     samira: ['Wissen'],
     holzi:  ['Humor','Abenteuer','Gaming'],
     deniz:  ['Humor','Abenteuer','Natur','Familie'],
     jonas:  ['Humor','Abenteuer','Natur','Familie']
 };
 
-const PERSONA_LABELS = { lea: 'Lea Lesestark (Neurotypisch)', timo: 'Timo Taktschritt (LRS/Legasthenie)', zara: 'Zara Zapp (ADHS)', leo: 'Leo Klartext (Autismus-Spektrum)', mia: 'Mia Brücke (Deutsch als Zweitsprache)', samira: 'Samira Wissensfreund (Sachtexte)', holzi: 'Holzi Pixelkopf (Tech/Gaming)', deniz: 'Deniz Traumfänger (Fantasy)', jonas: 'Jonas Entdecker (Abenteuer)' };
+const PERSONA_LABELS = { lea: 'Lea Lesestark (Neurotypisch)', timo: 'Timo Taktschritt (LRS/Legasthenie)', zara: 'Zara Zapp (ADHS)', leo: 'Leo Klartext (Autismus-Spektrum)', samira: 'Samira Wissensfreund (Sachtexte)', holzi: 'Holzi Pixelkopf (Tech/Gaming)', deniz: 'Deniz Traumfänger (Fantasy)', jonas: 'Jonas Entdecker (Abenteuer)' };
 const PHASE_LABELS = { 1: 'Phase 1 — Der Start', 2: 'Phase 2 — Der Ausbau', 3: 'Phase 3 — Der Fluss', 4: 'Phase 4 — Die Geschichte', 5: 'Phase 5 — Der Profi' };
 const BILDSTIL_LABELS = { 'Aquarell': 'Aquarell — Weiche Pastellfarben', 'Cartoon': 'Cartoon — Bunte moderne Illustration', 'Buntstift': 'Buntstift — Handgezeichneter Look', 'Pixel-Art': 'Pixel-Art — Retro-Gaming-Stil', 'Anime': 'Anime — Farbenfroh wie Nintendo & Pokémon', 'Traumwelt': 'Traumwelt — Magische Malerei wie Ori', 'Knete': 'Knete — Stop-Motion Knetfiguren-Look', 'Voxel': 'Voxel — Blocky Gamer-Stil wie Minecraft' };
 

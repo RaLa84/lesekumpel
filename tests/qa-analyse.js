@@ -34,7 +34,6 @@ const STUFEN = {
 const PERSONA_RULES = {
   lea: { name:'Lea Lesestark', noGos:['passiv_haeufig'], checks:['augenzwinkern','lebendige_szenen'] },
   leo: { name:'Leo Klartext', noGos:['metaphern','ironie','personifikation'], checks:['gefuehle_explizit','weil_deshalb','woerter_erklaert'] },
-  mia: { name:'Mia Brücke', noGos:['passiv','komposita','genitiv','idiome'], checks:['woerter_erklaert','spo_struktur'] },
   timo: { name:'Timo Taktschritt', noGos:['komposita','genitiv','lange_woerter'], checks:['rhythmus','kurze_saetze'] },
   zara: { name:'Zara Zapp', noGos:['passiv','lange_absaetze','langsamer_einstieg'], checks:['action_start','kurze_absaetze','cliffhanger'] },
   jonas: { name:'Jonas Entdecker', noGos:['abstrakte_konzepte'], checks:['ich_perspektive','alltagssprache','innerer_monolog'] },

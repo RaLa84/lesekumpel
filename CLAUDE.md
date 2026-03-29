@@ -47,22 +47,21 @@ Each story HTML file must include these meta tags for the catalog to work:
 
 ### Authors/Personas
 
-Nine fictional AI author personas with individuellen Systemprompts in `prompts/`. Avatare in `avatars/`.
+Acht fiktionale AI-Autoren-Personas mit individuellen Systemprompts in `prompts/`. Avatare in `avatars/`. Profil: **Neuroinklusion**.
 
 **Basis-Stimme:**
 - **Lea Lesestark** — Basis-Referenz, ausgewogen und altersgerecht (5–10 J.)
 
 **Genre-Personas (Stil-Differenzierung):**
 - **Samira Wissensfreund** — Edutainment/Sachtexte (Checker-Tobi-Stil)
-- **Holzi Pixelkopf** — Tech/Digital-Geschichten
-- **Deniz Traumfänger** — Fantasy/Emotion (8–12 J.)
+- **Holzi Pixelkopf** — Tech/Digital-Geschichten (ab Stufe 4)
+- **Deniz Traumfänger** — Fantasy/Emotion (8–12 J., ab Stufe 4)
 - **Jonas Entdecker** — Abenteuer/Alltag, authentisch (8–12 J.)
-- **Zara Zapp** — Action/Spannung, hohes Tempo
 
 **Neuroinclusive Personas (Barrierefreiheit-Fokus):**
+- **Zara Zapp** — ADHS/Konzentration: Action, Tempo, max 2 Sätze/Absatz, Mini-Cliffhanger
 - **Leo Klartext** — Autismus-Spektrum: keine Metaphern, explizite Gefühle, absolute Eindeutigkeit
 - **Timo Taktschritt** — LRS/Dyslexie: Rhythmus, kurze Silben, keine Komposita, Lesefluss
-- **Mia Brücke** — DaZ (Deutsch als Zweitsprache): einfache Sprache, Welt-Erklärungen
 
 ## Deployment
 

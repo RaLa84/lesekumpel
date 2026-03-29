@@ -24,7 +24,7 @@ Erscheint wenn der Workflow in der N8N-UI geöffnet wird.
 `n8n-config/workflows/lesekumpel-story-generator.json`
 
 Neuroinclusive Kindergeschichten-Generator mit:
-- 5 Persona-Agenten (Lea, Timo, Zara, Leo, Mia) via `@n8n/n8n-nodes-langchain.chainLlm`
+- 4 Persona-Agenten (Lea, Timo, Zara, Leo) via `@n8n/n8n-nodes-langchain.chainLlm`
 - Google Gemini als LLM (`@n8n/n8n-nodes-langchain.lmChatGoogleGemini`)
 - Bild-Generierung via Gemini Image API
 - GitHub Commit der fertigen HTML-Dateien

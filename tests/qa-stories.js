@@ -238,15 +238,6 @@ function testPersonaRegeln(story) {
       }
       break;
     }
-    case 'mia': {
-      // Wort-Erklärungen
-      const erklaerungen = ['bedeutet', 'heißt', 'das ist ein', 'das ist eine', 'das sind', 'man nennt'];
-      const hatErklaerung = erklaerungen.some(e => textLower.includes(e));
-      if (!hatErklaerung && parseFloat(story.stufe) >= 4.0) {
-        issues.push('Mia: Keine Wort-Erklärungen gefunden (ab Stufe 4 erwartet)');
-      }
-      break;
-    }
     case 'jonas': {
       // Ich-Perspektive
       const ichCount = (text.match(/\bIch\b/g) || []).length + (text.match(/\bich\b/g) || []).length;

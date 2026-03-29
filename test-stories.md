@@ -145,19 +145,3 @@
 ```
 
 ---
-
-## 9. Mia Brücke
-
-```json
-[
-  {
-    "Titel": "Neue Freunde im Park",
-    "Genre": "Freundschaft & Familie",
-    "Phase": "Phase 1 — Der Start",
-    "Stufe": "1.0 — Sichtwörter",
-    "Persona": "Mia Brücke (DaZ)",
-    "Bildstil": "Aquarell",
-    "Kurzbeschreibung": "Ein Kind lernt auf dem Spielplatz neue Freunde kennen"
-  }
-]
-```

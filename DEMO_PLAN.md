@@ -29,10 +29,6 @@ Jede Persona trägt die neurotyp-spezifischen Schreib-Eigenschaften von Natur au
 - **Stimme:** Präzise, zuverlässig, ehrlich — sagt genau was er meint
 - **Schreibeigenschaften:** Keine Metaphern/Idiome, Gefühle explizit benannt ("Er war wütend, weil..."), Figurenmotivationen direkt erklärt, linearer Aufbau, keine Doppeldeutigkeit
 
-### Mia Brücke · Deutsch als Zweitsprache (DaZ)
-- **Stimme:** Einladend, geduldig, bildhaft — erklärt die Welt als wäre alles neu
-- **Schreibeigenschaften:** Kein Passiv, keine Komposita (aufteilen), keine kulturellen Referenzen, schwierige Wörter inline erklärt ("der Döner — das ist Fleisch in Brot")
-
 ---
 
 ## Gamification: Autoren-Unlock (RPG-Mechanik)
@@ -41,7 +37,7 @@ Kinder starten mit Lea Lesestark. Weitere Autoren werden durch Lesefortschritt f
 
 | Stufe | Freigeschaltet |
 |---|---|
-| Stufe 1 | Lea Lesestark + Mia Brücke (immer verfügbar) |
+| Stufe 1 | Lea Lesestark (immer verfügbar) |
 | Stufe 3 | + Timo Taktschritt + Zara Zapp |
 | Stufe 5 | + Leo Klartext |
 
@@ -75,7 +71,6 @@ Textregeln: Max. 7 Wörter/Satz · Top-100 + Themen-Wörter · Präsens · natü
 | Timo Taktschritt | 🔒 Stufe 3 | Text zu minimal, Rhythmus-Anpassung wirkungslos |
 | Zara Zapp | 🔒 Stufe 3 | Kein Raum für Action-Pacing |
 | Leo Klartext | 🔒 Stufe 5 | Text bereits literal genug |
-| Mia Brücke | ✅ | Anderes Vokabular, keine "Döner"/"Minecraft"-Referenzen |
 
 → **2 Versionen**
 
@@ -88,7 +83,6 @@ Textregeln: 80–100 Wörter · Konjunktionen · einfache Nebensätze · Präter
 | Timo Taktschritt | ✅ | Silbenrhythmus, gleichmäßige Sätze |
 | Zara Zapp | ✅ | Sofort-Action, kurze Absätze |
 | Leo Klartext | 🔒 Stufe 5 | Ironie/Metaphern tauchen erst ab Stufe 5 dominant auf |
-| Mia Brücke | ✅ | Kein Passiv, keine Komposita, Bildvokabular |
 
 → **4 Versionen**
 
@@ -101,7 +95,6 @@ Textregeln: 200–300+ Wörter · Abstrakta · Gefühle · Innenperspektive · I
 | Timo Taktschritt | ✅ | Rhythmus, Absatz-Breaks, keine langen Komposita |
 | Zara Zapp | ✅ | Cliffhanger, kurze Kapitel, hohes Tempo |
 | Leo Klartext | ✅ | Literal, Gefühle explizit, keine Metaphern |
-| Mia Brücke | ✅ | Einfachstes Deutsch, Glossar-Einschübe |
 
 → **5 Versionen**
 
@@ -152,40 +145,31 @@ User: Schreib "Die Katze klaut einen Döner" auf Stufe 5:
 ```
 demo-texte/
   katze-doener-stufe1-lea.html
-  katze-doener-stufe1-mia.html
   katze-doener-stufe3-lea.html
   katze-doener-stufe3-timo.html
   katze-doener-stufe3-zara.html
-  katze-doener-stufe3-mia.html
   katze-doener-stufe5-lea.html
   katze-doener-stufe5-timo.html
   katze-doener-stufe5-zara.html
   katze-doener-stufe5-leo.html
-  katze-doener-stufe5-mia.html
 
   minecraft-stufe1-lea.html
-  minecraft-stufe1-mia.html
   minecraft-stufe3-lea.html
   minecraft-stufe3-timo.html
   minecraft-stufe3-zara.html
-  minecraft-stufe3-mia.html
   minecraft-stufe5-lea.html
   minecraft-stufe5-timo.html
   minecraft-stufe5-zara.html
   minecraft-stufe5-leo.html
-  minecraft-stufe5-mia.html
 
   alien-bruder-stufe1-lea.html
-  alien-bruder-stufe1-mia.html
   alien-bruder-stufe3-lea.html
   alien-bruder-stufe3-timo.html
   alien-bruder-stufe3-zara.html
-  alien-bruder-stufe3-mia.html
   alien-bruder-stufe5-lea.html
   alien-bruder-stufe5-timo.html
   alien-bruder-stufe5-zara.html
   alien-bruder-stufe5-leo.html
-  alien-bruder-stufe5-mia.html
 ```
 
 ---
@@ -204,7 +188,7 @@ demo-texte/
 │                                                          │
 │  SCHRITT 3: Dein Autor                                   │
 │  [Lea Lesestark ✅]  [Timo Taktschritt 🔒]              │
-│  [Zara Zapp 🔒]      [Leo Klartext 🔒]  [Mia Brücke ✅] │
+│  [Zara Zapp 🔒]      [Leo Klartext 🔒]                   │
 │                                                          │
 │  ┌──────────────────────────────────────────────────┐   │
 │  │  👤 Lea Lesestark  ·  Stufe 3                   │   │
