@@ -459,12 +459,22 @@
             // Bilder gleichmäßig zwischen Gruppen verteilen
             let imgPositions = {};
             if (inlineImages.length > 0 && !state.summary) {
-                let interval = Math.max(1, Math.floor(groups.length / (inlineImages.length + 1)));
-                inlineImages.forEach((url, i) => {
-                    let pos = interval * (i + 1);
-                    if (pos >= groups.length) pos = groups.length - 1;
-                    imgPositions[pos] = url;
-                });
+                if (ntClass === 'nt-adhs') {
+                    // ADHS: Bilder ab Position 0 verteilen
+                    let interval = Math.max(1, Math.floor(groups.length / inlineImages.length));
+                    inlineImages.forEach((url, i) => {
+                        let pos = interval * i;
+                        if (pos >= groups.length) pos = groups.length - 1;
+                        imgPositions[pos] = url;
+                    });
+                } else {
+                    let interval = Math.max(1, Math.floor(groups.length / (inlineImages.length + 1)));
+                    inlineImages.forEach((url, i) => {
+                        let pos = interval * (i + 1);
+                        if (pos >= groups.length) pos = groups.length - 1;
+                        imgPositions[pos] = url;
+                    });
+                }
             }
 
             // HTML zusammenbauen: Text-Gruppen mit Bildern dazwischen
