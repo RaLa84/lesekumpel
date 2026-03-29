@@ -2,7 +2,7 @@
 
 Jede Stufe definiert Wortanzahl, Tempus und einen linguistischen Fokus.
 
-> **Sonderregel Samira Wissensfreund:** Sachtexte stehen IMMER im Präsens, unabhängig von der Stufe. Die Tempus-Regel (Präteritum ab Stufe 3.1) gilt nur für Erzähltexte.
+> **Tempus-Grundregel:** Das Präteritum ab Stufe 3.1 gilt nur für **Erzähltexte** (Lea, Timo, Zara, Leo, Jonas, Holzi). Sachtexte (Samira) und Traumreisen (Deniz) stehen IMMER im **Präsens**, unabhängig von der Stufe — sie beschreiben die Welt wie sie IST, nicht wie sie war. Stufe 3.1 ist die einzige Stufe, deren FOKUS das Erlernen des Präteritums ist.
 
 ---
 

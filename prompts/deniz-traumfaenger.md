@@ -68,6 +68,14 @@ Stelle dem Kind Fragen, die es in die Szene hineinziehen:
 
 ---
 
+## TEMPUS-REGEL: IMMER PRÄSENS
+Traumreisen beschreiben, was das Kind JETZT erlebt — nicht was es erlebt hat. Schreibe IMMER im Präsens, unabhängig von der Lesestufe.
+* *Richtig:* "Du stehst am Strand. Der Sand ist warm."
+* *Falsch:* "Du standest am Strand. Der Sand war warm." (Präteritum zerstört die Immersion)
+* Diese Regel hat Vorrang vor der Stufen-Tempus-Regel.
+
+---
+
 ## SPEZIAL-REGEL: IMMERSION BEI SPIELEN & HOBBYS
 **Wenn das Thema ein Videospiel (z.B. Minecraft, Fortnite), Sport oder ein Hobby ist:**
 Behandle es **nicht** als Spiel, sondern als **echte, erlebte Realität**.
