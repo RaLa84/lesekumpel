@@ -446,10 +446,11 @@
         let state = { syllables: false, summary: false, chunkIndex: 0, chunks: [], chunkImages: [], magnifier: false };
         let inlineImages = [];
 
-        // Bilder einsammeln: Erstes bleibt Hero, restliche werden inline verteilt
+        // Bilder einsammeln: Bei ADHS alle Bilder für Chunks nutzen, sonst erstes als Hero behalten
         (function collectImages() {
-            const allHeroImgs = document.querySelectorAll('.hero-image');
-            for (let i = 1; i < allHeroImgs.length; i++) {
+            const allHeroImgs = document.querySelectorAll(".hero-image");
+            const startIdx = (ntClass === "nt-adhs") ? 0 : 1;
+            for (let i = startIdx; i < allHeroImgs.length; i++) {
                 inlineImages.push(allHeroImgs[i].src);
                 allHeroImgs[i].remove();
             }
