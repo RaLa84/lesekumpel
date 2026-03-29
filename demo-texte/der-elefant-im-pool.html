@@ -215,7 +215,8 @@
         /* Leo – Autismus-Spektrum */
         body.nt-autismus { line-height: 1.9; }
         body.nt-autismus .story-text p {
-            border-left: 3px solid var(--primary-yellow); padding-left: 15px; margin-bottom: 1.5em !important;
+            border-left: 3px solid var(--primary-yellow); padding-left: 35px; margin-bottom: 1.5em !important;
+            position: relative;
         }
         body.nt-autismus .toolbar-container { border-style: solid; }
 
@@ -414,7 +415,7 @@
             if (ntClass === 'nt-autismus') {
                 document.querySelectorAll('#full-text-view p').forEach((p, i) => {
                     let marker = document.createElement('span');
-                    marker.style.cssText = 'color:#bbb; font-size:0.7em; margin-right:8px; font-family:var(--font-heading); user-select:none;';
+                    marker.style.cssText = 'color:var(--primary-yellow); font-size:0.7em; font-family:var(--font-heading); user-select:none; position:absolute; left:8px; top:0.15em;';
                     marker.textContent = (i + 1);
                     p.prepend(marker);
                 });
