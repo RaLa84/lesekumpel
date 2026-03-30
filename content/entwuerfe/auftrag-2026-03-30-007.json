@@ -1,0 +1,82 @@
+{
+  "auftrag_id": "auftrag-2026-03-30-007",
+  "titel": "Pixel-Stadt 2099: Die KI streikt",
+  "persona": "holzi",
+  "stufe": "4.4",
+  "geschichte": "Al-so, ich war in Pi-xel-Stadt 2099. Al-les lief dort über AR-CO, die schnells-te KI der Welt. Schnel-ler als je-der Mensch, schlau-er als tau-send Leh-rer.\n\nDann, 08:14 Uhr: al-le Am-peln aus. Gleich-zei-tig. Er-ror 404.\n\nMein ers-ter Ge-dan-ke: Wir sind lost. Ich rann-te zum Ser-ver-Raum. Ich so: Easy, ich fix das bes-ser als je-der IT-Typ hier. Ich tipp-te wild rum. AR-CO crash-te noch här-ter als vor-her. Die Am-peln blink-ten wie der lag-gigs-te Minecraft-Ser-ver ever.\n\nDann kam Ki-ra. Zwölf Jah-re alt, Hoodie mit Bug-Auf-druck, ru-hi-ger als ein lee-rer Ser-ver nachts. Sie guck-te auf mei-nen Code. Sie so: Das ist der dümms-te Loop, den ich je ge-se-hen ha-be.\n\nIch so: Wait, what?\n\nSie tipp-te drei Zei-len. Drei! Ich hat-te hun-dert ge-tippt. AR-CO boo-te-te neu. Am-peln an, grü-ner als Creeper-Haut.\n\nKi-ra so: Hotfix deployed.\n\nIch stand da wie der größ-te NPC der Stadt. Not gonna lie — ein Kind war bes-ser als ich. Deut-lich bes-ser.",
+  "zusammenfassung": "Holzi versucht in Pixel-Stadt 2099 einen KI-Absturz zu fixen und macht alles schlimmer. Die zwölfjährige Kira löst das Problem in drei Zeilen Code, während Holzi daneben steht und staunt.",
+  "wortanzahl": 150,
+  "status": "korrigiert",
+  "version": 5,
+  "quiz": [
+    {
+      "q": "Warum blinken die Ampeln nach Holzis Eingriff noch schlimmer?",
+      "a": ["Holzi hat den Bug verschlimmert statt ihn zu reparieren", "Ein Gewitter hat die Leitungen getroffen", "Kira hat aus Versehen einen Knopf gedrückt"],
+      "correct": 0
+    },
+    {
+      "q": "Wie viele Zeilen Code tippt Kira, um ARCO zu reparieren?",
+      "a": ["Hundert Zeilen", "Drei Zeilen", "Dreißig Zeilen"],
+      "correct": 1
+    },
+    {
+      "q": "Was sagt Holzi am Ende über Kira?",
+      "a": ["Sie hat Glück gehabt", "Ein Kind war deutlich besser als er", "Sie hätte länger gebraucht als erwartet"],
+      "correct": 1
+    }
+  ],
+  "wortschatz": [
+    {
+      "wort": "crashen",
+      "silben": "crash-en",
+      "bedeutung": "Wenn ein Programm oder Computer plötzlich aufhört zu funktionieren und abstürzt."
+    },
+    {
+      "wort": "Hotfix",
+      "silben": "Hotfix",
+      "bedeutung": "Eine schnelle Notfall-Reparatur für ein laufendes Programm — so schnell, dass keine Zeit zum langen Nachdenken bleibt."
+    },
+    {
+      "wort": "Loop",
+      "silben": "Loop",
+      "bedeutung": "Eine Schleife im Programmcode, die immer wieder dasselbe tut. Ein Endlos-Loop hört nie auf."
+    },
+    {
+      "wort": "NPC",
+      "silben": "N-P-C",
+      "bedeutung": "Abkürzung für Non-Player Character — eine Spielfigur im Videospiel, die nur herumsteht und vom Computer gesteuert wird."
+    }
+  ],
+  "tags": ["KI", "Programmieren", "Futurismus", "Teamwork", "Gaming"],
+  "szenen": [
+    {
+      "scene": 1,
+      "prompt": "pixel art illustration for kids, retro gaming style, colorful blocky pixels, 16-bit aesthetic, cheerful, no text in image. A futuristic pixel-art city street in the year 2099, tall neon-lit skyscrapers made of colorful blocks in purple, teal and orange, all traffic lights simultaneously dark and switched off, confused pedestrians frozen mid-step on the sidewalk like paused video game characters, a dramatic purple morning sky with glowing pixel stars still visible, energetic and slightly chaotic atmosphere."
+    },
+    {
+      "scene": 2,
+      "prompt": "pixel art illustration for kids, retro gaming style, colorful blocky pixels, 16-bit aesthetic, cheerful, no text in image. Inside a futuristic pixel-art server room glowing with blue and teal light, a tall adult figure with spiky orange hair, pale skin, and green glasses wearing a bright yellow t-shirt and cargo pants stands frantically typing at a large pixel terminal covered in red error symbols, the screens show cascading red ERROR 404 messages, computer fans spinning wildly, chaotic and comedic mood."
+    },
+    {
+      "scene": 3,
+      "prompt": "pixel art illustration for kids, retro gaming style, colorful blocky pixels, 16-bit aesthetic, cheerful, no text in image. A 12-year-old girl with short dark hair, light brown skin, large dark eyes, wearing a dark blue hoodie with a small bug icon on the chest and gray jeans, standing calmly at a glowing pixel-art terminal typing with focused determination, three bright green lines of code appear on the screen, beside her a tall adult with spiky orange hair and yellow t-shirt watches with wide surprised eyes, the room lights shift from red to green as ARCO reboots successfully, triumphant and cheerful atmosphere."
+    }
+  ],
+  "charaktere": [
+    {
+      "name": "Holzi",
+      "role": "narrator",
+      "appearance": "A tall adult with spiky orange hair, pale skin, round green glasses, wearing a bright yellow t-shirt with a pixel-art logo and dark cargo pants. Expressive and slightly chaotic energy, often looking flustered or surprised."
+    },
+    {
+      "name": "Kira",
+      "role": "main",
+      "appearance": "A 12-year-old girl with short dark hair, light brown skin, large dark eyes, wearing a dark blue hoodie with a small debugger bug icon printed on the chest, gray jeans, and white sneakers. Calm, focused, and quietly confident expression."
+    },
+    {
+      "name": "ARCO",
+      "role": "supporting",
+      "appearance": "An artificial intelligence represented as a floating glowing pixel-art orb in shades of teal and white, with a simple pixel face showing red error symbols when crashed and a cheerful green smiley when running correctly, surrounded by streams of colorful data pixels."
+    }
+  ]
+}

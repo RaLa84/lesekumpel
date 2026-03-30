@@ -1,0 +1,95 @@
+{
+  "auftrag_id": "auftrag-2026-03-30-006",
+  "titel": "Warum ich keine Witze verstehe",
+  "persona": "leo",
+  "stufe": "4.1",
+  "geschichte": "Ich hei-ße Le-on. Heu-te er-zählt Tom in der Pau-se ei-nen Witz.\n\nWar-um weint der Blei-stift? Weil er ei-ne schwe-re Auf-ga-be hat.\n\nAl-le la-chen los. Ich la-che nicht. Ich bin ver-wirrt, weil ein Blei-stift nicht wei-nen kann. Das stimmt ein-fach nicht.\n\nTom fängt den nächs-ten Witz an. Was macht der Frosch im Ne-bel? Er hüpft im Trü-ben.\n\nAl-le la-chen wie-der. Ich den-ke nach. Ein Frosch hüpft. Aber was be-deu-tet im Trü-ben? Die Wör-ter mei-nen et-was an-de-res, als sie sa-gen. Das nennt man bild-li-che Spra-che. Bild-li-che Spra-che be-deu-tet: Die Wör-ter ha-ben ei-ne ver-steck-te Be-deu-tung.\n\nIch ver-ste-he Wör-ter so, wie sie da ste-hen. Ich neh-me sie wört-lich. Des-halb ver-ste-he ich kei-ne Wit-ze.\n\nFrü-her war ich trau-rig des-we-gen. Heu-te weiß ich: Das ist in Ord-nung. Ich se-he die Din-ge ge-nau so, wie sie sind. Das hilft mir bei vie-lem. Zum Bei-spiel mer-ke ich so-fort, wenn et-was nicht stimmt.",
+  "zusammenfassung": "Leon versteht keine Witze, weil er Worte wörtlich nimmt. Anhand von zwei Witz-Beispielen erklärt er, was bildliche Sprache ist. Am Ende stellt er fest: Wörtlich zu denken hilft ihm, weil er sofort merkt, wenn etwas nicht stimmt.",
+  "wortanzahl": 140,
+  "status": "korrigiert",
+  "version": 2,
+  "quiz": [
+    {
+      "q": "Warum lacht Leon nicht, als Tom den Witz erzählt?",
+      "a": [
+        "Weil er den Witz schon kennt.",
+        "Weil ein Bleistift wirklich nicht weinen kann.",
+        "Weil er schlechte Laune hat."
+      ],
+      "correct": 1
+    },
+    {
+      "q": "Was bedeutet \"bildliche Sprache\"?",
+      "a": [
+        "Sprache, die man nur flüstern darf.",
+        "Wörter, die genau das meinen, was sie sagen.",
+        "Wörter, die eine versteckte Bedeutung haben."
+      ],
+      "correct": 2
+    },
+    {
+      "q": "Wie fühlt Leon sich am Ende der Geschichte?",
+      "a": [
+        "Er findet es okay, weil ihm wörtliches Denken bei vielem hilft.",
+        "Er ist traurig, weil er keine Witze versteht.",
+        "Er möchte unbedingt Witze lernen."
+      ],
+      "correct": 0
+    }
+  ],
+  "wortschatz": [
+    {
+      "wort": "loslachen",
+      "silben": "los-la-chen",
+      "bedeutung": "Plötzlich anfangen zu lachen."
+    },
+    {
+      "wort": "anfangen",
+      "silben": "an-fan-gen",
+      "bedeutung": "Mit etwas beginnen — das Verb teilt sich auf: Er fängt an."
+    },
+    {
+      "wort": "nachdenken",
+      "silben": "nach-den-ken",
+      "bedeutung": "Ruhig und lange über etwas denken — das Verb teilt sich auf: Er denkt nach."
+    },
+    {
+      "wort": "bildliche Sprache",
+      "silben": "bild-li-che Spra-che",
+      "bedeutung": "Wörter, die etwas anderes meinen, als sie wörtlich sagen."
+    }
+  ],
+  "tags": [
+    "Autismus",
+    "Bildliche Sprache",
+    "Selbstakzeptanz",
+    "Schule",
+    "Emotion"
+  ],
+  "charaktere": [
+    {
+      "name": "Leon",
+      "role": "main",
+      "appearance": "A 9-year-old boy with straight dark brown hair, pale skin, wearing a plain light blue long-sleeve shirt and dark grey trousers. He has a calm, serious expression and thoughtful dark brown eyes. He often tilts his head slightly when thinking."
+    },
+    {
+      "name": "Tom",
+      "role": "secondary",
+      "appearance": "A 9-year-old boy with short blond hair, light skin, wearing a green striped t-shirt and jeans. He is smiling and gesturing with his hands as he tells jokes."
+    }
+  ],
+  "szenen": [
+    {
+      "scene": 1,
+      "prompt": "colored pencil drawing, hand-drawn children's illustration, crayon texture, sketch-like, warm paper background, no text in image. A school break scene: a 9-year-old boy named Leon with straight dark brown hair, pale skin, light blue long-sleeve shirt and dark grey trousers stands still with a puzzled, confused expression. Around him, several classmates are laughing together, including a blond boy named Tom in a green striped t-shirt who is grinning widely. Leon looks at a pencil on the ground with a frown, clearly not understanding the joke. Bright classroom and playground in the background."
+    },
+    {
+      "scene": 2,
+      "prompt": "colored pencil drawing, hand-drawn children's illustration, crayon texture, sketch-like, warm paper background, no text in image. A 9-year-old boy named Leon with straight dark brown hair, pale skin, light blue long-sleeve shirt and dark grey trousers sits alone at a school bench, thinking deeply. A large thought bubble above his head shows a literal image: a green frog hopping through thick grey fog. Leon's expression is serious and concentrated, one finger on his chin. Soft outdoor school setting with trees."
+    },
+    {
+      "scene": 3,
+      "prompt": "colored pencil drawing, hand-drawn children's illustration, crayon texture, sketch-like, warm paper background, no text in image. A 9-year-old boy named Leon with straight dark brown hair, pale skin, light blue long-sleeve shirt and dark grey trousers stands calmly outside, looking forward with a small, confident smile. Warm golden afternoon light. He stands slightly apart from a group of classmates in the background, relaxed and self-assured. The mood is peaceful and accepting."
+    }
+  ]
+}

@@ -1,0 +1,105 @@
+{
+  "auftrag_id": "auftrag-2026-03-30-008",
+  "titel": "Der letzte Baum auf dem Schuldach",
+  "persona": "jonas",
+  "stufe": "5.2",
+  "geschichte": "Okay, ich muss euch was er-zäh-len. Auf un-se-rem Schul-dach steht ein Kirsch-baum. Al-so, er steht da schon e-wig — län-ger als ich le-be, län-ger als un-se-re Leh-re-rin hier ar-bei-tet. In der gro-ßen Pau-se sit-zen wir im-mer un-ter dem Baum, weil da Schat-ten ist und es nach Kir-schen riecht, so-bald der Mai kommt. Man-che sa-gen, der Baum ge-hört ein-fach da-zu. Wie das Klet-ter-ge-rüst. Nur äl-ter.\n\nAm Diens-tag kam un-se-re Klas-sen-leh-re-rin rein und sag-te: Der Baum wird ge-fällt. Die Schu-le braucht ei-nen neu-en Park-platz für die Leh-rer-au-tos.\n\nErst mal macht kei-ner was. Dann fing Le-na an: Das ist doch voll un-fair! Und ich dach-te: Ja. Ge-nau. Das bringt das Fass zum Ü-ber-lau-fen. Erst ha-ben sie den Schul-gar-ten zu-ge-macht, jetzt der Baum. Im-mer geht ir-gend-was ver-lo-ren, da-mit ir-gend-wer par-ken kann.\n\nAm nächs-ten Tag hat-ten wir ei-nen Plan. Le-na mal-te ein Schild: Re-ttet un-se-ren Baum! Paul, der sonst nie was sagt — stil-le Was-ser sind tief, sag ich nur — hat ei-ne Un-ter-schrif-ten-lis-te ge-star-tet. In der ers-ten Pau-se hat-te er schon vier-zig Na-men. Ich konn-te es kaum glau-ben.\n\nWir sind al-le vor zum Rek-tor, ob-wohl wir wuss-ten, dass er ge-nervt sein wür-de. Le-na sag-te: Wir sit-zen al-le im glei-chen Boot. Der Baum ge-hört nicht nur uns, son-dern al-len, die nach uns kom-men.\n\nDer Rek-tor hat zu-ge-hört. Er hat nichts ver-spro-chen. Er hat ge-sagt, er re-det mit der Stadt.\n\nKei-ne Ah-nung, ob der Baum bleibt. Viel-leicht fäl-len sie ihn trotz-dem. A-ber wisst ihr was? Wir ha-ben nicht ein-fach zu-ge-schaut. Und das fühlt sich bes-ser an, als ich dach-te.",
+  "zusammenfassung": "Jonas erzaehlt, wie seine Klasse sich gegen die Faellung des alten Kirschbaums auf dem Schuldach wehrt. Die Schueler malen Schilder, sammeln Unterschriften und gehen zum Rektor. Ob der Baum bleibt, ist offen — aber die Klasse hat gehandelt.",
+  "wortanzahl": 248,
+  "status": "korrigiert",
+  "version": 3,
+  "quiz": [
+    {
+      "q": "Warum soll der Kirschbaum auf dem Schuldach gefällt werden?",
+      "a": [
+        "Die Schule braucht einen neuen Parkplatz für Lehrераutos.",
+        "Der Baum ist krank und gefährlich.",
+        "Es soll ein neuer Spielplatz gebaut werden."
+      ],
+      "correct": 0
+    },
+    {
+      "q": "Was macht Paul, um den Baum zu retten?",
+      "a": [
+        "Er malt ein großes Plakat.",
+        "Er startet eine Unterschriftenliste.",
+        "Er ruft die Zeitung an."
+      ],
+      "correct": 1
+    },
+    {
+      "q": "Was passiert am Ende der Geschichte?",
+      "a": [
+        "Der Rektor verspricht, den Baum zu retten.",
+        "Der Baum wird sofort gefällt.",
+        "Der Rektor hört zu und sagt, er redet mit der Stadt."
+      ],
+      "correct": 2
+    }
+  ],
+  "wortschatz": [
+    {
+      "wort": "das Fass zum Überlaufen bringen",
+      "silben": "das Fass zum Ü-ber-lau-fen brin-gen",
+      "bedeutung": "Eine Redewendung: Der letzte Tropfen, der alles zu viel macht — wenn sich Ärger lange angesammelt hat und dann noch etwas dazukommt."
+    },
+    {
+      "wort": "stille Wasser sind tief",
+      "silben": "stil-le Was-ser sind tief",
+      "bedeutung": "Eine Redewendung: Wer ruhig und leise wirkt, hat oft viel mehr in sich, als man denkt."
+    },
+    {
+      "wort": "im gleichen Boot sitzen",
+      "silben": "im glei-chen Boot sit-zen",
+      "bedeutung": "Eine Redewendung: Alle stecken in der gleichen Situation und müssen gemeinsam eine Lösung finden."
+    },
+    {
+      "wort": "fällen",
+      "silben": "fäl-len",
+      "bedeutung": "Einen Baum absägen und umwerfen, damit er nicht mehr steht."
+    }
+  ],
+  "tags": [
+    "Umwelt",
+    "Protest",
+    "Teamwork",
+    "Schule",
+    "Mut"
+  ],
+  "charaktere": [
+    {
+      "name": "Jonas",
+      "role": "narrator",
+      "appearance": "A 10-year-old boy with short dark brown hair, light skin, brown eyes, wearing a green hoodie and jeans, with an earnest and thoughtful expression"
+    },
+    {
+      "name": "Lena",
+      "role": "supporting",
+      "appearance": "A 10-year-old girl with long blonde hair in a ponytail, freckles, light skin, wearing a red jacket and dark blue jeans, holding a handmade protest sign"
+    },
+    {
+      "name": "Paul",
+      "role": "supporting",
+      "appearance": "A quiet 10-year-old boy with short black hair, light brown skin, dark eyes, wearing a grey sweater and black pants, holding a clipboard with a petition"
+    },
+    {
+      "name": "Rektor",
+      "role": "secondary",
+      "appearance": "A middle-aged man around 50, with short grey hair, glasses, light skin, wearing a dark blue suit jacket and a white shirt, with a serious but attentive expression"
+    }
+  ],
+  "szenen": [
+    {
+      "scene": 1,
+      "prompt": "colorful cartoon illustration for children, bold outlines, bright vivid colors, fun and playful, digital art, no text in image. A rooftop school garden in spring with a large blooming cherry tree covered in pink blossoms. A group of five children sit and play in the shade beneath the tree on a sunny day. Among them: a 10-year-old boy with short dark brown hair wearing a green hoodie (Jonas), and a 10-year-old girl with a long blonde ponytail in a red jacket (Lena). The rooftop has a low railing and blue sky with fluffy white clouds in the background."
+    },
+    {
+      "scene": 2,
+      "prompt": "colorful cartoon illustration for children, bold outlines, bright vivid colors, fun and playful, digital art, no text in image. A school hallway scene. A 10-year-old girl with long blonde hair in a ponytail, freckles, and a red jacket (Lena) holds up a large colorful handmade protest sign. Next to her, a quiet 10-year-old boy with short black hair, light brown skin, wearing a grey sweater (Paul) holds a clipboard collecting signatures. Several classmates crowd around eagerly signing the list. The mood is determined and energetic."
+    },
+    {
+      "scene": 3,
+      "prompt": "colorful cartoon illustration for children, bold outlines, bright vivid colors, fun and playful, digital art, no text in image. A school principal's office. A group of children stands confidently in front of a large wooden desk. In front: a 10-year-old boy with short dark brown hair and a green hoodie (Jonas) and a 10-year-old girl with a blonde ponytail and red jacket (Lena). Behind the desk sits a middle-aged man around 50 with short grey hair, glasses, and a dark blue suit jacket (the principal), leaning forward and listening attentively. The children look brave and hopeful."
+    }
+  ]
+}
