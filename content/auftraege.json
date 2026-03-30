@@ -1,0 +1,55 @@
+[
+  {
+    "id": "auftrag-2026-03-30-001",
+    "idee_id": "idea-2026-03-30-001",
+    "titel": "Mein roter Regenschirm",
+    "genre": "Alltag",
+    "beschreibung": "Ein Kind findet auf dem Schulweg einen leuchtend roten Regenschirm auf dem Bürgersteig. Er gehört offensichtlich jemandem — aber wem? Die Geschichte zeigt, wie das Kind den Mut aufbringt, fremde Menschen anzusprechen, und schließlich die Besitzerin findet. Ton: warm, nah, alltagsnah. Sprache: sehr einfach, kurze Sätze (max. 8 Wörter), Satzzeichen als Pausen nutzen. Keine Metaphern, keine Komposita ohne Erklärung. Jeder Absatz maximal 2 Sätze. Kernbotschaft: Ehrlichkeit und der erste kleine Mut. Umfang: ca. 300–400 Wörter. Stufe 2.1 bedeutet: erste Lesejahre, Erstleser kurz nach dem Buchstaben-Lernprozess.",
+    "stufe": "2.1",
+    "persona": "lea",
+    "bildstil": "Aquarell",
+    "status": "fertig",
+    "prioritaet": 1,
+    "erstellt": "2026-03-30"
+  }
+  ,
+  {
+    "id": "auftrag-2026-03-30-002",
+    "idee_id": "idea-2026-03-30-002",
+    "titel": "Kita-Krach: Wer hat das Lego geklaut?",
+    "genre": "Humor",
+    "beschreibung": "Im Kindergarten fehlt eine ganze Tüte Lego. Alle sind verdächtig: der vorwitzige Ben, die stille Mia, sogar Erzieherin Frau Koch — die immer so komisch schaut! Zara Zapp erzählt diese Detektivgeschichte mit Knallsätzen und viel Tempo. Jeder Absatz maximal 2 kurze Sätze. Mini-Cliffhanger am Ende jedes Abschnitts. Der Täter ist völlig überraschend — und keiner ist böse, es ist einfach nur sehr lustig. Ton: schräg, frech, tempo-geladen. Kein langer Satz über 10 Wörter. Keine Nebensätze. Erzählrhythmus: Frage stellen, Verdacht wecken, Spannung aufbauen, Auflösung — komisch. Umfang: ca. 300–380 Wörter. Stufe 2.4 bedeutet: sicheres Erstlesen, kurze Wörter bevorzugt, Komposita nur wenn sie klar und maximal zweiteilig sind.",
+    "stufe": "2.4",
+    "persona": "zara",
+    "bildstil": "Cartoon",
+    "status": "in_arbeit",
+    "prioritaet": 1,
+    "erstellt": "2026-03-30"
+  },
+  {
+    "id": "auftrag-2026-03-30-003",
+    "idee_id": "idea-2026-03-30-003",
+    "titel": "Wie schmeckt eigentlich Farbe?",
+    "genre": "Sachtext",
+    "beschreibung": "Samira erklaert das Phaenomen Synaesthesie kindgerecht und fesselnd. Einstieg mit einer konkreten Frage: Stell dir vor, du hoerst Musik — und ploetzlich schmeckt sie nach Schokolade. Klingt komisch? Fuer manche Menschen ist das wirklich so! Dann Erklaerung: Was ist Synaesthesie? Wie funktioniert sie? Welche Arten gibt es (Farben hoeren, Zahlen als Farben sehen, Klang schmecken)? Samiras Checker-Stil: kurze, packende Fakten-Saetze, dann eine staunende Frage dazwischen. Zwischendurch echte Beispiele aus dem Alltag von Kindern (z.B. Mathe-Stunde, Musikunterricht). Abschluss: Wie waere dein Alltag, wenn Musik nach Schokolade schmecken wuerde? Lade die Lesenden ein, sich vorzustellen, welche Farbe ihr Lieblingsessen haette. Ton: neugierig, aufgeweckt, nie oberlehrerhaft. Jeder Erklaerungsblock endet mit einem Stauner-Satz oder einer Mitmach-Frage. Keine Fremdwoerter ohne sofortige Erklaerung direkt dahinter in Klammern. Umfang: ca. 380–450 Woerter. Stufe 3.2 bedeutet: fluessige Leser, zwei- bis dreisilbige Woerter problemlos, kurze Nebensaetze erlaubt, aber kein verschachtelter Satzbau.",
+    "stufe": "3.2",
+    "persona": "samira",
+    "bildstil": "Aquarell",
+    "status": "in_arbeit",
+    "prioritaet": 1,
+    "erstellt": "2026-03-30"
+  },
+  {
+    "id": "auftrag-2026-03-30-005",
+    "idee_id": "idea-2026-03-30-005",
+    "titel": "Nacht-Alarm im Tierheim",
+    "genre": "Abenteuer",
+    "beschreibung": "Timo Taktschritt erzaehlt diese Geschichte rhythmisch und mit Herzklopfen. Szenario: Um Mitternacht geht im Tierheim der Feuermelder los. Aber es brennt nicht. Stattdessen sind drei Hasen ausgebuexter. Pflegerin Sonja muss die Tiere finden, bevor der Chef es merkt. Sprache und Stil: Satzlaenge strikt 5–10 Woerter, gleichmaessiger Rhythmus wie ein ruhiger Herzschlag — kurz, kurz, kurz. Keine Komposita: nicht 'Feuermelder', sondern 'der Alarm', nicht 'Tierheim', sondern 'das Heim fuer Tiere' oder 'das Heim'. Kein Genitiv. Konjunktionen erlaubt: weil, dass, aber, denn (Stufe 3.4). Kurze Nebensaetze sind moeglich, aber nie verschachtelt. Spannung durch Wiederholung und Klang aufbauen: Wo ist Hase eins? Wo ist Hase zwei? Wo ist Hase drei? Sonja haelt den Atem an. Ton: angespannt, aber kindlich-warm, kein echter Schrecken — am Ende ist alles gut. Die Hasen sitzen irgendwo Verrruecktes (z.B. in der Kueche, unter dem Schreibtisch). Sonja findet alle drei. Der Chef schlaeft durch. Abschluss: ein letzter Satz, der schmunzeln laesst. Umfang: 80–100 Woerter. Stufe 3.4 bedeutet: Konjunktionen und kurze Nebensaetze, Leser lesen sicher aber brauchen noch Rhythmus und Vorhersehbarkeit.",
+    "stufe": "3.4",
+    "persona": "timo",
+    "bildstil": "Buntstift",
+    "status": "in_arbeit",
+    "prioritaet": 1,
+    "erstellt": "2026-03-30"
+  }
+]

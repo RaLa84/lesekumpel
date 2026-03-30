@@ -1,0 +1,364 @@
+{
+  "name": "Lesekumpel – Publish (Claude Pipeline)",
+  "nodes": [
+    {
+      "parameters": {
+        "path": "lesekumpel-publish",
+        "responseMode": "lastNode",
+        "httpMethod": "POST",
+        "options": {}
+      },
+      "id": "pub-webhook",
+      "name": "Webhook: Publish Story",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 2,
+      "position": [
+        260,
+        500
+      ],
+      "webhookId": "pub-lesekumpel-publish-001"
+    },
+    {
+      "parameters": {
+        "jsCode": "const raw = $input.first().json;\nconst input = raw.body || raw;\n\n// --- Required fields ---\nconst requiredFields = ['titel', 'slug', 'persona', 'geschichte', 'szenen'];\nconst missing = requiredFields.filter(f => !input[f]);\nif (missing.length > 0) {\n  throw new Error(`Fehlende Pflichtfelder: ${missing.join(', ')}`);\n}\n\nconst titel = (input.titel || '').trim();\nconst slug = (input.slug || '').trim();\nconst persona = (input.persona || 'lea').trim().toLowerCase();\nconst personaName = (input.personaName || '').trim();\nconst neurotype = (input.neurotype || '').trim();\nconst stufe = (input.stufe || '3.4').trim();\nconst stufeLabel = (input.stufeLabel || '').trim();\nconst genre = (input.genre || 'Abenteuer').trim();\nconst bildstil = (input.bildstil || 'Aquarell').trim();\nconst geschichte = (input.geschichte || '').trim();\nconst zusammenfassung = (input.zusammenfassung || '').trim();\nconst quiz = input.quiz || [];\nconst wortschatz = input.wortschatz || [];\nconst tags = input.tags || [];\nconst szenen = input.szenen || [];\nconst charaktere = input.charaktere || [];\n\n// --- Persona metadata ---\nconst personaMeta = {\n  lea:    { name: 'Lea Lesestark',        neurotype: 'Neurotypisch',             imgUrl: 'https://rala84.github.io/lesekumpel/avatars/lea-lesestark.webp',          bio: 'Lea liebt Geschichten so sehr, dass sie am liebsten selbst in jedes Abenteuer hineinspringen würde!' },\n  timo:   { name: 'Timo Taktschritt',     neurotype: 'LRS/Legasthenie',          imgUrl: 'https://rala84.github.io/lesekumpel/avatars/timo-taktschritt.webp',       bio: 'Timo liebt Musik und Geschichten — am liebsten beides zusammen! Seine Sätze haben einen Rhythmus, den du fast mitklatschen kannst.' },\n  zara:   { name: 'Zara Zapp',            neurotype: 'ADHS',                     imgUrl: 'https://rala84.github.io/lesekumpel/avatars/zara-zapp.webp',              bio: 'Zara kann einfach nicht stillsitzen — und ihre Geschichten auch nicht! Bei ihr geht es sofort los: Action, Überraschungen und immer eine Wendung.' },\n  leo:    { name: 'Leo Klartext',          neurotype: 'Autismus-Spektrum',        imgUrl: 'https://rala84.github.io/lesekumpel/avatars/leo-klartext.webp',           bio: 'Leo sagt immer genau das, was er meint. In seinen Geschichten weißt du immer, was passiert und warum.' },\n  mia:    { name: 'Mia Brücke',           neurotype: 'Deutsch als Zweitsprache', imgUrl: 'https://rala84.github.io/lesekumpel/avatars/mia-bruecke.webp',            bio: 'Mia nimmt dich an die Hand und zeigt dir die Welt, als wäre alles ganz neu und aufregend.' },\n  samira: { name: 'Samira Wissensfreund', neurotype: 'Autismus-Spektrum',        imgUrl: 'https://rala84.github.io/lesekumpel/avatars/samira-wissensfreund.webp',   bio: 'Samira liebt es, spannende Fakten zu entdecken und sie so zu erzählen, dass du staunst!' },\n  holzi:  { name: 'Holzi Pixelkopf',      neurotype: 'ADHS',                     imgUrl: 'https://rala84.github.io/lesekumpel/avatars/holzi-pixelkopf.webp',        bio: 'Holzi ist der sympathische Chaot, der Gaming-Geschichten erzählt mit maximaler Action und minimaler Planung.' },\n  deniz:  { name: 'Deniz Traumfänger',    neurotype: 'Neurotypisch',             imgUrl: 'https://rala84.github.io/lesekumpel/avatars/deniz-traumfaenger.webp',     bio: 'Deniz nimmt dich mit in magische Welten voller Atmosphäre und Gefühle.' },\n  jonas:  { name: 'Jonas Entdecker',       neurotype: 'DaZ',                      imgUrl: 'https://rala84.github.io/lesekumpel/avatars/jonas-entdecker.webp',        bio: 'Jonas erzählt Alltagsabenteuer aus der Ich-Perspektive — ehrlich, lustig und immer zum Mitfühlen.' }\n};\n\nconst p = personaMeta[persona] || personaMeta.lea;\n\n// --- Map bildstil ---\nconst bildstilMap = {\n  'Aquarell':   \"children's book watercolor illustration, soft pastel colors, warm and friendly, white background, no text in image\",\n  'Cartoon':    \"colorful cartoon illustration for children, bold outlines, bright vivid colors, fun and playful, digital art, no text in image\",\n  'Buntstift':  \"colored pencil drawing, hand-drawn children's illustration, crayon texture, sketch-like, warm paper background, no text in image\",\n  'Pixel-Art':  \"pixel art illustration for kids, retro gaming style, colorful blocky pixels, 16-bit aesthetic, cheerful, no text in image\",\n  'Anime':      \"anime-style children's illustration, bright vibrant colors, cute big eyes, cel-shading, Nintendo/Pokémon inspired, cheerful, no text in image\",\n  'Traumwelt':  \"dreamlike magical painting, glowing light effects, ethereal atmosphere, inspired by Ori and the Blind Forest, soft luminous colors, no text in image\",\n  'Knete':      \"claymation stop-motion style, 3D clay figures, plasticine texture, handmade look, warm lighting, Aardman-inspired, no text in image\",\n  'Voxel':      \"voxel art illustration, 3D blocky style, Minecraft-inspired, colorful cubes, isometric view, cheerful, no text in image\"\n};\nconst imageStyle = bildstilMap[bildstil] || bildstilMap['Aquarell'];\n\n// --- Build characterReference ---\nlet charRef = '';\nif (charaktere && charaktere.length > 0) {\n  charRef = charaktere.map(c =>\n    `${c.name}: ${c.beschreibung || c.description || ''}`\n  ).join('. ');\n}\n\n// --- Calculate wordCount ---\nconst plainText = geschichte.replace(/-/g, ' ');\nconst wordCount = plainText.split(/\\s+/).filter(w => w.length > 0).length;\n\nconst date = new Date().toISOString().split('T')[0];\n\nreturn {\n  json: {\n    title: titel,\n    slug,\n    persona,\n    personaName: personaName || p.name,\n    neurotype: neurotype || p.neurotype,\n    personaImg: p.imgUrl,\n    personaBio: p.bio,\n    stufe,\n    stufeLabel,\n    genre,\n    imageStyle,\n    imageCount: szenen.length,\n    storyText: geschichte,\n    summaryText: zusammenfassung,\n    quizData: quiz,\n    wortschatz,\n    tags,\n    szenen,\n    charRef,\n    wordCount,\n    date\n  }\n};"
+      },
+      "id": "pub-prepare",
+      "name": "Daten validieren",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        500,
+        500
+      ]
+    },
+    {
+      "parameters": {
+        "jsCode": "const data = $('Daten validieren').first().json;\nconst szenen = data.szenen || [];\nconst charRef = data.charRef || '';\nconst imageStyle = data.imageStyle || '';\n\nreturn szenen.map((scene, idx) => {\n  const sceneIndex = scene.scene || (idx + 1);\n  let finalPrompt = imageStyle + '. ';\n  if (charRef) {\n    finalPrompt += charRef + '. Scene: ';\n  }\n  finalPrompt += (scene.prompt || scene.bildprompt || '');\n\n  return {\n    json: {\n      ...data,\n      sceneIndex,\n      imagePrompt: finalPrompt,\n      imageFilename: data.slug + '-' + sceneIndex + '.png',\n      imageGithubPath: 'bilder/' + data.slug + '-' + sceneIndex + '.png'\n    }\n  };\n});"
+      },
+      "id": "pub-scenes",
+      "name": "Szenen zu Items",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        740,
+        500
+      ]
+    },
+    {
+      "parameters": {
+        "options": {}
+      },
+      "id": "pub-img-loop",
+      "name": "Bild-Loop",
+      "type": "n8n-nodes-base.splitInBatches",
+      "typeVersion": 3,
+      "position": [
+        980,
+        500
+      ]
+    },
+    {
+      "parameters": {
+        "resource": "image",
+        "modelId": {
+          "__rl": true,
+          "value": "models/gemini-2.5-flash-image",
+          "mode": "list",
+          "cachedResultName": "models/gemini-2.5-flash-image (Nano Banana)"
+        },
+        "prompt": "={{ $json.imagePrompt }}",
+        "options": {}
+      },
+      "id": "pub-gen-image",
+      "name": "Gemini: Bild generieren",
+      "type": "@n8n/n8n-nodes-langchain.googleGemini",
+      "typeVersion": 1,
+      "position": [
+        1220,
+        380
+      ],
+      "retryOnFail": true,
+      "credentials": {
+        "googlePalmApi": {
+          "id": "6COxa9BJR4aj2W2w",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "operation": "binaryToPropery",
+        "options": {}
+      },
+      "id": "pub-extract-img",
+      "name": "Bild-Daten extrahieren",
+      "type": "n8n-nodes-base.extractFromFile",
+      "typeVersion": 1.1,
+      "position": [
+        1460,
+        380
+      ]
+    },
+    {
+      "parameters": {
+        "authentication": "oAuth2",
+        "resource": "file",
+        "owner": {
+          "__rl": true,
+          "value": "RaLa84",
+          "mode": "name"
+        },
+        "repository": {
+          "__rl": true,
+          "value": "lesekumpel",
+          "mode": "list",
+          "cachedResultName": "lesekumpel",
+          "cachedResultUrl": "https://github.com/RaLa84/lesekumpel"
+        },
+        "filePath": "={{ $('Szenen zu Items').all()[$('Bild-Loop').context.currentRunIndex]?.json.imageGithubPath }}",
+        "fileContent": "={{ $json.data }}",
+        "commitMessage": "=Bild: {{ $('Szenen zu Items').all()[$('Bild-Loop').context.currentRunIndex]?.json.imageFilename }}"
+      },
+      "id": "pub-upload-img",
+      "name": "GitHub: Bild hochladen",
+      "type": "n8n-nodes-base.github",
+      "typeVersion": 1.1,
+      "position": [
+        1700,
+        380
+      ],
+      "credentials": {
+        "githubOAuth2Api": {
+          "id": "WBP07xjckQiul5s7",
+          "name": "GitHub account"
+        }
+      }
+    },
+    {
+      "parameters": {},
+      "id": "pub-limit",
+      "name": "Nur 1 Item",
+      "type": "n8n-nodes-base.limit",
+      "typeVersion": 1,
+      "position": [
+        1220,
+        640
+      ]
+    },
+    {
+      "parameters": {
+        "url": "https://raw.githubusercontent.com/RaLa84/lesekumpel/main/n8n-config/demo-template.html",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "text"
+            }
+          }
+        }
+      },
+      "id": "pub-template",
+      "name": "GitHub: Template laden",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        1460,
+        640
+      ]
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "const data = $('Daten validieren').first().json;\nlet template = $input.item.json.data;\n\n// Generate image tags for all images (1 to imageCount)\nconst imageCount = data.imageCount || 1;\nlet imagesHtml = '';\nfor (let i = 1; i <= imageCount; i++) {\n  const imgUrl = `https://rala84.github.io/lesekumpel/bilder/${data.slug}-${i}.png`;\n  imagesHtml += `<img src=\"${imgUrl}\" alt=\"${data.title}\" class=\"hero-image\" onerror=\"this.style.display='none'\">\n        `;\n}\n\ntemplate = template\n  .replace(/\\{\\{STORY_TITLE\\}\\}/g, data.title)\n  .replace(/\\{\\{STORY_DATE\\}\\}/g, data.date)\n  .replace(/\\{\\{PERSONA_NAME\\}\\}/g, data.personaName)\n  .replace(/\\{\\{PERSONA_IMG_URL\\}\\}/g, data.personaImg)\n  .replace(/\\{\\{PERSONA_BIO\\}\\}/g, data.personaBio)\n  .replace(/\\{\\{STUFE\\}\\}/g, String(data.stufe))\n  .replace(/\\{\\{STUFE_LABEL\\}\\}/g, data.stufeLabel || '')\n  .replace(/\\{\\{NEUROTYPE\\}\\}/g, data.neurotype)\n  .replace(/\\{\\{GENRE\\}\\}/g, data.genre)\n  .replace(/\\{\\{STORY_IMAGES_HTML\\}\\}/g, imagesHtml.trim())\n  .replace(/\\{\\{HERO_IMAGE_URL\\}\\}/g, `https://rala84.github.io/lesekumpel/bilder/${data.slug}-1.png`)\n  .replace(/\\{\\{RAW_STORY_TEXT\\}\\}/g, JSON.stringify(data.storyText || ''))\n  .replace(/\\{\\{RAW_SUMMARY_TEXT\\}\\}/g, JSON.stringify(data.summaryText || ''))\n  .replace(/\\{\\{QUIZ_DATA_JSON\\}\\}/g, JSON.stringify(data.quizData || []))\n  .replace(/\\{\\{DICTIONARY_JSON\\}\\}/g, JSON.stringify(data.wortschatz || []))\n  .replace(/\\{\\{WORD_COUNT\\}\\}/g, String(data.wordCount || 0))\n  .replace(/\\{\\{SLUG\\}\\}/g, data.slug)\n  .replace(/\\{\\{RELATED_STORIES_HTML\\}\\}/g, '');\n\nconst htmlBase64 = Buffer.from(template, 'utf8').toString('base64');\nconst storyUrl = `https://rala84.github.io/lesekumpel/demo-texte/${data.slug}.html`;\n\nreturn { json: { ...data, htmlBase64, filePath: `demo-texte/${data.slug}.html`, commitMessage: `Demo-Text: ${data.title} — ${data.personaName} Stufe ${data.stufe}`, storyUrl } };\n"
+      },
+      "id": "pub-assemble",
+      "name": "HTML assemblieren",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        1700,
+        640
+      ]
+    },
+    {
+      "parameters": {
+        "authentication": "oAuth2",
+        "resource": "file",
+        "owner": {
+          "__rl": true,
+          "value": "RaLa84",
+          "mode": "name"
+        },
+        "repository": {
+          "__rl": true,
+          "value": "lesekumpel",
+          "mode": "list",
+          "cachedResultName": "lesekumpel",
+          "cachedResultUrl": "https://github.com/RaLa84/lesekumpel"
+        },
+        "filePath": "={{ $json.filePath }}",
+        "fileContent": "={{ $json.htmlBase64 }}",
+        "commitMessage": "={{ $json.commitMessage }}"
+      },
+      "id": "pub-commit",
+      "name": "GitHub: HTML committen",
+      "type": "n8n-nodes-base.github",
+      "typeVersion": 1.1,
+      "position": [
+        1940,
+        640
+      ],
+      "credentials": {
+        "githubOAuth2Api": {
+          "id": "WBP07xjckQiul5s7",
+          "name": "GitHub account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsCode": "const data = $('HTML assemblieren').first().json;\nreturn {\n  json: {\n    status: 'success',\n    storyTitle: data.title,\n    personaName: data.personaName,\n    stufe: data.stufe,\n    storyUrl: data.storyUrl,\n    imageCount: data.imageCount\n  }\n};"
+      },
+      "id": "pub-result",
+      "name": "Ergebnis aufbauen",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2180,
+        640
+      ]
+    }
+  ],
+  "connections": {
+    "Webhook: Publish Story": {
+      "main": [
+        [
+          {
+            "node": "Daten validieren",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Daten validieren": {
+      "main": [
+        [
+          {
+            "node": "Szenen zu Items",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Szenen zu Items": {
+      "main": [
+        [
+          {
+            "node": "Bild-Loop",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Bild-Loop": {
+      "main": [
+        [
+          {
+            "node": "Nur 1 Item",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Gemini: Bild generieren",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Gemini: Bild generieren": {
+      "main": [
+        [
+          {
+            "node": "Bild-Daten extrahieren",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Bild-Daten extrahieren": {
+      "main": [
+        [
+          {
+            "node": "GitHub: Bild hochladen",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GitHub: Bild hochladen": {
+      "main": [
+        [
+          {
+            "node": "Bild-Loop",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Nur 1 Item": {
+      "main": [
+        [
+          {
+            "node": "GitHub: Template laden",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GitHub: Template laden": {
+      "main": [
+        [
+          {
+            "node": "HTML assemblieren",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "HTML assemblieren": {
+      "main": [
+        [
+          {
+            "node": "GitHub: HTML committen",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "GitHub: HTML committen": {
+      "main": [
+        [
+          {
+            "node": "Ergebnis aufbauen",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  }
+}

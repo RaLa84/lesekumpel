@@ -1,0 +1,83 @@
+{
+  "auftrag_id": "auftrag-2026-03-30-005",
+  "titel": "Nacht-Alarm im Tierheim",
+  "persona": "timo",
+  "stufe": "3.4",
+  "geschichte": "Es ist mit-ten in der Nacht.\nDer A-larm geht los.\n\nA-ber es brennt nicht.\nDrei Ha-sen sind weg, weil die Tür of-fen stand.\nSon-ja rennt durch den Flur.\n\nWo ist Ha-se eins?\nEr sitzt in der Kü-che im Topf!\n\nWo ist Ha-se zwei?\nEr liegt un-ter dem Tisch und schläft.\n\nWo ist Ha-se drei?\nSon-ja hält den A-tem an.\nDer Ha-se sitzt auf dem Stuhl vom Chef!\n\nSon-ja schnappt al-le drei.\nSie trägt sie zu-rück, da-mit der Chef nichts merkt.\n\nEr schnarcht die gan-ze Nacht.\nSon-ja grinst, denn sie hat es ge-schafft.",
+  "zusammenfassung": "Um Mitternacht geht im Tierheim der Alarm los. Drei Hasen sind ausgebuext und Pflegerin Sonja muss sie finden, bevor der Chef aufwacht. Sie entdeckt die Hasen in der Kueche, unter dem Tisch und auf dem Stuhl vom Chef -- und bringt alle drei zurueck, waehrend der Chef die ganze Nacht durchschnarcht.",
+  "wortanzahl": 92,
+  "status": "freigegeben",
+  "version": 1,
+  "quiz": [
+    {
+      "q": "Warum geht der Alarm im Tierheim los?",
+      "a": ["Weil es brennt.", "Weil drei Hasen weg sind.", "Weil der Chef schnarcht."],
+      "correct": 1
+    },
+    {
+      "q": "Wo findet Sonja den ersten Hasen?",
+      "a": ["Unter dem Tisch.", "Auf dem Stuhl vom Chef.", "Im Topf in der Küche."],
+      "correct": 2
+    },
+    {
+      "q": "Warum bringt Sonja die Hasen schnell zurück?",
+      "a": ["Damit der Chef es nicht merkt.", "Weil die Hasen Hunger haben.", "Weil der Alarm noch läutet."],
+      "correct": 0
+    }
+  ],
+  "wortschatz": [
+    {
+      "wort": "Alarm",
+      "silben": "A-larm",
+      "bedeutung": "Ein lautes Signal, das auf etwas Wichtiges aufmerksam macht."
+    },
+    {
+      "wort": "Tierheim",
+      "silben": "Tier-heim",
+      "bedeutung": "Ein Ort, an dem Tiere gepflegt und betreut werden, bis sie ein neues Zuhause finden."
+    },
+    {
+      "wort": "damit",
+      "silben": "da-mit",
+      "bedeutung": "Ein Bindewort: es erklärt, wozu etwas getan wird — zum Beispiel: \"Sie ist leise, damit er nicht aufwacht.\""
+    },
+    {
+      "wort": "denn",
+      "silben": "denn",
+      "bedeutung": "Ein Bindewort: es erklärt den Grund für etwas — zum Beispiel: \"Sie grinst, denn sie hat es geschafft.\""
+    }
+  ],
+  "tags": ["Tierheim", "Abenteuer", "Nacht", "Hasen", "Spannung"],
+  "charaktere": [
+    {
+      "name": "Sonja",
+      "role": "main",
+      "appearance": "A young woman in her late twenties with short dark hair tucked behind her ears, warm olive skin, and tired but determined brown eyes. She wears a teal green animal shelter uniform shirt, dark jogger pants, and white sneakers. She carries a small fleece blanket draped over her arm."
+    },
+    {
+      "name": "Hase eins",
+      "role": "supporting",
+      "appearance": "A small fluffy white rabbit with long floppy ears, a pink nose, and bright curious eyes. It sits comfortably inside a large silver cooking pot as if it were a cozy chair."
+    },
+    {
+      "name": "Hase zwei",
+      "role": "supporting",
+      "appearance": "A small fluffy grey rabbit with white patches on its nose and paws, lying on its side, fast asleep beneath a wooden table."
+    },
+    {
+      "name": "Hase drei",
+      "role": "supporting",
+      "appearance": "A small fluffy brown rabbit with big round eyes and short upright ears, sitting upright and alert on a large office chair with worn black fabric."
+    }
+  ],
+  "szenen": [
+    {
+      "scene": 1,
+      "prompt": "colored pencil drawing, hand-drawn children's illustration, crayon texture, sketch-like, warm paper background, no text in image. A young woman in her late twenties with short dark hair, warm olive skin, and a teal green animal shelter uniform is sneaking through a dimly lit hallway at night. She holds a small torch and looks surprised: in front of her, a large silver cooking pot on the kitchen floor has a small fluffy white rabbit with floppy ears sitting inside it, looking very comfortable and content. The kitchen has cheerful yellow walls and soft shadows, cozy and a little funny."
+    },
+    {
+      "scene": 2,
+      "prompt": "colored pencil drawing, hand-drawn children's illustration, crayon texture, sketch-like, warm paper background, no text in image. A young woman in her late twenties with short dark hair, warm olive skin, and a teal green animal shelter uniform carefully cradles three small fluffy rabbits — one white, one grey, one brown — in her arms. She walks on tiptoes past a half-open door, behind which a man in pajamas can be seen sleeping deeply in a big armchair, snoring with his mouth open. The woman grins with relief. The scene is warm, cozy, and gently humorous."
+    }
+  ]
+}

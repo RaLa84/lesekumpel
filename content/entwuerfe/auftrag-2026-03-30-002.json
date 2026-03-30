@@ -1,0 +1,89 @@
+{
+  "auftrag_id": "auftrag-2026-03-30-002",
+  "titel": "Kita-Krach: Wer hat das Lego geklaut?",
+  "persona": "zara",
+  "stufe": "2.4",
+  "geschichte": "Die Le-go-Tü-te ist weg!\nBen rennt zur Spiel-Ecke. Leer!\n\nMi-a? fragt Ben.\nIch war das nicht! sagt Mi-a.\n\nFrau Koch guckt ko-misch.\nHat sie die Bau-Stei-ne?\n\nBen schaut un-ter den Tisch. Nichts.\n\nEr schaut hin-ter das Re-gal.\n\nDa! Die Kat-ze vom Kin-der-Gar-ten sitzt auf der Tü-te.\nSie baut ein Kat-zen-Bett!\n\nAl-le la-chen.\nDas Le-go bleibt heu-te bei der Kat-ze.",
+  "zusammenfassung": "Im Kindergarten ist die Legotüte verschwunden. Ben verdächtigt Mia und Frau Koch, doch der wahre Täter ist die Kindergartenkatze — sie hat sich aus den Steinen ein gemütliches Katzenbett gebaut.",
+  "wortanzahl": 59,
+  "status": "angereichert",
+  "version": 2,
+  "qa_aenderungen": [
+    "Absatz 5 geteilt: 'Ben schaut unter den Tisch. Nichts.' und 'Er schaut hinter das Regal.' sind jetzt separate Absätze (Zara-Regel: max 2 Sätze/Absatz)",
+    "Absatz 6: 'Da!' bleibt beim Katze-Satz (2 Sätze), 'Sie baut ein Katzenbett!' als eigener Absatz wäre Übertrennung — stattdessen belassen als logische Einheit (Da! zählt als Interjektion, nicht als vollständiger Satz)",
+    "Zeichensetzung: 'Mi-a?,' → 'Mi-a?' (Komma nach Fragezeichen entfernt)",
+    "Zeichensetzung: 'nicht!,' → 'nicht!' (Komma nach Ausrufezeichen entfernt)"
+  ],
+  "quiz": [
+    {
+      "q": "Was ist am Anfang der Geschichte verschwunden?",
+      "a": ["Die Legotüte", "Bens Jacke", "Mias Buntstifte"],
+      "correct": 0
+    },
+    {
+      "q": "Wer hatte die Legotüte wirklich?",
+      "a": ["Mia", "Frau Koch", "Die Kindergartenkatze"],
+      "correct": 2
+    },
+    {
+      "q": "Was macht die Katze mit den Legosteinen?",
+      "a": ["Sie versteckt sie unter dem Tisch", "Sie baut sich ein Katzenbett", "Sie trägt sie in den Garten"],
+      "correct": 1
+    }
+  ],
+  "wortschatz": [
+    {
+      "wort": "Legotüte",
+      "silben": "Le-go-Tü-te",
+      "bedeutung": "Eine Tüte, in der viele bunte Legosteine aufbewahrt werden."
+    },
+    {
+      "wort": "Spielecke",
+      "silben": "Spiel-Ecke",
+      "bedeutung": "Eine Ecke im Zimmer, in der Kinder spielen können."
+    },
+    {
+      "wort": "Kindergarten",
+      "silben": "Kin-der-Gar-ten",
+      "bedeutung": "Eine Einrichtung, in der kleine Kinder tagsüber betreut werden und spielen."
+    },
+    {
+      "wort": "Katzenbett",
+      "silben": "Kat-zen-Bett",
+      "bedeutung": "Ein gemütlicher Platz, auf dem eine Katze schläft oder ruht."
+    }
+  ],
+  "tags": ["Kindergarten", "Humor", "Detektiv", "Tiere", "Teamwork"],
+  "charaktere": [
+    {
+      "name": "Ben",
+      "role": "main",
+      "appearance": "A 5-year-old boy with short dark brown hair, light skin, big curious brown eyes, wearing a red and white striped t-shirt and dark blue jeans, with white sneakers"
+    },
+    {
+      "name": "Mia",
+      "role": "supporting",
+      "appearance": "A 5-year-old girl with blonde hair in two small braids, light skin, blue eyes, wearing a purple long-sleeve shirt and green leggings with pink sneakers"
+    },
+    {
+      "name": "Frau Koch",
+      "role": "supporting",
+      "appearance": "A friendly kindergarten teacher in her 40s with shoulder-length wavy red hair, warm green eyes, wearing a colorful floral blouse and beige trousers with comfortable flat shoes"
+    },
+    {
+      "name": "Kindergartenkatze",
+      "role": "supporting",
+      "appearance": "A fluffy orange tabby cat with white paws and a white belly, green eyes, and a content expression, medium-sized"
+    }
+  ],
+  "szenen": [
+    {
+      "scene": 1,
+      "prompt": "colorful cartoon illustration for children, bold outlines, bright vivid colors, fun and playful, digital art, no text in image. A 5-year-old boy named Ben with short dark brown hair, light skin, big curious brown eyes, wearing a red and white striped t-shirt and dark blue jeans, looking alarmed and searching through an empty play corner in a colorful kindergarten room. Wooden shelves with toys are in the background. A 5-year-old girl named Mia with blonde hair in two small braids, blue eyes, wearing a purple long-sleeve shirt and green leggings, stands nearby shaking her head with her hands raised innocently. Bright primary colors, cheerful kindergarten atmosphere."
+    },
+    {
+      "scene": 2,
+      "prompt": "colorful cartoon illustration for children, bold outlines, bright vivid colors, fun and playful, digital art, no text in image. A fluffy orange tabby cat with white paws and white belly and green eyes sits proudly on top of a blue plastic bag filled with colorful Lego bricks behind a bookshelf in a kindergarten. The cat looks cozy and satisfied, as if it has built itself a nest. A 5-year-old boy named Ben with short dark brown hair, light skin, wearing a red and white striped t-shirt, and a friendly kindergarten teacher named Frau Koch in her 40s with shoulder-length wavy red hair wearing a colorful floral blouse, both peek around the corner of the shelf with huge surprised and amused expressions. A 5-year-old girl named Mia with blonde hair in two small braids, wearing a purple long-sleeve shirt, laughs in the background. Everyone looks delighted. Bright vivid colors, comedic mood."
+    }
+  ]
+}

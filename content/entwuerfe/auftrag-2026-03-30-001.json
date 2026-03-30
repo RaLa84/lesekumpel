@@ -1,0 +1,74 @@
+{
+  "auftrag_id": "auftrag-2026-03-30-001",
+  "titel": "Mein roter Regenschirm",
+  "persona": "lea",
+  "stufe": "2.1",
+  "geschichte": "Ein ro-ter Re-gen-schirm liegt auf dem Bür-ger-steig. Er leuch-tet im Re-gen. Ich he-be ihn auf.\n\nIch fra-ge ei-ne Frau. Ist das Ih-rer? Nein, sagt sie.\n\nDa rennt ein Mäd-chen zu mir. Hey, das ist mei-ner! Sie strahlt übers gan-ze Ge-sicht.\n\nDan-ke, dan-ke, dan-ke!, ruft sie. Ich muss auch la-chen.",
+  "zusammenfassung": "Ein Kind findet einen leuchtend roten Regenschirm im Regen auf dem Bürgersteig und hebt ihn auf. Es fragt eine Frau, ob er ihr gehört. Ein Mädchen erkennt den Schirm und bedankt sich überglücklich.",
+  "wortanzahl": 46,
+  "status": "freigegeben",
+  "version": 3,
+  "freigabe_datum": "2026-03-30",
+  "aenderungen": [
+    "Absatz 3 aufgeteilt: Ursprünglich 5 Sätze, jetzt 2 Absätze mit je 3 und 3 Sätzen (Lea-Regel: max 4 Sätze pro Absatz)",
+    "v3: Kindermund-Fix — 'Dein Mut ist echt schön!' ersetzt durch 'Danke, danke, danke!' (authentische Kinderreaktion statt LLM-Bewertung)"
+  ],
+  "quiz": [
+    {
+      "q": "Was findet das Kind auf dem Bürgersteig?",
+      "a": ["Einen roten Regenschirm", "Eine gelbe Tasche", "Einen blauen Ball"],
+      "correct": 0
+    },
+    {
+      "q": "Was macht das Kind mit dem Regenschirm?",
+      "a": ["Es nimmt ihn mit nach Hause", "Es fragt eine Frau, ob er ihr gehört", "Es lässt ihn liegen"],
+      "correct": 1
+    },
+    {
+      "q": "Wer ruft am Ende: Mein Schirm!?",
+      "a": ["Eine alte Frau", "Ein Mädchen", "Eine Lehrerin"],
+      "correct": 1
+    }
+  ],
+  "wortschatz": [
+    {
+      "wort": "Bürgersteig",
+      "silben": "Bür-ger-steig",
+      "bedeutung": "Der Weg neben der Straße, auf dem Menschen gehen."
+    },
+    {
+      "wort": "leuchten",
+      "silben": "leuch-ten",
+      "bedeutung": "Etwas leuchtet, wenn es sehr hell und auffällig aussieht."
+    },
+    {
+      "wort": "strahlen",
+      "silben": "strah-len",
+      "bedeutung": "Jemand strahlt, wenn er oder sie vor Freude ganz breit lächelt."
+    }
+  ],
+  "tags": ["Alltag", "Hilfsbereitschaft", "Mut", "Regen", "Fundsache"],
+  "szenen": [
+    {
+      "scene": 1,
+      "prompt": "children's book watercolor illustration, soft pastel colors, warm and friendly, white background, no text in image — A young child with short brown hair, wearing a yellow raincoat and red rubber boots, bending down to pick up a bright red umbrella from a wet grey sidewalk. Light rain is falling. In the background, a woman in a blue coat walks past. The scene feels cozy and hopeful despite the rainy weather."
+    }
+  ],
+  "charaktere": [
+    {
+      "name": "Ich (das Kind)",
+      "role": "main",
+      "appearance": "A young child around 6-7 years old with short brown hair, wearing a yellow raincoat and red rubber boots. Friendly and curious expression."
+    },
+    {
+      "name": "Die Frau",
+      "role": "supporting",
+      "appearance": "An adult woman in a blue coat, dark hair, shaking her head with a gentle smile."
+    },
+    {
+      "name": "Das Mädchen",
+      "role": "supporting",
+      "appearance": "A girl around the same age as the main character, with pigtails and a pink jacket, eyes shining with joy and gratitude."
+    }
+  ]
+}

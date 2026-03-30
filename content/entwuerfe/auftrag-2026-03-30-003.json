@@ -1,0 +1,62 @@
+{
+  "auftrag_id": "auftrag-2026-03-30-003",
+  "titel": "Wie schmeckt eigentlich Farbe?",
+  "persona": "samira",
+  "stufe": "3.2",
+  "geschichte": "**Sin-ne im Mix**\n\nStell dir vor: Du hörst Mu-sik. Und plötz-lich schmeckt sie nach Scho-ko-la-de! Klingt ver-rückt? Für man-che Men-schen ist das wirk-lich so.\n\n**Was pas-siert da?**\n\nDas Ge-hirn ver-mischt die Sin-ne. Es ver-bin-det Tö-ne mit Ge-schmack oder Zah-len mit Far-ben. Das nennt man Syn-äs-the-sie. Das be-deu-tet: Die Sin-ne ar-bei-ten ge-mein-sam.\n\n**Wie ent-deckt man das?**\n\nMan-che Kin-der be-mer-ken es im Mu-sik-un-ter-richt. Sie be-gin-nen ein Lied zu hö-ren und se-hen da-bei Far-ben. Die Zahl Fünf ist für sie viel-leicht grün. Das ist nicht er-fun-den. So er-le-ben die-se Kin-der ih-re Welt.\n\n**Und du?**\n\nWel-che Far-be hat dein Lieb-lings-lied? Ver-such es mal. Viel-leicht ent-deckst du et-was!",
+  "zusammenfassung": "Samira erklaert kindgerecht das Phaenomen Synaesthesie: Manche Menschen hoeren Farben oder schmecken Musik, weil ihr Gehirn die Sinne vermischt. Der Text laedt die Lesenden ein, selbst zu ueberlegen, welche Farbe ihr Lieblingslied haben koennte.",
+  "wortanzahl": 91,
+  "status": "angereichert",
+  "version": 1,
+  "quiz": [
+    {
+      "q": "Was macht das Gehirn bei der Synästhesie?",
+      "a": ["Es vermischt die Sinne.", "Es vergisst Farben.", "Es schläft beim Hören."],
+      "correct": 0
+    },
+    {
+      "q": "Wo bemerken manche Kinder die Synästhesie?",
+      "a": ["Beim Sport auf dem Spielplatz.", "Im Musikunterricht.", "Beim Frühstück zu Hause."],
+      "correct": 1
+    },
+    {
+      "q": "Was könnte jemand mit Synästhesie beim Musikhören erleben?",
+      "a": ["Er sieht dabei Farben.", "Er wird sehr müde.", "Er hört gar nichts mehr."],
+      "correct": 0
+    }
+  ],
+  "wortschatz": [
+    {
+      "wort": "vermischen",
+      "silben": "ver-mi-schen",
+      "bedeutung": "Wenn zwei oder mehr Dinge zusammengemischt werden und sich verbinden."
+    },
+    {
+      "wort": "verbinden",
+      "silben": "ver-bin-den",
+      "bedeutung": "Zwei Dinge zusammenbringen, so dass sie zusammengehören."
+    },
+    {
+      "wort": "entdecken",
+      "silben": "ent-de-cken",
+      "bedeutung": "Etwas finden oder herausfinden, das man vorher noch nicht kannte."
+    },
+    {
+      "wort": "Synästhesie",
+      "silben": "Syn-äs-the-sie",
+      "bedeutung": "Ein besonderes Phänomen, bei dem das Gehirn Sinne vermischt — zum Beispiel Musik sehen oder Zahlen in Farben erleben."
+    }
+  ],
+  "tags": ["Sinne", "Gehirn", "Musik", "Wahrnehmung", "Sachtext"],
+  "szenen": [
+    {
+      "scene": 1,
+      "prompt": "children's book watercolor illustration, soft pastel colors, warm and friendly, white background, no text in image. A young child about 8 years old with short dark hair, warm brown skin, wearing a light blue sweater, sitting at a school desk with eyes closed and headphones on, listening to music. Around the child, colorful swirls of watercolor paint float in the air — soft pinks, yellows, and greens flowing out from the headphones like musical waves transforming into visible color clouds. The mood is dreamy and magical."
+    },
+    {
+      "scene": 2,
+      "prompt": "children's book watercolor illustration, soft pastel colors, warm and friendly, white background, no text in image. A close-up of a child's hand pointing to a large colorful number five painted in bright green watercolor on a sheet of paper. Around the number, small stars and colored dots in soft rainbow hues float gently. In the background, a blurred classroom setting with a warm yellow light. The overall atmosphere is curious and wondrous, showing that the number has a color and a feeling."
+    }
+  ],
+  "charaktere": []
+}

@@ -1,0 +1,79 @@
+[
+  {
+    "id": "idea-2026-03-30-001",
+    "titel": "Mein roter Regenschirm",
+    "genre": "Alltag",
+    "beschreibung": "Ein Kind findet einen roten Regenschirm auf dem Schulweg. Gehört er jemandem? Eine kurze, warme Geschichte für Erstleser über Ehrlichkeit und den Mut, Fremde anzusprechen.",
+    "empfohlene_stufe": "2.1",
+    "empfohlene_persona": "Lea Lesestark",
+    "status": "fertig",
+    "erstellt": "2026-03-30",
+    "prioritaet": null
+  },
+  {
+    "id": "idea-2026-03-30-002",
+    "titel": "Kita-Krach: Wer hat das Lego geklaut?",
+    "genre": "Humor",
+    "beschreibung": "Im Kindergarten ist eine ganze Tüte Lego verschwunden. Alle sind verdächtig — sogar die Erzieherin! Eine witzige Erstleser-Detektivgeschichte mit kurzen Knallsätzen und einem überraschenden Täter.",
+    "empfohlene_stufe": "2.4",
+    "empfohlene_persona": "Zara Zapp",
+    "status": "in_arbeit",
+    "erstellt": "2026-03-30",
+    "prioritaet": null
+  },
+  {
+    "id": "idea-2026-03-30-003",
+    "titel": "Wie schmeckt eigentlich Farbe?",
+    "genre": "Sachtext",
+    "beschreibung": "Manche Menschen schmecken Farben oder hören Zahlen — das nennt man Synästhesie. Samira erklärt dieses faszinierende Phänomen kindgerecht und fragt: Wie wäre dein Alltag, wenn Musik nach Schokolade schmecken würde?",
+    "empfohlene_stufe": "3.2",
+    "empfohlene_persona": "Samira Wissensfreund",
+    "status": "in_arbeit",
+    "erstellt": "2026-03-30",
+    "prioritaet": null
+  },
+  {
+    "id": "idea-2026-03-30-005",
+    "titel": "Nacht-Alarm im Tierheim",
+    "genre": "Abenteuer",
+    "beschreibung": "Um Mitternacht geht im Tierheim der Feuermelder los — aber es brennt gar nicht. Stattdessen sind drei Hasen ausgebüxt. Lea erzählt rhythmisch und mit Herzklopfen, wie Pflegerin Sonja die Tiere rettet, bevor der Chef es merkt.",
+    "empfohlene_stufe": "3.4",
+    "empfohlene_persona": "Timo Taktschritt",
+    "status": "in_arbeit",
+    "erstellt": "2026-03-30",
+    "prioritaet": null
+  },
+  {
+    "id": "idea-2026-03-30-006",
+    "titel": "Warum ich keine Witze verstehe",
+    "genre": "Emotion",
+    "beschreibung": "Leon findet Witze seltsam — alle lachen, aber er versteht nie warum. Eine ehrliche Ich-Geschichte aus Leo-Klartexts Feder, die erklärt was figurative Sprache ist und warum es völlig okay ist, Dinge wörtlich zu nehmen. Mit konkreten Beispielen.",
+    "empfohlene_stufe": "4.1",
+    "empfohlene_persona": "Leo Klartext",
+    "status": "neu",
+    "erstellt": "2026-03-30",
+    "prioritaet": null
+  },
+  {
+    "id": "idea-2026-03-30-007",
+    "titel": "Pixel-Stadt 2099: Die KI streikt",
+    "genre": "Fantasy",
+    "beschreibung": "In einer Stadt, die von einer KI namens ARCO gesteuert wird, gehen plötzlich alle Ampeln aus — gleichzeitig. Holzi Pixelkopf erzählt diesen Tech-Thriller für ältere Lesende mit Coding-Denken, System-Fehlern und einem Mädchen, das debuggt wie eine Profi-Entwicklerin.",
+    "empfohlene_stufe": "4.4",
+    "empfohlene_persona": "Holzi Pixelkopf",
+    "status": "neu",
+    "erstellt": "2026-03-30",
+    "prioritaet": null
+  },
+  {
+    "id": "idea-2026-03-30-008",
+    "titel": "Der letzte Baum auf dem Schuldach",
+    "genre": "Emotion",
+    "beschreibung": "Jonas und seine Klasse erfahren, dass der alte Kirschbaum auf dem Schuldach gefällt werden soll — für einen neuen Parkplatz. Eine stille, berührende Geschichte über Klimagerechtigkeit, Wut und den ersten echten Protest. Für Lesende, die Tiefe suchen.",
+    "empfohlene_stufe": "5.2",
+    "empfohlene_persona": "Jonas Entdecker",
+    "status": "neu",
+    "erstellt": "2026-03-30",
+    "prioritaet": null
+  }
+]
