@@ -424,7 +424,7 @@
         document.body.classList.add(ntClass);
 
 
-        let state = { syllables: false, summary: false, chunkIndex: 0, chunks: [], magnifier: false };
+        let state = { syllables: false, summary: false, chunkIndex: 0, chunks: [], chunkHeadings: [], magnifier: false };
         let inlineImages = [];
 
         // Bilder einsammeln: Bei ADHS alle Bilder für Chunks nutzen, sonst erstes als Hero behalten
@@ -438,50 +438,87 @@
         })();
 
         function renderText() {
-            let txt = state.summary ? summaryRaw : storyRaw;
+            // Direkt rawStory/rawSummary nutzen, um \n\n-Sektionsgrenzen zu erhalten
+            let raw = state.summary ? rawSummary : rawStory;
 
-            // Text in Sätze aufteilen
-            let cleanForSplit = txt.replace(/<br\s*\/?>/gi, " ").replace(/\n/g, " ");
-            let sentences = cleanForSplit.match(/[^\.!\?]+[\.!\?]+(\s+|$)/g);
-            if (!sentences) sentences = [cleanForSplit];
+            // In Sektionen aufteilen (getrennt durch Leerzeilen)
+            let sections = raw.split(/\n\n+/);
 
-            // Sätze zu Gruppen bündeln (je 2-3 Sätze)
-            let groups = [];
-            let tempGroup = "", sentCount = 0;
-            sentences.forEach((sent, index) => {
-                tempGroup += sent; sentCount++;
-                if (sentCount >= 2 || index === sentences.length - 1) {
-                    groups.push(tempGroup.trim());
-                    tempGroup = ""; sentCount = 0;
+            // Pro Sektion: Überschrift erkennen und Body-Text extrahieren
+            let allGroups = []; // { heading: string|null, text: string }
+            sections.forEach(section => {
+                let lines = section.split(/\n/);
+                let heading = null;
+                let bodyLines = [];
+
+                lines.forEach((line, i) => {
+                    let trimmed = line.trim();
+                    if (i === 0 && /^\*\*.*\*\*$/.test(trimmed)) {
+                        heading = trimmed.replace(/^\*\*/, '').replace(/\*\*$/, '');
+                    } else if (trimmed) {
+                        bodyLines.push(trimmed);
+                    }
+                });
+
+                let body = bodyLines.join(' ').replace(/[“”„""]/g, "");
+                let sentences = body.match(/[^.!?]*[.!?]+(?:\s*,\s*[^.!?]*[.!?]+)*(?:\s+|$)/g);
+                if (!sentences && body.trim()) sentences = [body];
+                if (!sentences) sentences = [];
+
+                let isFirstGroup = true;
+                let tempGroup = "", sentCount = 0;
+                sentences.forEach((sent, index) => {
+                    tempGroup += sent; sentCount++;
+                    if (sentCount >= 2 || index === sentences.length - 1) {
+                        allGroups.push({ heading: isFirstGroup ? heading : null, text: tempGroup.trim() });
+                        isFirstGroup = false;
+                        tempGroup = ""; sentCount = 0;
+                    }
+                });
+
+                // Sektion hat Überschrift aber keinen Body-Text
+                if (sentences.length === 0 && heading) {
+                    allGroups.push({ heading: heading, text: '' });
                 }
             });
+
+            // Fallback: kein parsbarer Inhalt
+            if (allGroups.length === 0) allGroups.push({ heading: null, text: raw });
 
             // Bilder gleichmäßig zwischen Gruppen verteilen
             let imgPositions = {};
             if (inlineImages.length > 0 && !state.summary) {
                 if (ntClass === 'nt-adhs') {
-                    // ADHS: Bilder ab Position 0 verteilen
-                    let interval = Math.max(1, Math.floor(groups.length / inlineImages.length));
+                    let interval = Math.max(1, Math.floor(allGroups.length / inlineImages.length));
                     inlineImages.forEach((url, i) => {
                         let pos = interval * i;
-                        if (pos >= groups.length) pos = groups.length - 1;
+                        if (pos >= allGroups.length) pos = allGroups.length - 1;
                         imgPositions[pos] = url;
                     });
                 } else {
-                    let interval = Math.max(1, Math.floor(groups.length / (inlineImages.length + 1)));
+                    let interval = Math.max(1, Math.floor(allGroups.length / (inlineImages.length + 1)));
                     inlineImages.forEach((url, i) => {
                         let pos = interval * (i + 1);
-                        if (pos >= groups.length) pos = groups.length - 1;
+                        if (pos >= allGroups.length) pos = allGroups.length - 1;
                         imgPositions[pos] = url;
                     });
                 }
             }
 
-            // HTML zusammenbauen: Text-Gruppen mit Bildern dazwischen
-            let html = groups.map((group, i) => {
-                let processed = group.split(/\s+/).map(w => processWord(w)).join(' ');
+            // HTML zusammenbauen: Überschriften als <h3>, Text als <p>
+            let html = allGroups.map((group, i) => {
                 let imgTag = imgPositions[i] ? `<img src="${imgPositions[i]}" alt="Illustration" class="story-inline-img" onerror="this.style.display='none'">` : '';
-                return imgTag + '<p style="margin:0 0 0.8em 0;">' + processed + '</p>';
+                let headingHtml = '';
+                if (group.heading) {
+                    let processedH = group.heading.split(/\s+/).map(w => processWord(w)).join(' ');
+                    headingHtml = `<h3 style="margin:1.2em 0 0.3em 0; font-size:0.75em; color:var(--accent-teal); font-family:var(--font-heading); font-weight:600; letter-spacing:0.03em; opacity:0.75;">${processedH}</h3>`;
+                }
+                let textHtml = '';
+                if (group.text) {
+                    let processed = group.text.split(/\s+/).map(w => processWord(w)).join(' ');
+                    textHtml = `<p style="margin:0 0 0.8em 0;">${processed}</p>`;
+                }
+                return imgTag + headingHtml + textHtml;
             }).join('');
             document.getElementById('full-text-view').innerHTML = html;
 
@@ -495,8 +532,15 @@
                 });
             }
 
-            // Chunks für Häppchen-Modus (ohne Bilder)
-            state.chunks = groups.map(g => g.trim().split(/\s+/).map(w => processWord(w)).join(' '));
+            // Chunks für Häppchen-Modus (mit Bildzuordnung und Überschriften)
+            state.chunks = allGroups.map(g => {
+                return g.text ? g.text.trim().split(/\s+/).map(w => processWord(w)).join(' ') : '';
+            });
+            state.chunkHeadings = allGroups.map(g => {
+                if (!g.heading) return null;
+                return g.heading.split(/\s+/).map(w => processWord(w)).join(' ');
+            });
+            state.chunkImages = allGroups.map((_, i) => imgPositions[i] || null);
             updateChunkDisplay();
             updateButtons();
         }
@@ -542,7 +586,22 @@
 
         function updateChunkDisplay() {
             if(state.chunkIndex >= state.chunks.length) state.chunkIndex = 0;
-            document.getElementById('chunk-display').innerHTML = state.chunks[state.chunkIndex] || "";
+            let imgHtml = '';
+            // Bild für diesen Chunk finden — fallback auf letztes verfügbares
+            let imgUrl = null;
+            if (state.chunkImages) {
+                for (let j = state.chunkIndex; j >= 0; j--) {
+                    if (state.chunkImages[j]) { imgUrl = state.chunkImages[j]; break; }
+                }
+            }
+            if (imgUrl) {
+                imgHtml = `<img src="${imgUrl}" alt="Illustration" class="story-inline-img" onerror="this.style.display='none'">`;
+            }
+            let headingHtml = '';
+            if (state.chunkHeadings && state.chunkHeadings[state.chunkIndex]) {
+                headingHtml = `<div style="font-weight:600; font-size:0.75em; color:var(--accent-teal); font-family:var(--font-heading); margin-bottom:0.4em; letter-spacing:0.03em; opacity:0.75;">${state.chunkHeadings[state.chunkIndex]}</div>`;
+            }
+            document.getElementById('chunk-display').innerHTML = imgHtml + headingHtml + (state.chunks[state.chunkIndex] || "");
             let current = state.chunkIndex + 1, total = state.chunks.length;
             let ring = document.getElementById('chunk-progress');
             ring.innerText = current + "/" + total;

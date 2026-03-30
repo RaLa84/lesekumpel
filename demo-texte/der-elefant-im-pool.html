@@ -423,15 +423,63 @@
         document.body.classList.add(ntClass);
 
 
-        let state = { syllables: false, summary: false, chunkIndex: 0, chunks: [], magnifier: false };
+        let state = { syllables: false, summary: false, chunkIndex: 0, chunks: [], chunkHeadings: [], magnifier: false };
 
         function renderText() {
-            let txt = state.summary ? summaryRaw : storyRaw;
-            let paragraphs = txt.split('<br>');
-            let html = paragraphs.map(p => {
-                if(!p.trim()) return "";
-                return p.split(' ').map(w => processWord(w)).join(' ');
-            }).join('<br>');
+            let raw = state.summary ? rawSummary : rawStory;
+
+            let sections = raw.split(/\n\n+/);
+            let allGroups = [];
+            sections.forEach(section => {
+                let lines = section.split(/\n/);
+                let heading = null;
+                let bodyLines = [];
+
+                lines.forEach((line, i) => {
+                    let trimmed = line.trim();
+                    if (i === 0 && /^\*\*.*\*\*$/.test(trimmed)) {
+                        heading = trimmed.replace(/^\*\*/, '').replace(/\*\*$/, '');
+                    } else if (trimmed) {
+                        bodyLines.push(trimmed);
+                    }
+                });
+
+                let body = bodyLines.join(' ').replace(/[“”„""]/g, "");
+                let sentences = body.match(/[^.!?]*[.!?]+(?:\s*,\s*[^.!?]*[.!?]+)*(?:\s+|$)/g);
+                if (!sentences && body.trim()) sentences = [body];
+                if (!sentences) sentences = [];
+
+                let isFirstGroup = true;
+                let tempGroup = "", sentCount = 0;
+                sentences.forEach((sent, index) => {
+                    tempGroup += sent; sentCount++;
+                    if (sentCount >= 2 || index === sentences.length - 1) {
+                        allGroups.push({ heading: isFirstGroup ? heading : null, text: tempGroup.trim() });
+                        isFirstGroup = false;
+                        tempGroup = ""; sentCount = 0;
+                    }
+                });
+
+                if (sentences.length === 0 && heading) {
+                    allGroups.push({ heading: heading, text: '' });
+                }
+            });
+
+            if (allGroups.length === 0) allGroups.push({ heading: null, text: raw });
+
+            let html = allGroups.map((group, i) => {
+                let headingHtml = '';
+                if (group.heading) {
+                    let processedH = group.heading.split(/\s+/).map(w => processWord(w)).join(' ');
+                    headingHtml = `<h3 style="margin:1.2em 0 0.3em 0; font-size:0.75em; color:var(--accent-teal); font-family:var(--font-heading); font-weight:600; letter-spacing:0.03em; opacity:0.75;">${processedH}</h3>`;
+                }
+                let textHtml = '';
+                if (group.text) {
+                    let processed = group.text.split(/\s+/).map(w => processWord(w)).join(' ');
+                    textHtml = `<p style="margin:0 0 0.8em 0;">${processed}</p>`;
+                }
+                return headingHtml + textHtml;
+            }).join('');
             document.getElementById('full-text-view').innerHTML = html;
 
             // Absatz-Nummern für Autismus-Spektrum
@@ -444,19 +492,12 @@
                 });
             }
 
-            let cleanText = txt.replace(/<br\s*\/?>/gi, " ");
-            let sentences = cleanText.match(/[^\.!\?]+[\.!\?]+(\s+|$)/g);
-            if (!sentences) sentences = [cleanText];
-
-            state.chunks = [];
-            let tempChunk = "", sentenceCount = 0;
-            sentences.forEach((sent, index) => {
-                tempChunk += sent; sentenceCount++;
-                if (sentenceCount >= 2 || index === sentences.length - 1) {
-                    let processed = tempChunk.trim().split(/\s+/).map(w => processWord(w)).join(' ');
-                    state.chunks.push(processed);
-                    tempChunk = ""; sentenceCount = 0;
-                }
+            state.chunks = allGroups.map(g => {
+                return g.text ? g.text.trim().split(/\s+/).map(w => processWord(w)).join(' ') : '';
+            });
+            state.chunkHeadings = allGroups.map(g => {
+                if (!g.heading) return null;
+                return g.heading.split(/\s+/).map(w => processWord(w)).join(' ');
             });
             updateChunkDisplay();
             updateButtons();
@@ -503,7 +544,11 @@
 
         function updateChunkDisplay() {
             if(state.chunkIndex >= state.chunks.length) state.chunkIndex = 0;
-            document.getElementById('chunk-display').innerHTML = state.chunks[state.chunkIndex] || "";
+            let headingHtml = '';
+            if (state.chunkHeadings && state.chunkHeadings[state.chunkIndex]) {
+                headingHtml = `<div style="font-weight:600; font-size:0.75em; color:var(--accent-teal); font-family:var(--font-heading); margin-bottom:0.4em; letter-spacing:0.03em; opacity:0.75;">${state.chunkHeadings[state.chunkIndex]}</div>`;
+            }
+            document.getElementById('chunk-display').innerHTML = headingHtml + (state.chunks[state.chunkIndex] || "");
             let current = state.chunkIndex + 1, total = state.chunks.length;
             let ring = document.getElementById('chunk-progress');
             ring.innerText = current + "/" + total;
