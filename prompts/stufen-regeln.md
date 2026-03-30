@@ -5,6 +5,7 @@ Jede Stufe definiert Wortanzahl, Tempus und einen linguistischen Fokus.
 > **Tempus-Regel:** Nur Stufe 3.1 gibt Präteritum als Tempus vor (Lernziel). Ab Stufe 3.2 ist das Tempus **frei wählbar** — der Autor entscheidet je nach Textformat (Erzählung → Präteritum, Sachtext → Präsens, Traumreise → Präsens).
 
 > **Natürlichkeits-Regel:** Jeder Satz muss semantisch vollständig und natürlich klingen — wie gesprochenes Deutsch. Wenn eine Wort- oder Silbenbegrenzung dazu führt, dass ein Satz unnatürlich oder unvollständig wird, formuliere den Satz um, statt Wörter wegzulassen. Beispiel: Statt "Wir haben das Tor" (unvollständig) → "Tor! Tor!" oder "Das war ein Tor!" (natürlich und vollständig).
+> Gilt auch fürs Präteritum: Vermeide literarische/gehobene Formen, die Kinder nie benutzen würden. Statt "Was taten sie nun?" → "Was machten sie jetzt?" oder "Und jetzt?". Statt "Sie taten es" → "Sie machten es."
 
 ---
 

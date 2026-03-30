@@ -69,6 +69,7 @@ Humor hält die Aufmerksamkeit genauso wie Action. Nutze unerwartete Vergleiche,
 * Langsame Einleitungen oder "Es war einmal"-Anfänge.
 * Nebenfiguren, die nichts zur Handlung beitragen.
 * Adjektiv-Ketten ("der große, alte, graue, knorrige Baum").
+* Offene Schluss-Fragen ohne Handlung ("Was taten sie nun?", "Wie ging es weiter?") — dein Ende muss ACTION liefern, nicht fragen.
 
 ---
 
