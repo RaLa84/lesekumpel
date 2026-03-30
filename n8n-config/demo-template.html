@@ -202,13 +202,13 @@
 
         /* --- NEUROTYP-SPEZIFISCH --- */
 
-        /* Timo – LRS/Legasthenie */
-        body.nt-lrs {
+        /* Leselinien-Modus (Leser-Preference) */
+        body.leselinien-active {
             font-family: 'Lexend', var(--font-body), sans-serif;
             letter-spacing: 0.05em; line-height: 2.1; font-size: 24px;
         }
-        body.nt-lrs .story-text { max-width: 600px; margin-left: auto; margin-right: auto; }
-        body.nt-lrs .story-text p {
+        body.leselinien-active .story-text { max-width: 600px; margin-left: auto; margin-right: auto; }
+        body.leselinien-active .story-text p {
             margin-bottom: 1.2em !important;
             background-image: repeating-linear-gradient(
                 transparent, transparent calc(2.1em - 1px), #e0d6c2 calc(2.1em - 1px), #e0d6c2 2.1em
@@ -217,13 +217,13 @@
             padding-top: 0.05em;
         }
 
-        /* Leo – Autismus-Spektrum */
-        body.nt-autismus { line-height: 1.9; }
-        body.nt-autismus .story-text p {
+        /* Fahrplan-Modus (Leser-Preference) */
+        body.fahrplan-active { line-height: 1.9; }
+        body.fahrplan-active .story-text p {
             border-left: 3px solid var(--primary-yellow); padding-left: 35px; margin-bottom: 1.5em !important;
             position: relative;
         }
-        body.nt-autismus .toolbar-container { border-style: solid; }
+        body.fahrplan-active .toolbar-container { border-style: solid; }
 
         /* Häppchen-Modus (Leser-Preference, nicht Autoren-gebunden) */
         body.haeppchen-active .story-text { font-size: 1.3em; }
@@ -319,6 +319,8 @@
             <button class="tool-btn" onclick="changeFontSize(-2)">A-</button>
             <button class="tool-btn" onclick="changeFontSize(2)">A+</button>
             <button class="tool-btn" onclick="toggleViewMode()" id="view-toggle-btn">🧩 Häppchen</button>
+            <button class="tool-btn" onclick="toggleLeselinien()" id="btn-leselinien">📏 Leselinien</button>
+            <button class="tool-btn" onclick="toggleFahrplan()" id="btn-fahrplan">🔢 Fahrplan</button>
         </div>
 
         <div id="full-text-view" class="story-text"></div>
@@ -532,14 +534,9 @@
             }).join('');
             document.getElementById('full-text-view').innerHTML = html;
 
-            // Absatz-Nummern für Autismus-Spektrum
-            if (ntClass === 'nt-autismus') {
-                document.querySelectorAll('#full-text-view p').forEach((p, i) => {
-                    let marker = document.createElement('span');
-                    marker.style.cssText = 'color:var(--primary-yellow); font-size:0.7em; font-family:var(--font-heading); user-select:none; position:absolute; left:8px; top:0.15em;';
-                    marker.textContent = (i + 1);
-                    p.prepend(marker);
-                });
+            // Absatz-Nummern für Fahrplan-Modus
+            if (document.body.classList.contains('fahrplan-active')) {
+                addParagraphNumbers();
             }
 
             // Chunks für Häppchen-Modus (mit Bildzuordnung und Überschriften)
@@ -684,6 +681,35 @@
             window.speechSynthesis.speak(u);
         }
         function closeMagnifier() { document.getElementById('magnifier-overlay').style.display = 'none'; }
+        function addParagraphNumbers() {
+            document.querySelectorAll('#full-text-view p').forEach((p, i) => {
+                if (p.querySelector('.para-num')) return;
+                let marker = document.createElement('span');
+                marker.className = 'para-num';
+                marker.style.cssText = 'color:var(--primary-yellow); font-size:0.7em; font-family:var(--font-heading); user-select:none; position:absolute; left:8px; top:0.15em;';
+                marker.textContent = (i + 1);
+                p.prepend(marker);
+            });
+        }
+        function removeParagraphNumbers() {
+            document.querySelectorAll('.para-num').forEach(el => el.remove());
+        }
+        function toggleLeselinien() {
+            let btn = document.getElementById('btn-leselinien');
+            let active = document.body.classList.toggle('leselinien-active');
+            btn.className = active ? "tool-btn active" : "tool-btn";
+            if (active && !state.syllables) toggleSyllables();
+            if (!active && state.syllables) toggleSyllables();
+            try { localStorage.setItem('lesekumpel-leselinien-default', active ? 'true' : 'false'); } catch(e) {}
+        }
+        function toggleFahrplan() {
+            let btn = document.getElementById('btn-fahrplan');
+            let active = document.body.classList.toggle('fahrplan-active');
+            btn.className = active ? "tool-btn active" : "tool-btn";
+            if (active) { addParagraphNumbers(); }
+            else { removeParagraphNumbers(); }
+            try { localStorage.setItem('lesekumpel-fahrplan-default', active ? 'true' : 'false'); } catch(e) {}
+        }
         let swipeInitialized = false;
         function setupSwipeIfNeeded() {
             if (swipeInitialized) return;
@@ -779,17 +805,22 @@
         }
 
         window.onload = function() {
-            // Toolbar-Defaults per Neurotyp
-            if (ntClass === 'nt-lrs') { state.syllables = true; }
             renderText(); renderQuiz();
 
-            // Häppchen-Preference: localStorage > Neurotyp-Default
-            let storedPref = null;
-            try { storedPref = localStorage.getItem('lesekumpel-haeppchen-default'); } catch(e) {}
-            let shouldActivate = storedPref !== null
-                ? (storedPref === 'true')
-                : (ntClass === 'nt-adhs');
-            if (shouldActivate) toggleViewMode();
+            // Leselinien: localStorage > Neurotyp-Default (LRS)
+            let lsPref = null;
+            try { lsPref = localStorage.getItem('lesekumpel-leselinien-default'); } catch(e) {}
+            if ((lsPref !== null ? (lsPref === 'true') : (ntClass === 'nt-lrs'))) toggleLeselinien();
+
+            // Fahrplan: localStorage > Neurotyp-Default (Autismus)
+            let fpPref = null;
+            try { fpPref = localStorage.getItem('lesekumpel-fahrplan-default'); } catch(e) {}
+            if ((fpPref !== null ? (fpPref === 'true') : (ntClass === 'nt-autismus'))) toggleFahrplan();
+
+            // Häppchen: localStorage > Neurotyp-Default (ADHS)
+            let hpPref = null;
+            try { hpPref = localStorage.getItem('lesekumpel-haeppchen-default'); } catch(e) {}
+            if ((hpPref !== null ? (hpPref === 'true') : (ntClass === 'nt-adhs'))) toggleViewMode();
         };
     </script>
 </body>
