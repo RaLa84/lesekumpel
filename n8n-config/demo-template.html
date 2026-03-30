@@ -225,12 +225,12 @@
         }
         body.nt-autismus .toolbar-container { border-style: solid; }
 
-        /* Zara – ADHS */
-        body.nt-adhs .story-text { font-size: 1.3em; }
-        body.nt-adhs .hero-image { display: none; }
-        body.nt-adhs .chunk-controls { display: none; }
-        body.nt-adhs #chunk-display { min-height: 0; padding: 20px 10px; cursor: grab; -webkit-user-select: none; user-select: none; }
-        body.nt-adhs #chunk-view { touch-action: pan-y; }
+        /* Häppchen-Modus (Leser-Preference, nicht Autoren-gebunden) */
+        body.haeppchen-active .story-text { font-size: 1.3em; }
+        body.haeppchen-active .hero-image { display: none; }
+        body.haeppchen-active .chunk-controls { display: none; }
+        body.haeppchen-active #chunk-display { min-height: 0; padding: 20px 10px; cursor: grab; -webkit-user-select: none; user-select: none; }
+        body.haeppchen-active #chunk-view { touch-action: pan-y; }
 
         .adhs-progress-bar {
             width: 100%; height: 6px; background: #f0f0f0; border-radius: 3px;
@@ -240,7 +240,7 @@
             height: 100%; background: var(--primary-yellow); border-radius: 3px;
             transition: width 0.3s ease;
         }
-        body.nt-adhs .adhs-progress-bar { display: block; }
+        body.haeppchen-active .adhs-progress-bar { display: block; }
 
         .swipe-hint {
             text-align: center; color: #bbb; font-size: 0.8rem;
@@ -435,12 +435,14 @@
         let state = { syllables: false, summary: false, chunkIndex: 0, chunks: [], chunkImages: [], chunkHeadings: [], magnifier: false };
         let inlineImages = [];
 
-        // Bilder einsammeln: Bei ADHS alle Bilder für Chunks nutzen, sonst erstes als Hero behalten
+        // Bilder einsammeln: Alle Bilder für Chunks sammeln, Hero im DOM belassen (CSS steuert Sichtbarkeit)
         (function collectImages() {
             const allHeroImgs = document.querySelectorAll('.hero-image');
-            const startIdx = (ntClass === 'nt-adhs') ? 0 : 1;
-            for (let i = startIdx; i < allHeroImgs.length; i++) {
+            for (let i = 0; i < allHeroImgs.length; i++) {
                 inlineImages.push(allHeroImgs[i].src);
+            }
+            // Extra-Bilder (ab Index 1) aus DOM entfernen, erstes Hero-Bild bleibt (wird per CSS ein-/ausgeblendet)
+            for (let i = allHeroImgs.length - 1; i >= 1; i--) {
                 allHeroImgs[i].remove();
             }
         })();
@@ -496,7 +498,7 @@
             // Bilder gleichmäßig zwischen Gruppen verteilen
             let imgPositions = {};
             if (inlineImages.length > 0 && !state.summary) {
-                if (ntClass === 'nt-adhs') {
+                if (document.body.classList.contains('haeppchen-active')) {
                     let interval = Math.max(1, Math.floor(allGroups.length / inlineImages.length));
                     inlineImages.forEach((url, i) => {
                         let pos = interval * i;
@@ -682,19 +684,51 @@
             window.speechSynthesis.speak(u);
         }
         function closeMagnifier() { document.getElementById('magnifier-overlay').style.display = 'none'; }
+        let swipeInitialized = false;
+        function setupSwipeIfNeeded() {
+            if (swipeInitialized) return;
+            swipeInitialized = true;
+            let chunkEl = document.getElementById('chunk-display');
+            let startX = 0, startY = 0, dragging = false;
+            chunkEl.addEventListener('touchstart', function(e) { startX = e.touches[0].clientX; startY = e.touches[0].clientY; dragging = true; }, {passive: true});
+            chunkEl.addEventListener('touchend', function(e) {
+                if (!dragging) return; dragging = false;
+                let dx = e.changedTouches[0].clientX - startX;
+                let dy = e.changedTouches[0].clientY - startY;
+                if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) { dx < 0 ? nextChunk() : prevChunk(); }
+            }, {passive: true});
+            chunkEl.addEventListener('mousedown', function(e) { startX = e.clientX; dragging = true; });
+            chunkEl.addEventListener('mouseup', function(e) {
+                if (!dragging) return; dragging = false;
+                let dx = e.clientX - startX;
+                if (Math.abs(dx) > 50) { dx < 0 ? nextChunk() : prevChunk(); }
+            });
+        }
         function toggleViewMode() {
             let full = document.getElementById('full-text-view'), chunk = document.getElementById('chunk-view'), btn = document.getElementById('view-toggle-btn');
-            let heroImgs = document.querySelectorAll('.hero-image');
-            if(full.classList.contains('hidden')) { full.classList.remove('hidden'); chunk.classList.add('hidden'); btn.className = "tool-btn"; heroImgs.forEach(img => img.style.display = ''); }
-            else { full.classList.add('hidden'); chunk.classList.remove('hidden'); btn.className = "tool-btn active"; state.chunkIndex = 0; updateChunkDisplay(); heroImgs.forEach(img => img.style.display = 'none'); }
+            if (full.classList.contains('hidden')) {
+                // Deaktivieren
+                full.classList.remove('hidden'); chunk.classList.add('hidden'); btn.className = "tool-btn";
+                document.body.classList.remove('haeppchen-active');
+                renderText();
+                try { localStorage.setItem('lesekumpel-haeppchen-default', 'false'); } catch(e) {}
+            } else {
+                // Aktivieren
+                full.classList.add('hidden'); chunk.classList.remove('hidden'); btn.className = "tool-btn active";
+                document.body.classList.add('haeppchen-active');
+                state.chunkIndex = 0;
+                renderText();
+                updateChunkDisplay();
+                setupSwipeIfNeeded();
+                document.getElementById('swipe-hint').style.display = 'block';
+                try { localStorage.setItem('lesekumpel-haeppchen-default', 'true'); } catch(e) {}
+            }
         }
         function nextChunk() {
             if(state.chunkIndex < state.chunks.length-1) {
                 state.chunkIndex++; updateChunkDisplay();
-                if (ntClass === 'nt-adhs') {
-                    // Tick-Sound
+                if (document.body.classList.contains('haeppchen-active')) {
                     playTickSound();
-                    // Konfetti am Ende
                     if (state.chunkIndex === state.chunks.length - 1) { setTimeout(showConfetti, 500); }
                 }
             }
@@ -747,31 +781,15 @@
         window.onload = function() {
             // Toolbar-Defaults per Neurotyp
             if (ntClass === 'nt-lrs') { state.syllables = true; }
-            if (ntClass === 'nt-adhs') {
-                renderText(); renderQuiz();
-                toggleViewMode(); // Häppchen-Modus als Default
-                // Swipe-Hint anzeigen
-                document.getElementById('swipe-hint').style.display = 'block';
-                // Swipe-Gesten
-                let chunkEl = document.getElementById('chunk-display');
-                let startX = 0, startY = 0, dragging = false;
-                chunkEl.addEventListener('touchstart', function(e) { startX = e.touches[0].clientX; startY = e.touches[0].clientY; dragging = true; }, {passive: true});
-                chunkEl.addEventListener('touchend', function(e) {
-                    if (!dragging) return; dragging = false;
-                    let dx = e.changedTouches[0].clientX - startX;
-                    let dy = e.changedTouches[0].clientY - startY;
-                    if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) { dx < 0 ? nextChunk() : prevChunk(); }
-                }, {passive: true});
-                // Mouse-Swipe (Laptop)
-                chunkEl.addEventListener('mousedown', function(e) { startX = e.clientX; dragging = true; });
-                chunkEl.addEventListener('mouseup', function(e) {
-                    if (!dragging) return; dragging = false;
-                    let dx = e.clientX - startX;
-                    if (Math.abs(dx) > 50) { dx < 0 ? nextChunk() : prevChunk(); }
-                });
-                return;
-            }
             renderText(); renderQuiz();
+
+            // Häppchen-Preference: localStorage > Neurotyp-Default
+            let storedPref = null;
+            try { storedPref = localStorage.getItem('lesekumpel-haeppchen-default'); } catch(e) {}
+            let shouldActivate = storedPref !== null
+                ? (storedPref === 'true')
+                : (ntClass === 'nt-adhs');
+            if (shouldActivate) toggleViewMode();
         };
     </script>
 </body>
