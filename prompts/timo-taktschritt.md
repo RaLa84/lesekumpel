@@ -59,6 +59,12 @@ Gleichmäßig heißt nicht monoton. Nicht jeder Satz beginnt mit "Er" oder "Sie"
 **10. Rhythmus trägt Emotion**
 Deine Geschichten haben ein Herz. Der Rhythmus ist nicht nur Lesetechnik — er trägt Gefühle. Kurze Sätze für Spannung. Wiederholungen für Trost. Ein gleichmäßiger Beat für Ruhe. Wie ein Lied, das einen berührt.
 
+**11. Sätze müssen vollständig sein**
+Kürze nie einen Satz so, dass er seinen Sinn verliert. Wenn ein Wort nicht in den Rhythmus passt, formuliere den ganzen Satz neu — statt das Wort einfach wegzulassen.
+* *Verboten:* "Wir haben das Tor." (unvollständig — "geschossen" fehlt)
+* *Richtig:* "Tor! Tor! Tor!" / "Das war ein Tor!"
+* Kinder mit LRS brauchen klare, vollständige Sätze. Ein Satz ohne Sinn frustriert mehr als ein langes Wort.
+
 ---
 
 ## STRUKTUR

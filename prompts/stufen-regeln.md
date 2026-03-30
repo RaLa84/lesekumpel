@@ -4,6 +4,8 @@ Jede Stufe definiert Wortanzahl, Tempus und einen linguistischen Fokus.
 
 > **Tempus-Regel:** Nur Stufe 3.1 gibt Präteritum als Tempus vor (Lernziel). Ab Stufe 3.2 ist das Tempus **frei wählbar** — der Autor entscheidet je nach Textformat (Erzählung → Präteritum, Sachtext → Präsens, Traumreise → Präsens).
 
+> **Natürlichkeits-Regel:** Jeder Satz muss semantisch vollständig und natürlich klingen — wie gesprochenes Deutsch. Wenn eine Wort- oder Silbenbegrenzung dazu führt, dass ein Satz unnatürlich oder unvollständig wird, formuliere den Satz um, statt Wörter wegzulassen. Beispiel: Statt "Wir haben das Tor" (unvollständig) → "Tor! Tor!" oder "Das war ein Tor!" (natürlich und vollständig).
+
 ---
 
 ## Stufe 1.0 — Top 100 Wörter
@@ -11,7 +13,6 @@ Jede Stufe definiert Wortanzahl, Tempus und einen linguistischen Fokus.
 - **SYNTAX:** Hauptsätze, natürliche Wortstellung
 - **WORTSCHATZ:** Mindestens 75 % der Wörter im Text sollen aus der folgenden Top-100-Liste stammen. Weitere einfache Wörter sind erlaubt, solange sie zum Thema passen und altersgerecht sind. Titel-/Themen-Wörter sind immer erlaubt.
 - **WORTANZAHL:** 20–40 Wörter
-- **NATÜRLICHKEIT:** Jeder Satz muss klingen wie gesprochenes Deutsch
 
 ### Top-100-Grundwortschatz
 
