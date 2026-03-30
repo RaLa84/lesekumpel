@@ -202,28 +202,28 @@
 
         /* --- NEUROTYP-SPEZIFISCH --- */
 
-        /* Timo – LRS/Legasthenie */
-        body.nt-lrs {
+        /* Leselinien-Modus (Leser-Preference) */
+        body.leselinien-active {
             font-family: 'Lexend', var(--font-body), sans-serif;
             letter-spacing: 0.05em; line-height: 2.1; font-size: 24px;
         }
-        body.nt-lrs .story-text { max-width: 600px; margin-left: auto; margin-right: auto; }
-        body.nt-lrs .story-text p { margin-bottom: 1.2em !important; }
+        body.leselinien-active .story-text { max-width: 600px; margin-left: auto; margin-right: auto; }
+        body.leselinien-active .story-text p { margin-bottom: 1.2em !important; }
 
-        /* Leo – Autismus-Spektrum */
-        body.nt-autismus { line-height: 1.9; }
-        body.nt-autismus .story-text p {
+        /* Fahrplan-Modus (Leser-Preference) */
+        body.fahrplan-active { line-height: 1.9; }
+        body.fahrplan-active .story-text p {
             border-left: 3px solid var(--primary-yellow); padding-left: 35px; margin-bottom: 1.5em !important;
             position: relative;
         }
-        body.nt-autismus .toolbar-container { border-style: solid; }
+        body.fahrplan-active .toolbar-container { border-style: solid; }
 
-        /* Zara – ADHS */
-        body.nt-adhs .story-text { font-size: 1.3em; }
-        body.nt-adhs .hero-image { display: none; }
-        body.nt-adhs .chunk-controls { display: none; }
-        body.nt-adhs #chunk-display { min-height: 0; padding: 20px 10px; cursor: grab; -webkit-user-select: none; user-select: none; }
-        body.nt-adhs #chunk-view { touch-action: pan-y; }
+        /* Häppchen-Modus (Leser-Preference) */
+        body.haeppchen-active .story-text { font-size: 1.3em; }
+        body.haeppchen-active .hero-image { display: none; }
+        body.haeppchen-active .chunk-controls { display: none; }
+        body.haeppchen-active #chunk-display { min-height: 0; padding: 20px 10px; cursor: grab; -webkit-user-select: none; user-select: none; }
+        body.haeppchen-active #chunk-view { touch-action: pan-y; }
 
         .adhs-progress-bar {
             width: 100%; height: 6px; background: #f0f0f0; border-radius: 3px;
@@ -233,7 +233,7 @@
             height: 100%; background: var(--primary-yellow); border-radius: 3px;
             transition: width 0.3s ease;
         }
-        body.nt-adhs .adhs-progress-bar { display: block; }
+        body.haeppchen-active .adhs-progress-bar { display: block; }
 
         .swipe-hint {
             text-align: center; color: #bbb; font-size: 0.8rem;
@@ -312,6 +312,8 @@
             <button class="tool-btn" onclick="changeFontSize(-2)">A-</button>
             <button class="tool-btn" onclick="changeFontSize(2)">A+</button>
             <button class="tool-btn" onclick="toggleViewMode()" id="view-toggle-btn">🧩 Häppchen</button>
+            <button class="tool-btn" onclick="toggleLeselinien()" id="btn-leselinien">📏 Leselinien</button>
+            <button class="tool-btn" onclick="toggleFahrplan()" id="btn-fahrplan">🔢 Fahrplan</button>
         </div>
 
         <div id="full-text-view" class="story-text"></div>
@@ -427,12 +429,14 @@
         let state = { syllables: false, summary: false, chunkIndex: 0, chunks: [], chunkImages: [], chunkHeadings: [], magnifier: false };
         let inlineImages = [];
 
-        // Bilder einsammeln: Bei ADHS alle Bilder für Chunks nutzen, sonst erstes als Hero behalten
+        // Bilder einsammeln: Alle Bilder für Chunks sammeln, Hero im DOM belassen (CSS steuert Sichtbarkeit)
         (function collectImages() {
-            const allHeroImgs = document.querySelectorAll(".hero-image");
-            const startIdx = (ntClass === "nt-adhs") ? 0 : 1;
-            for (let i = startIdx; i < allHeroImgs.length; i++) {
+            const allHeroImgs = document.querySelectorAll('.hero-image');
+            for (let i = 0; i < allHeroImgs.length; i++) {
                 inlineImages.push(allHeroImgs[i].src);
+            }
+            // Extra-Bilder (ab Index 1) aus DOM entfernen, erstes Hero-Bild bleibt (wird per CSS ein-/ausgeblendet)
+            for (let i = allHeroImgs.length - 1; i >= 1; i--) {
                 allHeroImgs[i].remove();
             }
         })();
@@ -488,7 +492,7 @@
             // Bilder gleichmäßig zwischen Gruppen verteilen
             let imgPositions = {};
             if (inlineImages.length > 0 && !state.summary) {
-                if (ntClass === 'nt-adhs') {
+                if (document.body.classList.contains('haeppchen-active')) {
                     let interval = Math.max(1, Math.floor(allGroups.length / inlineImages.length));
                     inlineImages.forEach((url, i) => {
                         let pos = interval * i;
@@ -522,14 +526,9 @@
             }).join('');
             document.getElementById('full-text-view').innerHTML = html;
 
-            // Absatz-Nummern für Autismus-Spektrum
-            if (ntClass === 'nt-autismus') {
-                document.querySelectorAll('#full-text-view p').forEach((p, i) => {
-                    let marker = document.createElement('span');
-                    marker.style.cssText = 'color:var(--primary-yellow); font-size:0.7em; font-family:var(--font-heading); user-select:none; position:absolute; left:8px; top:0.15em;';
-                    marker.textContent = (i + 1);
-                    p.prepend(marker);
-                });
+            // Absatz-Nummern für Fahrplan-Modus
+            if (document.body.classList.contains('fahrplan-active')) {
+                addParagraphNumbers();
             }
 
             // Chunks für Häppchen-Modus (mit Bildzuordnung und Überschriften)
@@ -674,19 +673,80 @@
             window.speechSynthesis.speak(u);
         }
         function closeMagnifier() { document.getElementById('magnifier-overlay').style.display = 'none'; }
+        function addParagraphNumbers() {
+            document.querySelectorAll('#full-text-view p').forEach((p, i) => {
+                if (p.querySelector('.para-num')) return;
+                let marker = document.createElement('span');
+                marker.className = 'para-num';
+                marker.style.cssText = 'color:var(--primary-yellow); font-size:0.7em; font-family:var(--font-heading); user-select:none; position:absolute; left:8px; top:0.15em;';
+                marker.textContent = (i + 1);
+                p.prepend(marker);
+            });
+        }
+        function removeParagraphNumbers() {
+            document.querySelectorAll('.para-num').forEach(el => el.remove());
+        }
+        function toggleLeselinien() {
+            let btn = document.getElementById('btn-leselinien');
+            let active = document.body.classList.toggle('leselinien-active');
+            btn.className = active ? "tool-btn active" : "tool-btn";
+            if (active && !state.syllables) toggleSyllables();
+            if (!active && state.syllables) toggleSyllables();
+            try { localStorage.setItem('lesekumpel-leselinien-default', active ? 'true' : 'false'); } catch(e) {}
+        }
+        function toggleFahrplan() {
+            let btn = document.getElementById('btn-fahrplan');
+            let active = document.body.classList.toggle('fahrplan-active');
+            btn.className = active ? "tool-btn active" : "tool-btn";
+            if (active) { addParagraphNumbers(); }
+            else { removeParagraphNumbers(); }
+            try { localStorage.setItem('lesekumpel-fahrplan-default', active ? 'true' : 'false'); } catch(e) {}
+        }
+        let swipeInitialized = false;
+        function setupSwipeIfNeeded() {
+            if (swipeInitialized) return;
+            swipeInitialized = true;
+            let chunkEl = document.getElementById('chunk-display');
+            let startX = 0, startY = 0, dragging = false;
+            chunkEl.addEventListener('touchstart', function(e) { startX = e.touches[0].clientX; startY = e.touches[0].clientY; dragging = true; }, {passive: true});
+            chunkEl.addEventListener('touchend', function(e) {
+                if (!dragging) return; dragging = false;
+                let dx = e.changedTouches[0].clientX - startX;
+                let dy = e.changedTouches[0].clientY - startY;
+                if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) { dx < 0 ? nextChunk() : prevChunk(); }
+            }, {passive: true});
+            chunkEl.addEventListener('mousedown', function(e) { startX = e.clientX; dragging = true; });
+            chunkEl.addEventListener('mouseup', function(e) {
+                if (!dragging) return; dragging = false;
+                let dx = e.clientX - startX;
+                if (Math.abs(dx) > 50) { dx < 0 ? nextChunk() : prevChunk(); }
+            });
+        }
         function toggleViewMode() {
             let full = document.getElementById('full-text-view'), chunk = document.getElementById('chunk-view'), btn = document.getElementById('view-toggle-btn');
-            let heroImgs = document.querySelectorAll('.hero-image');
-            if(full.classList.contains('hidden')) { full.classList.remove('hidden'); chunk.classList.add('hidden'); btn.className = "tool-btn"; heroImgs.forEach(img => img.style.display = ''); }
-            else { full.classList.add('hidden'); chunk.classList.remove('hidden'); btn.className = "tool-btn active"; state.chunkIndex = 0; updateChunkDisplay(); heroImgs.forEach(img => img.style.display = 'none'); }
+            if (full.classList.contains('hidden')) {
+                // Deaktivieren
+                full.classList.remove('hidden'); chunk.classList.add('hidden'); btn.className = "tool-btn";
+                document.body.classList.remove('haeppchen-active');
+                renderText();
+                try { localStorage.setItem('lesekumpel-haeppchen-default', 'false'); } catch(e) {}
+            } else {
+                // Aktivieren
+                full.classList.add('hidden'); chunk.classList.remove('hidden'); btn.className = "tool-btn active";
+                document.body.classList.add('haeppchen-active');
+                state.chunkIndex = 0;
+                renderText();
+                updateChunkDisplay();
+                setupSwipeIfNeeded();
+                document.getElementById('swipe-hint').style.display = 'block';
+                try { localStorage.setItem('lesekumpel-haeppchen-default', 'true'); } catch(e) {}
+            }
         }
         function nextChunk() {
             if(state.chunkIndex < state.chunks.length-1) {
                 state.chunkIndex++; updateChunkDisplay();
-                if (ntClass === 'nt-adhs') {
-                    // Tick-Sound
+                if (document.body.classList.contains('haeppchen-active')) {
                     playTickSound();
-                    // Konfetti am Ende
                     if (state.chunkIndex === state.chunks.length - 1) { setTimeout(showConfetti, 500); }
                 }
             }
@@ -737,33 +797,22 @@
         }
 
         window.onload = function() {
-            // Toolbar-Defaults per Neurotyp
-            if (ntClass === 'nt-lrs') { state.syllables = true; }
-            if (ntClass === 'nt-adhs') {
-                renderText(); renderQuiz();
-                toggleViewMode(); // Häppchen-Modus als Default
-                // Swipe-Hint anzeigen
-                document.getElementById('swipe-hint').style.display = 'block';
-                // Swipe-Gesten
-                let chunkEl = document.getElementById('chunk-display');
-                let startX = 0, startY = 0, dragging = false;
-                chunkEl.addEventListener('touchstart', function(e) { startX = e.touches[0].clientX; startY = e.touches[0].clientY; dragging = true; }, {passive: true});
-                chunkEl.addEventListener('touchend', function(e) {
-                    if (!dragging) return; dragging = false;
-                    let dx = e.changedTouches[0].clientX - startX;
-                    let dy = e.changedTouches[0].clientY - startY;
-                    if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy)) { dx < 0 ? nextChunk() : prevChunk(); }
-                }, {passive: true});
-                // Mouse-Swipe (Laptop)
-                chunkEl.addEventListener('mousedown', function(e) { startX = e.clientX; dragging = true; });
-                chunkEl.addEventListener('mouseup', function(e) {
-                    if (!dragging) return; dragging = false;
-                    let dx = e.clientX - startX;
-                    if (Math.abs(dx) > 50) { dx < 0 ? nextChunk() : prevChunk(); }
-                });
-                return;
-            }
             renderText(); renderQuiz();
+
+            // Leselinien: localStorage > Neurotyp-Default (LRS)
+            let lsPref = null;
+            try { lsPref = localStorage.getItem('lesekumpel-leselinien-default'); } catch(e) {}
+            if ((lsPref !== null ? (lsPref === 'true') : (ntClass === 'nt-lrs'))) toggleLeselinien();
+
+            // Fahrplan: localStorage > Neurotyp-Default (Autismus)
+            let fpPref = null;
+            try { fpPref = localStorage.getItem('lesekumpel-fahrplan-default'); } catch(e) {}
+            if ((fpPref !== null ? (fpPref === 'true') : (ntClass === 'nt-autismus'))) toggleFahrplan();
+
+            // Häppchen: localStorage > Neurotyp-Default (ADHS)
+            let hpPref = null;
+            try { hpPref = localStorage.getItem('lesekumpel-haeppchen-default'); } catch(e) {}
+            if ((hpPref !== null ? (hpPref === 'true') : (ntClass === 'nt-adhs'))) toggleViewMode();
         };
     </script>
 </body>
