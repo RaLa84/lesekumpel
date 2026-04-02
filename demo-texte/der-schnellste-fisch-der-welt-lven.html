@@ -557,7 +557,7 @@
         function processWord(raw) {
             let isBold = false;
             if (raw.includes('**')) { isBold = true; raw = raw.replace(/\*\*/g, ""); }
-            else if (raw.startsWith('*') || raw.endsWith('*')) { isBold = true; raw = raw.replace(/\*/g, ""); }
+            else if (raw.includes('*')) { isBold = true; raw = raw.replace(/\*/g, ""); }
             let clean = raw.replace(/-/g, "").replace(/[.,!?:;„"()]/g, "");
             let display = raw.replace(/-/g, "");
             let cleanLower = clean.toLowerCase();
