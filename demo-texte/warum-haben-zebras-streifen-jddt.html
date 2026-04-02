@@ -442,7 +442,7 @@
         // Bilder einsammeln: Alle Bilder für Chunks sammeln, Hero im DOM belassen (CSS steuert Sichtbarkeit)
         (function collectImages() {
             const allHeroImgs = document.querySelectorAll('.hero-image');
-            for (let i = 0; i < allHeroImgs.length; i++) {
+            for (let i = 1; i < allHeroImgs.length; i++) {
                 inlineImages.push(allHeroImgs[i].src);
             }
             // Extra-Bilder (ab Index 1) aus DOM entfernen, erstes Hero-Bild bleibt (wird per CSS ein-/ausgeblendet)
@@ -557,6 +557,7 @@
         function processWord(raw) {
             let isBold = false;
             if (raw.includes('**')) { isBold = true; raw = raw.replace(/\*\*/g, ""); }
+            else if (raw.startsWith('*') || raw.endsWith('*')) { isBold = true; raw = raw.replace(/\*/g, ""); }
             let clean = raw.replace(/-/g, "").replace(/[.,!?:;„"()]/g, "");
             let display = raw.replace(/-/g, "");
             let cleanLower = clean.toLowerCase();
