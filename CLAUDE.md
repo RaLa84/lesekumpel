@@ -15,18 +15,23 @@ This is a **static site with no build step** — pure vanilla HTML, CSS, and Jav
 ### Content Pipeline
 
 - Stories are generated via **N8N workflows** (`rala84.app.n8n.cloud`) which create HTML files and commit them directly to this repo
-- Comic images are generated via Nano Banana (AI image generation) integrated with N8N
+- Webhook-Endpoint: `/webhook/lesekumpel-story` — akzeptiert `Persona`, `Neurotyp`, `Titel`, `Genre`, `Kurzbeschreibung`, `Bildstil`
+- Silbentrennung wird **per Code** nachträglich hinzugefügt (nicht vom LLM) — im Knoten "Geschichte parsen"
+- **Bilderpipeline temporär ausgebaut** (Knoten verwaist, nicht gelöscht) — Stories werden ohne Bilder committed
 - The GitHub API is used at runtime to dynamically discover story files
 
 ### Key Files & Directories
 
 - `index.html` — Main catalog/library page. Fetches story lists via GitHub API, extracts metadata from each story's `<meta>` tags, and renders a filterable/searchable catalog
 - `texte/` — Text-based stories (HTML files)
+- `demo-texte/` — Test-Geschichten (HTML, öffentlich sichtbar)
 - `comicgeschichten/` — Comic/picture stories (HTML files)
 - `comics/` — Comic panel images (PNG)
 - `bilder/` — Story illustration images (PNG)
-- `prompts/` — Systemprompts der 9 Autor-Personas (je 1 Markdown-Datei)
+- `prompts/` — Systemprompts der Personas (je 1 Markdown-Datei)
 - `avatars/` — Avatar-Bilder der Personas (WEBP)
+- `n8n-config/` — Workflow-JSON, Daten-vorbereiten-Code, API-Config
+- `n8n-config/daten-vorbereiten-v4.js` — Aktuelle Version der Prompt-Builder-Node
 - `tests/` — Textqualitäts-Tests: Prompts, Ergebnisse pro Modell, Vergleichsanalysen
 - `leseapp_konzeption.md` — Full project vision document (German)
 
@@ -45,23 +50,30 @@ Each story HTML file must include these meta tags for the catalog to work:
 <meta name="date" content="YYYY-MM-DD">
 ```
 
-### Authors/Personas
+### Personas & Neurotypen
 
-Acht fiktionale AI-Autoren-Personas mit individuellen Systemprompts in `prompts/`. Avatare in `avatars/`. Profil: **Neuroinklusion**.
+Neun Personas in zwei Kategorien. Systemprompts in `prompts/`. Avatare in `avatars/`.
 
-**Basis-Stimme:**
-- **Lea Lesestark** — Basis-Referenz, ausgewogen und altersgerecht (5–10 J.)
+**5 Skill-Personas** — definieren das Leseniveau. Jede hat 4 Neurotyp-Varianten (Standard, ADHS, Autismus-Spektrum, LRS) im Systemprompt:
 
-**Genre-Personas (Stil-Differenzierung):**
-- **Samira Wissensfreund** — Edutainment/Sachtexte (Checker-Tobi-Stil)
-- **Holzi Pixelkopf** — Tech/Digital-Geschichten (ab Stufe 4)
-- **Deniz Traumfänger** — Fantasy/Emotion (8–12 J., ab Stufe 4)
-- **Jonas Entdecker** — Abenteuer/Alltag, authentisch (8–12 J.)
+| Persona | Leseniveau | Wörter | Tempus | Prompt-Datei |
+|---------|-----------|--------|--------|-------------|
+| **Pip Punkt** | Einfach lesen | 20–50 | Präsens | `prompts/pip-punkt.md` |
+| **Mia Mitte** | Flüssig lesen | 50–100 | Präsens | `prompts/mia-mitte.md` |
+| **Peter Past** | Erzählzeit | 100–150 | Präteritum | `prompts/peter-past.md` |
+| **Stella Stimmenreich** | Dialoge & Komplexität | 150–250 | Frei | `prompts/stella-stimmenreich.md` |
+| **Finn Feder** | Anspruchsvoll | 250–400 | Frei | `prompts/finn-feder.md` |
 
-**Neuroinclusive Personas (Barrierefreiheit-Fokus):**
-- **Zara Zapp** — ADHS/Konzentration: Action, Tempo, max 2 Sätze/Absatz, Mini-Cliffhanger
-- **Leo Klartext** — Autismus-Spektrum: keine Metaphern, explizite Gefühle, absolute Eindeutigkeit
-- **Timo Taktschritt** — LRS/Dyslexie: Rhythmus, kurze Silben, keine Komposita, Lesefluss
+**4 Bonus-Personas** — fixer Stil, kein Neurotyp-Parameter, freischaltbar als Belohnung:
+
+- **Samira Wissensfreund** — Edutainment/Sachtexte, Wikipedia-Tool (agent v1.9, nicht chainLlm!)
+- **Holzi Pixelkopf** — Gaming/Humor, Denglisch, ADHS-optimiert
+- **Deniz Traumfänger** — Immersive Traumreisen, Du-Perspektive, immer Präsens
+- **Jonas Entdecker** — Alltags-Abenteuer, Ich-Perspektive
+
+**Neurotyp-Parameter** (nur Skill-Personas): Wird als Webhook-Feld `Neurotyp` übergeben (Standard | ADHS | Autismus | LRS). Der User-Prompt sagt `Schreib im Modus: [Neurotyp]` und das Modell folgt der passenden Sektion im Systemprompt.
+
+**Alte Personas (archiviert):** Lea Lesestark, Timo Taktschritt, Zara Zapp, Leo Klartext — deren Neurotyp-Regeln sind jetzt Sektionen in den Skill-Persona-Systemprompts. Mia Brücke (DaZ) wurde entfernt.
 
 ## Deployment
 
