@@ -43,9 +43,9 @@ const personaMeta = {
     imgUrl: 'https://rala84.github.io/lesekumpel/avatars/stella-stimmenreich.webp',
     bio: 'Stella gibt jeder Figur eine eigene Stimme. Bei ihr reden die Charaktere — laut, leise, lustig und ernst.'
   },
-  finn: {
-    name: 'Finn Feder', typ: 'skill', woerter: '250–400',
-    imgUrl: 'https://rala84.github.io/lesekumpel/avatars/finn-feder.webp',
+  finja: {
+    name: 'Finja Feder', typ: 'skill', woerter: '250–400',
+    imgUrl: 'https://rala84.github.io/lesekumpel/avatars/finja-feder.webp',
     bio: 'Finn schreibt wie ein echter Autor. Bei ihm liest du Geschichten, die dich zum Nachdenken bringen.'
   },
   // ── Bonus-Personas (fixer Stil, kein Neurotyp-Parameter) ──

@@ -62,7 +62,7 @@ Neun Personas in zwei Kategorien. Systemprompts in `prompts/`. Avatare in `avata
 | **Mia Mitte** | Flüssig lesen | 50–100 | Präsens | `prompts/mia-mitte.md` |
 | **Peter Past** | Erzählzeit | 100–150 | Präteritum | `prompts/peter-past.md` |
 | **Stella Stimmenreich** | Dialoge & Komplexität | 150–250 | Frei | `prompts/stella-stimmenreich.md` |
-| **Finn Feder** | Anspruchsvoll | 250–400 | Frei | `prompts/finn-feder.md` |
+| **Finja Feder** | Anspruchsvoll | 250–400 | Frei | `prompts/finja-feder.md` |
 
 **4 Bonus-Personas** — fixer Stil, kein Neurotyp-Parameter, freischaltbar als Belohnung:
 
