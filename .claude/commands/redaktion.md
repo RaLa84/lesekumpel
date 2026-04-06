@@ -13,16 +13,16 @@ Starte den `redakteur` Agent um neue Story-Ideen zu generieren:
 
 ### Stufe 2: Chefredakteur (Auftrag)
 Starte den `chefredakteur` Agent:
-- Analysiere Katalog-Lücken (welche Stufen/Personas/Genres fehlen?)
+- Analysiere Katalog-Lücken (welche Personas/Neurotypen/Genres fehlen?)
 - Wähle 1 Idee aus dem Backlog (die mit dem größten Bedarf)
-- Erstelle einen konkreten Auftrag in `content/auftraege.json`
+- Erstelle einen konkreten Auftrag in `content/auftraege.json` mit: persona, neurotyp, titel, genre, beschreibung
 
 ### Stufe 3: Autor (Text)
 Starte den `autor` Agent:
 - Nimm den Auftrag mit höchster Priorität und Status "bereit"
 - Lade die Persona-Regeln aus `prompts/{persona}.md`
-- Lade die Stufen-Regeln aus `prompts/stufen-regeln.md`
-- Schreibe die Geschichte mit Silbentrennung
+- Wende den Neurotyp-Modus an (Standard/ADHS/Autismus/LRS)
+- Schreibe die Geschichte OHNE Silbentrennung (die wird per Code hinzugefügt)
 - Speichere in `content/entwuerfe/{auftrag-id}.json`
 
 ### Stufe 4: Lektor (QA)
@@ -44,7 +44,7 @@ Zeige dem User das fertige Ergebnis zur Kontrolle:
 📖 Neue Geschichte fertig zur Review
 
 Titel: {titel}
-Autor: {persona_name} | Stufe: {stufe} | Genre: {genre}
+Autor: {persona_name} | Neurotyp: {neurotyp} | Genre: {genre}
 
 --- Geschichte ---
 {vollständiger text}

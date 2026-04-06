@@ -245,42 +245,25 @@
 
         <hr class="section-divider">
 
-        <!-- Sektion B: Lesestufe -->
+        <!-- Sektion B: Autor/Persona -->
         <div class="form-section">
-            <div class="section-title">Lesephase</div>
-            <div class="section-sub">In welcher Phase befindet sich das Kind?</div>
-            <div class="phase-grid">
-                <div class="phase-card phase-1-bg" data-phase="1" onclick="selectPhase(1)">
-                    <span class="phase-emoji">🟠</span><span class="phase-num">Phase 1</span><br>Der Start
-                </div>
-                <div class="phase-card phase-2-bg" data-phase="2" onclick="selectPhase(2)">
-                    <span class="phase-emoji">🟡</span><span class="phase-num">Phase 2</span><br>Der Ausbau
-                </div>
-                <div class="phase-card phase-3-bg" data-phase="3" onclick="selectPhase(3)">
-                    <span class="phase-emoji">🟨</span><span class="phase-num">Phase 3</span><br>Der Fluss
-                </div>
-                <div class="phase-card phase-4-bg" data-phase="4" onclick="selectPhase(4)">
-                    <span class="phase-emoji">🟩</span><span class="phase-num">Phase 4</span><br>Die Geschichte
-                </div>
-                <div class="phase-card phase-5-bg" data-phase="5" onclick="selectPhase(5)">
-                    <span class="phase-emoji">🟢</span><span class="phase-num">Phase 5</span><br>Der Profi
-                </div>
-            </div>
-            <div class="stufe-grid" id="stufe-grid"></div>
+            <div class="section-title">Wer schreibt die Geschichte?</div>
+            <div class="section-sub">Wähle ein Leseniveau oder einen Bonus-Autor.</div>
+
+            <div class="persona-group-title">Leseniveau</div>
+            <div class="persona-grid" id="persona-grid-skill"></div>
+
+            <div class="persona-group-title">Bonus-Autoren</div>
+            <div class="persona-grid" id="persona-grid-bonus"></div>
         </div>
 
         <hr class="section-divider">
 
-        <!-- Sektion C: Autor -->
-        <div class="form-section hidden" id="section-autor">
-            <div class="section-title">Wer schreibt die Geschichte?</div>
-            <div class="section-sub">Ausgegraute Autoren sind für diese Stufe nicht verfügbar.</div>
-
-            <div class="persona-group-title">Stil-Autoren</div>
-            <div class="persona-grid" id="persona-grid-stil"></div>
-
-            <div class="persona-group-title">Genre-Autoren</div>
-            <div class="persona-grid" id="persona-grid-genre"></div>
+        <!-- Sektion C: Neurotyp (nur für Skill-Personas) -->
+        <div class="form-section hidden" id="section-neurotyp">
+            <div class="section-title">Lesemodus</div>
+            <div class="section-sub">Für welchen Lesetyp soll die Geschichte angepasst werden?</div>
+            <div class="toggle-group" id="neurotyp-grid"></div>
         </div>
 
         <hr class="section-divider">
@@ -379,65 +362,26 @@ function toggleMenu() {
 // ============================================================
 // DATA
 // ============================================================
-const STUFEN = {
-    1: [{ id: '1.0', name: 'Top-100-Wörter', fokus: 'Häufigste Grundwörter' }],
-    2: [
-        { id: '2.1', name: 'Sonderlaute', fokus: 'sch, ch, pf, ei, au, eu' },
-        { id: '2.2', name: 'Stolpersteine', fokus: 'str, pfl, schr, spr' },
-        { id: '2.3', name: 'Endungen', fokus: '-en, -er, -el' },
-        { id: '2.4', name: 'Komposita', fokus: 'Zusammengesetzte Wörter' }
-    ],
-    3: [
-        { id: '3.1', name: 'Präteritum', fokus: 'Erzählzeit (lief, sah)' },
-        { id: '3.2', name: 'Vorsilben', fokus: 'ver-, be-, ent-, ge-' },
-        { id: '3.3', name: 'Suffixe', fokus: '-ung, -heit, -keit' },
-        { id: '3.4', name: 'Konjunktionen', fokus: 'weil, obwohl, damit' }
-    ],
-    4: [
-        { id: '4.1', name: 'Satzklammer', fokus: 'Trennbare Verben' },
-        { id: '4.2', name: 'Dialoge', fokus: 'Wörtliche Rede' },
-        { id: '4.3', name: 'Relativsätze', fokus: 'der, die, das, welcher' },
-        { id: '4.4', name: 'Vergleiche', fokus: 'schneller als, am besten' }
-    ],
-    5: [
-        { id: '5.1', name: 'Synonyme', fokus: 'Schleichen statt gehen' },
-        { id: '5.2', name: 'Redewendungen', fokus: 'Metaphern & Idiome' },
-        { id: '5.3', name: 'Abstrakta', fokus: 'Mut, Neid, Freiheit' },
-        { id: '5.4', name: 'Sachtext', fokus: 'Fakten & Erklärungen' }
-    ]
-};
-
+// ── Skill-Personas (Leseniveaus) ──
 const PERSONAS = {
-    lea:    { name: 'Lea Lesestark',        type: 'stil',  label: 'Neurotypisch',             avatar: 'avatars/lea-lesestark.webp' },
-    timo:   { name: 'Timo Taktschritt',     type: 'stil',  label: 'LRS / Legasthenie',       avatar: 'avatars/timo-taktschritt.webp' },
-    zara:   { name: 'Zara Zapp',            type: 'stil',  label: 'ADHS',                    avatar: 'avatars/zara-zapp.webp' },
-    leo:    { name: 'Leo Klartext',         type: 'stil',  label: 'Autismus-Spektrum',        avatar: 'avatars/leo-klartext.webp' },
-    samira: { name: 'Samira Wissensfreund', type: 'genre', label: 'Sachtexte / Wissen',      avatar: 'avatars/samira-wissensfreund.webp' },
-    holzi:  { name: 'Holzi Pixelkopf',     type: 'genre', label: 'Tech / Gaming',            avatar: 'avatars/holzi-pixelkopf.webp' },
-    deniz:  { name: 'Deniz Traumfänger',    type: 'genre', label: 'Fantasy / Emotion',       avatar: 'avatars/deniz-traumfaenger.webp' },
-    jonas:  { name: 'Jonas Entdecker',      type: 'genre', label: 'Abenteuer / Alltag',      avatar: 'avatars/jonas-entdecker.webp' }
+    pip:    { name: 'Pip Punkt',             type: 'skill', label: 'Einfach lesen (20–50 W)',     avatar: 'avatars/pip-punkt.webp' },
+    mia:    { name: 'Mia Mitte',             type: 'skill', label: 'Flüssig lesen (50–100 W)',    avatar: 'avatars/mia-mitte.webp' },
+    peter:  { name: 'Peter Past',            type: 'skill', label: 'Erzählzeit (100–150 W)',      avatar: 'avatars/peter-past.webp' },
+    stella: { name: 'Stella Stimmenreich',   type: 'skill', label: 'Dialoge (150–250 W)',         avatar: 'avatars/stella-stimmenreich.webp' },
+    finn:   { name: 'Finn Feder',            type: 'skill', label: 'Anspruchsvoll (250–400 W)',   avatar: 'avatars/finn-feder.webp' },
+    samira: { name: 'Samira Wissensfreund',  type: 'bonus', label: 'Sachtexte / Wissen',          avatar: 'avatars/samira-wissensfreund.webp' },
+    holzi:  { name: 'Holzi Pixelkopf',       type: 'bonus', label: 'Tech / Gaming',               avatar: 'avatars/holzi-pixelkopf.webp' },
+    deniz:  { name: 'Deniz Traumfänger',     type: 'bonus', label: 'Fantasy / Emotion',           avatar: 'avatars/deniz-traumfaenger.webp' },
+    jonas:  { name: 'Jonas Entdecker',       type: 'bonus', label: 'Abenteuer / Alltag',          avatar: 'avatars/jonas-entdecker.webp' }
 };
 
-const PERSONA_EXCLUSIONS = {
-    lea:    [],
-    timo:   ['1.0'],
-    zara:   ['1.0'],
-    leo:    ['1.0'],
-    samira: ['1.0','2.1','2.2','2.3','2.4'],
-    holzi:  ['1.0','2.1','2.2','2.3','2.4'],
-    deniz:  ['1.0','2.1','2.2','2.3','2.4'],
-    jonas:  ['1.0','2.1','2.2','2.3','2.4']
-};
-
-const EXCLUSION_REASONS = {
-    timo:   { '1.0': 'Zu wenig Text für Stil-Differenzierung' },
-    zara:   { '1.0': 'Zu wenig Text für Stil-Differenzierung' },
-    leo:    { '1.0': 'Zu wenig Text für Stil-Differenzierung' },
-    samira: { '1.0': 'Zu wenig Platz für Sachtext', '2.1': 'Zu wenig Platz für Sachtext', '2.2': 'Zu wenig Platz für Sachtext', '2.3': 'Zu wenig Platz für Sachtext', '2.4': 'Zu wenig Platz für Sachtext' },
-    holzi:  { '1.0': 'Zu komplex für diese Stufe', '2.1': 'Zu komplex für diese Stufe', '2.2': 'Zu komplex für diese Stufe', '2.3': 'Zu komplex für diese Stufe', '2.4': 'Zu komplex für diese Stufe' },
-    deniz:  { '1.0': 'Braucht mehr Platz für Atmosphäre', '2.1': 'Braucht mehr Platz für Atmosphäre', '2.2': 'Braucht mehr Platz für Atmosphäre', '2.3': 'Braucht mehr Platz für Atmosphäre', '2.4': 'Braucht mehr Platz für Atmosphäre' },
-    jonas:  { '1.0': 'Zu reif für diese Stufe', '2.1': 'Zu reif für diese Stufe', '2.2': 'Zu reif für diese Stufe', '2.3': 'Zu reif für diese Stufe', '2.4': 'Zu reif für diese Stufe' }
-};
+// Neurotypen (nur für Skill-Personas)
+const NEUROTYPEN = [
+    { id: 'Standard',  emoji: '🧒', label: 'Standard' },
+    { id: 'ADHS',      emoji: '⚡', label: 'ADHS' },
+    { id: 'Autismus',  emoji: '🔍', label: 'Autismus-Spektrum' },
+    { id: 'LRS',       emoji: '🎵', label: 'LRS / Legasthenie' }
+];
 
 const ALL_KATEGORIEN = [
     { id: 'Humor',     emoji: '😄' },
@@ -450,23 +394,22 @@ const ALL_KATEGORIEN = [
 
 // null = alle Kategorien
 const PERSONA_KATEGORIEN = {
-    lea: null, timo: null, zara: null, leo: null,
+    pip: null, mia: null, peter: null, stella: null, finn: null,
     samira: ['Wissen'],
     holzi:  ['Humor','Abenteuer','Gaming'],
     deniz:  ['Humor','Abenteuer','Natur','Familie'],
     jonas:  ['Humor','Abenteuer','Natur','Familie']
 };
 
-const PERSONA_LABELS = { lea: 'Lea Lesestark (Neurotypisch)', timo: 'Timo Taktschritt (LRS/Legasthenie)', zara: 'Zara Zapp (ADHS)', leo: 'Leo Klartext (Autismus-Spektrum)', samira: 'Samira Wissensfreund (Sachtexte)', holzi: 'Holzi Pixelkopf (Tech/Gaming)', deniz: 'Deniz Traumfänger (Fantasy)', jonas: 'Jonas Entdecker (Abenteuer)' };
-const PHASE_LABELS = { 1: 'Phase 1 — Der Start', 2: 'Phase 2 — Der Ausbau', 3: 'Phase 3 — Der Fluss', 4: 'Phase 4 — Die Geschichte', 5: 'Phase 5 — Der Profi' };
+const PERSONA_LABELS = { pip: 'Pip Punkt', mia: 'Mia Mitte', peter: 'Peter Past', stella: 'Stella Stimmenreich', finn: 'Finn Feder', samira: 'Samira Wissensfreund', holzi: 'Holzi Pixelkopf', deniz: 'Deniz Traumfänger', jonas: 'Jonas Entdecker' };
 const BILDSTIL_LABELS = { 'Aquarell': 'Aquarell — Weiche Pastellfarben', 'Cartoon': 'Cartoon — Bunte moderne Illustration', 'Buntstift': 'Buntstift — Handgezeichneter Look', 'Pixel-Art': 'Pixel-Art — Retro-Gaming-Stil', 'Anime': 'Anime — Farbenfroh wie Nintendo & Pokémon', 'Traumwelt': 'Traumwelt — Magische Malerei wie Ori', 'Knete': 'Knete — Stop-Motion Knetfiguren-Look', 'Voxel': 'Voxel — Blocky Gamer-Stil wie Minecraft' };
 
 const WEBHOOK_URL = 'https://rala84.app.n8n.cloud/webhook/lesekumpel-story';
 
-let state = { phase: null, stufe: null, persona: null, kategorie: null, stil: null };
+let state = { persona: null, neurotyp: null, kategorie: null, stil: null };
 
 // ============================================================
-// PAGE NAVIGATION
+// PAGE NAVIGATION & SECTION VISIBILITY
 // ============================================================
 function goPage(num) {
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
@@ -474,129 +417,85 @@ function goPage(num) {
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
-// ============================================================
-// SECTION VISIBILITY
-// ============================================================
 function showSection(id) {
     const el = document.getElementById(id);
-    if (el.classList.contains('hidden')) {
-        el.classList.remove('hidden');
-        el.classList.add('reveal');
-    }
+    if (el.classList.contains('hidden')) { el.classList.remove('hidden'); el.classList.add('reveal'); }
 }
 
 function hideSection(id) {
     const el = document.getElementById(id);
-    el.classList.add('hidden');
-    el.classList.remove('reveal');
-}
-
-// ============================================================
-// PHASE SELECTION
-// ============================================================
-function selectPhase(phase) {
-    state.phase = phase;
-    state.stufe = null;
-    state.persona = null;
-    state.kategorie = null;
-
-    document.querySelectorAll('.phase-card').forEach(c => c.classList.remove('active'));
-    document.querySelector(`.phase-card[data-phase="${phase}"]`).classList.add('active');
-
-    hideSection('section-autor');
-    hideSection('section-kategorie');
-    updateNextButton();
-
-    const grid = document.getElementById('stufe-grid');
-    const stufen = STUFEN[phase];
-
-    if (stufen.length === 1) {
-        grid.innerHTML = '';
-        state.stufe = stufen[0].id;
-        onStufeSelected();
-        return;
-    }
-
-    grid.innerHTML = stufen.map(s =>
-        `<div class="stufe-btn" data-stufe="${s.id}" onclick="selectStufe('${s.id}')">
-            <div class="stufe-num">${s.id}</div>
-            <div class="stufe-fokus">${s.name} — ${s.fokus}</div>
-        </div>`
-    ).join('');
-}
-
-// ============================================================
-// STUFE SELECTION
-// ============================================================
-function selectStufe(stufe) {
-    state.stufe = stufe;
-    state.persona = null;
-    state.kategorie = null;
-
-    document.querySelectorAll('.stufe-btn').forEach(b => b.classList.remove('active'));
-    document.querySelector(`.stufe-btn[data-stufe="${stufe}"]`).classList.add('active');
-
-    hideSection('section-kategorie');
-    updateNextButton();
-    onStufeSelected();
-}
-
-function onStufeSelected() {
-    renderPersonaCards();
-    showSection('section-autor');
-    setTimeout(() => {
-        document.getElementById('section-autor').scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }, 100);
+    el.classList.add('hidden'); el.classList.remove('reveal');
 }
 
 // ============================================================
 // PERSONA RENDERING & SELECTION
 // ============================================================
 function renderPersonaCards() {
-    const stilGrid = document.getElementById('persona-grid-stil');
-    const genreGrid = document.getElementById('persona-grid-genre');
-
-    stilGrid.innerHTML = '';
-    genreGrid.innerHTML = '';
+    const skillGrid = document.getElementById('persona-grid-skill');
+    const bonusGrid = document.getElementById('persona-grid-bonus');
+    skillGrid.innerHTML = '';
+    bonusGrid.innerHTML = '';
 
     for (const [pid, p] of Object.entries(PERSONAS)) {
-        const excluded = PERSONA_EXCLUSIONS[pid].includes(state.stufe);
-        const reason = EXCLUSION_REASONS[pid]?.[state.stufe] || '';
-
         const card = document.createElement('div');
-        card.className = 'persona-card' + (excluded ? ' disabled' : '');
+        card.className = 'persona-card';
         card.dataset.persona = pid;
-        if (!excluded) card.onclick = () => selectPersona(pid);
-
+        card.onclick = () => selectPersona(pid);
         card.innerHTML = `
             <img src="${p.avatar}" alt="${p.name}" class="persona-avatar">
             <div class="persona-name">${p.name}</div>
             <div class="persona-type">${p.label}</div>
-            ${excluded ? `<div class="persona-tooltip">${reason}</div>` : ''}
         `;
-
-        if (p.type === 'stil') {
-            stilGrid.appendChild(card);
-        } else {
-            genreGrid.appendChild(card);
-        }
+        if (p.type === 'skill') { skillGrid.appendChild(card); }
+        else { bonusGrid.appendChild(card); }
     }
 }
 
 function selectPersona(persona) {
     state.persona = persona;
+    state.neurotyp = null;
     state.kategorie = null;
 
     document.querySelectorAll('.persona-card').forEach(c => c.classList.remove('active'));
     document.querySelector(`.persona-card[data-persona="${persona}"]`).classList.add('active');
 
+    const isSkill = PERSONAS[persona].type === 'skill';
+
+    // Skill-Personas: Neurotyp-Auswahl zeigen
+    if (isSkill) {
+        renderNeurotypen();
+        showSection('section-neurotyp');
+    } else {
+        // Bonus-Personas: kein Neurotyp, direkt Kategorie
+        state.neurotyp = 'Standard';
+        hideSection('section-neurotyp');
+    }
+
     renderKategorien();
     showSection('section-kategorie');
     updateNextButton();
 
+    const scrollTarget = isSkill ? 'section-neurotyp' : 'section-kategorie';
     setTimeout(() => {
-        document.getElementById('section-kategorie').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        document.getElementById(scrollTarget).scrollIntoView({ behavior: 'smooth', block: 'start' });
     }, 100);
+}
+
+// ============================================================
+// NEUROTYP SELECTION (nur Skill-Personas)
+// ============================================================
+function renderNeurotypen() {
+    const grid = document.getElementById('neurotyp-grid');
+    grid.innerHTML = NEUROTYPEN.map(n =>
+        `<button class="toggle-btn" data-neurotyp="${n.id}" onclick="selectNeurotyp('${n.id}')">${n.emoji} ${n.label}</button>`
+    ).join('');
+}
+
+function selectNeurotyp(neurotyp) {
+    state.neurotyp = neurotyp;
+    document.querySelectorAll('#neurotyp-grid .toggle-btn').forEach(b => b.classList.remove('active'));
+    document.querySelector(`#neurotyp-grid .toggle-btn[data-neurotyp="${neurotyp}"]`).classList.add('active');
+    updateNextButton();
 }
 
 // ============================================================
@@ -607,7 +506,6 @@ function renderKategorien() {
     const allowed = PERSONA_KATEGORIEN[state.persona];
     const kategorien = allowed ? ALL_KATEGORIEN.filter(k => allowed.includes(k.id)) : ALL_KATEGORIEN;
 
-    // Auto-set for single kategorie (Samira)
     if (kategorien.length === 1) {
         const k = kategorien[0];
         state.kategorie = k.id;
@@ -621,7 +519,7 @@ function renderKategorien() {
     }
 
     document.getElementById('kategorie-sub').textContent = 'Worum soll es in der Geschichte gehen?';
-    container.innerHTML = `<div class="toggle-group" id="kategorie-group">
+    container.innerHTML = `<div class="toggle-group">
         ${kategorien.map(k => `<button class="toggle-btn" data-val="${k.id}">${k.emoji} ${k.id}</button>`).join('')}
     </div>`;
 
@@ -636,19 +534,16 @@ function renderKategorien() {
 }
 
 // ============================================================
-// NEXT BUTTON VALIDATION
+// VALIDATION & BILDSTIL
 // ============================================================
 function updateNextButton() {
     const titel = document.getElementById('titel').value.trim();
-    const valid = titel.length > 0 && state.stufe && state.persona && state.kategorie;
+    const valid = titel.length > 0 && state.persona && state.neurotyp && state.kategorie;
     document.getElementById('btn-next-page2').disabled = !valid;
 }
 
 document.getElementById('titel').addEventListener('input', updateNextButton);
 
-// ============================================================
-// BILDSTIL SELECTION
-// ============================================================
 function selectStil(stil) {
     state.stil = stil;
     document.querySelectorAll('.stil-card').forEach(c => c.classList.remove('active'));
@@ -666,9 +561,8 @@ async function submitStory() {
     const payload = {
         Titel: titel,
         Genre: state.kategorie,
-        Phase: PHASE_LABELS[state.phase],
-        Stufe: state.stufe + ' — ' + (STUFEN[state.phase].find(s => s.id === state.stufe)?.name || ''),
         Persona: PERSONA_LABELS[state.persona],
+        Neurotyp: state.neurotyp,
         Bildstil: BILDSTIL_LABELS[state.stil],
         Kurzbeschreibung: beschreibung
     };
@@ -700,14 +594,13 @@ function showLoading() {
     const overlay = document.getElementById('loading-overlay');
     overlay.classList.add('visible');
     let elapsed = 0;
-    const total = 90;
+    const total = 60;
     const messages = [
-        [0, 'Die Autorin spitzt den Bleistift...'],
-        [10, 'Erfinde lustige Figuren...'],
-        [25, 'Schreibe die Geschichte...'],
-        [45, 'Male bunte Bilder...'],
-        [65, 'Erstelle ein Quiz...'],
-        [80, 'Fast fertig! Klebe den Buchrücken...']
+        [0, 'Der Autor spitzt den Bleistift...'],
+        [15, 'Schreibe die Geschichte...'],
+        [40, 'Erstelle ein Quiz...'],
+        [60, 'Fast fertig! Letzte Details...'],
+        [85, 'Gleich geschafft...']
     ];
     const timer = setInterval(() => {
         elapsed++;
@@ -725,6 +618,9 @@ function hideLoading() {
     overlay.classList.remove('visible');
     if (overlay._timer) clearInterval(overlay._timer);
 }
+
+// Init: Persona-Karten rendern
+renderPersonaCards();
 </script>
 </body>
 </html>
