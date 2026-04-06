@@ -456,29 +456,35 @@
                             <div class="author-img-wrapper" style="background:#eee;"><span class="author-placeholder">&#x1F465;</span></div>
                             <span class="author-name">Alle</span>
                         </div>
-                        <div class="author-item" onclick="setAuthorFilter('Lea Lesestark', this)" data-author="Lea Lesestark" style="--author-color: #D67171">
+                        <div class="author-item" onclick="setAuthorFilter('Pip Punkt', this)" data-author="Pip Punkt" style="--author-color: #6B5B9E">
                             <div class="author-img-wrapper">
-                                <img src="avatars/lea-lesestark.webp" class="author-img" alt="Lea Lesestark">
+                                <img src="avatars/pip-punkt.webp" class="author-img" alt="Pip Punkt">
                             </div>
-                            <span class="author-name">Lea</span>
+                            <span class="author-name">Pip</span>
                         </div>
-                        <div class="author-item" onclick="setAuthorFilter('Timo Taktschritt', this)" data-author="Timo Taktschritt" style="--author-color: #5B9BD5">
+                        <div class="author-item" onclick="setAuthorFilter('Mia Mitte', this)" data-author="Mia Mitte" style="--author-color: #D67171">
                             <div class="author-img-wrapper">
-                                <img src="avatars/timo-taktschritt.webp" class="author-img" alt="Timo Taktschritt">
+                                <img src="avatars/mia-mitte.webp" class="author-img" alt="Mia Mitte">
                             </div>
-                            <span class="author-name">Timo</span>
+                            <span class="author-name">Mia</span>
                         </div>
-                        <div class="author-item" onclick="setAuthorFilter('Zara Zapp', this)" data-author="Zara Zapp" style="--author-color: #E8950A">
+                        <div class="author-item" onclick="setAuthorFilter('Peter Past', this)" data-author="Peter Past" style="--author-color: #5B9BD5">
                             <div class="author-img-wrapper">
-                                <img src="avatars/zara-zapp.webp" class="author-img" alt="Zara Zapp">
+                                <img src="avatars/peter-past.webp" class="author-img" alt="Peter Past">
                             </div>
-                            <span class="author-name">Zara</span>
+                            <span class="author-name">Peter</span>
                         </div>
-                        <div class="author-item" onclick="setAuthorFilter('Leo Klartext', this)" data-author="Leo Klartext" style="--author-color: #6B5B9E">
+                        <div class="author-item" onclick="setAuthorFilter('Stella Stimmenreich', this)" data-author="Stella Stimmenreich" style="--author-color: #E8950A">
                             <div class="author-img-wrapper">
-                                <img src="avatars/leo-klartext.webp" class="author-img" alt="Leo Klartext">
+                                <img src="avatars/stella-stimmenreich.webp" class="author-img" alt="Stella Stimmenreich">
                             </div>
-                            <span class="author-name">Leo</span>
+                            <span class="author-name">Stella</span>
+                        </div>
+                        <div class="author-item" onclick="setAuthorFilter('Finja Feder', this)" data-author="Finja Feder" style="--author-color: #7E57C2">
+                            <div class="author-img-wrapper">
+                                <img src="avatars/finja-feder.webp" class="author-img" alt="Finja Feder">
+                            </div>
+                            <span class="author-name">Finja</span>
                         </div>
                         <div class="author-divider"></div>
                         <div class="author-item" onclick="setAuthorFilter('Samira Wissensfreund', this)" data-author="Samira Wissensfreund" style="--author-color: #E07B39">
@@ -623,10 +629,11 @@
         const repo = 'lesekumpel';
 
         const authorColors = {
-            'Lea Lesestark': '#D67171',
-            'Timo Taktschritt': '#5B9BD5',
-            'Zara Zapp': '#E8950A',
-            'Leo Klartext': '#6B5B9E',
+            'Pip Punkt': '#6B5B9E',
+            'Mia Mitte': '#D67171',
+            'Peter Past': '#5B9BD5',
+            'Stella Stimmenreich': '#E8950A',
+            'Finja Feder': '#7E57C2',
             'Samira Wissensfreund': '#E07B39',
             'Holzi Pixelkopf': '#4CAF50',
             'Deniz Traumf\u00e4nger': '#7E57C2',
@@ -634,44 +641,49 @@
         };
 
         const authorBios = {
-            'Lea Lesestark': {
-                neurotype: 'Neurotypisch',
-                description: 'Warmherzige, bildhafte Sprache mit klassischem Erz\u00e4hlfluss. Ausgewogene Satzl\u00e4ngen, lebendige Verben und kindgerechte Metaphern \u2014 der Einstiegsautor f\u00fcr alle Kinder.',
-                avatar: 'avatars/lea-lesestark.webp'
+            'Pip Punkt': {
+                neurotype: 'Einfach lesen (20\u201350 W)',
+                description: 'Jeder Satz passt auf eine Zeile. Kurz. Klar. Fertig. Bei Pip kannst du jedes Wort lesen \u2014 und bist stolz darauf!',
+                avatar: 'avatars/pip-punkt.webp'
             },
-            'Timo Taktschritt': {
-                neurotype: 'LRS / Legasthenie',
-                description: 'Rhythmische, gleichm\u00e4\u00dfige S\u00e4tze zum Mitklatschen. Kurze W\u00f6rter (1\u20132 Silben), keine Komposita, keine verwechselbaren Buchstaben (b/d, p/q) \u2014 optimiert f\u00fcr fl\u00fcssiges Lesen bei Lese-Rechtschreib-Schw\u00e4che.',
-                avatar: 'avatars/timo-taktschritt.webp'
+            'Mia Mitte': {
+                neurotype: 'Fl\u00fcssig lesen (50\u2013100 W)',
+                description: 'Mia erz\u00e4hlt richtige Geschichten \u2014 mit Anfang, Mitte und Ende. Bei ihr f\u00fchlst du dich schon wie ein echter Leser!',
+                avatar: 'avatars/mia-mitte.webp'
             },
-            'Zara Zapp': {
-                neurotype: 'ADHS',
-                description: 'Sofortige Action, ultrakurze Abs\u00e4tze und Mini-Cliffhanger. Kein Leerlauf \u2014 jeder Satz treibt die Handlung voran. Geschrieben f\u00fcr Kinder, die schnell die Aufmerksamkeit verlieren.',
-                avatar: 'avatars/zara-zapp.webp'
+            'Peter Past': {
+                neurotype: 'Erz\u00e4hlzeit (100\u2013150 W)',
+                description: 'Peter erz\u00e4hlt spannende Geschichten aus der Vergangenheit. Bei ihm lernst du, wie echte Erz\u00e4hlungen klingen.',
+                avatar: 'avatars/peter-past.webp'
             },
-            'Leo Klartext': {
-                neurotype: 'Autismus-Spektrum',
-                description: 'Keine Metaphern, keine Ironie, keine Doppeldeutigkeiten. Emotionen werden immer benannt und begr\u00fcndet, die Handlung ist streng chronologisch \u2014 klar und vorhersehbar.',
-                avatar: 'avatars/leo-klartext.webp'
+            'Stella Stimmenreich': {
+                neurotype: 'Dialoge (150\u2013250 W)',
+                description: 'Stella gibt jeder Figur eine eigene Stimme. Bei ihr reden die Charaktere \u2014 laut, leise, lustig und ernst.',
+                avatar: 'avatars/stella-stimmenreich.webp'
+            },
+            'Finja Feder': {
+                neurotype: 'Anspruchsvoll (250\u2013400 W)',
+                description: 'Finja schreibt wie eine echte Autorin. Bei ihr liest du Geschichten, die dich zum Nachdenken bringen.',
+                avatar: 'avatars/finja-feder.webp'
             },
             'Samira Wissensfreund': {
                 neurotype: 'Sachtexte / Wissen',
-                description: 'Spannende Fakten im Edutainment-Stil \u2014 wie ein YouTube-Video zum Lesen. Kino im Kopf statt nackter Zahlen, klare Struktur und echtes Staunen.',
+                description: 'Spannende Fakten im Edutainment-Stil \u2014 wie ein YouTube-Video zum Lesen. Kino im Kopf statt nackter Zahlen.',
                 avatar: 'avatars/samira-wissensfreund.webp'
             },
             'Holzi Pixelkopf': {
                 neurotype: 'Tech / Gaming',
-                description: 'Der sympathische Chaot erz\u00e4hlt Gaming-Geschichten mit maximaler Action und minimaler Planung. Ultrakurze Abs\u00e4tze, Cliffhanger und Selbstironie.',
+                description: 'Der sympathische Chaot erz\u00e4hlt Gaming-Geschichten mit maximaler Action und minimaler Planung.',
                 avatar: 'avatars/holzi-pixelkopf.webp'
             },
             'Deniz Traumf\u00e4nger': {
                 neurotype: 'Fantasy / Emotion',
-                description: 'Atmosph\u00e4rische Erz\u00e4hlungen voller Sinneseindr\u00fccke. Deniz nimmt sich Zeit, nutzt poetische Bilder aus der Kinderwelt und l\u00e4dt zum Tr\u00e4umen ein.',
+                description: 'Atmosph\u00e4rische Erz\u00e4hlungen voller Sinneseindr\u00fccke. Deniz l\u00e4dt zum Tr\u00e4umen ein.',
                 avatar: 'avatars/deniz-traumfaenger.webp'
             },
             'Jonas Entdecker': {
                 neurotype: 'Abenteuer / Alltag',
-                description: 'Authentische Alltagsgeschichten aus der Ich-Perspektive. Ehrlich, lustig und immer zum Mitf\u00fchlen \u2014 in einfacher Sprache, die jedes Kind versteht.',
+                description: 'Authentische Alltagsgeschichten aus der Ich-Perspektive. Ehrlich, lustig und immer zum Mitf\u00fchlen.',
                 avatar: 'avatars/jonas-entdecker.webp'
             }
         };
