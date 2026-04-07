@@ -315,6 +315,7 @@
             <span style="width:1px; background:#ddd; margin:0 5px;"></span>
             <button class="tool-btn btn-coral" onclick="toggleSummaryMode()" id="btn-summary">📖 Einfach</button>
             <button class="tool-btn" onclick="toggleSyllables()" id="btn-syllables">🔴🔵 Silben</button>
+            <button class="tool-btn" onclick="toggleEmojis()" id="btn-emojis">😊 Emojis</button>
             <span style="width:1px; background:#ddd; margin:0 5px;"></span>
             <button class="tool-btn" onclick="changeFontSize(-2)">A-</button>
             <button class="tool-btn" onclick="changeFontSize(2)">A+</button>
@@ -393,6 +394,7 @@
          * DYNAMISCHE INJEKTION — diese Werte werden von N8N befüllt
          * ============================================================ */
         let rawStory = {{RAW_STORY_TEXT}};
+        let emojiStory = {{EMOJI_STORY_TEXT}};
         let rawSummary = {{RAW_SUMMARY_TEXT}};
         const quizData = {{QUIZ_DATA_JSON}};
         const rawDictionaryEntry = {{DICTIONARY_JSON}};
@@ -434,7 +436,9 @@
         const ntClass = ntMap[ntValue] || 'nt-standard';
         document.body.classList.add(ntClass);
 
-        let state = { syllables: false, summary: false, chunkIndex: 0, chunks: [], chunkImages: [], chunkHeadings: [], magnifier: false };
+        // Emoji-Toggle: bei Autismus default AN
+        const isAutismus = ntValue === 'Autismus' || ntValue === 'Autismus-Spektrum';
+        let state = { syllables: false, emojis: isAutismus, summary: false, chunkIndex: 0, chunks: [], chunkImages: [], chunkHeadings: [], magnifier: false };
         let inlineImages = [];
 
         // Bilder einsammeln: Alle Bilder für Chunks sammeln, Hero im DOM belassen (CSS steuert Sichtbarkeit)
@@ -450,8 +454,9 @@
         })();
 
         function renderText() {
-            // Direkt rawStory/rawSummary nutzen, um \n\n-Sektionsgrenzen zu erhalten
-            let raw = state.summary ? rawSummary : rawStory;
+            // Emoji-Toggle: emoji-Version oder plain-Version
+            let activeStory = state.emojis ? emojiStory : rawStory;
+            let raw = state.summary ? rawSummary : activeStory;
 
             // In Sektionen aufteilen (getrennt durch Leerzeilen)
             let sections = raw.split(/\n\n+/);
@@ -589,6 +594,7 @@
 
         function updateButtons() {
             document.getElementById('btn-syllables').className = state.syllables ? "tool-btn active" : "tool-btn";
+            document.getElementById('btn-emojis').className = state.emojis ? "tool-btn active" : "tool-btn";
             document.getElementById('btn-summary').className = state.summary ? "tool-btn btn-coral active" : "tool-btn btn-coral";
         }
 
@@ -620,6 +626,7 @@
         }
 
         function toggleSyllables() { state.syllables = !state.syllables; renderText(); renderQuiz(); }
+        function toggleEmojis() { state.emojis = !state.emojis; renderText(); document.getElementById('btn-emojis').className = state.emojis ? "tool-btn active" : "tool-btn"; }
         function toggleSummaryMode() { state.summary = !state.summary; state.chunkIndex=0; renderText(); }
 
         function toggleTTS() {
