@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-04-07T15:27:20.625Z",
+  "updatedAt": "2026-04-07T15:33:57.100Z",
   "createdAt": "2026-03-19T13:18:27.527Z",
   "id": "eHfC95UaMbJMcLTb",
   "name": "Lesekumpel – Neuroinclusive Story Generator",
@@ -1244,7 +1244,7 @@
         954
       ],
       "parameters": {
-        "jsCode": "const prev = $('QA bestanden?').first().json || $('Retry parsen').first().json;\nconst emojiText = $input.item.json.text || '';\n\n// Silbentrennung\nfunction silbentrennung(wort) {\n  if (wort.length <= 3) return wort;\n  if (!/^[a-zäöüß]+$/i.test(wort)) return wort;\n  const w = wort.toLowerCase();\n  const einheiten = [];\n  let i = 0;\n  while (i < w.length) {\n    if (i+2 < w.length && w.substring(i, i+3) === 'sch') { einheiten.push({text:w.substring(i,i+3),typ:'K',pos:i,len:3}); i+=3; continue; }\n    const zwei = i+1<w.length ? w.substring(i,i+2) : '';\n    if (['ch','ck','ph','th','qu','pf'].includes(zwei)) { einheiten.push({text:zwei,typ:'K',pos:i,len:2}); i+=2; continue; }\n    if (['ei','au','eu','äu','ie','ai'].includes(zwei)) { einheiten.push({text:zwei,typ:'V',pos:i,len:2}); i+=2; continue; }\n    const vokal = 'aeiouyäöü'.includes(w[i]);\n    einheiten.push({text:w[i],typ:vokal?'V':'K',pos:i,len:1}); i++;\n  }\n  const vokalIndices = [];\n  for (let e=0; e<einheiten.length; e++) {\n    if (einheiten[e].typ==='V') {\n      if (vokalIndices.length>0 && vokalIndices[vokalIndices.length-1].end===e) vokalIndices[vokalIndices.length-1].end=e+1;\n      else vokalIndices.push({start:e,end:e+1});\n    }\n  }\n  if (vokalIndices.length<2) return wort;\n  const trennstellen = [];\n  for (let v=0; v<vokalIndices.length-1; v++) {\n    const nachVokal = vokalIndices[v].end;\n    const vorVokal = vokalIndices[v+1].start;\n    const anzahlKons = vorVokal - nachVokal;\n    let trennEinheit;\n    if (anzahlKons===0) trennEinheit=nachVokal;\n    else if (anzahlKons===1) trennEinheit=nachVokal;\n    else { trennEinheit=vorVokal-1;\n      if (anzahlKons>=2) { const vl=einheiten[vorVokal-2]; const lt=einheiten[vorVokal-1];\n        if (vl.text==='s'&&lt.text==='t') trennEinheit=vorVokal-2;\n      }\n    }\n    const charPos = einheiten[trennEinheit].pos;\n    if (charPos>0 && charPos<wort.length) trennstellen.push(charPos);\n  }\n  if (!trennstellen.length) return wort;\n  let erg='', letzte=0;\n  for (const pos of trennstellen) { erg+=wort.substring(letzte,pos)+'-'; letzte=pos; }\n  return erg+wort.substring(letzte);\n}\n\nfunction doSilben(text) {\n  return text.replace(/[a-zäöüßA-ZÄÖÜ]{4,}/g, (w) => silbentrennung(w));\n}\n\n// Emoji-Text mit Silbentrennung\nconst emojiStoryText = doSilben(emojiText);\n\n// Daten von Geschichte parsen weitergeben + emojiStoryText ergänzen\nconst data = prev || {};\nreturn { json: { ...data, emojiStoryText } };"
+        "jsCode": "const prev = $input.item.json;\nconst emojiText = prev.text || '';\n\n// Get original data from Geschichte parsen\nconst origData = $('Geschichte parsen').first().json;\n\n// Silbentrennung\nfunction silbentrennung(wort) {\n  if (wort.length <= 3) return wort;\n  if (!/^[a-zäöüß]+$/i.test(wort)) return wort;\n  const w = wort.toLowerCase();\n  const einheiten = [];\n  let i = 0;\n  while (i < w.length) {\n    if (i+2 < w.length && w.substring(i, i+3) === 'sch') { einheiten.push({text:w.substring(i,i+3),typ:'K',pos:i,len:3}); i+=3; continue; }\n    const zwei = i+1<w.length ? w.substring(i,i+2) : '';\n    if (['ch','ck','ph','th','qu','pf'].includes(zwei)) { einheiten.push({text:zwei,typ:'K',pos:i,len:2}); i+=2; continue; }\n    if (['ei','au','eu','äu','ie','ai'].includes(zwei)) { einheiten.push({text:zwei,typ:'V',pos:i,len:2}); i+=2; continue; }\n    const vokal = 'aeiouyäöü'.includes(w[i]);\n    einheiten.push({text:w[i],typ:vokal?'V':'K',pos:i,len:1}); i++;\n  }\n  const vokalIndices = [];\n  for (let e=0; e<einheiten.length; e++) {\n    if (einheiten[e].typ==='V') {\n      if (vokalIndices.length>0 && vokalIndices[vokalIndices.length-1].end===e) vokalIndices[vokalIndices.length-1].end=e+1;\n      else vokalIndices.push({start:e,end:e+1});\n    }\n  }\n  if (vokalIndices.length<2) return wort;\n  const trennstellen = [];\n  for (let v=0; v<vokalIndices.length-1; v++) {\n    const nachVokal = vokalIndices[v].end;\n    const vorVokal = vokalIndices[v+1].start;\n    const anzahlKons = vorVokal - nachVokal;\n    let trennEinheit;\n    if (anzahlKons===0) trennEinheit=nachVokal;\n    else if (anzahlKons===1) trennEinheit=nachVokal;\n    else { trennEinheit=vorVokal-1;\n      if (anzahlKons>=2) { const vl=einheiten[vorVokal-2]; const lt=einheiten[vorVokal-1];\n        if (vl.text==='s'&&lt.text==='t') trennEinheit=vorVokal-2;\n      }\n    }\n    const charPos = einheiten[trennEinheit].pos;\n    if (charPos>0 && charPos<wort.length) trennstellen.push(charPos);\n  }\n  if (!trennstellen.length) return wort;\n  let erg='', letzte=0;\n  for (const pos of trennstellen) { erg+=wort.substring(letzte,pos)+'-'; letzte=pos; }\n  return erg+wort.substring(letzte);\n}\n\nfunction doSilben(text) {\n  return text.replace(/[a-zäöüßA-ZÄÖÜ]{4,}/g, (w) => silbentrennung(w));\n}\n\nconst emojiStoryText = doSilben(emojiText);\n\nreturn { json: { ...origData, emojiStoryText } };"
       }
     }
   ],
@@ -1917,9 +1917,9 @@
       }
     ]
   },
-  "versionId": "cb5d62d7-07ff-4355-8702-7c258ffddb54",
-  "activeVersionId": "cb5d62d7-07ff-4355-8702-7c258ffddb54",
-  "versionCounter": 355,
+  "versionId": "e3814596-6da0-4b68-8ba7-88155c85b9a7",
+  "activeVersionId": "e3814596-6da0-4b68-8ba7-88155c85b9a7",
+  "versionCounter": 357,
   "triggerCount": 1,
   "shared": [
     {
@@ -1973,9 +1973,9 @@
   ],
   "tags": [],
   "activeVersion": {
-    "updatedAt": "2026-04-07T15:27:20.627Z",
-    "createdAt": "2026-04-07T15:27:20.627Z",
-    "versionId": "cb5d62d7-07ff-4355-8702-7c258ffddb54",
+    "updatedAt": "2026-04-07T15:33:57.102Z",
+    "createdAt": "2026-04-07T15:33:57.102Z",
+    "versionId": "e3814596-6da0-4b68-8ba7-88155c85b9a7",
     "workflowId": "eHfC95UaMbJMcLTb",
     "nodes": [
       {
@@ -2448,7 +2448,7 @@
       {
         "parameters": {
           "mode": "runOnceForEachItem",
-          "jsCode": "const data = $('Quiz parsen').first().json;\nlet template = $input.item.json.data;\n\n// Generate image tags for all images (1 to imageCount)\nconst imageCount = data.imageCount || 1;\nlet imagesHtml = '';\nfor (let i = 1; i <= imageCount; i++) {\n  const imgUrl = `https://rala84.github.io/lesekumpel/bilder/${data.slug}-${i}.png`;\n  imagesHtml += `<img src=\"${imgUrl}\" alt=\"${data.title}\" class=\"hero-image\" onerror=\"this.style.display='none'\">\n        `;\n}\n\ntemplate = template\n  .replace(/\\{\\{STORY_TITLE\\}\\}/g, data.title)\n  .replace(/\\{\\{STORY_DATE\\}\\}/g, data.date)\n  .replace(/\\{\\{PERSONA_NAME\\}\\}/g, data.personaName)\n  .replace(/\\{\\{PERSONA_IMG_URL\\}\\}/g, data.personaImg)\n  .replace(/\\{\\{PERSONA_BIO\\}\\}/g, data.personaBio)\n  .replace(/\\{\\{STUFE\\}\\}/g, String(data.stufe))\n  .replace(/\\{\\{STUFE_LABEL\\}\\}/g, data.stufeLabel || '')\n  .replace(/\\{\\{NEUROTYPE\\}\\}/g, data.neurotype)\n  .replace(/\\{\\{GENRE\\}\\}/g, data.genre)\n  .replace(/\\{\\{STORY_IMAGES_HTML\\}\\}/g, imagesHtml.trim())\n  .replace(/\\{\\{HERO_IMAGE_URL\\}\\}/g, `https://rala84.github.io/lesekumpel/bilder/${data.slug}-1.png`)\n  .replace(/\\{\\{RAW_STORY_TEXT\\}\\}/g, JSON.stringify(data.storyText || ''))\n  .replace(/\\{\\{RAW_SUMMARY_TEXT\\}\\}/g, JSON.stringify(data.summaryText || ''))\n  .replace(/\\{\\{QUIZ_DATA_JSON\\}\\}/g, JSON.stringify(data.quizData || []))\n  .replace(/\\{\\{DICTIONARY_JSON\\}\\}/g, JSON.stringify(data.wortschatz || []))\n  .replace(/\\{\\{WORD_COUNT\\}\\}/g, String(data.wordCount || 0))\n  .replace(/\\{\\{SLUG\\}\\}/g, data.slug)\n  .replace(/\\{\\{RELATED_STORIES_HTML\\}\\}/g, '');\n\nconst htmlBase64 = Buffer.from(template, 'utf8').toString('base64');\nconst storyUrl = `https://rala84.github.io/lesekumpel/demo-texte/${data.slug}.html`;\n\nreturn { json: { ...data, htmlBase64, filePath: `demo-texte/${data.slug}.html`, commitMessage: `Demo-Text: ${data.title} — ${data.personaName} Stufe ${data.stufe}`, storyUrl } };\n"
+          "jsCode": "const data = $('Quiz parsen').first().json;\nlet template = $input.item.json.data;\n\n// Generate image tags for all images (1 to imageCount)\nconst imageCount = data.imageCount || 1;\nlet imagesHtml = '';\nfor (let i = 1; i <= imageCount; i++) {\n  const imgUrl = `https://rala84.github.io/lesekumpel/bilder/${data.slug}-${i}.png`;\n  imagesHtml += `<img src=\"${imgUrl}\" alt=\"${data.title}\" class=\"hero-image\" onerror=\"this.style.display='none'\">\n        `;\n}\n\ntemplate = template\n  .replace(/\\{\\{STORY_TITLE\\}\\}/g, data.title)\n  .replace(/\\{\\{STORY_DATE\\}\\}/g, data.date)\n  .replace(/\\{\\{PERSONA_NAME\\}\\}/g, data.personaName)\n  .replace(/\\{\\{PERSONA_IMG_URL\\}\\}/g, data.personaImg)\n  .replace(/\\{\\{PERSONA_BIO\\}\\}/g, data.personaBio)\n  .replace(/\\{\\{STUFE\\}\\}/g, String(data.stufe))\n  .replace(/\\{\\{STUFE_LABEL\\}\\}/g, data.stufeLabel || '')\n  .replace(/\\{\\{NEUROTYPE\\}\\}/g, data.neurotype)\n  .replace(/\\{\\{GENRE\\}\\}/g, data.genre)\n  .replace(/\\{\\{STORY_IMAGES_HTML\\}\\}/g, imagesHtml.trim())\n  .replace(/\\{\\{HERO_IMAGE_URL\\}\\}/g, `https://rala84.github.io/lesekumpel/bilder/${data.slug}-1.png`)\n  .replace(/\\{\\{RAW_STORY_TEXT\\}\\}/g, JSON.stringify(data.storyText || ''))\n  .replace(/\\{\\{EMOJI_STORY_TEXT\\}\\}/g, JSON.stringify(data.emojiStoryText || data.storyText || ''))\n  .replace(/\\{\\{RAW_SUMMARY_TEXT\\}\\}/g, JSON.stringify(data.summaryText || ''))\n  .replace(/\\{\\{QUIZ_DATA_JSON\\}\\}/g, JSON.stringify(data.quizData || []))\n  .replace(/\\{\\{DICTIONARY_JSON\\}\\}/g, JSON.stringify(data.wortschatz || []))\n  .replace(/\\{\\{WORD_COUNT\\}\\}/g, String(data.wordCount || 0))\n  .replace(/\\{\\{SLUG\\}\\}/g, data.slug)\n  .replace(/\\{\\{RELATED_STORIES_HTML\\}\\}/g, '');\n\nconst htmlBase64 = Buffer.from(template, 'utf8').toString('base64');\nconst storyUrl = `https://rala84.github.io/lesekumpel/demo-texte/${data.slug}.html`;\n\nreturn { json: { ...data, htmlBase64, filePath: `demo-texte/${data.slug}.html`, commitMessage: `Demo-Text: ${data.title} — ${data.personaName} Stufe ${data.stufe}`, storyUrl } };\n"
         },
         "id": "assemble-html",
         "name": "HTML assemblieren",
@@ -3163,37 +3163,6 @@
         }
       },
       {
-        "id": "if-autismus",
-        "name": "Autismus?",
-        "type": "n8n-nodes-base.if",
-        "typeVersion": 2,
-        "position": [
-          1848,
-          704
-        ],
-        "parameters": {
-          "conditions": {
-            "options": {
-              "caseSensitive": false,
-              "leftValue": "",
-              "typeValidation": "strict",
-              "version": 2
-            },
-            "conditions": [
-              {
-                "leftValue": "={{ $json.neurotyp }}",
-                "rightValue": "Autismus",
-                "operator": {
-                  "type": "string",
-                  "operation": "equals"
-                }
-              }
-            ],
-            "combinator": "and"
-          }
-        }
-      },
-      {
         "id": "emoji-tagger",
         "name": "😊 Emoji-Tagger",
         "type": "@n8n/n8n-nodes-langchain.chainLlm",
@@ -3246,7 +3215,7 @@
           954
         ],
         "parameters": {
-          "jsCode": "const prev = $('Autismus?').first().json;\nconst emojiText = $input.item.json.text || prev.rawStoryText;\n\n// Silbentrennung auf den Emoji-Text anwenden\nfunction silbentrennung(wort) {\n  if (wort.length <= 3) return wort;\n  if (!/^[a-zäöüß]+$/i.test(wort)) return wort;\n  const w = wort.toLowerCase();\n  const einheiten = [];\n  let i = 0;\n  while (i < w.length) {\n    if (i+2 < w.length && w.substring(i, i+3) === 'sch') { einheiten.push({text:w.substring(i,i+3),typ:'K',pos:i,len:3}); i+=3; continue; }\n    const zwei = i+1<w.length ? w.substring(i,i+2) : '';\n    if (['ch','ck','ph','th','qu','pf'].includes(zwei)) { einheiten.push({text:zwei,typ:'K',pos:i,len:2}); i+=2; continue; }\n    if (['ei','au','eu','äu','ie','ai'].includes(zwei)) { einheiten.push({text:zwei,typ:'V',pos:i,len:2}); i+=2; continue; }\n    const vokal = 'aeiouyäöü'.includes(w[i]);\n    einheiten.push({text:w[i],typ:vokal?'V':'K',pos:i,len:1}); i++;\n  }\n  const vokalIndices = [];\n  for (let e=0; e<einheiten.length; e++) {\n    if (einheiten[e].typ==='V') {\n      if (vokalIndices.length>0 && vokalIndices[vokalIndices.length-1].end===e) vokalIndices[vokalIndices.length-1].end=e+1;\n      else vokalIndices.push({start:e,end:e+1});\n    }\n  }\n  if (vokalIndices.length<2) return wort;\n  const trennstellen = [];\n  for (let v=0; v<vokalIndices.length-1; v++) {\n    const nachVokal = vokalIndices[v].end;\n    const vorVokal = vokalIndices[v+1].start;\n    const anzahlKons = vorVokal - nachVokal;\n    let trennEinheit;\n    if (anzahlKons===0) trennEinheit=nachVokal;\n    else if (anzahlKons===1) trennEinheit=nachVokal;\n    else { trennEinheit=vorVokal-1;\n      if (anzahlKons>=2) { const vl=einheiten[vorVokal-2]; const lt=einheiten[vorVokal-1];\n        if (vl.text==='s'&&lt.text==='t') trennEinheit=vorVokal-2;\n      }\n    }\n    const charPos = einheiten[trennEinheit].pos;\n    if (charPos>0 && charPos<wort.length) trennstellen.push(charPos);\n  }\n  if (!trennstellen.length) return wort;\n  let erg='', letzte=0;\n  for (const pos of trennstellen) { erg+=wort.substring(letzte,pos)+'-'; letzte=pos; }\n  return erg+wort.substring(letzte);\n}\n\nconst storyText = emojiText.replace(/[a-zäöüßA-ZÄÖÜ]{4,}/g, (w) => silbentrennung(w));\n\nreturn { json: { ...prev, storyText, rawStoryText: emojiText } };"
+          "jsCode": "const prev = $('QA bestanden?').first().json || $('Retry parsen').first().json;\nconst emojiText = $input.item.json.text || '';\n\n// Silbentrennung\nfunction silbentrennung(wort) {\n  if (wort.length <= 3) return wort;\n  if (!/^[a-zäöüß]+$/i.test(wort)) return wort;\n  const w = wort.toLowerCase();\n  const einheiten = [];\n  let i = 0;\n  while (i < w.length) {\n    if (i+2 < w.length && w.substring(i, i+3) === 'sch') { einheiten.push({text:w.substring(i,i+3),typ:'K',pos:i,len:3}); i+=3; continue; }\n    const zwei = i+1<w.length ? w.substring(i,i+2) : '';\n    if (['ch','ck','ph','th','qu','pf'].includes(zwei)) { einheiten.push({text:zwei,typ:'K',pos:i,len:2}); i+=2; continue; }\n    if (['ei','au','eu','äu','ie','ai'].includes(zwei)) { einheiten.push({text:zwei,typ:'V',pos:i,len:2}); i+=2; continue; }\n    const vokal = 'aeiouyäöü'.includes(w[i]);\n    einheiten.push({text:w[i],typ:vokal?'V':'K',pos:i,len:1}); i++;\n  }\n  const vokalIndices = [];\n  for (let e=0; e<einheiten.length; e++) {\n    if (einheiten[e].typ==='V') {\n      if (vokalIndices.length>0 && vokalIndices[vokalIndices.length-1].end===e) vokalIndices[vokalIndices.length-1].end=e+1;\n      else vokalIndices.push({start:e,end:e+1});\n    }\n  }\n  if (vokalIndices.length<2) return wort;\n  const trennstellen = [];\n  for (let v=0; v<vokalIndices.length-1; v++) {\n    const nachVokal = vokalIndices[v].end;\n    const vorVokal = vokalIndices[v+1].start;\n    const anzahlKons = vorVokal - nachVokal;\n    let trennEinheit;\n    if (anzahlKons===0) trennEinheit=nachVokal;\n    else if (anzahlKons===1) trennEinheit=nachVokal;\n    else { trennEinheit=vorVokal-1;\n      if (anzahlKons>=2) { const vl=einheiten[vorVokal-2]; const lt=einheiten[vorVokal-1];\n        if (vl.text==='s'&&lt.text==='t') trennEinheit=vorVokal-2;\n      }\n    }\n    const charPos = einheiten[trennEinheit].pos;\n    if (charPos>0 && charPos<wort.length) trennstellen.push(charPos);\n  }\n  if (!trennstellen.length) return wort;\n  let erg='', letzte=0;\n  for (const pos of trennstellen) { erg+=wort.substring(letzte,pos)+'-'; letzte=pos; }\n  return erg+wort.substring(letzte);\n}\n\nfunction doSilben(text) {\n  return text.replace(/[a-zäöüßA-ZÄÖÜ]{4,}/g, (w) => silbentrennung(w));\n}\n\n// Emoji-Text mit Silbentrennung\nconst emojiStoryText = doSilben(emojiText);\n\n// Daten von Geschichte parsen weitergeben + emojiStoryText ergänzen\nconst data = prev || {};\nreturn { json: { ...data, emojiStoryText } };"
         }
       }
     ],
@@ -3800,7 +3769,7 @@
         "main": [
           [
             {
-              "node": "Autismus?",
+              "node": "😊 Emoji-Tagger",
               "type": "main",
               "index": 0
             }
@@ -3840,25 +3809,7 @@
         "main": [
           [
             {
-              "node": "Autismus?",
-              "type": "main",
-              "index": 0
-            }
-          ]
-        ]
-      },
-      "Autismus?": {
-        "main": [
-          [
-            {
               "node": "😊 Emoji-Tagger",
-              "type": "main",
-              "index": 0
-            }
-          ],
-          [
-            {
-              "node": "📚 Linguistik-Anreicherung",
               "type": "main",
               "index": 0
             }
