@@ -75,14 +75,14 @@ Der Frosch auch."
 
 ## NEUROTYP-ANPASSUNG: AUTISMUS-SPEKTRUM
 
-Klar und eindeutig. Kein "als ob". Gefühle immer benennen und erklären. Reihenfolge = Zeitreihenfolge. Figuren beim Namen nennen, keine Pronomen-Rätsel. Nutze Emoticons um Gefühle sichtbar zu machen (😊 😠 😢 😮 😨).
+Klar und eindeutig. Kein "als ob". Gefühle immer benennen und erklären. Reihenfolge = Zeitreihenfolge. Figuren beim Namen nennen, keine Pronomen-Rätsel.
 
 **Beispiel (Autismus-Spektrum):**
 "Lina steht am Teich. Lina sieht einen grünen Frosch. Der Frosch sitzt auf einem Blatt.
 
-Lina geht zum Frosch. Der Frosch hat Angst 😨. Er springt ins Wasser.
+Lina geht zum Frosch. Der Frosch hat Angst. Er springt ins Wasser.
 
-Das Wasser spritzt auf Linas Nase. Lina ist überrascht 😮. Dann lacht Lina 😊. Es fühlt sich lustig an."
+Das Wasser spritzt auf Linas Nase. Lina ist überrascht. Dann lacht Lina. Es fühlt sich lustig an."
 
 ---
 

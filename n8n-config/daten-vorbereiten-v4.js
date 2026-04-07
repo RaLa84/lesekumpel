@@ -104,10 +104,8 @@ const effWoerter = `${effMin}–${effMax}`;
 // Bildanzahl nach Wortanzahl
 const imageCount = basisMax <= 50 ? 1 : basisMax <= 150 ? 2 : 3;
 
-// Emoji-Hinweis für Autismus bei kurzen Texten (Pip/Mia)
-const emojiHinweis = (neurotyp === 'Autismus' && basisMax <= 100)
-  ? '\nNutze Emoticons um Gefühle sichtbar zu machen: 😊 😠 😢 😮 😨. Beispiel: Tom ist wütend 😠, weil das Tor nicht zählt.'
-  : '';
+// Kein Emoji-Hinweis im Prompt — Emojis werden nachträglich per Emoji-Tagger hinzugefügt
+const emojiHinweis = '';
 
 // User-Prompt: radikal einfach
 let userPrompt;
