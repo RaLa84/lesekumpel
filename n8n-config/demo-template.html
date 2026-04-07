@@ -430,8 +430,10 @@
         const ntMeta = document.querySelector('meta[name="neurotype"]');
         const ntValue = ntMeta ? ntMeta.content.trim() : 'Neurotypisch';
         const ntMap = {
-            'LRS/Legasthenie': 'nt-lrs', 'Autismus-Spektrum': 'nt-autismus',
-            'Deutsch als Zweitsprache': 'nt-daz', 'ADHS': 'nt-adhs', 'Neurotypisch': 'nt-standard'
+            'LRS': 'nt-lrs', 'LRS/Legasthenie': 'nt-lrs',
+            'Autismus': 'nt-autismus', 'Autismus-Spektrum': 'nt-autismus',
+            'ADHS': 'nt-adhs',
+            'Standard': 'nt-standard', 'Neurotypisch': 'nt-standard'
         };
         const ntClass = ntMap[ntValue] || 'nt-standard';
         document.body.classList.add(ntClass);
