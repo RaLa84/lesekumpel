@@ -438,9 +438,11 @@
         const ntClass = ntMap[ntValue] || 'nt-standard';
         document.body.classList.add(ntClass);
 
-        // Emoji-Toggle: bei Autismus default AN
-        const isAutismus = ntValue === 'Autismus' || ntValue === 'Autismus-Spektrum';
-        let state = { syllables: false, emojis: isAutismus, summary: false, chunkIndex: 0, chunks: [], chunkImages: [], chunkHeadings: [], magnifier: false };
+        // Neurotyp-Defaults
+        const isAutismus = ntClass === 'nt-autismus';
+        const isLRS = ntClass === 'nt-lrs';
+        const isADHS = ntClass === 'nt-adhs';
+        let state = { syllables: isLRS, emojis: isAutismus, summary: false, chunkIndex: 0, chunks: [], chunkImages: [], chunkHeadings: [], magnifier: false };
         let inlineImages = [];
 
         // Bilder einsammeln: Alle Bilder für Chunks sammeln, Hero im DOM belassen (CSS steuert Sichtbarkeit)
