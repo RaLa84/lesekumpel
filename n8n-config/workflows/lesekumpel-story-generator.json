@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-04-07T18:04:12.352Z",
+  "updatedAt": "2026-04-07T18:07:10.356Z",
   "createdAt": "2026-03-19T13:18:27.527Z",
   "id": "eHfC95UaMbJMcLTb",
   "name": "Lesekumpel – Neuroinclusive Story Generator",
@@ -348,7 +348,7 @@
     {
       "parameters": {
         "promptType": "define",
-        "text": "={{ 'Erstelle 3 Multiple-Choice-Fragen zu diesem Kindertext:\\n\\n' + $json.storyText + '\\n\\nFormat (nur JSON-Array, kein Markdown):\\n[{\"q\":\"Frage?\",\"a\":[\"Option A\",\"Option B\",\"Option C\"],\"correct\":0}]\\n\\ncorrect = Index der richtigen Antwort (0, 1 oder 2). Fragen auf Deutsch, für 6-10 Jahre.' }}",
+        "text": "={{ 'Erstelle 3 Multiple-Choice-Fragen zu diesem Kindertext:\\n\\n' + $json.rawStoryText + '\\n\\nFormat (nur JSON-Array, kein Markdown):\\n[{\"q\":\"Frage?\",\"a\":[\"Option A\",\"Option B\",\"Option C\"],\"correct\":0}]\\n\\ncorrect = Index der richtigen Antwort (0, 1 oder 2). Fragen auf Deutsch, für 6-10 Jahre.' }}",
         "messages": {
           "messageValues": [
             {
@@ -1917,9 +1917,9 @@
       }
     ]
   },
-  "versionId": "24f20adc-4dea-4ab5-8d71-af5b37dd976e",
-  "activeVersionId": "24f20adc-4dea-4ab5-8d71-af5b37dd976e",
-  "versionCounter": 363,
+  "versionId": "58c9a1c8-5bfe-414a-81d3-a29ecb900680",
+  "activeVersionId": "58c9a1c8-5bfe-414a-81d3-a29ecb900680",
+  "versionCounter": 365,
   "triggerCount": 1,
   "shared": [
     {
@@ -1973,9 +1973,9 @@
   ],
   "tags": [],
   "activeVersion": {
-    "updatedAt": "2026-04-07T18:04:12.354Z",
-    "createdAt": "2026-04-07T18:04:12.354Z",
-    "versionId": "24f20adc-4dea-4ab5-8d71-af5b37dd976e",
+    "updatedAt": "2026-04-07T18:07:10.359Z",
+    "createdAt": "2026-04-07T18:07:10.359Z",
+    "versionId": "58c9a1c8-5bfe-414a-81d3-a29ecb900680",
     "workflowId": "eHfC95UaMbJMcLTb",
     "nodes": [
       {
@@ -3177,7 +3177,7 @@
           "messages": {
             "messageValues": [
               {
-                "message": "Du bekommst einen Kindertext. Füge nach Gefühls-Wörtern ein passendes Emoji ein.\n\nSTRENGE REGELN:\n- Du darfst KEIN EINZIGES WORT ändern, hinzufügen oder entfernen\n- Du darfst NUR Emojis EINFÜGEN — direkt nach dem Gefühls-Wort\n- Der Text muss Wort für Wort identisch bleiben, nur mit eingefügten Emojis\n- Nur EIN Emoji pro Gefühl\n- Nicht jeder Satz braucht ein Emoji — nur bei klar benannten Gefühlen\n\nRICHTIG: \"Timo ist wütend\" → \"Timo ist wütend 😠\"\nFALSCH: \"Es geht kaputt\" → \"Es geht kaputt 😢\" (kaputt ist kein Gefühl!)\nFALSCH: \"Er ist traurig\" → \"Er fühlt sich traurig 😢\" (Wort hinzugefügt!)\n\nEMOJI-ZUORDNUNG:\n😊 froh, glücklich, freut sich\n😢 traurig, weint\n😠 wütend, sauer\n😨 Angst, erschrocken\n😮 überrascht, erstaunt\n😰 unsicher, nervös\n🤔 überlegt, grübelt\n💪 mutig, traut sich\n😤 frustriert, genervt\n😌 erleichtert, beruhigt\n😏 stolz, zufrieden\n🥰 liebt, mag sehr\n\nAntworte NUR mit dem Text. Kein Kommentar, keine Erklärung."
+                "message": "Du bekommst einen Kindertext. Identifiziere alle Gefühls-Wörter und ordne ihnen ein passendes Emoji zu.\n\nAntworte NUR mit einem JSON-Array. Jeder Eintrag hat:\n- \"wort\": das exakte Gefühls-Wort aus dem Text (exakte Schreibweise!)\n- \"emoji\": ein passendes Emoji\n\nNUR echte Gefühle/Emotionen markieren. NICHT markieren: Handlungen, Zustände, Objekte.\n\nRICHTIG: {\"wort\": \"wütend\", \"emoji\": \"😠\"}\nRICHTIG: {\"wort\": \"Angst\", \"emoji\": \"😨\"}\nFALSCH: {\"wort\": \"kaputt\", \"emoji\": \"😢\"} (kaputt ist kein Gefühl)\nFALSCH: {\"wort\": \"laut\", \"emoji\": \"😠\"} (laut ist kein Gefühl)\n\nEMOJI-ZUORDNUNG:\n😊 froh, glücklich, freut sich, lacht\n😢 traurig, weint, vermisst\n😠 wütend, sauer, ärgert sich\n😨 Angst, erschrocken, fürchtet sich\n😮 überrascht, erstaunt\n😰 unsicher, nervös, aufgeregt\n🤔 überlegt, grübelt, zweifelt\n💪 mutig, traut sich\n😤 frustriert, genervt\n😌 erleichtert, beruhigt\n😏 stolz, zufrieden\n🥰 liebt, mag sehr\n\nBeispiel-Input: \"Timo ist wütend. Er hat Angst. Das Schiff ist kaputt.\"\nBeispiel-Output: [{\"wort\":\"wütend\",\"emoji\":\"😠\"},{\"wort\":\"Angst\",\"emoji\":\"😨\"}]\n\nAntworte NUR mit dem JSON-Array, nichts anderes."
               }
             ]
           },
@@ -3215,7 +3215,7 @@
           954
         ],
         "parameters": {
-          "jsCode": "const prev = $input.item.json;\nconst emojiText = prev.text || '';\n\n// Get original data from Geschichte parsen\nconst origData = $('Geschichte parsen').first().json;\n\n// Silbentrennung\nfunction silbentrennung(wort) {\n  if (wort.length <= 3) return wort;\n  if (!/^[a-zäöüß]+$/i.test(wort)) return wort;\n  const w = wort.toLowerCase();\n  const einheiten = [];\n  let i = 0;\n  while (i < w.length) {\n    if (i+2 < w.length && w.substring(i, i+3) === 'sch') { einheiten.push({text:w.substring(i,i+3),typ:'K',pos:i,len:3}); i+=3; continue; }\n    const zwei = i+1<w.length ? w.substring(i,i+2) : '';\n    if (['ch','ck','ph','th','qu','pf'].includes(zwei)) { einheiten.push({text:zwei,typ:'K',pos:i,len:2}); i+=2; continue; }\n    if (['ei','au','eu','äu','ie','ai'].includes(zwei)) { einheiten.push({text:zwei,typ:'V',pos:i,len:2}); i+=2; continue; }\n    const vokal = 'aeiouyäöü'.includes(w[i]);\n    einheiten.push({text:w[i],typ:vokal?'V':'K',pos:i,len:1}); i++;\n  }\n  const vokalIndices = [];\n  for (let e=0; e<einheiten.length; e++) {\n    if (einheiten[e].typ==='V') {\n      if (vokalIndices.length>0 && vokalIndices[vokalIndices.length-1].end===e) vokalIndices[vokalIndices.length-1].end=e+1;\n      else vokalIndices.push({start:e,end:e+1});\n    }\n  }\n  if (vokalIndices.length<2) return wort;\n  const trennstellen = [];\n  for (let v=0; v<vokalIndices.length-1; v++) {\n    const nachVokal = vokalIndices[v].end;\n    const vorVokal = vokalIndices[v+1].start;\n    const anzahlKons = vorVokal - nachVokal;\n    let trennEinheit;\n    if (anzahlKons===0) trennEinheit=nachVokal;\n    else if (anzahlKons===1) trennEinheit=nachVokal;\n    else { trennEinheit=vorVokal-1;\n      if (anzahlKons>=2) { const vl=einheiten[vorVokal-2]; const lt=einheiten[vorVokal-1];\n        if (vl.text==='s'&&lt.text==='t') trennEinheit=vorVokal-2;\n      }\n    }\n    const charPos = einheiten[trennEinheit].pos;\n    if (charPos>0 && charPos<wort.length) trennstellen.push(charPos);\n  }\n  if (!trennstellen.length) return wort;\n  let erg='', letzte=0;\n  for (const pos of trennstellen) { erg+=wort.substring(letzte,pos)+'-'; letzte=pos; }\n  return erg+wort.substring(letzte);\n}\n\nfunction doSilben(text) {\n  return text.replace(/[a-zäöüßA-ZÄÖÜ]{4,}/g, (w) => silbentrennung(w));\n}\n\nconst emojiStoryText = doSilben(emojiText);\n\nreturn { json: { ...origData, emojiStoryText } };"
+          "jsCode": "const origData = $('Geschichte parsen').first().json;\nconst taggerOutput = $input.item.json.text || '[]';\nconst rawText = origData.rawStoryText || '';\n\n// Parse Emoji-Annotations\nlet annotations = [];\ntry {\n  const m = taggerOutput.match(/\\[[\\s\\S]*\\]/);\n  if (m) annotations = JSON.parse(m[0]);\n} catch(e) { /* ignore parse errors */ }\n\n// Insert emojis into original text (deterministic, no LLM rewriting)\nlet emojiText = rawText;\nif (Array.isArray(annotations) && annotations.length > 0) {\n  // Sort by position in text (last first to preserve indices)\n  const positions = [];\n  for (const a of annotations) {\n    if (!a.wort || !a.emoji) continue;\n    // Find all occurrences of this word in the text\n    let searchFrom = 0;\n    while (true) {\n      const idx = emojiText.indexOf(a.wort, searchFrom);\n      if (idx === -1) break;\n      // Check if emoji already inserted after this word\n      const afterWord = idx + a.wort.length;\n      if (emojiText[afterWord] !== ' ' || !isEmoji(emojiText[afterWord + 1])) {\n        positions.push({ idx: afterWord, emoji: a.emoji, wort: a.wort });\n      }\n      searchFrom = idx + a.wort.length + 1;\n      break; // Only first occurrence per annotation\n    }\n  }\n  \n  // Sort descending so we insert from end to start (preserves indices)\n  positions.sort((a, b) => b.idx - a.idx);\n  \n  for (const p of positions) {\n    emojiText = emojiText.substring(0, p.idx) + ' ' + p.emoji + emojiText.substring(p.idx);\n  }\n}\n\nfunction isEmoji(char) {\n  if (!char) return false;\n  const cp = char.codePointAt(0);\n  return cp > 0x1F000;\n}\n\n// Apply Silbentrennung to emoji text\nfunction silbentrennung(wort) {\n  if (wort.length <= 3) return wort;\n  if (!/^[a-zäöüß]+$/i.test(wort)) return wort;\n  const w = wort.toLowerCase();\n  const einheiten = [];\n  let i = 0;\n  while (i < w.length) {\n    if (i+2 < w.length && w.substring(i, i+3) === 'sch') { einheiten.push({text:w.substring(i,i+3),typ:'K',pos:i,len:3}); i+=3; continue; }\n    const zwei = i+1<w.length ? w.substring(i,i+2) : '';\n    if (['ch','ck','ph','th','qu','pf'].includes(zwei)) { einheiten.push({text:zwei,typ:'K',pos:i,len:2}); i+=2; continue; }\n    if (['ei','au','eu','äu','ie','ai'].includes(zwei)) { einheiten.push({text:zwei,typ:'V',pos:i,len:2}); i+=2; continue; }\n    const vokal = 'aeiouyäöü'.includes(w[i]);\n    einheiten.push({text:w[i],typ:vokal?'V':'K',pos:i,len:1}); i++;\n  }\n  const vokalIndices = [];\n  for (let e=0; e<einheiten.length; e++) {\n    if (einheiten[e].typ==='V') {\n      if (vokalIndices.length>0 && vokalIndices[vokalIndices.length-1].end===e) vokalIndices[vokalIndices.length-1].end=e+1;\n      else vokalIndices.push({start:e,end:e+1});\n    }\n  }\n  if (vokalIndices.length<2) return wort;\n  const trennstellen = [];\n  for (let v=0; v<vokalIndices.length-1; v++) {\n    const nachVokal = vokalIndices[v].end;\n    const vorVokal = vokalIndices[v+1].start;\n    const anzahlKons = vorVokal - nachVokal;\n    let trennEinheit;\n    if (anzahlKons===0) trennEinheit=nachVokal;\n    else if (anzahlKons===1) trennEinheit=nachVokal;\n    else { trennEinheit=vorVokal-1;\n      if (anzahlKons>=2) { const vl=einheiten[vorVokal-2]; const lt=einheiten[vorVokal-1];\n        if (vl.text==='s'&&lt.text==='t') trennEinheit=vorVokal-2;\n      }\n    }\n    const charPos = einheiten[trennEinheit].pos;\n    if (charPos>0 && charPos<wort.length) trennstellen.push(charPos);\n  }\n  if (!trennstellen.length) return wort;\n  let erg='', letzte=0;\n  for (const pos of trennstellen) { erg+=wort.substring(letzte,pos)+'-'; letzte=pos; }\n  return erg+wort.substring(letzte);\n}\n\nconst emojiStoryText = emojiText.replace(/[a-zäöüßA-ZÄÖÜ]{4,}/g, (w) => silbentrennung(w));\n\nreturn { json: { ...origData, emojiStoryText } };"
         }
       }
     ],
