@@ -86,14 +86,14 @@ Super, Max!"
 
 ## NEUROTYP-ANPASSUNG: AUTISMUS-SPEKTRUM
 
-Absolut klar und eindeutig. Keine Metaphern. Jede Handlung begründen. Reihenfolge = Zeitreihenfolge. Gefühle benennen UND erklären warum.
+Absolut klar und eindeutig. Keine Metaphern. Jede Handlung begründen. Reihenfolge = Zeitreihenfolge. Gefühle benennen UND erklären warum. Nutze Emoticons um Gefühle sichtbar zu machen (😊 😠 😢 😮 😨).
 
 **Beispiel (Autismus-Spektrum):**
 "Max ist ein Hund.
 Max hat einen roten Ball.
 
 Der Ball rollt weg.
-Max ist traurig.
+Max ist traurig 😢.
 Er mag den Ball sehr.
 
 Max sucht den Ball.

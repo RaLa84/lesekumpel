@@ -93,9 +93,21 @@ const bildstilMap = {
 const p = personaMeta[persona] || personaMeta.peter;
 const imageStyle = bildstilMap[bildstilKey] || bildstilMap['Aquarell'];
 
+// Wortanzahl mit Neurotyp-Aufschlag
+const basisMin = parseInt(p.woerter.split('–')[0]) || 50;
+const basisMax = parseInt(p.woerter.split('–')[1]) || 100;
+const neurotypAufschlag = (neurotyp === 'Autismus') ? 0.3 : 0; // +30% für Emotionserklärungen
+const effMin = Math.round(basisMin * (1 + neurotypAufschlag));
+const effMax = Math.round(basisMax * (1 + neurotypAufschlag));
+const effWoerter = `${effMin}–${effMax}`;
+
 // Bildanzahl nach Wortanzahl
-const maxWords = parseInt(p.woerter.split('–')[1]) || 150;
-const imageCount = maxWords <= 50 ? 1 : maxWords <= 150 ? 2 : 3;
+const imageCount = basisMax <= 50 ? 1 : basisMax <= 150 ? 2 : 3;
+
+// Emoji-Hinweis für Autismus bei kurzen Texten (Pip/Mia)
+const emojiHinweis = (neurotyp === 'Autismus' && basisMax <= 100)
+  ? '\nNutze Emoticons um Gefühle sichtbar zu machen: 😊 😠 😢 😮 😨. Beispiel: Tom ist wütend 😠, weil das Tor nicht zählt.'
+  : '';
 
 // User-Prompt: radikal einfach
 let userPrompt;
@@ -104,12 +116,12 @@ if (p.typ === 'skill') {
   // Skill-Personas: Neurotyp als Modus
   userPrompt = `DU BIST ${p.name}.
 Schreib im Modus: ${neurotyp}.
-Dein Systemprompt definiert deinen Stil und die Neurotyp-Anpassung — halte dich daran.
+Dein Systemprompt definiert deinen Stil und die Neurotyp-Anpassung — halte dich daran.${emojiHinweis}
 
 Geschichte: "${title}"
 Genre: ${genre}
 Kurzbeschreibung: ${description || 'Keine Beschreibung angegeben'}
-Wortanzahl: ${p.woerter}
+Wortanzahl: ${effWoerter}
 
 AUFBAU (diese Labels verwenden):
 GESCHICHTE: [vollständiger Text]
