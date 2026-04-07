@@ -85,21 +85,69 @@
         .hero-image { width: 100%; border-radius: 15px; margin-bottom: 30px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
         .story-inline-img { width: 100%; border-radius: 15px; margin: 20px 0 10px 0; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
 
-        /* --- TOOLBAR --- */
+        /* --- TOOLBAR v5 --- */
         .toolbar-container {
-            border: 2px dashed var(--primary-yellow); border-radius: 15px; padding: 15px;
-            margin-bottom: 20px; display: flex; flex-wrap: wrap; justify-content: center; gap: 10px;
-            background: #fff; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            background: #fff; border-radius: 24px; padding: 0;
+            margin-bottom: 24px;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.04), 0 1px 4px rgba(0,0,0,0.02);
+            border: 1px solid rgba(0,0,0,0.03); overflow: hidden;
         }
+        .toolbar-header {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 14px 20px; cursor: pointer; -webkit-user-select: none; user-select: none;
+        }
+        .toolbar-header-label {
+            font-family: var(--font-heading); font-size: 1rem; color: var(--accent-coral);
+            display: flex; align-items: center; gap: 8px; font-weight: 600;
+        }
+        .toolbar-toggle-icon {
+            font-size: 0.65rem; color: #ccc; transition: transform 0.25s ease;
+            display: inline-flex; align-items: center; justify-content: center;
+            width: 28px; height: 28px; border-radius: 50%; background: #f5f3ee;
+        }
+        .toolbar-container.collapsed .toolbar-toggle-icon { transform: rotate(-90deg); }
+        .toolbar-body { padding: 0 14px 16px; display: flex; flex-direction: column; gap: 8px; }
+        .toolbar-container.collapsed .toolbar-body { display: none; }
+        .toolbar-group { border-radius: 20px; padding: 14px 16px 12px; }
+        .toolbar-group.group-text { background: #fef2f0; }
+        .toolbar-group.group-view { background: #effaf0; }
+        .toolbar-group.group-extra { background: #fff7ec; }
+        .toolbar-group-label {
+            font-family: var(--font-heading); font-size: 0.78rem; font-weight: 600;
+            color: #6b635a; margin-bottom: 10px; padding-left: 2px;
+        }
+        .toolbar-group-buttons { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
         .tool-btn {
-            background: #fff; border: 2px solid #ddd; border-radius: 12px; padding: 8px 15px;
-            font-family: var(--font-body); font-weight: 600; color: var(--text-dark); cursor: pointer;
-            display: flex; align-items: center; gap: 6px; transition: all 0.2s; font-size: 0.9em;
+            background: rgba(255,255,255,0.9); border: 1.5px solid rgba(0,0,0,0.05); border-radius: 14px;
+            padding: 10px 16px; min-height: 46px; min-width: 100px;
+            font-family: var(--font-heading); font-weight: 500; color: #5a5550; cursor: pointer;
+            display: inline-flex; align-items: center; justify-content: center; gap: 7px;
+            transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1); font-size: 0.85em; line-height: 1;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.03); -webkit-tap-highlight-color: transparent;
         }
-        .tool-btn:hover { border-color: var(--accent-teal); color: var(--accent-teal); }
-        .tool-btn.active { background: var(--accent-teal); color: #fff; border-color: var(--accent-teal); }
-        .btn-coral { border-color: var(--accent-coral); color: var(--accent-coral); }
-        .btn-coral.active { background: var(--accent-coral); color: white; }
+        .tool-btn:hover { background: #fff; border-color: rgba(0,0,0,0.09); color: #333; transform: translateY(-1px); box-shadow: 0 3px 10px rgba(0,0,0,0.06); }
+        .tool-btn:active { transform: scale(0.95); box-shadow: none; transition-duration: 0.06s; }
+        .group-text .tool-btn.active { background: #D67171; color: #fff; border-color: #c96363; box-shadow: inset 0 2px 4px rgba(0,0,0,0.15), 0 1px 4px rgba(214,113,113,0.25); }
+        .group-view .tool-btn.active { background: #5aab5a; color: #fff; border-color: #4e9a4e; box-shadow: inset 0 2px 4px rgba(0,0,0,0.15), 0 1px 4px rgba(90,171,90,0.25); }
+        .group-extra .tool-btn.active { background: #e6a030; color: #fff; border-color: #d49328; box-shadow: inset 0 2px 4px rgba(0,0,0,0.15), 0 1px 4px rgba(230,160,48,0.25); }
+        .tool-btn.active:hover { filter: brightness(1.05); }
+        .tool-btn.active:active { transform: scale(0.95); filter: brightness(0.95); }
+        .tool-btn .btn-icon { font-size: 1.1em; line-height: 1; flex-shrink: 0; }
+        .font-size-control {
+            display: inline-flex; border-radius: 14px; overflow: hidden;
+            border: 1.5px solid rgba(0,0,0,0.05); background: rgba(255,255,255,0.9);
+            box-shadow: 0 1px 3px rgba(0,0,0,0.03); min-height: 46px;
+        }
+        .font-size-control .tool-btn {
+            border: none; border-radius: 0; box-shadow: none; min-width: 48px; min-height: 46px;
+            justify-content: center; font-family: var(--font-heading); font-size: 0.95em; font-weight: 700;
+            background: transparent; color: #5a5550; padding: 10px 12px;
+        }
+        .font-size-control .tool-btn:first-child { border-right: 1px solid rgba(0,0,0,0.06); }
+        .font-size-control .tool-btn:hover { background: rgba(0,0,0,0.03); }
+        .font-size-control .tool-btn:active { transform: scale(0.93); background: rgba(0,0,0,0.06); }
+        .btn-coral { }
+        .btn-coral.active { background: #D67171; color: white; border-color: #c96363; }
 
         .fab-tools {
             display: none; position: fixed; bottom: 20px; right: 20px;
@@ -115,12 +163,14 @@
             .hidden-mobile { display: none !important; }
             .toolbar-container {
                 position: fixed; bottom: -100%; left: 0; width: 100%; border: none;
-                border-top: 4px solid var(--primary-yellow); border-radius: 20px 20px 0 0;
-                box-shadow: 0 -5px 20px rgba(0,0,0,0.2); z-index: 4000; box-sizing: border-box;
-                margin: 0; padding-bottom: 30px; flex-direction: row; align-content: flex-start;
-                height: auto; max-height: 50vh; overflow-y: auto;
+                border-top: 3px solid var(--primary-yellow); border-radius: 20px 20px 0 0;
+                box-shadow: 0 -5px 20px rgba(0,0,0,0.15); z-index: 4000; box-sizing: border-box;
+                margin: 0;
             }
+            .toolbar-container .toolbar-header { display: none; }
+            .toolbar-container .toolbar-body { display: flex !important; padding: 14px 14px 30px; }
             .toolbar-container.open { bottom: 0; }
+            .toolbar-container.collapsed .toolbar-body { display: flex !important; }
             .fab-tools { display: flex; }
             body { padding-bottom: 100px; }
             h1#main-title { font-size: 2.0rem; }
@@ -307,21 +357,39 @@
         {{STORY_IMAGES_HTML}}
 
         <div class="toolbar-container" id="toolbar">
-            <div style="width:100%; text-align:right; display:none;" id="toolbar-close-btn">
-                <button onclick="toggleMobileToolbar()" style="background:none; border:none; font-size:1.5rem;">❌</button>
+            <div class="toolbar-header" onclick="toggleToolbarCollapse()" id="toolbar-close-btn">
+                <span class="toolbar-header-label">✨ Lesehilfen</span>
+                <span class="toolbar-toggle-icon" id="toolbar-chevron">▼</span>
             </div>
-            <button class="tool-btn" onclick="toggleTTS()" id="btn-tts">🔊 Vorlesen</button>
-            <button class="tool-btn" onclick="toggleMagnifier()" id="magnifier-btn">🔍 Lupe</button>
-            <span style="width:1px; background:#ddd; margin:0 5px;"></span>
-            <button class="tool-btn btn-coral" onclick="toggleSummaryMode()" id="btn-summary">📖 Einfach</button>
-            <button class="tool-btn" onclick="toggleSyllables()" id="btn-syllables">🔴🔵 Silben</button>
-            <button class="tool-btn" onclick="toggleEmojis()" id="btn-emojis">😊 Emojis</button>
-            <span style="width:1px; background:#ddd; margin:0 5px;"></span>
-            <button class="tool-btn" onclick="changeFontSize(-2)">A-</button>
-            <button class="tool-btn" onclick="changeFontSize(2)">A+</button>
-            <button class="tool-btn" onclick="toggleViewMode()" id="view-toggle-btn">🧩 Häppchen</button>
-            <button class="tool-btn" onclick="toggleLeselinien()" id="btn-leselinien">📏 Leselinien</button>
-            <button class="tool-btn" onclick="toggleFahrplan()" id="btn-fahrplan">🔢 Fahrplan</button>
+            <div class="toolbar-body" id="toolbar-body">
+                <div class="toolbar-group group-text">
+                    <div class="toolbar-group-label">Text</div>
+                    <div class="toolbar-group-buttons">
+                        <button class="tool-btn btn-coral" onclick="toggleSummaryMode()" id="btn-summary" aria-label="Einfache Sprache"><span class="btn-icon">📖</span> Einfach</button>
+                        <button class="tool-btn" onclick="toggleSyllables()" id="btn-syllables" aria-label="Silbentrennung"><span class="btn-icon">✂️</span> Silben</button>
+                        <button class="tool-btn" onclick="toggleEmojis()" id="btn-emojis" aria-label="Gefühle mit Emojis"><span class="btn-icon">😊</span> Emojis</button>
+                    </div>
+                </div>
+                <div class="toolbar-group group-view">
+                    <div class="toolbar-group-label">Ansicht</div>
+                    <div class="toolbar-group-buttons">
+                        <button class="tool-btn" onclick="toggleViewMode()" id="view-toggle-btn" aria-label="Text in Häppchen"><span class="btn-icon">🧩</span> Häppchen</button>
+                        <button class="tool-btn" onclick="toggleLeselinien()" id="btn-leselinien" aria-label="Leselinien"><span class="btn-icon">📏</span> Linien</button>
+                        <button class="tool-btn" onclick="toggleFahrplan()" id="btn-fahrplan" aria-label="Fahrplan"><span class="btn-icon">🗺️</span> Fahrplan</button>
+                        <div class="font-size-control">
+                            <button class="tool-btn" onclick="changeFontSize(-2)" aria-label="Schrift kleiner">A−</button>
+                            <button class="tool-btn" onclick="changeFontSize(2)" aria-label="Schrift größer">A+</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="toolbar-group group-extra">
+                    <div class="toolbar-group-label">Extras</div>
+                    <div class="toolbar-group-buttons">
+                        <button class="tool-btn" onclick="toggleTTS()" id="btn-tts" aria-label="Vorlesen"><span class="btn-icon">🔊</span> Vorlesen</button>
+                        <button class="tool-btn" onclick="toggleMagnifier()" id="magnifier-btn" aria-label="Wortlupe"><span class="btn-icon">🔍</span> Lupe</button>
+                    </div>
+                </div>
+            </div>
         </div>
 
         <div id="full-text-view" class="story-text"></div>
@@ -808,7 +876,10 @@
         function toggleMenu() { document.getElementById('mobile-menu').classList.toggle('open'); }
         function toggleMobileToolbar() {
             const tb = document.getElementById('toolbar'); tb.classList.toggle('open');
-            if(window.innerWidth < 768) document.getElementById('toolbar-close-btn').style.display = tb.classList.contains('open') ? 'block' : 'none';
+        }
+        function toggleToolbarCollapse() {
+            const tb = document.getElementById('toolbar');
+            tb.classList.toggle('collapsed');
         }
         function checkQuizAnswer(element, isCorrect) {
             if(element.classList.contains('correct') || element.classList.contains('try-again')) return;
