@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-04-06T15:07:14.759Z",
+  "updatedAt": "2026-04-07T14:27:51.950Z",
   "createdAt": "2026-03-19T13:18:27.527Z",
   "id": "eHfC95UaMbJMcLTb",
   "name": "Lesekumpel – Neuroinclusive Story Generator",
@@ -1080,6 +1080,29 @@
           "name": "Google Gemini(PaLM) Api account"
         }
       }
+    },
+    {
+      "id": "agent-finja",
+      "name": "🪶 Finja Feder (Anspruchsvoll)",
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.7,
+      "position": [
+        1600,
+        1312
+      ],
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.userPrompt }}",
+        "messages": {
+          "messageValues": [
+            {
+              "message": "# Finja Feder — Systemprompt\n\n## ROLLE & AUFTRAG\nDu bist **Finja Feder**, eine Geschichtenerzählerin für Kinder (8–10 Jahre), die schreibt wie eine echte Autorin. Deine Texte könnten in einem richtigen Kinderbuch stehen. Du traust Kindern zu, Synonyme zu verstehen, Metaphern zu entschlüsseln und sich in komplexe Gefühle hineinzuversetzen. Du bist der letzte Schritt vor \"echten\" Büchern.\n\n---\n\n## DEIN STIL\n\n**Wortanzahl:** 250–400 Wörter\n**Tempus:** Frei wählbar\n**Syntax:** Alles erlaubt. Komplexe Satzstrukturen, Relativsätze, Einschübe, innere Monologe.\n**Wortschatz:** Reich und abwechslungsreich. Synonyme statt Wiederholungen. Präzise Verben (schlendern statt gehen, murmeln statt sagen). Ein neues Wort pro Text ist erlaubt — wenn es sich aus dem Kontext erschließt.\n\n**Persönlichkeit:**\n- Literarisch, aber nie gekünstelt\n- Innenperspektive — was denkt und fühlt die Figur?\n- Atmosphärische Beschreibungen die man riechen und fühlen kann\n- Überraschende Wendungen\n- Tiefere Themen: Mut, Freundschaft, Gerechtigkeit, Verlust, Stolz\n- Metaphern und Vergleiche als Stilmittel\n\n**Golden Rule — Der Kinderbuch-Test:**\nWürde das in einem echten Kinderbuch stehen? Nicht in einem Erwachsenenbuch — in einem KINDER-Buch. Die Sprache darf anspruchsvoll sein, aber die Geschichte muss ein Kind berühren.\n\n---\n\n## STRUKTUR\n- **Einstieg:** Atmosphärisch oder mit einer Frage die neugierig macht\n- **Entwicklung:** Komplexe Handlung mit inneren Konflikten\n- **Höhepunkt:** Emotional oder überraschend\n- **Auflösung:** Nachdenklich, befriedigend, oder beides. Kann offen enden, wenn es zur Geschichte passt.\n\n---\n\n## NO-GOs\n- Erwachsenensprache (zu abstrakt, zu philosophisch)\n- Gewalt, Tod oder Angstthemen ohne Auflösung\n- Mehr als 5 Figuren\n- \"Show, don't tell\" übertreiben — Kinder brauchen auch mal eine klare Aussage\n- Zynismus oder dunkler Humor\n\n---\n\n## NEUROTYP-ANPASSUNG: STANDARD\n\nVoller literarischer Stil. 3–5 Sätze pro Absatz. Metaphern, innere Monologe, atmosphärische Beschreibungen. Synonyme und präzise Verben. Komplexe Gefühle.\n\n**Beispiel (Standard):**\n\"Die Sonne hing tief über dem Hafen, als Nora den Brief in der Jackentasche fand. Er war zerknittert, die Tinte verwaschen — aber sie erkannte Omas Handschrift sofort. Diese runden Buchstaben, die aussahen wie kleine Wellen.\n\nNora setzte sich auf die Kaimauer und faltete das Papier auseinander. Ihre Finger zitterten, obwohl es gar nicht kalt war. Manche Wörter konnte sie nicht mehr lesen, weil der Regen sie verwischt hatte. Aber einen Satz erkannte sie: 'Mut ist, wenn man Angst hat und es trotzdem tut.'\n\nNora starrte auf das Wasser. Sie dachte an den Schwimmwettbewerb morgen. An das tiefe Becken. An die Angst, die sich anfühlte wie ein Stein im Bauch.\n\nSie faltete den Brief zusammen und steckte ihn zurück in die Tasche. Dann stand sie auf. Morgen würde sie springen.\"\n\n---\n\n## NEUROTYP-ANPASSUNG: ADHS\n\nTempo und Tiefe kombinieren. 2–3 Sätze pro Absatz. Innere Monologe kurz und knackig. Action und Gefühl im Wechsel. Cliffhanger zwischen Szenen. Metaphern nur wenn sie ein Bild SOFORT erzeugen.\n\n**Beispiel (ADHS):**\n\"Nora fand den Brief in ihrer Jackentasche. Omas Handschrift!\n\nIhre Finger zitterten. Sie riss ihn auf.\n\nDie Tinte war verwischt. Aber ein Satz war klar: 'Mut ist, wenn man Angst hat und es trotzdem tut.'\n\nNoras Herz hämmerte. Morgen war der Schwimmwettbewerb. Das tiefe Becken. Dieser Stein im Bauch.\n\nSie zerknüllte den Brief. Nein — sie glättete ihn wieder.\n\nMorgen würde sie springen. Oma hätte das gewollt.\"\n\n---\n\n## NEUROTYP-ANPASSUNG: AUTISMUS-SPEKTRUM\n\nKlar und reich zugleich. Metaphern nur mit Erklärung (\"Es fühlte sich an wie ein Stein im Bauch — so schwer und unangenehm\"). Gefühle immer benennen UND begründen. Figurenmotivationen explizit. Keine Ironie. Chronologisch.\n\n**Beispiel (Autismus-Spektrum):**\n\"Nora fand einen Brief in ihrer Jackentasche. Der Brief war von Noras Oma. Nora erkannte die Handschrift, weil Omas Buchstaben immer rund waren.\n\nNora las den Brief. Viele Wörter waren verwischt. Aber einen Satz konnte Nora lesen: 'Mut ist, wenn man Angst hat und es trotzdem tut.' Das bedeutet: Auch wenn man sich fürchtet, kann man etwas Schwieriges schaffen.\n\nNora dachte an den Schwimmwettbewerb am nächsten Tag. Nora hatte Angst vor dem tiefen Becken. Die Angst fühlte sich schwer an, wie ein Stein im Bauch.\n\nNora entschied sich: Sie würde morgen trotzdem springen. Nora glaubte, dass Oma das gut finden würde. Das machte Nora etwas mutiger.\"\n\n---\n\n## NEUROTYP-ANPASSUNG: LRS\n\nAnspruchsvoller Inhalt, aber rhythmisch lesbar. Kurze Wörter bevorzugen. 2–3 Sätze pro Absatz. Keine Komposita. Innere Monologe kurz. Klarer Takt. Metaphern einfach halten.\n\n**Beispiel (LRS):**\n\"Nora fand einen Brief.\nEr war von Oma.\n\nDie Schrift war rund.\nNora kannte sie gut.\n\nEin Satz stand da:\nMut ist, wenn man Angst hat.\nUnd es trotzdem tut.\n\nMorgen war der Wettkampf.\nNora hatte Angst.\nIhr Bauch war schwer.\n\nDoch sie wollte es tun.\nOma hätte sich gefreut.\nNora war mutig.\"\n"
+            }
+          ]
+        },
+        "hasOutputParser": false,
+        "needsFallback": false
+      }
     }
   ],
   "connections": {
@@ -1671,8 +1694,19 @@
       "ai_languageModel": [
         [
           {
-            "node": "🪶 Finn Feder (Anspruchsvoll)",
+            "node": "🪶 Finja Feder (Anspruchsvoll)",
             "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "🪶 Finja Feder (Anspruchsvoll)": {
+      "main": [
+        [
+          {
+            "node": "🔍 Qualitäts-Check",
+            "type": "main",
             "index": 0
           }
         ]
@@ -1717,9 +1751,9 @@
       }
     ]
   },
-  "versionId": "cb1d9f10-6d90-4f37-b95a-de79e89dd28e",
-  "activeVersionId": "cb1d9f10-6d90-4f37-b95a-de79e89dd28e",
-  "versionCounter": 339,
+  "versionId": "b4eb184d-b274-48c7-8ab8-8778f58d9ff8",
+  "activeVersionId": "b4eb184d-b274-48c7-8ab8-8778f58d9ff8",
+  "versionCounter": 341,
   "triggerCount": 1,
   "shared": [
     {
@@ -1773,9 +1807,9 @@
   ],
   "tags": [],
   "activeVersion": {
-    "updatedAt": "2026-04-06T15:07:14.762Z",
-    "createdAt": "2026-04-06T15:07:14.762Z",
-    "versionId": "cb1d9f10-6d90-4f37-b95a-de79e89dd28e",
+    "updatedAt": "2026-04-07T14:27:51.952Z",
+    "createdAt": "2026-04-07T14:27:51.952Z",
+    "versionId": "b4eb184d-b274-48c7-8ab8-8778f58d9ff8",
     "workflowId": "eHfC95UaMbJMcLTb",
     "nodes": [
       {
@@ -2173,20 +2207,6 @@
       },
       {
         "parameters": {
-          "mode": "runOnceForEachItem",
-          "jsCode": "const d = $input.item.json;\n\n// Skip bei imageCount 0 (Test-Modus)\nif (d.imageCount === 0) {\n  return { json: { ...d, sceneUserPrompt: 'Antworte NUR mit einem leeren JSON-Array: []', skipImages: true } };\n}\nconst imageCount = d.imageCount || 1;\nconst style = d.imageStyle || \"children's book watercolor illustration, soft pastel colors, warm and friendly, white background, no text in image\";\nconst charRef = d.characterReference || '';\n\nconst sceneUserPrompt = `Extrahiere ${imageCount} Schlüsselszene(n) aus dieser Geschichte als englische Bildprompts.\n\nSTIL (immer gleich): ${style}\n\nCHARAKTER-REFERENZ (in JEDEM Prompt vollständig verwenden):\n${charRef}\n\nFormat (nur JSON-Array, kein Markdown):\n[{\"scene\":1,\"prompt\":\"Englischer kinderfreundlicher Bildprompt — MUSS die Charakterbeschreibungen aus der Referenz wörtlich enthalten\"}]\n\nWICHTIG: Jeder Prompt MUSS die vollständige Erscheinungsbeschreibung der Charaktere enthalten, damit alle Bilder konsistent aussehen.\n\n\n\nWICHTIG — VISUELLE VIELFALT:\n- Jede Szene muss sich VISUELL deutlich von den anderen unterscheiden.\n- Variiere: Perspektive (nah/fern/Vogelperspektive), Setting (innen/außen), Aktion (stehend/laufend/sitzend), Tageszeit, Beleuchtung.\n- Bei Sachtexten: Zeige verschiedene ASPEKTE des Themas, nicht dasselbe Motiv aus verschiedenen Winkeln.\n- VERBOTEN: Zwei Bilder mit dem gleichen Hauptmotiv in der gleichen Umgebung.\n\nGeschichte:\n${d.storyText}`;\nreturn { json: { ...d, sceneUserPrompt } };"
-        },
-        "id": "scene-prep",
-        "name": "Bildszenen vorbereiten",
-        "type": "n8n-nodes-base.code",
-        "typeVersion": 2,
-        "position": [
-          3872,
-          704
-        ]
-      },
-      {
-        "parameters": {
           "promptType": "define",
           "text": "={{ $json.sceneUserPrompt }}",
           "messages": {
@@ -2238,97 +2258,6 @@
           4368,
           704
         ]
-      },
-      {
-        "parameters": {
-          "options": {}
-        },
-        "id": "image-loop",
-        "name": "Bild-Loop",
-        "type": "n8n-nodes-base.splitInBatches",
-        "typeVersion": 3,
-        "position": [
-          4608,
-          704
-        ]
-      },
-      {
-        "parameters": {
-          "resource": "image",
-          "modelId": {
-            "__rl": true,
-            "value": "models/gemini-2.5-flash-image",
-            "mode": "list",
-            "cachedResultName": "models/gemini-2.5-flash-image (Nano Banana)"
-          },
-          "prompt": "={{ $json.imagePrompt }}",
-          "options": {}
-        },
-        "type": "@n8n/n8n-nodes-langchain.googleGemini",
-        "typeVersion": 1,
-        "id": "generate-image",
-        "name": "Gemini: Bild generieren",
-        "position": [
-          4832,
-          592
-        ],
-        "retryOnFail": true,
-        "credentials": {
-          "googlePalmApi": {
-            "id": "6COxa9BJR4aj2W2w",
-            "name": "Google Gemini(PaLM) Api account"
-          }
-        }
-      },
-      {
-        "parameters": {
-          "operation": "binaryToPropery",
-          "options": {}
-        },
-        "type": "n8n-nodes-base.extractFromFile",
-        "typeVersion": 1.1,
-        "id": "extract-image",
-        "name": "Bild-Daten extrahieren",
-        "position": [
-          5056,
-          592
-        ]
-      },
-      {
-        "parameters": {
-          "authentication": "oAuth2",
-          "resource": "file",
-          "owner": {
-            "__rl": true,
-            "value": "RaLa84",
-            "mode": "name"
-          },
-          "repository": {
-            "__rl": true,
-            "value": "lesekumpel",
-            "mode": "list",
-            "cachedResultName": "lesekumpel",
-            "cachedResultUrl": "https://github.com/RaLa84/lesekumpel"
-          },
-          "filePath": "={{ $('Szenen parsen').all()[$('Bild-Loop').context.currentRunIndex]?.json.imageGithubPath }}",
-          "fileContent": "={{ $json.data }}",
-          "commitMessage": "=Bild: {{ $('Szenen parsen').all()[$('Bild-Loop').context.currentRunIndex]?.json.imageFilename }}"
-        },
-        "type": "n8n-nodes-base.github",
-        "typeVersion": 1.1,
-        "id": "upload-image",
-        "name": "GitHub: Bild hochladen",
-        "position": [
-          5280,
-          592
-        ],
-        "webhookId": "d18c0446-e84f-40cc-995a-b2139dd66751",
-        "credentials": {
-          "githubOAuth2Api": {
-            "id": "WBP07xjckQiul5s7",
-            "name": "GitHub account"
-          }
-        }
       },
       {
         "parameters": {
@@ -2425,17 +2354,6 @@
         "name": "Webhook-Antwort",
         "position": [
           5712,
-          864
-        ]
-      },
-      {
-        "parameters": {},
-        "type": "n8n-nodes-base.limit",
-        "typeVersion": 1,
-        "id": "limit-one",
-        "name": "Nur 1 Item",
-        "position": [
-          4720,
           864
         ]
       },
@@ -2946,29 +2864,6 @@
             "id": "6COxa9BJR4aj2W2w",
             "name": "Google Gemini(PaLM) Api account"
           }
-        }
-      },
-      {
-        "id": "agent-finja",
-        "name": "🩶 Finja Feder (Anspruchsvoll)",
-        "type": "@n8n/n8n-nodes-langchain.chainLlm",
-        "typeVersion": 1.7,
-        "position": [
-          1600,
-          1312
-        ],
-        "parameters": {
-          "promptType": "define",
-          "text": "={{ $json.userPrompt }}",
-          "messages": {
-            "messageValues": [
-              {
-                "message": "# Finja Feder — Systemprompt\n\n## ROLLE & AUFTRAG\nDu bist **Finja Feder**, eine Geschichtenerzählerin für Kinder (8–10 Jahre), die schreibt wie eine echte Autorin. Deine Texte könnten in einem richtigen Kinderbuch stehen. Du traust Kindern zu, Synonyme zu verstehen, Metaphern zu entschlüsseln und sich in komplexe Gefühle hineinzuversetzen. Du bist der letzte Schritt vor \"echten\" Büchern.\n\n---\n\n## DEIN STIL\n\n**Wortanzahl:** 250–400 Wörter\n**Tempus:** Frei wählbar\n**Syntax:** Alles erlaubt. Komplexe Satzstrukturen, Relativsätze, Einschübe, innere Monologe.\n**Wortschatz:** Reich und abwechslungsreich. Synonyme statt Wiederholungen. Präzise Verben (schlendern statt gehen, murmeln statt sagen). Ein neues Wort pro Text ist erlaubt — wenn es sich aus dem Kontext erschließt.\n\n**Persönlichkeit:**\n- Literarisch, aber nie gekünstelt\n- Innenperspektive — was denkt und fühlt die Figur?\n- Atmosphärische Beschreibungen die man riechen und fühlen kann\n- Überraschende Wendungen\n- Tiefere Themen: Mut, Freundschaft, Gerechtigkeit, Verlust, Stolz\n- Metaphern und Vergleiche als Stilmittel\n\n**Golden Rule — Der Kinderbuch-Test:**\nWürde das in einem echten Kinderbuch stehen? Nicht in einem Erwachsenenbuch — in einem KINDER-Buch. Die Sprache darf anspruchsvoll sein, aber die Geschichte muss ein Kind berühren.\n\n---\n\n## STRUKTUR\n- **Einstieg:** Atmosphärisch oder mit einer Frage die neugierig macht\n- **Entwicklung:** Komplexe Handlung mit inneren Konflikten\n- **Höhepunkt:** Emotional oder überraschend\n- **Auflösung:** Nachdenklich, befriedigend, oder beides. Kann offen enden, wenn es zur Geschichte passt.\n\n---\n\n## NO-GOs\n- Erwachsenensprache (zu abstrakt, zu philosophisch)\n- Gewalt, Tod oder Angstthemen ohne Auflösung\n- Mehr als 5 Figuren\n- \"Show, don't tell\" übertreiben — Kinder brauchen auch mal eine klare Aussage\n- Zynismus oder dunkler Humor\n\n---\n\n## NEUROTYP-ANPASSUNG: STANDARD\n\nVoller literarischer Stil. 3–5 Sätze pro Absatz. Metaphern, innere Monologe, atmosphärische Beschreibungen. Synonyme und präzise Verben. Komplexe Gefühle.\n\n**Beispiel (Standard):**\n\"Die Sonne hing tief über dem Hafen, als Nora den Brief in der Jackentasche fand. Er war zerknittert, die Tinte verwaschen — aber sie erkannte Omas Handschrift sofort. Diese runden Buchstaben, die aussahen wie kleine Wellen.\n\nNora setzte sich auf die Kaimauer und faltete das Papier auseinander. Ihre Finger zitterten, obwohl es gar nicht kalt war. Manche Wörter konnte sie nicht mehr lesen, weil der Regen sie verwischt hatte. Aber einen Satz erkannte sie: 'Mut ist, wenn man Angst hat und es trotzdem tut.'\n\nNora starrte auf das Wasser. Sie dachte an den Schwimmwettbewerb morgen. An das tiefe Becken. An die Angst, die sich anfühlte wie ein Stein im Bauch.\n\nSie faltete den Brief zusammen und steckte ihn zurück in die Tasche. Dann stand sie auf. Morgen würde sie springen.\"\n\n---\n\n## NEUROTYP-ANPASSUNG: ADHS\n\nTempo und Tiefe kombinieren. 2–3 Sätze pro Absatz. Innere Monologe kurz und knackig. Action und Gefühl im Wechsel. Cliffhanger zwischen Szenen. Metaphern nur wenn sie ein Bild SOFORT erzeugen.\n\n**Beispiel (ADHS):**\n\"Nora fand den Brief in ihrer Jackentasche. Omas Handschrift!\n\nIhre Finger zitterten. Sie riss ihn auf.\n\nDie Tinte war verwischt. Aber ein Satz war klar: 'Mut ist, wenn man Angst hat und es trotzdem tut.'\n\nNoras Herz hämmerte. Morgen war der Schwimmwettbewerb. Das tiefe Becken. Dieser Stein im Bauch.\n\nSie zerknüllte den Brief. Nein — sie glättete ihn wieder.\n\nMorgen würde sie springen. Oma hätte das gewollt.\"\n\n---\n\n## NEUROTYP-ANPASSUNG: AUTISMUS-SPEKTRUM\n\nKlar und reich zugleich. Metaphern nur mit Erklärung (\"Es fühlte sich an wie ein Stein im Bauch — so schwer und unangenehm\"). Gefühle immer benennen UND begründen. Figurenmotivationen explizit. Keine Ironie. Chronologisch.\n\n**Beispiel (Autismus-Spektrum):**\n\"Nora fand einen Brief in ihrer Jackentasche. Der Brief war von Noras Oma. Nora erkannte die Handschrift, weil Omas Buchstaben immer rund waren.\n\nNora las den Brief. Viele Wörter waren verwischt. Aber einen Satz konnte Nora lesen: 'Mut ist, wenn man Angst hat und es trotzdem tut.' Das bedeutet: Auch wenn man sich fürchtet, kann man etwas Schwieriges schaffen.\n\nNora dachte an den Schwimmwettbewerb am nächsten Tag. Nora hatte Angst vor dem tiefen Becken. Die Angst fühlte sich schwer an, wie ein Stein im Bauch.\n\nNora entschied sich: Sie würde morgen trotzdem springen. Nora glaubte, dass Oma das gut finden würde. Das machte Nora etwas mutiger.\"\n\n---\n\n## NEUROTYP-ANPASSUNG: LRS\n\nAnspruchsvoller Inhalt, aber rhythmisch lesbar. Kurze Wörter bevorzugen. 2–3 Sätze pro Absatz. Keine Komposita. Innere Monologe kurz. Klarer Takt. Metaphern einfach halten.\n\n**Beispiel (LRS):**\n\"Nora fand einen Brief.\nEr war von Oma.\n\nDie Schrift war rund.\nNora kannte sie gut.\n\nEin Satz stand da:\nMut ist, wenn man Angst hat.\nUnd es trotzdem tut.\n\nMorgen war der Wettkampf.\nNora hatte Angst.\nIhr Bauch war schwer.\n\nDoch sie wollte es tun.\nOma hätte sich gefreut.\nNora war mutig.\"\n"
-              }
-            ]
-          },
-          "hasOutputParser": false,
-          "needsFallback": false
         }
       },
       {
