@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-04-07T15:00:31.614Z",
+  "updatedAt": "2026-04-07T15:06:46.203Z",
   "createdAt": "2026-03-19T13:18:27.527Z",
   "id": "eHfC95UaMbJMcLTb",
   "name": "Lesekumpel – Neuroinclusive Story Generator",
@@ -1190,6 +1190,93 @@
       "parameters": {
         "jsCode": "const prev = $('Geschichte parsen').first().json;\nconst responseText = $input.item.json.text || '';\n\nconst storyMatch = responseText.match(/TEXT:\\s*([\\s\\S]*?)(?=ZUSAMMENFASSUNG:|$)/);\nconst summaryMatch = responseText.match(/ZUSAMMENFASSUNG:\\s*([\\s\\S]*)/);\nconst storyMatchOld = responseText.match(/GESCHICHTE:\\s*([\\s\\S]*?)(?=ZUSAMMENFASSUNG:|$)/);\n\nconst rawStory = storyMatch ? storyMatch[1].trim()\n  : storyMatchOld ? storyMatchOld[1].trim()\n  : responseText.trim();\nconst summaryText = summaryMatch ? summaryMatch[1].trim() : prev.summaryText;\n\n// Silbentrennung\nfunction silbentrennung(wort) {\n  if (wort.length <= 3) return wort;\n  if (!/^[a-z\\u00e4\\u00f6\\u00fc\\u00df]+$/i.test(wort)) return wort;\n  const w = wort.toLowerCase();\n  const einheiten = [];\n  let i = 0;\n  while (i < w.length) {\n    if (i+2 < w.length && w.substring(i, i+3) === 'sch') { einheiten.push({text:w.substring(i,i+3),typ:'K',pos:i,len:3}); i+=3; continue; }\n    const zwei = i+1<w.length ? w.substring(i,i+2) : '';\n    if (['ch','ck','ph','th','qu','pf'].includes(zwei)) { einheiten.push({text:zwei,typ:'K',pos:i,len:2}); i+=2; continue; }\n    if (['ei','au','eu','\\u00e4u','ie','ai'].includes(zwei)) { einheiten.push({text:zwei,typ:'V',pos:i,len:2}); i+=2; continue; }\n    const vokal = 'aeiouy\\u00e4\\u00f6\\u00fc'.includes(w[i]);\n    einheiten.push({text:w[i],typ:vokal?'V':'K',pos:i,len:1}); i++;\n  }\n  const vokalIndices = [];\n  for (let e=0; e<einheiten.length; e++) {\n    if (einheiten[e].typ==='V') {\n      if (vokalIndices.length>0 && vokalIndices[vokalIndices.length-1].end===e) vokalIndices[vokalIndices.length-1].end=e+1;\n      else vokalIndices.push({start:e,end:e+1});\n    }\n  }\n  if (vokalIndices.length<2) return wort;\n  const trennstellen = [];\n  for (let v=0; v<vokalIndices.length-1; v++) {\n    const nachVokal = vokalIndices[v].end;\n    const vorVokal = vokalIndices[v+1].start;\n    const anzahlKons = vorVokal - nachVokal;\n    let trennEinheit;\n    if (anzahlKons===0) trennEinheit=nachVokal;\n    else if (anzahlKons===1) trennEinheit=nachVokal;\n    else { trennEinheit=vorVokal-1;\n      if (anzahlKons>=2) { const vl=einheiten[vorVokal-2]; const lt=einheiten[vorVokal-1];\n        if (vl.text==='s'&&lt.text==='t') trennEinheit=vorVokal-2;\n      }\n    }\n    const charPos = einheiten[trennEinheit].pos;\n    if (charPos>0 && charPos<wort.length) trennstellen.push(charPos);\n  }\n  if (!trennstellen.length) return wort;\n  let erg='', letzte=0;\n  for (const pos of trennstellen) { erg+=wort.substring(letzte,pos)+'-'; letzte=pos; }\n  return erg+wort.substring(letzte);\n}\n\nconst storyText = rawStory.replace(/[a-z\\u00e4\\u00f6\\u00fc\\u00dfA-Z\\u00c4\\u00d6\\u00dc]{4,}/g, (w) => silbentrennung(w));\nconst wordCount = rawStory.split(/\\s+/).length;\n\nreturn { json: { ...prev, storyText, rawStoryText: rawStory, summaryText, wordCount, qaResult: 'RETRY' } };"
       }
+    },
+    {
+      "id": "if-autismus",
+      "name": "Autismus?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        1848,
+        704
+      ],
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": false,
+            "leftValue": "",
+            "typeValidation": "strict",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "leftValue": "={{ $json.neurotyp }}",
+              "rightValue": "Autismus",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        }
+      }
+    },
+    {
+      "id": "emoji-tagger",
+      "name": "😊 Emoji-Tagger",
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.7,
+      "position": [
+        1848,
+        954
+      ],
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.rawStoryText }}",
+        "messages": {
+          "messageValues": [
+            {
+              "message": "Du bekommst einen Kindertext. Füge nach JEDEM Gefühls-Wort oder Emotions-Ausdruck ein passendes Emoji ein.\n\nREGELN:\n- Nur EIN Emoji pro Gefühl, direkt nach dem Wort\n- Auch komplexe/nuancierte Gefühle bekommen Emojis\n- Körperliche Reaktionen auf Gefühle auch markieren (Herz klopft, zittern)\n- Den Text sonst NICHT verändern — kein Wort hinzufügen oder entfernen\n- Gib NUR den Text zurück, keine Erklärungen\n\nEMOJI-BEISPIELE (nicht erschöpfend, nutze dein Urteil):\n😊 froh, glücklich, freut sich, lacht\n😢 traurig, weint, vermisst\n😠 wütend, sauer, ärgert sich\n😨 Angst, erschrocken, fürchtet sich\n😮 überrascht, erstaunt, staunt\n😰 unsicher, nervös, aufgeregt\n🤔 überlegt, grübelt, zweifelt\n😳 verlegen, schämt sich, peinlich\n💪 mutig, stark, traut sich\n😤 frustriert, genervt, ungeduldig\n🥰 liebt, mag sehr, kuschelt\n😌 erleichtert, beruhigt, entspannt\n😶 still, schweigt, sagt nichts\n🫣 schüchtern, versteckt sich\n😟 besorgt, Sorgen, sorgt sich\n🥺 bittet, bettelt, hofft\n😡 zornig, tobt, schreit\n😴 müde, schläfrig, erschöpft\n🤩 begeistert, fasziniert, beeindruckt\n😏 stolz, zufrieden, selbstbewusst"
+            }
+          ]
+        },
+        "hasOutputParser": false,
+        "needsFallback": false
+      }
+    },
+    {
+      "id": "llm-emoji",
+      "name": "⚙️ Gemini (Emoji)",
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [
+        1848,
+        1154
+      ],
+      "parameters": {
+        "modelName": "models/gemini-2.5-flash",
+        "options": {}
+      },
+      "credentials": {
+        "googlePalmApi": {
+          "id": "6COxa9BJR4aj2W2w",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "id": "emoji-parse",
+      "name": "Emoji parsen",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        2118,
+        954
+      ],
+      "parameters": {
+        "jsCode": "const prev = $('Autismus?').first().json;\nconst emojiText = $input.item.json.text || prev.rawStoryText;\n\n// Silbentrennung auf den Emoji-Text anwenden\nfunction silbentrennung(wort) {\n  if (wort.length <= 3) return wort;\n  if (!/^[a-zäöüß]+$/i.test(wort)) return wort;\n  const w = wort.toLowerCase();\n  const einheiten = [];\n  let i = 0;\n  while (i < w.length) {\n    if (i+2 < w.length && w.substring(i, i+3) === 'sch') { einheiten.push({text:w.substring(i,i+3),typ:'K',pos:i,len:3}); i+=3; continue; }\n    const zwei = i+1<w.length ? w.substring(i,i+2) : '';\n    if (['ch','ck','ph','th','qu','pf'].includes(zwei)) { einheiten.push({text:zwei,typ:'K',pos:i,len:2}); i+=2; continue; }\n    if (['ei','au','eu','äu','ie','ai'].includes(zwei)) { einheiten.push({text:zwei,typ:'V',pos:i,len:2}); i+=2; continue; }\n    const vokal = 'aeiouyäöü'.includes(w[i]);\n    einheiten.push({text:w[i],typ:vokal?'V':'K',pos:i,len:1}); i++;\n  }\n  const vokalIndices = [];\n  for (let e=0; e<einheiten.length; e++) {\n    if (einheiten[e].typ==='V') {\n      if (vokalIndices.length>0 && vokalIndices[vokalIndices.length-1].end===e) vokalIndices[vokalIndices.length-1].end=e+1;\n      else vokalIndices.push({start:e,end:e+1});\n    }\n  }\n  if (vokalIndices.length<2) return wort;\n  const trennstellen = [];\n  for (let v=0; v<vokalIndices.length-1; v++) {\n    const nachVokal = vokalIndices[v].end;\n    const vorVokal = vokalIndices[v+1].start;\n    const anzahlKons = vorVokal - nachVokal;\n    let trennEinheit;\n    if (anzahlKons===0) trennEinheit=nachVokal;\n    else if (anzahlKons===1) trennEinheit=nachVokal;\n    else { trennEinheit=vorVokal-1;\n      if (anzahlKons>=2) { const vl=einheiten[vorVokal-2]; const lt=einheiten[vorVokal-1];\n        if (vl.text==='s'&&lt.text==='t') trennEinheit=vorVokal-2;\n      }\n    }\n    const charPos = einheiten[trennEinheit].pos;\n    if (charPos>0 && charPos<wort.length) trennstellen.push(charPos);\n  }\n  if (!trennstellen.length) return wort;\n  let erg='', letzte=0;\n  for (const pos of trennstellen) { erg+=wort.substring(letzte,pos)+'-'; letzte=pos; }\n  return erg+wort.substring(letzte);\n}\n\nconst storyText = emojiText.replace(/[a-zäöüßA-ZÄÖÜ]{4,}/g, (w) => silbentrennung(w));\n\nreturn { json: { ...prev, storyText, rawStoryText: emojiText } };"
+      }
     }
   ],
   "connections": {
@@ -1742,7 +1829,7 @@
       "main": [
         [
           {
-            "node": "📚 Linguistik-Anreicherung",
+            "node": "Autismus?",
             "type": "main",
             "index": 0
           }
@@ -1779,6 +1866,57 @@
       ]
     },
     "Retry parsen": {
+      "main": [
+        [
+          {
+            "node": "Autismus?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Autismus?": {
+      "main": [
+        [
+          {
+            "node": "😊 Emoji-Tagger",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "📚 Linguistik-Anreicherung",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "😊 Emoji-Tagger": {
+      "main": [
+        [
+          {
+            "node": "Emoji parsen",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "⚙️ Gemini (Emoji)": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "😊 Emoji-Tagger",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Emoji parsen": {
       "main": [
         [
           {
@@ -1828,9 +1966,9 @@
       }
     ]
   },
-  "versionId": "02916a0b-ff48-4b2a-abb0-23dc6c005c5b",
-  "activeVersionId": "02916a0b-ff48-4b2a-abb0-23dc6c005c5b",
-  "versionCounter": 347,
+  "versionId": "014f09e7-27ab-4758-aa80-94afb09594f1",
+  "activeVersionId": "014f09e7-27ab-4758-aa80-94afb09594f1",
+  "versionCounter": 351,
   "triggerCount": 1,
   "shared": [
     {
@@ -1884,9 +2022,9 @@
   ],
   "tags": [],
   "activeVersion": {
-    "updatedAt": "2026-04-07T15:00:31.616Z",
-    "createdAt": "2026-04-07T15:00:31.616Z",
-    "versionId": "02916a0b-ff48-4b2a-abb0-23dc6c005c5b",
+    "updatedAt": "2026-04-07T15:06:46.205Z",
+    "createdAt": "2026-04-07T15:06:46.205Z",
+    "versionId": "014f09e7-27ab-4758-aa80-94afb09594f1",
     "workflowId": "eHfC95UaMbJMcLTb",
     "nodes": [
       {
@@ -2985,6 +3123,93 @@
           "hasOutputParser": false,
           "needsFallback": false
         }
+      },
+      {
+        "id": "if-qa-result",
+        "name": "QA bestanden?",
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2,
+        "position": [
+          2168,
+          704
+        ],
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": false,
+              "leftValue": "",
+              "typeValidation": "strict",
+              "version": 2
+            },
+            "conditions": [
+              {
+                "leftValue": "={{ $json.qaResult }}",
+                "rightValue": "BESTANDEN",
+                "operator": {
+                  "type": "string",
+                  "operation": "equals"
+                }
+              }
+            ],
+            "combinator": "and"
+          }
+        }
+      },
+      {
+        "id": "retry-agent",
+        "name": "🔄 Retry-Agent",
+        "type": "@n8n/n8n-nodes-langchain.chainLlm",
+        "typeVersion": 1.7,
+        "position": [
+          2448,
+          904
+        ],
+        "parameters": {
+          "promptType": "define",
+          "text": "={{ $json.rawStoryText }}",
+          "messages": {
+            "messageValues": [
+              {
+                "message": "Du bist ein Textverbesserer für Kindergeschichten.\n\nDu bekommst einen Text der die Qualitätsprüfung NICHT bestanden hat, zusammen mit konkretem Feedback.\n\nAUFGABE: Schreibe den Text so um, dass er das Feedback berücksichtigt.\nBehalte den Stil, die Persona und die Textlänge bei.\nÄndere NUR was das Feedback kritisiert.\n\nFEEDBACK:\n{{ $json.qaFeedback }}\n\nPERSONA: {{ $json.personaName }}\nNEUROTYP: {{ $json.neurotyp }}\n\nAntworte NUR mit:\nTEXT:\n[Der verbesserte Text]\nZUSAMMENFASSUNG:\n[2-3 Sätze]"
+              }
+            ]
+          },
+          "hasOutputParser": false,
+          "needsFallback": false
+        }
+      },
+      {
+        "id": "llm-retry",
+        "name": "⚙️ Gemini (Retry)",
+        "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+        "typeVersion": 1,
+        "position": [
+          2448,
+          1104
+        ],
+        "parameters": {
+          "modelName": "models/gemini-2.5-flash",
+          "options": {}
+        },
+        "credentials": {
+          "googlePalmApi": {
+            "id": "6COxa9BJR4aj2W2w",
+            "name": "Google Gemini(PaLM) Api account"
+          }
+        }
+      },
+      {
+        "id": "retry-parse",
+        "name": "Retry parsen",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          2728,
+          904
+        ],
+        "parameters": {
+          "jsCode": "const prev = $('Geschichte parsen').first().json;\nconst responseText = $input.item.json.text || '';\n\nconst storyMatch = responseText.match(/TEXT:\\s*([\\s\\S]*?)(?=ZUSAMMENFASSUNG:|$)/);\nconst summaryMatch = responseText.match(/ZUSAMMENFASSUNG:\\s*([\\s\\S]*)/);\nconst storyMatchOld = responseText.match(/GESCHICHTE:\\s*([\\s\\S]*?)(?=ZUSAMMENFASSUNG:|$)/);\n\nconst rawStory = storyMatch ? storyMatch[1].trim()\n  : storyMatchOld ? storyMatchOld[1].trim()\n  : responseText.trim();\nconst summaryText = summaryMatch ? summaryMatch[1].trim() : prev.summaryText;\n\n// Silbentrennung\nfunction silbentrennung(wort) {\n  if (wort.length <= 3) return wort;\n  if (!/^[a-z\\u00e4\\u00f6\\u00fc\\u00df]+$/i.test(wort)) return wort;\n  const w = wort.toLowerCase();\n  const einheiten = [];\n  let i = 0;\n  while (i < w.length) {\n    if (i+2 < w.length && w.substring(i, i+3) === 'sch') { einheiten.push({text:w.substring(i,i+3),typ:'K',pos:i,len:3}); i+=3; continue; }\n    const zwei = i+1<w.length ? w.substring(i,i+2) : '';\n    if (['ch','ck','ph','th','qu','pf'].includes(zwei)) { einheiten.push({text:zwei,typ:'K',pos:i,len:2}); i+=2; continue; }\n    if (['ei','au','eu','\\u00e4u','ie','ai'].includes(zwei)) { einheiten.push({text:zwei,typ:'V',pos:i,len:2}); i+=2; continue; }\n    const vokal = 'aeiouy\\u00e4\\u00f6\\u00fc'.includes(w[i]);\n    einheiten.push({text:w[i],typ:vokal?'V':'K',pos:i,len:1}); i++;\n  }\n  const vokalIndices = [];\n  for (let e=0; e<einheiten.length; e++) {\n    if (einheiten[e].typ==='V') {\n      if (vokalIndices.length>0 && vokalIndices[vokalIndices.length-1].end===e) vokalIndices[vokalIndices.length-1].end=e+1;\n      else vokalIndices.push({start:e,end:e+1});\n    }\n  }\n  if (vokalIndices.length<2) return wort;\n  const trennstellen = [];\n  for (let v=0; v<vokalIndices.length-1; v++) {\n    const nachVokal = vokalIndices[v].end;\n    const vorVokal = vokalIndices[v+1].start;\n    const anzahlKons = vorVokal - nachVokal;\n    let trennEinheit;\n    if (anzahlKons===0) trennEinheit=nachVokal;\n    else if (anzahlKons===1) trennEinheit=nachVokal;\n    else { trennEinheit=vorVokal-1;\n      if (anzahlKons>=2) { const vl=einheiten[vorVokal-2]; const lt=einheiten[vorVokal-1];\n        if (vl.text==='s'&&lt.text==='t') trennEinheit=vorVokal-2;\n      }\n    }\n    const charPos = einheiten[trennEinheit].pos;\n    if (charPos>0 && charPos<wort.length) trennstellen.push(charPos);\n  }\n  if (!trennstellen.length) return wort;\n  let erg='', letzte=0;\n  for (const pos of trennstellen) { erg+=wort.substring(letzte,pos)+'-'; letzte=pos; }\n  return erg+wort.substring(letzte);\n}\n\nconst storyText = rawStory.replace(/[a-z\\u00e4\\u00f6\\u00fc\\u00dfA-Z\\u00c4\\u00d6\\u00dc]{4,}/g, (w) => silbentrennung(w));\nconst wordCount = rawStory.split(/\\s+/).length;\n\nreturn { json: { ...prev, storyText, rawStoryText: rawStory, summaryText, wordCount, qaResult: 'RETRY' } };"
+        }
       }
     ],
     "connections": {
@@ -3075,7 +3300,7 @@
         "main": [
           [
             {
-              "node": "📚 Linguistik-Anreicherung",
+              "node": "QA bestanden?",
               "type": "main",
               "index": 0
             }
@@ -3527,6 +3752,57 @@
           [
             {
               "node": "🔍 Qualitäts-Check",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "QA bestanden?": {
+        "main": [
+          [
+            {
+              "node": "📚 Linguistik-Anreicherung",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "🔄 Retry-Agent",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "🔄 Retry-Agent": {
+        "main": [
+          [
+            {
+              "node": "Retry parsen",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "⚙️ Gemini (Retry)": {
+        "ai_languageModel": [
+          [
+            {
+              "node": "🔄 Retry-Agent",
+              "type": "ai_languageModel",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Retry parsen": {
+        "main": [
+          [
+            {
+              "node": "📚 Linguistik-Anreicherung",
               "type": "main",
               "index": 0
             }
