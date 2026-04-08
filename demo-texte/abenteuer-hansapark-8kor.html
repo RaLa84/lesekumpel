@@ -158,14 +158,14 @@
         .toolbar-container.collapsed .toolbar-toggle-icon { transform: rotate(-90deg); }
         .toolbar-body { padding: 0 14px 16px; display: flex; flex-direction: column; gap: 8px; }
         .toolbar-container.collapsed .toolbar-body { display: none; }
-        /* Offen: Bottom-Sheet auf allen Geräten */
+        /* Offen: Karte rechts unten, expandiert nach oben */
         .toolbar-container:not(.collapsed) {
-            position: fixed; bottom: 0; left: 0; right: 0; z-index: 4500;
-            max-width: 600px; margin: 0 auto;
-            border-radius: 24px 24px 0 0;
-            box-shadow: 0 -4px 24px rgba(0,0,0,0.1);
-            border: none; border-top: 3px solid var(--primary-yellow);
-            max-height: 55vh; overflow-y: auto;
+            position: fixed; bottom: 24px; right: 24px; left: auto; z-index: 4500;
+            max-width: 400px; margin: 0;
+            border-radius: 24px;
+            box-shadow: 0 6px 32px rgba(0,0,0,0.12), 0 2px 8px rgba(0,0,0,0.06);
+            border: 2px solid var(--primary-yellow);
+            max-height: 70vh; overflow-y: auto;
         }
 
         /* Gruppen */
@@ -226,7 +226,7 @@
             .brand-name { display: none; }
             .hidden-mobile { display: none !important; }
             .toolbar-container.collapsed { bottom: 16px; right: 16px; }
-            .toolbar-container:not(.collapsed) { max-width: 100%; border-radius: 20px 20px 0 0; }
+            .toolbar-container:not(.collapsed) { bottom: 0; right: 0; max-width: 100%; border-radius: 20px 20px 0 0; border-bottom: none; }
             body { padding-bottom: 80px; }
             h1#main-title { font-size: 1.6rem; letter-spacing: 0.5px; }
             .main-card { padding: 24px 20px; }
