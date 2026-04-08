@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lesekumpel — Lesen lernen auf deine Art</title>
+    <meta name="description" content="Schluss mit dem Lesekampf. Lesekumpel verwandelt Frustration in Begeisterung — mit neuroinklusiven Geschichten für Kinder mit ADHS, Autismus und Legasthenie.">
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="Lesekumpel — Lesen lernen auf deine Art">
+    <meta property="og:description" content="Wir verwandeln Frustration und Wut in echte Begeisterung. Schluss mit dem Lesekampf am Schreibtisch.">
+    <meta property="og:image" content="bilder/lesekumpel_logo.png">
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="de_DE">
+
+    <!-- Fonts (DSGVO-konform, lokal) -->
+    <link rel="stylesheet" href="fonts/fonts.css">
+
+    <style>
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg-body: #FFF9E5;
+            --bg-warm-light: #FFF3D0;
+            --accent-coral: #D67171;
+            --accent-coral-light: #FDEAEA;
+            --accent-coral-dark: #B85555;
+            --primary-yellow: #FFD54F;
+            --text-dark: #2D3436;
+            --text-body: #3D4449;
+            --text-muted: #4A5258;
+            --font-heading: 'Fredoka', sans-serif;
+            --font-body: 'Quicksand', sans-serif;
+        }
+
+        body {
+            font-family: var(--font-body);
+            background: radial-gradient(ellipse at center, #FFFDF5 0%, #FFF3D0 100%);
+            color: var(--text-dark);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 40px 32px 40px;
+            position: relative;
+        }
+
+        /* ========== FLOATING DECORATIONS ========== */
+        .floating-deco {
+            position: fixed;
+            pointer-events: none;
+            z-index: 0;
+            will-change: transform;
+        }
+
+        .deco-star {
+            width: 32px;
+            height: 32px;
+            animation: float 6s ease-in-out infinite;
+            filter: drop-shadow(0 0 6px rgba(255, 213, 79, 0.4));
+        }
+
+        .deco-circle {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            animation: float-slow 8s ease-in-out infinite;
+        }
+
+        .deco-sparkle {
+            width: 16px;
+            height: 16px;
+            animation: sparkle 4s ease-in-out infinite;
+        }
+
+        .deco-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            animation: float 5s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-18px) rotate(5deg); }
+        }
+
+        @keyframes float-slow {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-12px) rotate(-3deg); }
+        }
+
+        @keyframes sparkle {
+            0%, 100% { opacity: 0.35; transform: scale(0.8); }
+            30% { opacity: 1; transform: scale(1.15); }
+            50% { opacity: 0.9; transform: scale(1.2); }
+            70% { opacity: 1; transform: scale(1.1); }
+        }
+
+        /* ========== MAIN CONTENT ========== */
+        main {
+            text-align: center;
+            max-width: 620px;
+            width: 100%;
+            animation: fadeIn 0.8s ease-out;
+            position: relative;
+            z-index: 1;
+        }
+
+        .logo {
+            width: clamp(100px, 28vw, 150px);
+            height: auto;
+            margin-bottom: 12px;
+            border-radius: 50%;
+            filter: drop-shadow(0 6px 20px rgba(180, 120, 80, 0.18));
+            transition: transform 0.4s cubic-bezier(0.34, 1.56, 0.64, 1),
+                        filter 0.4s ease;
+        }
+
+        .logo:hover {
+            transform: scale(1.1) rotate(-5deg);
+            filter: drop-shadow(0 10px 28px rgba(180, 120, 80, 0.28));
+        }
+
+        .brand-name {
+            font-family: var(--font-heading);
+            font-weight: 700;
+            font-size: clamp(0.9rem, 2.5vw, 1.1rem);
+            color: var(--accent-coral);
+            margin-bottom: 28px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+
+        h1 {
+            font-family: var(--font-heading);
+            font-weight: 700;
+            font-size: clamp(1.5rem, 5vw, 2.4rem);
+            color: var(--text-dark);
+            line-height: 1.3;
+            margin-bottom: 20px;
+            max-width: 520px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        h1 .highlight {
+            color: var(--accent-coral-dark);
+        }
+
+        .subtitle {
+            font-family: var(--font-body);
+            font-weight: 600;
+            font-size: clamp(0.95rem, 2.8vw, 1.15rem);
+            color: var(--text-body);
+            line-height: 1.6;
+            margin-bottom: 40px;
+            max-width: 480px;
+            margin-left: auto;
+            margin-right: auto;
+            text-align: left;
+        }
+
+        /* ========== FEATURE CARDS ========== */
+        .features {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 14px;
+        }
+
+        .feature-card {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            background: #ffffff;
+            border: 2px solid #F5E6A3;
+            border-radius: 18px;
+            padding: 18px 22px;
+            text-align: left;
+            box-shadow: 0 2px 12px rgba(0, 0, 0, 0.03);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
+        }
+
+        .feature-card .icon {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 44px;
+            height: 44px;
+            border-radius: 12px;
+            flex-shrink: 0;
+            font-size: 20px;
+            font-weight: 700;
+        }
+
+        .feature-card:nth-child(1) .icon {
+            background: #EDE7F6;
+            color: #5E35B1;
+        }
+
+        .feature-card:nth-child(2) .icon {
+            background: #E8F5E9;
+            color: #2E7D32;
+        }
+
+        .feature-card:nth-child(3) .icon {
+            background: #FFF8E1;
+            color: #F57F17;
+        }
+
+        .feature-card .text strong {
+            display: block;
+            font-family: var(--font-heading);
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: var(--text-dark);
+            margin-bottom: 2px;
+        }
+
+        .feature-card .text span {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            line-height: 1.5;
+        }
+
+        @media (max-width: 480px) {
+            .deco-hide-mobile {
+                display: none;
+            }
+
+            .feature-card {
+                padding: 16px 18px;
+            }
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(12px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        /* ========== SECTION HEADING ========== */
+        .section-heading {
+            font-family: var(--font-heading);
+            font-weight: 600;
+            font-size: clamp(1.1rem, 3vw, 1.3rem);
+            color: var(--text-dark);
+            margin: 32px 0 16px;
+        }
+
+        .teaser-detail {
+            font-weight: 400;
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            margin-bottom: 16px;
+            line-height: 1.6;
+        }
+
+        /* ========== TEASER ========== */
+        .teaser {
+            margin-top: 36px;
+            padding: 28px 24px;
+            background: rgba(255, 255, 255, 0.6);
+            border: 2px solid #F5E6A3;
+            border-radius: 18px;
+            text-align: center;
+        }
+
+        .teaser p {
+            font-family: var(--font-body);
+            font-weight: 600;
+            font-size: 1rem;
+            color: var(--text-body);
+            line-height: 1.6;
+            margin-bottom: 14px;
+        }
+
+        .teaser a {
+            display: inline-block;
+            font-family: var(--font-heading);
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: #fff;
+            background: var(--accent-coral);
+            padding: 10px 24px;
+            border-radius: 30px;
+            text-decoration: none;
+            transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1),
+                        background 0.3s ease,
+                        box-shadow 0.3s ease;
+            box-shadow: 0 3px 12px rgba(214, 113, 113, 0.25);
+        }
+
+        .teaser a:hover {
+            transform: scale(1.06);
+            background: var(--accent-coral-dark);
+            box-shadow: 0 6px 20px rgba(214, 113, 113, 0.35);
+        }
+
+        /* ========== FOOTER ========== */
+        footer {
+            margin-top: 28px;
+            padding-bottom: 20px;
+            text-align: center;
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            opacity: 0.7;
+            z-index: 1;
+        }
+
+
+        @media (prefers-reduced-motion: reduce) {
+            main { animation: none; }
+            .logo { transition: none; }
+            .feature-card { transition: none; }
+            .floating-deco { animation: none !important; }
+        }
+    </style>
+</head>
+<body>
+    <!-- Floating Decorations -->
+    <svg aria-hidden="true" class="floating-deco deco-star" style="top:12%;right:10%;animation-delay:-1s;" viewBox="0 0 32 32"><polygon points="16,2 20,12 30,12 22,19 25,30 16,23 7,30 10,19 2,12 12,12" fill="#FFD54F" opacity="0.5"/></svg>
+    <svg aria-hidden="true" class="floating-deco deco-star deco-hide-mobile" style="top:65%;left:6%;animation-delay:-3s;" viewBox="0 0 32 32"><polygon points="16,2 20,12 30,12 22,19 25,30 16,23 7,30 10,19 2,12 12,12" fill="#D67171" opacity="0.2"/></svg>
+    <svg aria-hidden="true" class="floating-deco deco-sparkle deco-hide-mobile" style="top:28%;right:18%;animation-delay:-2s;" viewBox="0 0 16 16"><circle cx="8" cy="8" r="3" fill="#FFD54F" opacity="0.6"/></svg>
+    <div aria-hidden="true" class="floating-deco deco-circle" style="top:72%;right:15%;background:#FDEAEA;animation-delay:-4s;"></div>
+    <div aria-hidden="true" class="floating-deco deco-dot deco-hide-mobile" style="top:20%;left:14%;background:#FFD54F;opacity:0.4;animation-delay:-2s;"></div>
+    <svg aria-hidden="true" class="floating-deco deco-sparkle" style="top:45%;left:7%;animation-delay:-1.5s;" viewBox="0 0 24 24"><path d="M12,2 L14,10 L22,12 L14,14 L12,22 L10,14 L2,12 L10,10 Z" fill="#FFD54F" opacity="0.45"/></svg>
+    <svg aria-hidden="true" class="floating-deco deco-star" style="bottom:18%;left:18%;animation-delay:-4.5s;" viewBox="0 0 32 32"><polygon points="16,2 20,12 30,12 22,19 25,30 16,23 7,30 10,19 2,12 12,12" fill="#FFD54F" opacity="0.3"/></svg>
+    <div aria-hidden="true" class="floating-deco deco-dot" style="bottom:25%;right:22%;background:#D67171;opacity:0.2;animation-delay:-3.5s;"></div>
+
+    <main>
+        <img src="bilder/lesekumpel_logo.png" alt="Lesekumpel Logo" class="logo">
+        <p class="brand-name">Lesekumpel</p>
+        <h1>Lesen lernen<br><span class="highlight">auf deine Art.</span></h1>
+        <p class="subtitle">Wir verwandeln Frustration und Wut in echte Begeisterung. Schluss mit dem Lesekampf am Schreibtisch. Mit hochindividueller, technologiegest&uuml;tzter Unterst&uuml;tzung entstehen Texte, die exakt die Interessen deines Kindes treffen. So bauen wir Barrieren ab und schaffen eine entspannte Leseroutine &ndash; ganz ohne Tr&auml;nen.</p>
+
+        <p class="section-heading">Drei S&auml;ulen f&uuml;r entspanntes Lesen</p>
+
+        <div class="features">
+            <div class="feature-card">
+                <span class="icon">&#9998;</span>
+                <div class="text">
+                    <strong>Geschichten, die dein Kind mitgestaltet</strong>
+                    <span>Ob Dinos, M&auml;rchen oder absoluter Quatsch &ndash; wie die Katze, die heimlich einen D&ouml;ner klaut. Dein Kind bestimmt die Themen. Wir nutzen Technologie, um daraus Texte zu formen, die fesseln und Barrieren senken. So w&auml;chst eine Bibliothek, von der alle profitieren.</span>
+                </div>
+            </div>
+            <div class="feature-card">
+                <span class="icon">&#9825;</span>
+                <div class="text">
+                    <strong>Hilfen, die den Weg frei machen</strong>
+                    <span>Wir geben deinem Kind genau die Werkzeuge an die Hand, die es braucht. Unsere Plattform ist neuroinklusiv gestaltet und optimiert die Lesbarkeit bei ADHS, Autismus und Legasthenie &ndash; f&uuml;r echte Erfolgserlebnisse ab der ersten Zeile.</span>
+                </div>
+            </div>
+            <div class="feature-card">
+                <span class="icon">&#9733;</span>
+                <div class="text">
+                    <strong>Routine statt Kampf</strong>
+                    <span>Kein Vergleichen, keine Ranglisten. Wir helfen dabei, das t&auml;gliche Lesen zu einem positiven Moment zu machen, auf den sich dein Kind freut. Wir begleiten den Weg vom &bdquo;M&uuml;ssen&ldquo; zum selbstverst&auml;ndlichen Ritual.</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="teaser">
+            <p>Wir bauen gerade an etwas Sch&ouml;nem f&uuml;r euch.</p>
+            <p class="teaser-detail">Du bist neugierig geworden, hast eigene Ideen oder willst dich einfach mal dazu austauschen, wie wir den Lesekampf gemeinsam beenden k&ouml;nnen? Wir freuen uns riesig &uuml;ber deine Nachricht und den Kontakt zu anderen Eltern.</p>
+            <a href="mailto:hallo@lesekumpel.de">Lass uns austauschen!</a>
+        </div>
+
+    </main>
+
+    <footer>
+<span>&copy; 2026 Raik Lasner, Marten Losansky, Antje Lasner</span>
+    </footer>
+
+</body>
+</html>
