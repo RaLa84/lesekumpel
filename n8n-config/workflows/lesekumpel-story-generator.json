@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-04-07T18:23:35.266Z",
+  "updatedAt": "2026-04-08T06:54:51.642Z",
   "createdAt": "2026-03-19T13:18:27.527Z",
   "id": "eHfC95UaMbJMcLTb",
   "name": "Lesekumpel – Neuroinclusive Story Generator",
@@ -41,7 +41,7 @@
     {
       "parameters": {
         "mode": "runOnceForEachItem",
-        "jsCode": "const d = $input.item.json;\nconst { title, description, persona } = d;\n\n// Content-Safety Check\nconst BLOCKED = ['gewalt', 'waffe', 'sex', 'drogen', 'sterben', 'töten', 'mord'];\nconst hit = BLOCKED.find(w => (title + ' ' + (description || '')).toLowerCase().includes(w));\nif (hit) throw new Error(`Inhalt nicht kindgerecht: \"${hit}\" gefunden`);\n\n// Persona existiert?\nconst VALID_PERSONAS = ['pip', 'mia', 'peter', 'stella', 'finn', 'samira', 'holzi', 'deniz', 'jonas'];\nif (!VALID_PERSONAS.includes(persona)) {\n  throw new Error(`Unbekannte Persona: \"${persona}\". Gültig: ${VALID_PERSONAS.join(', ')}`);\n}\n\nreturn { json: d };"
+        "jsCode": "const d = $input.item.json;\nconst { title, description, persona } = d;\n\n// Content-Safety Check\nconst BLOCKED = ['gewalt', 'waffe', 'sex', 'drogen', 'sterben', 'töten', 'mord'];\nconst hit = BLOCKED.find(w => (title + ' ' + (description || '')).toLowerCase().includes(w));\nif (hit) throw new Error(`Inhalt nicht kindgerecht: \"${hit}\" gefunden`);\n\n// Persona existiert?\nconst VALID_PERSONAS = ['pip', 'mia', 'peter', 'stella', 'finja', 'samira', 'holzi', 'deniz', 'jonas'];\nif (!VALID_PERSONAS.includes(persona)) {\n  throw new Error(`Unbekannte Persona: \"${persona}\". Gültig: ${VALID_PERSONAS.join(', ')}`);\n}\n\nreturn { json: d };"
       },
       "id": "guardrail",
       "name": "Guardrail: Kind-Safe + Matrix",
@@ -1924,9 +1924,9 @@
       }
     ]
   },
-  "versionId": "03522bcd-13c4-4665-9b26-67fa8abb5b4a",
-  "activeVersionId": "03522bcd-13c4-4665-9b26-67fa8abb5b4a",
-  "versionCounter": 367,
+  "versionId": "7b572894-2c5e-4632-a672-917009f7d489",
+  "activeVersionId": "7b572894-2c5e-4632-a672-917009f7d489",
+  "versionCounter": 369,
   "triggerCount": 1,
   "shared": [
     {
@@ -1980,9 +1980,9 @@
   ],
   "tags": [],
   "activeVersion": {
-    "updatedAt": "2026-04-07T18:23:35.270Z",
-    "createdAt": "2026-04-07T18:23:35.270Z",
-    "versionId": "03522bcd-13c4-4665-9b26-67fa8abb5b4a",
+    "updatedAt": "2026-04-08T06:54:51.645Z",
+    "createdAt": "2026-04-08T06:54:51.645Z",
+    "versionId": "7b572894-2c5e-4632-a672-917009f7d489",
     "workflowId": "eHfC95UaMbJMcLTb",
     "nodes": [
       {
@@ -3275,6 +3275,13 @@
           [
             {
               "node": "🎭 Stella Stimmenreich (Dialoge)",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "🪶 Finja Feder (Anspruchsvoll)",
               "type": "main",
               "index": 0
             }
