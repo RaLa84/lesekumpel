@@ -65,22 +65,41 @@
             position: relative; box-shadow: 0 10px 0 rgba(0,0,0,0.05);
         }
 
+        /* --- HEADER v2 --- */
         h1#main-title {
-            font-family: var(--font-heading); color: var(--accent-coral); font-size: 3rem;
-            text-align: center; line-height: 1.1; margin-bottom: 10px; margin-top: 0; text-transform: uppercase;
+            font-family: var(--font-heading); color: var(--accent-coral); font-size: 2.6rem;
+            text-align: center; line-height: 1.15; margin-bottom: 14px; margin-top: 0;
+            text-transform: uppercase; letter-spacing: 1.5px;
             overflow-wrap: break-word; word-wrap: break-word; hyphens: auto; -webkit-hyphens: auto; max-width: 100%;
+            text-shadow:
+                -1.5px -1.5px 0 #fff, 1.5px -1.5px 0 #fff,
+                -1.5px 1.5px 0 #fff, 1.5px 1.5px 0 #fff,
+                0 3px 10px rgba(214,113,113,0.12);
         }
 
         .quality-badge {
-            display: block; text-align: center; background: #fffbe6; color: #d4ac0d;
-            border: 1px solid var(--primary-yellow); border-radius: 20px; padding: 4px 12px;
-            width: fit-content; margin: 0 auto 10px auto; font-weight: bold;
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+            text-align: center; background: #fffdf5; color: #8b6914;
+            border: 1px solid rgba(212,172,13,0.25); border-radius: 24px; padding: 8px 20px;
+            width: fit-content; margin: 0 auto 10px auto; font-weight: 600;
+            font-family: var(--font-heading); font-size: 0.95rem;
+            box-shadow: 0 2px 8px rgba(212,172,13,0.08);
         }
+        .quality-badge .badge-avatar {
+            width: 28px; height: 28px; border-radius: 50%; border: 2px solid var(--primary-yellow);
+            object-fit: cover;
+        }
+
         .neurotype-badge {
-            display: block; text-align: center; background: #f0f8ff; color: #2a9d8f;
-            border: 1px solid #2a9d8f; border-radius: 20px; padding: 4px 12px;
-            width: fit-content; margin: 0 auto 30px auto; font-weight: bold; font-size: 0.85rem;
+            display: inline-flex; align-items: center; gap: 6px;
+            text-align: center; color: #fff; font-weight: 600;
+            border: none; border-radius: 20px; padding: 6px 18px;
+            width: fit-content; margin: 0 auto 24px auto; font-size: 0.82rem;
+            font-family: var(--font-heading);
+            background: linear-gradient(135deg, #2a9d8f 0%, #7c6bc4 100%);
+            box-shadow: 0 2px 10px rgba(42,157,143,0.2);
         }
+        .neurotype-badge-wrap { display: block; text-align: center; }
 
         .hero-image { width: 100%; border-radius: 15px; margin-bottom: 30px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
         .story-inline-img { width: 100%; border-radius: 15px; margin: 20px 0 10px 0; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
@@ -210,8 +229,8 @@
             .toolbar-container.collapsed .toolbar-body { display: block !important; }
             .fab-tools { display: flex; }
             body { padding-bottom: 100px; }
-            h1#main-title { font-size: 2.0rem; }
-            .quality-badge { font-size: 0.8rem; padding: 3px 10px; }
+            h1#main-title { font-size: 1.8rem; letter-spacing: 0.5px; }
+            .quality-badge { font-size: 0.85rem; padding: 6px 14px; }
         }
         @media (min-width: 768px) {
             .burger-icon { display: none; }
@@ -389,8 +408,13 @@
 
     <div class="main-card">
         <h1 id="main-title">Abenteuer Hansapark</h1>
-        <div class="quality-badge">📖 Mia Mitte</div>
-        <div class="neurotype-badge">🧠 Autismus</div>
+        <div class="quality-badge">
+            <img src="../avatars/mia-mitte.webp" alt="Mia Mitte" class="badge-avatar">
+            Mia Mitte
+        </div>
+        <div class="neurotype-badge-wrap">
+            <span class="neurotype-badge">♾️ Autismus</span>
+        </div>
         <img src="https://rala84.github.io/lesekumpel/bilder/abenteuer-hansapark-8kor-1.png" alt="Abenteuer Hansapark" class="hero-image" onerror="this.style.display='none'">
         <img src="https://rala84.github.io/lesekumpel/bilder/abenteuer-hansapark-8kor-2.png" alt="Abenteuer Hansapark" class="hero-image" onerror="this.style.display='none'">
 
