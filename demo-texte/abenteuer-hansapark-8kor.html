@@ -65,10 +65,10 @@
             position: relative; box-shadow: 0 10px 0 rgba(0,0,0,0.05);
         }
 
-        /* --- HEADER v3 — Compact & Balanced --- */
+        /* --- HEADER v4 — Book-First --- */
         h1#main-title {
             font-family: var(--font-heading); color: var(--accent-coral); font-size: 2.2rem;
-            text-align: center; line-height: 1.15; margin-bottom: 12px; margin-top: 0;
+            text-align: center; line-height: 1.15; margin-bottom: 6px; margin-top: 0;
             text-transform: uppercase; letter-spacing: 1px;
             overflow-wrap: break-word; word-wrap: break-word; hyphens: auto; -webkit-hyphens: auto; max-width: 100%;
             text-shadow:
@@ -77,37 +77,32 @@
                 0 3px 10px rgba(214,113,113,0.12);
         }
 
-        /* Meta-Zeile: Badges horizontal */
-        .header-meta {
-            display: flex; justify-content: center; align-items: center;
-            gap: 12px; flex-wrap: wrap; margin-bottom: 16px;
+        /* Autor-Zeile: literarisch, kein Button */
+        .author-line {
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+            margin-bottom: 6px;
+        }
+        .author-line .author-avatar {
+            width: 26px; height: 26px; border-radius: 50%; object-fit: cover;
+        }
+        .author-line .author-credit {
+            font-family: var(--font-body); font-size: 0.9rem; color: #999;
+            font-weight: 500; font-style: italic;
         }
 
-        .quality-badge {
-            display: inline-flex; align-items: center; gap: 7px;
-            background: #fffdf5; color: #8b6914;
-            border: 1px solid rgba(212,172,13,0.25); border-radius: 22px; padding: 6px 16px;
-            font-weight: 600; font-family: var(--font-heading); font-size: 0.88rem;
-            box-shadow: 0 1px 6px rgba(212,172,13,0.08);
-        }
-        .quality-badge .badge-avatar {
-            width: 24px; height: 24px; border-radius: 50%; border: 2px solid var(--primary-yellow);
-            object-fit: cover;
+        /* Neurotyp-Hinweis: dezent, für Eltern */
+        .neurotype-hint {
+            text-align: center; font-size: 0.75rem; color: #bbb;
+            font-family: var(--font-body); margin-bottom: 28px;
         }
 
-        .neurotype-badge {
-            display: inline-flex; align-items: center; gap: 5px;
-            color: #fff; font-weight: 600;
-            border: none; border-radius: 18px; padding: 6px 16px;
-            font-size: 0.82rem; font-family: var(--font-heading);
-            background: linear-gradient(135deg, #2a9d8f 0%, #7c6bc4 100%);
-            box-shadow: 0 2px 8px rgba(42,157,143,0.15);
-        }
+        /* Alte Badges verstecken (für Kompatibilität) */
+        .quality-badge, .neurotype-badge { display: none; }
 
         /* --- CONTENT: Wide View --- */
         .story-text {
-            line-height: 1.8 !important;
-            color: #2c2c2c;
+            line-height: 1.85 !important;
+            color: #2a2a2a;
         }
 
         .hero-image { width: 100%; border-radius: 15px; margin-bottom: 30px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
@@ -420,13 +415,11 @@
 
     <div class="main-card">
         <h1 id="main-title">Abenteuer Hansapark</h1>
-        <div class="header-meta">
-            <div class="quality-badge">
-                <img src="../avatars/mia-mitte.webp" alt="Mia Mitte" class="badge-avatar">
-                Mia Mitte
-            </div>
-            <span class="neurotype-badge">♾️ Autismus</span>
+        <div class="author-line">
+            <img src="../avatars/mia-mitte.webp" alt="Mia Mitte" class="author-avatar">
+            <span class="author-credit">geschrieben von Mia Mitte</span>
         </div>
+        <div class="neurotype-hint">✓ Optimiert für Autismus-Profile</div>
         <img src="https://rala84.github.io/lesekumpel/bilder/abenteuer-hansapark-8kor-1.png" alt="Abenteuer Hansapark" class="hero-image" onerror="this.style.display='none'">
         <img src="https://rala84.github.io/lesekumpel/bilder/abenteuer-hansapark-8kor-2.png" alt="Abenteuer Hansapark" class="hero-image" onerror="this.style.display='none'">
 
