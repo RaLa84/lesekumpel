@@ -90,10 +90,10 @@
             font-weight: 500; font-style: italic;
         }
 
-        /* Neurotyp-Hinweis: dezent, für Eltern */
+        /* Neurotyp-Hinweis: dezent aber lesbar, für Eltern */
         .neurotype-hint {
-            text-align: center; font-size: 0.75rem; color: #bbb;
-            font-family: var(--font-body); margin-bottom: 28px;
+            text-align: center; font-size: 0.75rem; color: #a0a0a0;
+            font-family: var(--font-body); margin-bottom: 12px;
         }
 
         /* Alte Badges verstecken (für Kompatibilität) */
@@ -108,26 +108,27 @@
         .hero-image { width: 100%; border-radius: 15px; margin-bottom: 30px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
         .story-inline-img { width: 100%; border-radius: 15px; margin: 20px 0 10px 0; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
 
-        /* --- TOOLBAR v5 — Final Polish --- */
+        /* --- TOOLBAR v6 — Sticky FAB --- */
         .toolbar-container {
             background: #fff; border-radius: 24px; padding: 0;
-            margin-bottom: 24px;
+            margin-bottom: 16px;
             box-shadow: 0 4px 24px rgba(0,0,0,0.04), 0 1px 4px rgba(0,0,0,0.02);
             border: 1px solid rgba(0,0,0,0.03);
             overflow: hidden;
             transition: all 0.3s ease;
         }
-        /* Collapsed: Pill-Form, zentriert, einladend */
+        /* Collapsed: Sticky FAB unten rechts */
         .toolbar-container.collapsed {
-            max-width: fit-content; margin-left: auto; margin-right: auto;
+            position: fixed; bottom: 24px; right: 24px; z-index: 4500;
+            max-width: fit-content; margin: 0;
             border-radius: 28px;
             background: linear-gradient(135deg, #fff5ec 0%, #fef0f0 50%, #f0f0ff 100%);
-            box-shadow: 0 4px 20px rgba(214,113,113,0.12), 0 1px 4px rgba(0,0,0,0.04);
-            border: 1.5px solid rgba(214,113,113,0.1);
+            box-shadow: 0 4px 20px rgba(214,113,113,0.18), 0 2px 6px rgba(0,0,0,0.06);
+            border: 1.5px solid rgba(214,113,113,0.12);
         }
         .toolbar-container.collapsed:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 24px rgba(214,113,113,0.18), 0 2px 6px rgba(0,0,0,0.05);
+            transform: translateY(-2px) scale(1.03);
+            box-shadow: 0 6px 28px rgba(214,113,113,0.25), 0 2px 8px rgba(0,0,0,0.08);
         }
         .toolbar-header {
             display: flex; justify-content: space-between; align-items: center;
@@ -141,7 +142,7 @@
         .toolbar-header-label .header-sparkle {
             font-size: 1.3em; display: inline-block;
         }
-        /* Glow-Pulse: 2x beim Laden, dann stopp */
+        /* Glow-Pulse: 2x beim Laden */
         @keyframes sparkle-glow {
             0%, 100% { filter: drop-shadow(0 0 0px transparent); transform: scale(1); }
             50% { filter: drop-shadow(0 0 8px rgba(255,200,50,0.6)); transform: scale(1.2); }
@@ -157,6 +158,10 @@
         .toolbar-container.collapsed .toolbar-toggle-icon { transform: rotate(-90deg); }
         .toolbar-body { padding: 0 14px 16px; display: flex; flex-direction: column; gap: 8px; }
         .toolbar-container.collapsed .toolbar-body { display: none; }
+        /* Offen: zurück in den Flow */
+        .toolbar-container:not(.collapsed) {
+            position: static;
+        }
 
         /* Gruppen */
         .toolbar-group { border-radius: 20px; padding: 14px 16px 12px; }
@@ -209,33 +214,27 @@
         .btn-coral { }
         .btn-coral.active { background: #D67171; color: white; border-color: #c96363; }
 
-        .fab-tools {
-            display: none; position: fixed; bottom: 20px; right: 20px;
-            width: 60px; height: 60px; background-color: var(--accent-coral); color: white;
-            border-radius: 50%; border: none; box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-            font-size: 1.8rem; cursor: pointer; z-index: 5000; justify-content: center; align-items: center;
-            transition: transform 0.2s;
-        }
-        .fab-tools:active { transform: scale(0.9); }
+        /* Alter FAB-Button: nicht mehr nötig, Toolbar ist jetzt der FAB */
+        .fab-tools { display: none !important; }
 
         @media (max-width: 767px) {
             .brand-name { display: none; }
             .hidden-mobile { display: none !important; }
-            .toolbar-container {
-                position: fixed; bottom: -100%; left: 0; width: 100%; border: none;
-                border-top: 3px solid var(--primary-yellow); border-radius: 20px 20px 0 0;
-                box-shadow: 0 -5px 20px rgba(0,0,0,0.15); z-index: 4000; box-sizing: border-box;
-                margin: 0;
+            /* Mobile collapsed: kleiner FAB unten rechts */
+            .toolbar-container.collapsed {
+                bottom: 16px; right: 16px;
+                border-radius: 24px; padding: 0;
             }
-            .toolbar-container .toolbar-header { display: none; }
-            .toolbar-container .toolbar-body { display: block !important; padding: 14px 14px 30px; }
-            .toolbar-container.open { bottom: 0; }
-            .toolbar-container.collapsed .toolbar-body { display: block !important; }
-            .fab-tools { display: flex; }
-            body { padding-bottom: 100px; }
+            /* Mobile offen: Fullwidth Sheet von unten */
+            .toolbar-container:not(.collapsed) {
+                position: fixed !important; bottom: 0; left: 0; width: 100%; border: none;
+                border-top: 3px solid var(--primary-yellow); border-radius: 20px 20px 0 0;
+                box-shadow: 0 -5px 20px rgba(0,0,0,0.15); z-index: 4500; box-sizing: border-box;
+                margin: 0; max-height: 60vh; overflow-y: auto;
+            }
+            body { padding-bottom: 80px; }
             h1#main-title { font-size: 1.6rem; letter-spacing: 0.5px; }
             .main-card { padding: 24px 20px; }
-            .header-meta { gap: 8px; }
             .quality-badge { font-size: 0.8rem; padding: 5px 12px; }
             .neurotype-badge { font-size: 0.78rem; padding: 5px 12px; }
         }
