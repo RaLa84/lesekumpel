@@ -158,9 +158,14 @@
         .toolbar-container.collapsed .toolbar-toggle-icon { transform: rotate(-90deg); }
         .toolbar-body { padding: 0 14px 16px; display: flex; flex-direction: column; gap: 8px; }
         .toolbar-container.collapsed .toolbar-body { display: none; }
-        /* Offen: zurück in den Flow */
+        /* Offen: Bottom-Sheet auf allen Geräten */
         .toolbar-container:not(.collapsed) {
-            position: static;
+            position: fixed; bottom: 0; left: 0; right: 0; z-index: 4500;
+            max-width: 600px; margin: 0 auto;
+            border-radius: 24px 24px 0 0;
+            box-shadow: 0 -4px 24px rgba(0,0,0,0.1);
+            border: none; border-top: 3px solid var(--primary-yellow);
+            max-height: 55vh; overflow-y: auto;
         }
 
         /* Gruppen */
@@ -220,23 +225,11 @@
         @media (max-width: 767px) {
             .brand-name { display: none; }
             .hidden-mobile { display: none !important; }
-            /* Mobile collapsed: kleiner FAB unten rechts */
-            .toolbar-container.collapsed {
-                bottom: 16px; right: 16px;
-                border-radius: 24px; padding: 0;
-            }
-            /* Mobile offen: Fullwidth Sheet von unten */
-            .toolbar-container:not(.collapsed) {
-                position: fixed !important; bottom: 0; left: 0; width: 100%; border: none;
-                border-top: 3px solid var(--primary-yellow); border-radius: 20px 20px 0 0;
-                box-shadow: 0 -5px 20px rgba(0,0,0,0.15); z-index: 4500; box-sizing: border-box;
-                margin: 0; max-height: 60vh; overflow-y: auto;
-            }
+            .toolbar-container.collapsed { bottom: 16px; right: 16px; }
+            .toolbar-container:not(.collapsed) { max-width: 100%; border-radius: 20px 20px 0 0; }
             body { padding-bottom: 80px; }
             h1#main-title { font-size: 1.6rem; letter-spacing: 0.5px; }
             .main-card { padding: 24px 20px; }
-            .quality-badge { font-size: 0.8rem; padding: 5px 12px; }
-            .neurotype-badge { font-size: 0.78rem; padding: 5px 12px; }
         }
         @media (min-width: 768px) {
             .burger-icon { display: none; }
