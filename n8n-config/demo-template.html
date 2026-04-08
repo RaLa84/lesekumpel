@@ -60,54 +60,80 @@
 
         /* --- MAIN CARD --- */
         .main-card {
-            max-width: 800px; margin: 40px auto; background: var(--bg-card);
-            border: 4px solid var(--primary-yellow); border-radius: 25px; padding: 40px;
+            max-width: 900px; margin: 30px auto; background: var(--bg-card);
+            border: 4px solid var(--primary-yellow); border-radius: 25px; padding: 36px 40px;
             position: relative; box-shadow: 0 10px 0 rgba(0,0,0,0.05);
         }
 
+        /* --- HEADER — Book-First --- */
         h1#main-title {
-            font-family: var(--font-heading); color: var(--accent-coral); font-size: 3rem;
-            text-align: center; line-height: 1.1; margin-bottom: 10px; margin-top: 0; text-transform: uppercase;
+            font-family: var(--font-heading); color: var(--accent-coral); font-size: 2.2rem;
+            text-align: center; line-height: 1.15; margin-bottom: 6px; margin-top: 0;
+            text-transform: uppercase; letter-spacing: 1px;
             overflow-wrap: break-word; word-wrap: break-word; hyphens: auto; -webkit-hyphens: auto; max-width: 100%;
+            text-shadow: -1.5px -1.5px 0 #fff, 1.5px -1.5px 0 #fff, -1.5px 1.5px 0 #fff, 1.5px 1.5px 0 #fff, 0 3px 10px rgba(214,113,113,0.12);
         }
-
-        .quality-badge {
-            display: block; text-align: center; background: #fffbe6; color: #d4ac0d;
-            border: 1px solid var(--primary-yellow); border-radius: 20px; padding: 4px 12px;
-            width: fit-content; margin: 0 auto 10px auto; font-weight: bold;
+        .author-line {
+            display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 6px;
         }
-        .neurotype-badge {
-            display: block; text-align: center; background: #f0f8ff; color: #2a9d8f;
-            border: 1px solid #2a9d8f; border-radius: 20px; padding: 4px 12px;
-            width: fit-content; margin: 0 auto 30px auto; font-weight: bold; font-size: 0.85rem;
+        .author-line .author-avatar { width: 26px; height: 26px; border-radius: 50%; object-fit: cover; }
+        .author-line .author-credit {
+            font-family: var(--font-body); font-size: 0.9rem; color: #999; font-weight: 500; font-style: italic;
         }
+        .neurotype-hint {
+            text-align: center; font-size: 0.75rem; color: #a0a0a0; font-family: var(--font-body); margin-bottom: 12px;
+        }
+        .quality-badge, .neurotype-badge { display: none; }
+        .story-text { line-height: 1.85 !important; color: #2a2a2a; }
 
         .hero-image { width: 100%; border-radius: 15px; margin-bottom: 30px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
         .story-inline-img { width: 100%; border-radius: 15px; margin: 20px 0 10px 0; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
 
-        /* --- TOOLBAR v5 --- */
+        /* --- TOOLBAR v6 — Sticky FAB --- */
         .toolbar-container {
-            background: #fff; border-radius: 24px; padding: 0;
-            margin-bottom: 24px;
+            background: #fff; border-radius: 24px; padding: 0; margin-bottom: 16px;
             box-shadow: 0 4px 24px rgba(0,0,0,0.04), 0 1px 4px rgba(0,0,0,0.02);
-            border: 1px solid rgba(0,0,0,0.03); overflow: hidden;
+            border: 1px solid rgba(0,0,0,0.03); overflow: hidden; transition: all 0.3s ease;
+        }
+        .toolbar-container.collapsed {
+            position: fixed; bottom: 24px; right: 24px; z-index: 4500;
+            max-width: fit-content; margin: 0; border-radius: 28px;
+            background: linear-gradient(135deg, #fff5ec 0%, #fef0f0 50%, #f0f0ff 100%);
+            box-shadow: 0 4px 20px rgba(214,113,113,0.18), 0 2px 6px rgba(0,0,0,0.06);
+            border: 1.5px solid rgba(214,113,113,0.12);
+        }
+        .toolbar-container.collapsed:hover {
+            transform: translateY(-2px) scale(1.03);
+            box-shadow: 0 6px 28px rgba(214,113,113,0.25), 0 2px 8px rgba(0,0,0,0.08);
         }
         .toolbar-header {
             display: flex; justify-content: space-between; align-items: center;
-            padding: 14px 20px; cursor: pointer; -webkit-user-select: none; user-select: none;
+            padding: 14px 20px; cursor: pointer; -webkit-user-select: none; user-select: none; gap: 12px;
         }
         .toolbar-header-label {
             font-family: var(--font-heading); font-size: 1rem; color: var(--accent-coral);
             display: flex; align-items: center; gap: 8px; font-weight: 600;
         }
+        .toolbar-header-label .header-sparkle { font-size: 1.3em; display: inline-block; }
+        @keyframes sparkle-glow {
+            0%, 100% { filter: drop-shadow(0 0 0px transparent); transform: scale(1); }
+            50% { filter: drop-shadow(0 0 8px rgba(255,200,50,0.6)); transform: scale(1.2); }
+        }
+        .toolbar-container.collapsed .header-sparkle { animation: sparkle-glow 1.2s ease-in-out 2; }
         .toolbar-toggle-icon {
-            font-size: 0.65rem; color: #ccc; transition: transform 0.25s ease;
+            font-size: 0.7rem; color: #bbb; transition: transform 0.25s ease;
             display: inline-flex; align-items: center; justify-content: center;
-            width: 28px; height: 28px; border-radius: 50%; background: #f5f3ee;
+            width: 28px; height: 28px; border-radius: 50%; background: rgba(0,0,0,0.04);
         }
         .toolbar-container.collapsed .toolbar-toggle-icon { transform: rotate(-90deg); }
         .toolbar-body { padding: 0 14px 16px; display: flex; flex-direction: column; gap: 8px; }
         .toolbar-container.collapsed .toolbar-body { display: none; }
+        .toolbar-container:not(.collapsed) {
+            position: fixed; bottom: 24px; right: 24px; left: auto; z-index: 4500;
+            max-width: 400px; margin: 0; border-radius: 24px;
+            box-shadow: 0 6px 32px rgba(0,0,0,0.12), 0 2px 8px rgba(0,0,0,0.06);
+            border: 2px solid var(--primary-yellow); max-height: 70vh; overflow-y: auto;
+        }
         .toolbar-group { border-radius: 20px; padding: 14px 16px 12px; }
         .toolbar-group.group-text { background: #fef2f0; }
         .toolbar-group.group-view { background: #effaf0; }
@@ -149,32 +175,16 @@
         .btn-coral { }
         .btn-coral.active { background: #D67171; color: white; border-color: #c96363; }
 
-        .fab-tools {
-            display: none; position: fixed; bottom: 20px; right: 20px;
-            width: 60px; height: 60px; background-color: var(--accent-coral); color: white;
-            border-radius: 50%; border: none; box-shadow: 0 4px 10px rgba(0,0,0,0.3);
-            font-size: 1.8rem; cursor: pointer; z-index: 5000; justify-content: center; align-items: center;
-            transition: transform 0.2s;
-        }
-        .fab-tools:active { transform: scale(0.9); }
+        .fab-tools { display: none !important; }
 
         @media (max-width: 767px) {
             .brand-name { display: none; }
             .hidden-mobile { display: none !important; }
-            .toolbar-container {
-                position: fixed; bottom: -100%; left: 0; width: 100%; border: none;
-                border-top: 3px solid var(--primary-yellow); border-radius: 20px 20px 0 0;
-                box-shadow: 0 -5px 20px rgba(0,0,0,0.15); z-index: 4000; box-sizing: border-box;
-                margin: 0;
-            }
-            .toolbar-container .toolbar-header { display: none; }
-            .toolbar-container .toolbar-body { display: flex !important; padding: 14px 14px 30px; }
-            .toolbar-container.open { bottom: 0; }
-            .toolbar-container.collapsed .toolbar-body { display: flex !important; }
-            .fab-tools { display: flex; }
-            body { padding-bottom: 100px; }
-            h1#main-title { font-size: 2.0rem; }
-            .quality-badge { font-size: 0.8rem; padding: 3px 10px; }
+            .toolbar-container.collapsed { bottom: 16px; right: 16px; }
+            .toolbar-container:not(.collapsed) { bottom: 0; right: 0; max-width: 100%; border-radius: 20px 20px 0 0; border-bottom: none; }
+            body { padding-bottom: 80px; }
+            h1#main-title { font-size: 1.6rem; letter-spacing: 0.5px; }
+            .main-card { padding: 24px 20px; }
         }
         @media (min-width: 768px) {
             .burger-icon { display: none; }
@@ -352,8 +362,11 @@
 
     <div class="main-card">
         <h1 id="main-title">{{STORY_TITLE}}</h1>
-        <div class="quality-badge">📖 {{PERSONA_NAME}}</div>
-        <div class="neurotype-badge">🧠 {{NEUROTYP}}</div>
+        <div class="author-line">
+            <img src="{{PERSONA_IMG_URL}}" alt="{{PERSONA_NAME}}" class="author-avatar">
+            <span class="author-credit">geschrieben von {{PERSONA_NAME}}</span>
+        </div>
+        <div class="neurotype-hint">✓ Optimiert für {{NEUROTYP}}-Profile</div>
         {{STORY_IMAGES_HTML}}
 
         <div class="toolbar-container collapsed" id="toolbar">
