@@ -60,16 +60,16 @@
 
         /* --- MAIN CARD --- */
         .main-card {
-            max-width: 800px; margin: 40px auto; background: var(--bg-card);
-            border: 4px solid var(--primary-yellow); border-radius: 25px; padding: 40px;
+            max-width: 900px; margin: 30px auto; background: var(--bg-card);
+            border: 4px solid var(--primary-yellow); border-radius: 25px; padding: 36px 40px;
             position: relative; box-shadow: 0 10px 0 rgba(0,0,0,0.05);
         }
 
-        /* --- HEADER v2 --- */
+        /* --- HEADER v3 — Compact & Balanced --- */
         h1#main-title {
-            font-family: var(--font-heading); color: var(--accent-coral); font-size: 2.6rem;
-            text-align: center; line-height: 1.15; margin-bottom: 14px; margin-top: 0;
-            text-transform: uppercase; letter-spacing: 1.5px;
+            font-family: var(--font-heading); color: var(--accent-coral); font-size: 2.2rem;
+            text-align: center; line-height: 1.15; margin-bottom: 12px; margin-top: 0;
+            text-transform: uppercase; letter-spacing: 1px;
             overflow-wrap: break-word; word-wrap: break-word; hyphens: auto; -webkit-hyphens: auto; max-width: 100%;
             text-shadow:
                 -1.5px -1.5px 0 #fff, 1.5px -1.5px 0 #fff,
@@ -77,29 +77,38 @@
                 0 3px 10px rgba(214,113,113,0.12);
         }
 
+        /* Meta-Zeile: Badges horizontal */
+        .header-meta {
+            display: flex; justify-content: center; align-items: center;
+            gap: 12px; flex-wrap: wrap; margin-bottom: 16px;
+        }
+
         .quality-badge {
-            display: flex; align-items: center; justify-content: center; gap: 8px;
-            text-align: center; background: #fffdf5; color: #8b6914;
-            border: 1px solid rgba(212,172,13,0.25); border-radius: 24px; padding: 8px 20px;
-            width: fit-content; margin: 0 auto 10px auto; font-weight: 600;
-            font-family: var(--font-heading); font-size: 0.95rem;
-            box-shadow: 0 2px 8px rgba(212,172,13,0.08);
+            display: inline-flex; align-items: center; gap: 7px;
+            background: #fffdf5; color: #8b6914;
+            border: 1px solid rgba(212,172,13,0.25); border-radius: 22px; padding: 6px 16px;
+            font-weight: 600; font-family: var(--font-heading); font-size: 0.88rem;
+            box-shadow: 0 1px 6px rgba(212,172,13,0.08);
         }
         .quality-badge .badge-avatar {
-            width: 28px; height: 28px; border-radius: 50%; border: 2px solid var(--primary-yellow);
+            width: 24px; height: 24px; border-radius: 50%; border: 2px solid var(--primary-yellow);
             object-fit: cover;
         }
 
         .neurotype-badge {
-            display: inline-flex; align-items: center; gap: 6px;
-            text-align: center; color: #fff; font-weight: 600;
-            border: none; border-radius: 20px; padding: 6px 18px;
-            width: fit-content; margin: 0 auto 24px auto; font-size: 0.82rem;
-            font-family: var(--font-heading);
+            display: inline-flex; align-items: center; gap: 5px;
+            color: #fff; font-weight: 600;
+            border: none; border-radius: 18px; padding: 6px 16px;
+            font-size: 0.82rem; font-family: var(--font-heading);
             background: linear-gradient(135deg, #2a9d8f 0%, #7c6bc4 100%);
-            box-shadow: 0 2px 10px rgba(42,157,143,0.2);
+            box-shadow: 0 2px 8px rgba(42,157,143,0.15);
         }
-        .neurotype-badge-wrap { display: block; text-align: center; }
+
+        /* --- CONTENT: Wide View --- */
+        .story-text {
+            line-height: 1.8 !important;
+            color: #2c2c2c;
+        }
 
         .hero-image { width: 100%; border-radius: 15px; margin-bottom: 30px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
         .story-inline-img { width: 100%; border-radius: 15px; margin: 20px 0 10px 0; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
@@ -229,8 +238,11 @@
             .toolbar-container.collapsed .toolbar-body { display: block !important; }
             .fab-tools { display: flex; }
             body { padding-bottom: 100px; }
-            h1#main-title { font-size: 1.8rem; letter-spacing: 0.5px; }
-            .quality-badge { font-size: 0.85rem; padding: 6px 14px; }
+            h1#main-title { font-size: 1.6rem; letter-spacing: 0.5px; }
+            .main-card { padding: 24px 20px; }
+            .header-meta { gap: 8px; }
+            .quality-badge { font-size: 0.8rem; padding: 5px 12px; }
+            .neurotype-badge { font-size: 0.78rem; padding: 5px 12px; }
         }
         @media (min-width: 768px) {
             .burger-icon { display: none; }
@@ -408,11 +420,11 @@
 
     <div class="main-card">
         <h1 id="main-title">Abenteuer Hansapark</h1>
-        <div class="quality-badge">
-            <img src="../avatars/mia-mitte.webp" alt="Mia Mitte" class="badge-avatar">
-            Mia Mitte
-        </div>
-        <div class="neurotype-badge-wrap">
+        <div class="header-meta">
+            <div class="quality-badge">
+                <img src="../avatars/mia-mitte.webp" alt="Mia Mitte" class="badge-avatar">
+                Mia Mitte
+            </div>
             <span class="neurotype-badge">♾️ Autismus</span>
         </div>
         <img src="https://rala84.github.io/lesekumpel/bilder/abenteuer-hansapark-8kor-1.png" alt="Abenteuer Hansapark" class="hero-image" onerror="this.style.display='none'">
