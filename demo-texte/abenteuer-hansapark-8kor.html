@@ -92,19 +92,44 @@
             box-shadow: 0 4px 24px rgba(0,0,0,0.04), 0 1px 4px rgba(0,0,0,0.02);
             border: 1px solid rgba(0,0,0,0.03);
             overflow: hidden;
+            transition: all 0.3s ease;
+        }
+        /* Collapsed: Pill-Form, zentriert, einladend */
+        .toolbar-container.collapsed {
+            max-width: fit-content; margin-left: auto; margin-right: auto;
+            border-radius: 28px;
+            background: linear-gradient(135deg, #fff5ec 0%, #fef0f0 50%, #f0f0ff 100%);
+            box-shadow: 0 4px 20px rgba(214,113,113,0.12), 0 1px 4px rgba(0,0,0,0.04);
+            border: 1.5px solid rgba(214,113,113,0.1);
+        }
+        .toolbar-container.collapsed:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 24px rgba(214,113,113,0.18), 0 2px 6px rgba(0,0,0,0.05);
         }
         .toolbar-header {
             display: flex; justify-content: space-between; align-items: center;
             padding: 14px 20px; cursor: pointer; -webkit-user-select: none; user-select: none;
+            gap: 12px;
         }
         .toolbar-header-label {
             font-family: var(--font-heading); font-size: 1rem; color: var(--accent-coral);
             display: flex; align-items: center; gap: 8px; font-weight: 600;
         }
+        .toolbar-header-label .header-sparkle {
+            font-size: 1.3em; display: inline-block;
+        }
+        /* Glow-Pulse: 2x beim Laden, dann stopp */
+        @keyframes sparkle-glow {
+            0%, 100% { filter: drop-shadow(0 0 0px transparent); transform: scale(1); }
+            50% { filter: drop-shadow(0 0 8px rgba(255,200,50,0.6)); transform: scale(1.2); }
+        }
+        .toolbar-container.collapsed .header-sparkle {
+            animation: sparkle-glow 1.2s ease-in-out 2;
+        }
         .toolbar-toggle-icon {
-            font-size: 0.65rem; color: #ccc; transition: transform 0.25s ease;
+            font-size: 0.7rem; color: #bbb; transition: transform 0.25s ease;
             display: inline-flex; align-items: center; justify-content: center;
-            width: 28px; height: 28px; border-radius: 50%; background: #f5f3ee;
+            width: 28px; height: 28px; border-radius: 50%; background: rgba(0,0,0,0.04);
         }
         .toolbar-container.collapsed .toolbar-toggle-icon { transform: rotate(-90deg); }
         .toolbar-body { padding: 0 14px 16px; display: flex; flex-direction: column; gap: 8px; }
@@ -371,7 +396,7 @@
 
         <div class="toolbar-container" id="toolbar">
             <div class="toolbar-header" onclick="toggleToolbarCollapse()" id="toolbar-close-btn">
-                <span class="toolbar-header-label">✨ Lesehilfen</span>
+                <span class="toolbar-header-label"><span class="header-sparkle">✨</span> Lese-Zauber</span>
                 <span class="toolbar-toggle-icon" id="toolbar-chevron">▼</span>
             </div>
             <div class="toolbar-body" id="toolbar-body">
