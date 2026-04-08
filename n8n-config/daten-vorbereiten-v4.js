@@ -24,29 +24,29 @@ const slug = (title.toLowerCase()
 const personaMeta = {
   // ── Skill-Personas (mit Neurotyp-Varianten im Systemprompt) ──
   pip: {
-    name: 'Pip Punkt', typ: 'skill', woerter: '20–50',
+    name: 'Pip Punkt', typ: 'skill', woerter: '20–50', tempus: 'Präsens',
     imgUrl: 'https://rala84.github.io/lesekumpel/avatars/pip-punkt.webp',
     bio: 'Pip macht jeden Satz kurz und klar. Punkt. Fertig. Bei Pip kannst du jedes Wort lesen — und bist stolz darauf!'
   },
   mia: {
-    name: 'Mia Mitte', typ: 'skill', woerter: '50–100',
+    name: 'Mia Mitte', typ: 'skill', woerter: '50–100', tempus: 'Präsens',
     imgUrl: 'https://rala84.github.io/lesekumpel/avatars/mia-mitte.webp',
     bio: 'Mia erzählt richtige Geschichten — mit Anfang, Mitte und Ende. Bei ihr fühlst du dich schon wie ein echter Leser!'
   },
   peter: {
-    name: 'Peter Past', typ: 'skill', woerter: '100–150',
+    name: 'Peter Past', typ: 'skill', woerter: '100–150', tempus: 'Durchgehend Präteritum (Vergangenheit)',
     imgUrl: 'https://rala84.github.io/lesekumpel/avatars/peter-past.webp',
     bio: 'Peter erzählt spannende Geschichten aus der Vergangenheit. Bei ihm lernst du, wie echte Erzählungen klingen.'
   },
   stella: {
-    name: 'Stella Stimmenreich', typ: 'skill', woerter: '150–250',
+    name: 'Stella Stimmenreich', typ: 'skill', woerter: '150–250', tempus: 'Frei wählbar',
     imgUrl: 'https://rala84.github.io/lesekumpel/avatars/stella-stimmenreich.webp',
     bio: 'Stella gibt jeder Figur eine eigene Stimme. Bei ihr reden die Charaktere — laut, leise, lustig und ernst.'
   },
   finja: {
-    name: 'Finja Feder', typ: 'skill', woerter: '250–400',
+    name: 'Finja Feder', typ: 'skill', woerter: '250–400', tempus: 'Frei wählbar',
     imgUrl: 'https://rala84.github.io/lesekumpel/avatars/finja-feder.webp',
-    bio: 'Finn schreibt wie ein echter Autor. Bei ihm liest du Geschichten, die dich zum Nachdenken bringen.'
+    bio: 'Finja schreibt wie eine echte Autorin. Bei ihr liest du Geschichten, die dich zum Nachdenken bringen.'
   },
   // ── Bonus-Personas (fixer Stil, kein Neurotyp-Parameter) ──
   samira: {
@@ -120,6 +120,7 @@ Geschichte: "${title}"
 Genre: ${genre}
 Kurzbeschreibung: ${description || 'Keine Beschreibung angegeben'}
 Wortanzahl: ${effWoerter}
+Tempus: ${p.tempus}
 
 AUFBAU (diese Labels verwenden):
 GESCHICHTE: [vollständiger Text]
