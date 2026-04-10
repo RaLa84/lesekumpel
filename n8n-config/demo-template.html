@@ -288,7 +288,35 @@
         /* Häppchen-Modus (Leser-Preference, nicht Autoren-gebunden) */
         body.haeppchen-active .story-text { font-size: 1.3em; }
         body.haeppchen-active .hero-image { display: none; }
-        body.haeppchen-active .chunk-controls { display: none; }
+        @media (max-width: 767px) {
+            body.haeppchen-active .chunk-controls { display: none; }
+        }
+        @media (min-width: 768px) {
+            body.haeppchen-active .chunk-controls {
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                gap: 20px;
+                margin-top: 24px;
+                padding: 10px 0;
+            }
+            body.haeppchen-active .chunk-controls .tool-btn {
+                background: var(--accent-coral);
+                color: #fff;
+                border-color: #c96363;
+                border-radius: 28px;
+                padding: 12px 24px;
+                font-size: 0.95em;
+                box-shadow: 0 4px 14px rgba(214,113,113,0.3);
+                min-width: 120px;
+            }
+            body.haeppchen-active .chunk-controls .tool-btn:hover {
+                filter: brightness(1.08);
+                transform: translateY(-2px);
+                box-shadow: 0 6px 18px rgba(214,113,113,0.4);
+            }
+            body.haeppchen-active .swipe-hint { display: none !important; }
+        }
         body.haeppchen-active #chunk-display { min-height: 0; padding: 20px 10px; cursor: grab; -webkit-user-select: none; user-select: none; }
         body.haeppchen-active #chunk-view { touch-action: pan-y; }
 
