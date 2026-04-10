@@ -557,6 +557,11 @@
         // Bilder einsammeln: Alle Bilder für Chunks sammeln, Hero im DOM belassen (CSS steuert Sichtbarkeit)
         (function collectImages() {
             const allHeroImgs = document.querySelectorAll('.hero-image');
+            // Erstes Bild auch für Häppchen-Modus merken
+            if (allHeroImgs.length > 0) {
+                inlineImages.push(allHeroImgs[0].src);
+            }
+            // Weitere Bilder ab Index 1
             for (let i = 1; i < allHeroImgs.length; i++) {
                 inlineImages.push(allHeroImgs[i].src);
             }
