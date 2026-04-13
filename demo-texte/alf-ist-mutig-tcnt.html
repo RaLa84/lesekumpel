@@ -395,7 +395,7 @@
          * DYNAMISCHE INJEKTION — diese Werte werden von N8N befüllt
          * ============================================================ */
         let rawStory = "Alf ist im Schwimm-bad! Er geht zum Sprungb-rett. Puh, das ist das ganz ho-he Brett.\n\nAlf steht o-ben auf dem Brett. Er schaut nach un-ten. Sei-ne Ba-de-ho-se zwickt am Bein! Alf ist ung-lück-lich 😢. Er hat Angst 😨 zu sprin-gen. A-ber Alf will sprin-gen!\n\nAlf zieht an sei-ner Ba-de-ho-se. Jetzt ist sie lo-cker! Alf ist we-ni-ger ängst-lich 😮. Er holt tief Luft. Dann schließt Alf kurz die Au-gen.\n\nDa springt Alf! Whuuusch! Er fliegt durch die Luft. Platsch! Alf lan-det im Was-ser. Alf ist so froh 😊! Das war ein tol-ler Sprung.";
-        let emojiStory = "Alf ist im Schwimm-bad! Er geht zum Sprungb-rett. Puh, das ist das ganz ho-he Brett.\n\nAlf steht o-ben auf dem Brett. Er schaut nach un-ten. Sei-ne Ba-de-ho-se zwickt am Bein! Alf ist ung-lück-lich 😢. Er hat Angst 😨 zu sprin-gen. A-ber Alf will sprin-gen!\n\nAlf zieht an sei-ner Ba-de-ho-se. Jetzt ist sie lo-cker! Alf ist we-ni-ger ängst-lich 😮. Er holt tief Luft. Dann schließt Alf kurz die Au-gen.\n\nDa springt Alf! Whuuusch! Er fliegt durch die Luft. Platsch! Alf lan-det im Was-ser. Alf ist so froh 😊! Das war ein tol-ler Sprung.";
+        let emojiStory = "Alf ist im Schwimm-bad! Er geht zum Sprungb-rett. Puh, das ist das ganz ho-he Brett.\n\nAlf steht o-ben auf dem Brett. Er schaut nach un-ten. Sei-ne Ba-de-ho-se zwickt am Bein! Alf ist ung-lück-lich 😢. Er hat Angst 😨 😨 zu sprin-gen. A-ber Alf will sprin-gen!\n\nAlf zieht an sei-ner Ba-de-ho-se. Jetzt ist sie lo-cker! Alf ist we-ni-ger ängst-lich 😮. Er holt tief Luft. Dann schließt Alf kurz die Au-gen.\n\nDa springt Alf! Whuuusch! Er fliegt durch die Luft. Platsch! Alf lan-det im Was-ser. Alf ist so froh 😊 😊! Das war ein tol-ler Sprung.";
         let rawSummary = "Alf will vom hohen Sprungbrett springen. Aber seine Badehose zwickt und Alf hat Angst 😨. Alf macht seine Badehose locker und springt dann ganz mutig. Alf ist stolz 😊 auf sich!";
         const quizData = [{"q":"Wo ist Alf in dieser Geschichte?","a":["Im Park","Im Schwimmbad","In der Schule"],"correct":1},{"q":"Warum ist Alf zuerst unglücklich und hat Angst?","a":["Weil seine Badehose zwickt.","Weil er hungrig ist.","Weil es regnet."],"correct":0},{"q":"Wie fühlt sich Alf, nachdem er ins Wasser gesprungen ist?","a":["Er ist wütend.","Er ist froh.","Er ist gelangweilt."],"correct":1}];
         const rawDictionaryEntry = [{"wort":"Sprungbrett","silben":"Sprung-brett","bedeutung":"Eine Plattform, von der man ins Wasser springt."},{"wort":"Badehose","silben":"Ba-de-ho-se","bedeutung":"Eine kurze Hose zum Schwimmen."},{"wort":"zwickt","silben":"zwickt","bedeutung":"Drückt unangenehm oder ist zu eng."},{"wort":"unglücklich","silben":"ung-lück-lich","bedeutung":"Traurig oder nicht froh."},{"wort":"ängstlich","silben":"ängst-lich","bedeutung":"Wenn man Angst hat."},{"wort":"landet","silben":"lan-det","bedeutung":"Kommt nach dem Sprung oder Flug an."}];
@@ -478,7 +478,7 @@
                     }
                 });
 
-                let body = bodyLines.join(' ').replace(/["""„]/g, "");
+                let body = bodyLines.join(' ');
                 let sentences = body.match(/[^.!?]*[.!?]+(?:\s*,\s*[^.!?]*[.!?]+)*(?:\s+|$)/g);
                 if (!sentences && body.trim()) sentences = [body];
                 if (!sentences) sentences = [];

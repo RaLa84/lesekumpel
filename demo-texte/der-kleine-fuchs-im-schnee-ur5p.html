@@ -475,7 +475,7 @@
          * DYNAMISCHE INJEKTION — diese Werte werden von N8N befüllt
          * ============================================================ */
         let rawStory = "Ein Fuchs spielt im Schnee.\nEr hat ei-ne Müt-ze auf.\nDie Müt-ze ist rot.\n\nDer Fuchs springt gern.\nEr macht ei-nen gro-ßen Sprung.\nDie Müt-ze fällt ab.\n\nWo ist die Müt-ze?\nDer Fuchs sucht sie.\nEr sieht sie un-ter dem Baum.\n\nDer Fuchs ist froh.\nEr hat sei-ne Müt-ze wie-der.\nDas ist schön.";
-        let emojiStory = "Ein Fuchs spielt im Schnee.\nEr hat ei-ne Müt-ze auf.\nDie Müt-ze ist rot.\n\nDer Fuchs springt gern.\nEr macht ei-nen gro-ßen Sprung.\nDie Müt-ze fällt ab.\n\nWo ist die Müt-ze?\nDer Fuchs sucht sie.\nEr sieht sie un-ter dem Baum.\n\nDer Fuchs ist froh.\nEr hat sei-ne Müt-ze wie-der.\nDas ist schön.";
+        let emojiStory = "Ein Fuchs spielt im Schnee.\nEr hat ei-ne Müt-ze auf.\nDie Müt-ze ist rot.\n\nDer Fuchs springt gern.\nEr macht ei-nen gro-ßen Sprung.\nDie Müt-ze fällt ab.\n\nWo ist die Müt-ze?\nDer Fuchs sucht sie.\nEr sieht sie un-ter dem Baum.\n\nDer Fuchs ist froh 😊.\nEr hat sei-ne Müt-ze wie-der.\nDas ist schön 😊.";
         let rawSummary = "Ein Fuchs spielt im Schnee.\nEr verliert seine rote Mütze.\nDoch er findet sie schnell wieder.";
         const quizData = [{"q":"Welche Farbe hat die Mütze des Fuchses?","a":["Rot","Blau","Gelb"],"correct":0},{"q":"Was passiert, als der Fuchs einen großen Sprung macht?","a":["Die Mütze wird nass.","Die Mütze fällt ab.","Die Mütze fliegt weg."],"correct":1},{"q":"Wo findet der Fuchs seine Mütze wieder?","a":["Im Schnee.","Unter dem Baum.","Auf seinem Kopf."],"correct":1}];
         const rawDictionaryEntry = [{"wort":"Fuchs","silben":"Fuchs","bedeutung":"Ein Tier mit rotem Fell."},{"wort":"Mütze","silben":"Müt-ze","bedeutung":"Eine warme Kopfbedeckung."},{"wort":"springt","silben":"springt","bedeutung":"Macht einen Sprung."},{"wort":"sucht","silben":"sucht","bedeutung":"Versucht, etwas zu finden."},{"wort":"wieder","silben":"wie-der","bedeutung":"Noch einmal, erneut."},{"wort":"froh","silben":"froh","bedeutung":"Glücklich, nicht traurig."}];
@@ -562,7 +562,7 @@
                     }
                 });
 
-                let body = bodyLines.join(' ').replace(/["""„]/g, "");
+                let body = bodyLines.join(' ');
                 let sentences = body.match(/[^.!?]*[.!?]+(?:\s*,\s*[^.!?]*[.!?]+)*(?:\s+|$)/g);
                 if (!sentences && body.trim()) sentences = [body];
                 if (!sentences) sentences = [];

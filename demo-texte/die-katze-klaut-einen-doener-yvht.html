@@ -563,7 +563,7 @@
                     }
                 });
 
-                let body = bodyLines.join(' ').replace(/["""„]/g, "");
+                let body = bodyLines.join(' ');
                 let sentences = body.match(/[^.!?]*[.!?]+(?:\s*,\s*[^.!?]*[.!?]+)*(?:\s+|$)/g);
                 if (!sentences && body.trim()) sentences = [body];
                 if (!sentences) sentences = [];
