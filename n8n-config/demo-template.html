@@ -596,7 +596,7 @@
                 });
 
                 let body = bodyLines.join(' ');
-                let sentences = body.match(/[^.!?]*[.!?]+(?:\s*,\s*[^.!?]*[.!?]+)*(?:\s+|$)/g);
+                let sentences = body.match(/[^.!?]*[.!?]+["""\u201E]?(?:\s*,\s*[^.!?]*[.!?]+["""\u201E]?)*(?:\s+|$)/g);
                 if (!sentences && body.trim()) sentences = [body];
                 if (!sentences) sentences = [];
 
