@@ -286,6 +286,15 @@
     <div class="page" id="page-2">
 
         <div class="form-section">
+            <div class="section-title">Bilder?</div>
+            <div class="section-sub">Bilder machen die Geschichte lebendig, brauchen aber etwas länger.</div>
+            <div class="toggle-group" id="bilder-toggle">
+                <button class="toggle-btn active" data-bilder="true" onclick="selectBilder(true)">🖼️ Mit Bildern</button>
+                <button class="toggle-btn" data-bilder="false" onclick="selectBilder(false)">📝 Nur Text</button>
+            </div>
+        </div>
+
+        <div class="form-section" id="section-bildstil" style="margin-top:20px;">
             <div class="section-title">Bildstil wählen</div>
             <div class="section-sub">Wie sollen die Illustrationen aussehen?</div>
             <div class="stil-grid">
@@ -313,15 +322,6 @@
                 <div class="stil-card" data-stil="Voxel" onclick="selectStil('Voxel')">
                     <span class="stil-emoji">🧊</span><div class="stil-name">Voxel</div>
                 </div>
-            </div>
-        </div>
-
-        <div class="form-section" style="margin-top:20px;">
-            <div class="section-title">Mit Bildern?</div>
-            <div class="section-sub">Bilder machen die Geschichte lebendig, brauchen aber etwas länger.</div>
-            <div class="toggle-group" id="bilder-toggle">
-                <button class="toggle-btn active" data-bilder="true" onclick="selectBilder(true)">🖼️ Mit Bildern</button>
-                <button class="toggle-btn" data-bilder="false" onclick="selectBilder(false)">📝 Nur Text</button>
             </div>
         </div>
 
@@ -560,6 +560,14 @@ function selectBilder(val) {
     state.mitBildern = val;
     document.querySelectorAll('#bilder-toggle .toggle-btn').forEach(b => b.classList.remove('active'));
     document.querySelector(`#bilder-toggle .toggle-btn[data-bilder="${val}"]`).classList.add('active');
+    const stilSection = document.getElementById('section-bildstil');
+    if (val) {
+        stilSection.style.display = '';
+        document.getElementById('btn-submit').disabled = !state.stil;
+    } else {
+        stilSection.style.display = 'none';
+        document.getElementById('btn-submit').disabled = false;
+    }
 }
 
 function selectStil(stil) {
