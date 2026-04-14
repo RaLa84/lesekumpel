@@ -266,15 +266,6 @@
             <div class="toggle-group" id="neurotyp-grid"></div>
         </div>
 
-        <hr class="section-divider">
-
-        <!-- Sektion D: Kategorie -->
-        <div class="form-section hidden" id="section-kategorie">
-            <div class="section-title">Kategorie</div>
-            <div class="section-sub" id="kategorie-sub">Worum soll es in der Geschichte gehen?</div>
-            <div id="kategorie-container"></div>
-        </div>
-
         <!-- Weiter-Button -->
         <div class="step-nav">
             <span></span>
@@ -392,30 +383,12 @@ const NEUROTYPEN = [
     { id: 'LRS',       emoji: '🎵', label: 'LRS / Legasthenie', info: 'Rhythmische Sätze, kurze Wörter, klarer Takt' }
 ];
 
-const ALL_KATEGORIEN = [
-    { id: 'Humor',     emoji: '😄' },
-    { id: 'Abenteuer', emoji: '🗺️' },
-    { id: 'Natur',     emoji: '🌿' },
-    { id: 'Gaming',    emoji: '🎮' },
-    { id: 'Familie',   emoji: '👨‍👩‍👧' },
-    { id: 'Wissen',    emoji: '🔬' }
-];
-
-// null = alle Kategorien
-const PERSONA_KATEGORIEN = {
-    pip: null, mia: null, peter: null, stella: null, finja: null,
-    samira: ['Wissen'],
-    holzi:  ['Humor','Abenteuer','Gaming'],
-    deniz:  ['Humor','Abenteuer','Natur','Familie'],
-    jonas:  ['Humor','Abenteuer','Natur','Familie']
-};
-
 const PERSONA_LABELS = { pip: 'Pip Punkt', mia: 'Mia Mitte', peter: 'Peter Past', stella: 'Stella Stimmenreich', finja: 'Finja Feder', samira: 'Samira Wissensfreund', holzi: 'Holzi Pixelkopf', deniz: 'Deniz Traumfänger', jonas: 'Jonas Entdecker' };
 const BILDSTIL_LABELS = { 'Aquarell': 'Aquarell — Weiche Pastellfarben', 'Cartoon': 'Cartoon — Bunte moderne Illustration', 'Buntstift': 'Buntstift — Handgezeichneter Look', 'Pixel-Art': 'Pixel-Art — Retro-Gaming-Stil', 'Anime': 'Anime — Farbenfroh wie Nintendo & Pokémon', 'Traumwelt': 'Traumwelt — Magische Malerei wie Ori', 'Knete': 'Knete — Stop-Motion Knetfiguren-Look', 'Voxel': 'Voxel — Blocky Gamer-Stil wie Minecraft' };
 
 const WEBHOOK_URL = 'https://rala84.app.n8n.cloud/webhook/lesekumpel-story';
 
-let state = { persona: null, neurotyp: null, kategorie: null, stil: null, mitBildern: true };
+let state = { persona: null, neurotyp: null, stil: null, mitBildern: true };
 
 // ============================================================
 // PAGE NAVIGATION & SECTION VISIBILITY
@@ -463,7 +436,6 @@ function renderPersonaCards() {
 function selectPersona(persona) {
     state.persona = persona;
     state.neurotyp = null;
-    state.kategorie = null;
 
     document.querySelectorAll('.persona-card').forEach(c => c.classList.remove('active'));
     document.querySelector(`.persona-card[data-persona="${persona}"]`).classList.add('active');
@@ -475,19 +447,18 @@ function selectPersona(persona) {
         renderNeurotypen();
         showSection('section-neurotyp');
     } else {
-        // Bonus-Personas: kein Neurotyp, direkt Kategorie
+        // Bonus-Personas: kein Neurotyp
         state.neurotyp = 'Standard';
         hideSection('section-neurotyp');
     }
 
-    renderKategorien();
-    showSection('section-kategorie');
     updateNextButton();
 
-    const scrollTarget = isSkill ? 'section-neurotyp' : 'section-kategorie';
-    setTimeout(() => {
-        document.getElementById(scrollTarget).scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }, 100);
+    if (isSkill) {
+        setTimeout(() => {
+            document.getElementById('section-neurotyp').scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }, 100);
+    }
 }
 
 // ============================================================
@@ -511,46 +482,11 @@ function selectNeurotyp(neurotyp) {
 }
 
 // ============================================================
-// KATEGORIE RENDERING & SELECTION
-// ============================================================
-function renderKategorien() {
-    const container = document.getElementById('kategorie-container');
-    const allowed = PERSONA_KATEGORIEN[state.persona];
-    const kategorien = allowed ? ALL_KATEGORIEN.filter(k => allowed.includes(k.id)) : ALL_KATEGORIEN;
-
-    if (kategorien.length === 1) {
-        const k = kategorien[0];
-        state.kategorie = k.id;
-        container.innerHTML = `<div class="auto-kategorie-badge">
-            <span class="badge-emoji">${k.emoji}</span>
-            ${PERSONAS[state.persona].name} schreibt ${k.id === 'Wissen' ? 'Sachtexte' : k.id} — Kategorie: ${k.emoji} ${k.id}
-        </div>`;
-        document.getElementById('kategorie-sub').textContent = 'Kategorie automatisch gewählt.';
-        updateNextButton();
-        return;
-    }
-
-    document.getElementById('kategorie-sub').textContent = 'Worum soll es in der Geschichte gehen?';
-    container.innerHTML = `<div class="toggle-group">
-        ${kategorien.map(k => `<button class="toggle-btn" data-val="${k.id}">${k.emoji} ${k.id}</button>`).join('')}
-    </div>`;
-
-    container.querySelectorAll('.toggle-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-            container.querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('active'));
-            btn.classList.add('active');
-            state.kategorie = btn.dataset.val;
-            updateNextButton();
-        });
-    });
-}
-
-// ============================================================
 // VALIDATION & BILDSTIL
 // ============================================================
 function updateNextButton() {
     const titel = document.getElementById('titel').value.trim();
-    const valid = titel.length > 0 && state.persona && state.neurotyp && state.kategorie;
+    const valid = titel.length > 0 && state.persona && state.neurotyp;
     document.getElementById('btn-next-page2').disabled = !valid;
 }
 
@@ -586,7 +522,6 @@ async function submitStory() {
 
     const payload = {
         Titel: titel,
-        Genre: state.kategorie,
         Persona: PERSONA_LABELS[state.persona],
         Neurotyp: state.neurotyp,
         Bildstil: BILDSTIL_LABELS[state.stil],

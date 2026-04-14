@@ -2,7 +2,6 @@ const raw = $input.item.json;
 const input = raw.body || raw;
 
 const title = (input['Titel'] || '').trim();
-const genre = (input['Genre'] || 'Abenteuer').trim();
 const personaRaw = (input['Persona'] || 'Peter Past').trim();
 const persona = personaRaw.split(' ')[0].toLowerCase();
 const neurotyp = (input['Neurotyp'] || 'Standard').trim();
@@ -118,7 +117,6 @@ Schreib im Modus: ${neurotyp}.
 Dein Systemprompt definiert deinen Stil und die Neurotyp-Anpassung — halte dich daran.${emojiHinweis}
 
 Geschichte: "${title}"
-Genre: ${genre}
 Kurzbeschreibung: ${description || 'Keine Beschreibung angegeben'}
 Wortanzahl: ${effWoerter}
 Tempus: ${p.tempus}
@@ -132,7 +130,6 @@ ZUSAMMENFASSUNG: [2–3 Sätze]`;
 Dein Stil aus dem Systemprompt hat VORRANG.
 
 Geschichte: "${title}"
-Genre: ${genre}
 Kurzbeschreibung: ${description || 'Keine Beschreibung angegeben'}
 Wortanzahl: ${p.woerter}
 
@@ -142,7 +139,7 @@ ZUSAMMENFASSUNG: [2–3 Sätze]`;
 }
 
 return { json: {
-  title, genre, persona, neurotyp, description, slug,
+  title, persona, neurotyp, description, slug,
   date: new Date().toISOString().split('T')[0],
   personaName: p.name, personaType: p.typ,
   personaImg: p.imgUrl, personaBio: p.bio,
