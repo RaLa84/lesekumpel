@@ -316,6 +316,15 @@
             </div>
         </div>
 
+        <div class="form-section" style="margin-top:20px;">
+            <div class="section-title">Mit Bildern?</div>
+            <div class="section-sub">Bilder machen die Geschichte lebendig, brauchen aber etwas länger.</div>
+            <div class="toggle-group" id="bilder-toggle">
+                <button class="toggle-btn active" data-bilder="true" onclick="selectBilder(true)">🖼️ Mit Bildern</button>
+                <button class="toggle-btn" data-bilder="false" onclick="selectBilder(false)">📝 Nur Text</button>
+            </div>
+        </div>
+
         <div style="margin-top:28px;">
             <button class="btn-submit" id="btn-submit" disabled onclick="submitStory()">✨ Geschichte erstellen</button>
         </div>
@@ -406,7 +415,7 @@ const BILDSTIL_LABELS = { 'Aquarell': 'Aquarell — Weiche Pastellfarben', 'Cart
 
 const WEBHOOK_URL = 'https://rala84.app.n8n.cloud/webhook/lesekumpel-story';
 
-let state = { persona: null, neurotyp: null, kategorie: null, stil: null };
+let state = { persona: null, neurotyp: null, kategorie: null, stil: null, mitBildern: true };
 
 // ============================================================
 // PAGE NAVIGATION & SECTION VISIBILITY
@@ -547,6 +556,12 @@ function updateNextButton() {
 
 document.getElementById('titel').addEventListener('input', updateNextButton);
 
+function selectBilder(val) {
+    state.mitBildern = val;
+    document.querySelectorAll('#bilder-toggle .toggle-btn').forEach(b => b.classList.remove('active'));
+    document.querySelector(`#bilder-toggle .toggle-btn[data-bilder="${val}"]`).classList.add('active');
+}
+
 function selectStil(stil) {
     state.stil = stil;
     document.querySelectorAll('.stil-card').forEach(c => c.classList.remove('active'));
@@ -567,7 +582,8 @@ async function submitStory() {
         Persona: PERSONA_LABELS[state.persona],
         Neurotyp: state.neurotyp,
         Bildstil: BILDSTIL_LABELS[state.stil],
-        Kurzbeschreibung: beschreibung
+        Kurzbeschreibung: beschreibung,
+        mitBildern: state.mitBildern
     };
 
     showLoading();

@@ -101,8 +101,9 @@ const effMin = Math.round(basisMin * (1 + neurotypAufschlag));
 const effMax = Math.round(basisMax * (1 + neurotypAufschlag));
 const effWoerter = `${effMin}–${effMax}`;
 
-// Bildanzahl nach Wortanzahl
-const imageCount = basisMax <= 50 ? 1 : basisMax <= 150 ? 2 : 3;
+// Bildanzahl: 0 wenn "Nur Text" gewählt, sonst nach Wortanzahl
+const mitBildern = input['mitBildern'] !== false && input['mitBildern'] !== 'false';
+const imageCount = mitBildern ? (basisMax <= 50 ? 1 : basisMax <= 150 ? 2 : 3) : 0;
 
 // Kein Emoji-Hinweis im Prompt — Emojis werden nachträglich per Emoji-Tagger hinzugefügt
 const emojiHinweis = '';
