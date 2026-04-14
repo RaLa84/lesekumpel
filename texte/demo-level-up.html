@@ -225,7 +225,6 @@
         .clearfix::after { content: ""; display: table; clear: both; }
         footer { text-align: center; margin-top: 50px; color: #888; font-size: 0.9rem; padding-top: 20px; border-top: 1px solid #eee; }
         .footer-links a { color: #888; text-decoration: none; margin: 0 5px; }
-        .magnifier-overlay { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: #fff; border: 4px solid var(--primary-yellow); padding: 20px; border-radius: 20px; font-size: 2rem; box-shadow: 0 10px 20px rgba(0,0,0,0.2); z-index: 6000; display: none; text-align: center; font-family: var(--font-heading); }
         .hidden { display: none; }
 
     </style>
@@ -264,7 +263,7 @@
                 <button onclick="toggleMobileToolbar()" style="background:none; border:none; font-size:1.5rem;">❌</button>
             </div>
             <button class="tool-btn" onclick="toggleTTS()" id="btn-tts">🔊 Vorlesen</button>
-            <button class="tool-btn" onclick="toggleMagnifier()" id="magnifier-btn">🔍 Lupe</button>
+            <button class="tool-btn" onclick="toggleWordReader()" id="btn-word-reader">👂 Wörter hören</button>
             <span style="width:1px; background:#ddd; margin:0 5px;"></span>
             <button class="tool-btn btn-salmon" onclick="toggleSummaryMode()" id="btn-summary">📖 Einfach</button>
             <button class="tool-btn" onclick="toggleSyllables()" id="btn-syllables">🔴🔵 Silben</button>
@@ -353,14 +352,6 @@
         <div class="footer-links"><a href="#">Impressum</a> • <a href="#">Datenschutz</a> • <a href="#">Über uns</a> • <a href="../blog-warum-lesekumpel.html">Blog</a> &bull; <a href="../knowledge-base/snacks/index.html">Wissen</a></div>
     </footer>
 
-    <div id="magnifier-overlay" class="magnifier-overlay">
-        <span id="magnifier-text">Wort</span>
-        <div style="margin-top:10px; font-size:1rem;">
-            <button class="tool-btn" onclick="speakMagnifiedWord()">🔊 Hören</button>
-            <button class="tool-btn btn-salmon" onclick="closeMagnifier()">Schließen</button>
-        </div>
-    </div>
-
     <a href="whatsapp://send?text=Lies dir diese Geschichte durch!" class="whatsapp-float">📱</a>
 
     <script>
@@ -411,7 +402,7 @@
         }
 
         /* --- LOGIC --- */
-        let state = { syllables: false, summary: false, english: false, chunkIndex: 0, chunks: [], magnifier: false };
+        let state = { syllables: false, summary: false, english: false, chunkIndex: 0, chunks: [], wordReader: false };
 
         function renderText() {
             let txt = state.summary ? summaryRaw : storyRaw;
@@ -585,25 +576,18 @@
             document.querySelectorAll('.highlight-active').forEach(el => el.classList.remove('highlight-active'));
         }
 
-        function toggleMagnifier() {
-            state.magnifier = !state.magnifier;
-            document.getElementById('magnifier-btn').className = state.magnifier ? "tool-btn active" : "tool-btn";
+        function toggleWordReader() {
+            state.wordReader = !state.wordReader;
+            document.getElementById('btn-word-reader').className = state.wordReader ? "tool-btn active" : "tool-btn";
         }
         function clickWord(el, word, lang) {
-            if(!state.magnifier) return;
-            document.getElementById('magnifier-text').innerText = el.innerText;
-            document.getElementById('magnifier-text').setAttribute('data-s', word);
-            document.getElementById('magnifier-text').setAttribute('data-l', lang);
-            document.getElementById('magnifier-overlay').style.display = 'block';
-        }
-        function speakMagnifiedWord() {
-            let t = document.getElementById('magnifier-text').innerText;
-            let l = document.getElementById('magnifier-text').getAttribute('data-l');
-            let u = new SpeechSynthesisUtterance(t);
-            u.lang = l === 'en' ? 'en-US' : 'de-DE';
+            if (!state.wordReader) return;
+            window.speechSynthesis.cancel();
+            let u = new SpeechSynthesisUtterance(el.innerText);
+            u.lang = 'de-DE';
+            u.rate = 0.9;
             window.speechSynthesis.speak(u);
         }
-        function closeMagnifier() { document.getElementById('magnifier-overlay').style.display = 'none'; }
 
         function toggleViewMode() {
             let full = document.getElementById('full-text-view');
