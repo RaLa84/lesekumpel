@@ -247,7 +247,6 @@
         .clearfix::after { content: ""; display: table; clear: both; }
         footer { text-align: center; margin-top: 50px; color: #888; font-size: 0.9rem; padding-top: 20px; border-top: 1px solid #eee; }
         .footer-links a { color: #888; text-decoration: none; margin: 0 5px; }
-        .magnifier-overlay { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: #fff; border: 4px solid var(--primary-yellow); padding: 20px; border-radius: 20px; font-size: 2rem; box-shadow: 0 10px 20px rgba(0,0,0,0.2); z-index: 6000; display: none; text-align: center; font-family: var(--font-heading); }
         .hidden { display: none; }
 
         /* --- NEUROTYP-SPEZIFISCH --- */
@@ -387,7 +386,7 @@
                     <div class="toolbar-group-label">Extras</div>
                     <div class="toolbar-group-buttons">
                         <button class="tool-btn" onclick="toggleTTS()" id="btn-tts" aria-label="Vorlesen"><span class="btn-icon">🔊</span> Vorlesen</button>
-                        <button class="tool-btn" onclick="toggleMagnifier()" id="magnifier-btn" aria-label="Wortlupe"><span class="btn-icon">🔍</span> Lupe</button>
+                        <button class="tool-btn" onclick="toggleWordReader()" id="btn-word-reader" aria-label="Wörter hören"><span class="btn-icon">👂</span> Wörter hören</button>
                     </div>
                 </div>
             </div>
@@ -450,14 +449,6 @@
         <div class="footer-links"><a href="#">Impressum</a> • <a href="../datenschutz.html">Datenschutz</a> • <a href="../ueber-uns.html">Über uns</a> • <a href="../blog-warum-lesekumpel.html">Blog</a> &bull; <a href="../knowledge-base/snacks/index.html">Wissen</a></div>
     </footer>
 
-    <div id="magnifier-overlay" class="magnifier-overlay">
-        <span id="magnifier-text">Wort</span>
-        <div style="margin-top:10px; font-size:1rem;">
-            <button class="tool-btn" onclick="speakMagnifiedWord()">🔊 Hören</button>
-            <button class="tool-btn btn-coral" onclick="closeMagnifier()">Schließen</button>
-        </div>
-    </div>
-
     <script>
         /* ============================================================
          * DYNAMISCHE INJEKTION — diese Werte werden von N8N befüllt
@@ -511,7 +502,7 @@
         const isAutismus = ntClass === 'nt-autismus';
         const isLRS = ntClass === 'nt-lrs';
         const isADHS = ntClass === 'nt-adhs';
-        let state = { syllables: isLRS, emojis: isAutismus, summary: false, chunkIndex: 0, chunks: [], chunkImages: [], chunkHeadings: [], magnifier: false };
+        let state = { syllables: isLRS, emojis: isAutismus, summary: false, chunkIndex: 0, chunks: [], chunkImages: [], chunkHeadings: [], wordReader: false };
         let inlineImages = [];
 
         // Bilder einsammeln: Alle Bilder für Chunks sammeln, Hero im DOM belassen (CSS steuert Sichtbarkeit)
@@ -732,15 +723,16 @@
         }
 
         function clearHighlights() { document.querySelectorAll('.highlight-active').forEach(el => el.classList.remove('highlight-active')); }
-        function toggleMagnifier() { state.magnifier = !state.magnifier; document.getElementById('magnifier-btn').className = state.magnifier ? "tool-btn active" : "tool-btn"; }
+        function toggleWordReader() { state.wordReader = !state.wordReader; document.getElementById('btn-word-reader').className = state.wordReader ? "tool-btn active" : "tool-btn"; }
         function clickWord(el, word) {
-            // Vokabel-Tooltip (visuell markiert nur bei nt-daz, aber für alle klickbar)
             let def = el.getAttribute('data-def');
             if (def) { showVocabTooltip(el, def); return; }
-            if(!state.magnifier) return;
-            document.getElementById('magnifier-text').innerText = el.innerText;
-            document.getElementById('magnifier-text').setAttribute('data-s', word);
-            document.getElementById('magnifier-overlay').style.display = 'block';
+            if (!state.wordReader) return;
+            window.speechSynthesis.cancel();
+            let u = new SpeechSynthesisUtterance(el.innerText);
+            u.lang = 'de-DE';
+            u.rate = 0.9;
+            window.speechSynthesis.speak(u);
         }
         function showVocabTooltip(el, definition) {
             document.querySelectorAll('.vocab-tooltip').forEach(t => t.remove());
@@ -756,12 +748,6 @@
                 });
             }, 10);
         }
-        function speakMagnifiedWord() {
-            let t = document.getElementById('magnifier-text').innerText;
-            let u = new SpeechSynthesisUtterance(t); u.lang = 'de-DE';
-            window.speechSynthesis.speak(u);
-        }
-        function closeMagnifier() { document.getElementById('magnifier-overlay').style.display = 'none'; }
         function addParagraphNumbers() {
             document.querySelectorAll('#full-text-view p').forEach((p, i) => {
                 if (p.querySelector('.para-num')) return;
