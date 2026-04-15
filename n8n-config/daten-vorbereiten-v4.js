@@ -116,7 +116,7 @@ if (p.typ === 'skill') {
 Schreib im Modus: ${neurotyp}.
 Dein Systemprompt definiert deinen Stil und die Neurotyp-Anpassung — halte dich daran.${emojiHinweis}
 
-Geschichte: "${title}"
+Titel: "${title}"
 Kurzbeschreibung: ${description || 'Keine Beschreibung angegeben'}
 Wortanzahl: ${effWoerter}
 Tempus: ${p.tempus}
@@ -129,7 +129,7 @@ ZUSAMMENFASSUNG: [2–3 Sätze]`;
   userPrompt = `DU BIST ${p.name}.
 Dein Stil aus dem Systemprompt hat VORRANG.
 
-Geschichte: "${title}"
+Titel: "${title}"
 Kurzbeschreibung: ${description || 'Keine Beschreibung angegeben'}
 Wortanzahl: ${p.woerter}
 
