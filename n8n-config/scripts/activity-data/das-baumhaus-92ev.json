@@ -1,0 +1,44 @@
+{
+  "weitererzaehlen": {
+    "frage": "Wie geht die Geschichte weiter?",
+    "optionen": [
+      {
+        "emoji": "🏠",
+        "titel": "Max baute die Wände",
+        "text": "Am nächsten Tag baute Max die Wände. Er nagelte vier Bretter fest. Das Baumhaus hatte jetzt Wände. Bello schaute zu."
+      },
+      {
+        "emoji": "🪜",
+        "titel": "Max baute ein Dach",
+        "text": "Max holte neue Bretter für das Dach. Er kletterte die Leiter hoch. Er nagelte das Dach fest. Das Baumhaus war jetzt trocken."
+      },
+      {
+        "emoji": "🐕",
+        "titel": "Bello kam mit hoch",
+        "text": "Max trug Bello vorsichtig die Leiter hoch. Sie saßen zusammen im Baumhaus. Max gab Bello einen Keks. Bello wedelte mit dem Schwanz."
+      }
+    ]
+  },
+  "schatzsuche": {
+    "thema": "Baumhaus-Wörter",
+    "emoji": "🔨",
+    "ziel": 3,
+    "einleitung": "Finde Wörter zum Baumhaus. Such diese Wörter im Text.",
+    "schatzwoerter": [
+      "baumhaus",
+      "hammer",
+      "nägel",
+      "bretter",
+      "leiter",
+      "baum",
+      "garten",
+      "brett",
+      "nagel",
+      "boden",
+      "bello",
+      "hund",
+      "max",
+      "schwanz"
+    ]
+  }
+}

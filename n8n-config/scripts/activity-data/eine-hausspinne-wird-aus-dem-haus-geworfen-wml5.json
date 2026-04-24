@@ -1,0 +1,44 @@
+{
+  "weitererzaehlen": {
+    "frage": "Wie geht die Geschichte weiter?",
+    "optionen": [
+      {
+        "emoji": "🕸️",
+        "titel": "Karla knüpft das schönste Netz",
+        "text": "In der stillen Ecke des Gartenhauses spinnt Karla Nacht für Nacht weiter. Ihr Netz wird so kunstvoll, dass sogar die Morgensonne darin hängen bleibt und in tausend winzigen Tropfen funkelt. Eines Tages entdeckt ein kleines Mädchen das glitzernde Wunder und staunt, statt zu erschrecken."
+      },
+      {
+        "emoji": "🐝",
+        "titel": "Eine ungewöhnliche Freundschaft",
+        "text": "Am nächsten Morgen hört Karla ein leises Summen an der Tür des Gartenhauses. Die gelbschwarze Biene von gestern ist zurück, doch diesmal wirkt sie weder riesig noch bedrohlich, nur ein wenig verloren. Vorsichtig tasten sich die beiden aufeinander zu und entdecken, dass auch mutige Wesen manchmal Gesellschaft brauchen."
+      },
+      {
+        "emoji": "🌸",
+        "titel": "Der geheime Garten erwacht",
+        "text": "Mit jedem Faden, den Karla spinnt, scheint das alte Gartenhaus lebendiger zu werden. Käfer, Marienkäfer und sogar eine neugierige Schnecke finden den Weg zu ihr und machen die dämmerige Ecke zu einem heimlichen Treffpunkt. Karla merkt, dass ein Zuhause nicht nur ein Ort ist, sondern auch die leisen Geräusche der anderen, die ihn mit ihr teilen."
+      }
+    ]
+  },
+  "schatzsuche": {
+    "thema": "Orte und Dinge im Garten",
+    "emoji": "🔍",
+    "ziel": 3,
+    "einleitung": "Karla reist durch eine fremde grüne Welt. Findest du die Orte und Dinge, die ihr auf dem Weg begegnen?",
+    "schatzwoerter": [
+      "hausspinne",
+      "bücherregal",
+      "glas",
+      "grashalmen",
+      "netz",
+      "mohnblume",
+      "stängel",
+      "biene",
+      "blüte",
+      "lederschuh",
+      "gartenhaus",
+      "holz",
+      "blumentopf",
+      "faden"
+    ]
+  }
+}

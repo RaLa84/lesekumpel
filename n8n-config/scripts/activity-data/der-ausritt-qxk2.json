@@ -1,0 +1,43 @@
+{
+  "weitererzaehlen": {
+    "frage": "Wie geht die Geschichte weiter?",
+    "optionen": [
+      {
+        "emoji": "🐴",
+        "titel": "Ein neues Abenteuer auf der Wiese",
+        "text": "Am nächsten Tag kamen Mats und Lilith wieder zum Reiterhof. Rike lachte und führte sie zu einem neuen Weg hinter der großen Wiese. Dort blühten bunte Blumen und die Ponys trabten fröhlich los. Mats freute sich, weil er schon viel mutiger war."
+      },
+      {
+        "emoji": "🌳",
+        "titel": "Der geheime Waldpfad",
+        "text": "Rike zeigte den Kindern einen schmalen Pfad in den Wald. Die Ponys Max und Lotte schnaubten leise und gingen ruhig zwischen den Bäumen. Mats entdeckte ein kleines Eichhörnchen, das neugierig herüberschaute. Lilith kicherte und alle genossen den geheimen Ausritt."
+      },
+      {
+        "emoji": "🍎",
+        "titel": "Belohnung für die Ponys",
+        "text": "Nach dem Ausritt holten Mats und Lilith einen Korb mit Äpfeln aus dem Stall. Vorsichtig fütterten sie Max und Lotte mit den süßen Früchten. Die Ponys knabberten vergnügt und wackelten mit den Ohren. Mats strahlte, weil Max ihm sanft über die Hand schnaubte."
+      }
+    ]
+  },
+  "schatzsuche": {
+    "thema": "Reit-Wörter",
+    "emoji": "🐴",
+    "ziel": 3,
+    "einleitung": "Findest du die Wörter rund um den Ausritt? Sammle sie wie kleine Schätze!",
+    "schatzwoerter": [
+      "pony",
+      "max",
+      "lotte",
+      "zügel",
+      "reitlehrerin",
+      "wiese",
+      "gras",
+      "sonne",
+      "vögeln",
+      "ausritt",
+      "mats",
+      "lilith",
+      "himmel"
+    ]
+  }
+}

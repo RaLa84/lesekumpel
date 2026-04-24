@@ -1,0 +1,29 @@
+{
+  "weitererzaehlen": {
+    "frage": "Wie geht die Geschichte weiter?",
+    "optionen": [
+      {
+        "emoji": "⚔️",
+        "titel": "Das Schwert zeigt sein Geheimnis",
+        "text": "Kaum hielt Ida das Schwert in der Hand, begann die Klinge sanft zu leuchten. „Du hast mich gefunden!“, schien es zu flüstern. Ein warmes, goldenes Licht tanzte zwischen den Bäumen und zeigte Ida einen verborgenen Pfad nach Hause."
+      },
+      {
+        "emoji": "🐰",
+        "titel": "Der Hase hat ein Problem",
+        "text": "Plötzlich hoppelte der Hase noch einmal zurück. „Wartet, Prinzessin! Mein kleiner Bruder steckt auch in Gefahr!“, piepste er aufgeregt. Ida lächelte mutig und sagte: „Dann kommt, tapferer Freund — gemeinsam schaffen wir das!“"
+      },
+      {
+        "emoji": "🏰",
+        "titel": "Heimweg zur Burg",
+        "text": "Mit dem Schwert in der Hand lief Ida fröhlich pfeifend durch den Wald zurück. Die Vögel zwitscherten ihr ein Willkommenslied, und am Horizont leuchteten schon die Türme der Burg in der Abendsonne. Zuhause würde sie dem König stolz von ihrem treuen Helfer erzählen."
+      }
+    ]
+  },
+  "schatzsuche": {
+    "thema": "Wald-Dinge",
+    "emoji": "🌲",
+    "ziel": 3,
+    "einleitung": "Im dunklen Wald versteckt sich jede Menge! Findest du die Schätze zwischen Idas Abenteuer?",
+    "schatzwoerter": ["ast", "wald", "hase", "schwert", "wurzel", "baum", "lichtung", "pfote", "ohren", "dickicht", "stiefeln", "prinzessin"]
+  }
+}

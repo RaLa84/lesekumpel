@@ -1,0 +1,41 @@
+{
+  "weitererzaehlen": {
+    "frage": "Wie geht die Geschichte weiter?",
+    "optionen": [
+      {
+        "emoji": "🐦",
+        "titel": "Ein Vogel besucht den Drachen",
+        "text": "Ein kleiner Vogel fliegt neugierig zum roten Drachen. Er setzt sich vorsichtig auf die Schnur und zwitschert fröhlich. Leonie lacht und winkt dem Vogel zu."
+      },
+      {
+        "emoji": "🌈",
+        "titel": "Der Drachen trifft einen Regenbogen",
+        "text": "Plötzlich erscheint ein bunter Regenbogen am Himmel. Der rote Drachen tanzt direkt hindurch und leuchtet in allen Farben. Leonie staunt und strahlt vor Freude."
+      },
+      {
+        "emoji": "👧",
+        "titel": "Ein Freund kommt dazu",
+        "text": "Leonies Freundin Mia rennt über die Wiese. Sie hat auch einen Drachen dabei, einen blauen. Nun tanzen zwei Drachen gemeinsam zwischen den Wolken."
+      }
+    ]
+  },
+  "schatzsuche": {
+    "thema": "Dinge in der Geschichte",
+    "emoji": "🪁",
+    "ziel": 3,
+    "einleitung": "Finde diese Wörter in der Geschichte. Tippe sie an, wenn du sie entdeckst!",
+    "schatzwoerter": [
+      "leonie",
+      "wiese",
+      "drachen",
+      "wind",
+      "haare",
+      "himmel",
+      "schnur",
+      "wolken",
+      "hand",
+      "rennt",
+      "tanzt"
+    ]
+  }
+}

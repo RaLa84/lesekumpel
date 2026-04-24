@@ -1,0 +1,41 @@
+{
+  "weitererzaehlen": {
+    "frage": "Wie geht die Geschichte weiter?",
+    "optionen": [
+      {
+        "emoji": "🏃",
+        "titel": "Tim und Lisa spielen Fangen",
+        "text": "Tim rennt schnell hinter Lisa her. Sie lachen beide laut. Bald kommen noch mehr Kinder dazu und machen mit. Jetzt ist die ganze Pause ein großes Fangen-Spiel."
+      },
+      {
+        "emoji": "🥪",
+        "titel": "Gemeinsam frühstücken",
+        "text": "Nach dem Spielen setzen sich Tim und Lisa auf die Bank. Lisa teilt ihr Brot mit Tim. Sie reden über ihre Lieblings-Tiere. Tim freut sich über seine neue Freundin."
+      },
+      {
+        "emoji": "🎨",
+        "titel": "Tim zeigt sein Talent",
+        "text": "Nach der Pause malt Tim ein schönes Bild. Lisa schaut ihm dabei zu und staunt. Sie zeigt das Bild der Lehrerin. Alle Kinder finden Tim super."
+      }
+    ]
+  },
+  "schatzsuche": {
+    "thema": "Schul-Sachen und Pause",
+    "emoji": "🏫",
+    "ziel": 3,
+    "einleitung": "Such die Schul-Wörter in der Geschichte! Klick sie an, wenn du sie findest.",
+    "schatzwoerter": [
+      "junge",
+      "klasse",
+      "kinder",
+      "pause",
+      "klettergerüst",
+      "schuhe",
+      "ball",
+      "hand",
+      "fangen",
+      "tim",
+      "lisa"
+    ]
+  }
+}

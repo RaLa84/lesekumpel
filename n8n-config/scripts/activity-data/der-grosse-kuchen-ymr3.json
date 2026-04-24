@@ -1,0 +1,41 @@
+{
+  "weitererzaehlen": {
+    "frage": "Wie geht die Geschichte weiter?",
+    "optionen": [
+      {
+        "emoji": "🎂",
+        "titel": "Nachbarn essen mit",
+        "text": "Oma lädt die Nachbarn in den Garten ein. Alle setzen sich an den Gartentisch. Jeder bekommt ein großes Stück Kuchen. Der Kuchen schmeckt allen sehr gut."
+      },
+      {
+        "emoji": "📸",
+        "titel": "Ein Foto vom Kuchen",
+        "text": "Leo holt die Kamera. Leo macht ein Foto vom großen Kuchen. Oma lacht und freut sich. Das Foto hängt später an der Küchenwand."
+      },
+      {
+        "emoji": "🎉",
+        "titel": "Das Garten-Fest",
+        "text": "Oma und Leo machen ein Garten-Fest. Sie decken den Tisch mit Tellern und Tassen. Freunde kommen vorbei und essen Kuchen. Alle sind fröhlich."
+      }
+    ]
+  },
+  "schatzsuche": {
+    "thema": "Back-Dinge",
+    "emoji": "🍰",
+    "ziel": 3,
+    "einleitung": "Finde die Back-Wörter in der Geschichte. Tippe die richtigen Wörter an.",
+    "schatzwoerter": [
+      "oma",
+      "küche",
+      "teig",
+      "schüssel",
+      "kuchen",
+      "ofen",
+      "tür",
+      "fenster",
+      "garten",
+      "gartentisch",
+      "stück"
+    ]
+  }
+}

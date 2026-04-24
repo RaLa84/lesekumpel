@@ -1,0 +1,29 @@
+{
+  "weitererzaehlen": {
+    "frage": "Wie geht die Geschichte weiter?",
+    "optionen": [
+      {
+        "emoji": "🏆",
+        "titel": "Lilith gewann einen Pokal",
+        "text": "Nach dem Ritt rief der Mann Liliths Namen laut ins Mikrofon. Sie bekam einen goldenen Pokal überreicht und strahlte über das ganze Gesicht. Spanico wieherte stolz, als alle Zuschauer jubelten."
+      },
+      {
+        "emoji": "🌈",
+        "titel": "Eine Überraschung wartete",
+        "text": "Am Rand des Parcours entdeckte Lilith ihre beste Freundin mit einer bunten Girlande. Gemeinsam schmückten sie Spanicos Mähne mit frischen Blumen. Das Pony sah nun aus wie ein echter Märchenheld."
+      },
+      {
+        "emoji": "🍎",
+        "titel": "Spanico traf neue Freunde",
+        "text": "Nach dem Wettbewerb führte Lilith ihr Pony zum Stall. Dort wartete schon ein freundliches Pferd namens Sternchen auf ihn. Die beiden Tiere knabberten zusammen an Äpfeln und wurden gleich dicke Freunde."
+      }
+    ]
+  },
+  "schatzsuche": {
+    "thema": "Reit-Sachen",
+    "emoji": "🏆",
+    "ziel": 3,
+    "einleitung": "Findest du die Reit-Sachen im Text? Klick sie an!",
+    "schatzwoerter": ["pony", "spanico", "hürde", "hufen", "karotte", "glocke", "parcours", "hals", "fell", "ziel", "mann", "tasche"]
+  }
+}

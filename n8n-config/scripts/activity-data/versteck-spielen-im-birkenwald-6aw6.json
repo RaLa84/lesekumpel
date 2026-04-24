@@ -1,0 +1,43 @@
+{
+  "weitererzaehlen": {
+    "frage": "Wie geht die Geschichte weiter?",
+    "optionen": [
+      {
+        "emoji": "🦊",
+        "titel": "Der Fuchs kehrt zurück",
+        "text": "Am nächsten Tag kamen Jonas und Tim wieder in den Birkenwald. Herbert flüsterte aufgeregt, dass der Fuchs aus seiner Geschichte gerade vorbei huschte. Die Jungen folgten leise den Spuren und erlebten ein echtes Waldabenteuer."
+      },
+      {
+        "emoji": "🌳",
+        "titel": "Ein Wald voller Stimmen",
+        "text": "Herbert erzählte den Jungen ein Geheimnis: Auch andere Bäume konnten sprechen. Jonas und Tim lauschten jedem Stamm und entdeckten überall freundliche Wesen. Von nun an war der Birkenwald ihr liebster Ort voller Freunde."
+      },
+      {
+        "emoji": "🗺️",
+        "titel": "Die Schatzkarte im Stamm",
+        "text": "Herbert zeigte den Jungen eine kleine Astspalte in seinem Stamm. Darin lag eine alte, vergilbte Schatzkarte aus vergangenen Zeiten. Jonas und Tim rollten sie aus und planten sofort ihre erste große Expedition."
+      }
+    ]
+  },
+  "schatzsuche": {
+    "thema": "Dinge im Birkenwald",
+    "emoji": "🌲",
+    "ziel": 3,
+    "einleitung": "Finde die Wald-Wörter in der Geschichte! Bist du bereit für die Suche?",
+    "schatzwoerter": [
+      "birkenwald",
+      "sonne",
+      "waldboden",
+      "bäume",
+      "baum",
+      "birke",
+      "stamm",
+      "käfer",
+      "fuchs",
+      "wächter",
+      "flecken",
+      "rücken",
+      "stimme"
+    ]
+  }
+}

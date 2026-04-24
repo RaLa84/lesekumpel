@@ -1,0 +1,42 @@
+{
+  "weitererzaehlen": {
+    "frage": "Wie geht die Geschichte weiter?",
+    "optionen": [
+      {
+        "emoji": "🦋",
+        "titel": "Ein Brief aus Mexiko",
+        "text": "Nach der Präsentation beschließt Lena, den Monarchfaltern einen Brief zu widmen. Sie schreibt eine Geschichte über ihre Reise und schickt sie an ein Forschungsprojekt in Mexiko. Wochen später flattert ein Antwortumschlag in den Briefkasten, gefüllt mit Fotos echter Falter und einer Einladung, ihre Arbeit in der nächsten Schulstunde vorzustellen."
+      },
+      {
+        "emoji": "🎤",
+        "titel": "Die Vorlese-AG",
+        "text": "Die Lehrerin bittet Lena nach dem Vortrag zu einem kurzen Gespräch. Sie fragt, ob Lena Lust hätte, eine neue Vorlese-AG für jüngere Kinder zu gründen. Lena zögert nur einen Augenblick, denn der warme Applaus klingt noch in ihren Ohren. Gemeinsam mit Maja plant sie die erste Sitzung – mit Geschichten über Tiere, die weite Wege zurücklegen."
+      },
+      {
+        "emoji": "🌿",
+        "titel": "Das Schmetterlings-Projekt",
+        "text": "Tom kommt in der Pause zu Lena herüber und gesteht, dass ihn die Monarchfalter nicht mehr loslassen. Zusammen beschließen sie, im Schulgarten einen kleinen Falterstreifen mit Wildblumen anzulegen. Jeden Morgen vor dem Unterricht pflegen sie die Beete, und bald summen und flattern dort die ersten Besucher zwischen den Blüten."
+      }
+    ]
+  },
+  "schatzsuche": {
+    "thema": "Präsentations-Gefühle",
+    "emoji": "🎤",
+    "ziel": 3,
+    "einleitung": "Lena hat Lampenfieber – und mutige Worte. Finde die versteckten Schätze in ihrer Geschichte!",
+    "schatzwoerter": [
+      "klassenzimmer",
+      "tafel",
+      "notizen",
+      "herz",
+      "stimme",
+      "lehrerin",
+      "anker",
+      "flüstern",
+      "monarchfalter",
+      "applaus",
+      "stolz",
+      "mitschüler"
+    ]
+  }
+}

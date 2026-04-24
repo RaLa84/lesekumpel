@@ -1,0 +1,43 @@
+{
+  "weitererzaehlen": {
+    "frage": "Wie geht die Geschichte weiter?",
+    "optionen": [
+      {
+        "emoji": "🖼️",
+        "titel": "Die Bilder bekommen einen Ehrenplatz",
+        "text": "Am nächsten Morgen rahmte Papa die beiden selbstgemalten Bilder in schöne Holzrahmen. Er hängte Mats' Roboter und Liliths Regenbogen direkt neben seinen Schreibtisch im Büro. Von nun an lächelte er jedes Mal, wenn er sie ansah."
+      },
+      {
+        "emoji": "🎉",
+        "titel": "Papa plant eine Gegenüberraschung",
+        "text": "Papa überlegte, wie er sich bei seinen Kollegen bedanken könnte. Heimlich backte er am Wochenende gemeinsam mit Mats und Lilith einen riesigen Zitronenkuchen. Am Montag stellte er ihn strahlend ins Büro und sagte: \"Jetzt feiern wir alle zusammen weiter!\""
+      },
+      {
+        "emoji": "📅",
+        "titel": "Eine neue Familientradition",
+        "text": "Beim Einschlafen dachte Papa noch lange über den Tag nach. Er beschloss, ab jetzt jedes Jahr einen besonderen \"Familien-Geburtstagsabend\" in der Lieblingspizzeria zu machen. Mats und Lilith jubelten, als er ihnen am Frühstückstisch davon erzählte."
+      }
+    ]
+  },
+  "schatzsuche": {
+    "thema": "Geburtstags-Dinge",
+    "emoji": "🎂",
+    "ziel": 3,
+    "einleitung": "In Papas Geburtstag sind jede Menge Festdinge versteckt. Findest du sie in der Geschichte?",
+    "schatzwoerter": [
+      "geburtstag",
+      "geschenke",
+      "bilder",
+      "kuchen",
+      "kerzen",
+      "girlanden",
+      "luftballons",
+      "schokoladenkuchen",
+      "regenbogen",
+      "roboter",
+      "überraschung",
+      "pizzeria",
+      "pizza"
+    ]
+  }
+}

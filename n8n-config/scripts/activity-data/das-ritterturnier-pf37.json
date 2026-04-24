@@ -1,0 +1,42 @@
+{
+  "weitererzaehlen": {
+    "frage": "Wie geht die Geschichte weiter?",
+    "optionen": [
+      {
+        "emoji": "🏆",
+        "titel": "Der goldene Pokal",
+        "text": "Der König überreichte Ben einen riesigen Pokal. Das Gold funkelte in der Sonne. Die Menge jubelte laut! Ben strahlte übers ganze Gesicht."
+      },
+      {
+        "emoji": "🤝",
+        "titel": "Ein neuer Freund",
+        "text": "Der rote Ritter stand auf und lachte. Er reichte Ben die Hand. „Toller Kampf!\", rief er. Die beiden wurden sofort Freunde."
+      },
+      {
+        "emoji": "🎉",
+        "titel": "Das große Siegesfest",
+        "text": "Am Abend gab es ein riesiges Fest. Es gab Musik, Tanz und leckeres Essen. Ben tanzte bis spät in die Nacht. Alle feierten den jungen Helden!"
+      }
+    ]
+  },
+  "schatzsuche": {
+    "thema": "Ritter-Sachen",
+    "emoji": "🛡️",
+    "ziel": 3,
+    "einleitung": "Such alle Ritter-Wörter in der Geschichte! Findest du sie?",
+    "schatzwoerter": [
+      "ritter",
+      "sattel",
+      "pferd",
+      "schild",
+      "lanze",
+      "gegner",
+      "turniertag",
+      "trompeten",
+      "sporen",
+      "arm",
+      "hand",
+      "gras"
+    ]
+  }
+}
