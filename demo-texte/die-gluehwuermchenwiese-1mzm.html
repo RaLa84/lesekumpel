@@ -344,6 +344,49 @@
         .klassen-hinweis-icon { font-size: 1.6rem; flex-shrink: 0; line-height: 1.2; }
         .klassen-hinweis strong { color: #3d2e5f; }
 
+        /* --- ACTIVITY HUB (Tab-Navigation für Lern-Spiele) --- */
+        .activity-hub {
+            margin-bottom: 40px;
+            border: 2px solid #eee; border-radius: 18px;
+            padding: 24px 22px 20px; background: #fff;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+        }
+        .activity-hub .section-title { margin-top: 0; margin-bottom: 18px; }
+        .activity-tabs {
+            display: flex; gap: 6px; padding: 6px;
+            background: #fef5f0; border-radius: 16px;
+            margin-bottom: 18px;
+        }
+        .activity-tab {
+            flex: 1; min-height: 48px; padding: 12px 14px;
+            display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+            background: transparent; border: none; border-radius: 12px;
+            font-family: var(--font-heading); font-weight: 600; font-size: 1rem;
+            color: var(--accent-coral); cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            -webkit-tap-highlight-color: transparent;
+        }
+        .activity-tab:hover:not(.active) { background: rgba(214,113,113,0.08); }
+        .activity-tab.active {
+            background: var(--accent-coral); color: #fff;
+            box-shadow: 0 3px 10px rgba(214,113,113,0.28);
+        }
+        .activity-tab .tab-icon { font-size: 1.25em; line-height: 1; }
+        .activity-tab .tab-label { letter-spacing: 0.01em; }
+
+        .activity-panel { display: none; }
+        .activity-panel.active { display: block; animation: activityFadeIn 0.18s ease-out; }
+        @keyframes activityFadeIn {
+            from { opacity: 0; transform: translateY(4px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 767px) {
+            .activity-hub { padding: 18px 16px 16px; }
+            .activity-tab { padding: 10px 8px; font-size: 0.95rem; gap: 6px; }
+            .activity-tab .tab-label { font-size: 0.95em; }
+        }
+
         .comments-box { border: 2px solid #eee; border-radius: 15px; padding: 20px; }
         .comment-input { width: 100%; border: 2px solid var(--primary-yellow); border-radius: 10px; padding: 15px; font-family: var(--font-body); font-size: 1rem; box-sizing: border-box; outline: none; }
         .btn-send { background-color: var(--accent-coral); color: white; border: none; padding: 10px 30px; border-radius: 10px; font-weight: bold; font-size: 1rem; float: right; margin-top: 10px; cursor: pointer; box-shadow: 0 4px 0 #b85c5c; }
@@ -568,19 +611,31 @@
             </div>
         </div>
 
-        <div class="quiz-section">
-            <div class="section-title">🧠 Quiz-Zeit! Hast du gut aufgepasst?</div>
-            <div id="quiz-wrapper" class="quiz-card"></div>
-        </div>
-
-        <div class="weitererzaehlen-section">
-            <div class="section-title">🌟 Wie geht es weiter?</div>
-            <p class="weitererzaehlen-intro">Hier gibt es kein richtig oder falsch — wähle, was dir am besten gefällt!</p>
-            <div id="weitererzaehlen-wrapper" class="weitererzaehlen-cards"></div>
-            <div class="klassen-hinweis">
-                <span class="klassen-hinweis-icon">👩‍🏫</span>
-                <div>
-                    <strong>Tipp für die Klasse:</strong> Stimmt per Handzeichen ab — welche Fortsetzung findet ihr am schönsten? Danach könnt ihr die gewählte Fortsetzung gemeinsam selbst weiterschreiben.
+        <div class="activity-hub">
+            <div class="section-title">🎮 Spielzeit!</div>
+            <div class="activity-tabs" role="tablist" aria-label="Spielformate">
+                <button class="activity-tab active" role="tab" aria-selected="true"
+                        aria-controls="panel-quiz" id="tab-quiz" data-tab="quiz"
+                        onclick="switchActivityTab('quiz')">
+                    <span class="tab-icon">🧠</span><span class="tab-label">Quiz</span>
+                </button>
+                <button class="activity-tab" role="tab" aria-selected="false"
+                        aria-controls="panel-weiterdenken" id="tab-weiterdenken" data-tab="weiterdenken"
+                        onclick="switchActivityTab('weiterdenken')">
+                    <span class="tab-icon">🌟</span><span class="tab-label">Weiterdenken</span>
+                </button>
+            </div>
+            <div id="panel-quiz" class="activity-panel active" role="tabpanel" aria-labelledby="tab-quiz">
+                <div id="quiz-wrapper" class="quiz-card"></div>
+            </div>
+            <div id="panel-weiterdenken" class="activity-panel" role="tabpanel" aria-labelledby="tab-weiterdenken">
+                <p class="weitererzaehlen-intro">Hier gibt es kein richtig oder falsch — wähle, was dir am besten gefällt!</p>
+                <div id="weitererzaehlen-wrapper" class="weitererzaehlen-cards"></div>
+                <div class="klassen-hinweis">
+                    <span class="klassen-hinweis-icon">👩‍🏫</span>
+                    <div>
+                        <strong>Tipp für die Klasse:</strong> Stimmt per Handzeichen ab — welche Fortsetzung findet ihr am schönsten? Danach könnt ihr die gewählte Fortsetzung gemeinsam selbst weiterschreiben.
+                    </div>
                 </div>
             </div>
         </div>
@@ -825,9 +880,11 @@
 
         function renderWeitererzaehlen() {
             const data = (typeof weitererzaehlenData !== 'undefined') ? weitererzaehlenData : null;
-            const section = document.querySelector('.weitererzaehlen-section');
             if (!data || !Array.isArray(data.optionen) || data.optionen.length === 0) {
-                if (section) section.style.display = 'none';
+                const tab = document.querySelector('[data-tab="weiterdenken"]');
+                const panel = document.getElementById('panel-weiterdenken');
+                if (tab) tab.style.display = 'none';
+                if (panel) panel.style.display = 'none';
                 return;
             }
             // Frage optional als Intro-Text setzen, falls vorhanden
@@ -857,6 +914,50 @@
             if (card) card.classList.toggle('open');
         }
 
+        function switchActivityTab(tabName) {
+            const tabs = document.querySelectorAll('.activity-tab');
+            const panels = document.querySelectorAll('.activity-panel');
+            tabs.forEach(t => {
+                const isActive = t.dataset.tab === tabName;
+                t.classList.toggle('active', isActive);
+                t.setAttribute('aria-selected', isActive ? 'true' : 'false');
+            });
+            panels.forEach(p => {
+                const isActive = p.id === 'panel-' + tabName;
+                p.classList.toggle('active', isActive);
+            });
+            try { localStorage.setItem('lesekumpel-activity-tab', tabName); } catch(e) {}
+        }
+
+        function initActivityTabs() {
+            // Verfügbare Tabs ermitteln (Tabs, die nicht von Render-Funktionen ausgeblendet wurden)
+            const availableTabs = Array.from(document.querySelectorAll('.activity-tab'))
+                .filter(t => t.style.display !== 'none')
+                .map(t => t.dataset.tab);
+
+            if (availableTabs.length === 0) {
+                // Gar kein Spielformat vorhanden → Hub komplett ausblenden
+                const hub = document.querySelector('.activity-hub');
+                if (hub) hub.style.display = 'none';
+                return;
+            }
+
+            // Wenn nur ein Tab übrig: Tab-Bar ausblenden, der eine Tab bleibt aktiv
+            if (availableTabs.length === 1) {
+                const tabsBar = document.querySelector('.activity-tabs');
+                if (tabsBar) tabsBar.style.display = 'none';
+                switchActivityTab(availableTabs[0]);
+                return;
+            }
+
+            // Gespeicherten Tab lesen, Default 'quiz', Fallback auf ersten verfügbaren
+            let saved = null;
+            try { saved = localStorage.getItem('lesekumpel-activity-tab'); } catch(e) {}
+            const target = (saved && availableTabs.includes(saved)) ? saved
+                         : (availableTabs.includes('quiz') ? 'quiz' : availableTabs[0]);
+            switchActivityTab(target);
+        }
+
         function renderQuiz() {
             let qHTML = "";
             quizData.forEach((item, i) => {
@@ -869,9 +970,14 @@
                 qHTML += `</div>`;
             });
             const quizWrapper = document.getElementById('quiz-wrapper');
-            const quizSection = document.querySelector('.quiz-section');
-            if(quizData.length > 0) { quizWrapper.innerHTML = qHTML; quizSection.style.display = 'block'; }
-            else { quizSection.style.display = 'none'; }
+            const tab = document.querySelector('[data-tab="quiz"]');
+            const panel = document.getElementById('panel-quiz');
+            if (quizData.length > 0) {
+                quizWrapper.innerHTML = qHTML;
+            } else {
+                if (tab) tab.style.display = 'none';
+                if (panel) panel.style.display = 'none';
+            }
         }
 
         function updateButtons() {
@@ -1094,7 +1200,7 @@
         }
 
         window.onload = function() {
-            renderText(); renderQuiz(); renderWeitererzaehlen();
+            renderText(); renderQuiz(); renderWeitererzaehlen(); initActivityTabs();
 
             // Leselinien: localStorage > Neurotyp-Default (LRS)
             let lsPref = null;
