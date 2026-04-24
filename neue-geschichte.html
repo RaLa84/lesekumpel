@@ -148,13 +148,32 @@
         .stil-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
         @media (min-width: 500px) { .stil-grid { grid-template-columns: repeat(4, 1fr); } }
         .stil-card {
-            background: #fff; border: 2px solid #eee; border-radius: 16px; padding: 16px;
-            text-align: center; cursor: pointer; transition: all 0.25s;
+            position: relative; aspect-ratio: 1 / 1; overflow: hidden;
+            background: #eee center/cover no-repeat;
+            border: 3px solid #eee; border-radius: 16px;
+            cursor: pointer; transition: border-color 0.2s, transform 0.25s, box-shadow 0.25s;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.06);
         }
-        .stil-card:hover { border-color: var(--accent-coral); transform: translateY(-3px); }
-        .stil-card.active { border-color: var(--accent-coral); background: var(--accent-coral-light); }
-        .stil-emoji { font-size: 2.5rem; display: block; margin-bottom: 8px; }
-        .stil-name { font-family: var(--font-heading); font-size: 0.9rem; }
+        .stil-card:hover { border-color: var(--accent-coral); transform: translateY(-3px); box-shadow: 0 6px 16px rgba(0,0,0,0.12); }
+        .stil-card.active { border-color: var(--accent-coral); box-shadow: 0 0 0 3px rgba(214,113,113,0.35), 0 6px 16px rgba(0,0,0,0.12); }
+        .stil-card .stil-label {
+            position: absolute; left: 0; right: 0; bottom: 0;
+            padding: 8px 10px;
+            background: linear-gradient(to top, rgba(0,0,0,0.72) 0%, rgba(0,0,0,0.55) 60%, rgba(0,0,0,0) 100%);
+            color: #fff; font-family: var(--font-heading); font-weight: 600;
+            font-size: 0.95rem; text-align: center; line-height: 1.2;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+        }
+        .stil-card.active .stil-label { background: linear-gradient(to top, rgba(214,113,113,0.92) 0%, rgba(214,113,113,0.7) 60%, rgba(214,113,113,0) 100%); }
+        /* Placeholder-Look wenn Bild fehlt (Fallback via CSS) */
+        .stil-card[data-stil="Aquarell"]  { background-image: url('bilder/bildstil-vorschau/aquarell.webp'); }
+        .stil-card[data-stil="Cartoon"]   { background-image: url('bilder/bildstil-vorschau/cartoon.webp'); }
+        .stil-card[data-stil="Buntstift"] { background-image: url('bilder/bildstil-vorschau/buntstift.webp'); }
+        .stil-card[data-stil="Pixel-Art"] { background-image: url('bilder/bildstil-vorschau/pixel-art.webp'); }
+        .stil-card[data-stil="Anime"]     { background-image: url('bilder/bildstil-vorschau/anime.webp'); }
+        .stil-card[data-stil="Traumwelt"] { background-image: url('bilder/bildstil-vorschau/traumwelt.webp'); }
+        .stil-card[data-stil="Knete"]     { background-image: url('bilder/bildstil-vorschau/knete.webp'); }
+        .stil-card[data-stil="Voxel"]     { background-image: url('bilder/bildstil-vorschau/voxel.webp'); }
 
         /* --- NAV BUTTONS --- */
         .step-nav { display: flex; justify-content: space-between; align-items: center; margin-top: 28px; }
@@ -290,28 +309,28 @@
             <div class="section-sub">Wie sollen die Illustrationen aussehen?</div>
             <div class="stil-grid">
                 <div class="stil-card" data-stil="Aquarell" onclick="selectStil('Aquarell')">
-                    <span class="stil-emoji">🎨</span><div class="stil-name">Aquarell</div>
+                    <div class="stil-label">Aquarell</div>
                 </div>
                 <div class="stil-card" data-stil="Cartoon" onclick="selectStil('Cartoon')">
-                    <span class="stil-emoji">🖍️</span><div class="stil-name">Cartoon</div>
+                    <div class="stil-label">Cartoon</div>
                 </div>
                 <div class="stil-card" data-stil="Buntstift" onclick="selectStil('Buntstift')">
-                    <span class="stil-emoji">✏️</span><div class="stil-name">Buntstift</div>
+                    <div class="stil-label">Buntstift</div>
                 </div>
                 <div class="stil-card" data-stil="Pixel-Art" onclick="selectStil('Pixel-Art')">
-                    <span class="stil-emoji">👾</span><div class="stil-name">Pixel-Art</div>
+                    <div class="stil-label">Pixel-Art</div>
                 </div>
                 <div class="stil-card" data-stil="Anime" onclick="selectStil('Anime')">
-                    <span class="stil-emoji">🌸</span><div class="stil-name">Anime</div>
+                    <div class="stil-label">Anime</div>
                 </div>
                 <div class="stil-card" data-stil="Traumwelt" onclick="selectStil('Traumwelt')">
-                    <span class="stil-emoji">🌙</span><div class="stil-name">Traumwelt</div>
+                    <div class="stil-label">Traumwelt</div>
                 </div>
                 <div class="stil-card" data-stil="Knete" onclick="selectStil('Knete')">
-                    <span class="stil-emoji">🧸</span><div class="stil-name">Knete</div>
+                    <div class="stil-label">Knete</div>
                 </div>
                 <div class="stil-card" data-stil="Voxel" onclick="selectStil('Voxel')">
-                    <span class="stil-emoji">🧊</span><div class="stil-name">Voxel</div>
+                    <div class="stil-label">Voxel</div>
                 </div>
             </div>
         </div>
