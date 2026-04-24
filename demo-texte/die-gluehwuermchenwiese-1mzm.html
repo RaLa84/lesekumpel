@@ -275,6 +275,67 @@
         .quiz-option.correct { background: #fffbe6; border-color: #f1c40f; color: #b7950b; box-shadow: 0 0 10px rgba(241,196,15,0.3); pointer-events: none; }
         .quiz-option.try-again { opacity: 0.6; background-color: #f4f4f4; border-color: #ddd; color: #999; animation: gentleShake 0.4s ease-in-out; cursor: default; }
 
+        /* --- WEITERERZÄHLEN --- */
+        .weitererzaehlen-section { margin-bottom: 40px; }
+        .weitererzaehlen-intro {
+            text-align: center; color: #888; font-style: italic;
+            margin-top: -10px; margin-bottom: 22px; font-size: 1rem;
+        }
+        .weitererzaehlen-cards { display: flex; flex-direction: column; gap: 14px; }
+        .weitererzaehlen-card {
+            background: linear-gradient(135deg, #fef9e7 0%, #fff 100%);
+            border: 2px solid var(--primary-yellow); border-radius: 18px; padding: 18px 20px;
+            cursor: pointer; transition: all 0.25s ease; position: relative; overflow: hidden;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .weitererzaehlen-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(255,213,79,0.35);
+            border-color: var(--accent-coral);
+        }
+        .weitererzaehlen-card.open {
+            background: linear-gradient(135deg, #fff 0%, #fff9e5 100%);
+            border-color: var(--accent-coral);
+            box-shadow: 0 4px 16px rgba(214,113,113,0.18);
+        }
+        .weitererzaehlen-card-header {
+            display: flex; align-items: center; gap: 14px;
+        }
+        .weitererzaehlen-emoji { font-size: 2rem; flex-shrink: 0; line-height: 1; }
+        .weitererzaehlen-titel {
+            font-family: var(--font-heading); font-weight: 600; font-size: 1.1rem;
+            color: var(--text-dark); flex-grow: 1; line-height: 1.3;
+        }
+        .weitererzaehlen-chevron {
+            color: #bbb; transition: transform 0.25s ease; font-size: 0.9rem; flex-shrink: 0;
+        }
+        .weitererzaehlen-card.open .weitererzaehlen-chevron {
+            transform: rotate(180deg); color: var(--accent-coral);
+        }
+        .weitererzaehlen-text {
+            max-height: 0; overflow: hidden;
+            transition: max-height 0.35s ease, padding 0.35s ease, margin 0.35s ease;
+            color: #444; line-height: 1.7; font-size: 1.05rem;
+            padding: 0; margin: 0;
+        }
+        .weitererzaehlen-card.open .weitererzaehlen-text {
+            max-height: 600px; padding: 14px 0 4px 0; margin-top: 6px;
+            border-top: 1px dashed #f0e4b8;
+        }
+        .weitererzaehlen-text-body { padding-top: 10px; }
+        .weitererzaehlen-hinweis {
+            color: #aaa; font-style: italic; font-size: 0.9rem;
+            margin-top: 14px; padding-top: 10px; border-top: 1px dashed #eee;
+        }
+        .klassen-hinweis {
+            display: flex; align-items: flex-start; gap: 14px;
+            background: #f8f4ff; border: 2px dashed #d4c7f0; border-radius: 15px;
+            padding: 16px 18px; margin-top: 22px; font-size: 0.95rem; color: #5a4a7a;
+            line-height: 1.55;
+        }
+        .klassen-hinweis-icon { font-size: 1.6rem; flex-shrink: 0; line-height: 1.2; }
+        .klassen-hinweis strong { color: #3d2e5f; }
+
         .comments-box { border: 2px solid #eee; border-radius: 15px; padding: 20px; }
         .comment-input { width: 100%; border: 2px solid var(--primary-yellow); border-radius: 10px; padding: 15px; font-family: var(--font-body); font-size: 1rem; box-sizing: border-box; outline: none; }
         .btn-send { background-color: var(--accent-coral); color: white; border: none; padding: 10px 30px; border-radius: 10px; font-weight: bold; font-size: 1rem; float: right; margin-top: 10px; cursor: pointer; box-shadow: 0 4px 0 #b85c5c; }
@@ -501,6 +562,18 @@
             <div id="quiz-wrapper" class="quiz-card"></div>
         </div>
 
+        <div class="weitererzaehlen-section">
+            <div class="section-title">🌟 Wie geht es weiter?</div>
+            <p class="weitererzaehlen-intro">Hier gibt es kein richtig oder falsch — wähle, was dir am besten gefällt!</p>
+            <div id="weitererzaehlen-wrapper" class="weitererzaehlen-cards"></div>
+            <div class="klassen-hinweis">
+                <span class="klassen-hinweis-icon">👩‍🏫</span>
+                <div>
+                    <strong>Tipp für die Klasse:</strong> Stimmt per Handzeichen ab — welche Fortsetzung findet ihr am schönsten? Danach könnt ihr die gewählte Fortsetzung gemeinsam selbst weiterschreiben.
+                </div>
+            </div>
+        </div>
+
         <div class="survey-section">
             <div class="section-title">Hat dir die Geschichte gefallen?</div>
             <div class="vote-wrapper">
@@ -541,6 +614,26 @@
         let rawSummary = "In dieser Traumreise sitzt du in einer warmen Sommernacht auf einer stillen Waldlichtung unter dem Mond. Plötzlich beginnen unzählige Glühwürmchen um dich herum zu leuchten und zu tanzen, und verwandeln die Dunkelheit in ein magisches Lichtermeer. Es ist ein ganz ruhiger und friedlicher Moment, der nur dir gehört.";
         const quizData = [{"q":"Wann spielt die Geschichte?","a":["Am Morgen","Nachts","Am Mittag"],"correct":1},{"q":"Welches Tier kann man in der Stille zirpen hören?","a":["Ein Vogel","Eine Grille","Ein Frosch"],"correct":1},{"q":"Wie wird der Mond beschrieben?","a":["Rund und hell wie eine silberne Münze","Leuchtend wie eine goldene Lampe","Groß und rot wie ein Apfel"],"correct":0}];
         const rawDictionaryEntry = [{"wort":"Tau","silben":"Tau","bedeutung":"Feuchtigkeit, die sich nachts auf Gräsern und Blättern sammelt."},{"wort":"Zirpen","silben":"Zir-pen","bedeutung":"Das leise Geräusch, das Grillen machen."},{"wort":"Rauschen","silben":"Rau-schen","bedeutung":"Das Geräusch, das entsteht, wenn Blätter im Wind sich bewegen."},{"wort":"Glühwürmchen","silben":"Glüh-würm-chen","bedeutung":"Ein kleines Insekt, das nachts leuchtet."},{"wort":"pulsiert","silben":"pul-siert","bedeutung":"Leuchtet oder schlägt in einem gleichmäßigen Rhythmus."}];
+        const weitererzaehlenData = {
+            "frage": "Wie geht deine Traumreise weiter?",
+            "optionen": [
+                {
+                    "emoji": "🦋",
+                    "titel": "Du folgst einem Glühwürmchen",
+                    "text": "Das kleine Licht auf deinem Knie hebt sich ganz langsam in die Höhe. Es schwebt vor dir, als würde es dir zuwinken. Leise stehst du auf und folgst seinem sanften Schein tiefer in die Wiese hinein. Wohin will es dich bringen?"
+                },
+                {
+                    "emoji": "🌙",
+                    "titel": "Du legst dich zurück",
+                    "text": "Du lässt dich ganz sacht ins weiche Gras sinken. Über dir schaut der Mond auf dich herab und die Glühwürmchen tanzen wie winzige Sterne direkt vor deinen Augen. Du atmest tief ein, lauschst dem Zirpen und spürst, wie die Zeit stehenbleibt."
+                },
+                {
+                    "emoji": "✨",
+                    "titel": "Du flüsterst einen Wunsch",
+                    "text": "Du beugst dich vor zu dem Glühwürmchen auf deinem Knie. Ganz leise flüsterst du ihm einen geheimen Wunsch zu, den nur du kennst. Das Glühwürmchen leuchtet plötzlich einmal ganz stark auf — und etwas in der warmen Nachtluft scheint sich zu verändern."
+                }
+            ]
+        };
         /* ============================================================ */
 
         const storyRaw = rawStory.replace(/\n/g, "<br>");
@@ -717,6 +810,40 @@
             let defAttr = dictKey ? ` data-def="${dictionary[dictKey].replace(/"/g, '&quot;')}"` : '';
             let defClass = dictKey ? ' word-has-definition' : '';
             return `<span class="word-interactive${defClass}" style="${style}"${defAttr} onclick="clickWord(this, '${clean}')">${display}</span>`;
+        }
+
+        function renderWeitererzaehlen() {
+            const data = (typeof weitererzaehlenData !== 'undefined') ? weitererzaehlenData : null;
+            const section = document.querySelector('.weitererzaehlen-section');
+            if (!data || !Array.isArray(data.optionen) || data.optionen.length === 0) {
+                if (section) section.style.display = 'none';
+                return;
+            }
+            // Frage optional als Intro-Text setzen, falls vorhanden
+            const introEl = document.querySelector('.weitererzaehlen-intro');
+            if (data.frage && introEl) {
+                introEl.innerHTML = data.frage + ' <span style="display:block; font-size:0.85em; margin-top:4px; opacity:0.75;">Hier gibt es kein richtig oder falsch.</span>';
+            }
+            let html = '';
+            data.optionen.forEach((opt, i) => {
+                html += `<div class="weitererzaehlen-card" onclick="toggleWeitererzaehlen(${i})" id="wet-card-${i}">
+                            <div class="weitererzaehlen-card-header">
+                                <span class="weitererzaehlen-emoji">${opt.emoji || '✨'}</span>
+                                <span class="weitererzaehlen-titel">${opt.titel || ''}</span>
+                                <span class="weitererzaehlen-chevron">▼</span>
+                            </div>
+                            <div class="weitererzaehlen-text">
+                                <div class="weitererzaehlen-text-body">${opt.text || ''}</div>
+                                <div class="weitererzaehlen-hinweis">So könnte es sein — oder ganz anders. Was denkst du?</div>
+                            </div>
+                        </div>`;
+            });
+            document.getElementById('weitererzaehlen-wrapper').innerHTML = html;
+        }
+
+        function toggleWeitererzaehlen(index) {
+            const card = document.getElementById('wet-card-' + index);
+            if (card) card.classList.toggle('open');
         }
 
         function renderQuiz() {
@@ -956,7 +1083,7 @@
         }
 
         window.onload = function() {
-            renderText(); renderQuiz();
+            renderText(); renderQuiz(); renderWeitererzaehlen();
 
             // Leselinien: localStorage > Neurotyp-Default (LRS)
             let lsPref = null;
