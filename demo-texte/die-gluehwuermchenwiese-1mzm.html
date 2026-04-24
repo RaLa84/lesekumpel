@@ -387,6 +387,121 @@
             .activity-tab .tab-label { font-size: 0.95em; }
         }
 
+        /* --- WORT-SCHATZSUCHE --- */
+        .schatz-intro-card {
+            background: linear-gradient(135deg, #fff9e5 0%, #fffdf2 100%);
+            border: 2px solid var(--primary-yellow); border-radius: 18px;
+            padding: 28px 24px; text-align: center;
+        }
+        .schatz-intro-emoji { font-size: 2.6rem; line-height: 1; margin-bottom: 10px; display: block; }
+        .schatz-intro-title {
+            font-family: var(--font-heading); font-weight: 600;
+            color: var(--accent-coral); font-size: 1.35rem; margin: 0 0 6px 0;
+        }
+        .schatz-intro-thema {
+            font-family: var(--font-heading); font-weight: 500;
+            color: #8c6d2a; font-size: 1.05rem; margin: 0 0 16px 0; font-style: italic;
+        }
+        .schatz-intro-text {
+            color: #555; font-size: 1rem; line-height: 1.55; margin: 0 auto 20px auto;
+            max-width: 480px;
+        }
+        .schatz-progress {
+            font-family: var(--font-heading); font-size: 1.15rem; color: #8c6d2a;
+            margin-bottom: 18px;
+        }
+        .schatz-progress-number { font-size: 1.5rem; color: var(--accent-coral); font-weight: 700; }
+        .schatz-start-btn {
+            background: var(--accent-coral); color: #fff; border: none;
+            padding: 14px 30px; border-radius: 28px; cursor: pointer;
+            font-family: var(--font-heading); font-size: 1.05rem; font-weight: 600;
+            box-shadow: 0 4px 14px rgba(214,113,113,0.35);
+            transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+            display: inline-flex; align-items: center; gap: 10px;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .schatz-start-btn:hover { background: #B85555; transform: translateY(-2px); box-shadow: 0 6px 18px rgba(214,113,113,0.45); }
+        .schatz-start-btn:active { transform: translateY(0); }
+
+        .schatz-complete { text-align: center; padding: 20px 10px; }
+        .schatz-complete-emoji { font-size: 3rem; line-height: 1; display: block; margin-bottom: 10px; }
+        .schatz-complete-title {
+            font-family: var(--font-heading); color: var(--accent-coral);
+            font-size: 1.5rem; margin: 0 0 8px 0;
+        }
+        .schatz-complete-text { color: #666; margin-bottom: 20px; }
+        .schatz-found-list {
+            display: flex; flex-wrap: wrap; justify-content: center; gap: 8px;
+            margin: 0 0 20px 0; padding: 0;
+        }
+        .schatz-found-chip {
+            background: #fff3b8; border: 2px solid #f1c40f; border-radius: 14px;
+            padding: 6px 14px; font-family: var(--font-heading); font-weight: 600;
+            color: #8c6d2a; font-size: 0.95rem;
+        }
+
+        /* Treffer: Wort wird goldig glühend markiert */
+        @keyframes schatzPulse {
+            0% { transform: scale(1); }
+            40% { transform: scale(1.25); }
+            100% { transform: scale(1.08); }
+        }
+        .word-schatz-treffer {
+            background: linear-gradient(135deg, #fff3b8 0%, #ffe066 100%) !important;
+            color: #7a5a00 !important; border-radius: 6px !important;
+            box-shadow: 0 0 14px rgba(255,213,79,0.8), inset 0 0 6px rgba(255,255,255,0.5) !important;
+            padding: 1px 4px; font-weight: bold;
+            animation: schatzPulse 0.45s ease-out;
+        }
+        .word-schatz-miss { animation: gentleShake 0.4s ease-in-out; }
+
+        /* Sticky-Banner */
+        .schatz-banner {
+            position: fixed; top: 72px; left: 12px; right: 12px;
+            z-index: 3000;
+            display: flex; align-items: center; gap: 12px;
+            background: linear-gradient(135deg, var(--accent-coral) 0%, #e88b8b 100%);
+            color: #fff; padding: 12px 16px; border-radius: 16px;
+            box-shadow: 0 6px 22px rgba(214,113,113,0.4);
+            font-family: var(--font-heading);
+            animation: schatzBannerIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        @keyframes schatzBannerIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .schatz-banner[hidden] { display: none; }
+        .schatz-banner-icon { font-size: 1.4rem; line-height: 1; flex-shrink: 0; }
+        .schatz-banner-text {
+            flex-grow: 1; display: flex; align-items: baseline; gap: 10px;
+            font-weight: 600; font-size: 0.98rem; flex-wrap: wrap;
+        }
+        .schatz-banner-count {
+            background: rgba(255,255,255,0.25); padding: 2px 10px;
+            border-radius: 10px; font-size: 0.95rem; font-weight: 700;
+        }
+        .schatz-banner-close {
+            background: rgba(255,255,255,0.2); border: none; color: #fff;
+            width: 32px; height: 32px; border-radius: 50%; cursor: pointer;
+            font-size: 0.9rem; font-weight: 700; flex-shrink: 0;
+            display: inline-flex; align-items: center; justify-content: center;
+            transition: all 0.2s ease; -webkit-tap-highlight-color: transparent;
+        }
+        .schatz-banner-close:hover { background: rgba(255,255,255,0.35); transform: scale(1.08); }
+        .schatz-banner.celebrate {
+            background: linear-gradient(135deg, #f1c40f 0%, #ffd54f 100%);
+            color: #5a4500;
+        }
+        .schatz-banner.celebrate .schatz-banner-count { background: rgba(255,255,255,0.4); color: #5a4500; }
+        .schatz-banner.celebrate .schatz-banner-close { background: rgba(255,255,255,0.35); color: #5a4500; }
+
+        @media (max-width: 767px) {
+            .schatz-banner { top: 68px; left: 8px; right: 8px; padding: 10px 12px; gap: 8px; }
+            .schatz-banner-text { font-size: 0.9rem; gap: 8px; }
+            .schatz-intro-card { padding: 22px 16px; }
+            .schatz-intro-title { font-size: 1.2rem; }
+        }
+
         .comments-box { border: 2px solid #eee; border-radius: 15px; padding: 20px; }
         .comment-input { width: 100%; border: 2px solid var(--primary-yellow); border-radius: 10px; padding: 15px; font-family: var(--font-body); font-size: 1rem; box-sizing: border-box; outline: none; }
         .btn-send { background-color: var(--accent-coral); color: white; border: none; padding: 10px 30px; border-radius: 10px; font-weight: bold; font-size: 1rem; float: right; margin-top: 10px; cursor: pointer; box-shadow: 0 4px 0 #b85c5c; }
@@ -533,6 +648,15 @@
         </div>
     </nav>
 
+    <div id="schatz-banner" class="schatz-banner" hidden>
+        <span class="schatz-banner-icon">🔍</span>
+        <span class="schatz-banner-text">
+            <span id="schatz-banner-thema">Finde leuchtende Dinge</span>
+            <span class="schatz-banner-count" id="schatz-banner-count">0/3</span>
+        </span>
+        <button type="button" class="schatz-banner-close" onclick="endSchatzsuche()" aria-label="Schatzsuche beenden">✕</button>
+    </div>
+
     <div class="main-card">
         <div class="story-hero-cover">
             <img class="hero-bg" src="https://rala84.github.io/lesekumpel/bilder/die-gluehwuermchenwiese-1mzm-1.png" alt="" aria-hidden="true" onerror="this.style.display='none'">
@@ -624,6 +748,11 @@
                         onclick="switchActivityTab('weiterdenken')">
                     <span class="tab-icon">🌟</span><span class="tab-label">Weiterdenken</span>
                 </button>
+                <button class="activity-tab" role="tab" aria-selected="false"
+                        aria-controls="panel-schatz" id="tab-schatz" data-tab="schatz"
+                        onclick="switchActivityTab('schatz')">
+                    <span class="tab-icon">🔍</span><span class="tab-label">Schatz</span>
+                </button>
             </div>
             <div id="panel-quiz" class="activity-panel active" role="tabpanel" aria-labelledby="tab-quiz">
                 <div id="quiz-wrapper" class="quiz-card"></div>
@@ -638,6 +767,7 @@
                     </div>
                 </div>
             </div>
+            <div id="panel-schatz" class="activity-panel" role="tabpanel" aria-labelledby="tab-schatz"></div>
         </div>
 
         <div class="survey-section">
@@ -680,6 +810,13 @@
         let rawSummary = "In dieser Traumreise sitzt du in einer warmen Sommernacht auf einer stillen Waldlichtung unter dem Mond. Plötzlich beginnen unzählige Glühwürmchen um dich herum zu leuchten und zu tanzen, und verwandeln die Dunkelheit in ein magisches Lichtermeer. Es ist ein ganz ruhiger und friedlicher Moment, der nur dir gehört.";
         const quizData = [{"q":"Wann spielt die Geschichte?","a":["Am Morgen","Nachts","Am Mittag"],"correct":1},{"q":"Welches Tier kann man in der Stille zirpen hören?","a":["Ein Vogel","Eine Grille","Ein Frosch"],"correct":1},{"q":"Wie wird der Mond beschrieben?","a":["Rund und hell wie eine silberne Münze","Leuchtend wie eine goldene Lampe","Groß und rot wie ein Apfel"],"correct":0}];
         const rawDictionaryEntry = [{"wort":"Tau","silben":"Tau","bedeutung":"Feuchtigkeit, die sich nachts auf Gräsern und Blättern sammelt."},{"wort":"Zirpen","silben":"Zir-pen","bedeutung":"Das leise Geräusch, das Grillen machen."},{"wort":"Rauschen","silben":"Rau-schen","bedeutung":"Das Geräusch, das entsteht, wenn Blätter im Wind sich bewegen."},{"wort":"Glühwürmchen","silben":"Glüh-würm-chen","bedeutung":"Ein kleines Insekt, das nachts leuchtet."},{"wort":"pulsiert","silben":"pul-siert","bedeutung":"Leuchtet oder schlägt in einem gleichmäßigen Rhythmus."}];
+        const schatzsucheData = {
+            "thema": "Dinge, die leuchten",
+            "emoji": "✨",
+            "ziel": 3,
+            "einleitung": "Überall in der Geschichte versteckt sich ein leuchtender Schatz. Finde drei Dinge, die leuchten, funkeln oder hell sind — einfach antippen!",
+            "schatzwoerter": ["licht", "funke", "mond", "leuchtet", "leuchtende", "hell", "silberne", "pulsiert", "goldener", "golden", "sterne", "glühwürmchen", "aufblitzt"]
+        };
         const weitererzaehlenData = {
             "frage": "Wie geht deine Traumreise weiter?",
             "optionen": [
@@ -914,6 +1051,138 @@
             if (card) card.classList.toggle('open');
         }
 
+        // --- WORT-SCHATZSUCHE ---
+        let schatzState = { active: false, found: [] };
+
+        function renderSchatzsuche() {
+            const data = (typeof schatzsucheData !== 'undefined') ? schatzsucheData : null;
+            const panel = document.getElementById('panel-schatz');
+            const tab = document.querySelector('[data-tab="schatz"]');
+            if (!data || !Array.isArray(data.schatzwoerter) || data.schatzwoerter.length === 0 || !data.ziel) {
+                if (tab) tab.style.display = 'none';
+                if (panel) panel.style.display = 'none';
+                return;
+            }
+            if (schatzState.found.length >= data.ziel) {
+                renderSchatzComplete(panel, data);
+            } else {
+                renderSchatzIntro(panel, data);
+            }
+        }
+
+        function renderSchatzIntro(panel, data) {
+            const found = schatzState.found.length;
+            const buttonLabel = found > 0 ? 'Weitersuchen' : 'Los geht’s!';
+            panel.innerHTML = `
+                <div class="schatz-intro-card">
+                    <span class="schatz-intro-emoji">${data.emoji || '🔍'}</span>
+                    <h3 class="schatz-intro-title">Schatz-Suche</h3>
+                    <p class="schatz-intro-thema">„${data.thema}“</p>
+                    <p class="schatz-intro-text">${data.einleitung || 'Finde versteckte Wörter im Text. Tippe sie einfach an!'}</p>
+                    <div class="schatz-progress">Gefunden: <span class="schatz-progress-number">${found}</span> / ${data.ziel}</div>
+                    <button type="button" class="schatz-start-btn" onclick="startSchatzsuche()">
+                        <span>🔍</span><span>${buttonLabel}</span>
+                    </button>
+                </div>`;
+        }
+
+        function renderSchatzComplete(panel, data) {
+            const chips = schatzState.found.map(w => {
+                const pretty = w.charAt(0).toUpperCase() + w.slice(1);
+                return `<li class="schatz-found-chip">${pretty}</li>`;
+            }).join('');
+            panel.innerHTML = `
+                <div class="schatz-complete">
+                    <span class="schatz-complete-emoji">🏆</span>
+                    <h3 class="schatz-complete-title">Schatz gefunden!</h3>
+                    <p class="schatz-complete-text">Du hast ${data.ziel} ${data.thema.toLowerCase()} entdeckt:</p>
+                    <ul class="schatz-found-list">${chips}</ul>
+                    <button type="button" class="schatz-start-btn" onclick="resetSchatzsuche()">
+                        <span>🔄</span><span>Nochmal spielen</span>
+                    </button>
+                </div>`;
+        }
+
+        function startSchatzsuche() {
+            if (typeof schatzsucheData === 'undefined') return;
+            schatzState.active = true;
+            showSchatzBanner();
+            updateSchatzBanner();
+            // Zum Textanfang scrollen (je nach Modus)
+            const chunkVisible = !document.getElementById('chunk-view').classList.contains('hidden');
+            const target = chunkVisible ? document.getElementById('chunk-view') : document.getElementById('full-text-view');
+            if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        function endSchatzsuche() {
+            schatzState.active = false;
+            hideSchatzBanner();
+            renderSchatzsuche();
+        }
+
+        function resetSchatzsuche() {
+            schatzState.found = [];
+            // Alle alten Treffer-Markierungen entfernen
+            document.querySelectorAll('.word-schatz-treffer').forEach(el => el.classList.remove('word-schatz-treffer'));
+            startSchatzsuche();
+            renderSchatzsuche();
+        }
+
+        function checkSchatzwort(el, word) {
+            if (typeof schatzsucheData === 'undefined') return;
+            const lw = (word || '').toLowerCase();
+            const isSchatz = schatzsucheData.schatzwoerter.includes(lw);
+            if (isSchatz && !schatzState.found.includes(lw)) {
+                schatzState.found.push(lw);
+                // Auch andere Vorkommen desselben Worts markieren
+                document.querySelectorAll('.word-interactive').forEach(w => {
+                    const txt = (w.innerText || '').toLowerCase().replace(/[.,!?:;„"()-]/g, '');
+                    if (txt === lw) w.classList.add('word-schatz-treffer');
+                });
+                try { playTickSound(); } catch(e) {}
+                updateSchatzBanner();
+                if (schatzState.found.length >= schatzsucheData.ziel) {
+                    showSchatzsucheComplete();
+                }
+            } else if (!isSchatz) {
+                el.classList.add('word-schatz-miss');
+                setTimeout(() => el.classList.remove('word-schatz-miss'), 500);
+            }
+        }
+
+        function showSchatzBanner() {
+            const banner = document.getElementById('schatz-banner');
+            const thema = document.getElementById('schatz-banner-thema');
+            if (banner) banner.hidden = false;
+            if (thema && schatzsucheData.thema) thema.textContent = 'Finde ' + schatzsucheData.thema.toLowerCase();
+        }
+
+        function hideSchatzBanner() {
+            const banner = document.getElementById('schatz-banner');
+            if (banner) {
+                banner.hidden = true;
+                banner.classList.remove('celebrate');
+            }
+        }
+
+        function updateSchatzBanner() {
+            const count = document.getElementById('schatz-banner-count');
+            if (count && typeof schatzsucheData !== 'undefined') {
+                count.textContent = schatzState.found.length + '/' + schatzsucheData.ziel;
+            }
+        }
+
+        function showSchatzsucheComplete() {
+            schatzState.active = false;
+            try { showConfetti(); } catch(e) {}
+            const banner = document.getElementById('schatz-banner');
+            const thema = document.getElementById('schatz-banner-thema');
+            if (banner) banner.classList.add('celebrate');
+            if (thema) thema.textContent = 'Schatz gefunden! ✨';
+            updateSchatzBanner();
+            setTimeout(() => { hideSchatzBanner(); renderSchatzsuche(); }, 3500);
+        }
+
         function switchActivityTab(tabName) {
             const tabs = document.querySelectorAll('.activity-tab');
             const panels = document.querySelectorAll('.activity-panel');
@@ -1049,6 +1318,8 @@
         function clearHighlights() { document.querySelectorAll('.highlight-active').forEach(el => el.classList.remove('highlight-active')); }
         function toggleWordReader() { state.wordReader = !state.wordReader; document.getElementById('btn-word-reader').className = state.wordReader ? "tool-btn active" : "tool-btn"; }
         function clickWord(el, word) {
+            // Schatzsuche-Modus hat Vorrang: blockiert Dictionary/TTS während aktiv
+            if (schatzState.active) { checkSchatzwort(el, word); return; }
             // Vokabel-Tooltip (visuell markiert nur bei nt-daz, aber für alle klickbar)
             let def = el.getAttribute('data-def');
             if (def) { showVocabTooltip(el, def); return; }
@@ -1200,7 +1471,7 @@
         }
 
         window.onload = function() {
-            renderText(); renderQuiz(); renderWeitererzaehlen(); initActivityTabs();
+            renderText(); renderQuiz(); renderWeitererzaehlen(); renderSchatzsuche(); initActivityTabs();
 
             // Leselinien: localStorage > Neurotyp-Default (LRS)
             let lsPref = null;
