@@ -141,13 +141,15 @@
         }
         .toolbar-header {
             display: flex; justify-content: space-between; align-items: center;
-            padding: 14px 20px; cursor: pointer; -webkit-user-select: none; user-select: none; gap: 12px;
+            padding: 16px 22px; cursor: pointer; -webkit-user-select: none; user-select: none; gap: 14px;
         }
         .toolbar-header-label {
-            font-family: var(--font-heading); font-size: 1rem; color: var(--accent-coral);
-            display: flex; align-items: center; gap: 8px; font-weight: 600;
+            font-family: var(--font-heading); font-size: 1.1rem; color: var(--accent-coral);
+            display: flex; align-items: center; gap: 10px; font-weight: 600;
         }
-        .toolbar-header-label .header-icon { font-size: 1.5em; display: inline-block; line-height: 1; }
+        .toolbar-header-label .header-icon { font-size: 1.9em; display: inline-block; line-height: 1; }
+        .toolbar-header-label .header-text { display: none; }
+        .toolbar-container.collapsed .toolbar-header-label .header-text { display: inline; white-space: nowrap; }
         @keyframes tool-wiggle {
             0%, 100% { transform: rotate(0deg); }
             25% { transform: rotate(-12deg); }
@@ -155,11 +157,14 @@
         }
         .toolbar-container.collapsed .header-icon { animation: tool-wiggle 0.6s ease-in-out 2; }
         .toolbar-toggle-icon {
-            font-size: 0.7rem; color: #bbb; transition: transform 0.25s ease;
+            font-size: 1.3rem; color: var(--accent-coral); font-weight: 300;
+            transition: background 0.2s;
             display: inline-flex; align-items: center; justify-content: center;
-            width: 28px; height: 28px; border-radius: 50%; background: rgba(0,0,0,0.04);
+            width: 34px; height: 34px; border-radius: 50%;
+            background: rgba(214,113,113,0.10); line-height: 1;
         }
-        .toolbar-container.collapsed .toolbar-toggle-icon { transform: rotate(-90deg); }
+        .toolbar-toggle-icon::before { content: "\00d7"; }
+        .toolbar-container.collapsed .toolbar-toggle-icon::before { content: "+"; }
         .toolbar-body { padding: 0 14px 16px; display: flex; flex-direction: column; gap: 8px; }
         .toolbar-container.collapsed .toolbar-body { display: none; }
         .toolbar-container:not(.collapsed) {
@@ -215,6 +220,9 @@
             .brand-name { display: none; }
             .hidden-mobile { display: none !important; }
             .toolbar-container.collapsed { bottom: 16px; right: 16px; }
+            .toolbar-container.collapsed .toolbar-header { padding: 14px 18px; gap: 10px; }
+            .toolbar-container.collapsed .header-icon { font-size: 1.7em; }
+            .toolbar-container.collapsed .toolbar-header-label { font-size: 1rem; }
             .toolbar-container:not(.collapsed) { bottom: 0; right: 0; max-width: 100%; border-radius: 20px 20px 0 0; border-bottom: none; }
             body { padding-bottom: 80px; }
             h1#main-title { font-size: 1.6rem; letter-spacing: 0.5px; }
@@ -500,9 +508,12 @@
         <img src="https://rala84.github.io/lesekumpel/bilder/die-gluehwuermchenwiese-1mzm-3.png" alt="Die Gluehwuermchenwiese" class="hero-image" onerror="this.style.display='none'">
 
         <div class="toolbar-container collapsed" id="toolbar">
-            <div class="toolbar-header" onclick="toggleToolbarCollapse()" id="toolbar-close-btn">
-                <span class="toolbar-header-label"><span class="header-icon">🛠️</span></span>
-                <span class="toolbar-toggle-icon" id="toolbar-chevron">▼</span>
+            <div class="toolbar-header" onclick="toggleToolbarCollapse()" id="toolbar-close-btn" role="button" tabindex="0" aria-label="Zauberkasten öffnen oder schließen">
+                <span class="toolbar-header-label">
+                    <span class="header-icon" aria-hidden="true">🪄</span>
+                    <span class="header-text">Zauberkasten</span>
+                </span>
+                <span class="toolbar-toggle-icon" id="toolbar-chevron" aria-hidden="true"></span>
             </div>
             <div class="toolbar-body" id="toolbar-body">
                 <div class="toolbar-group group-text">
