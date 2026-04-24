@@ -135,7 +135,7 @@ Requirements (MANDATORY):
 - Every character MUST have ageYears (number) and heightCategory ("child"|"teen"|"adult").
 - Every character MUST have hair color+style, clothing colors, at least one distinguishing feature.
 - Every prop MUST have count (integer) and heldIn ("left hand"|"right hand"|"both hands"|"none").
-- sceneRules MUST contain 2-4 concrete physical constraints derived from the story. If a child interacts with a structure (bed, table, car, stage), the rule MUST state the exact spatial relation. If there are paired props (shield+lance, cup+saucer), the rule MUST fix counts and hand assignment. If only children appear in the story, the rule MUST state "All humans are children aged <=12".
+- sceneRules MUST contain 2-4 concrete physical constraint sentences derived from the story. If a character interacts with a structure (bed, table, car, stage), the rule MUST state the exact spatial relation. If there are paired props (shield+lance, cup+saucer), the rule MUST fix counts and hand assignment. If only children appear in the story, include a rule: "Only the named children from the story appear; no extra characters."
 - If the story doesn't mention a detail (like hair color), invent one and keep it consistent.
 
 Story:
@@ -155,9 +155,9 @@ NEW_AGENT_ELEMENTS_SYS = (
     "PFLICHT:\n"
     "- Jede Figur hat eine explizite Alterszahl (ageYears) und Größenkategorie (heightCategory).\n"
     "- Jedes Prop hat count (Anzahl) und heldIn (Hand-Slot).\n"
-    "- sceneRules enthält 2-4 harte physische Constraints in je einem vollständigen englischen Satz: explizite Räumlichkeit (ON/NEXT-TO/BEHIND/IN-FRONT-OF), explizite Objektanzahl, explizite Altersaussage.\n"
+    "- sceneRules enthält 2-4 kurze englische Constraint-Sätze: explizite Räumlichkeit (ON/NEXT-TO/BEHIND/IN-FRONT-OF), explizite Objektanzahl, explizite Altersangabe.\n"
     "- Wenn eine Figur mit einer Struktur interagiert (Beet, Tisch, Bühne, Auto), MUSS die räumliche Relation in sceneRules stehen.\n"
-    "- Wenn die Geschichte nur Kinder zeigt, MUSS sceneRules den Satz \"All humans are children aged <=12, no adults in any scene\" enthalten.\n"
+    "- Wenn nur Kinder in der Geschichte sind, nimm einen Satz auf: \"Only children from the story appear; no extra characters.\"\n"
     "- Bei paarigen Werkzeugen (Schild/Lanze, Tasse/Teller) MUSS count und heldIn stimmen.\n\n"
     "Antworte NUR mit dem JSON-Objekt — kein Markdown, keine Erklärungen."
 )
@@ -254,12 +254,12 @@ TASK: Output a JSON array with exactly ${imageCount} objects. Each object has th
   "physicalCheck": "<one English sentence asserting this scene satisfies every PHYSICAL RULE listed above>"
 }
 
-MANDATORY CHECKS (failing any means re-fill):
-1. Spatial relation is explicit (ON / NEXT-TO / BEHIND / IN-FRONT-OF) — never vague.
+CHECKS for every scene:
+1. Spatial relation is explicit (ON / NEXT-TO / BEHIND / IN-FRONT-OF).
 2. Every named prop has a hand slot (left / right / both / none).
-3. Every human in the scene has an explicit age matching the story.
-4. Adult characters MUST NOT appear unless the story names an adult. If only children in story, all ages <=12.
-5. Each scene varies camera angle and setting compared to other scenes, but character appearance stays IDENTICAL.
+3. Every person has an explicit age that matches the story.
+4. Only include people named in the story; do not invent extras.
+5. Camera angle and setting vary between scenes; character appearance stays identical.
 
 Output ONLY the JSON array, no markdown, no explanation.`;
 
@@ -273,15 +273,15 @@ nodes_by_id["prep-scenes"]["parameters"]["jsCode"] = NEW_PREP_SCENES_CODE
 # ═══════════════════════════════════════════════════════════════
 
 NEW_AGENT_SZENEN_SYS = (
-    "You are a prompt compiler, not a creative writer. Your job is to fill slot templates for a children's book illustrator.\n\n"
-    "HARD RULES — every scene MUST pass all 4 checks or regenerate that scene:\n"
-    "1. Spatial relation is explicit (ON / NEXT-TO / BEHIND / IN-FRONT-OF / HELD-BY) — never vague prepositions like 'at' or 'by'.\n"
+    "You are a prompt compiler for a children's book illustrator. Your job is to fill slot templates.\n\n"
+    "RULES — every scene MUST satisfy all 4 checks:\n"
+    "1. Spatial relation is explicit (ON / NEXT-TO / BEHIND / IN-FRONT-OF / HELD-BY).\n"
     "2. Every named prop has a hand slot (left / right / both / none).\n"
-    "3. Every human has an explicit age matching the story. If the story only features children, all ages <=12.\n"
-    "4. Adult characters MUST NOT appear unless the story explicitly names an adult. Never insert adult bystanders, dance partners, or guardians if not in the story.\n\n"
-    "VARIATION RULE: change camera angle and setting between scenes. NEVER change character appearance (hair, clothing, skin, age, build).\n\n"
-    "STYLE RULE: The art style prefix must be IDENTICAL verbatim across all scenes of the same story.\n\n"
-    "Output ONLY the JSON array — no markdown, no explanations."
+    "3. Every person has an explicit age that matches the story.\n"
+    "4. Only include people named in the story. Do not invent extra characters.\n\n"
+    "VARIATION RULE: change camera angle and setting between scenes. Keep character appearance identical (hair, clothing, skin, age, build).\n\n"
+    "STYLE RULE: The art style prefix is identical verbatim across all scenes of the same story.\n\n"
+    "Output ONLY the JSON array, no markdown, no explanations."
 )
 
 nodes_by_id["agent-szenen"]["parameters"]["messages"]["messageValues"][0]["message"] = NEW_AGENT_SZENEN_SYS
