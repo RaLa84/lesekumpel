@@ -282,6 +282,16 @@
         }
         .quiz-option.correct { background: #fffbe6; border-color: #f1c40f; color: #b7950b; box-shadow: 0 0 10px rgba(241,196,15,0.3); pointer-events: none; }
         .quiz-option.try-again { opacity: 0.6; background-color: #f4f4f4; border-color: #ddd; color: #999; animation: gentleShake 0.4s ease-in-out; cursor: default; }
+        .quiz-reveal-btn {
+            display: block; margin: 12px auto 0 auto;
+            background: transparent; border: 1.5px dashed #ddd;
+            padding: 8px 18px; border-radius: 20px; cursor: pointer;
+            font-family: var(--font-body); font-size: 0.9rem;
+            color: #999; transition: all 0.2s ease;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .quiz-reveal-btn:hover { color: var(--accent-coral); border-color: var(--accent-coral); background: rgba(214,113,113,0.04); }
+        .quiz-reveal-btn:active { transform: scale(0.98); }
 
         /* --- WEITERERZÄHLEN --- */
         .weitererzaehlen-section { margin-bottom: 40px; }
@@ -1230,12 +1240,13 @@
         function renderQuiz() {
             let qHTML = "";
             quizData.forEach((item, i) => {
-                qHTML += `<div style="margin-bottom:30px; border-bottom:1px dashed #eee; padding-bottom:20px;">
+                qHTML += `<div class="quiz-question" data-correct="${item.correct}" style="margin-bottom:30px; border-bottom:1px dashed #eee; padding-bottom:20px;">
                             <div style="font-weight:bold; margin-bottom:15px; color:var(--accent-teal);">${i+1}. ${item.q}</div>`;
                 item.a.forEach((ans, j) => {
                     const isCorrect = (j === item.correct);
                     qHTML += `<div class="quiz-option" onclick="checkQuizAnswer(this, ${isCorrect})"><span>${ans}</span></div>`;
                 });
+                qHTML += `<button type="button" class="quiz-reveal-btn" onclick="revealQuizAnswer(this)">💡 Auflösen</button>`;
                 qHTML += `</div>`;
             });
             const quizWrapper = document.getElementById('quiz-wrapper');
@@ -1468,6 +1479,25 @@
             if(element.classList.contains('correct') || element.classList.contains('try-again')) return;
             if (isCorrect) { element.classList.add('correct'); element.innerHTML += " 🌟"; }
             else { element.classList.add('try-again'); }
+        }
+
+        function revealQuizAnswer(btn) {
+            const q = btn.closest('.quiz-question');
+            if (!q) return;
+            const correctIdx = parseInt(q.dataset.correct, 10);
+            const options = q.querySelectorAll('.quiz-option');
+            options.forEach((opt, j) => {
+                if (j === correctIdx) {
+                    if (!opt.classList.contains('correct')) {
+                        opt.classList.remove('try-again');
+                        opt.classList.add('correct');
+                        opt.innerHTML += ' 💡';
+                    }
+                } else if (!opt.classList.contains('try-again')) {
+                    opt.classList.add('try-again');
+                }
+            });
+            btn.remove();
         }
 
         window.onload = function() {
