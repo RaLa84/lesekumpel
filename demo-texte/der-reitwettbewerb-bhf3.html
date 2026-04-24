@@ -382,6 +382,235 @@
             position: absolute; width: 10px; height: 10px; top: -10px;
             animation: confettiFall 3s ease-in forwards;
         }
+    
+        /* --- ACTIVITY-HUB: Quiz + Weiterdenken + Schatzsuche --- */
+        .quiz-reveal-btn {
+            display: block; margin: 12px auto 0 auto;
+            background: transparent; border: 1.5px dashed #ddd;
+            padding: 8px 18px; border-radius: 20px; cursor: pointer;
+            font-family: var(--font-body); font-size: 0.9rem;
+            color: #999; transition: all 0.2s ease;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .quiz-reveal-btn:hover { color: var(--accent-coral); border-color: var(--accent-coral); background: rgba(214,113,113,0.04); }
+        .quiz-reveal-btn:active { transform: scale(0.98); }
+
+        /* --- WEITERERZÄHLEN --- */
+        .weitererzaehlen-intro {
+            text-align: center; color: #888; font-style: italic;
+            margin-top: -10px; margin-bottom: 22px; font-size: 1rem;
+        }
+        .weitererzaehlen-cards { display: flex; flex-direction: column; gap: 14px; }
+        .weitererzaehlen-card {
+            background: linear-gradient(135deg, #fef9e7 0%, #fff 100%);
+            border: 2px solid var(--primary-yellow); border-radius: 18px; padding: 18px 20px;
+            cursor: pointer; transition: all 0.25s ease; position: relative; overflow: hidden;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .weitererzaehlen-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(255,213,79,0.35);
+            border-color: var(--accent-coral);
+        }
+        .weitererzaehlen-card.open {
+            background: linear-gradient(135deg, #fff 0%, #fff9e5 100%);
+            border-color: var(--accent-coral);
+            box-shadow: 0 4px 16px rgba(214,113,113,0.18);
+        }
+        .weitererzaehlen-card-header { display: flex; align-items: center; gap: 14px; }
+        .weitererzaehlen-emoji { font-size: 2rem; flex-shrink: 0; line-height: 1; }
+        .weitererzaehlen-titel {
+            font-family: var(--font-heading); font-weight: 600; font-size: 1.1rem;
+            color: var(--text-dark); flex-grow: 1; line-height: 1.3;
+        }
+        .weitererzaehlen-chevron {
+            color: #bbb; transition: transform 0.25s ease; font-size: 0.9rem; flex-shrink: 0;
+        }
+        .weitererzaehlen-card.open .weitererzaehlen-chevron {
+            transform: rotate(180deg); color: var(--accent-coral);
+        }
+        .weitererzaehlen-text {
+            max-height: 0; overflow: hidden;
+            transition: max-height 0.35s ease, padding 0.35s ease, margin 0.35s ease;
+            color: #444; line-height: 1.7; font-size: 1.05rem;
+            padding: 0; margin: 0;
+        }
+        .weitererzaehlen-card.open .weitererzaehlen-text {
+            max-height: 600px; padding: 14px 0 4px 0; margin-top: 6px;
+            border-top: 1px dashed #f0e4b8;
+        }
+        .weitererzaehlen-text-body { padding-top: 10px; }
+        .weitererzaehlen-hinweis {
+            color: #aaa; font-style: italic; font-size: 0.9rem;
+            margin-top: 14px; padding-top: 10px; border-top: 1px dashed #eee;
+        }
+        .klassen-hinweis {
+            display: flex; align-items: flex-start; gap: 14px;
+            background: #f8f4ff; border: 2px dashed #d4c7f0; border-radius: 15px;
+            padding: 16px 18px; margin-top: 22px; font-size: 0.95rem; color: #5a4a7a;
+            line-height: 1.55;
+        }
+        .klassen-hinweis-icon { font-size: 1.6rem; flex-shrink: 0; line-height: 1.2; }
+        .klassen-hinweis strong { color: #3d2e5f; }
+
+        /* --- ACTIVITY HUB (Tab-Navigation) --- */
+        .activity-hub {
+            margin-bottom: 40px;
+            border: 2px solid #eee; border-radius: 18px;
+            padding: 24px 22px 20px; background: #fff;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+        }
+        .activity-hub .section-title { margin-top: 0; margin-bottom: 18px; }
+        .activity-tabs {
+            display: flex; gap: 6px; padding: 6px;
+            background: #fef5f0; border-radius: 16px;
+            margin-bottom: 18px;
+        }
+        .activity-tab {
+            flex: 1; min-height: 48px; padding: 12px 14px;
+            display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+            background: transparent; border: none; border-radius: 12px;
+            font-family: var(--font-heading); font-weight: 600; font-size: 1rem;
+            color: var(--accent-coral); cursor: pointer;
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
+            -webkit-tap-highlight-color: transparent;
+        }
+        .activity-tab:hover:not(.active) { background: rgba(214,113,113,0.08); }
+        .activity-tab.active {
+            background: var(--accent-coral); color: #fff;
+            box-shadow: 0 3px 10px rgba(214,113,113,0.28);
+        }
+        .activity-tab .tab-icon { font-size: 1.25em; line-height: 1; }
+        .activity-tab .tab-label { letter-spacing: 0.01em; }
+
+        .activity-panel { display: none; }
+        .activity-panel.active { display: block; animation: activityFadeIn 0.18s ease-out; }
+        @keyframes activityFadeIn {
+            from { opacity: 0; transform: translateY(4px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (max-width: 767px) {
+            .activity-hub { padding: 18px 16px 16px; }
+            .activity-tab { padding: 10px 8px; font-size: 0.95rem; gap: 6px; }
+            .activity-tab .tab-label { font-size: 0.95em; }
+        }
+
+        /* --- WORT-SCHATZSUCHE --- */
+        .schatz-intro-card {
+            background: linear-gradient(135deg, #fff9e5 0%, #fffdf2 100%);
+            border: 2px solid var(--primary-yellow); border-radius: 18px;
+            padding: 28px 24px; text-align: center;
+        }
+        .schatz-intro-emoji { font-size: 2.6rem; line-height: 1; margin-bottom: 10px; display: block; }
+        .schatz-intro-title {
+            font-family: var(--font-heading); font-weight: 600;
+            color: var(--accent-coral); font-size: 1.35rem; margin: 0 0 6px 0;
+        }
+        .schatz-intro-thema {
+            font-family: var(--font-heading); font-weight: 500;
+            color: #8c6d2a; font-size: 1.05rem; margin: 0 0 16px 0; font-style: italic;
+        }
+        .schatz-intro-text {
+            color: #555; font-size: 1rem; line-height: 1.55; margin: 0 auto 20px auto;
+            max-width: 480px;
+        }
+        .schatz-progress {
+            font-family: var(--font-heading); font-size: 1.15rem; color: #8c6d2a;
+            margin-bottom: 18px;
+        }
+        .schatz-progress-number { font-size: 1.5rem; color: var(--accent-coral); font-weight: 700; }
+        .schatz-start-btn {
+            background: var(--accent-coral); color: #fff; border: none;
+            padding: 14px 30px; border-radius: 28px; cursor: pointer;
+            font-family: var(--font-heading); font-size: 1.05rem; font-weight: 600;
+            box-shadow: 0 4px 14px rgba(214,113,113,0.35);
+            transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+            display: inline-flex; align-items: center; gap: 10px;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .schatz-start-btn:hover { background: #B85555; transform: translateY(-2px); box-shadow: 0 6px 18px rgba(214,113,113,0.45); }
+        .schatz-start-btn:active { transform: translateY(0); }
+
+        .schatz-complete { text-align: center; padding: 20px 10px; }
+        .schatz-complete-emoji { font-size: 3rem; line-height: 1; display: block; margin-bottom: 10px; }
+        .schatz-complete-title {
+            font-family: var(--font-heading); color: var(--accent-coral);
+            font-size: 1.5rem; margin: 0 0 8px 0;
+        }
+        .schatz-complete-text { color: #666; margin-bottom: 20px; }
+        .schatz-found-list {
+            display: flex; flex-wrap: wrap; justify-content: center; gap: 8px;
+            margin: 0 0 20px 0; padding: 0;
+        }
+        .schatz-found-chip {
+            background: #fff3b8; border: 2px solid #f1c40f; border-radius: 14px;
+            padding: 6px 14px; font-family: var(--font-heading); font-weight: 600;
+            color: #8c6d2a; font-size: 0.95rem;
+        }
+
+        @keyframes schatzPulse {
+            0% { transform: scale(1); }
+            40% { transform: scale(1.25); }
+            100% { transform: scale(1.08); }
+        }
+        .word-schatz-treffer {
+            background: linear-gradient(135deg, #fff3b8 0%, #ffe066 100%) !important;
+            color: #7a5a00 !important; border-radius: 6px !important;
+            box-shadow: 0 0 14px rgba(255,213,79,0.8), inset 0 0 6px rgba(255,255,255,0.5) !important;
+            padding: 1px 4px; font-weight: bold;
+            animation: schatzPulse 0.45s ease-out;
+        }
+        @keyframes gentleShakeSchatz {
+            0% { transform: translateX(0); } 25% { transform: translateX(-5px); }
+            50% { transform: translateX(5px); } 75% { transform: translateX(-5px); }
+            100% { transform: translateX(0); }
+        }
+        .word-schatz-miss { animation: gentleShakeSchatz 0.4s ease-in-out; }
+
+        .schatz-banner {
+            position: fixed; top: 72px; left: 12px; right: 12px;
+            z-index: 3000;
+            display: flex; align-items: center; gap: 12px;
+            background: linear-gradient(135deg, var(--accent-coral) 0%, #e88b8b 100%);
+            color: #fff; padding: 12px 16px; border-radius: 16px;
+            box-shadow: 0 6px 22px rgba(214,113,113,0.4);
+            font-family: var(--font-heading);
+            animation: schatzBannerIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        @keyframes schatzBannerIn {
+            from { opacity: 0; transform: translateY(-10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        .schatz-banner[hidden] { display: none; }
+        .schatz-banner-icon { font-size: 1.4rem; line-height: 1; flex-shrink: 0; }
+        .schatz-banner-text {
+            flex-grow: 1; display: flex; align-items: baseline; gap: 10px;
+            font-weight: 600; font-size: 0.98rem; flex-wrap: wrap;
+        }
+        .schatz-banner-count {
+            background: rgba(255,255,255,0.25); padding: 2px 10px;
+            border-radius: 10px; font-size: 0.95rem; font-weight: 700;
+        }
+        .schatz-banner-close {
+            background: rgba(255,255,255,0.2); border: none; color: #fff;
+            width: 32px; height: 32px; border-radius: 50%; cursor: pointer;
+            font-size: 0.9rem; font-weight: 700; flex-shrink: 0;
+            display: inline-flex; align-items: center; justify-content: center;
+            transition: all 0.2s ease; -webkit-tap-highlight-color: transparent;
+        }
+        .schatz-banner-close:hover { background: rgba(255,255,255,0.35); transform: scale(1.08); }
+        .schatz-banner.celebrate {
+            background: linear-gradient(135deg, #f1c40f 0%, #ffd54f 100%);
+            color: #5a4500;
+        }
+        .schatz-banner.celebrate .schatz-banner-count { background: rgba(255,255,255,0.4); color: #5a4500; }
+        .schatz-banner.celebrate .schatz-banner-close { background: rgba(255,255,255,0.35); color: #5a4500; }
+        @media (max-width: 767px) {
+            .schatz-banner { top: 68px; left: 8px; right: 8px; padding: 10px 12px; gap: 8px; }
+            .schatz-banner-text { font-size: 0.9rem; gap: 8px; }
+        }
+
     </style>
     <link rel="stylesheet" href="../fonts/fonts.css">
 </head>
@@ -419,6 +648,15 @@
             <a href="../landingpage.html#registrieren" class="nav-btn" onclick="toggleMenu()">Jetzt registrieren</a>
         </div>
     </nav>
+
+    <div id="schatz-banner" class="schatz-banner" hidden>
+        <span class="schatz-banner-icon">🔍</span>
+        <span class="schatz-banner-text">
+            <span id="schatz-banner-thema">Finde Schätze im Text</span>
+            <span class="schatz-banner-count" id="schatz-banner-count">0/3</span>
+        </span>
+        <button type="button" class="schatz-banner-close" onclick="endSchatzsuche()" aria-label="Schatzsuche beenden">✕</button>
+    </div>
 
     <div class="main-card">
         <div class="story-hero-cover">
@@ -494,9 +732,39 @@
             </div>
         </div>
 
-        <div class="quiz-section">
-            <div class="section-title">🧠 Quiz-Zeit! Hast du gut aufgepasst?</div>
-            <div id="quiz-wrapper" class="quiz-card"></div>
+        <div class="activity-hub">
+            <div class="section-title">🎮 Spielzeit!</div>
+            <div class="activity-tabs" role="tablist" aria-label="Spielformate">
+                <button class="activity-tab active" role="tab" aria-selected="true"
+                        aria-controls="panel-quiz" id="tab-quiz" data-tab="quiz"
+                        onclick="switchActivityTab('quiz')">
+                    <span class="tab-icon">🧠</span><span class="tab-label">Quiz</span>
+                </button>
+                <button class="activity-tab" role="tab" aria-selected="false"
+                        aria-controls="panel-weiterdenken" id="tab-weiterdenken" data-tab="weiterdenken"
+                        onclick="switchActivityTab('weiterdenken')">
+                    <span class="tab-icon">🌟</span><span class="tab-label">Weiterdenken</span>
+                </button>
+                <button class="activity-tab" role="tab" aria-selected="false"
+                        aria-controls="panel-schatz" id="tab-schatz" data-tab="schatz"
+                        onclick="switchActivityTab('schatz')">
+                    <span class="tab-icon">🔍</span><span class="tab-label">Schatz</span>
+                </button>
+            </div>
+            <div id="panel-quiz" class="activity-panel active" role="tabpanel" aria-labelledby="tab-quiz">
+                <div id="quiz-wrapper" class="quiz-card"></div>
+            </div>
+            <div id="panel-weiterdenken" class="activity-panel" role="tabpanel" aria-labelledby="tab-weiterdenken">
+                <p class="weitererzaehlen-intro">Hier gibt es kein richtig oder falsch — wähle, was dir am besten gefällt!</p>
+                <div id="weitererzaehlen-wrapper" class="weitererzaehlen-cards"></div>
+                <div class="klassen-hinweis">
+                    <span class="klassen-hinweis-icon">👩‍🏫</span>
+                    <div>
+                        <strong>Tipp für die Klasse:</strong> Stimmt per Handzeichen ab — welche Fortsetzung findet ihr am schönsten? Danach könnt ihr die gewählte Fortsetzung gemeinsam selbst weiterschreiben.
+                    </div>
+                </div>
+            </div>
+            <div id="panel-schatz" class="activity-panel" role="tabpanel" aria-labelledby="tab-schatz"></div>
         </div>
 
         <div class="survey-section">
@@ -538,6 +806,8 @@
         let emojiStory = "Li-lith stand mit ih-rem Po-ny Spa-ni-co am Start des gro-ßen Reit-wett-be-werbs. Sein Fell glänz-te in der Son-ne und Li-liths Herz klopf-te ein we-nig, weil so vie-le Leu-te zu-schau-ten. Spa-ni-co scharr-te un-ge-dul-dig 😤 mit den Hu-fen, denn er woll-te end-lich los-lau-fen.\n\nEin Mann gab das Zei-chen und sie rit-ten los. Zuerst kam ei-ne ro-te Hür-de. Spa-ni-co sprang kraft-voll da-rü-ber. Dann folg-te ei-ne blaue und schließ-lich ei-ne gel-be Hür-de. Li-lith hielt sich gut fest, wäh-rend ihr Po-ny e-le-gant ü-ber je-des Hin-der-nis sprang. Sie wa-ren ein tol-les Team und ga-lop-pier-ten schnell durch den Par-cours.\n\nAls sie durch das Ziel rit-ten, läu-te-te ei-ne lau-te Glo-cke. Li-lith lach-te 😊 und u-marm-te Spa-ni-cos Hals. Sie hol-te ei-ne kna-cki-ge Ka-rot-te aus ih-rer Ta-sche, die sie ihm als Be-loh-nung gab.";
         let rawSummary = "Lilith und ihr Pony Spanico nahmen an einem Reitwettbewerb teil. Sie sprangen fehlerfrei über drei bunte Hürden. Als sie im Ziel waren, läutete eine Glocke und Spanico bekam eine Karotte als Belohnung.";
         const quizData = [{"q":"Wie heißt Liliths Pony?","a":["Spanico","Blitz","Stern"],"correct":0},{"q":"Welche Farbe hatte die erste Hürde, über die Lilith und Spanico sprangen?","a":["Blau","Rot","Gelb"],"correct":1},{"q":"Was bekam Spanico als Belohnung nach dem Ritt?","a":["Einen Zuckerwürfel","Eine Karotte","Einen Apfel"],"correct":1}];
+        const weitererzaehlenData = { "frage": "Wie geht die Geschichte weiter?", "optionen": [ { "emoji": "🏆", "titel": "Lilith gewann einen Pokal", "text": "Nach dem Ritt rief der Mann Liliths Namen laut ins Mikrofon. Sie bekam einen goldenen Pokal überreicht und strahlte über das ganze Gesicht. Spanico wieherte stolz, als alle Zuschauer jubelten." }, { "emoji": "🌈", "titel": "Eine Überraschung wartete", "text": "Am Rand des Parcours entdeckte Lilith ihre beste Freundin mit einer bunten Girlande. Gemeinsam schmückten sie Spanicos Mähne mit frischen Blumen. Das Pony sah nun aus wie ein echter Märchenheld." }, { "emoji": "🍎", "titel": "Spanico traf neue Freunde", "text": "Nach dem Wettbewerb führte Lilith ihr Pony zum Stall. Dort wartete schon ein freundliches Pferd namens Sternchen auf ihn. Die beiden Tiere knabberten zusammen an Äpfeln und wurden gleich dicke Freunde." } ] };
+        const schatzsucheData = { "thema": "Reit-Sachen", "emoji": "🏆", "ziel": 3, "einleitung": "Findest du die Reit-Sachen im Text? Klick sie an!", "schatzwoerter": [ "pony", "spanico", "hürde", "hufen", "karotte", "glocke", "parcours", "hals", "fell", "ziel", "mann", "tasche" ] };
         const rawDictionaryEntry = [{"wort":"Reitwettbewerb","silben":"Reit-wett-be-werb","bedeutung":"Ein sportliches Ereignis, bei dem Reiter und Pferde gegeneinander antreten."},{"wort":"ungeduldig","silben":"un-ge-dul-dig","bedeutung":"Wenn man nicht warten kann und möchte, dass etwas sofort passiert."},{"wort":"Hürde","silben":"Hür-de","bedeutung":"Ein Hindernis, über das man springen muss, zum Beispiel beim Reiten."},{"wort":"elegant","silben":"e-le-gant","bedeutung":"Anmutig und stilvoll, mit schönen und leichten Bewegungen."},{"wort":"galoppierten","silben":"ga-lop-pier-ten","bedeutung":"Die schnellste Gangart eines Pferdes, bei der es rennt."},{"wort":"Belohnung","silben":"Be-loh-nung","bedeutung":"Etwas Gutes, das man für eine gute Leistung oder ein Ziel bekommt."}];
         /* ============================================================ */
 
@@ -720,18 +990,24 @@
         function renderQuiz() {
             let qHTML = "";
             quizData.forEach((item, i) => {
-                qHTML += `<div style="margin-bottom:30px; border-bottom:1px dashed #eee; padding-bottom:20px;">
+                qHTML += `<div class="quiz-question" data-correct="${item.correct}" style="margin-bottom:30px; border-bottom:1px dashed #eee; padding-bottom:20px;">
                             <div style="font-weight:bold; margin-bottom:15px; color:var(--accent-teal);">${i+1}. ${item.q}</div>`;
                 item.a.forEach((ans, j) => {
                     const isCorrect = (j === item.correct);
                     qHTML += `<div class="quiz-option" onclick="checkQuizAnswer(this, ${isCorrect})"><span>${ans}</span></div>`;
                 });
+                qHTML += `<button type="button" class="quiz-reveal-btn" onclick="revealQuizAnswer(this)">💡 Auflösen</button>`;
                 qHTML += `</div>`;
             });
             const quizWrapper = document.getElementById('quiz-wrapper');
-            const quizSection = document.querySelector('.quiz-section');
-            if(quizData.length > 0) { quizWrapper.innerHTML = qHTML; quizSection.style.display = 'block'; }
-            else { quizSection.style.display = 'none'; }
+            const tab = document.querySelector('[data-tab="quiz"]');
+            const panel = document.getElementById('panel-quiz');
+            if (quizData.length > 0) {
+                quizWrapper.innerHTML = qHTML;
+            } else {
+                if (tab) tab.style.display = 'none';
+                if (panel) panel.style.display = 'none';
+            }
         }
 
         function updateButtons() {
@@ -803,6 +1079,8 @@
         function clearHighlights() { document.querySelectorAll('.highlight-active').forEach(el => el.classList.remove('highlight-active')); }
         function toggleWordReader() { state.wordReader = !state.wordReader; document.getElementById('btn-word-reader').className = state.wordReader ? "tool-btn active" : "tool-btn"; }
         function clickWord(el, word) {
+            // Schatzsuche-Modus hat Vorrang: blockiert Dictionary/TTS waehrend aktiv
+            if (schatzState.active) { checkSchatzwort(el, word); return; }
             // Vokabel-Tooltip (visuell markiert nur bei nt-daz, aber für alle klickbar)
             let def = el.getAttribute('data-def');
             if (def) { showVocabTooltip(el, def); return; }
@@ -954,7 +1232,7 @@
         }
 
         window.onload = function() {
-            renderText(); renderQuiz();
+            renderText(); renderQuiz(); renderWeitererzaehlen(); renderSchatzsuche(); initActivityTabs();
 
             // Leselinien: localStorage > Neurotyp-Default (LRS)
             let lsPref = null;
@@ -971,6 +1249,228 @@
             try { hpPref = localStorage.getItem('lesekumpel-haeppchen-default'); } catch(e) {}
             if ((hpPref !== null ? (hpPref === 'true') : (ntClass === 'nt-adhs'))) toggleViewMode();
         };
+    
+        // --- ACTIVITY-HUB: Funktionen ---
+        let schatzState = { active: false, found: [] };
+
+        function renderWeitererzaehlen() {
+            const data = (typeof weitererzaehlenData !== 'undefined') ? weitererzaehlenData : null;
+            if (!data || !Array.isArray(data.optionen) || data.optionen.length === 0) {
+                const tab = document.querySelector('[data-tab="weiterdenken"]');
+                const panel = document.getElementById('panel-weiterdenken');
+                if (tab) tab.style.display = 'none';
+                if (panel) panel.style.display = 'none';
+                return;
+            }
+            const introEl = document.querySelector('.weitererzaehlen-intro');
+            if (data.frage && introEl) {
+                introEl.innerHTML = data.frage + ' <span style="display:block; font-size:0.85em; margin-top:4px; opacity:0.75;">Hier gibt es kein richtig oder falsch.</span>';
+            }
+            let html = '';
+            data.optionen.forEach((opt, i) => {
+                html += `<div class="weitererzaehlen-card" onclick="toggleWeitererzaehlen(${i})" id="wet-card-${i}">
+                            <div class="weitererzaehlen-card-header">
+                                <span class="weitererzaehlen-emoji">${opt.emoji || '✨'}</span>
+                                <span class="weitererzaehlen-titel">${opt.titel || ''}</span>
+                                <span class="weitererzaehlen-chevron">▼</span>
+                            </div>
+                            <div class="weitererzaehlen-text">
+                                <div class="weitererzaehlen-text-body">${opt.text || ''}</div>
+                                <div class="weitererzaehlen-hinweis">So könnte es sein — oder ganz anders. Was denkst du?</div>
+                            </div>
+                        </div>`;
+            });
+            document.getElementById('weitererzaehlen-wrapper').innerHTML = html;
+        }
+
+        function toggleWeitererzaehlen(index) {
+            const card = document.getElementById('wet-card-' + index);
+            if (card) card.classList.toggle('open');
+        }
+
+        function renderSchatzsuche() {
+            const data = (typeof schatzsucheData !== 'undefined') ? schatzsucheData : null;
+            const panel = document.getElementById('panel-schatz');
+            const tab = document.querySelector('[data-tab="schatz"]');
+            if (!data || !Array.isArray(data.schatzwoerter) || data.schatzwoerter.length === 0 || !data.ziel) {
+                if (tab) tab.style.display = 'none';
+                if (panel) panel.style.display = 'none';
+                return;
+            }
+            if (schatzState.found.length >= data.ziel) {
+                renderSchatzComplete(panel, data);
+            } else {
+                renderSchatzIntro(panel, data);
+            }
+        }
+
+        function renderSchatzIntro(panel, data) {
+            const found = schatzState.found.length;
+            const buttonLabel = found > 0 ? 'Weitersuchen' : 'Los geht’s!';
+            panel.innerHTML = `
+                <div class="schatz-intro-card">
+                    <span class="schatz-intro-emoji">${data.emoji || '🔍'}</span>
+                    <h3 class="schatz-intro-title">Schatz-Suche</h3>
+                    <p class="schatz-intro-thema">„${data.thema}"</p>
+                    <p class="schatz-intro-text">${data.einleitung || 'Finde versteckte Wörter im Text. Tippe sie einfach an!'}</p>
+                    <div class="schatz-progress">Gefunden: <span class="schatz-progress-number">${found}</span> / ${data.ziel}</div>
+                    <button type="button" class="schatz-start-btn" onclick="startSchatzsuche()">
+                        <span>🔍</span><span>${buttonLabel}</span>
+                    </button>
+                </div>`;
+        }
+
+        function renderSchatzComplete(panel, data) {
+            const chips = schatzState.found.map(w => {
+                const pretty = w.charAt(0).toUpperCase() + w.slice(1);
+                return `<li class="schatz-found-chip">${pretty}</li>`;
+            }).join('');
+            panel.innerHTML = `
+                <div class="schatz-complete">
+                    <span class="schatz-complete-emoji">🏆</span>
+                    <h3 class="schatz-complete-title">Schatz gefunden!</h3>
+                    <p class="schatz-complete-text">Du hast ${data.ziel} ${data.thema.toLowerCase()} entdeckt:</p>
+                    <ul class="schatz-found-list">${chips}</ul>
+                    <button type="button" class="schatz-start-btn" onclick="resetSchatzsuche()">
+                        <span>🔄</span><span>Nochmal spielen</span>
+                    </button>
+                </div>`;
+        }
+
+        function startSchatzsuche() {
+            if (typeof schatzsucheData === 'undefined') return;
+            schatzState.active = true;
+            showSchatzBanner();
+            updateSchatzBanner();
+            const chunkView = document.getElementById('chunk-view');
+            const fullView = document.getElementById('full-text-view');
+            const chunkVisible = chunkView && !chunkView.classList.contains('hidden');
+            const target = chunkVisible ? chunkView : fullView;
+            if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+
+        function endSchatzsuche() {
+            schatzState.active = false;
+            hideSchatzBanner();
+            renderSchatzsuche();
+        }
+
+        function resetSchatzsuche() {
+            schatzState.found = [];
+            document.querySelectorAll('.word-schatz-treffer').forEach(el => el.classList.remove('word-schatz-treffer'));
+            startSchatzsuche();
+            renderSchatzsuche();
+        }
+
+        function checkSchatzwort(el, word) {
+            if (typeof schatzsucheData === 'undefined') return;
+            const lw = (word || '').toLowerCase();
+            const isSchatz = schatzsucheData.schatzwoerter.includes(lw);
+            if (isSchatz && !schatzState.found.includes(lw)) {
+                schatzState.found.push(lw);
+                document.querySelectorAll('.word-interactive').forEach(w => {
+                    const txt = (w.innerText || '').toLowerCase().replace(/[.,!?:;„"()-]/g, '');
+                    if (txt === lw) w.classList.add('word-schatz-treffer');
+                });
+                try { if (typeof playTickSound === 'function') playTickSound(); } catch(e) {}
+                updateSchatzBanner();
+                if (schatzState.found.length >= schatzsucheData.ziel) {
+                    showSchatzsucheComplete();
+                }
+            } else if (!isSchatz) {
+                el.classList.add('word-schatz-miss');
+                setTimeout(() => el.classList.remove('word-schatz-miss'), 500);
+            }
+        }
+
+        function showSchatzBanner() {
+            const banner = document.getElementById('schatz-banner');
+            const thema = document.getElementById('schatz-banner-thema');
+            if (banner) banner.hidden = false;
+            if (thema && typeof schatzsucheData !== 'undefined' && schatzsucheData.thema) {
+                thema.textContent = 'Finde ' + schatzsucheData.thema.toLowerCase();
+            }
+        }
+
+        function hideSchatzBanner() {
+            const banner = document.getElementById('schatz-banner');
+            if (banner) { banner.hidden = true; banner.classList.remove('celebrate'); }
+        }
+
+        function updateSchatzBanner() {
+            const count = document.getElementById('schatz-banner-count');
+            if (count && typeof schatzsucheData !== 'undefined') {
+                count.textContent = schatzState.found.length + '/' + schatzsucheData.ziel;
+            }
+        }
+
+        function showSchatzsucheComplete() {
+            schatzState.active = false;
+            try { if (typeof showConfetti === 'function') showConfetti(); } catch(e) {}
+            const banner = document.getElementById('schatz-banner');
+            const thema = document.getElementById('schatz-banner-thema');
+            if (banner) banner.classList.add('celebrate');
+            if (thema) thema.textContent = 'Schatz gefunden! ✨';
+            updateSchatzBanner();
+            setTimeout(() => { hideSchatzBanner(); renderSchatzsuche(); }, 3500);
+        }
+
+        function switchActivityTab(tabName) {
+            const tabs = document.querySelectorAll('.activity-tab');
+            const panels = document.querySelectorAll('.activity-panel');
+            tabs.forEach(t => {
+                const isActive = t.dataset.tab === tabName;
+                t.classList.toggle('active', isActive);
+                t.setAttribute('aria-selected', isActive ? 'true' : 'false');
+            });
+            panels.forEach(p => {
+                const isActive = p.id === 'panel-' + tabName;
+                p.classList.toggle('active', isActive);
+            });
+            try { localStorage.setItem('lesekumpel-activity-tab', tabName); } catch(e) {}
+        }
+
+        function initActivityTabs() {
+            const availableTabs = Array.from(document.querySelectorAll('.activity-tab'))
+                .filter(t => t.style.display !== 'none')
+                .map(t => t.dataset.tab);
+            if (availableTabs.length === 0) {
+                const hub = document.querySelector('.activity-hub');
+                if (hub) hub.style.display = 'none';
+                return;
+            }
+            if (availableTabs.length === 1) {
+                const tabsBar = document.querySelector('.activity-tabs');
+                if (tabsBar) tabsBar.style.display = 'none';
+                switchActivityTab(availableTabs[0]);
+                return;
+            }
+            let saved = null;
+            try { saved = localStorage.getItem('lesekumpel-activity-tab'); } catch(e) {}
+            const target = (saved && availableTabs.includes(saved)) ? saved
+                         : (availableTabs.includes('quiz') ? 'quiz' : availableTabs[0]);
+            switchActivityTab(target);
+        }
+
+        function revealQuizAnswer(btn) {
+            const q = btn.closest('.quiz-question');
+            if (!q) return;
+            const correctIdx = parseInt(q.dataset.correct, 10);
+            const options = q.querySelectorAll('.quiz-option');
+            options.forEach((opt, j) => {
+                if (j === correctIdx) {
+                    if (!opt.classList.contains('correct')) {
+                        opt.classList.remove('try-again');
+                        opt.classList.add('correct');
+                        opt.innerHTML += ' 💡';
+                    }
+                } else if (!opt.classList.contains('try-again')) {
+                    opt.classList.add('try-again');
+                }
+            });
+            btn.remove();
+        }
+
     </script>
 </body>
 </html>
