@@ -89,6 +89,39 @@
         .hero-image { width: 100%; border-radius: 15px; margin-bottom: 30px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
         .story-inline-img { width: 100%; border-radius: 15px; margin: 20px 0 10px 0; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
 
+        /* --- HERO COVER (Blur + Titel-Overlay) --- */
+        .story-hero-cover {
+            position: relative; width: 100%; aspect-ratio: 16 / 9;
+            border-radius: 15px; overflow: hidden; margin-bottom: 20px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.12); background: #f0ebd8;
+        }
+        .story-hero-cover .hero-bg {
+            position: absolute; inset: 0; width: 100%; height: 100%;
+            object-fit: cover; object-position: center center;
+            filter: blur(14px) saturate(1.1) brightness(0.92);
+            transform: scale(1.12); transform-origin: center;
+        }
+        .story-hero-cover .hero-overlay {
+            position: absolute; inset: 0;
+            background: radial-gradient(ellipse at center, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0.45) 100%);
+        }
+        .story-hero-cover .hero-title-box {
+            position: absolute; inset: 0; display: flex;
+            align-items: center; justify-content: center;
+            padding: 24px 28px; text-align: center;
+        }
+        .story-hero-cover .hero-title-box #main-title {
+            margin: 0; color: #fff; font-size: 2.6rem;
+            text-shadow: 0 2px 8px rgba(0,0,0,0.55), 0 0 2px rgba(0,0,0,0.4);
+        }
+        @media (max-width: 767px) {
+            .story-hero-cover { aspect-ratio: 4 / 3; }
+            .story-hero-cover .hero-title-box #main-title { font-size: 1.7rem; letter-spacing: 0.5px; }
+            .story-hero-cover .hero-bg { filter: blur(10px) saturate(1.1) brightness(0.92); }
+        }
+        body.haeppchen-active .story-hero-cover { display: none; }
+
+
         /* --- TOOLBAR v6 — Sticky FAB --- */
         .toolbar-container {
             background: #fff; border-radius: 24px; padding: 0; margin-bottom: 16px;
@@ -389,7 +422,13 @@
     </nav>
 
     <div class="main-card">
-        <h1 id="main-title">Das Hochbeet</h1>
+        <div class="story-hero-cover">
+            <img class="hero-bg" src="https://rala84.github.io/lesekumpel/bilder/das-hochbeet-mj4t-1.png" alt="" aria-hidden="true" onerror="this.style.display='none'">
+            <div class="hero-overlay"></div>
+            <div class="hero-title-box">
+                <h1 id="main-title">Das Hochbeet</h1>
+            </div>
+        </div>
         <div class="author-line">
             <img src="https://rala84.github.io/lesekumpel/avatars/mia-mitte.webp" alt="Mia Mitte" class="author-avatar">
             <span class="author-credit">geschrieben von Mia Mitte</span>
@@ -548,21 +587,13 @@
         let state = { syllables: isLRS, emojis: isAutismus, summary: false, chunkIndex: 0, chunks: [], chunkImages: [], chunkHeadings: [], wordReader: false };
         let inlineImages = [];
 
-        // Bilder einsammeln: Alle Bilder für Chunks sammeln, Hero im DOM belassen (CSS steuert Sichtbarkeit)
+        // Bilder einsammeln: Alle .hero-image werden zu Inline-Bildern. Der Hero-Cover
+        // oben (.story-hero-cover) ist eigenstaendig und bleibt unangetastet.
         (function collectImages() {
-            const allHeroImgs = document.querySelectorAll('.hero-image');
-            // Erstes Bild auch für Häppchen-Modus merken
-            if (allHeroImgs.length > 0) {
-                inlineImages.push(allHeroImgs[0].src);
-            }
-            // Weitere Bilder ab Index 1
-            for (let i = 1; i < allHeroImgs.length; i++) {
-                inlineImages.push(allHeroImgs[i].src);
-            }
-            // Extra-Bilder (ab Index 1) aus DOM entfernen, erstes Hero-Bild bleibt (wird per CSS ein-/ausgeblendet)
-            for (let i = allHeroImgs.length - 1; i >= 1; i--) {
-                allHeroImgs[i].remove();
-            }
+            document.querySelectorAll('.hero-image').forEach(img => {
+                inlineImages.push(img.src);
+                img.remove();
+            });
         })();
 
         function renderText() {
