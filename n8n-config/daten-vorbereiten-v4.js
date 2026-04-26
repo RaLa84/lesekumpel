@@ -1,7 +1,9 @@
-const raw = $input.item.json;
-const input = raw.body || raw;
-
-const title = (input['Titel'] || '').trim();
+// Webhook input is now read explicitly because 📝 Titel korrigieren sits between Webhook and this node
+const webhookInput = $('Webhook: Geschichte anfordern').first().json;
+const input = webhookInput.body || webhookInput;
+// Corrected title from 📝 Titel korrigieren chainLlm (with quote-strip + fallback)
+const correctedTitle = ($input.item.json.text || '').trim().replace(/^["']|["']$/g, '');
+const title = correctedTitle || (input['Titel'] || '').trim();
 const personaRaw = (input['Persona'] || 'Peter Past').trim();
 const persona = personaRaw.split(' ')[0].toLowerCase();
 const neurotyp = (input['Neurotyp'] || 'Standard').trim();
@@ -9,12 +11,17 @@ const bildstilRaw = (input['Bildstil'] || 'Aquarell').trim();
 const bildstilKey = bildstilRaw.split(' ')[0];
 const description = (input['Kurzbeschreibung'] || '').trim();
 
-// Slug
+// Slug — deterministic content-hash (idempotent: same inputs -> same slug, prevents duplicates from caller-retry)
 const umlautMap = { 'ä': 'ae', 'ö': 'oe', 'ü': 'ue', 'ß': 'ss', 'Ä': 'ae', 'Ö': 'oe', 'Ü': 'ue' };
-const slug = (title.toLowerCase()
+const slugBase = (title.toLowerCase()
   .replace(/[äöüßÄÖÜ]/g, c => umlautMap[c] || c)
   .replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '').replace(/-+/g, '-')
-  .substring(0, 55) || 'neue-geschichte') + '-' + Math.random().toString(36).substring(2, 6);
+  .substring(0, 55) || 'neue-geschichte');
+const slugInput = title + '|' + persona + '|' + neurotyp + '|' + bildstilKey + '|' + description;
+let _h = 5381;
+for (let i = 0; i < slugInput.length; i++) { _h = ((_h * 33) ^ slugInput.charCodeAt(i)) | 0; }
+const slugSuffix = ((_h >>> 0).toString(36) + '0000').substring(0, 4);
+const slug = slugBase + '-' + slugSuffix;
 
 // ═══════════════════════════════════════════════════════════════
 // PERSONA-META — Skill-Personas + Bonus-Personas
@@ -75,14 +82,38 @@ const personaMeta = {
 };
 
 const bildstilMap = {
-  'Aquarell': "children's book watercolor illustration, soft pastel colors, warm and friendly, white background, no text in image",
-  'Cartoon': "colorful cartoon illustration for children, bold outlines, bright vivid colors, fun and playful, digital art, no text in image",
-  'Buntstift': "colored pencil drawing, hand-drawn children's illustration, crayon texture, sketch-like, warm paper background, no text in image",
-  'Pixel-Art': "pixel art illustration for kids, retro gaming style, colorful blocky pixels, 16-bit aesthetic, cheerful, no text in image",
-  'Anime': "anime-style children's illustration, bright vibrant colors, cute big eyes, cel-shading, Nintendo/Pokémon inspired, cheerful, no text in image",
-  'Traumwelt': "dreamlike magical painting, glowing light effects, ethereal atmosphere, inspired by Ori and the Blind Forest, soft luminous colors, no text in image",
-  'Knete': "claymation stop-motion style, 3D clay figures, plasticine texture, handmade look, warm lighting, Aardman-inspired, no text in image",
-  'Voxel': "voxel art illustration, 3D blocky style, Minecraft-inspired, colorful cubes, isometric view, cheerful, no text in image"
+  'Aquarell': {
+    positive: "traditional children's book watercolor illustration, hand-painted with warm cream paper texture filling the entire image, soft pastel palette, gentle wet-on-wet washes with visible bleeding edges, loose expressive brush strokes, soft painterly rendering, inspired by Beatrix Potter and Quentin Blake, consistent palette and brush handling across all panels of this story, same character proportions and facial features in every panel, full bleed composition extending to all four image edges, no inner framing, subjects and background reach every corner of the image, square 1:1 aspect ratio",
+    negative: "no text, no watermarks, no labels, no tags, no annotations, no nameplates, no UI overlays, no callouts, no captions, no speech bubbles, no sign text, no alphanumeric text in image, no letterboxing, no black bars, no white margin, no cream margin, no paper border, no inner matte, no mat board, no illustration frame, no vignette, no aspect-ratio padding, no hard black outlines, no digital vector look, no CGI, no 3D shading, no photorealism, no extra limbs, no duplicate props, no floating objects, no mixed art styles, no style drift"
+  },
+  'Cartoon': {
+    positive: "modern children's cartoon illustration inspired by Bluey and Peppa Pig, bold black outlines of uniform stroke width, bright saturated flat colors with one soft tonal shadow per shape, simple rounded geometric shapes, playful expressions, consistent outline weight and palette across all panels of this story, same character proportions and facial features in every panel, full bleed composition extending to all four image edges, no inner framing, subjects and background reach every corner of the image, square 1:1 aspect ratio",
+    negative: "no text, no watermarks, no labels, no tags, no annotations, no nameplates, no UI overlays, no callouts, no captions, no speech bubbles, no sign text, no alphanumeric text in image, no letterboxing, no black bars, no white margin, no cream margin, no paper border, no inner matte, no mat board, no illustration frame, no vignette, no aspect-ratio padding, no extra limbs, no duplicate props, no floating objects, no mixed art styles, no style drift, no gritty textures, no realistic shading, no photorealism"
+  },
+  'Buntstift': {
+    positive: "colored pencil drawing with warm cream paper texture filling the entire image, visible pencil grain and diagonal hatching strokes, soft muted earthy palette, slightly sketchy outlines, hand-drawn children's illustration feel, consistent stroke density and palette across all panels of this story, same character proportions and facial features in every panel, full bleed composition extending to all four image edges, no inner framing, subjects and background reach every corner of the image, square 1:1 aspect ratio",
+    negative: "no text, no watermarks, no labels, no tags, no annotations, no nameplates, no UI overlays, no callouts, no captions, no speech bubbles, no sign text, no alphanumeric text in image, no letterboxing, no black bars, no white margin, no cream margin, no paper border, no inner matte, no mat board, no illustration frame, no vignette, no aspect-ratio padding, no crayon texture, no digital smooth gradients, no vector look, no photorealism, no extra limbs, no duplicate props, no floating objects, no mixed art styles, no style drift"
+  },
+  'Pixel-Art': {
+    positive: "modern 32-bit style pixel art in the aesthetic of Game Boy Advance JRPGs such as Advance Wars and Fire Emblem, detailed character sprites with clearly defined dark outlines, rich but limited 32-color palette with subtle dithering for shading, uniform pixel density across the entire image, consistent sprite resolution and palette across all panels of this story, same character sprite silhouette and facial features in every panel, 3/4 front view or side view composition, full bleed composition extending to all four image edges, no inner framing, subjects and background reach every corner of the image, square 1:1 aspect ratio",
+    negative: "no text, no watermarks, no labels, no tags, no annotations, no nameplates, no UI overlays, no callouts, no captions, no speech bubbles, no sign text, no alphanumeric text in image, no letterboxing, no black bars, no white margin, no cream margin, no paper border, no inner matte, no mat board, no illustration frame, no vignette, no aspect-ratio padding, no mixed pixel resolutions between regions, no smooth gradients, no anti-aliasing, no blurry edges, no 3D shading, no photorealism, no high-res rendering, no extra limbs, no duplicate props, no floating objects, no style drift"
+  },
+  'Anime': {
+    positive: "anime-style children's illustration inspired by Studio Ghibli and modern Pokémon anime, cel-shaded with one soft shadow layer, bright vibrant saturated colors, clean uniform line art with tapered ends, expressive large eyes with highlights, soft blushed cheeks, consistent line weight and palette across all panels of this story, same character proportions and facial features in every panel, full bleed composition extending to all four image edges, no inner framing, subjects and background reach every corner of the image, square 1:1 aspect ratio",
+    negative: "no text, no watermarks, no labels, no tags, no annotations, no nameplates, no UI overlays, no callouts, no captions, no speech bubbles, no sign text, no alphanumeric text in image, no letterboxing, no black bars, no white margin, no cream margin, no paper border, no inner matte, no mat board, no illustration frame, no vignette, no aspect-ratio padding, no extra limbs, no duplicate props, no floating objects, no mixed art styles, no style drift, no gritty shading, no sketchy outlines, no photorealism"
+  },
+  'Traumwelt': {
+    positive: "dreamlike magical digital painting, soft glowing volumetric light, ethereal misty atmosphere, luminous pastel palette with high contrast highlights, rim lighting on characters, inspired by Ori and the Blind Forest and Studio Ghibli night scenes, consistent luminosity and palette across all panels of this story, same character proportions and facial features in every panel, full bleed composition extending to all four image edges, no inner framing, subjects and background reach every corner of the image, square 1:1 aspect ratio",
+    negative: "no text, no watermarks, no labels, no tags, no annotations, no nameplates, no UI overlays, no callouts, no captions, no speech bubbles, no sign text, no alphanumeric text in image, no letterboxing, no black bars, no white margin, no cream margin, no paper border, no inner matte, no mat board, no illustration frame, no vignette, no aspect-ratio padding, no harsh black outlines, no flat cartoon shading, no photorealism, no gritty realism, no extra limbs, no duplicate props, no floating objects, no mixed art styles, no style drift"
+  },
+  'Knete': {
+    positive: "claymation stop-motion photograph style inspired by Aardman Animations (Wallace and Gromit, Shaun the Sheep), 3D plasticine figures with visible fingerprints and clay thumbprint texture, slightly uneven handmade surfaces, warm three-point studio lighting casting soft shadows, consistent clay palette and lighting across all panels of this story, same character proportions and facial features in every panel, full bleed composition extending to all four image edges, no inner framing, subjects and background reach every corner of the image, square 1:1 aspect ratio",
+    negative: "no text, no watermarks, no labels, no tags, no annotations, no nameplates, no UI overlays, no callouts, no captions, no speech bubbles, no sign text, no alphanumeric text in image, no letterboxing, no black bars, no white margin, no cream margin, no paper border, no inner matte, no mat board, no illustration frame, no vignette, no aspect-ratio padding, no 2D flat shading, no painted illustration look, no CGI plastic sheen, no photorealism, no extra limbs, no duplicate props, no floating objects, no mixed art styles, no style drift"
+  },
+  'Voxel': {
+    positive: "low-poly voxel art illustration in the aesthetic of Crossy Road and Minecraft, 3D cube-based geometry with uniform voxel size, limited 16-color-per-character palette, consistent isometric 3/4 camera angle, soft ambient shading with a single directional light, consistent voxel size and palette across all panels of this story, same character voxel silhouette and facial features in every panel, full bleed composition extending to all four image edges, no inner framing, subjects and background reach every corner of the image, square 1:1 aspect ratio",
+    negative: "no text, no watermarks, no labels, no tags, no annotations, no nameplates, no UI overlays, no callouts, no captions, no speech bubbles, no sign text, no alphanumeric text in image, no letterboxing, no black bars, no white margin, no cream margin, no paper border, no inner matte, no mat board, no illustration frame, no vignette, no aspect-ratio padding, no smooth curved surfaces, no anti-aliasing, no photorealism, no detailed textures on voxels, no extra limbs, no duplicate props, no floating objects, no mixed art styles, no style drift"
+  }
 };
 
 // ═══════════════════════════════════════════════════════════════
@@ -90,7 +121,9 @@ const bildstilMap = {
 // ═══════════════════════════════════════════════════════════════
 
 const p = personaMeta[persona] || personaMeta.peter;
-const imageStyle = bildstilMap[bildstilKey] || bildstilMap['Aquarell'];
+const styleEntry = bildstilMap[bildstilKey] || bildstilMap['Aquarell'];
+const imageStylePositive = styleEntry.positive;
+const imageStyleNegative = styleEntry.negative;
 
 // Wortanzahl mit Neurotyp-Aufschlag
 const basisMin = parseInt(p.woerter.split('–')[0]) || 50;
@@ -123,7 +156,7 @@ Tempus: ${p.tempus}
 
 AUFBAU (diese Labels verwenden):
 GESCHICHTE: [vollständiger Text]
-ZUSAMMENFASSUNG: [2–3 Sätze]`;
+ZUSAMMENFASSUNG: [2–3 Sätze]\n\nWICHTIG: Verwende die Labels GESCHICHTE: und ZUSAMMENFASSUNG: GENAU mit Doppelpunkt. Keine Markdown-Heading-Marker (#, ##, ###), kein Fettdruck, keine Sterne im Story-Text.`;
 } else {
   // Bonus-Personas: kein Neurotyp, Stil kommt komplett aus Systemprompt
   userPrompt = `DU BIST ${p.name}.
@@ -135,13 +168,13 @@ Wortanzahl: ${p.woerter}
 
 AUFBAU (diese Labels verwenden):
 GESCHICHTE: [vollständiger Text]
-ZUSAMMENFASSUNG: [2–3 Sätze]`;
+ZUSAMMENFASSUNG: [2–3 Sätze]\n\nWICHTIG: Verwende die Labels GESCHICHTE: und ZUSAMMENFASSUNG: GENAU mit Doppelpunkt. Keine Markdown-Heading-Marker (#, ##, ###), kein Fettdruck, keine Sterne im Story-Text.`;
 }
 
 return { json: {
   title, persona, neurotyp, description, slug,
-  date: new Date().toISOString().split('T')[0],
+  date: new Date().toISOString(),
   personaName: p.name, personaType: p.typ,
   personaImg: p.imgUrl, personaBio: p.bio,
-  imageCount, bildstilKey, imageStyle, userPrompt
+  imageCount, bildstilKey, imageStylePositive, imageStyleNegative, userPrompt
 }};
