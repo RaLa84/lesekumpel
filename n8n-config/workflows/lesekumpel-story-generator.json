@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-04-26T09:25:05.825Z",
+  "updatedAt": "2026-04-26T09:35:03.668Z",
   "createdAt": "2026-03-19T13:18:27.527Z",
   "id": "eHfC95UaMbJMcLTb",
   "name": "Lesekumpel – Neuroinclusive Story Generator",
@@ -1186,7 +1186,7 @@
             {
               "id": "f0d39971-03d3-4f10-8369-0f0549dd8869",
               "name": "data",
-              "value": "={{ $json.data[0].b64_json }}",
+              "value": "={{ typeof $json.data === 'string' ? $json.data : ($json.data && $json.data[0] && $json.data[0].b64_json ? $json.data[0].b64_json : '') }}",
               "type": "string"
             }
           ]
@@ -2484,9 +2484,9 @@
       }
     ]
   },
-  "versionId": "16716a16-25ce-470e-851e-a99d3014a941",
-  "activeVersionId": "16716a16-25ce-470e-851e-a99d3014a941",
-  "versionCounter": 496,
+  "versionId": "889f56b1-7af6-46e5-adcd-c179de388828",
+  "activeVersionId": "889f56b1-7af6-46e5-adcd-c179de388828",
+  "versionCounter": 498,
   "triggerCount": 1,
   "shared": [
     {
@@ -2540,9 +2540,9 @@
   ],
   "tags": [],
   "activeVersion": {
-    "updatedAt": "2026-04-26T09:25:05.827Z",
-    "createdAt": "2026-04-26T09:25:05.827Z",
-    "versionId": "16716a16-25ce-470e-851e-a99d3014a941",
+    "updatedAt": "2026-04-26T09:35:03.672Z",
+    "createdAt": "2026-04-26T09:35:03.672Z",
+    "versionId": "889f56b1-7af6-46e5-adcd-c179de388828",
     "workflowId": "eHfC95UaMbJMcLTb",
     "nodes": [
       {
@@ -3724,7 +3724,7 @@
               {
                 "id": "f0d39971-03d3-4f10-8369-0f0549dd8869",
                 "name": "data",
-                "value": "={{ $json.data[0].b64_json }}",
+                "value": "={{ typeof $json.data === 'string' ? $json.data : ($json.data && $json.data[0] && $json.data[0].b64_json ? $json.data[0].b64_json : '') }}",
                 "type": "string"
               }
             ]
