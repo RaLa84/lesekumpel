@@ -38,7 +38,6 @@
             border: none; box-shadow: 0 4px 14px rgba(214,113,113,0.3);
         }
         .btn-cta-nav:hover { background: var(--accent-coral-dark); transform: translateY(-2px) scaleX(1.04) scaleY(0.97); }
-        .btn-cta-nav:active { transform: translateY(0) scaleX(0.97) scaleY(1.03); transition-duration: 0.1s; }
         .nav-right { display: flex; align-items: center; gap: 15px; }
         .burger-icon { font-size: 1.8rem; cursor: pointer; display: block; color: var(--text-dark); background: none; border: none; padding: 0; }
         .mobile-menu { display: none; position: absolute; top: 100%; left: 0; width: 100%; background: #fff; padding: 15px 24px; border-bottom: 2px solid var(--primary-yellow); box-shadow: 0 4px 12px rgba(0,0,0,0.08); flex-direction: column; gap: 12px; z-index: 999; }
@@ -47,54 +46,173 @@
         @media (min-width: 1024px) { .burger-icon { display: none; } .nav-links-desktop { display: flex; } .btn-cta-nav { display: inline-block; } }
 
         /* --- MAIN --- */
-        .main-container { max-width: 760px; margin: 0 auto; padding: 30px 20px 60px; }
+        .main-container {
+            max-width: 800px; margin: 0 auto;
+            padding: 30px 20px 60px;
+            position: relative;
+        }
+
+        /* --- HINTERGRUND-DEKO (übernommen aus landingpage.html) --- */
+        .floating-deco {
+            position: absolute; pointer-events: none; z-index: 0;
+            will-change: transform;
+        }
+        .deco-star { width: 32px; height: 32px; animation: float 6s ease-in-out infinite; }
+        .deco-circle { width: 20px; height: 20px; border-radius: 50%; animation: float-slow 8s ease-in-out infinite; }
+        .deco-sparkle { width: 18px; height: 18px; animation: sparkle 4s ease-in-out infinite; }
+        @keyframes float { 0%,100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-20px) rotate(5deg); } }
+        @keyframes float-slow { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-12px); } }
+        @keyframes sparkle { 0%,100% { opacity: 0.3; transform: scale(0.8); } 50% { opacity: 1; transform: scale(1.2); } }
 
         /* --- HERO --- */
-        .hub-hero { text-align: center; margin-bottom: 32px; }
+        .hub-hero { text-align: center; margin-bottom: 32px; position: relative; z-index: 1; }
         .hub-hero h1 { font-family: var(--font-heading); font-size: 1.8rem; color: var(--accent-coral); margin-bottom: 8px; }
         .hub-hero p { color: var(--text-muted); font-size: 1rem; }
         @media (min-width: 768px) { .hub-hero h1 { font-size: 2.2rem; } .hub-hero p { font-size: 1.1rem; } }
 
         /* --- MODUS GRID --- */
         .modus-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 16px;
+            display: grid; grid-template-columns: 1fr; gap: 18px;
+            position: relative; z-index: 1;
         }
-        @media (min-width: 768px) { .modus-grid { grid-template-columns: repeat(2, 1fr); gap: 20px; } }
+        @media (min-width: 768px) { .modus-grid { grid-template-columns: repeat(2, 1fr); gap: 22px; } }
 
+        /* --- MODUS-CARD (CSS-Variablen --card-accent / --card-tint pro Karte via inline style) --- */
         .modus-card {
-            background: #fff;
-            border: 2px solid var(--accent-coral-light);
+            background: linear-gradient(135deg, #fff 0%, #fff 50%, var(--card-tint, rgba(214,113,113,0.05)) 100%);
+            border: 2px solid var(--card-accent, var(--accent-coral));
             border-radius: 24px;
-            padding: 24px 22px;
+            padding: 28px 22px 22px;
             cursor: pointer;
-            transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
             text-decoration: none;
             color: var(--text-dark);
             display: flex;
             flex-direction: column;
-            gap: 10px;
-            box-shadow: 0 2px 16px rgba(0,0,0,0.04);
-            min-height: 220px;
+            gap: 12px;
+            box-shadow: 0 4px 18px rgba(0,0,0,0.06);
+            min-height: 260px;
+            position: relative;
+            overflow: hidden;
         }
-        .modus-card:hover { border-color: var(--accent-coral); transform: translateY(-3px); box-shadow: 0 6px 20px rgba(214,113,113,0.15); }
-        .modus-card.coming-soon { opacity: 0.96; }
-        .modus-card.coming-soon:hover { transform: translateY(-2px); }
+        .modus-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 32px var(--card-tint, rgba(214,113,113,0.15));
+        }
+        .modus-card.coming-soon {
+            border-style: dashed;
+            opacity: 0.86;
+            background: #fff;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+        }
+        .modus-card.coming-soon:hover {
+            transform: translateY(-2px);
+            opacity: 1;
+            box-shadow: 0 6px 18px var(--card-tint, rgba(214,113,113,0.10));
+        }
 
-        .modus-icon { font-size: 2.6rem; line-height: 1; margin-bottom: 4px; }
-        .modus-titel { font-family: var(--font-heading); font-size: 1.35rem; color: var(--accent-coral); margin: 0; }
+        /* Pille rechts oben (absolut) */
         .modus-tag {
-            display: inline-block; align-self: flex-start;
-            background: rgba(255, 213, 79, 0.35); color: var(--text-dark);
-            font-size: 0.72rem; font-weight: 600; padding: 3px 10px; border-radius: 999px;
-            text-transform: uppercase; letter-spacing: 0.04em;
+            position: absolute; top: 14px; right: 14px;
+            background: var(--card-accent, var(--accent-coral)); color: #fff;
+            font-size: 0.68rem; font-weight: 700; padding: 4px 11px;
+            border-radius: 999px;
+            text-transform: uppercase; letter-spacing: 0.05em;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.12);
+            z-index: 2;
         }
-        .modus-tag.in-arbeit { background: rgba(214, 113, 113, 0.15); color: var(--accent-coral); }
+        .modus-card.coming-soon .modus-tag {
+            background: #fff;
+            color: var(--card-accent, var(--accent-coral));
+            border: 1px solid var(--card-accent, var(--accent-coral));
+        }
+
+        /* Icon-Kreis (Tönung in Akzentfarbe) */
+        .modus-icon-circle {
+            width: 80px; height: 80px;
+            border-radius: 50%;
+            background: var(--card-tint, rgba(214,113,113,0.10));
+            display: flex; align-items: center; justify-content: center;
+            margin-bottom: 4px;
+            box-shadow: inset 0 2px 6px rgba(0,0,0,0.04);
+        }
+        .modus-icon { font-size: 2.6rem; line-height: 1; }
+
+        .modus-titel { font-family: var(--font-heading); font-size: 1.35rem; color: var(--card-accent, var(--accent-coral)); margin: 0; }
         .modus-beschreibung { font-size: 0.92rem; line-height: 1.5; color: var(--text-muted); margin: 0; }
 
+        /* --- PERSÖNLICHKEITS-VISUALS --- */
+        .modus-visual { display: flex; align-items: center; flex-wrap: wrap; gap: 6px; margin-top: 6px; }
+
+        /* Avatar-Stack (Autorengeschichte) */
+        .avatar-stack { display: flex; align-items: center; }
+        .mini-avatar {
+            width: 36px; height: 36px; border-radius: 50%;
+            border: 2px solid #fff;
+            object-fit: cover;
+            background: #f8f8f8;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+        .mini-avatar:not(:first-child) { margin-left: -10px; }
+        .mini-avatar-more {
+            display: inline-flex; align-items: center; justify-content: center;
+            width: 36px; height: 36px; border-radius: 50%;
+            background: var(--card-accent, var(--accent-coral));
+            color: #fff; font-family: var(--font-heading);
+            font-size: 0.7rem; font-weight: 700;
+            border: 2px solid #fff; margin-left: -10px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+        }
+
+        /* Wort-Pillen (Top 100) */
+        .wort-pill {
+            display: inline-block; padding: 4px 12px;
+            background: var(--card-tint, rgba(244,169,60,0.10));
+            border: 1px solid var(--card-accent, #F4A93C);
+            border-radius: 999px;
+            color: var(--card-accent, #F4A93C);
+            font-family: var(--font-heading); font-weight: 600;
+            font-size: 0.85rem;
+        }
+
+        /* Buchstaben-Kacheln (Lesestufen) */
+        .letter-tile {
+            display: inline-flex; align-items: center; justify-content: center;
+            min-width: 36px; height: 36px; padding: 0 8px;
+            background: var(--card-tint, rgba(102,187,106,0.12));
+            border: 2px solid var(--card-accent, #66BB6A);
+            border-radius: 8px;
+            color: var(--card-accent, #66BB6A);
+            font-family: var(--font-heading); font-weight: 700;
+            font-size: 1rem;
+        }
+
+        /* Bausteine (Geschichte bauen) */
+        .block {
+            display: inline-block;
+            width: 30px; height: 30px;
+            border-radius: 6px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.12);
+        }
+        .blocks { display: flex; gap: 4px; }
+
+        /* --- HOVER-AFFORDANCE --- */
+        .modus-go {
+            margin-top: auto; align-self: flex-end;
+            color: var(--card-accent, var(--accent-coral));
+            font-family: var(--font-body); font-weight: 700; font-size: 0.92rem;
+            opacity: 0; transform: translateX(-8px);
+            transition: opacity 0.25s ease, transform 0.25s ease;
+            padding-top: 8px;
+        }
+        .modus-card:hover .modus-go { opacity: 1; transform: translateX(0); }
+        /* Auf Mobile (Touch) den Pfeil immer dezent zeigen, weil kein Hover */
+        @media (hover: none) {
+            .modus-go { opacity: 0.7; transform: translateX(0); }
+        }
+
         /* --- FOOTER --- */
-        footer { text-align: center; color: var(--text-muted); font-size: 0.85rem; padding: 24px; border-top: 2px solid var(--primary-yellow); background: #fff; margin-top: 60px; }
+        footer { text-align: center; color: var(--text-muted); font-size: 0.85rem; padding: 24px; border-top: 2px solid var(--primary-yellow); background: #fff; margin-top: 60px; position: relative; z-index: 1; }
         .footer-links { margin-top: 6px; }
         .footer-links a { color: var(--text-muted); text-decoration: none; margin: 0 6px; transition: color 0.2s; }
         .footer-links a:hover { color: var(--accent-coral); }
@@ -137,6 +255,23 @@
 
 <main class="main-container">
 
+    <!-- Animierte Hintergrund-Deko -->
+    <svg aria-hidden="true" class="floating-deco deco-star" style="top:6%;left:3%;animation-delay:-1s;" viewBox="0 0 32 32">
+        <polygon points="16,2 20,12 30,12 22,19 25,30 16,23 7,30 10,19 2,12 12,12" fill="#FFD54F" opacity="0.55"/>
+    </svg>
+    <div aria-hidden="true" class="floating-deco deco-circle" style="top:12%;right:4%;background:rgba(214,113,113,0.25);animation-delay:-3s;"></div>
+    <svg aria-hidden="true" class="floating-deco deco-sparkle" style="top:38%;left:2%;animation-delay:-2s;" viewBox="0 0 24 24">
+        <path d="M12 2L13.5 9 21 12L13.5 14.5L12 22L10.5 14.5L3 12L10.5 9Z" fill="#F4A93C" opacity="0.5"/>
+    </svg>
+    <svg aria-hidden="true" class="floating-deco deco-star" style="top:48%;right:2.5%;animation-delay:-4s;" viewBox="0 0 32 32">
+        <polygon points="16,2 20,12 30,12 22,19 25,30 16,23 7,30 10,19 2,12 12,12" fill="#9575CD" opacity="0.45"/>
+    </svg>
+    <div aria-hidden="true" class="floating-deco deco-circle" style="top:72%;left:4%;background:rgba(102,187,106,0.30);animation-delay:-5s;"></div>
+    <svg aria-hidden="true" class="floating-deco deco-sparkle" style="top:80%;right:5%;animation-delay:-1.5s;" viewBox="0 0 24 24">
+        <path d="M12 2L13.5 9 21 12L13.5 14.5L12 22L10.5 14.5L3 12L10.5 9Z" fill="#D67171" opacity="0.5"/>
+    </svg>
+    <div aria-hidden="true" class="floating-deco deco-circle" style="top:90%;left:48%;background:rgba(255,213,79,0.45);width:14px;height:14px;animation-delay:-2.5s;"></div>
+
     <section class="hub-hero">
         <h1>Was möchtest du heute lesen?</h1>
         <p>Wähle einen Modus.</p>
@@ -144,32 +279,64 @@
 
     <section class="modus-grid" aria-label="Geschichtenmodi">
 
-        <a href="neue-autorengeschichte.html" class="modus-card">
-            <div class="modus-icon" aria-hidden="true">📖</div>
+        <!-- 1. Autorengeschichte (aktiv, Coral) -->
+        <a href="neue-autorengeschichte.html" class="modus-card" style="--card-accent:#D67171;--card-tint:rgba(214,113,113,0.10);">
             <span class="modus-tag">Klassisch</span>
+            <div class="modus-icon-circle"><span class="modus-icon" aria-hidden="true">📖</span></div>
             <h3 class="modus-titel">Autorengeschichte</h3>
             <p class="modus-beschreibung">Persona wählen, Lesemodus festlegen, Thema vorgeben — Lesekumpel schreibt eine maßgeschneiderte Geschichte für dich.</p>
+            <div class="modus-visual avatar-stack" aria-hidden="true">
+                <img src="avatars/pip-punkt.webp" class="mini-avatar" alt="">
+                <img src="avatars/mia-mitte.webp" class="mini-avatar" alt="">
+                <img src="avatars/stella-stimmenreich.webp" class="mini-avatar" alt="">
+                <img src="avatars/holzi-pixelkopf.webp" class="mini-avatar" alt="">
+                <span class="mini-avatar-more">+5</span>
+            </div>
+            <span class="modus-go">Los geht's →</span>
         </a>
 
-        <a href="neue-top100.html" class="modus-card coming-soon">
-            <div class="modus-icon" aria-hidden="true">💯</div>
-            <span class="modus-tag in-arbeit">In Arbeit</span>
+        <!-- 2. Top 100 Basiswörter (Stub, Orange) -->
+        <a href="neue-top100.html" class="modus-card coming-soon" style="--card-accent:#F4A93C;--card-tint:rgba(244,169,60,0.12);">
+            <span class="modus-tag">In Arbeit</span>
+            <div class="modus-icon-circle"><span class="modus-icon" aria-hidden="true">💯</span></div>
             <h3 class="modus-titel">Top 100 Basiswörter</h3>
             <p class="modus-beschreibung">Die 100 wichtigsten Wörter spielerisch lernen — Fortschritt sehen, Wimmelbilder lösen, eigene Mix-Geschichten aus deinem Wortschatz.</p>
+            <div class="modus-visual" aria-hidden="true">
+                <span class="wort-pill">der</span>
+                <span class="wort-pill">die</span>
+                <span class="wort-pill">ist</span>
+                <span class="wort-pill">und</span>
+                <span class="wort-pill">ein</span>
+            </div>
+            <span class="modus-go">Mehr erfahren →</span>
         </a>
 
-        <a href="neue-lesestufen.html" class="modus-card coming-soon">
-            <div class="modus-icon" aria-hidden="true">🎓</div>
-            <span class="modus-tag in-arbeit">In Arbeit</span>
+        <!-- 3. Lesestufen (Stub, Mint) -->
+        <a href="neue-lesestufen.html" class="modus-card coming-soon" style="--card-accent:#66BB6A;--card-tint:rgba(102,187,106,0.12);">
+            <span class="modus-tag">In Arbeit</span>
+            <div class="modus-icon-circle"><span class="modus-icon" aria-hidden="true">🎓</span></div>
             <h3 class="modus-titel">Lesestufen</h3>
             <p class="modus-beschreibung">Geschichten passend zur Schul-Fibel — wähle die aktuelle Lese-Stufe und ein Lieblingsthema (z.&nbsp;B. „Minecraft").</p>
+            <div class="modus-visual" aria-hidden="true">
+                <span class="letter-tile">S</span>
+                <span class="letter-tile">ch</span>
+                <span class="letter-tile">au</span>
+            </div>
+            <span class="modus-go">Mehr erfahren →</span>
         </a>
 
-        <a href="neue-geschichte-bauen.html" class="modus-card coming-soon">
-            <div class="modus-icon" aria-hidden="true">✏️</div>
-            <span class="modus-tag in-arbeit">In Arbeit</span>
+        <!-- 4. Geschichte bauen (Stub, Lavender) -->
+        <a href="neue-geschichte-bauen.html" class="modus-card coming-soon" style="--card-accent:#9575CD;--card-tint:rgba(149,117,205,0.12);">
+            <span class="modus-tag">In Arbeit</span>
+            <div class="modus-icon-circle"><span class="modus-icon" aria-hidden="true">✏️</span></div>
             <h3 class="modus-titel">Geschichte bauen</h3>
             <p class="modus-beschreibung">Du startest, die KI macht weiter — mit Cliffhanger-Modus für deine eigene Story.</p>
+            <div class="modus-visual blocks" aria-hidden="true">
+                <span class="block" style="background:rgba(149,117,205,0.45);transform:rotate(-4deg);"></span>
+                <span class="block" style="background:rgba(149,117,205,0.65);transform:rotate(2deg);"></span>
+                <span class="block" style="background:rgba(149,117,205,0.85);transform:rotate(-2deg);"></span>
+            </div>
+            <span class="modus-go">Mehr erfahren →</span>
         </a>
 
     </section>
