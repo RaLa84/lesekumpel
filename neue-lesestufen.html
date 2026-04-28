@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Neue Geschichte — Lesekumpel</title>
+    <title>Lesestufen — Lesekumpel</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Quicksand:wght@400;500;600;700&display=swap">
     <link rel="stylesheet" href="fonts/fonts.css">
     <style>
@@ -17,28 +17,15 @@
         }
         * { box-sizing: border-box; margin: 0; padding: 0; }
         body { font-family: var(--font-body); background: var(--bg-body); color: var(--text-dark); line-height: 1.6; }
-
-        /* --- NAVBAR --- */
-        .main-navbar {
-            background: rgba(255, 255, 255, 0.78); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
-            padding: 12px 24px; border-bottom: 3px solid rgba(255, 213, 79, 0.5);
-            display: flex; justify-content: space-between; align-items: center;
-            position: sticky; top: 0; z-index: 1000;
-        }
+        .main-navbar { background: rgba(255, 255, 255, 0.78); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px); padding: 12px 24px; border-bottom: 3px solid rgba(255, 213, 79, 0.5); display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; }
         .nav-left { display: flex; align-items: center; gap: 10px; }
         .nav-logo { height: 40px; width: auto; border-radius: 50%; }
         .brand-name { font-family: var(--font-heading); font-size: 1.2rem; color: var(--accent-coral); font-weight: 600; text-decoration: none; }
         .nav-links-desktop { display: none; gap: 20px; align-items: center; margin-left: 16px; }
         .nav-btn { text-decoration: none; color: var(--text-dark); font-weight: 600; font-size: 0.95rem; display: flex; align-items: center; gap: 5px; transition: color 0.2s; }
         .nav-btn:hover { color: var(--accent-coral); }
-        .btn-cta-nav {
-            display: none; background: var(--accent-coral); color: #fff; padding: 11px 26px;
-            border-radius: 28px; font-weight: 600; transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-            text-decoration: none; font-family: var(--font-body); font-size: 0.9rem;
-            border: none; box-shadow: 0 4px 14px rgba(214,113,113,0.3);
-        }
+        .btn-cta-nav { display: none; background: var(--accent-coral); color: #fff; padding: 11px 26px; border-radius: 28px; font-weight: 600; transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); text-decoration: none; font-family: var(--font-body); font-size: 0.9rem; border: none; box-shadow: 0 4px 14px rgba(214,113,113,0.3); }
         .btn-cta-nav:hover { background: var(--accent-coral-dark); transform: translateY(-2px) scaleX(1.04) scaleY(0.97); }
-        .btn-cta-nav:active { transform: translateY(0) scaleX(0.97) scaleY(1.03); transition-duration: 0.1s; }
         .nav-right { display: flex; align-items: center; gap: 15px; }
         .burger-icon { font-size: 1.8rem; cursor: pointer; display: block; color: var(--text-dark); background: none; border: none; padding: 0; }
         .mobile-menu { display: none; position: absolute; top: 100%; left: 0; width: 100%; background: #fff; padding: 15px 24px; border-bottom: 2px solid var(--primary-yellow); box-shadow: 0 4px 12px rgba(0,0,0,0.08); flex-direction: column; gap: 12px; z-index: 999; }
@@ -46,54 +33,23 @@
         @media (min-width: 768px) { .nav-logo { height: 50px; } .brand-name { font-size: 1.5rem; } .nav-left { gap: 15px; } }
         @media (min-width: 1024px) { .burger-icon { display: none; } .nav-links-desktop { display: flex; } .btn-cta-nav { display: inline-block; } }
 
-        /* --- MAIN --- */
-        .main-container { max-width: 760px; margin: 0 auto; padding: 30px 20px 60px; }
+        .main-container { max-width: 720px; margin: 0 auto; padding: 30px 20px 60px; }
+        .stub-hero { text-align: center; margin-bottom: 28px; }
+        .stub-icon { font-size: 4.5rem; line-height: 1; margin-bottom: 12px; }
+        .stub-hero h1 { font-family: var(--font-heading); font-size: 2rem; color: var(--accent-coral); margin-bottom: 12px; }
+        @media (min-width: 768px) { .stub-hero h1 { font-size: 2.4rem; } .stub-icon { font-size: 5.5rem; } }
+        .stub-pill { display: inline-block; background: rgba(214, 113, 113, 0.15); color: var(--accent-coral); font-size: 0.78rem; font-weight: 600; padding: 4px 14px; border-radius: 999px; text-transform: uppercase; letter-spacing: 0.05em; }
+        .stub-card { background: #fff; border: 2px solid var(--accent-coral-light); border-radius: 24px; padding: 28px 24px; margin-bottom: 24px; box-shadow: 0 2px 16px rgba(0,0,0,0.04); }
+        .stub-intro { font-size: 1.05rem; line-height: 1.6; color: var(--text-dark); margin-bottom: 18px; }
+        .stub-features-title { font-family: var(--font-heading); font-size: 1.1rem; color: var(--accent-coral); margin-bottom: 12px; }
+        .stub-features { list-style: none; padding: 0; }
+        .stub-features li { position: relative; padding: 8px 0 8px 32px; border-bottom: 1px solid rgba(255, 213, 79, 0.25); font-size: 0.96rem; }
+        .stub-features li:last-child { border-bottom: none; }
+        .stub-features li::before { content: '✦'; position: absolute; left: 8px; top: 8px; color: var(--primary-yellow); font-size: 1rem; }
+        .stub-back { text-align: center; margin-top: 16px; }
+        .btn-back-hub { display: inline-block; background: var(--accent-coral); color: #fff; padding: 14px 32px; border-radius: 28px; font-weight: 700; font-size: 1rem; text-decoration: none; transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1); box-shadow: 0 4px 14px rgba(214,113,113,0.3); font-family: var(--font-body); }
+        .btn-back-hub:hover { background: var(--accent-coral-dark); transform: translateY(-2px) scale(1.02); }
 
-        /* --- HERO --- */
-        .hub-hero { text-align: center; margin-bottom: 32px; }
-        .hub-hero h1 { font-family: var(--font-heading); font-size: 1.8rem; color: var(--accent-coral); margin-bottom: 8px; }
-        .hub-hero p { color: var(--text-muted); font-size: 1rem; }
-        @media (min-width: 768px) { .hub-hero h1 { font-size: 2.2rem; } .hub-hero p { font-size: 1.1rem; } }
-
-        /* --- MODUS GRID --- */
-        .modus-grid {
-            display: grid;
-            grid-template-columns: 1fr;
-            gap: 16px;
-        }
-        @media (min-width: 768px) { .modus-grid { grid-template-columns: repeat(2, 1fr); gap: 20px; } }
-
-        .modus-card {
-            background: #fff;
-            border: 2px solid var(--accent-coral-light);
-            border-radius: 24px;
-            padding: 24px 22px;
-            cursor: pointer;
-            transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
-            text-decoration: none;
-            color: var(--text-dark);
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            box-shadow: 0 2px 16px rgba(0,0,0,0.04);
-            min-height: 220px;
-        }
-        .modus-card:hover { border-color: var(--accent-coral); transform: translateY(-3px); box-shadow: 0 6px 20px rgba(214,113,113,0.15); }
-        .modus-card.coming-soon { opacity: 0.96; }
-        .modus-card.coming-soon:hover { transform: translateY(-2px); }
-
-        .modus-icon { font-size: 2.6rem; line-height: 1; margin-bottom: 4px; }
-        .modus-titel { font-family: var(--font-heading); font-size: 1.35rem; color: var(--accent-coral); margin: 0; }
-        .modus-tag {
-            display: inline-block; align-self: flex-start;
-            background: rgba(255, 213, 79, 0.35); color: var(--text-dark);
-            font-size: 0.72rem; font-weight: 600; padding: 3px 10px; border-radius: 999px;
-            text-transform: uppercase; letter-spacing: 0.04em;
-        }
-        .modus-tag.in-arbeit { background: rgba(214, 113, 113, 0.15); color: var(--accent-coral); }
-        .modus-beschreibung { font-size: 0.92rem; line-height: 1.5; color: var(--text-muted); margin: 0; }
-
-        /* --- FOOTER --- */
         footer { text-align: center; color: var(--text-muted); font-size: 0.85rem; padding: 24px; border-top: 2px solid var(--primary-yellow); background: #fff; margin-top: 60px; }
         .footer-links { margin-top: 6px; }
         .footer-links a { color: var(--text-muted); text-decoration: none; margin: 0 6px; transition: color 0.2s; }
@@ -137,42 +93,27 @@
 
 <main class="main-container">
 
-    <section class="hub-hero">
-        <h1>Was möchtest du heute lesen?</h1>
-        <p>Wähle einen Modus.</p>
+    <section class="stub-hero">
+        <div class="stub-icon" aria-hidden="true">🎓</div>
+        <h1>Lesestufen</h1>
+        <span class="stub-pill">In Arbeit</span>
     </section>
 
-    <section class="modus-grid" aria-label="Geschichtenmodi">
+    <section class="stub-card">
+        <p class="stub-intro">Bald begleitet Lesekumpel die Schul-Fibel deines Kindes Lektion für Lektion. Du gibst die aktuelle Lese-Stufe und ein Lieblingsthema ein — Lesekumpel schreibt eine Geschichte, in der genau die neuen Buchstaben besonders oft vorkommen.</p>
 
-        <a href="neue-autorengeschichte.html" class="modus-card">
-            <div class="modus-icon" aria-hidden="true">📖</div>
-            <span class="modus-tag">Klassisch</span>
-            <h3 class="modus-titel">Autorengeschichte</h3>
-            <p class="modus-beschreibung">Persona wählen, Lesemodus festlegen, Thema vorgeben — Lesekumpel schreibt eine maßgeschneiderte Geschichte für dich.</p>
-        </a>
-
-        <a href="neue-top100.html" class="modus-card coming-soon">
-            <div class="modus-icon" aria-hidden="true">💯</div>
-            <span class="modus-tag in-arbeit">In Arbeit</span>
-            <h3 class="modus-titel">Top 100 Basiswörter</h3>
-            <p class="modus-beschreibung">Die 100 wichtigsten Wörter spielerisch lernen — Fortschritt sehen, Wimmelbilder lösen, eigene Mix-Geschichten aus deinem Wortschatz.</p>
-        </a>
-
-        <a href="neue-lesestufen.html" class="modus-card coming-soon">
-            <div class="modus-icon" aria-hidden="true">🎓</div>
-            <span class="modus-tag in-arbeit">In Arbeit</span>
-            <h3 class="modus-titel">Lesestufen</h3>
-            <p class="modus-beschreibung">Geschichten passend zur Schul-Fibel — wähle die aktuelle Lese-Stufe und ein Lieblingsthema (z.&nbsp;B. „Minecraft").</p>
-        </a>
-
-        <a href="neue-geschichte-bauen.html" class="modus-card coming-soon">
-            <div class="modus-icon" aria-hidden="true">✏️</div>
-            <span class="modus-tag in-arbeit">In Arbeit</span>
-            <h3 class="modus-titel">Geschichte bauen</h3>
-            <p class="modus-beschreibung">Du startest, die KI macht weiter — mit Cliffhanger-Modus für deine eigene Story.</p>
-        </a>
-
+        <div class="stub-features-title">Geplante Features</div>
+        <ul class="stub-features">
+            <li>Lese-Stufen passend zu Cornelsen, Mildenberger &amp; anderen Fibeln</li>
+            <li>Lieblingsthema als Keyword (z.&nbsp;B. „Minecraft", „Pferde", „Fußball")</li>
+            <li>Neue Grapheme/Buchstaben werden farbig hervorgehoben</li>
+            <li>Genau das, was in der Schule gerade dran ist — verpackt in eine Geschichte</li>
+        </ul>
     </section>
+
+    <div class="stub-back">
+        <a href="neue-geschichte.html" class="btn-back-hub">← Zurück zur Auswahl</a>
+    </div>
 
 </main>
 
