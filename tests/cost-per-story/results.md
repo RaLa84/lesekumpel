@@ -124,27 +124,63 @@ Cost-Komponenten der gemessenen Autorengeschichte (Mittelwert):
 | Geschichte bauen | **0.077 €** | geschätzt (5 Iterationen + 1 Bild) |
 | Top 100 Basiswörter | **~0 €** | vorgeneriert (CapEx ≈ 3.85 € einmalig) |
 
-## Hochrechnung mit Modi-Mix
+## Hochrechnung mit User-Personas
 
-Annahme: Top 100 und Lesestufen sind die meistgenutzten Modi, Autorengeschichte und Geschichte bauen weniger. Mix:
+Realistischere Modellierung: jedes Alters-Segment hat Casual/Regular/Power-Profile, plus Lehrkräfte als eigene Gruppe. Die Modi-Verteilung hängt vom Alter und Anspruch ab.
 
-| Modus | Anteil | €/Story | Beitrag |
+### Persona-Definitionen
+
+**P1: Kind 6 Jahre, Casual** (Leseanfänger, gelegentliche Nutzung)
+- ~20 Sessions/Monat — primär Top 100 + Lesestufen
+- 12 × Top 100 / 6 × Lesestufen / 2 × Autorengeschichte / 0 × Bauen
+
+**P2: Kind 6–7 Jahre, Regular** (täglich aktiv)
+- ~30 Sessions/Monat — noch viel Top 100, wachsender Anteil Lesestufen
+- 7 × Top 100 / 11 × Lesestufen / 9 × Autorengeschichte / 3 × Bauen
+
+**P3: Kind 8 Jahre, Power** (ambitionierte Eltern, lesefreudig)
+- ~60 Sessions/Monat — Schwerpunkt eigene Geschichten + Fortsetzungen
+- 6 × Top 100 / 9 × Lesestufen / 39 × Autorengeschichte / 6 × Bauen
+
+**P4: Lehrkraft** (für Klasse oder Förderkind)
+- ~12 Stories/Monat (2–3 pro Woche, Schulferien gemittelt)
+- 0 × Top 100 / 7 × Lesestufen / 5 × Autorengeschichte / 0 × Bauen
+
+### Kosten pro Persona
+
+| Persona | Top 100 | Lesestufen × 0.073 € | Autoren × 0.105 € | Bauen × 0.077 € | **€/Monat** |
+|---|---:|---:|---:|---:|---:|
+| P1 Kind 6, Casual | 0 € | 0.44 € | 0.21 € | 0 € | **0.65 €** |
+| P2 Kind 6–7, Regular | 0 € | 0.80 € | 0.95 € | 0.23 € | **1.98 €** |
+| P3 Kind 8, Power | 0 € | 0.66 € | 4.10 € | 0.46 € | **5.22 €** |
+| P4 Lehrkraft | 0 € | 0.51 € | 0.53 € | 0 € | **1.04 €** |
+
+### Verteilungs-Annahme der Nutzerbasis
+
+| Anteil | Persona | Cost-Beitrag |
+|---:|---|---:|
+| 30 % | P1 Casual Kind | 0.20 € |
+| 40 % | P2 Regular Kind | 0.79 € |
+| 15 % | P3 Power Kind | 0.78 € |
+| 15 % | P4 Lehrkraft | 0.16 € |
+| | **Gewichtetes Mittel** | **1.93 €/User/Monat** |
+
+### Range zur Pricing-Auslegung
+
+- **Untergrenze** (Casual Kid): ~0.65 €/Monat
+- **Median** (Regular Kid): ~1.98 €/Monat
+- **Obergrenze** (Power Kid mit Eltern): ~5.22 €/Monat
+
+### Plus wiederkehrende CapEx & Fixkosten
+
+| Posten | Pro Monat | Pro User (bei 100) | Pro User (bei 10) |
 |---|---:|---:|---:|
-| Autorengeschichte | 20 % | 0.105 € | 0.0210 € |
-| Top 100 Basiswörter | 30 % | ~0 € | 0 € |
-| Lesestufen | 35 % | 0.073 € | 0.0256 € |
-| Geschichte bauen | 15 % | 0.077 € | 0.0116 € |
-| **Gewichtet pro Story** | | | **0.0581 €** |
+| Top-100-Content (3-Monats-Zyklus) | 1.28 € | 0.013 € | 0.13 € |
+| n8n-Cloud-Plan (Annahme 20 €) | 20 € | 0.20 € | 2.00 € |
+| Domain, GitHub Pages | 0 € | 0 € | 0 € |
+| **Total Fix-Anteil** | | **0.21 €/User** | **2.13 €/User** |
 
-| User-Profil | Stories/Monat | Variable Kosten | + Top-100-CapEx (anteilig) | Total/Monat |
-|---|---:|---:|---:|---:|
-| Casual | 5 | 0.29 € | 0.013 € | **0.30 €** |
-| Regular | 20 | 1.16 € | 0.013 € | **1.17 €** |
-| Power | 60 | 3.49 € | 0.013 € | **3.50 €** |
-
-(Top-100-CapEx-Anteil: 1.28 €/Monat ÷ 100 zahlende User. Bei 10 Usern wäre der Anteil 0.13 €/Monat.)
-
-**Plus Fixkosten** wie n8n-Cloud (20 €/Monat?), Domain, GitHub Pages = 0 € — diese skalieren nicht mit Nutzung. Bei 100 Usern: 0.20 €/User/Monat extra.
+→ **Effektive Kosten/User/Monat (bei 100 Usern):** ~2.14 € im Mittel; Power-User ~5.43 €.
 
 ## Nächste Schritte
 
