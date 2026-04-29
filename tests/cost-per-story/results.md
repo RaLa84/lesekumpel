@@ -88,10 +88,12 @@ Cost-Komponenten der gemessenen Autorengeschichte (Mittelwert):
 
 **Modell:** Vorgenerierte Texte (z. B. ~50 Mini-Geschichten à ~80 Wörter) und Wimmelbilder werden **einmalig** erzeugt und liegen statisch im Repo. Plus optional dynamisch generierte Mix-Mini-Geschichten aus dem gelernten Wortschatz des Kindes.
 
-**Einmal-Investition (CapEx):**
+**Einmal-Investition (CapEx) pro Erneuerungs-Zyklus:**
 - 50 Mini-Texte à ~Pip-Punkt-Größe: 50 × 0.062 € ≈ **3.10 €**
 - 20 Wimmelbilder à $0.040: 20 × 0.037 € ≈ **0.74 €**
-- **Gesamt: ~3.85 €** — verteilt über alle User ≈ 0 €/User
+- **Gesamt: ~3.85 €** pro Zyklus
+
+**Erneuerungs-Annahme:** alle ~3 Monate wird der Content erweitert/erneuert (Curriculum, Variabilität für Kinder). Wiederkehrende CapEx ≈ **1.28 €/Monat**. Bei 100 zahlenden Usern: **0.013 €/User/Monat** (vernachlässigbar). Bei 10 Usern: 0.13 €/User/Monat.
 
 **Laufend pro User:** ≈ 0 € für vorgenerierte Inhalte. Falls Mix-Mini-Geschichten implementiert werden: ~0.03 € pro Mix-Story.
 
@@ -124,17 +126,25 @@ Cost-Komponenten der gemessenen Autorengeschichte (Mittelwert):
 
 ## Hochrechnung mit Modi-Mix
 
-Mit Annahme-Mix **40 % Autorengeschichte / 15 % Top 100 / 30 % Lesestufen / 15 % Geschichte bauen**:
+Annahme: Top 100 und Lesestufen sind die meistgenutzten Modi, Autorengeschichte und Geschichte bauen weniger. Mix:
 
-Pro Story (gemittelt über alle Modi): 0.40 × 0.105 + 0.15 × 0 + 0.30 × 0.073 + 0.15 × 0.077 = **0.0758 €**
+| Modus | Anteil | €/Story | Beitrag |
+|---|---:|---:|---:|
+| Autorengeschichte | 20 % | 0.105 € | 0.0210 € |
+| Top 100 Basiswörter | 30 % | ~0 € | 0 € |
+| Lesestufen | 35 % | 0.073 € | 0.0256 € |
+| Geschichte bauen | 15 % | 0.077 € | 0.0116 € |
+| **Gewichtet pro Story** | | | **0.0581 €** |
 
-| User-Profil | Stories/Monat | Kosten/Monat |
-|---|---:|---:|
-| Casual | 5 | 0.38 € |
-| Regular | 20 | 1.52 € |
-| Power | 60 | 4.55 € |
+| User-Profil | Stories/Monat | Variable Kosten | + Top-100-CapEx (anteilig) | Total/Monat |
+|---|---:|---:|---:|---:|
+| Casual | 5 | 0.29 € | 0.013 € | **0.30 €** |
+| Regular | 20 | 1.16 € | 0.013 € | **1.17 €** |
+| Power | 60 | 3.49 € | 0.013 € | **3.50 €** |
 
-Plus n8n-Cloud-Fixkosten (z. B. 20 €/Monat Plan) verteilt auf z. B. 100 zahlende User = 0.20 €/User.
+(Top-100-CapEx-Anteil: 1.28 €/Monat ÷ 100 zahlende User. Bei 10 Usern wäre der Anteil 0.13 €/Monat.)
+
+**Plus Fixkosten** wie n8n-Cloud (20 €/Monat?), Domain, GitHub Pages = 0 € — diese skalieren nicht mit Nutzung. Bei 100 Usern: 0.20 €/User/Monat extra.
 
 ## Nächste Schritte
 
