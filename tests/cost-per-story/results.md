@@ -192,43 +192,99 @@ Wenn ein User die 30 erreicht hat, gibt es drei Optionen — Pricing-Diskussion 
 | **Soft Cap (Pay-per-use)** | z. B. 0.20 € pro zusätzlicher Story (4× Cost = solide Marge). |
 | **Tier-Upgrade** | Premium-Tier mit höherem oder keinem Cap (z. B. 12 € statt 7 €). |
 
-### Plus wiederkehrende CapEx & Fixkosten
+### Plus wiederkehrende CapEx & Fixkosten (recherchierte Realdaten 2026)
 
-Vollständige Liste der Fixkosten — Schätzungen, müssen verifiziert werden:
+**Anlauf-Phase (≤ 80 aktive User):**
+
+| Posten | Pro Monat | Quelle / Anmerkung |
+|---|---:|---|
+| n8n Cloud Starter (2.500 Executions) | 24 € | n8n.io |
+| Vercel Pro (commercial use erlaubt) | ~18 € | $20, Hobby ist kommerziell verboten |
+| Supabase Pro (24/7 verfügbar) | ~23 € | $25, Free pausiert nach 7d Inaktivität |
+| Resend Free (3.000 E-Mails/Monat) | 0 € | für Anlauf ausreichend |
+| Cloudflare R2 (Bild-Storage) | ~5 € | $0.015/GB, Reserve-Posten |
+| Domain .de | ~1 € | 12 €/Jahr |
+| Top-100-Content (3-Monats-Zyklus) | 1.28 € | wiederkehrender CapEx |
+| **Total Fix-Anteil (Anlauf)** | **~72 €/Monat** | |
+
+**Wachstums-Phase (100–500 aktive User):**
 
 | Posten | Pro Monat | Anmerkung |
 |---|---:|---|
-| n8n-Cloud-Plan | 20 € | Annahme — aktueller Plan prüfen |
-| Backend-Hosting (Vercel/Railway) | 20 € | Sobald Profile/Tracking/Bezahlung → braucht Backend |
-| Datenbank (Supabase/Neon) | 0–25 € | Hobby-Tier reicht initial; Pro-Tier ab vielen Usern |
-| File-Storage für Bilder (R2/S3) | 5 € | GitHub Pages skaliert nicht für viele Stories |
-| Mailing (Resend/Postmark) | 15 € | Welcome, Reset, Newsletter |
-| Domain | 1 € | (~12 €/Jahr) |
-| Top-100-Content (3-Monats-Zyklus) | 1.28 € | wiederkehrender CapEx |
-| **Total Fix-Anteil** | **~62 €/Monat (Anlauf)** | bis ~90 € bei Produktion mit Pro-Plänen |
+| n8n Cloud Pro (10.000 Executions) | 60 € | Starter zu klein ab ~80 Power-User |
+| Vercel Pro | ~18 € | Pro reicht weit (1 TB Bandwidth) |
+| Supabase Pro | ~23 € | reicht für 100k MAU |
+| Resend Pro (50.000 E-Mails) | ~18 € | bei wachsender User-Basis |
+| Cloudflare R2 | ~10 € | mehr Bilder |
+| Domain | ~1 € | |
+| Top-100-Content | 1.28 € | |
+| **Total Fix-Anteil (Wachstum)** | **~131 €/Monat** | |
 
 ### Worst-Case-Cost/User/Monat (alle User = P3 Power gecappt)
 
-| User-Anzahl | Variable | Fix-Allokation (62 €/Monat) | **Total/User** |
+| User-Anzahl | Variable | Fix-Allokation | Phase | **Total/User** |
+|---:|---:|---:|---|---:|
+| 10 | 2.91 € | 7.20 € (72 €/10) | Anlauf | **10.11 €** |
+| 50 | 2.91 € | 1.44 € (72 €/50) | Anlauf | **4.35 €** |
+| 100 | 2.91 € | 1.31 € (131 €/100) | Wachstum | **4.22 €** |
+| 500 | 2.91 € | 0.26 € (131 €/500) | Wachstum | **3.17 €** |
+| 1.000 | 2.91 € | 0.13 € | Wachstum | **3.04 €** |
+
+→ **Anlaufphase ist verlustreich** bei jedem Pricing < 5 €/Monat. **Stabilität ab ~100 Premium-Usern** im Wachstumsplan-Setup.
+
+## Tier-System: Free + Premium 5,99 €
+
+### Vorgeschlagene Tier-Definition
+
+**Free (0 €):**
+- Alle bereits erstellten Geschichten **lesen** (Library, Demo-Texte, andere User-Stories falls public)
+- Top 100 Wimmelbild-Spiel uneingeschränkt nutzen (vorgeneriert, keine LLM-Kosten)
+- Persona-Übersicht, Lese-Tipps
+
+**Premium (5,99 €/Monat):**
+- Alles aus Free
+- **Eigene Geschichten generieren** (alle 4 Modi)
+- Cap: 30 LLM-Stories/Monat
+- Eigene Story-Library, History
+- Optional später: PDF-Download, mehrere Profile pro Account
+
+**Free-User produzieren keine LLM-Variable-Kosten** (sie generieren nichts), nur Backend-Anteil. Damit ist Cross-Subsidization mathematisch tragbar.
+
+### Break-Even-Analyse
+
+Anhand der Wachstumsphase-Fixkosten (131 €/Monat):
+
+```
+Cost = 131 € (Fix) + 2.91 € × Premium-User
+Income = 5.99 € × Premium-User
+Break-Even: 131 € + 2.91 P = 5.99 P → P = 42.5
+```
+
+→ **Break-Even bei 43 Premium-Usern** — egal wieviele Free-User dahinter stehen. Das ist eine niedrige Schwelle und mit SEO + Instagram organisch in 6–12 Monaten erreichbar.
+
+### Profitabilitäts-Szenarien
+
+| Premium-User | Cost (Fix + Var.) | Income | Profit/Monat |
 |---:|---:|---:|---:|
-| 10 | 2.91 € | 6.20 € | **9.11 €** |
-| 50 | 2.91 € | 1.24 € | **4.15 €** |
-| 100 | 2.91 € | 0.62 € | **3.53 €** |
-| 500 | 2.91 € | 0.12 € | **3.03 €** |
-| 1.000 | 2.91 € | 0.062 € | **2.97 €** |
+| 25 | 131 + 73 = 204 € | 150 € | **−54 €** |
+| 43 | 131 + 125 = 256 € | 258 € | **±0 €** (Break-Even) |
+| 100 | 131 + 291 = 422 € | 599 € | **+177 €** |
+| 250 | 131 + 728 = 859 € | 1.498 € | **+639 €** |
+| 500 | 131 + 1.455 = 1.586 € | 2.995 € | **+1.409 €** |
+| 1.000 | 131 + 2.910 = 3.041 € | 5.990 € | **+2.949 €** |
 
-→ **Anlaufphase (<50 User) ist verlustreich** — unter 5 €/Monat Pricing wird's defizitär. **Ab ~100 Usern** stabilisiert sich der Worst Case bei ~3.50 €/Monat.
+Anmerkung: Bei >300 Premium-Usern (= 9.000 LLM-Stories/Monat) wird der n8n-Pro-Plan (10.000 Executions inklusive) knapp. Dann zusätzliche Pakete oder Business-Plan nötig — proportionale Kosten-Steigerung.
 
-### Pricing-Korridor basierend auf 100-User-Worst-Case (3.53 €)
+### Marktvergleich
 
-| Marge | Preis/Monat | Beurteilung |
+| Anbieter | Preis | Anmerkung |
 |---|---:|---|
-| 1.5× | 5.30 € | break-even bei Anlauf, kein Marketing-Budget |
-| 2× | 7.06 € | solide bei Skalierung, schmal bei <50 Usern |
-| **3×** | **10.59 €** | **typische SaaS-Marge, deckt Akquise-Kosten** |
-| 4× | 14.12 € | premium, braucht klares Differential |
+| Anton (App) | kostenlos / 6 €/Monat | Schul-fokussiert, mehr Nutzer-Volumen |
+| Reading Eggs | 10–14 €/Monat | englischsprachig, Premium-Bildung |
+| Duolingo Family | 13 €/Monat | 4 Konten, breites Lernspektrum |
+| **Lesekumpel Premium** | **5,99 €/Monat** | spezifisch deutsche Lese-Förderung |
 
-Im Markt: Anton 6 €, Reading Eggs 10–14 €, Duolingo Family 13 € — eine Range von **8–10 €/Monat** wäre wettbewerbsfähig und finanziell tragfähig **ab ~100 zahlenden Usern**.
+5,99 € liegt im günstigeren Drittel — wettbewerbsfähig für Anlauf, aber Marge ist schmal (1.7× im Worst Case). Wenn der Worst Case durch Optimierung (z. B. Bilder-Anzahl reduzieren) sinkt, wird die Marge komfortabler.
 
 ## Nächste Schritte
 
