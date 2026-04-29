@@ -205,7 +205,8 @@ Wenn ein User die 30 erreicht hat, gibt es drei Optionen — Pricing-Diskussion 
 | Cloudflare R2 (Bild-Storage) | ~5 € | $0.015/GB, Reserve-Posten |
 | Domain .de | ~1 € | 12 €/Jahr |
 | Top-100-Content (3-Monats-Zyklus) | 1.28 € | wiederkehrender CapEx |
-| **Total Fix-Anteil (Anlauf)** | **~72 €/Monat** | |
+| **KI/Dev-Tool-Subscriptions** | **250 €** | Claude, Gemini, OpenAI, Cursor & Co. — Entwicklungs-Subscriptions |
+| **Total Fix-Anteil (Anlauf)** | **~322 €/Monat** | |
 
 **Wachstums-Phase (100–500 aktive User):**
 
@@ -218,7 +219,8 @@ Wenn ein User die 30 erreicht hat, gibt es drei Optionen — Pricing-Diskussion 
 | Cloudflare R2 | ~10 € | mehr Bilder |
 | Domain | ~1 € | |
 | Top-100-Content | 1.28 € | |
-| **Total Fix-Anteil (Wachstum)** | **~131 €/Monat** | |
+| **KI/Dev-Tool-Subscriptions** | **250 €** | Claude, Gemini, OpenAI, Cursor & Co. — bleiben unabhängig von User-Zahl |
+| **Total Fix-Anteil (Wachstum)** | **~381 €/Monat** | |
 
 ### Worst-Case-Cost/User/Monat (alle User = P3 Power gecappt)
 
@@ -258,7 +260,7 @@ Branchenmittel Freemium-zu-Paid: 2–5 %. Bildungs-Apps mit klarem Eltern-Wert (
 
 Annahme: Auf 1 Premium-User kommen 9 Free-User → Total = 10 × Premium.
 
-### Break-Even-Analyse (mit Free-User-Compute)
+### Break-Even-Analyse (mit Free-User-Compute + Dev-Tools)
 
 ```
 Pro Premium-User in der Kohorte:
@@ -266,26 +268,27 @@ Pro Premium-User in der Kohorte:
   - 9 × Free:       9 × 0,10 € = 0,90 € Backend
   Effektive Variable-Cost pro Premium-User: 3,91 €
 
-Cost   = 131 € (Fix) + 3,91 € × P
+Cost   = 381 € (Fix inkl. Dev-Tools) + 3,91 € × P
 Income = 5,99 € × P
-Break-Even:   131 € + 3,91 P = 5,99 P  →  P = 63
+Break-Even:   381 € + 3,91 P = 5,99 P  →  P = 183
 ```
 
-→ **Break-Even bei 63 Premium-Usern (= 630 Total Users mit 10 % Conversion).**
+→ **Break-Even bei 183 Premium-Usern (= 1.830 Total Users bei 10 % Conversion).**
 
-Die Free-User-Compute-Kosten erhöhen die Break-Even-Schwelle von 43 auf 63 Premium-User.
+Die 250 € Dev-Tool-Subscriptions verschieben Break-Even von 63 auf 183 Premium-User. Das ist deutlich anspruchsvoller — entspricht aber der Realität, weil diese Kosten unabhängig von der User-Zahl bestehen.
 
-### Profitabilitäts-Szenarien (10 % Conversion)
+### Profitabilitäts-Szenarien (10 % Conversion, mit allen Fixkosten)
 
 | Premium | Free | Total | Cost (Fix + Var. + Free-Compute) | Income | **Profit/Monat** |
 |---:|---:|---:|---:|---:|---:|
-| 25 | 225 | 250 | 131 + 73 + 23 = 227 € | 150 € | **−77 €** |
-| 50 | 450 | 500 | 131 + 146 + 45 = 322 € | 300 € | **−22 €** |
-| **63** | **567** | **630** | 131 + 184 + 57 = 372 € | 377 € | **±0 € (Break-Even)** |
-| 100 | 900 | 1.000 | 131 + 291 + 90 = 512 € | 599 € | **+87 €** |
-| 250 | 2.250 | 2.500 | 131 + 728 + 225 = 1.084 € | 1.498 € | **+414 €** |
-| 500 | 4.500 | 5.000 | 131 + 1.455 + 450 = 2.036 € | 2.995 € | **+959 €** |
-| 1.000 | 9.000 | 10.000 | 131 + 2.910 + 900 = 3.941 € | 5.990 € | **+2.049 €** |
+| 25 | 225 | 250 | 381 + 73 + 23 = 477 € | 150 € | **−327 €** |
+| 50 | 450 | 500 | 381 + 146 + 45 = 572 € | 300 € | **−272 €** |
+| 100 | 900 | 1.000 | 381 + 291 + 90 = 762 € | 599 € | **−163 €** |
+| **183** | **1.647** | **1.830** | 381 + 533 + 165 = 1.079 € | 1.096 € | **±0 € (Break-Even)** |
+| 250 | 2.250 | 2.500 | 381 + 728 + 225 = 1.334 € | 1.498 € | **+164 €** |
+| 500 | 4.500 | 5.000 | 381 + 1.455 + 450 = 2.286 € | 2.995 € | **+709 €** |
+| 1.000 | 9.000 | 10.000 | 381 + 2.910 + 900 = 4.191 € | 5.990 € | **+1.799 €** |
+| 2.000 | 18.000 | 20.000 | 381 + 5.820 + 1.800 = 8.001 € | 11.980 € | **+3.979 €** |
 
 Skalierungs-Schwellen mit zusätzlichen Kosten:
 
