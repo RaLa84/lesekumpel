@@ -128,32 +128,43 @@ Cost-Komponenten der gemessenen Autorengeschichte (Mittelwert):
 
 Realistischere Modellierung: jedes Alters-Segment hat Casual/Regular/Power-Profile, plus Lehrkräfte als eigene Gruppe. Die Modi-Verteilung hängt vom Alter und Anspruch ab.
 
+### Wichtig: Cap auf 30 LLM-Geschichten/Monat
+
+**Annahme:** Pro User maximal **30 LLM-generierte Geschichten** (Autorengeschichte + Lesestufen + Geschichte bauen) pro Monat. **Top 100 ist unbegrenzt**, weil vorgeneriert (kostet keine €). Damit fängt das Cap die Power-User-Spitze ab und macht die Kosten kalkulierbar.
+
 ### Persona-Definitionen
 
 **P1: Kind 6 Jahre, Casual** (Leseanfänger, gelegentliche Nutzung)
 - ~20 Sessions/Monat — primär Top 100 + Lesestufen
 - 12 × Top 100 / 6 × Lesestufen / 2 × Autorengeschichte / 0 × Bauen
+- LLM-Stories gesamt: 8 — **unter Cap**
 
 **P2: Kind 6–7 Jahre, Regular** (täglich aktiv)
 - ~30 Sessions/Monat — noch viel Top 100, wachsender Anteil Lesestufen
 - 7 × Top 100 / 11 × Lesestufen / 9 × Autorengeschichte / 3 × Bauen
+- LLM-Stories gesamt: 23 — **unter Cap**
 
-**P3: Kind 8 Jahre, Power** (ambitionierte Eltern, lesefreudig)
-- ~60 Sessions/Monat — Schwerpunkt eigene Geschichten + Fortsetzungen
-- 6 × Top 100 / 9 × Lesestufen / 39 × Autorengeschichte / 6 × Bauen
+**P3: Kind 8 Jahre, Power** (ambitionierte Eltern, lesefreudig) — **vom Cap betroffen**
+- Wunsch wäre ~54 LLM-Stories/Monat (39 Autoren / 9 Lesestufen / 6 Bauen)
+- Cap reduziert auf 30 — Mix proportional skaliert: 22 Autoren / 5 Lesestufen / 3 Bauen
+- Plus 6 × Top 100 (unbegrenzt)
+- Tatsächlich: ~36 Sessions/Monat statt 60
 
 **P4: Lehrkraft** (für Klasse oder Förderkind)
 - ~12 Stories/Monat (2–3 pro Woche, Schulferien gemittelt)
 - 0 × Top 100 / 7 × Lesestufen / 5 × Autorengeschichte / 0 × Bauen
+- LLM-Stories gesamt: 12 — **unter Cap**
 
-### Kosten pro Persona
+### Kosten pro Persona (mit Cap)
 
 | Persona | Top 100 | Lesestufen × 0.073 € | Autoren × 0.105 € | Bauen × 0.077 € | **€/Monat** |
 |---|---:|---:|---:|---:|---:|
 | P1 Kind 6, Casual | 0 € | 0.44 € | 0.21 € | 0 € | **0.65 €** |
 | P2 Kind 6–7, Regular | 0 € | 0.80 € | 0.95 € | 0.23 € | **1.98 €** |
-| P3 Kind 8, Power | 0 € | 0.66 € | 4.10 € | 0.46 € | **5.22 €** |
+| P3 Kind 8, Power *(gecappt)* | 0 € | 0.37 € | 2.31 € | 0.23 € | **2.91 €** |
 | P4 Lehrkraft | 0 € | 0.51 € | 0.53 € | 0 € | **1.04 €** |
+
+(P3 ohne Cap wäre 5.22 €/Monat — der Cap halbiert den Worst Case.)
 
 ### Verteilungs-Annahme der Nutzerbasis
 
@@ -161,15 +172,25 @@ Realistischere Modellierung: jedes Alters-Segment hat Casual/Regular/Power-Profi
 |---:|---|---:|
 | 30 % | P1 Casual Kind | 0.20 € |
 | 40 % | P2 Regular Kind | 0.79 € |
-| 15 % | P3 Power Kind | 0.78 € |
+| 15 % | P3 Power Kind *(gecappt)* | 0.44 € |
 | 15 % | P4 Lehrkraft | 0.16 € |
-| | **Gewichtetes Mittel** | **1.93 €/User/Monat** |
+| | **Gewichtetes Mittel** | **1.58 €/User/Monat** |
 
 ### Range zur Pricing-Auslegung
 
 - **Untergrenze** (Casual Kid): ~0.65 €/Monat
 - **Median** (Regular Kid): ~1.98 €/Monat
-- **Obergrenze** (Power Kid mit Eltern): ~5.22 €/Monat
+- **Obergrenze** (Power Kid, Cap aktiv): ~2.91 €/Monat
+
+### Cap-Strategien
+
+Wenn ein User die 30 erreicht hat, gibt es drei Optionen — Pricing-Diskussion für später:
+
+| Strategie | Wirkung |
+|---|---|
+| **Hard Cap** | Generierung gesperrt bis zum Monatswechsel. Klar, aber frustriert Power-Eltern. |
+| **Soft Cap (Pay-per-use)** | z. B. 0.20 € pro zusätzlicher Story (4× Cost = solide Marge). |
+| **Tier-Upgrade** | Premium-Tier mit höherem oder keinem Cap (z. B. 12 € statt 7 €). |
 
 ### Plus wiederkehrende CapEx & Fixkosten
 
@@ -180,7 +201,7 @@ Realistischere Modellierung: jedes Alters-Segment hat Casual/Regular/Power-Profi
 | Domain, GitHub Pages | 0 € | 0 € | 0 € |
 | **Total Fix-Anteil** | | **0.21 €/User** | **2.13 €/User** |
 
-→ **Effektive Kosten/User/Monat (bei 100 Usern):** ~2.14 € im Mittel; Power-User ~5.43 €.
+→ **Effektive Kosten/User/Monat (bei 100 Usern):** ~1.79 € im Mittel; Power-User (gecappt) ~3.12 €.
 
 ## Nächste Schritte
 
