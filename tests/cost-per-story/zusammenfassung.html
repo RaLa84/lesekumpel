@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lesekumpel — Geschäftsmodell-Übersicht</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Quicksand:wght@400;500;600;700&display=swap">
+    <style>
+        :root {
+            --bg-body: #FFF9E5; --bg-card: #ffffff;
+            --primary-yellow: #FFD54F;
+            --accent-coral: #D67171; --accent-coral-light: #FDEAEA; --accent-coral-dark: #B85555;
+            --accent-mint: #66BB6A; --accent-mint-light: #DCEDC8;
+            --accent-orange: #F4A93C; --accent-orange-light: #FFE0B2;
+            --accent-lavender: #9575CD; --accent-lavender-light: #E1D5F0;
+            --text-dark: #2D3436; --text-muted: #5a6368;
+            --font-heading: 'Fredoka', cursive, sans-serif;
+            --font-body: 'Quicksand', sans-serif;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: var(--font-body);
+            background: var(--bg-body);
+            color: var(--text-dark);
+            line-height: 1.6;
+            padding: 40px 20px;
+        }
+
+        .container { max-width: 980px; margin: 0 auto; }
+
+        /* Header */
+        .doc-header {
+            text-align: center;
+            margin-bottom: 48px;
+            padding-bottom: 24px;
+            border-bottom: 3px solid rgba(255, 213, 79, 0.5);
+        }
+        .doc-header h1 {
+            font-family: var(--font-heading);
+            font-size: 2.4rem;
+            color: var(--accent-coral);
+            margin-bottom: 8px;
+        }
+        .doc-header .doc-subtitle {
+            color: var(--text-muted);
+            font-size: 1.05rem;
+        }
+        .doc-header .doc-date {
+            display: inline-block;
+            margin-top: 12px;
+            padding: 4px 14px;
+            background: var(--primary-yellow);
+            border-radius: 999px;
+            font-size: 0.78rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-dark);
+        }
+
+        /* TL;DR Box */
+        .tldr {
+            background: linear-gradient(135deg, #fff 0%, var(--accent-coral-light) 100%);
+            border: 2px solid var(--accent-coral);
+            border-radius: 20px;
+            padding: 28px 28px;
+            margin-bottom: 48px;
+            box-shadow: 0 4px 20px rgba(214,113,113,0.12);
+        }
+        .tldr h2 {
+            font-family: var(--font-heading);
+            font-size: 1.1rem;
+            color: var(--accent-coral);
+            margin-bottom: 14px;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+        .tldr ul { list-style: none; padding: 0; }
+        .tldr li {
+            position: relative;
+            padding: 6px 0 6px 28px;
+            font-size: 0.98rem;
+        }
+        .tldr li::before {
+            content: '✦';
+            position: absolute;
+            left: 4px;
+            color: var(--primary-yellow);
+            font-size: 1.1rem;
+            top: 4px;
+        }
+        .tldr strong { color: var(--accent-coral); }
+
+        /* Sektionen */
+        section {
+            margin-bottom: 56px;
+            scroll-margin-top: 24px;
+        }
+        section h2 {
+            font-family: var(--font-heading);
+            font-size: 1.8rem;
+            color: var(--accent-coral);
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 14px;
+        }
+        section h2 .num {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            width: 38px;
+            height: 38px;
+            background: var(--primary-yellow);
+            border-radius: 50%;
+            font-size: 1.1rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            flex-shrink: 0;
+        }
+        section h3 {
+            font-family: var(--font-heading);
+            font-size: 1.15rem;
+            color: var(--accent-coral);
+            margin: 28px 0 12px;
+        }
+        section p { margin-bottom: 12px; }
+        section .lead {
+            color: var(--text-muted);
+            font-size: 1rem;
+            margin-bottom: 24px;
+        }
+
+        /* Tabellen */
+        .table-wrap {
+            background: #fff;
+            border: 2px solid var(--accent-coral-light);
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 2px 14px rgba(0,0,0,0.04);
+            margin-bottom: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            font-size: 0.94rem;
+        }
+        thead th {
+            background: rgba(255,213,79,0.18);
+            font-family: var(--font-heading);
+            font-weight: 700;
+            color: var(--text-dark);
+            text-align: left;
+            padding: 12px 16px;
+            font-size: 0.85rem;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+        thead th.right, td.right { text-align: right; }
+        tbody td {
+            padding: 11px 16px;
+            border-top: 1px solid rgba(255,213,79,0.25);
+            vertical-align: top;
+        }
+        tbody tr.highlight td {
+            background: var(--accent-coral-light);
+            font-weight: 700;
+        }
+        tbody tr.success td { background: rgba(102,187,106,0.10); }
+        tbody td.profit-positive { color: var(--accent-mint); font-weight: 700; }
+        tbody td.profit-negative { color: var(--accent-coral); font-weight: 700; }
+        tbody td.profit-neutral { color: var(--text-dark); font-weight: 700; }
+
+        /* Badges */
+        .badge {
+            display: inline-block;
+            padding: 3px 10px;
+            border-radius: 999px;
+            font-size: 0.72rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 0.04em;
+        }
+        .badge-coral { background: var(--accent-coral); color: #fff; }
+        .badge-mint { background: var(--accent-mint); color: #fff; }
+        .badge-orange { background: var(--accent-orange); color: #fff; }
+        .badge-lavender { background: var(--accent-lavender); color: #fff; }
+        .badge-warn { background: rgba(214,113,113,0.18); color: var(--accent-coral); border: 1px solid var(--accent-coral); }
+
+        /* KPI Cards */
+        .kpi-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 16px;
+            margin: 24px 0;
+        }
+        .kpi-card {
+            background: #fff;
+            border: 2px solid var(--accent-coral-light);
+            border-radius: 16px;
+            padding: 18px 16px;
+            text-align: center;
+        }
+        .kpi-card .kpi-label {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+            font-weight: 600;
+            margin-bottom: 6px;
+        }
+        .kpi-card .kpi-value {
+            font-family: var(--font-heading);
+            font-size: 1.6rem;
+            color: var(--accent-coral);
+            font-weight: 700;
+        }
+        .kpi-card .kpi-sub {
+            font-size: 0.78rem;
+            color: var(--text-muted);
+            margin-top: 4px;
+        }
+
+        /* Code-Box (Formel) */
+        .formula {
+            background: #2D3436;
+            color: #FFF9E5;
+            padding: 16px 18px;
+            border-radius: 12px;
+            font-family: 'Courier New', monospace;
+            font-size: 0.88rem;
+            line-height: 1.6;
+            margin: 16px 0;
+            overflow-x: auto;
+        }
+        .formula .highlight { color: var(--primary-yellow); font-weight: 700; }
+
+        /* Callout-Box */
+        .callout {
+            background: #fff;
+            border-left: 4px solid var(--accent-coral);
+            border-radius: 0 12px 12px 0;
+            padding: 14px 18px;
+            margin: 18px 0;
+            font-size: 0.95rem;
+        }
+        .callout strong { color: var(--accent-coral); }
+        .callout.warn {
+            border-left-color: var(--accent-orange);
+            background: rgba(244,169,60,0.06);
+        }
+        .callout.warn strong { color: var(--accent-orange); }
+        .callout.success {
+            border-left-color: var(--accent-mint);
+            background: rgba(102,187,106,0.06);
+        }
+        .callout.success strong { color: var(--accent-mint); }
+
+        /* Profit-Bar Visualisierung */
+        .profit-row { display: flex; align-items: center; gap: 12px; }
+        .profit-bar-bg {
+            flex: 1; height: 10px;
+            background: rgba(255,213,79,0.20);
+            border-radius: 5px;
+            overflow: hidden;
+            position: relative;
+        }
+        .profit-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent-coral), var(--primary-yellow), var(--accent-mint));
+            border-radius: 5px;
+        }
+
+        /* Footer */
+        footer {
+            text-align: center;
+            margin-top: 48px;
+            padding-top: 24px;
+            border-top: 2px solid rgba(255,213,79,0.4);
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        /* Print */
+        @media print {
+            body { background: #fff; padding: 0; }
+            section { page-break-inside: avoid; }
+            .table-wrap { box-shadow: none; }
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+
+    <header class="doc-header">
+        <h1>Lesekumpel — Geschäftsmodell</h1>
+        <div class="doc-subtitle">Kostenstruktur, Break-Even-Analyse und Einnahmequellen</div>
+        <div class="doc-date">Stand: 29. April 2026</div>
+    </header>
+
+    <!-- TL;DR -->
+    <div class="tldr">
+        <h2>Auf einen Blick</h2>
+        <ul>
+            <li><strong>Variable Kosten</strong> pro Story: 0,07–0,11 € (gemessen für Autorengeschichte)</li>
+            <li><strong>Fixkosten</strong>: 322 € (Anlauf) / 381 € (Wachstum) — inkl. 250 € Dev-Tool-Subscriptions</li>
+            <li><strong>Pricing</strong>: Free + Premium 7,99 €/Monat, Cap 30 LLM-Stories/Monat</li>
+            <li><strong>Break-Even</strong> bei 94 Premium-Usern (≈ 940 Total bei 10 % Conversion)</li>
+            <li><strong>Vollzeit-tragfähig</strong> ab ~1.000 Premium (~3.800 €/Monat Profit)</li>
+            <li><strong>Werbung wird nicht empfohlen</strong> — stattdessen +35 % Umsatz durch Family Plan, Print-Add-On und Schul-Lizenzen erreichbar</li>
+            <li><strong>100 Premium realistisch in 9–15 Monaten</strong> mit SEO + Instagram organisch</li>
+        </ul>
+    </div>
+
+    <!-- 1. Kosten -->
+    <section>
+        <h2><span class="num">1</span> Kostenstruktur</h2>
+        <p class="lead">Lesekumpel hat zwei Kostentypen: <strong>variable Kosten pro Story</strong> (LLM-Tokens + Bilder) und <strong>monatliche Fixkosten</strong> (Hosting, Tools, Subscriptions).</p>
+
+        <h3>Variable Kosten pro Story</h3>
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Modus</th>
+                        <th class="right">€/Story</th>
+                        <th>Quelle</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><span class="badge badge-coral">Klassisch</span> Autorengeschichte</td>
+                        <td class="right"><strong>0,105 €</strong></td>
+                        <td>gemessen aus 10 Live-Executions</td>
+                    </tr>
+                    <tr>
+                        <td><span class="badge badge-mint">Schule</span> Lesestufen</td>
+                        <td class="right">0,073 €</td>
+                        <td>geschätzt (LLM + 1 Bild)</td>
+                    </tr>
+                    <tr>
+                        <td><span class="badge badge-lavender">Mitmachen</span> Geschichte bauen</td>
+                        <td class="right">0,077 €</td>
+                        <td>geschätzt (5 Iterationen + 1 Bild)</td>
+                    </tr>
+                    <tr>
+                        <td><span class="badge badge-orange">Üben</span> Top 100 Basiswörter</td>
+                        <td class="right">~0 €</td>
+                        <td>vorgenerierte Inhalte (CapEx alle 3 Monate ~3,85 €)</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h3>Fixkosten pro Monat</h3>
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Posten</th>
+                        <th class="right">Anlauf</th>
+                        <th class="right">Wachstum</th>
+                        <th>Hinweis</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>n8n Cloud</td>
+                        <td class="right">24 €</td>
+                        <td class="right">60 €</td>
+                        <td>Starter → Pro ab ~80 Power-Usern</td>
+                    </tr>
+                    <tr>
+                        <td>Vercel Pro (Hosting)</td>
+                        <td class="right">18 €</td>
+                        <td class="right">18 €</td>
+                        <td>Hobby kommerziell verboten</td>
+                    </tr>
+                    <tr>
+                        <td>Supabase Pro (DB)</td>
+                        <td class="right">23 €</td>
+                        <td class="right">23 €</td>
+                        <td>Free pausiert nach 7 Tagen</td>
+                    </tr>
+                    <tr>
+                        <td>Resend (Mailing)</td>
+                        <td class="right">0 €</td>
+                        <td class="right">18 €</td>
+                        <td>Free reicht initial</td>
+                    </tr>
+                    <tr>
+                        <td>Cloudflare R2 (Bild-Storage)</td>
+                        <td class="right">5 €</td>
+                        <td class="right">10 €</td>
+                        <td>$0,015/GB</td>
+                    </tr>
+                    <tr>
+                        <td>Domain</td>
+                        <td class="right">1 €</td>
+                        <td class="right">1 €</td>
+                        <td>~12 €/Jahr</td>
+                    </tr>
+                    <tr>
+                        <td>Top-100-Content-CapEx</td>
+                        <td class="right">1,28 €</td>
+                        <td class="right">1,28 €</td>
+                        <td>3-Monats-Erneuerungs-Zyklus</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Dev-Tool-Subscriptions</strong></td>
+                        <td class="right"><strong>250 €</strong></td>
+                        <td class="right"><strong>250 €</strong></td>
+                        <td>Claude, Gemini, OpenAI, Cursor & Co.</td>
+                    </tr>
+                    <tr class="highlight">
+                        <td><strong>Total</strong></td>
+                        <td class="right"><strong>322 €</strong></td>
+                        <td class="right"><strong>381 €</strong></td>
+                        <td>Anlauf bis ~80 User · Wachstum darüber</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h3>Pro-User-Kosten</h3>
+        <div class="kpi-grid">
+            <div class="kpi-card">
+                <div class="kpi-label">Free-User</div>
+                <div class="kpi-value">0,10 €</div>
+                <div class="kpi-sub">Backend pro Monat</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-label">Premium-User (Worst Case)</div>
+                <div class="kpi-value">3,01 €</div>
+                <div class="kpi-sub">Variable + Backend</div>
+            </div>
+            <div class="kpi-card">
+                <div class="kpi-label">1:9-Kohorte (1 Premium + 9 Free)</div>
+                <div class="kpi-value">3,91 €</div>
+                <div class="kpi-sub">effektive Variable pro Premium</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- 2. Break-Even -->
+    <section>
+        <h2><span class="num">2</span> Break-Even-Analyse</h2>
+        <p class="lead">Bei welcher User-Zahl decken sich die monatlichen Einnahmen mit den Kosten? Annahmen: <strong>10 % Conversion</strong> (Bildungs-App-Mittel), <strong>Worst Case</strong> alle Premium am 30-Story-Cap.</p>
+
+        <div class="formula">
+<span class="highlight">Cost</span>   = 381 € (Fix) + 3,91 € × P
+<span class="highlight">Income</span> = 7,99 € × P
+<span class="highlight">Break-Even</span>:  381 € + 3,91 P = 7,99 P  →  P = 94
+        </div>
+
+        <div class="callout success">
+            <strong>Break-Even bei 94 Premium-Usern</strong> = ca. 940 Total Users (mit 10 % Conversion).
+        </div>
+
+        <h3>Profitabilitäts-Kurve</h3>
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th class="right">Premium</th>
+                        <th class="right">Free</th>
+                        <th class="right">Total</th>
+                        <th class="right">Cost</th>
+                        <th class="right">Income</th>
+                        <th class="right">Profit/Monat</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td class="right">50</td>
+                        <td class="right">450</td>
+                        <td class="right">500</td>
+                        <td class="right">572 €</td>
+                        <td class="right">400 €</td>
+                        <td class="right profit-negative">−173 €</td>
+                    </tr>
+                    <tr class="highlight">
+                        <td class="right"><strong>94</strong></td>
+                        <td class="right"><strong>846</strong></td>
+                        <td class="right"><strong>940</strong></td>
+                        <td class="right"><strong>740 €</strong></td>
+                        <td class="right"><strong>751 €</strong></td>
+                        <td class="right profit-neutral">±0 € Break-Even</td>
+                    </tr>
+                    <tr>
+                        <td class="right">100</td>
+                        <td class="right">900</td>
+                        <td class="right">1.000</td>
+                        <td class="right">762 €</td>
+                        <td class="right">799 €</td>
+                        <td class="right profit-positive">+37 €</td>
+                    </tr>
+                    <tr>
+                        <td class="right">250</td>
+                        <td class="right">2.250</td>
+                        <td class="right">2.500</td>
+                        <td class="right">1.334 €</td>
+                        <td class="right">1.998 €</td>
+                        <td class="right profit-positive">+664 €</td>
+                    </tr>
+                    <tr>
+                        <td class="right">500</td>
+                        <td class="right">4.500</td>
+                        <td class="right">5.000</td>
+                        <td class="right">2.286 €</td>
+                        <td class="right">3.995 €</td>
+                        <td class="right profit-positive">+1.709 €</td>
+                    </tr>
+                    <tr class="success">
+                        <td class="right"><strong>1.000</strong></td>
+                        <td class="right"><strong>9.000</strong></td>
+                        <td class="right"><strong>10.000</strong></td>
+                        <td class="right"><strong>4.191 €</strong></td>
+                        <td class="right"><strong>7.990 €</strong></td>
+                        <td class="right profit-positive">+3.799 € Vollzeit</td>
+                    </tr>
+                    <tr>
+                        <td class="right">2.000</td>
+                        <td class="right">18.000</td>
+                        <td class="right">20.000</td>
+                        <td class="right">8.001 €</td>
+                        <td class="right">15.980 €</td>
+                        <td class="right profit-positive">+7.979 €</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h3>Zeitplan zur Profitabilität</h3>
+        <p>Mit reinem SEO + Instagram organisch (ohne bezahlte Werbung):</p>
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Phase</th>
+                        <th>Zeitraum</th>
+                        <th class="right">Total Users</th>
+                        <th class="right">Premium</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Aufbau</strong> — Insta-Account, erste SEO-Sandbox</td>
+                        <td>Monat 1–3</td>
+                        <td class="right">50–100</td>
+                        <td class="right">5–10</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Wachstum</strong> — 500–2.000 Insta-Follower, erste Long-Tail-Keywords</td>
+                        <td>Monat 3–6</td>
+                        <td class="right">200–500</td>
+                        <td class="right">20–50</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Beschleunigung</strong> — etablierte SEO, Mund-zu-Mund</td>
+                        <td>Monat 6–12</td>
+                        <td class="right">500–1.500</td>
+                        <td class="right">50–150</td>
+                    </tr>
+                    <tr class="highlight">
+                        <td><strong>Break-Even-Marke</strong> erreicht</td>
+                        <td>~Monat 9–15</td>
+                        <td class="right">~ 940</td>
+                        <td class="right">~ 94</td>
+                    </tr>
+                    <tr class="success">
+                        <td><strong>Vollzeit-Schwelle</strong></td>
+                        <td>~Monat 18–24</td>
+                        <td class="right">~ 10.000</td>
+                        <td class="right">~ 1.000</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="callout warn">
+            <strong>Anlauf-Investment</strong>: in den ersten 6 Monaten ca. 1.500–2.500 € (Fixkosten minus geringe Einnahmen). Bei sicherer Profitabilität nach 18 Monaten: ~6.000–8.000 € Anlauf-Investment.
+        </div>
+    </section>
+
+    <!-- 3. Einnahmequellen -->
+    <section>
+        <h2><span class="num">3</span> Einnahmequellen</h2>
+        <p class="lead">Premium-Subscription ist die Basis. Mit weiteren Streams lässt sich der Umsatz pro bestehendem User um ~35 % steigern, ohne neue Akquise-Kosten.</p>
+
+        <div class="callout warn">
+            <strong>Werbung wird ausdrücklich nicht empfohlen.</strong> Begründung: regulatorisch heikel (DSGVO bei Kindern, KJM/ZAW), niedrige CPMs im Kinder-Bereich (0,50–2 € statt 5–15 € bei Erwachsenen) und Vertrauens-Schaden bei zahlenden Eltern.
+        </div>
+
+        <h3>Zusätzliche Streams im Vergleich</h3>
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Stream</th>
+                        <th>Mechanik</th>
+                        <th>Aufwand</th>
+                        <th class="right">Income/Monat (bei 1.000 Premium)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>Family Plan</strong> (14,99 €, 4 Profile)</td>
+                        <td>30 % Premium-Switch → Aufpreis pro User</td>
+                        <td><span class="badge badge-mint">niedrig</span></td>
+                        <td class="right profit-positive">+2.100 €</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Yearly Plan</strong> (79 €/Jahr, −20 %)</td>
+                        <td>40 % Switch → Cash vorab, bessere Retention</td>
+                        <td><span class="badge badge-mint">niedrig</span></td>
+                        <td class="right">LTV +30 %</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Print-Add-On</strong> (eigenes Buch 19,99 €)</td>
+                        <td>3–5 % Premium × 1 Buch × ~10 € Marge</td>
+                        <td><span class="badge badge-coral">hoch</span> Logistik</td>
+                        <td class="right profit-positive">+300–500 €</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Schul-Lizenzen</strong> (25 €/Klasse-Monat)</td>
+                        <td>10 Klassen-Abos, B2B-Vertrieb</td>
+                        <td><span class="badge badge-coral">hoch</span> B2B</td>
+                        <td class="right profit-positive">+250 €</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Geschenk-Codes</strong> (Großeltern)</td>
+                        <td>Saison-Spike Weihnachten / Geburtstag</td>
+                        <td><span class="badge badge-orange">mittel</span></td>
+                        <td class="right profit-positive">+200–500 €</td>
+                    </tr>
+                    <tr>
+                        <td><strong>Affiliate</strong> Buchempfehlungen</td>
+                        <td>Amazon/Carlsen, 3–7 % Provision</td>
+                        <td><span class="badge badge-mint">niedrig</span></td>
+                        <td class="right profit-positive">+30–80 €</td>
+                    </tr>
+                    <tr>
+                        <td><strong>B2B / Stiftungen</strong></td>
+                        <td>Bibliotheken, Bildungsträger</td>
+                        <td><span class="badge badge-coral">sehr hoch</span></td>
+                        <td class="right profit-positive">+500–2.000 €</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <h3>Realistisches Gesamt-Bild bei 1.000 Premium</h3>
+        <div class="formula">
+Premium-Subscriptions  (1.000 × 7,99 €):  <span class="highlight">7.990 €</span>
++ Family-Upgrade       (300 × 7 €):      +2.100 €
++ Print-Add-On                            +400 €
++ Schul-Lizenzen                          +250 €
++ Affiliate                                +50 €
+─────────────────────────────────────────────
+<span class="highlight">Total Income/Monat:                    ~10.790 €</span>
+                       (= +35 % vs. Premium-only)
+        </div>
+
+        <h3>Roadmap nach Wachstumsphase</h3>
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Phase</th>
+                        <th class="right">Premium-Marke</th>
+                        <th>Streams</th>
+                        <th>Begründung</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td><strong>1. MVP</strong></td>
+                        <td class="right">0–500</td>
+                        <td>Premium nur</td>
+                        <td>Fokus auf Conversion + Retention</td>
+                    </tr>
+                    <tr>
+                        <td><strong>2. Festigen</strong></td>
+                        <td class="right">500–1.000</td>
+                        <td>+ Family Plan, Yearly</td>
+                        <td>bestehende User mehr monetarisieren</td>
+                    </tr>
+                    <tr>
+                        <td><strong>3. Erweitern</strong></td>
+                        <td class="right">1.000–2.500</td>
+                        <td>+ Print-Add-On, Geschenk-Codes</td>
+                        <td>tiefere Wertschöpfung, Saison-Hebel</td>
+                    </tr>
+                    <tr>
+                        <td><strong>4. Diversifizieren</strong></td>
+                        <td class="right">2.500+</td>
+                        <td>+ Schul-Lizenzen, B2B-Stiftungen</td>
+                        <td>neue Kanäle, Risiko-Streuung</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <!-- Schlussbild -->
+    <section>
+        <h2><span class="num">★</span> Schlussbild</h2>
+        <div class="callout success">
+            Das Modell ist <strong>wirtschaftlich tragfähig ab ~1.000 zahlenden Usern</strong> — eine erreichbare Schwelle mit konsequentem SEO/Insta-Aufbau in 12–18 Monaten. Der <strong>Premium-Stream allein ist die kürzeste Strecke zur Profitabilität</strong>; die anderen Streams sind <strong>Multiplikatoren</strong>, die pro bestehendem User mehr Wert ziehen, ohne neue Akquise-Kosten zu erzeugen. Der größte Hebel zur Verbesserung ist <strong>die Conversion-Rate</strong> (10 % → 12 % wäre +20 % Umsatz), nicht der Preis.
+        </div>
+
+        <h3>Wichtigste Annahmen — zu validieren</h3>
+        <ul style="list-style:none; padding-left: 0;">
+            <li style="padding: 8px 0; border-bottom: 1px solid rgba(255,213,79,0.3);">
+                <strong style="color: var(--accent-coral);">Conversion-Rate 10 %</strong> — Branchenmittel für Bildungs-Apps; stark vom Onboarding abhängig.
+            </li>
+            <li style="padding: 8px 0; border-bottom: 1px solid rgba(255,213,79,0.3);">
+                <strong style="color: var(--accent-coral);">Worst-Case-Annahme 100 % Power</strong> — alle Premium nutzen 30-Cap voll aus; Realität meist niedriger → bessere Marge.
+            </li>
+            <li style="padding: 8px 0; border-bottom: 1px solid rgba(255,213,79,0.3);">
+                <strong style="color: var(--accent-coral);">30-Story-Cap</strong> — Soft Cap mit Pay-per-Use über 30 wäre noch profitabler.
+            </li>
+            <li style="padding: 8px 0; border-bottom: 1px solid rgba(255,213,79,0.3);">
+                <strong style="color: var(--accent-coral);">Dev-Tool-Subscriptions 250 €</strong> — Solopreneur-Realität; mit Wachstum eher mehr (Designer, Texter).
+            </li>
+            <li style="padding: 8px 0;">
+                <strong style="color: var(--accent-coral);">Free-User Backend 0,10 €</strong> — Schätzung; mit live App und Logs validierbar.
+            </li>
+        </ul>
+    </section>
+
+    <footer>
+        Lesekumpel — Geschäftsmodell-Übersicht · 29. April 2026 · Detaildaten in <code>tests/cost-per-story/results.md</code>
+    </footer>
+
+</div>
+
+</body>
+</html>
