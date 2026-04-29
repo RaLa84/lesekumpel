@@ -234,7 +234,7 @@ Wenn ein User die 30 erreicht hat, gibt es drei Optionen — Pricing-Diskussion 
 
 → **Anlaufphase ist verlustreich** bei jedem Pricing < 5 €/Monat. **Stabilität ab ~100 Premium-Usern** im Wachstumsplan-Setup.
 
-## Tier-System: Free + Premium 5,99 €
+## Tier-System: Free + Premium 7,99 €
 
 ### Vorgeschlagene Tier-Definition
 
@@ -243,7 +243,7 @@ Wenn ein User die 30 erreicht hat, gibt es drei Optionen — Pricing-Diskussion 
 - Top 100 Wimmelbild-Spiel uneingeschränkt nutzen (vorgeneriert, keine LLM-Kosten)
 - Persona-Übersicht, Lese-Tipps
 
-**Premium (5,99 €/Monat):**
+**Premium (7,99 €/Monat):**
 - Alles aus Free
 - **Eigene Geschichten generieren** (alle 4 Modi)
 - Cap: 30 LLM-Stories/Monat
@@ -269,26 +269,26 @@ Pro Premium-User in der Kohorte:
   Effektive Variable-Cost pro Premium-User: 3,91 €
 
 Cost   = 381 € (Fix inkl. Dev-Tools) + 3,91 € × P
-Income = 5,99 € × P
-Break-Even:   381 € + 3,91 P = 5,99 P  →  P = 183
+Income = 7,99 € × P
+Break-Even:   381 € + 3,91 P = 7,99 P  →  P = 94
 ```
 
-→ **Break-Even bei 183 Premium-Usern (= 1.830 Total Users bei 10 % Conversion).**
+→ **Break-Even bei 94 Premium-Usern (= 940 Total Users bei 10 % Conversion).**
 
-Die 250 € Dev-Tool-Subscriptions verschieben Break-Even von 63 auf 183 Premium-User. Das ist deutlich anspruchsvoller — entspricht aber der Realität, weil diese Kosten unabhängig von der User-Zahl bestehen.
+Mit 7,99 € statt 5,99 € halbiert sich die Break-Even-Schwelle: 94 statt 183 Premium. Pro Premium-User bleibt eine Marge von 4,08 € statt 2,08 € — das ist ein deutlicher Hebel.
 
-### Profitabilitäts-Szenarien (10 % Conversion, mit allen Fixkosten)
+### Profitabilitäts-Szenarien (10 % Conversion, Premium 7,99 €)
 
 | Premium | Free | Total | Cost (Fix + Var. + Free-Compute) | Income | **Profit/Monat** |
 |---:|---:|---:|---:|---:|---:|
-| 25 | 225 | 250 | 381 + 73 + 23 = 477 € | 150 € | **−327 €** |
-| 50 | 450 | 500 | 381 + 146 + 45 = 572 € | 300 € | **−272 €** |
-| 100 | 900 | 1.000 | 381 + 291 + 90 = 762 € | 599 € | **−163 €** |
-| **183** | **1.647** | **1.830** | 381 + 533 + 165 = 1.079 € | 1.096 € | **±0 € (Break-Even)** |
-| 250 | 2.250 | 2.500 | 381 + 728 + 225 = 1.334 € | 1.498 € | **+164 €** |
-| 500 | 4.500 | 5.000 | 381 + 1.455 + 450 = 2.286 € | 2.995 € | **+709 €** |
-| 1.000 | 9.000 | 10.000 | 381 + 2.910 + 900 = 4.191 € | 5.990 € | **+1.799 €** |
-| 2.000 | 18.000 | 20.000 | 381 + 5.820 + 1.800 = 8.001 € | 11.980 € | **+3.979 €** |
+| 25 | 225 | 250 | 381 + 73 + 23 = 477 € | 200 € | **−277 €** |
+| 50 | 450 | 500 | 381 + 146 + 45 = 572 € | 400 € | **−173 €** |
+| **94** | **846** | **940** | 381 + 274 + 85 = 740 € | 751 € | **±0 € (Break-Even)** |
+| 100 | 900 | 1.000 | 381 + 291 + 90 = 762 € | 799 € | **+37 €** |
+| 250 | 2.250 | 2.500 | 381 + 728 + 225 = 1.334 € | 1.998 € | **+664 €** |
+| 500 | 4.500 | 5.000 | 381 + 1.455 + 450 = 2.286 € | 3.995 € | **+1.709 €** |
+| 1.000 | 9.000 | 10.000 | 381 + 2.910 + 900 = 4.191 € | 7.990 € | **+3.799 €** |
+| 2.000 | 18.000 | 20.000 | 381 + 5.820 + 1.800 = 8.001 € | 15.980 € | **+7.979 €** |
 
 Skalierungs-Schwellen mit zusätzlichen Kosten:
 
@@ -305,9 +305,9 @@ Skalierungs-Schwellen mit zusätzlichen Kosten:
 | Anton (App) | kostenlos / 6 €/Monat | Schul-fokussiert, mehr Nutzer-Volumen |
 | Reading Eggs | 10–14 €/Monat | englischsprachig, Premium-Bildung |
 | Duolingo Family | 13 €/Monat | 4 Konten, breites Lernspektrum |
-| **Lesekumpel Premium** | **5,99 €/Monat** | spezifisch deutsche Lese-Förderung |
+| **Lesekumpel Premium** | **7,99 €/Monat** | spezifisch deutsche Lese-Förderung |
 
-5,99 € liegt im günstigeren Drittel — wettbewerbsfähig für Anlauf, aber Marge ist schmal (1.7× im Worst Case). Wenn der Worst Case durch Optimierung (z. B. Bilder-Anzahl reduzieren) sinkt, wird die Marge komfortabler.
+7,99 € liegt im mittleren Drittel — knapp über Anton, deutlich unter Reading Eggs. Marge gegenüber Worst-Case-User: 7,99 / 2,91 = 2,7× (vs. 2,1× bei 5,99 €). Das ist ein solider Korridor, der auch Conversion-Schwankungen verzeiht.
 
 ## Nächste Schritte
 
