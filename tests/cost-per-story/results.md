@@ -248,32 +248,52 @@ Wenn ein User die 30 erreicht hat, gibt es drei Optionen — Pricing-Diskussion 
 - Eigene Story-Library, History
 - Optional später: PDF-Download, mehrere Profile pro Account
 
-**Free-User produzieren keine LLM-Variable-Kosten** (sie generieren nichts), nur Backend-Anteil. Damit ist Cross-Subsidization mathematisch tragbar.
+**Free-User generieren keine LLM-Variable-Kosten** (sie generieren keine Stories), aber sie beanspruchen Backend-Compute: Page-Loads (Vercel Function-Calls), Login & Lese-Fortschritt (Supabase MAU + DB-Writes), Welcome-/Reminder-Mails (Resend), File-Bandwidth (Bilder anschauen).
 
-### Break-Even-Analyse
+**Schätzung Free-User-Backend-Cost: ~0,10 €/User/Monat.**
 
-Anhand der Wachstumsphase-Fixkosten (131 €/Monat):
+### Conversion-Rate 1:10 (10 % zahlen)
+
+Branchenmittel Freemium-zu-Paid: 2–5 %. Bildungs-Apps mit klarem Eltern-Wert (Duolingo ~8 %, Reading Eggs ~12 %): 8–12 %. **10 % ist eine valide Ziel-Conversion** — am Anfang oft niedriger, mit gutem Onboarding erreichbar.
+
+Annahme: Auf 1 Premium-User kommen 9 Free-User → Total = 10 × Premium.
+
+### Break-Even-Analyse (mit Free-User-Compute)
 
 ```
-Cost = 131 € (Fix) + 2.91 € × Premium-User
-Income = 5.99 € × Premium-User
-Break-Even: 131 € + 2.91 P = 5.99 P → P = 42.5
+Pro Premium-User in der Kohorte:
+  - 1 × Premium:    2,91 € Variable + 0,10 € Backend = 3,01 €
+  - 9 × Free:       9 × 0,10 € = 0,90 € Backend
+  Effektive Variable-Cost pro Premium-User: 3,91 €
+
+Cost   = 131 € (Fix) + 3,91 € × P
+Income = 5,99 € × P
+Break-Even:   131 € + 3,91 P = 5,99 P  →  P = 63
 ```
 
-→ **Break-Even bei 43 Premium-Usern** — egal wieviele Free-User dahinter stehen. Das ist eine niedrige Schwelle und mit SEO + Instagram organisch in 6–12 Monaten erreichbar.
+→ **Break-Even bei 63 Premium-Usern (= 630 Total Users mit 10 % Conversion).**
 
-### Profitabilitäts-Szenarien
+Die Free-User-Compute-Kosten erhöhen die Break-Even-Schwelle von 43 auf 63 Premium-User.
 
-| Premium-User | Cost (Fix + Var.) | Income | Profit/Monat |
-|---:|---:|---:|---:|
-| 25 | 131 + 73 = 204 € | 150 € | **−54 €** |
-| 43 | 131 + 125 = 256 € | 258 € | **±0 €** (Break-Even) |
-| 100 | 131 + 291 = 422 € | 599 € | **+177 €** |
-| 250 | 131 + 728 = 859 € | 1.498 € | **+639 €** |
-| 500 | 131 + 1.455 = 1.586 € | 2.995 € | **+1.409 €** |
-| 1.000 | 131 + 2.910 = 3.041 € | 5.990 € | **+2.949 €** |
+### Profitabilitäts-Szenarien (10 % Conversion)
 
-Anmerkung: Bei >300 Premium-Usern (= 9.000 LLM-Stories/Monat) wird der n8n-Pro-Plan (10.000 Executions inklusive) knapp. Dann zusätzliche Pakete oder Business-Plan nötig — proportionale Kosten-Steigerung.
+| Premium | Free | Total | Cost (Fix + Var. + Free-Compute) | Income | **Profit/Monat** |
+|---:|---:|---:|---:|---:|---:|
+| 25 | 225 | 250 | 131 + 73 + 23 = 227 € | 150 € | **−77 €** |
+| 50 | 450 | 500 | 131 + 146 + 45 = 322 € | 300 € | **−22 €** |
+| **63** | **567** | **630** | 131 + 184 + 57 = 372 € | 377 € | **±0 € (Break-Even)** |
+| 100 | 900 | 1.000 | 131 + 291 + 90 = 512 € | 599 € | **+87 €** |
+| 250 | 2.250 | 2.500 | 131 + 728 + 225 = 1.084 € | 1.498 € | **+414 €** |
+| 500 | 4.500 | 5.000 | 131 + 1.455 + 450 = 2.036 € | 2.995 € | **+959 €** |
+| 1.000 | 9.000 | 10.000 | 131 + 2.910 + 900 = 3.941 € | 5.990 € | **+2.049 €** |
+
+Skalierungs-Schwellen mit zusätzlichen Kosten:
+
+| Schwelle | Was passiert |
+|---|---|
+| ~300 Premium (9.000 Stories/Monat) | n8n Pro (10.000 Exec) wird knapp → Business-Plan oder zusätzliche Pakete |
+| ~3.000 Free | Resend Pro (50.000 E-Mails) wird knapp bei moderater Mail-Frequenz |
+| ~10.000 Total | Vercel Bandwidth/Function-Calls, Supabase Compute → höhere Tarife |
 
 ### Marktvergleich
 
