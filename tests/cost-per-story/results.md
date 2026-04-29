@@ -68,8 +68,77 @@ Bei **0.1050 € pro Story** im Mittel:
 - Größter Kostenfaktor: **⚙️ Gemini (Szenen)** mit $0.1560 über alle 10 Stories.
 - Bilder kosten in 10 der Stories durchschnittlich 0.0699 € pro Story (nur Stories mit Bildern).
 
+## Schätzungen für die anderen 3 Modi
+
+### Bild-Anzahl-Annahme
+
+Lesestufen und Geschichte bauen: **immer 1 Bild pro Story** (vs. 1.9 im Mittel bei Autorengeschichte). Top 100 nutzt vorgenerierte Texte und Wimmelbilder — keine laufenden Kosten pro User.
+
+Cost-Komponenten der gemessenen Autorengeschichte (Mittelwert):
+
+| Komponente | USD | Anteil |
+|---|---:|---:|
+| LLM Input + Output | $0.0391 | 34 % |
+| Bilder (1.9 × $0.040) | $0.0760 | 66 % |
+| **Total** | **$0.1141** | **100 %** |
+
+→ Mit nur **1 Bild** statt 1.9: $0.0391 + $0.040 = **$0.0791** (0.0728 €).
+
+### Top 100 Basiswörter
+
+**Modell:** Vorgenerierte Texte (z. B. ~50 Mini-Geschichten à ~80 Wörter) und Wimmelbilder werden **einmalig** erzeugt und liegen statisch im Repo. Plus optional dynamisch generierte Mix-Mini-Geschichten aus dem gelernten Wortschatz des Kindes.
+
+**Einmal-Investition (CapEx):**
+- 50 Mini-Texte à ~Pip-Punkt-Größe: 50 × 0.062 € ≈ **3.10 €**
+- 20 Wimmelbilder à $0.040: 20 × 0.037 € ≈ **0.74 €**
+- **Gesamt: ~3.85 €** — verteilt über alle User ≈ 0 €/User
+
+**Laufend pro User:** ≈ 0 € für vorgenerierte Inhalte. Falls Mix-Mini-Geschichten implementiert werden: ~0.03 € pro Mix-Story.
+
+### Lesestufen
+
+**Modell:** Selber Workflow wie Autorengeschichte, aber Lese-Fokus-Constraint im Prompt + nur 1 Bild.
+
+**Geschätzte Kosten:** ~Autorengeschichte LLM + 1 Bild = **0.073 € pro Story**
+
+### Geschichte bauen
+
+**Modell:** Mehrere LLM-Iterationen (Kind schreibt → KI macht weiter → Kind wieder dran). Annahme: **5 Iterationen** pro Story, jede mit wachsendem Kontext.
+
+**Geschätzte Kosten:**
+- LLM: ~110 % der Autorengeschichte-LLM-Kosten (mehr Round-Trips, kleinere Outputs)
+  → 1.10 × $0.0391 = $0.043 → 0.040 €
+- 1 Bild am Ende: $0.040 → 0.037 €
+- **Gesamt: ~0.077 € pro Story**
+
+(Annahme volatil: bei 3 Iterationen ~0.062 €, bei 10 Iterationen ~0.10 €.)
+
+## Cost-Tabelle aller 4 Modi
+
+| Modus | Kosten/Story | Anmerkung |
+|---|---:|---|
+| Autorengeschichte | **0.105 €** | gemessen (Stichprobe, Mittel) |
+| Lesestufen | **0.073 €** | geschätzt (Autorengeschichte LLM + 1 Bild) |
+| Geschichte bauen | **0.077 €** | geschätzt (5 Iterationen + 1 Bild) |
+| Top 100 Basiswörter | **~0 €** | vorgeneriert (CapEx ≈ 3.85 € einmalig) |
+
+## Hochrechnung mit Modi-Mix
+
+Mit Annahme-Mix **40 % Autorengeschichte / 15 % Top 100 / 30 % Lesestufen / 15 % Geschichte bauen**:
+
+Pro Story (gemittelt über alle Modi): 0.40 × 0.105 + 0.15 × 0 + 0.30 × 0.073 + 0.15 × 0.077 = **0.0758 €**
+
+| User-Profil | Stories/Monat | Kosten/Monat |
+|---|---:|---:|
+| Casual | 5 | 0.38 € |
+| Regular | 20 | 1.52 € |
+| Power | 60 | 4.55 € |
+
+Plus n8n-Cloud-Fixkosten (z. B. 20 €/Monat Plan) verteilt auf z. B. 100 zahlende User = 0.20 €/User.
+
 ## Nächste Schritte
 
-1. Schätzung der drei Stub-Modi (Top 100, Lesestufen, Geschichte bauen) — Anteile dieser Cost-Basis.
-2. User-Profile (Casual/Regular/Power) verfeinern — was ist realistisch?
-3. Optimierungs-Hebel identifizieren: welche Knoten könnten von Pro auf Flash gewechselt werden?
+1. **User-Profile verfeinern**: Sind 5/20/60 Stories/Monat realistisch? Mix 40/15/30/15 plausibel?
+2. **Top-100-CapEx absichern**: Wie viele Mini-Texte und Wimmelbilder genau? Mix-Stories ja/nein?
+3. **"Geschichte bauen" Iterationen**: 5 ist eine Annahme — Test-Run wäre sinnvoll, sobald implementiert.
+4. **Optimierungs-Hebel**: Szenen-Extraktor (15 % der Autorengeschichte-Kosten) auf Flash → spart ~$0.012/Story = ~10 % Cost-Reduction.
