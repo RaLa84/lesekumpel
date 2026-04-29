@@ -194,14 +194,41 @@ Wenn ein User die 30 erreicht hat, gibt es drei Optionen — Pricing-Diskussion 
 
 ### Plus wiederkehrende CapEx & Fixkosten
 
-| Posten | Pro Monat | Pro User (bei 100) | Pro User (bei 10) |
-|---|---:|---:|---:|
-| Top-100-Content (3-Monats-Zyklus) | 1.28 € | 0.013 € | 0.13 € |
-| n8n-Cloud-Plan (Annahme 20 €) | 20 € | 0.20 € | 2.00 € |
-| Domain, GitHub Pages | 0 € | 0 € | 0 € |
-| **Total Fix-Anteil** | | **0.21 €/User** | **2.13 €/User** |
+Vollständige Liste der Fixkosten — Schätzungen, müssen verifiziert werden:
 
-→ **Effektive Kosten/User/Monat (bei 100 Usern):** ~1.79 € im Mittel; Power-User (gecappt) ~3.12 €.
+| Posten | Pro Monat | Anmerkung |
+|---|---:|---|
+| n8n-Cloud-Plan | 20 € | Annahme — aktueller Plan prüfen |
+| Backend-Hosting (Vercel/Railway) | 20 € | Sobald Profile/Tracking/Bezahlung → braucht Backend |
+| Datenbank (Supabase/Neon) | 0–25 € | Hobby-Tier reicht initial; Pro-Tier ab vielen Usern |
+| File-Storage für Bilder (R2/S3) | 5 € | GitHub Pages skaliert nicht für viele Stories |
+| Mailing (Resend/Postmark) | 15 € | Welcome, Reset, Newsletter |
+| Domain | 1 € | (~12 €/Jahr) |
+| Top-100-Content (3-Monats-Zyklus) | 1.28 € | wiederkehrender CapEx |
+| **Total Fix-Anteil** | **~62 €/Monat (Anlauf)** | bis ~90 € bei Produktion mit Pro-Plänen |
+
+### Worst-Case-Cost/User/Monat (alle User = P3 Power gecappt)
+
+| User-Anzahl | Variable | Fix-Allokation (62 €/Monat) | **Total/User** |
+|---:|---:|---:|---:|
+| 10 | 2.91 € | 6.20 € | **9.11 €** |
+| 50 | 2.91 € | 1.24 € | **4.15 €** |
+| 100 | 2.91 € | 0.62 € | **3.53 €** |
+| 500 | 2.91 € | 0.12 € | **3.03 €** |
+| 1.000 | 2.91 € | 0.062 € | **2.97 €** |
+
+→ **Anlaufphase (<50 User) ist verlustreich** — unter 5 €/Monat Pricing wird's defizitär. **Ab ~100 Usern** stabilisiert sich der Worst Case bei ~3.50 €/Monat.
+
+### Pricing-Korridor basierend auf 100-User-Worst-Case (3.53 €)
+
+| Marge | Preis/Monat | Beurteilung |
+|---|---:|---|
+| 1.5× | 5.30 € | break-even bei Anlauf, kein Marketing-Budget |
+| 2× | 7.06 € | solide bei Skalierung, schmal bei <50 Usern |
+| **3×** | **10.59 €** | **typische SaaS-Marge, deckt Akquise-Kosten** |
+| 4× | 14.12 € | premium, braucht klares Differential |
+
+Im Markt: Anton 6 €, Reading Eggs 10–14 €, Duolingo Family 13 € — eine Range von **8–10 €/Monat** wäre wettbewerbsfähig und finanziell tragfähig **ab ~100 zahlenden Usern**.
 
 ## Nächste Schritte
 
