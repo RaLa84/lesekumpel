@@ -1120,8 +1120,15 @@
         function removeParagraphNumbers() {
             document.querySelectorAll('.para-num').forEach(el => el.remove());
         }
+        function deactivateOtherAnsichtModes(except) {
+            if (except !== 'linien' && document.body.classList.contains('leselinien-active')) toggleLeselinien();
+            if (except !== 'fahrplan' && document.body.classList.contains('fahrplan-active')) toggleFahrplan();
+            if (except !== 'haeppchen' && document.body.classList.contains('haeppchen-active')) toggleViewMode();
+        }
         function toggleLeselinien() {
             let btn = document.getElementById('btn-leselinien');
+            let willActivate = !document.body.classList.contains('leselinien-active');
+            if (willActivate) deactivateOtherAnsichtModes('linien');
             let active = document.body.classList.toggle('leselinien-active');
             btn.className = active ? "tool-btn active" : "tool-btn";
             if (active && !state.syllables) toggleSyllables();
@@ -1130,6 +1137,8 @@
         }
         function toggleFahrplan() {
             let btn = document.getElementById('btn-fahrplan');
+            let willActivate = !document.body.classList.contains('fahrplan-active');
+            if (willActivate) deactivateOtherAnsichtModes('fahrplan');
             let active = document.body.classList.toggle('fahrplan-active');
             btn.className = active ? "tool-btn active" : "tool-btn";
             if (active) { addParagraphNumbers(); }
@@ -1165,7 +1174,8 @@
                 renderText();
                 try { localStorage.setItem('lesekumpel-haeppchen-default', 'false'); } catch(e) {}
             } else {
-                // Aktivieren
+                // Aktivieren — Ansicht ist exklusiv
+                deactivateOtherAnsichtModes('haeppchen');
                 full.classList.add('hidden'); chunk.classList.remove('hidden'); btn.className = "tool-btn active";
                 document.body.classList.add('haeppchen-active');
                 state.chunkIndex = 0;
@@ -1236,20 +1246,24 @@
         window.onload = function() {
             renderText(); renderQuiz(); renderWeitererzaehlen(); renderSchatzsuche(); initActivityTabs();
 
-            // Leselinien: localStorage > Neurotyp-Default (LRS)
-            let lsPref = null;
-            try { lsPref = localStorage.getItem('lesekumpel-leselinien-default'); } catch(e) {}
-            if ((lsPref !== null ? (lsPref === 'true') : (ntClass === 'nt-lrs'))) toggleLeselinien();
-
-            // Fahrplan: localStorage > Neurotyp-Default (Autismus)
-            let fpPref = null;
-            try { fpPref = localStorage.getItem('lesekumpel-fahrplan-default'); } catch(e) {}
-            if ((fpPref !== null ? (fpPref === 'true') : (ntClass === 'nt-autismus'))) toggleFahrplan();
-
-            // Häppchen: localStorage > Neurotyp-Default (ADHS)
-            let hpPref = null;
-            try { hpPref = localStorage.getItem('lesekumpel-haeppchen-default'); } catch(e) {}
-            if ((hpPref !== null ? (hpPref === 'true') : (ntClass === 'nt-adhs'))) toggleViewMode();
+            // Ansicht ist exklusiv — höchstens einen Modus aktivieren
+            // Priorität: explizite localStorage-Wahl > Neurotyp-Default
+            let lsPref = null, fpPref = null, hpPref = null;
+            try {
+                lsPref = localStorage.getItem('lesekumpel-leselinien-default');
+                fpPref = localStorage.getItem('lesekumpel-fahrplan-default');
+                hpPref = localStorage.getItem('lesekumpel-haeppchen-default');
+            } catch(e) {}
+            let viewMode = null;
+            if (lsPref === 'true') viewMode = 'linien';
+            else if (fpPref === 'true') viewMode = 'fahrplan';
+            else if (hpPref === 'true') viewMode = 'haeppchen';
+            else if (lsPref !== 'false' && ntClass === 'nt-lrs') viewMode = 'linien';
+            else if (fpPref !== 'false' && ntClass === 'nt-autismus') viewMode = 'fahrplan';
+            else if (hpPref !== 'false' && ntClass === 'nt-adhs') viewMode = 'haeppchen';
+            if (viewMode === 'linien') toggleLeselinien();
+            else if (viewMode === 'fahrplan') toggleFahrplan();
+            else if (viewMode === 'haeppchen') toggleViewMode();
         };
     
         // --- ACTIVITY-HUB: Funktionen ---
