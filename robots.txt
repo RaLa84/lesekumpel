@@ -1,0 +1,8 @@
+User-agent: *
+Allow: /
+Disallow: /tests/
+Disallow: /knowledge-base/
+Disallow: /n8n-config/
+Disallow: /prompts/
+
+Sitemap: https://rala84.github.io/lesekumpel/sitemap.xml
