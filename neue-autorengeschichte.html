@@ -244,11 +244,15 @@
         .precheck-diff { font-size: 0.95rem; line-height: 1.5; word-wrap: break-word; }
         .precheck-diff del { background: #FDEAEA; color: var(--accent-coral-dark); text-decoration: line-through; padding: 1px 3px; border-radius: 3px; }
         .precheck-diff ins { background: #E8F5E9; color: #2E7D32; text-decoration: none; padding: 1px 3px; border-radius: 3px; font-weight: 600; }
-        .precheck-issue-list { list-style: none; padding: 0; margin: 0; }
+        .precheck-issue-list { list-style: none; padding: 0; margin: 12px 0 0; }
         .precheck-issue-list li {
             background: #FDEAEA; border-radius: 10px; padding: 10px 14px; margin-bottom: 8px;
             color: var(--accent-coral-dark); font-size: 0.92rem; line-height: 1.4;
         }
+        .precheck-issue-list-info li {
+            background: #FFF8E1; color: #6D4C00; border-left: 3px solid var(--primary-yellow);
+        }
+        .precheck-issue-list li strong { font-weight: 700; }
         .precheck-actions {
             display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px; justify-content: flex-end;
         }
@@ -726,18 +730,31 @@ function showCorrectionModal(precheck, originalPayload) {
     const orig = precheck.original || {};
     const corr = precheck.corrected || {};
     const fields = [];
-    if (orig.titel !== corr.titel) {
-        fields.push({ label: 'Titel', diff: diffTokens(orig.titel, corr.titel) });
+    if ((orig.titel || '') !== (corr.titel || '')) {
+        fields.push({ label: 'Titel', diff: diffTokens(orig.titel || '', corr.titel || '') });
     }
     if ((orig.kurzbeschreibung || '') !== (corr.kurzbeschreibung || '')) {
         fields.push({ label: 'Kurzbeschreibung', diff: diffTokens(orig.kurzbeschreibung || '', corr.kurzbeschreibung || '') });
     }
-    document.getElementById('precheck-body').innerHTML = fields.map(f =>
+    const issues = (precheck.issues || []).filter(i => i && i.typ === 'grammatik' && typeof i.grund === 'string');
+
+    let bodyHtml = fields.map(f =>
         '<div class="precheck-field">' +
             '<div class="precheck-field-label">' + f.label + '</div>' +
             '<div class="precheck-diff">' + f.diff + '</div>' +
         '</div>'
-    ).join('') || '<div class="precheck-sub">Keine Änderungen.</div>';
+    ).join('');
+
+    if (issues.length) {
+        bodyHtml += '<ul class="precheck-issue-list precheck-issue-list-info">' +
+            issues.map(i => '<li>' + (i.feld === 'titel' ? '<strong>Titel:</strong> ' : '<strong>Beschreibung:</strong> ') + i.grund + '</li>').join('') +
+            '</ul>';
+    }
+
+    if (!bodyHtml) {
+        bodyHtml = '<div class="precheck-sub">Keine Änderungen vorgeschlagen.</div>';
+    }
+    document.getElementById('precheck-body').innerHTML = bodyHtml;
 
     document.getElementById('precheck-actions').innerHTML =
         '<button class="precheck-btn precheck-btn-secondary" id="precheck-btn-cancel">Zurück zum Formular</button>' +
