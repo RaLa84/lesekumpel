@@ -206,11 +206,16 @@
             z-index: 9000; flex-direction: column; align-items: center; justify-content: center;
         }
         .loading-overlay.visible { display: flex; }
-        .loading-card { background: #fff; border: 4px solid var(--primary-yellow); border-radius: 24px; padding: 40px; text-align: center; max-width: 400px; width: 90%; }
+        .loading-card { background: #fff; border: 4px solid var(--primary-yellow); border-radius: 24px; padding: 40px; text-align: center; max-width: 400px; width: 90%; position: relative; }
         .loading-title { font-family: var(--font-heading); font-size: 1.5rem; color: var(--accent-coral); margin-bottom: 10px; }
         .loading-bar-bg { width: 100%; height: 16px; background: #f0f0f0; border-radius: 10px; margin: 20px 0; overflow: hidden; }
         .loading-bar { height: 100%; background: linear-gradient(90deg, var(--accent-coral), var(--primary-yellow)); width: 0%; transition: width 1s linear; border-radius: 10px; }
         .loading-status { color: var(--text-muted); font-size: 0.95rem; }
+        .loading-close { display: none; position: absolute; top: 8px; right: 14px; background: none; border: 0; font-size: 1.8rem; line-height: 1; color: var(--text-muted); cursor: pointer; padding: 4px 8px; }
+        .loading-close:hover { color: var(--accent-coral); }
+        .loading-overlay.dismissable .loading-close { display: block; }
+        .story-ready-btn { display: inline-block; margin-top: 12px; background: var(--accent-coral); color: #fff; padding: 12px 24px; border-radius: 12px; font-weight: 700; text-decoration: none; }
+        .story-ready-btn:hover { filter: brightness(1.05); }
         @keyframes wackel { 0%{transform:rotate(0)} 25%{transform:rotate(-10deg)} 75%{transform:rotate(10deg)} 100%{transform:rotate(0)} }
         .wackel { display: inline-block; animation: wackel 2s infinite; font-size: 3rem; margin-bottom: 15px; }
 
@@ -416,6 +421,7 @@
 <!-- LOADING OVERLAY -->
 <div class="loading-overlay" id="loading-overlay">
     <div class="loading-card">
+        <button class="loading-close" id="loading-close" aria-label="Schließen" type="button">×</button>
         <span class="wackel">📖</span>
         <div class="loading-title" id="loading-title">Deine Geschichte wird geschrieben...</div>
         <div class="loading-bar-bg"><div class="loading-bar" id="loading-bar"></div></div>
@@ -691,10 +697,7 @@ function proceedToStory(payload) {
             alert('Fehler: ' + (result.message || result.error));
         } else {
             // Async-Submit (n8n hat sofort Echo-Body geantwortet, Story läuft im Hintergrund)
-            // Loading-Anzeige weiterlaufen lassen; nach ~90s zur Demo-Seite weiterleiten
-            document.getElementById('loading-title').textContent = 'Deine Geschichte wird im Hintergrund erstellt';
-            document.getElementById('loading-status').textContent = 'Sie erscheint gleich in der Bibliothek...';
-            document.getElementById('loading-hint').innerHTML = 'Das dauert ca. 1-2 Minuten. <a href="demo.html" style="color:var(--accent-coral);font-weight:600;">Zur Bibliothek →</a>';
+            enterAsyncMode(payload);
         }
     })
     .catch(() => {
@@ -860,8 +863,99 @@ function showLoading(mode) {
 function hideLoading() {
     const overlay = document.getElementById('loading-overlay');
     overlay.classList.remove('visible');
+    overlay.classList.remove('dismissable');
     if (overlay._timer) { clearInterval(overlay._timer); overlay._timer = null; }
+    stopPolling();
 }
+
+// ─── Async-Story-Detection via GitHub-API-Polling ───────────────────
+// n8n quittiert den Webhook sofort und erstellt die Story im Hintergrund.
+// Wir snapshotten die Dateiliste in demo-texte/ und pollen, bis ein neues
+// File auftaucht — dann switcht das Modal in den Fertig-State mit Direktlink.
+
+const STORY_FOLDER = 'demo-texte';
+const STORY_LIST_API = `https://api.github.com/repos/RaLa84/lesekumpel/contents/${STORY_FOLDER}`;
+const POLL_INTERVAL_MS = 10000;
+const POLL_MAX_ATTEMPTS = 18; // ~3 Minuten
+
+let pollState = null;
+
+function slugifyTitle(title) {
+    const m = { 'ä':'ae','ö':'oe','ü':'ue','ß':'ss','Ä':'ae','Ö':'oe','Ü':'ue' };
+    return (title || '').toLowerCase()
+        .replace(/[äöüßÄÖÜ]/g, c => m[c] || c)
+        .replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '').replace(/-+/g, '-')
+        .substring(0, 55);
+}
+
+async function fetchStoryFileSet() {
+    try {
+        const res = await fetch(STORY_LIST_API);
+        if (!res.ok) return null;
+        const data = await res.json();
+        if (!Array.isArray(data)) return null;
+        return new Set(data.filter(f => f && f.name && f.name.endsWith('.html')).map(f => f.name));
+    } catch (e) {
+        return null;
+    }
+}
+
+async function enterAsyncMode(payload) {
+    const overlay = document.getElementById('loading-overlay');
+    // Synthetischen Progress-Timer stoppen — er würde sonst weiter den Status-Text überschreiben
+    if (overlay._timer) { clearInterval(overlay._timer); overlay._timer = null; }
+    document.getElementById('loading-bar').style.width = '100%';
+    document.getElementById('loading-title').textContent = 'Deine Geschichte wird im Hintergrund erstellt';
+    document.getElementById('loading-status').textContent = 'Sie erscheint gleich in der Bibliothek...';
+    document.getElementById('loading-hint').innerHTML = 'Das dauert ca. 1–2 Minuten. <a href="demo.html" style="color:var(--accent-coral);font-weight:600;">Zur Bibliothek →</a>';
+    overlay.classList.add('dismissable');
+
+    const snapshot = await fetchStoryFileSet();
+    if (!snapshot) return; // Kein Polling möglich — Modal bleibt closeable mit Bibliothek-Link
+    pollState = {
+        snapshot,
+        slugHint: slugifyTitle(payload && payload.Titel),
+        attempts: 0,
+        timer: setInterval(pollForNewStory, POLL_INTERVAL_MS)
+    };
+}
+
+async function pollForNewStory() {
+    if (!pollState) return;
+    pollState.attempts++;
+    if (pollState.attempts > POLL_MAX_ATTEMPTS) { stopPolling(); return; }
+
+    const current = await fetchStoryFileSet();
+    if (!current) return;
+    const newFiles = [...current].filter(n => !pollState.snapshot.has(n));
+    if (newFiles.length === 0) return;
+
+    // Bevorzugt das File, dessen Name mit unserem Title-Slug beginnt; sonst das erste neue
+    const match = (pollState.slugHint && newFiles.find(n => n.startsWith(pollState.slugHint))) || newFiles[0];
+    markStoryReady(`${STORY_FOLDER}/${match}`);
+}
+
+function stopPolling() {
+    if (pollState && pollState.timer) clearInterval(pollState.timer);
+    pollState = null;
+}
+
+function markStoryReady(url) {
+    stopPolling();
+    document.getElementById('loading-title').textContent = '✅ Fertig — deine Geschichte ist da!';
+    document.getElementById('loading-status').textContent = 'Du kannst sie jetzt lesen.';
+    document.getElementById('loading-bar').style.width = '100%';
+    const hint = document.getElementById('loading-hint');
+    hint.innerHTML = '';
+    const a = document.createElement('a');
+    a.href = url;
+    a.className = 'story-ready-btn';
+    a.textContent = '📖 Geschichte ansehen →';
+    hint.appendChild(a);
+}
+
+// Close-Button binden
+document.getElementById('loading-close').addEventListener('click', hideLoading);
 
 // Init: Persona-Karten rendern
 renderPersonaCards();
