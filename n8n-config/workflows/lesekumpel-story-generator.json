@@ -1118,7 +1118,7 @@
     },
     {
       "parameters": {
-        "jsCode": "const prev = $input.first().json;\n\nif (!prev.imageCount || prev.imageCount === 0) {\n  return [{ json: { ...prev, skipImages: true } }];\n}\n\nconst charRef = prev.characterReference || '';\nconst imageStylePositive = prev.imageStylePositive || \"children's book watercolor illustration, soft pastel colors, consistent rendering across all panels of this story: same line weight, same color palette, same character proportions and facial features\";\nconst imageStyleNegative = prev.imageStyleNegative || \"no text, no watermarks, no extra limbs, no duplicate props, no floating objects, no mixed art styles, no style drift\";\nconst imageCount = prev.imageCount || 1;\nconst sceneRules = Array.isArray(prev.sceneRules) ? prev.sceneRules : [];\n\nconst rulesBlock = sceneRules.length > 0\n  ? sceneRules.map((r, i) => `${i+1}. ${r}`).join('\\n')\n  : '(no explicit invariants — infer plausibility from story)';\n\nconst sceneUserPrompt = `You are a prompt compiler for a children's book illustrator. Fill the slot template below. Do NOT write free prose.\n\nART STYLE (positive):\n${imageStylePositive}\n\nART STYLE (negative):\n${imageStyleNegative}\n\nCHARACTER REFERENCE (repeat exactly in EVERY scene):\n${charRef}\n\nSCENE INVARIANTS (global rules that apply to EVERY scene as constraints, NOT as actions to depict):\n${rulesBlock}\n\nSTORY TEXT:\n${prev.storyText || ''}\n\nTASK: Output a JSON array with exactly ${imageCount} objects. Pick ${imageCount} distinct moment(s) from the story that together cover the story arc. Each scene shows exactly ONE moment — never combine two moments into one image, never show the same character twice.\n\nEach object has this shape:\n{\n  \"scene\": <1-based number>,\n  \"momentSummary\": \"<one English sentence naming the single story moment this scene depicts>\",\n  \"positive\": \"<ART_STYLE_POSITIVE>. Characters present (repeat description verbatim from CHARACTER REFERENCE for each — humans keep clothing, animals keep real animal anatomy with NO clothing and NO costume): <CHAR_REF_SUBSET>. Ages: <explicit age for every HUMAN character; for animals write \\\"real animal — no age\\\">. Composition: <camera angle>, <action verb>. Spatial: <ON|NEXT-TO|BEHIND|IN-FRONT-OF> <object>. Props in hands: left=<X or none>, right=<Y or none>. Setting: <location>. Mood: <adjective>.\",\n  \"negative\": \"<ART_STYLE_NEGATIVE>, wrong ages, duplicate props, floating objects, extra characters not in the story, same character shown more than once, animals depicted as humans in costume, anthropomorphic animals unless explicitly stated in the story\",\n  \"invariantCheck\": \"<one English sentence asserting this scene respects every SCENE INVARIANT above>\",\n  \"compositionCheck\": \"<one English sentence asserting this scene is a full-bleed square 1:1 image with artwork reaching all four corners, no white margin, no inner matte>\"\n}\n\nCHECKS for every scene:\n1. Spatial relation is explicit (ON / NEXT-TO / BEHIND / IN-FRONT-OF).\n2. Every named prop shown has a hand slot (left / right / both / none).\n3. Every HUMAN character has an explicit age that matches the story; animals are rendered as actual animals with real anatomy, not as humans in costume.\n4. Only include characters named in the story; do not invent extras.\n5. Each named character appears AT MOST ONCE in the scene — never duplicate a character.\n6. Scene depicts exactly ONE moment from the story; do not combine moments.\n7. Camera angle and setting vary between scenes; character appearance stays identical.\n\nOutput ONLY the JSON array, no markdown, no explanation.`;\n\nreturn [{ json: { ...prev, sceneUserPrompt } }];"
+        "jsCode": "const prev = $input.first().json;\n\nif (!prev.imageCount || prev.imageCount === 0) {\n  return [{ json: { ...prev, skipImages: true } }];\n}\n\n// Style-Reference-URL aus Bildstil ableiten\nconst STYLE_REFS = {\n  'Aquarell':  'bilder/bildstil-vorschau/aquarell.webp',\n  'Cartoon':   'bilder/bildstil-vorschau/cartoon.webp',\n  'Buntstift': 'bilder/bildstil-vorschau/buntstift.webp',\n  'Pixel-Art': 'bilder/bildstil-vorschau/pixel-art.webp',\n  'Anime':     'bilder/bildstil-vorschau/anime.webp',\n  'Traumwelt': 'bilder/bildstil-vorschau/traumwelt.webp',\n  'Knete':     'bilder/bildstil-vorschau/knete.webp',\n  'Voxel':     'bilder/bildstil-vorschau/voxel.webp'\n};\nconst bildstilFromWebhook = $('Webhook: Geschichte anfordern').first().json.body?.Bildstil || prev.imageStyle || 'Cartoon';\nconst styleRefPath = STYLE_REFS[bildstilFromWebhook] || STYLE_REFS['Cartoon'];\nconst styleRefUrl = `https://rala84.github.io/lesekumpel/${styleRefPath}`;\n\nconst charRef = prev.characterReference || '';\nconst imageStylePositive = prev.imageStylePositive || \"children's book watercolor illustration, soft pastel colors, consistent rendering across all panels of this story: same line weight, same color palette, same character proportions and facial features\";\nconst imageStyleNegative = prev.imageStyleNegative || \"no text, no watermarks, no extra limbs, no duplicate props, no floating objects, no mixed art styles, no style drift\";\nconst imageCount = prev.imageCount || 1;\nconst sceneRules = Array.isArray(prev.sceneRules) ? prev.sceneRules : [];\n\nconst rulesBlock = sceneRules.length > 0\n  ? sceneRules.map((r, i) => `${i+1}. ${r}`).join('\\n')\n  : '(no explicit invariants — infer plausibility from story)';\n\nconst sceneUserPrompt = `You are a prompt compiler for a children's book illustrator. Fill the slot template below. Do NOT write free prose.\n\nVISUAL STYLE ANCHOR: A reference image will be attached to every generation call. That image defines the art style, color palette, line weight, character proportions, rendering technique, and overall world atmosphere. Match it strictly across all scenes — but generate completely new content (different characters, different scene, different composition) per the prompt below. Do NOT copy the reference's content; only its style.\n\nART STYLE (positive, supplementary to the reference image):\n${imageStylePositive}\n\nART STYLE (negative):\n${imageStyleNegative}\n\nCHARACTER REFERENCE (repeat exactly in EVERY scene):\n${charRef}\n\nSCENE INVARIANTS (global rules that apply to EVERY scene as constraints, NOT as actions to depict):\n${rulesBlock}\n\nSTORY TEXT:\n${prev.storyText || ''}\n\nTASK: Output a JSON array with exactly ${imageCount} objects. Pick ${imageCount} distinct moment(s) from the story that together cover the story arc. Each scene shows exactly ONE moment — never combine two moments into one image, never show the same character twice.\n\nEach object has this shape:\n{\n  \"scene\": <1-based number>,\n  \"momentSummary\": \"<one English sentence naming the single story moment this scene depicts>\",\n  \"positive\": \"Match style of attached reference image (anchor). ${imageStylePositive}. Characters present (repeat description verbatim from CHARACTER REFERENCE for each — humans keep clothing, animals keep real animal anatomy with NO clothing and NO costume): <CHAR_REF_SUBSET>. Ages: <explicit age for every HUMAN character; for animals write \\\"real animal — no age\\\">. Composition: <camera angle>, <action verb>. Spatial: <ON|NEXT-TO|BEHIND|IN-FRONT-OF> <object>. Props in hands: left=<X or none>, right=<Y or none>. Setting: <location>. Mood: <adjective>.\",\n  \"negative\": \"<ART_STYLE_NEGATIVE>, wrong ages, duplicate props, floating objects, extra characters not in the story, same character shown more than once, animals depicted as humans in costume, anthropomorphic animals unless explicitly stated in the story, deviation from reference image style\",\n  \"invariantCheck\": \"<one English sentence asserting this scene respects every SCENE INVARIANT above>\",\n  \"compositionCheck\": \"<one English sentence asserting this scene is a full-bleed square 1:1 image with artwork reaching all four corners, no white margin, no inner matte>\"\n}\n\nCHECKS for every scene:\n1. Spatial relation is explicit (ON / NEXT-TO / BEHIND / IN-FRONT-OF).\n2. Every named prop shown has a hand slot (left / right / both / none).\n3. Every HUMAN character has an explicit age that matches the story; animals are rendered as actual animals with real anatomy, not as humans in costume.\n4. Only include characters named in the story; do not invent extras.\n5. Each named character appears AT MOST ONCE in the scene — never duplicate a character.\n6. Scene depicts exactly ONE moment from the story; do not combine moments.\n7. Camera angle and setting vary between scenes; character appearance stays identical.\n\nOutput ONLY the JSON array, no markdown, no explanation.`;\n\nreturn [{ json: { ...prev, sceneUserPrompt, styleRefUrl } }];"
       },
       "id": "prep-scenes",
       "name": "Bildszenen vorbereiten",
@@ -1574,22 +1574,24 @@
     {
       "id": "gemini-fallback-image",
       "name": "Gemini Fallback Bild",
-      "type": "@n8n/n8n-nodes-langchain.googleGemini",
-      "typeVersion": 1,
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
       "position": [
         4880,
         880
       ],
       "parameters": {
-        "resource": "image",
-        "modelId": {
-          "__rl": true,
-          "value": "models/gemini-2.5-flash-image",
-          "mode": "list",
-          "cachedResultName": "models/gemini-2.5-flash-image"
+        "method": "POST",
+        "url": "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-image:generateContent",
+        "sendHeaders": true,
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"contents\": [{\n    \"parts\": [\n      { \"inlineData\": { \"mimeType\": {{ JSON.stringify($json.styleRefMimeType || 'image/webp') }}, \"data\": {{ JSON.stringify($json.styleRefBase64 || '') }} } },\n      { \"text\": {{ JSON.stringify($json.imagePrompt || '') }} }\n    ]\n  }]\n}",
+        "options": {
+          "timeout": 120000
         },
-        "prompt": "={{ $json.imagePrompt }}",
-        "options": {}
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "googlePalmApi"
       },
       "credentials": {
         "googlePalmApi": {
@@ -1601,15 +1603,14 @@
     {
       "id": "extract-image-gemini",
       "name": "Bild-Daten extrahieren (Gemini)",
-      "type": "n8n-nodes-base.extractFromFile",
-      "typeVersion": 1.1,
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
       "position": [
         5040,
         880
       ],
       "parameters": {
-        "operation": "binaryToPropery",
-        "options": {}
+        "jsCode": "// Parst die Gemini-multimodal-Response: extrahiert die base64-Bild-Daten aus\n// candidates[0].content.parts[*].inlineData.data und setzt sie als \\$json.data\n// (kompatibel mit dem GitHub-Upload-Knoten der \\$json.data direkt nutzt)\nconst inputJson = $input.first().json;\nconst parts = inputJson?.candidates?.[0]?.content?.parts || [];\nconst imagePart = parts.find(p => p && p.inlineData && p.inlineData.data);\nif (!imagePart) {\n  throw new Error('Gemini-Response enthält kein Bild — candidates[0].content.parts hat kein inlineData');\n}\nconst data = imagePart.inlineData.data;\nreturn { json: { ...inputJson, data } };"
       }
     },
     {
@@ -1680,6 +1681,42 @@
       "parameters": {
         "schemaType": "manual",
         "inputSchema": "{\n  \"type\": \"object\",\n  \"required\": [\n    \"characters\",\n    \"props\",\n    \"setting\",\n    \"sceneRules\"\n  ],\n  \"properties\": {\n    \"characters\": {\n      \"type\": \"array\",\n      \"items\": {\n        \"type\": \"object\",\n        \"required\": [\n          \"name\",\n          \"type\",\n          \"role\",\n          \"appearance\"\n        ],\n        \"properties\": {\n          \"name\": {\n            \"type\": \"string\"\n          },\n          \"type\": {\n            \"type\": \"string\",\n            \"enum\": [\n              \"human\",\n              \"animal\",\n              \"creature\",\n              \"object\"\n            ]\n          },\n          \"species\": {\n            \"type\": [\n              \"string\",\n              \"null\"\n            ]\n          },\n          \"role\": {\n            \"type\": \"string\"\n          },\n          \"ageYears\": {\n            \"type\": [\n              \"integer\",\n              \"null\"\n            ]\n          },\n          \"heightCategory\": {\n            \"type\": [\n              \"string\",\n              \"null\"\n            ]\n          },\n          \"appearance\": {\n            \"type\": \"string\"\n          }\n        }\n      }\n    },\n    \"props\": {\n      \"type\": \"array\",\n      \"items\": {\n        \"type\": \"object\",\n        \"required\": [\n          \"name\",\n          \"count\",\n          \"heldIn\",\n          \"description\"\n        ],\n        \"properties\": {\n          \"name\": {\n            \"type\": \"string\"\n          },\n          \"count\": {\n            \"type\": \"integer\"\n          },\n          \"heldIn\": {\n            \"type\": \"string\"\n          },\n          \"description\": {\n            \"type\": \"string\"\n          }\n        }\n      }\n    },\n    \"setting\": {\n      \"type\": \"string\"\n    },\n    \"sceneRules\": {\n      \"type\": \"array\",\n      \"items\": {\n        \"type\": \"string\"\n      }\n    }\n  }\n}"
+      }
+    },
+    {
+      "id": "style-ref-prep",
+      "name": "Style-Ref vorbereiten",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        4660,
+        880
+      ],
+      "parameters": {
+        "method": "GET",
+        "url": "={{ $json.styleRefUrl || $('Bildszenen vorbereiten').first().json.styleRefUrl }}",
+        "options": {
+          "response": {
+            "response": {
+              "responseFormat": "file",
+              "outputPropertyName": "data"
+            }
+          },
+          "timeout": 30000
+        }
+      }
+    },
+    {
+      "id": "style-ref-encode",
+      "name": "Style-Ref Encode",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        4770,
+        880
+      ],
+      "parameters": {
+        "jsCode": "// Löst den n8n-binary-File-Pointer auf und gibt das base64 + mimeType ins json\nconst buffer = await this.helpers.getBinaryDataBuffer(0, 'data');\nconst base64 = buffer.toString('base64');\nconst mimeType = $input.first().binary?.data?.mimeType || 'image/webp';\nreturn { json: { ...$input.first().json, styleRefBase64: base64, styleRefMimeType: mimeType } };"
       }
     }
   ],
@@ -2464,7 +2501,7 @@
         ],
         [
           {
-            "node": "Gemini Fallback Bild",
+            "node": "Style-Ref vorbereiten",
             "type": "main",
             "index": 0
           }
@@ -2532,6 +2569,28 @@
           {
             "node": "🧩 Story-Elemente extrahieren",
             "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Style-Ref vorbereiten": {
+      "main": [
+        [
+          {
+            "node": "Style-Ref Encode",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Style-Ref Encode": {
+      "main": [
+        [
+          {
+            "node": "Gemini Fallback Bild",
+            "type": "main",
             "index": 0
           }
         ]
