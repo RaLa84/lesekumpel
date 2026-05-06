@@ -1,0 +1,120 @@
+{
+  "name": "Lesekumpel — Input Pre-Check",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "lesekumpel-precheck",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1.1,
+      "id": "precheck-webhook",
+      "name": "Webhook: Pre-Check",
+      "position": [240, 320],
+      "webhookId": "f7c2e3b4-lesekumpel-precheck"
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "// Webhook-Input lesen\nconst webhookInput = $('Webhook: Pre-Check').first().json;\nconst input = webhookInput.body || webhookInput;\nconst titel = (input['Titel'] || '').toString().trim();\nconst kurzbeschreibung = (input['Kurzbeschreibung'] || '').toString().trim();\n\nreturn { json: {\n  titel,\n  kurzbeschreibung,\n  // Original wird im Response-Parser zurückgereicht (vor LLM-Modifikation gesichert)\n  _originalTitel: titel,\n  _originalKurzbeschreibung: kurzbeschreibung\n}};"
+      },
+      "id": "precheck-prepare",
+      "name": "Eingabe vorbereiten",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [464, 320]
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "=Titel: \"{{ $json.titel }}\"\nKurzbeschreibung: \"{{ $json.kurzbeschreibung }}\"",
+        "messages": {
+          "messageValues": [
+            {
+              "message": "Du bist Inhaltsprüfer für eine Kinder-Lese-App (Zielgruppe 5–10 Jahre, deutsch). Du erhältst Titel und Kurzbeschreibung einer Story-Anfrage von einem Elternteil oder Kind.\n\nAUFGABEN:\n1) JUGENDFREIHEIT (semantisch, nicht nur Keywords): Markiere als problematisch, wenn der Inhalt enthält:\n   - explizite Gewalt, Blut, Körperverletzung, Folter\n   - sexuelle Inhalte oder Anspielungen\n   - Drogen, Alkohol-Missbrauch\n   - Suizid, Selbstverletzung\n   - reale politische Konflikte, Krieg als Hauptthema, Religiöse Polemik\n   - diskriminierende Stereotype, Hassrede\n   Spannung, leichte Konflikte, leichte Angst, Streit, Tod (z.B. von Haustieren oder als Hintergrund-Element) sind OK — das gehört zu Kindergeschichten.\n\n2) RECHTSCHREIBUNG/GRAMMATIK: Korrigiere NUR deutliche Fehler:\n   - Tippfehler\n   - fehlende oder falsche Groß-/Kleinschreibung\n   - klare Grammatikfehler (Kasus, Verb-Konjugation)\n   KEINE Stil-Vorschläge, KEINE Umformulierungen, wenn das Original verständlich ist. Behalte Tonfall und Wortwahl des Nutzers.\n\nAUSGABE: NUR valides JSON, kein Markdown, kein Kommentar, kein Code-Block. Schema:\n{\n  \"status\": \"ok\" | \"corrected\" | \"rejected\",\n  \"corrected\": { \"titel\": \"...\", \"kurzbeschreibung\": \"...\" },\n  \"issues\": [ { \"feld\": \"titel\" | \"kurzbeschreibung\", \"typ\": \"grammatik\" | \"jugendfrei\", \"grund\": \"kurze Begründung auf Deutsch, kindgerecht formuliert\" } ]\n}\n\nREGELN:\n- \"ok\": kein Fehler, keine Bedenken → issues: [], corrected = Original (unverändert).\n- \"corrected\": NUR Grammatik-Korrekturen nötig, Inhalt jugendfrei → corrected enthält bereinigte Werte, issues listet die Korrekturen mit typ=grammatik.\n- \"rejected\": jugendfrei-Verstoß festgestellt → corrected = Original (NICHT selbst entschärfen), issues enthält mind. ein Item mit typ=jugendfrei und einer freundlichen Begründung, die das Frontend dem User zeigt.\n- Wenn das Eingabefeld kurzbeschreibung leer ist, beziehe dich nur auf den titel.\n- Antworte ausschließlich mit dem JSON-Objekt, ohne umschließende Markdown-Code-Blöcke."
+            }
+          ]
+        },
+        "batching": {}
+      },
+      "id": "precheck-chain",
+      "name": "Pre-Check Agent",
+      "type": "@n8n/n8n-nodes-langchain.chainLlm",
+      "typeVersion": 1.7,
+      "position": [720, 320],
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 2000
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-2.5-flash",
+        "options": {}
+      },
+      "id": "precheck-llm",
+      "name": "Gemini 2.5 Flash (Pre-Check)",
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1,
+      "position": [720, 496],
+      "credentials": {
+        "googlePalmApi": {
+          "id": "6COxa9BJR4aj2W2w",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "mode": "runOnceForEachItem",
+        "jsCode": "// LLM-Output parsen + Schema validieren + Fail-Open-Defaults\nconst orig = $('Eingabe vorbereiten').first().json;\nconst rawText = ($input.item.json.text || '').toString();\n\nconst originalTitel = orig._originalTitel || '';\nconst originalKurzbeschreibung = orig._originalKurzbeschreibung || '';\n\nfunction failOpen(reason) {\n  return { json: {\n    status: 'ok',\n    original: { titel: originalTitel, kurzbeschreibung: originalKurzbeschreibung },\n    corrected: { titel: originalTitel, kurzbeschreibung: originalKurzbeschreibung },\n    issues: [],\n    _debug: { failOpenReason: reason }\n  }};\n}\n\n// JSON aus Text extrahieren (LLM kann Code-Blöcke trotz Anweisung liefern)\nconst match = rawText.match(/\\{[\\s\\S]*\\}/);\nif (!match) return failOpen('no-json-found');\n\nlet parsed;\ntry { parsed = JSON.parse(match[0]); } catch (e) { return failOpen('parse-error'); }\n\nconst validStatus = ['ok', 'corrected', 'rejected'];\nconst status = validStatus.includes(parsed.status) ? parsed.status : 'ok';\n\nconst correctedTitel = (parsed.corrected && typeof parsed.corrected.titel === 'string')\n  ? parsed.corrected.titel : originalTitel;\nconst correctedKurz  = (parsed.corrected && typeof parsed.corrected.kurzbeschreibung === 'string')\n  ? parsed.corrected.kurzbeschreibung : originalKurzbeschreibung;\n\nconst issues = Array.isArray(parsed.issues) ? parsed.issues.filter(i =>\n  i && typeof i === 'object' &&\n  ['titel', 'kurzbeschreibung'].includes(i.feld) &&\n  ['grammatik', 'jugendfrei'].includes(i.typ) &&\n  typeof i.grund === 'string'\n) : [];\n\n// Bei rejected: corrected immer auf Original, damit Frontend keine LLM-entschärfte Variante anzeigt\nconst finalCorrected = status === 'rejected'\n  ? { titel: originalTitel, kurzbeschreibung: originalKurzbeschreibung }\n  : { titel: correctedTitel, kurzbeschreibung: correctedKurz };\n\n// Bei ok: corrected = Original (schon vom LLM so gemeint, aber sicherheitshalber)\nif (status === 'ok') {\n  finalCorrected.titel = originalTitel;\n  finalCorrected.kurzbeschreibung = originalKurzbeschreibung;\n}\n\nreturn { json: {\n  status,\n  original: { titel: originalTitel, kurzbeschreibung: originalKurzbeschreibung },\n  corrected: finalCorrected,\n  issues\n}};"
+      },
+      "id": "precheck-parse",
+      "name": "Response parsen",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [992, 320]
+    },
+    {
+      "parameters": {
+        "respondWith": "json",
+        "responseBody": "={{ JSON.stringify($json) }}",
+        "options": {
+          "responseHeaders": {
+            "entries": [
+              { "name": "Access-Control-Allow-Origin", "value": "*" },
+              { "name": "Access-Control-Allow-Headers", "value": "Content-Type" },
+              { "name": "Access-Control-Allow-Methods", "value": "POST, OPTIONS" }
+            ]
+          }
+        }
+      },
+      "id": "precheck-respond",
+      "name": "Respond to Webhook",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1.1,
+      "position": [1248, 320]
+    }
+  ],
+  "connections": {
+    "Webhook: Pre-Check": {
+      "main": [[{ "node": "Eingabe vorbereiten", "type": "main", "index": 0 }]]
+    },
+    "Eingabe vorbereiten": {
+      "main": [[{ "node": "Pre-Check Agent", "type": "main", "index": 0 }]]
+    },
+    "Gemini 2.5 Flash (Pre-Check)": {
+      "ai_languageModel": [[{ "node": "Pre-Check Agent", "type": "ai_languageModel", "index": 0 }]]
+    },
+    "Pre-Check Agent": {
+      "main": [[{ "node": "Response parsen", "type": "main", "index": 0 }]]
+    },
+    "Response parsen": {
+      "main": [[{ "node": "Respond to Webhook", "type": "main", "index": 0 }]]
+    }
+  },
+  "settings": {
+    "executionOrder": "v1"
+  }
+}

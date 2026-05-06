@@ -214,6 +214,62 @@
         @keyframes wackel { 0%{transform:rotate(0)} 25%{transform:rotate(-10deg)} 75%{transform:rotate(10deg)} 100%{transform:rotate(0)} }
         .wackel { display: inline-block; animation: wackel 2s infinite; font-size: 3rem; margin-bottom: 15px; }
 
+        /* --- PRE-CHECK MODAL --- */
+        .precheck-modal {
+            display: none; position: fixed; inset: 0; background: rgba(45,52,54,0.55);
+            z-index: 9100; align-items: center; justify-content: center; padding: 20px;
+            animation: fadeIn 0.2s ease;
+        }
+        .precheck-modal.visible { display: flex; }
+        .precheck-card {
+            background: #fff; border-radius: 24px; padding: 28px 24px; max-width: 520px;
+            width: 100%; max-height: 90vh; overflow-y: auto;
+            box-shadow: 0 12px 40px rgba(0,0,0,0.18);
+        }
+        .precheck-card.is-corrected { border-top: 6px solid var(--success-green); }
+        .precheck-card.is-rejected  { border-top: 6px solid var(--accent-coral); }
+        .precheck-headline {
+            font-family: var(--font-heading); font-size: 1.25rem; color: var(--text-dark);
+            margin-bottom: 6px; line-height: 1.3;
+        }
+        .precheck-sub { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 18px; }
+        .precheck-field {
+            background: #FFF9E5; border-radius: 14px; padding: 14px 16px; margin-bottom: 12px;
+            border: 1px solid var(--accent-coral-light);
+        }
+        .precheck-field-label {
+            font-size: 0.75rem; font-weight: 700; color: var(--accent-coral);
+            text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px;
+        }
+        .precheck-diff { font-size: 0.95rem; line-height: 1.5; word-wrap: break-word; }
+        .precheck-diff del { background: #FDEAEA; color: var(--accent-coral-dark); text-decoration: line-through; padding: 1px 3px; border-radius: 3px; }
+        .precheck-diff ins { background: #E8F5E9; color: #2E7D32; text-decoration: none; padding: 1px 3px; border-radius: 3px; font-weight: 600; }
+        .precheck-issue-list { list-style: none; padding: 0; margin: 0; }
+        .precheck-issue-list li {
+            background: #FDEAEA; border-radius: 10px; padding: 10px 14px; margin-bottom: 8px;
+            color: var(--accent-coral-dark); font-size: 0.92rem; line-height: 1.4;
+        }
+        .precheck-actions {
+            display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px; justify-content: flex-end;
+        }
+        .precheck-btn {
+            padding: 12px 22px; border-radius: 24px; font-family: var(--font-body); font-weight: 700;
+            font-size: 0.95rem; cursor: pointer; border: none; transition: all 0.2s;
+        }
+        .precheck-btn-primary {
+            background: var(--accent-coral); color: #fff;
+            box-shadow: 0 4px 12px rgba(214,113,113,0.3);
+        }
+        .precheck-btn-primary:hover { background: var(--accent-coral-dark); transform: translateY(-1px); }
+        .precheck-btn-secondary {
+            background: #fff; color: var(--text-dark); border: 2px solid #ddd;
+        }
+        .precheck-btn-secondary:hover { border-color: var(--accent-coral); color: var(--accent-coral); }
+        @media (max-width: 480px) {
+            .precheck-actions { flex-direction: column-reverse; }
+            .precheck-btn { width: 100%; }
+        }
+
         /* --- FOOTER --- */
         footer { text-align: center; color: var(--text-muted); font-size: 0.85rem; padding: 24px; border-top: 2px solid var(--primary-yellow); background: #fff; }
         .footer-links { margin-top: 6px; }
@@ -357,10 +413,20 @@
 <div class="loading-overlay" id="loading-overlay">
     <div class="loading-card">
         <span class="wackel">📖</span>
-        <div class="loading-title">Deine Geschichte wird geschrieben...</div>
+        <div class="loading-title" id="loading-title">Deine Geschichte wird geschrieben...</div>
         <div class="loading-bar-bg"><div class="loading-bar" id="loading-bar"></div></div>
         <div class="loading-status" id="loading-status">Die Autorin spitzt den Bleistift...</div>
-        <p style="margin-top:15px; font-size:0.8rem; color:var(--text-muted);">Das dauert ca. 1-2 Minuten. Bitte schließe das Fenster nicht.</p>
+        <p style="margin-top:15px; font-size:0.8rem; color:var(--text-muted);" id="loading-hint">Das dauert ca. 1-2 Minuten. Bitte schließe das Fenster nicht.</p>
+    </div>
+</div>
+
+<!-- PRE-CHECK MODAL -->
+<div class="precheck-modal" id="precheck-modal" role="dialog" aria-modal="true" aria-labelledby="precheck-headline">
+    <div class="precheck-card" id="precheck-card">
+        <div class="precheck-headline" id="precheck-headline"></div>
+        <div class="precheck-sub" id="precheck-sub"></div>
+        <div id="precheck-body"></div>
+        <div class="precheck-actions" id="precheck-actions"></div>
     </div>
 </div>
 
@@ -413,6 +479,8 @@ const PERSONA_LABELS = { pip: 'Pip Punkt', mia: 'Mia Mitte', peter: 'Peter Past'
 const BILDSTIL_LABELS = { 'Aquarell': 'Aquarell — Weiche Pastellfarben', 'Cartoon': 'Cartoon — Bunte moderne Illustration', 'Buntstift': 'Buntstift — Handgezeichneter Look', 'Pixel-Art': 'Pixel-Art — Retro-Gaming-Stil', 'Anime': 'Anime — Farbenfroh wie Nintendo & Pokémon', 'Traumwelt': 'Traumwelt — Magische Malerei wie Ori', 'Knete': 'Knete — Stop-Motion Knetfiguren-Look', 'Voxel': 'Voxel — Blocky Gamer-Stil wie Minecraft' };
 
 const WEBHOOK_URL = 'https://rala84.app.n8n.cloud/webhook/lesekumpel-story';
+const PRECHECK_URL = 'https://rala84.app.n8n.cloud/webhook/lesekumpel-precheck';
+const PRECHECK_TIMEOUT_MS = 15000;
 
 let state = { persona: null, neurotyp: null, stil: null, mitBildern: true };
 
@@ -556,15 +624,58 @@ async function submitStory() {
         mitBildern: state.mitBildern
     };
 
-    showLoading();
+    showLoading('check');
 
+    let precheck;
     try {
-        const response = await fetch(WEBHOOK_URL, {
+        precheck = await runPrecheck(titel, beschreibung);
+    } catch (err) {
+        // Fail open: Pre-Check-Defekt darf User nicht blockieren
+        console.warn('Pre-Check fehlgeschlagen, gehe direkt zur Story-Generierung:', err);
+        proceedToStory(payload);
+        return;
+    }
+
+    if (precheck.status === 'ok') {
+        proceedToStory(payload);
+    } else if (precheck.status === 'corrected') {
+        hideLoading();
+        showCorrectionModal(precheck, payload);
+    } else if (precheck.status === 'rejected') {
+        hideLoading();
+        showRejectionModal(precheck);
+    } else {
+        // Unbekannter Status → fail open
+        proceedToStory(payload);
+    }
+}
+
+async function runPrecheck(titel, kurzbeschreibung) {
+    const ctrl = new AbortController();
+    const timer = setTimeout(() => ctrl.abort(), PRECHECK_TIMEOUT_MS);
+    try {
+        const res = await fetch(PRECHECK_URL, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(payload)
+            body: JSON.stringify({ Titel: titel, Kurzbeschreibung: kurzbeschreibung }),
+            signal: ctrl.signal
         });
-        const result = await response.json();
+        if (!res.ok) throw new Error('Pre-Check HTTP ' + res.status);
+        return await res.json();
+    } finally {
+        clearTimeout(timer);
+    }
+}
+
+function proceedToStory(payload) {
+    showLoading('story');
+    fetch(WEBHOOK_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+    })
+    .then(r => r.json())
+    .then(result => {
         if (result.storyUrl) {
             document.getElementById('loading-status').textContent = 'Fertig! Du wirst weitergeleitet...';
             document.getElementById('loading-bar').style.width = '100%';
@@ -573,15 +684,135 @@ async function submitStory() {
             hideLoading();
             alert('Fehler: ' + (result.message || 'Unbekannter Fehler'));
         }
-    } catch (err) {
+    })
+    .catch(() => {
         hideLoading();
         alert('Verbindungsfehler — bitte versuche es erneut.');
-    }
+    });
 }
 
-function showLoading() {
+// Wort-Level-Diff: markiert geänderte Tokens als <del>/<ins>, gleiche als plain
+function diffTokens(oldStr, newStr) {
+    const a = (oldStr || '').split(/(\s+)/);
+    const b = (newStr || '').split(/(\s+)/);
+    const m = a.length, n = b.length;
+    const dp = Array.from({ length: m + 1 }, () => new Array(n + 1).fill(0));
+    for (let i = m - 1; i >= 0; i--) {
+        for (let j = n - 1; j >= 0; j--) {
+            dp[i][j] = a[i] === b[j] ? dp[i + 1][j + 1] + 1 : Math.max(dp[i + 1][j], dp[i][j + 1]);
+        }
+    }
+    const out = [];
+    let i = 0, j = 0;
+    const esc = s => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    while (i < m && j < n) {
+        if (a[i] === b[j]) { out.push(esc(a[i])); i++; j++; }
+        else if (dp[i + 1][j] >= dp[i][j + 1]) { if (a[i].trim()) out.push('<del>' + esc(a[i]) + '</del>'); else out.push(esc(a[i])); i++; }
+        else { if (b[j].trim()) out.push('<ins>' + esc(b[j]) + '</ins>'); else out.push(esc(b[j])); j++; }
+    }
+    while (i < m) { if (a[i].trim()) out.push('<del>' + esc(a[i]) + '</del>'); else out.push(esc(a[i])); i++; }
+    while (j < n) { if (b[j].trim()) out.push('<ins>' + esc(b[j]) + '</ins>'); else out.push(esc(b[j])); j++; }
+    return out.join('');
+}
+
+function showCorrectionModal(precheck, originalPayload) {
+    const card = document.getElementById('precheck-card');
+    card.classList.remove('is-rejected');
+    card.classList.add('is-corrected');
+
+    document.getElementById('precheck-headline').textContent = '✏️ Wir haben kleine Tippfehler gefunden';
+    document.getElementById('precheck-sub').textContent = 'Möchtest du den Vorschlag übernehmen oder dein Original behalten?';
+
+    const orig = precheck.original || {};
+    const corr = precheck.corrected || {};
+    const fields = [];
+    if (orig.titel !== corr.titel) {
+        fields.push({ label: 'Titel', diff: diffTokens(orig.titel, corr.titel) });
+    }
+    if ((orig.kurzbeschreibung || '') !== (corr.kurzbeschreibung || '')) {
+        fields.push({ label: 'Kurzbeschreibung', diff: diffTokens(orig.kurzbeschreibung || '', corr.kurzbeschreibung || '') });
+    }
+    document.getElementById('precheck-body').innerHTML = fields.map(f =>
+        '<div class="precheck-field">' +
+            '<div class="precheck-field-label">' + f.label + '</div>' +
+            '<div class="precheck-diff">' + f.diff + '</div>' +
+        '</div>'
+    ).join('') || '<div class="precheck-sub">Keine Änderungen.</div>';
+
+    document.getElementById('precheck-actions').innerHTML =
+        '<button class="precheck-btn precheck-btn-secondary" id="precheck-btn-cancel">Zurück zum Formular</button>' +
+        '<button class="precheck-btn precheck-btn-secondary" id="precheck-btn-keep">Original behalten</button>' +
+        '<button class="precheck-btn precheck-btn-primary" id="precheck-btn-accept">Vorschlag übernehmen</button>';
+
+    document.getElementById('precheck-btn-cancel').onclick = closePrecheckModal;
+    document.getElementById('precheck-btn-keep').onclick = function() {
+        closePrecheckModal();
+        proceedToStory(originalPayload);
+    };
+    document.getElementById('precheck-btn-accept').onclick = function() {
+        closePrecheckModal();
+        proceedToStory(Object.assign({}, originalPayload, {
+            Titel: corr.titel || originalPayload.Titel,
+            Kurzbeschreibung: corr.kurzbeschreibung != null ? corr.kurzbeschreibung : originalPayload.Kurzbeschreibung
+        }));
+    };
+
+    document.getElementById('precheck-modal').classList.add('visible');
+}
+
+function showRejectionModal(precheck) {
+    const card = document.getElementById('precheck-card');
+    card.classList.remove('is-corrected');
+    card.classList.add('is-rejected');
+
+    document.getElementById('precheck-headline').textContent = '🤔 Bitte formuliere deine Eingabe etwas anders';
+    document.getElementById('precheck-sub').textContent = 'Die Geschichte sollte für Kinder zwischen 5 und 10 Jahren passen.';
+
+    const issues = (precheck.issues || []).filter(i => i.typ === 'jugendfrei');
+    const items = issues.length
+        ? issues.map(i => '<li>' + (i.grund || 'Inhalt nicht jugendfrei.') + '</li>').join('')
+        : '<li>Der Inhalt passt nicht für unsere Altersgruppe.</li>';
+    document.getElementById('precheck-body').innerHTML =
+        '<ul class="precheck-issue-list">' + items + '</ul>';
+
+    document.getElementById('precheck-actions').innerHTML =
+        '<button class="precheck-btn precheck-btn-primary" id="precheck-btn-edit">Eingabe ändern</button>';
+    document.getElementById('precheck-btn-edit').onclick = closePrecheckModal;
+
+    document.getElementById('precheck-modal').classList.add('visible');
+}
+
+function closePrecheckModal() {
+    document.getElementById('precheck-modal').classList.remove('visible');
+}
+
+function showLoading(mode) {
     const overlay = document.getElementById('loading-overlay');
     overlay.classList.add('visible');
+    if (overlay._timer) clearInterval(overlay._timer);
+
+    const titleEl  = document.getElementById('loading-title');
+    const statusEl = document.getElementById('loading-status');
+    const hintEl   = document.getElementById('loading-hint');
+    const barEl    = document.getElementById('loading-bar');
+
+    if (mode === 'check') {
+        titleEl.textContent  = 'Wir prüfen deine Eingabe...';
+        statusEl.textContent = 'Tippfehler & Inhalt werden gecheckt...';
+        hintEl.textContent   = 'Das dauert nur ein paar Sekunden.';
+        barEl.style.width = '0%';
+        let elapsed = 0;
+        overlay._timer = setInterval(() => {
+            elapsed++;
+            barEl.style.width = Math.min(elapsed * 10, 90) + '%';
+        }, 300);
+        return;
+    }
+
+    // mode === 'story' (default)
+    titleEl.textContent = 'Deine Geschichte wird geschrieben...';
+    hintEl.textContent  = 'Das dauert ca. 1-2 Minuten. Bitte schließe das Fenster nicht.';
+    barEl.style.width = '0%';
     let elapsed = 0;
     const total = 60;
     const messages = [
@@ -591,21 +822,20 @@ function showLoading() {
         [60, 'Fast fertig! Letzte Details...'],
         [85, 'Gleich geschafft...']
     ];
-    const timer = setInterval(() => {
+    overlay._timer = setInterval(() => {
         elapsed++;
         const pct = Math.min((elapsed / total) * 100, 95);
-        document.getElementById('loading-bar').style.width = pct + '%';
+        barEl.style.width = pct + '%';
         const msg = messages.filter(m => m[0] <= pct).pop();
-        if (msg) document.getElementById('loading-status').textContent = msg[1];
-        if (elapsed >= total) clearInterval(timer);
+        if (msg) statusEl.textContent = msg[1];
+        if (elapsed >= total) clearInterval(overlay._timer);
     }, 1000);
-    overlay._timer = timer;
 }
 
 function hideLoading() {
     const overlay = document.getElementById('loading-overlay');
     overlay.classList.remove('visible');
-    if (overlay._timer) clearInterval(overlay._timer);
+    if (overlay._timer) { clearInterval(overlay._timer); overlay._timer = null; }
 }
 
 // Init: Persona-Karten rendern
