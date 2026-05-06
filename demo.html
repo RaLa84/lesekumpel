@@ -772,7 +772,10 @@
 
                     const titleMatch = text.match(/<title>([^<]+)<\/title>/i);
                     if (titleMatch && titleMatch[1]) {
-                        story.displayTitle = titleMatch[1].replace(/\s*[—–-]\s*Lesekumpel$/, '').trim();
+                        story.displayTitle = titleMatch[1]
+                            .replace(/\s*[—–-]\s*Lesetext\s+für\s+[^|]*\|\s*Lesekumpel\s*$/i, '')
+                            .replace(/\s*[—–-]\s*Lesekumpel$/i, '')
+                            .trim();
                     }
 
                     const metaLevel = text.match(/<meta\s+name=["']reading-level["']\s+content=["'](.*?)["']/i);
@@ -929,7 +932,8 @@
                 const color = authorColors[file.author] || '#ccc';
                 const hearts = 47 + (hashCode(file.name) % 143);
                 const levelLabel = file.readingLevel ? getLevelLabel(file.readingLevel) : '';
-                const levelBadgeText = file.readingLevel ? file.readingLevel + ' \u00b7 ' + levelLabel : '';
+                const levelDisplay = (file.readingLevel || '').split(',')[0].trim();
+                const levelBadgeText = levelDisplay ? levelDisplay + ' \u00b7 ' + levelLabel : '';
 
                 const slug = file.name.replace('.html', '');
                 const thumbUrl = `bilder/thumbs/${slug}-1.webp`;
