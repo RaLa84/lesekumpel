@@ -811,6 +811,7 @@
         let rawStory = {{RAW_STORY_TEXT}};
         let emojiStory = {{EMOJI_STORY_TEXT}};
         let rawSummary = {{RAW_SUMMARY_TEXT}};
+        let emojiSummary = {{EMOJI_SUMMARY_TEXT}};
         const quizData = {{QUIZ_DATA_JSON}};
         const rawDictionaryEntry = {{DICTIONARY_JSON}};
         const weitererzaehlenData = {{WEITERERZAEHLEN_JSON}};
@@ -872,9 +873,10 @@
         })();
 
         function renderText() {
-            // Emoji-Toggle: emoji-Version oder plain-Version
+            // Emoji-Toggle: pro Modus (Story / Summary) jeweils Emoji- oder Plain-Version
             let activeStory = state.emojis ? emojiStory : rawStory;
-            let raw = state.summary ? rawSummary : activeStory;
+            let activeSummary = (state.emojis && emojiSummary) ? emojiSummary : rawSummary;
+            let raw = state.summary ? activeSummary : activeStory;
 
             // In Sektionen aufteilen (getrennt durch Leerzeilen)
             let sections = raw.split(/\n\n+/);
