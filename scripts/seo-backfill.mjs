@@ -149,7 +149,100 @@ function buildSeoBlock({ title, date, author, readingLevel, neurotype, genre, sl
   ].filter(Boolean).join('\n');
 }
 
+function computeSeoValues({ title, date, author, readingLevel, neurotype, genre, storyPath, excerpt }) {
+  const persona = PERSONA_META[author] || FALLBACK_PERSONA;
+  const age = persona.age;
+  const neuroBadge = (neurotype && neurotype !== 'Standard' && neurotype !== author) ? ` (${neurotype}-optimiert)` : '';
+  const descRaw = `Lesetext für ${age}-Jährige${neuroBadge}: ${title}. ${excerpt}`.trim();
+  const description = descRaw.length > 157 ? descRaw.substring(0, 157).trimEnd() + '…' : descRaw;
+  const keywords = [author, neurotype, genre, 'Lesetext', 'Lesen lernen', `Kinder ${age}`]
+    .filter(v => v && v !== 'Standard').join(', ');
+  const url = `${SITE}/${storyPath}`;
+  const ogImage = persona.img;
+  const readingLabel = readingLevel && !readingLevel.includes('{{')
+    ? readingLevel
+    : (persona.words ? `${persona.words} Wörter, ${author}` : author);
+  const topic = excerpt ? excerpt.substring(0, 60).trim() : '';
+
+  return { age, description, keywords, url, ogImage, readingLabel, topic, author, persona, date };
+}
+
+function buildJsonLd({ title, description, date, url, ogImage, author, persona, age }) {
+  return {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: title,
+    description,
+    datePublished: date || '',
+    inLanguage: 'de-DE',
+    url,
+    image: ogImage,
+    author: { '@type': 'Person', name: author, image: persona.img, description: persona.bio },
+    publisher: { '@type': 'Organization', name: 'Lesekumpel', url: `${SITE}/` },
+    audience: { '@type': 'EducationalAudience', educationalRole: 'student', audienceType: `Kinder ${age} Jahre` },
+  };
+}
+
+async function fixLeaks(filePath, opts = {}) {
+  const html = await readFile(filePath, 'utf-8');
+  if (!/\{\{[A-Z_]+\}\}/.test(html)) {
+    return { filePath, skipped: 'no leaked placeholders' };
+  }
+
+  const title = getTitle(html).replace(/\s*—\s*Lesetext für\s*\{\{READING_LEVEL_LABEL\}\}\s*\|\s*Lesekumpel\s*$/i, '').trim();
+  if (!title) return { filePath, skipped: 'no <title>' };
+
+  const author = getMeta(html, 'author');
+  const date = getMeta(html, 'date');
+  const readingLevel = getMeta(html, 'reading-level');
+  const neurotype = getMeta(html, 'neurotype');
+  const genre = getMeta(html, 'genre');
+  const fileName = basename(filePath);
+  const dirName = filePath.replace(/\\/g, '/').split('/').slice(-2, -1)[0];
+  const storyPath = `${dirName}/${fileName}`;
+
+  const excerpt = extractStoryExcerpt(html);
+  const v = computeSeoValues({ title, date, author, readingLevel, neurotype, genre, storyPath, excerpt });
+
+  const e = htmlEscape;
+  const replacements = {
+    READING_LEVEL_LABEL: e(v.readingLabel),
+    META_DESCRIPTION: e(v.description),
+    META_KEYWORDS: e(v.keywords),
+    STORY_PATH: storyPath,
+    TOPIC: e(v.topic),
+    OG_IMAGE_URL: v.ogImage,
+    PERSONA_AVATAR_URL: v.ogImage,
+    TYPICAL_AGE: e(v.age),
+  };
+
+  let out = html;
+  for (const [k, val] of Object.entries(replacements)) {
+    out = out.replaceAll(`{{${k}}}`, val);
+  }
+
+  // JSON-LD-Block sauber neu rendern (vermeidet HTML-Entity-Müll im JSON)
+  const jsonLd = buildJsonLd({ ...v, title });
+  const jsonLdSafe = JSON.stringify(jsonLd, null, 2).replace(/<\/script>/gi, '<\\/script>');
+  out = out.replace(
+    /<script type="application\/ld\+json">[\s\S]*?<\/script>/i,
+    `<script type="application/ld+json">\n${jsonLdSafe.split('\n').map(l => '    ' + l).join('\n')}\n    </script>`
+  );
+
+  if (out === html) return { filePath, skipped: 'no change produced' };
+
+  // Verify keine Platzhalter mehr im File
+  const remaining = out.match(/\{\{[A-Z_]+\}\}/g);
+  if (remaining) {
+    return { filePath, skipped: `unresolved placeholders: ${[...new Set(remaining)].join(', ')}` };
+  }
+
+  if (!opts.dryRun) await writeFile(filePath, out, 'utf-8');
+  return { filePath, changed: true, bytesAdded: out.length - html.length, title, author };
+}
+
 async function processFile(filePath, opts) {
+  if (opts.fixLeaks) return fixLeaks(filePath, opts);
   const html = await readFile(filePath, 'utf-8');
   if (/<meta\s+name=["']description["']/i.test(html) && !opts.force) {
     return { filePath, skipped: 'description already present' };
@@ -211,12 +304,13 @@ async function listHtml(dir) {
 }
 
 function parseArgs(argv) {
-  const opts = { dirs: [], dryRun: false, force: false, all: false };
+  const opts = { dirs: [], dryRun: false, force: false, all: false, fixLeaks: false };
   for (let i = 2; i < argv.length; i++) {
     const a = argv[i];
     if (a === '--dry-run') opts.dryRun = true;
     else if (a === '--force') opts.force = true;
     else if (a === '--all') opts.all = true;
+    else if (a === '--fix-leaks') opts.fixLeaks = true;
     else if (a === '--dir') opts.dirs.push(argv[++i]);
     else if (a.startsWith('--dir=')) opts.dirs.push(a.slice(6));
     else { console.error(`Unknown arg: ${a}`); process.exit(2); }
