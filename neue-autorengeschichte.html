@@ -678,15 +678,23 @@ function proceedToStory(payload) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(payload)
     })
-    .then(r => r.json())
+    .then(r => r.json().catch(() => ({})))
     .then(result => {
-        if (result.storyUrl) {
+        if (result && result.storyUrl) {
+            // Synchroner Pfad: Workflow ist fertig und liefert URL
             document.getElementById('loading-status').textContent = 'Fertig! Du wirst weitergeleitet...';
             document.getElementById('loading-bar').style.width = '100%';
             setTimeout(() => { window.location.href = result.storyUrl; }, 1500);
-        } else {
+        } else if (result && (result.error || result.message)) {
+            // Echter Fehler vom Server
             hideLoading();
-            alert('Fehler: ' + (result.message || 'Unbekannter Fehler'));
+            alert('Fehler: ' + (result.message || result.error));
+        } else {
+            // Async-Submit (n8n hat sofort Echo-Body geantwortet, Story läuft im Hintergrund)
+            // Loading-Anzeige weiterlaufen lassen; nach ~90s zur Demo-Seite weiterleiten
+            document.getElementById('loading-title').textContent = 'Deine Geschichte wird im Hintergrund erstellt';
+            document.getElementById('loading-status').textContent = 'Sie erscheint gleich in der Bibliothek...';
+            document.getElementById('loading-hint').innerHTML = 'Das dauert ca. 1-2 Minuten. <a href="demo.html" style="color:var(--accent-coral);font-weight:600;">Zur Bibliothek →</a>';
         }
     })
     .catch(() => {
