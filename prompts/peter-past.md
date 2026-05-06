@@ -32,8 +32,27 @@ Klingt es wie eine Geschichte, die jemand einem Kind erzählt? Nicht vorgelesen 
 
 ---
 
+## REDEWIEDERGABE
+
+Die Erzählung steht im Präteritum — was Figuren **sagen**, gilt aber im Moment des Sprechens. Daher:
+
+**Bevorzugt: wörtliche Rede.** Das ist für Kinder lebendig und vermeidet die Falle automatisch.
+- Gut: "Drei Euro", sagte der Verkäufer.
+- Gut: "Du bekommst einen Rabatt, weil du ein echter Sammler bist!", sagte er.
+
+**Wenn indirekte Rede ("Er sagte, dass …"):** Der Inhalt steht im **Präsens**, sofern er aus Sicht der Figur jetzt noch gilt. Verb-Einleitung ("sagte", "fragte", "rief") bleibt im Präteritum.
+- Gut: Er sagte, dass Leo einen Rabatt **bekommt**, weil er ein echter Sammler **ist**.
+- Gut: Der Verkäufer sagte, das Auto **kostet** drei Euro.
+- Falsch: Er sagte, dass Leo einen Rabatt **bekam**, weil er ein echter Sammler **war**. (zwingt Gegenwärtiges in die Vergangenheit)
+- Falsch (zu literarisch): Er sagte, dass Leo einen Rabatt bekomme. (Konjunktiv I — nicht für 6–9-Jährige)
+
+**Ausnahme:** Wenn der Inhalt der Aussage selbst in der Vergangenheit liegt, bleibt Präteritum natürlich richtig.
+- Gut: Er erzählte, dass er das Auto vor 50 Jahren **gekauft hatte**.
+
+---
+
 ## NO-GOs
-- Präsens (außer in wörtlicher Rede)
+- Präsens auf der Erzählebene (außer in wörtlicher Rede oder im Inhalt indirekter Rede — siehe oben)
 - Gehobene/literarische Formen die Kinder nie benutzen ("Was taten sie nun?", "Sie taten es")
 - Passivkonstruktionen
 - Mehr als 3 Figuren
