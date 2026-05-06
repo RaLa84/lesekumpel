@@ -851,6 +851,7 @@ function showLoading(mode) {
         [85, 'Gleich geschafft...']
     ];
     overlay._timer = setInterval(() => {
+        if (overlay._asyncMode) return; // Async-Modus übernommen — nicht mehr überschreiben
         elapsed++;
         const pct = Math.min((elapsed / total) * 100, 95);
         barEl.style.width = pct + '%';
@@ -864,6 +865,7 @@ function hideLoading() {
     const overlay = document.getElementById('loading-overlay');
     overlay.classList.remove('visible');
     overlay.classList.remove('dismissable');
+    overlay._asyncMode = false;
     if (overlay._timer) { clearInterval(overlay._timer); overlay._timer = null; }
     stopPolling();
 }
@@ -876,7 +878,7 @@ function hideLoading() {
 const STORY_FOLDER = 'demo-texte';
 const STORY_LIST_API = `https://api.github.com/repos/RaLa84/lesekumpel/contents/${STORY_FOLDER}`;
 const POLL_INTERVAL_MS = 10000;
-const POLL_MAX_ATTEMPTS = 18; // ~3 Minuten
+const POLL_MAX_ATTEMPTS = 30; // ~5 Minuten — toleriert GitHub-API-Cache-Lag
 
 let pollState = null;
 
@@ -890,7 +892,8 @@ function slugifyTitle(title) {
 
 async function fetchStoryFileSet() {
     try {
-        const res = await fetch(STORY_LIST_API);
+        // Cache-Buster gegen GitHub-API-Cache: ohne diesen kann die Liste mehrere Minuten alt sein
+        const res = await fetch(`${STORY_LIST_API}?_cb=${Date.now()}`, { cache: 'no-store' });
         if (!res.ok) return null;
         const data = await res.json();
         if (!Array.isArray(data)) return null;
@@ -902,7 +905,8 @@ async function fetchStoryFileSet() {
 
 async function enterAsyncMode(payload) {
     const overlay = document.getElementById('loading-overlay');
-    // Synthetischen Progress-Timer stoppen — er würde sonst weiter den Status-Text überschreiben
+    // Async-Modus aktivieren — der synthetische Progress-Timer hört dann auf, das Status-Feld zu überschreiben
+    overlay._asyncMode = true;
     if (overlay._timer) { clearInterval(overlay._timer); overlay._timer = null; }
     document.getElementById('loading-bar').style.width = '100%';
     document.getElementById('loading-title').textContent = 'Deine Geschichte wird im Hintergrund erstellt';
@@ -911,6 +915,8 @@ async function enterAsyncMode(payload) {
     overlay.classList.add('dismissable');
 
     const snapshot = await fetchStoryFileSet();
+    // Status nach dem await nochmal hard-setzen — schützt vor Race-Condition mit pending Timer-Tick
+    document.getElementById('loading-status').textContent = 'Sie erscheint gleich in der Bibliothek...';
     if (!snapshot) return; // Kein Polling möglich — Modal bleibt closeable mit Bibliothek-Link
     pollState = {
         snapshot,
@@ -923,7 +929,14 @@ async function enterAsyncMode(payload) {
 async function pollForNewStory() {
     if (!pollState) return;
     pollState.attempts++;
-    if (pollState.attempts > POLL_MAX_ATTEMPTS) { stopPolling(); return; }
+    if (pollState.attempts > POLL_MAX_ATTEMPTS) {
+        stopPolling();
+        // Modal nicht stumm hängen lassen — User soll wissen, dass die Story bald da sein sollte
+        document.getElementById('loading-title').textContent = 'Fast fertig!';
+        document.getElementById('loading-status').textContent = 'Die Geschichte ist gleich in deiner Bibliothek.';
+        document.getElementById('loading-hint').innerHTML = '<a href="demo.html" class="story-ready-btn" style="margin-top:12px;">📚 Zur Bibliothek →</a>';
+        return;
+    }
 
     const current = await fetchStoryFileSet();
     if (!current) return;
