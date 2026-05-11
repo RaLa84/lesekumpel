@@ -1651,7 +1651,7 @@
         };
 
         // --- INHALTE-MELDEN MODAL ---
-        (function initReportModal() {
+        document.addEventListener('DOMContentLoaded', function initReportModal() {
             const modal = document.getElementById('report-modal');
             const openBtn = document.getElementById('report-open');
             if (!modal || !openBtn) return;
@@ -1717,7 +1717,7 @@
                 form.hidden = true;
                 success.hidden = false;
             });
-        })();
+        });
     </script>
 
     <div class="report-modal-backdrop" id="report-modal" role="dialog" aria-modal="true" aria-labelledby="report-title" hidden>
