@@ -666,6 +666,99 @@
             position: absolute; width: 10px; height: 10px; top: -10px;
             animation: confettiFall 3s ease-in forwards;
         }
+
+        /* --- INHALTE-MELDEN MODAL --- */
+        .report-link {
+            background: none; border: none; padding: 0; margin: 0 5px; cursor: pointer;
+            color: #888; text-decoration: underline; font-family: var(--font-body); font-size: inherit;
+        }
+        .report-link:hover { color: var(--accent-coral); }
+
+        .report-modal-backdrop {
+            position: fixed; inset: 0; background: rgba(0, 0, 0, 0.55);
+            display: none; align-items: center; justify-content: center;
+            z-index: 10000; padding: 20px; overflow-y: auto;
+        }
+        .report-modal-backdrop.is-open { display: flex; }
+        .report-modal-backdrop[hidden] { display: none !important; }
+
+        .report-modal {
+            background: var(--bg-card); border-radius: 16px; padding: 28px 24px 24px;
+            max-width: 480px; width: 100%; position: relative;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            font-family: var(--font-body); color: var(--text-dark);
+            max-height: calc(100vh - 40px); overflow-y: auto;
+        }
+        .report-modal h2 {
+            font-family: var(--font-heading); color: var(--accent-coral);
+            margin: 0 0 8px; font-size: 1.5rem;
+        }
+        .report-modal > p { margin: 0 0 16px; color: #555; }
+        .report-close {
+            position: absolute; top: 10px; right: 12px;
+            background: none; border: none; font-size: 1.8rem; line-height: 1;
+            color: #888; cursor: pointer; padding: 4px 10px; border-radius: 8px;
+        }
+        .report-close:hover { background: #f3f3f3; color: var(--accent-coral); }
+
+        .report-modal fieldset { border: none; padding: 0; margin: 0 0 16px; }
+        .report-modal .sr-only {
+            position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+            overflow: hidden; clip: rect(0, 0, 0, 0); border: 0;
+        }
+        .report-modal .reason-option {
+            display: flex; align-items: center; gap: 10px;
+            padding: 10px 12px; border-radius: 10px; cursor: pointer;
+            min-height: 44px; transition: background 0.15s ease;
+        }
+        .report-modal .reason-option:hover { background: var(--bg-body); }
+        .report-modal .reason-option input[type="radio"] {
+            width: 20px; height: 20px; accent-color: var(--accent-coral); flex-shrink: 0;
+        }
+        .report-modal label.field {
+            display: block; margin: 14px 0 0; font-weight: 600; font-size: 0.95rem;
+        }
+        .report-modal label.field .hint {
+            display: block; font-weight: 400; font-size: 0.85rem; color: #777; margin-top: 2px;
+        }
+        .report-modal textarea,
+        .report-modal input[type="email"] {
+            width: 100%; box-sizing: border-box; margin-top: 6px;
+            padding: 10px 12px; border: 2px solid #e0e0e0; border-radius: 10px;
+            font-family: var(--font-body); font-size: 1rem; color: var(--text-dark);
+            background: #fff; resize: vertical;
+        }
+        .report-modal textarea:focus,
+        .report-modal input[type="email"]:focus {
+            outline: none; border-color: var(--accent-coral);
+        }
+        .report-modal .actions {
+            display: flex; gap: 10px; justify-content: flex-end; margin-top: 20px;
+            flex-wrap: wrap;
+        }
+        .report-modal .btn-primary,
+        .report-modal .btn-secondary {
+            font-family: var(--font-heading); font-size: 1rem; padding: 10px 20px;
+            border-radius: 10px; border: none; cursor: pointer; min-height: 44px;
+        }
+        .report-modal .btn-primary {
+            background: var(--accent-coral); color: #fff;
+        }
+        .report-modal .btn-primary:hover { background: #c25a5a; }
+        .report-modal .btn-secondary {
+            background: #ececec; color: var(--text-dark);
+        }
+        .report-modal .btn-secondary:hover { background: #dcdcdc; }
+
+        .report-success h2 { color: var(--accent-teal); }
+        .report-success p { color: #444; }
+
+        @media (max-width: 768px) {
+            .report-modal { padding: 24px 18px 20px; max-height: calc(100vh - 24px); }
+            .report-modal h2 { font-size: 1.3rem; }
+            .report-modal .actions { flex-direction: column-reverse; }
+            .report-modal .actions button { width: 100%; }
+        }
     </style>
     <link rel="stylesheet" href="../fonts/fonts.css">
 </head>
@@ -853,7 +946,7 @@
 
     <footer>
         <p>Erstellt von deinem KI-Lesekumpel 🤖</p>
-        <div class="footer-links"><a href="#">Impressum</a> • <a href="../datenschutz.html">Datenschutz</a> • <a href="../ueber-uns.html">Über uns</a> • <a href="../blog-warum-lesekumpel.html">Blog</a> &bull; <a href="../knowledge-base/snacks/index.html">Wissen</a></div>
+        <div class="footer-links"><a href="#">Impressum</a> • <a href="../datenschutz.html">Datenschutz</a> • <a href="../ueber-uns.html">Über uns</a> • <a href="../blog-warum-lesekumpel.html">Blog</a> &bull; <a href="../knowledge-base/snacks/index.html">Wissen</a> &bull; <button class="report-link" type="button" id="report-open">Inhalt melden</button></div>
     </footer>
 
 
@@ -1544,6 +1637,113 @@
             else if (viewMode === 'fahrplan') toggleFahrplan();
             else if (viewMode === 'haeppchen') toggleViewMode();
         };
+
+        // --- INHALTE-MELDEN MODAL ---
+        (function initReportModal() {
+            const modal = document.getElementById('report-modal');
+            const openBtn = document.getElementById('report-open');
+            if (!modal || !openBtn) return;
+            const cancelBtn = document.getElementById('report-cancel');
+            const closeBtn = modal.querySelector('.report-close');
+            const doneBtn = document.getElementById('report-done');
+            const form = document.getElementById('report-form');
+            const success = modal.querySelector('.report-success');
+
+            function openModal() {
+                form.hidden = false;
+                success.hidden = true;
+                form.reset();
+                modal.hidden = false;
+                modal.classList.add('is-open');
+                document.body.style.overflow = 'hidden';
+                const firstRadio = form.querySelector('input[name="reason"]');
+                if (firstRadio) firstRadio.focus();
+            }
+            function closeModal() {
+                modal.hidden = true;
+                modal.classList.remove('is-open');
+                document.body.style.overflow = '';
+                openBtn.focus();
+            }
+
+            openBtn.addEventListener('click', openModal);
+            cancelBtn.addEventListener('click', closeModal);
+            closeBtn.addEventListener('click', closeModal);
+            doneBtn.addEventListener('click', closeModal);
+            modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
+            document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !modal.hidden) closeModal(); });
+
+            form.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const data = new FormData(form);
+                const reason = data.get('reason');
+                if (!reason) {
+                    const firstRadio = form.querySelector('input[name="reason"]');
+                    if (firstRadio) firstRadio.focus();
+                    return;
+                }
+                const details = (data.get('details') || '').toString().trim();
+                const reporterEmail = (data.get('reporter_email') || '').toString().trim();
+                const h1 = document.querySelector('h1');
+                const title = (h1 ? h1.textContent : document.title.replace(/ \| Lesekumpel$/, '')).trim();
+                const url = window.location.href;
+                const timestamp = new Date().toISOString();
+
+                const subject = `Inhaltsmeldung: ${title}`;
+                const bodyLines = [
+                    `Geschichte: ${title}`,
+                    `URL: ${url}`,
+                    `Meldegrund: ${reason}`
+                ];
+                if (details) bodyLines.push(`Details: ${details}`);
+                if (reporterEmail) bodyLines.push(`Antwort an: ${reporterEmail}`);
+                bodyLines.push(`Zeitpunkt: ${timestamp}`);
+
+                const mailto = `mailto:hallo@lesekumpel.de?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(bodyLines.join('\n'))}`;
+                window.location.href = mailto;
+
+                form.hidden = true;
+                success.hidden = false;
+            });
+        })();
     </script>
+
+    <div class="report-modal-backdrop" id="report-modal" role="dialog" aria-modal="true" aria-labelledby="report-title" hidden>
+        <div class="report-modal">
+            <button type="button" class="report-close" aria-label="Schließen">&times;</button>
+            <h2 id="report-title">Inhalt melden</h2>
+            <p>Was stört dich an dieser Geschichte?</p>
+            <form id="report-form" novalidate>
+                <fieldset>
+                    <legend class="sr-only">Meldegrund</legend>
+                    <label class="reason-option"><input type="radio" name="reason" value="Gewalt" required> Gewalt</label>
+                    <label class="reason-option"><input type="radio" name="reason" value="Angstmachend"> Angstmachend / verstörend</label>
+                    <label class="reason-option"><input type="radio" name="reason" value="Diskriminierung"> Diskriminierung oder Klischee</label>
+                    <label class="reason-option"><input type="radio" name="reason" value="Falschinformation"> Falsche Informationen</label>
+                    <label class="reason-option"><input type="radio" name="reason" value="Sprachfehler"> Sprach- oder Rechtschreibfehler</label>
+                    <label class="reason-option"><input type="radio" name="reason" value="Nicht altersgerecht"> Nicht altersgerecht</label>
+                    <label class="reason-option"><input type="radio" name="reason" value="Sonstiges"> Sonstiges</label>
+                </fieldset>
+                <label class="field">Details (optional)
+                    <textarea name="details" rows="3" maxlength="500" placeholder="Was genau stört dich?"></textarea>
+                </label>
+                <label class="field">Deine E-Mail (optional, für Rückfragen)
+                    <input type="email" name="reporter_email" autocomplete="email" placeholder="dein.name@beispiel.de">
+                    <span class="hint">Nur, falls du eine Rückmeldung möchtest. Wir nutzen die Adresse ausschließlich zur Beantwortung dieser Meldung.</span>
+                </label>
+                <div class="actions">
+                    <button type="button" class="btn-secondary" id="report-cancel">Abbrechen</button>
+                    <button type="submit" class="btn-primary">Meldung absenden</button>
+                </div>
+            </form>
+            <div class="report-success" hidden>
+                <h2>Danke für die Meldung! 💛</h2>
+                <p>Dein E-Mail-Programm öffnet sich gleich mit den Meldedaten. Schick die Mail bitte ab — wir schauen uns den Text an und entfernen ihn, falls nötig.</p>
+                <div class="actions">
+                    <button type="button" class="btn-primary" id="report-done">Schließen</button>
+                </div>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
