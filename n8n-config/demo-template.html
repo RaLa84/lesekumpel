@@ -668,11 +668,20 @@
         }
 
         /* --- INHALTE-MELDEN MODAL --- */
-        .report-link {
-            background: none; border: none; padding: 0; margin: 0 5px; cursor: pointer;
-            color: #888; text-decoration: underline; font-family: var(--font-body); font-size: inherit;
+        .report-trigger-wrapper {
+            text-align: center; margin-top: 18px;
         }
-        .report-link:hover { color: var(--accent-coral); }
+        .report-link {
+            background: none; border: none; padding: 8px 14px; cursor: pointer;
+            color: #888; font-family: var(--font-body); font-size: 0.95rem;
+            border-radius: 10px; text-decoration: underline;
+            min-height: 36px;
+        }
+        .report-link:hover { color: var(--accent-coral); background: rgba(214, 113, 113, 0.06); }
+        .report-link:focus-visible {
+            outline: 2px solid var(--accent-coral); outline-offset: 2px;
+            text-decoration: none;
+        }
 
         .report-modal-backdrop {
             position: fixed; inset: 0; background: rgba(0, 0, 0, 0.55);
@@ -924,6 +933,9 @@
                 <div class="vote-card" onclick="alert('Yay!')">👍</div>
                 <div class="vote-card" onclick="alert('Oh nein!')">👎</div>
             </div>
+            <div class="report-trigger-wrapper">
+                <button class="report-link" type="button" id="report-open">🚩 Inhalt melden</button>
+            </div>
         </div>
 
         <div class="related-section">
@@ -946,7 +958,7 @@
 
     <footer>
         <p>Erstellt von deinem KI-Lesekumpel 🤖</p>
-        <div class="footer-links"><a href="#">Impressum</a> • <a href="../datenschutz.html">Datenschutz</a> • <a href="../ueber-uns.html">Über uns</a> • <a href="../blog-warum-lesekumpel.html">Blog</a> &bull; <a href="../knowledge-base/snacks/index.html">Wissen</a> &bull; <button class="report-link" type="button" id="report-open">Inhalt melden</button></div>
+        <div class="footer-links"><a href="#">Impressum</a> • <a href="../datenschutz.html">Datenschutz</a> • <a href="../ueber-uns.html">Über uns</a> • <a href="../blog-warum-lesekumpel.html">Blog</a> &bull; <a href="../knowledge-base/snacks/index.html">Wissen</a></div>
     </footer>
 
 
