@@ -163,16 +163,99 @@
         }
         .author-line strong { color: var(--accent-salmon); }
 
-        /* Comic-Bild — voll sichtbar, nicht beschnitten */
-        .comic-image-area {
+        /* Comic-Bühne mit klickbaren Panel-Hotspots */
+        .comic-stage {
+            position: relative;
             width: 100%;
-            background-color: #f9f9f9; border-radius: 15px; margin-bottom: 20px;
-            display: flex; justify-content: center; align-items: center; overflow: hidden;
+            background-color: #f9f9f9;
+            border-radius: 15px;
             border: 2px solid #eee;
+            overflow: hidden;
+            margin-bottom: 20px;
+            line-height: 0; /* verhindert Spalt unter dem img */
         }
-        .comic-image-area img {
+        .comic-stage img {
             width: 100%; height: auto; display: block;
             border-radius: 10px;
+        }
+        .panel-hotspots {
+            position: absolute;
+            inset: 0;
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: 1fr 1fr;
+        }
+        .panel-hotspot {
+            background: transparent;
+            border: none;
+            padding: 0;
+            cursor: pointer;
+            outline: none;
+            transition: box-shadow 0.18s ease, background 0.18s ease, opacity 0.18s ease;
+        }
+        .panel-hotspot:hover {
+            background: rgba(255, 213, 79, 0.22);
+            box-shadow: inset 0 0 0 6px var(--primary-yellow);
+        }
+        .panel-hotspot:focus-visible {
+            box-shadow: inset 0 0 0 6px var(--accent-teal);
+        }
+        .panel-hotspot.active {
+            box-shadow:
+                inset 0 0 0 8px var(--accent-salmon),
+                inset 0 0 0 12px rgba(255, 255, 255, 0.85);
+            background: rgba(214, 113, 113, 0.06);
+        }
+        /* Sternchen-Marker oben links im aktiven Panel — gut sichtbar gegen jeden Bildinhalt */
+        .panel-hotspot.active::before {
+            content: "★";
+            position: absolute;
+            top: 8px; left: 8px;
+            width: 32px; height: 32px;
+            background: var(--accent-salmon);
+            color: #fff;
+            border-radius: 50%;
+            font-size: 1rem;
+            display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.25);
+            font-family: var(--font-heading);
+            font-weight: 700;
+            pointer-events: none;
+        }
+        .panel-hotspot { position: relative; }
+        .panel-hotspots.has-active .panel-hotspot:not(.active):not(:hover) {
+            opacity: 0.55;
+        }
+
+        /* Panel-Navigation unter dem Bild */
+        .active-panel-nav {
+            display: flex; align-items: center; justify-content: center;
+            gap: 16px;
+            margin-bottom: 14px;
+            width: 100%;
+        }
+        .nav-arrow {
+            background: #fff;
+            border: 2px solid #ddd;
+            border-radius: 50%;
+            width: 44px; height: 44px;
+            font-size: 1.3rem;
+            color: var(--accent-salmon);
+            cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            transition: all 0.15s;
+        }
+        .nav-arrow:hover {
+            border-color: var(--accent-salmon);
+            background: #fff5f5;
+        }
+        .panel-indicator {
+            font-family: var(--font-heading);
+            font-weight: 600;
+            color: var(--text-dark);
+            font-size: 1rem;
+            min-width: 110px;
+            text-align: center;
         }
 
         /* --- TOOLBAR --- */
@@ -189,20 +272,24 @@
         .tool-btn:hover { border-color: var(--accent-teal); color: var(--accent-teal); }
         .tool-btn.active { background: var(--accent-teal); color: #fff; border-color: var(--accent-teal); }
 
-        /* --- LESEKARTEN (Panels) --- */
-        .reading-section {
+        /* --- AKTIVE PANEL-KARTE (nur EINE sichtbar) --- */
+        .panel-card-area {
             width: 100%;
-            display: flex; flex-direction: column; gap: 18px;
-            margin-bottom: 30px;
+            margin-bottom: 25px;
         }
         .panel-card {
             background: #fdfdfd;
             border: 2px solid #eee;
-            border-left: 6px solid var(--primary-yellow);
+            border-left: 6px solid var(--accent-salmon);
             border-radius: 14px;
             padding: 18px 22px;
             font-size: 24px;
             line-height: 1.7;
+            animation: panel-fade-in 0.25s ease;
+        }
+        @keyframes panel-fade-in {
+            from { opacity: 0; transform: translateY(4px); }
+            to   { opacity: 1; transform: translateY(0); }
         }
         .panel-card .panel-num {
             display: inline-block;
@@ -313,10 +400,16 @@
         <h1 id="book-title">Tom und Tina spielen<br>Mensch ärgere dich nicht</h1>
         <div class="author-line">Comic von <strong>Pip Punkt</strong> · Einfach lesen</div>
 
-        <div class="comic-image-area">
+        <div class="comic-stage">
             <img id="story-image"
                  src="../comics/tom-und-tina-mensch-aergere-dich-nicht.png"
                  alt="Vierteiliger Comic: Tom und Tina spielen am Küchentisch Mensch ärgere dich nicht. Tina würfelt eine Sechs, wirft Toms rote Figur vom Brett. Am Ende essen beide lachend Kekse.">
+            <div class="panel-hotspots has-active" id="panel-hotspots" role="tablist" aria-label="Comic-Panels">
+                <button class="panel-hotspot active" data-panel="1" role="tab" aria-label="Panel 1 ansehen" aria-selected="true"></button>
+                <button class="panel-hotspot" data-panel="2" role="tab" aria-label="Panel 2 ansehen" aria-selected="false"></button>
+                <button class="panel-hotspot" data-panel="3" role="tab" aria-label="Panel 3 ansehen" aria-selected="false"></button>
+                <button class="panel-hotspot" data-panel="4" role="tab" aria-label="Panel 4 ansehen" aria-selected="false"></button>
+            </div>
         </div>
 
         <div class="toolbar-container">
@@ -329,8 +422,14 @@
             <button class="tool-btn" onclick="changeFontSize(-2)">A-</button>
         </div>
 
-        <div class="reading-section" id="reading-section">
-            <!-- Wird per JS gerendert -->
+        <div class="active-panel-nav">
+            <button class="nav-arrow" id="btn-prev-panel" aria-label="Vorheriges Panel">◀</button>
+            <span class="panel-indicator" id="panel-indicator">Panel 1 von 4</span>
+            <button class="nav-arrow" id="btn-next-panel" aria-label="Nächstes Panel">▶</button>
+        </div>
+
+        <div class="panel-card-area" id="panel-card-area" role="tabpanel" aria-live="polite">
+            <!-- Wird per JS gerendert (eine Karte pro aktivem Panel) -->
         </div>
 
         <div class="survey-section">
@@ -372,13 +471,19 @@
             ]
         };
 
-        const state = { syllables: false, wordReader: false, dyslexia: false };
+        const state = {
+            syllables: false,
+            wordReader: false,
+            dyslexia: false,
+            activePanel: 1,
+            ttsRunning: false,
+            fontSize: 24  // wird auf .panel-card angewendet
+        };
 
         function speakerClass(name) {
             return name.toLowerCase() === "tina" ? "speaker-tina" : "speaker-tom";
         }
 
-        // Silbentrennung-Regex (kopiert aus baerli-sucht-honig.html)
         function colorizeSyllables(word) {
             const parts = word.match(/[^aeiouäöüAEIOUÄÖÜ]*[aeiouäöüAEIOUÄÖÜ]+(?:[^aeiouäöüAEIOUÄÖÜ]*$|[^aeiouäöüAEIOUÄÖÜ](?=[^aeiouäöüAEIOUÄÖÜ]))?/gi) || [word];
             return parts.map((part, i) => {
@@ -397,40 +502,72 @@
             return text.split(' ').map(renderWord).join(' ');
         }
 
-        function renderPanels() {
-            const container = document.getElementById('reading-section');
-            container.innerHTML = comicData.panels.map(panel => {
-                const lines = panel.dialog.map(line => `
-                    <div class="dialog-line">
-                        <span class="speaker ${speakerClass(line.speaker)}">${line.speaker}</span>
-                        <span class="speech">${renderSpeech(line.text)}</span>
-                    </div>
-                `).join('');
-                return `
-                    <div class="panel-card" data-panel="${panel.num}">
-                        <span class="panel-num">${panel.num}</span>
-                        <span class="panel-label">Panel ${panel.num}</span>
-                        ${lines}
-                    </div>
-                `;
-            }).join('');
+        // --- AKTIVES PANEL RENDERN (nur EINE Karte) ---
+        function renderActivePanel() {
+            const panel = comicData.panels.find(p => p.num === state.activePanel);
+            if (!panel) return;
+            const lines = panel.dialog.map(line => `
+                <div class="dialog-line">
+                    <span class="speaker ${speakerClass(line.speaker)}">${line.speaker}</span>
+                    <span class="speech">${renderSpeech(line.text)}</span>
+                </div>
+            `).join('');
+            const container = document.getElementById('panel-card-area');
+            container.innerHTML = `
+                <div class="panel-card" data-panel="${panel.num}" style="font-size:${state.fontSize}px;">
+                    <span class="panel-num">${panel.num}</span>
+                    <span class="panel-label">Panel ${panel.num}</span>
+                    ${lines}
+                </div>
+            `;
         }
 
-        // --- VORLESEN: Alle Panels nacheinander, mit Wort-Highlighting ---
+        function updateHotspots() {
+            document.querySelectorAll('.panel-hotspot').forEach(btn => {
+                const isActive = parseInt(btn.dataset.panel, 10) === state.activePanel;
+                btn.classList.toggle('active', isActive);
+                btn.setAttribute('aria-selected', isActive ? 'true' : 'false');
+            });
+            document.getElementById('panel-indicator').textContent =
+                `Panel ${state.activePanel} von ${comicData.panels.length}`;
+        }
+
+        function setActivePanel(n) {
+            const total = comicData.panels.length;
+            // rolliert (Klick auf Pfeil am Ende geht zum Anfang & umgekehrt — spielerischer)
+            if (n < 1) n = total;
+            if (n > total) n = 1;
+            state.activePanel = n;
+            updateHotspots();
+            renderActivePanel();
+        }
+
+        // --- VORLESEN: kette Utterances pro Panel, wandere mit dem Highlight ---
         function toggleTTS() {
             const btn = document.getElementById('btn-tts');
-            if (window.speechSynthesis.speaking) {
+            if (state.ttsRunning) {
+                state.ttsRunning = false;
                 window.speechSynthesis.cancel();
                 btn.classList.remove('active');
                 clearHighlights();
                 return;
             }
-            readAllPanels();
+            state.ttsRunning = true;
             btn.classList.add('active');
+            readPanelsSequentially(1);
         }
 
-        function readAllPanels() {
-            const spans = document.querySelectorAll('#reading-section .word-interactive');
+        function readPanelsSequentially(startNum) {
+            const total = comicData.panels.length;
+            if (!state.ttsRunning || startNum > total) {
+                state.ttsRunning = false;
+                document.getElementById('btn-tts').classList.remove('active');
+                clearHighlights();
+                return;
+            }
+            setActivePanel(startNum);
+            // Nach Render: alle word-interactive der aktuellen Karte sammeln
+            const spans = document.querySelectorAll('#panel-card-area .word-interactive');
             let speechText = "";
             const wordMap = [];
             spans.forEach(span => {
@@ -439,9 +576,10 @@
                 speechText += word + " ";
                 wordMap.push({ start, end: speechText.length - 1, el: span });
             });
-
-            // Speaker-Namen zusätzlich einfügen: wir gehen panel-für-panel, dialog-für-dialog
-            // Da wir aber via spans gehen, lesen wir nur die Texte (ohne Speaker-Tags)
+            if (!speechText.trim()) {
+                readPanelsSequentially(startNum + 1);
+                return;
+            }
             const u = new SpeechSynthesisUtterance(speechText);
             u.lang = "de-DE";
             u.rate = 0.9;
@@ -454,8 +592,11 @@
                 }
             };
             u.onend = function() {
-                document.getElementById('btn-tts').classList.remove('active');
                 clearHighlights();
+                if (state.ttsRunning) {
+                    // kurze Pause zwischen Panels (300 ms)
+                    setTimeout(() => readPanelsSequentially(startNum + 1), 300);
+                }
             };
             window.speechSynthesis.speak(u);
         }
@@ -464,7 +605,7 @@
             document.querySelectorAll('.highlight-active').forEach(el => el.classList.remove('highlight-active'));
         }
 
-        // --- WÖRTER HÖREN: Klick auf einzelnes Wort ---
+        // --- WÖRTER HÖREN ---
         function toggleWordReader() {
             state.wordReader = !state.wordReader;
             document.getElementById('btn-word-reader').className = state.wordReader ? "tool-btn active" : "tool-btn";
@@ -483,7 +624,7 @@
         function toggleSyllables() {
             state.syllables = !state.syllables;
             document.getElementById('btn-syllables').className = state.syllables ? "tool-btn active" : "tool-btn";
-            renderPanels();
+            renderActivePanel();
         }
 
         // --- DYSLEXIE-TOGGLE ---
@@ -495,15 +636,32 @@
 
         // --- SCHRIFTGRÖSSE ---
         function changeFontSize(delta) {
-            const cards = document.querySelectorAll('.panel-card');
-            cards.forEach(card => {
-                const current = parseFloat(window.getComputedStyle(card).fontSize);
-                const next = Math.max(14, Math.min(40, current + delta));
-                card.style.fontSize = next + 'px';
-            });
+            state.fontSize = Math.max(14, Math.min(40, state.fontSize + delta));
+            const card = document.querySelector('.panel-card');
+            if (card) card.style.fontSize = state.fontSize + 'px';
         }
 
-        renderPanels();
+        // --- HOTSPOTS, NAV-ARROWS, KEYBOARD ---
+        document.querySelectorAll('.panel-hotspot').forEach(btn => {
+            btn.addEventListener('click', () => {
+                setActivePanel(parseInt(btn.dataset.panel, 10));
+            });
+        });
+        document.getElementById('btn-prev-panel').addEventListener('click', () => {
+            setActivePanel(state.activePanel - 1);
+        });
+        document.getElementById('btn-next-panel').addEventListener('click', () => {
+            setActivePanel(state.activePanel + 1);
+        });
+        document.addEventListener('keydown', (e) => {
+            if (e.target.tagName === 'INPUT' || e.target.tagName === 'TEXTAREA') return;
+            if (e.key === 'ArrowLeft')  { setActivePanel(state.activePanel - 1); }
+            if (e.key === 'ArrowRight') { setActivePanel(state.activePanel + 1); }
+        });
+
+        // Initial-Render
+        updateHotspots();
+        renderActivePanel();
     </script>
 </body>
 </html>
