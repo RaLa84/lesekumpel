@@ -10,8 +10,6 @@ const neurotyp = (input['Neurotyp'] || 'Standard').trim();
 const bildstilRaw = (input['Bildstil'] || 'Aquarell').trim();
 const bildstilKey = bildstilRaw.split(' ')[0];
 const description = (input['Kurzbeschreibung'] || '').trim();
-const genre = (input['Genre'] || '').trim();
-const targetDir = (input['targetDir'] || 'demo-texte').trim();
 
 // Slug — deterministic content-hash (idempotent: same inputs -> same slug, prevents duplicates from caller-retry)
 const umlautMap = { 'ä': 'ae', 'ö': 'oe', 'ü': 'ue', 'ß': 'ss', 'Ä': 'ae', 'Ö': 'oe', 'Ü': 'ue' };
@@ -142,6 +140,9 @@ const imageCount = mitBildern ? (basisMax <= 50 ? 1 : basisMax <= 150 ? 2 : 3) :
 // Kein Emoji-Hinweis im Prompt — Emojis werden nachträglich per Emoji-Tagger hinzugefügt
 const emojiHinweis = '';
 
+// Eröffnungs-Varianz für Bonus-Personas: würfle Typ 1–7 aus dem Toolkit im Systemprompt
+const openerType = (p.typ === 'bonus') ? Math.floor(Math.random() * 7) + 1 : null;
+
 // User-Prompt: radikal einfach
 let userPrompt;
 
@@ -164,6 +165,8 @@ ZUSAMMENFASSUNG: [2–3 Sätze]\n\nWICHTIG: Verwende die Labels GESCHICHTE: und 
   userPrompt = `DU BIST ${p.name}.
 Dein Stil aus dem Systemprompt hat VORRANG.
 
+WICHTIG: Verwende ERÖFFNUNGSTYP #${openerType} aus deinem Stil-Toolkit für den ersten Satz dieser Geschichte.
+
 Titel: "${title}"
 Kurzbeschreibung: ${description || 'Keine Beschreibung angegeben'}
 Wortanzahl: ${p.woerter}
@@ -173,40 +176,11 @@ GESCHICHTE: [vollständiger Text]
 ZUSAMMENFASSUNG: [2–3 Sätze]\n\nWICHTIG: Verwende die Labels GESCHICHTE: und ZUSAMMENFASSUNG: GENAU mit Doppelpunkt. Keine Markdown-Heading-Marker (#, ##, ###), kein Fettdruck, keine Sterne im Story-Text.`;
 }
 
-// ═══════════════════════════════════════════════════════════════
-// SEO-FELDER — Eltern-fokussierte Meta-Beschreibung & Schema
-// ═══════════════════════════════════════════════════════════════
-
-// Altersmapping pro Persona (Eltern googeln nach Alter, nicht nach Persona)
-const ageMap = {
-  pip: '5–6', mia: '6–7', peter: '7–8', stella: '8–9', finja: '9–10',
-  samira: '7–10', holzi: '8–10', deniz: '7–10', jonas: '7–10'
-};
-const typicalAge = ageMap[persona] || '6–10';
-const readingLevelLabel = `${p.woerter} Wörter, ${p.name}`;
-
-// Eltern-Hook + Story-Teaser, max 157 Zeichen + ggf. Ellipsis
-const neuroBadge = (p.typ === 'skill' && neurotyp && neurotyp !== 'Standard') ? ` (${neurotyp}-optimiert)` : '';
-const metaDescriptionRaw = `Lesetext für ${typicalAge}-Jährige${neuroBadge}: ${title}. ${description}`.trim();
-const metaDescription = metaDescriptionRaw.length > 157
-  ? metaDescriptionRaw.substring(0, 157).trimEnd() + '…'
-  : metaDescriptionRaw;
-
-const metaKeywords = [p.name, neurotyp, genre, 'Lesetext', 'Lesen lernen', `Kinder ${typicalAge}`]
-  .filter(Boolean).join(', ');
-
-const topic = description ? description.substring(0, 60).trim() : '';
-const storyPath = `${targetDir}/${slug}.html`;
-const ogImageUrl = p.imgUrl; // Fallback solange Bilderpipeline aus ist
-
 return { json: {
   title, persona, neurotyp, description, slug,
   date: new Date().toISOString(),
   personaName: p.name, personaType: p.typ,
   personaImg: p.imgUrl, personaBio: p.bio,
   imageCount, bildstilKey, imageStylePositive, imageStyleNegative, userPrompt,
-  // SEO
-  genre, topic, targetDir, storyPath,
-  readingLevelLabel, typicalAge,
-  metaDescription, metaKeywords, ogImageUrl
+  openerType
 }};

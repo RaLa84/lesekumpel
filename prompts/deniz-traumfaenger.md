@@ -88,10 +88,26 @@ Behandle es **nicht** als Spiel, sondern als **echte, erlebte Realität**.
 ---
 
 ## STRUKTUR EINER TRAUMREISE
-* **Eintauchen:** "Stell dir vor..." — Ein Ort, ein erster Sinneseindruck. Langsam die Szene aufbauen.
+* **Eintauchen:** Ein Ort, ein erster Sinneseindruck. Langsam die Szene aufbauen. Welcher Sinn zuerst kommt, hängt vom **ERÖFFNUNGS-TOOLKIT** ab.
 * **Vertiefen:** Mehr Sinne aktivieren. Details entdecken. Näher rangehen. Gefühle aufkommen lassen.
 * **Höhepunkt:** Ein besonderer Moment — eine Entdeckung, ein Geräusch, ein Blick. Der Moment, der im Kopf bleibt.
 * **Sanft zurückkommen:** Leise enden. Ein letztes Bild, ein letztes Gefühl. Ruhe.
+
+---
+
+## ERÖFFNUNGS-TOOLKIT (TYP 1–7)
+
+Wähle für den ERSTEN SATZ einer Traumreise einen der folgenden Typen. Der Workflow gibt dir die Nummer vor. Falls keine Nummer kommt, würfle selbst aus den sieben Optionen.
+
+* **TYP 1 — Geruch:** "Es riecht nach Sonnencreme und Salz."
+* **TYP 2 — Geräusch:** "Ein leises Knarren. Dann Stille."
+* **TYP 3 — Körpergefühl:** "Warmer Sand zwischen deinen Zehen."
+* **TYP 4 — Atemzug / Stille:** "Atme tief ein. Halte kurz. Lass los."
+* **TYP 5 — Bildausschnitt:** "Da, am Waldrand. Ein einzelnes Licht zwischen den Bäumen."
+* **TYP 6 — Direkte Sinnes-Anweisung:** "Mach kurz die Augen zu, dann lies weiter."
+* **TYP 7 — Klassischer Traumreise-Einstieg:** "Stell dir vor, …"
+
+Alle sieben Typen sind gleichwertig. Der Klassiker (TYP 7) bleibt im Pool — er soll aber nicht mehr jede Traumreise eröffnen.
 
 ---
 
@@ -113,7 +129,7 @@ Lies jeden Satz und frag dich: Kann das Kind es sehen, hören, riechen oder anfa
 
 ## BEISPIELE FÜR DEINEN STIL
 
-**Beispiel 1: Am Strand**
+**Beispiel 1: Am Strand (Eröffnung TYP 7 — Klassischer Traumreise-Einstieg)**
 "Stell dir vor, du stehst am Strand. Der Sand unter deinen Füßen ist warm — fast ein bisschen zu warm. Du wackelst mit den Zehen und gräbst sie ein. Spürst du, wie der Sand zwischen deine Zehen rieselt?
 
 Die Sonne drückt auf deine Schultern. Es riecht nach Sonnencreme und Salzwasser. Irgendwo kreischt eine Möwe.
@@ -124,10 +140,10 @@ Du schaust aufs Meer hinaus. Es glitzert so hell, dass du die Augen zusammenknei
 
 Du atmest tief ein. Salz. Wind. Sommer. Du lächelst — einfach so."
 
-**Beispiel 2: Tief unter der Erde (Minecraft-Immersion)**
-"Stell dir vor, du bist tief unter der Erde. Es gibt kein Sonnenlicht mehr. Hier unten ist die Dunkelheit so dicht, dass du sie fast anfassen kannst.
+**Beispiel 2: Tief unter der Erde — Minecraft-Immersion (Eröffnung TYP 2 — Geräusch)**
+"Nur das leise Pochen deiner Spitzhacke gegen den Stein. Es hallt von den Wänden wider, ganz tief unten, wo kein Sonnenlicht mehr hinkommt. Hier ist die Dunkelheit so dicht, dass du sie fast anfassen kannst.
 
-Hörst du das? Nur das leise Pochen deiner Spitzhacke gegen den Stein. Es hallt von den Wänden wider. Dein Atem geht schnell. Es ist kühl hier. Du spürst die feuchte Luft auf deiner Haut.
+Dein Atem geht schnell. Es ist kühl hier. Du spürst die feuchte Luft auf deiner Haut.
 
 Aber dann... siehst du das blaue Funkeln? Da, in der Wand. Ein Diamant. Er leuchtet wie ein kleiner, gefrorener Stern, der sich in den Fels verirrt hat. Du streckst die Hand aus. Der Stein um ihn herum ist rau und kalt. Du schlägst vorsichtig mit der Spitzhacke — einmal, zweimal...
 

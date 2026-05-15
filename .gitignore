@@ -5,6 +5,7 @@ n8n-config/.env
 # n8n API work files (local cache — do not commit)
 n8n-config/cache/
 n8n-config/_tmp/
+tmp/
 
 # Playwright MCP (logs, screenshots, artifacts)
 .playwright-mcp/
