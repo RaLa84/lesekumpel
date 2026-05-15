@@ -6,6 +6,10 @@ on:
     paths: ['bilder/**-1.png']
   workflow_dispatch:
 
+concurrency:
+  group: generate-thumbnails
+  cancel-in-progress: false
+
 jobs:
   thumbnails:
     runs-on: ubuntu-latest
@@ -59,8 +63,17 @@ jobs:
           git add bilder/thumbs/
           if git diff --cached --quiet; then
             echo "Keine neuen Thumbnails"
-          else
-            git commit -m "Auto: Thumbnails generiert"
-            git pull --rebase
-            git push
+            exit 0
           fi
+          git commit -m "Auto: Thumbnails generiert"
+          for i in 1 2 3 4 5; do
+            git pull --rebase origin main
+            if git push; then
+              echo "Push erfolgreich (Versuch $i)"
+              exit 0
+            fi
+            echo "Push fehlgeschlagen (Versuch $i), retry in ${i}s..."
+            sleep $i
+          done
+          echo "Push nach 5 Versuchen fehlgeschlagen"
+          exit 1
