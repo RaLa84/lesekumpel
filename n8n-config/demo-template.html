@@ -1142,9 +1142,12 @@
                     inlineImages.forEach(img => {
                         const map = imagePositions.find(p => p.scene === img.scene);
                         if (!map) return;
-                        const targetSection = Math.max(0, map.paragraphIndex);
-                        let groupIdx = allGroups.findIndex(g => g.sectionIndex >= targetSection);
-                        if (groupIdx < 0) groupIdx = allGroups.length - 1;
+                        // Hard rule: Geschichten beginnen immer mit Text — paragraphIndex 0
+                        // würde das Bild über dem ersten Absatz platzieren und sich mit
+                        // dem Hero-Banner doppeln.
+                        const targetSection = Math.max(1, map.paragraphIndex);
+                        const groupIdx = allGroups.findIndex(g => g.sectionIndex >= targetSection);
+                        if (groupIdx < 0) return; // keine passende Position — Bild wird übersprungen
                         imgPositions[groupIdx] = img.src;
                     });
                 } else if (document.body.classList.contains('haeppchen-active')) {
