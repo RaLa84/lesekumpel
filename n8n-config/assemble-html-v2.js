@@ -69,6 +69,7 @@ template = template
   .replace(/\{\{WEITERERZAEHLEN_JSON\}\}/g, JSON.stringify(data.weitererzaehlenData || null))
   .replace(/\{\{SCHATZSUCHE_JSON\}\}/g, JSON.stringify(data.schatzsucheData || null))
   .replace(/\{\{DICTIONARY_JSON\}\}/g, JSON.stringify(data.wortschatz || []))
+  .replace(/\{\{IMAGE_POSITIONS_JSON\}\}/g, JSON.stringify(data.imagePositions || []))
   .replace(/\{\{WORD_COUNT\}\}/g, String(data.wordCount || 0))
   .replace(/\{\{IMAGE_MODEL\}\}/g, data.imageModel || '')
   .replace(/\{\{SLUG\}\}/g, data.slug || '')

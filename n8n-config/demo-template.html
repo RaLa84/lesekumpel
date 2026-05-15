@@ -1017,6 +1017,7 @@
         const rawDictionaryEntry = {{DICTIONARY_JSON}};
         const weitererzaehlenData = {{WEITERERZAEHLEN_JSON}};
         const schatzsucheData = {{SCHATZSUCHE_JSON}};
+        const imagePositions = {{IMAGE_POSITIONS_JSON}};
         /* ============================================================ */
 
         const storyRaw = rawStory.replace(/\n/g, "<br>");
@@ -1066,9 +1067,13 @@
 
         // Bilder einsammeln: Alle .hero-image werden zu Inline-Bildern. Der Hero-Cover
         // oben (.story-hero-cover) ist eigenstaendig und bleibt unangetastet.
+        // scene-Index aus dem Dateinamen (…-N.png) extrahieren, damit imagePositions
+        // das jeweilige Bild der richtigen Textstelle zuordnen kann.
         (function collectImages() {
             document.querySelectorAll('.hero-image').forEach(img => {
-                inlineImages.push(img.src);
+                const match = img.src.match(/-(\d+)\.png(?:\?.*)?$/);
+                const scene = match ? parseInt(match[1], 10) : null;
+                inlineImages.push({ src: img.src, scene });
                 img.remove();
             });
         })();
@@ -1083,8 +1088,10 @@
             let sections = raw.split(/\n\n+/);
 
             // Pro Sektion: Überschrift erkennen und Body-Text extrahieren
-            let allGroups = []; // { heading: string|null, text: string }
-            sections.forEach(section => {
+            // sectionIndex je Gruppe merken, damit Bild-Mapping (paragraphIndex)
+            // die Gruppe identifizieren kann, an der eine Sektion beginnt.
+            let allGroups = []; // { heading: string|null, text: string, sectionIndex: number }
+            sections.forEach((section, sectionIndex) => {
                 let lines = section.split(/\n/);
                 let heading = null;
                 let bodyLines = [];
@@ -1108,7 +1115,7 @@
                 sentences.forEach((sent, index) => {
                     tempGroup += sent; sentCount++;
                     if (sentCount >= 2 || index === sentences.length - 1) {
-                        allGroups.push({ heading: isFirstGroup ? heading : null, text: tempGroup.trim() });
+                        allGroups.push({ heading: isFirstGroup ? heading : null, text: tempGroup.trim(), sectionIndex });
                         isFirstGroup = false;
                         tempGroup = ""; sentCount = 0;
                     }
@@ -1116,29 +1123,43 @@
 
                 // Sektion hat Überschrift aber keinen Body-Text
                 if (sentences.length === 0 && heading) {
-                    allGroups.push({ heading: heading, text: '' });
+                    allGroups.push({ heading: heading, text: '', sectionIndex });
                 }
             });
 
             // Fallback: kein parsbarer Inhalt
-            if (allGroups.length === 0) allGroups.push({ heading: null, text: raw });
+            if (allGroups.length === 0) allGroups.push({ heading: null, text: raw, sectionIndex: 0 });
 
-            // Bilder gleichmäßig zwischen Gruppen verteilen
+            // Bilder positionieren: bevorzugt via paragraphIndex aus imagePositions
+            // (Mapping aus der Pipeline), Fallback auf gleichmäßige Verteilung.
             let imgPositions = {};
             if (inlineImages.length > 0 && !state.summary) {
-                if (document.body.classList.contains('haeppchen-active')) {
+                const mappingActive = Array.isArray(imagePositions)
+                    && imagePositions.length > 0
+                    && imagePositions.every(p => typeof p.paragraphIndex === 'number');
+
+                if (mappingActive) {
+                    inlineImages.forEach(img => {
+                        const map = imagePositions.find(p => p.scene === img.scene);
+                        if (!map) return;
+                        const targetSection = Math.max(0, map.paragraphIndex);
+                        let groupIdx = allGroups.findIndex(g => g.sectionIndex >= targetSection);
+                        if (groupIdx < 0) groupIdx = allGroups.length - 1;
+                        imgPositions[groupIdx] = img.src;
+                    });
+                } else if (document.body.classList.contains('haeppchen-active')) {
                     let interval = Math.max(1, Math.floor(allGroups.length / inlineImages.length));
-                    inlineImages.forEach((url, i) => {
+                    inlineImages.forEach((img, i) => {
                         let pos = interval * i;
                         if (pos >= allGroups.length) pos = allGroups.length - 1;
-                        imgPositions[pos] = url;
+                        imgPositions[pos] = img.src;
                     });
                 } else {
                     let interval = Math.max(1, Math.floor(allGroups.length / (inlineImages.length + 1)));
-                    inlineImages.forEach((url, i) => {
+                    inlineImages.forEach((img, i) => {
                         let pos = interval * (i + 1);
                         if (pos >= allGroups.length) pos = allGroups.length - 1;
-                        imgPositions[pos] = url;
+                        imgPositions[pos] = img.src;
                     });
                 }
             }
