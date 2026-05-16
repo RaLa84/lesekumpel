@@ -1,0 +1,531 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lesekumpel — Lesen lernen auf eure Art</title>
+    <meta name="description" content="Schluss mit dem Lesekampf. Lesekumpel verwandelt Frustration in Begeisterung — mit neuroinklusiven Geschichten für Kinder mit ADHS, Autismus und Legasthenie.">
+
+    <!-- Open Graph -->
+    <meta property="og:title" content="Lesekumpel — Lesen lernen auf eure Art">
+    <meta property="og:description" content="Wir verwandeln Frustration und Wut in echte Begeisterung. Schluss mit dem Lesekampf am Schreibtisch.">
+    <meta property="og:image" content="bilder/lesekumpel_logo_v2.png">
+    <meta property="og:type" content="website">
+    <meta property="og:locale" content="de_DE">
+
+    <!-- Fonts (DSGVO-konform, lokal) -->
+    <link rel="stylesheet" href="fonts/fonts.css">
+
+    <style>
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            /* === INSPIRED v2 — 8 Original-Token === */
+            --mint:        #2FB8A6;
+            --navy:        #2B3140;
+            --cream:       #FFF6EF;
+            --cream-light: #FEFBF6;
+            --coral:       #F97352;
+            --lila:        #7D6AE6;
+            --yellow:      #FFD95A;
+            --border:      #D9D4CC;
+            --white:       #FFFFFF;
+            --focus-ring:  rgba(43,49,64,0.35);
+
+            --font-heading: 'Fredoka', system-ui, sans-serif;
+            --font-body:    'Lexend', system-ui, sans-serif;
+
+            --shadow-card:       0 2px 12px rgba(43,49,64,0.05);
+            --shadow-card-hover: 0 8px 24px rgba(43,49,64,0.08);
+            --shadow-btn-mint:   0 6px 18px rgba(47,184,166,0.30);
+        }
+
+        html { scroll-behavior: smooth; }
+
+        body {
+            font-family: var(--font-body);
+            font-weight: 400;
+            line-height: 1.65;
+            background: var(--cream);
+            color: var(--navy);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 56px 24px 32px;
+            position: relative;
+            overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+        }
+
+        :focus-visible {
+            outline: none;
+            box-shadow: 0 0 0 3px var(--focus-ring);
+            border-radius: 6px;
+        }
+
+        /* ========== ORGANISCHE BLOBS ========== */
+        .blob {
+            position: fixed;
+            pointer-events: none;
+            z-index: 0;
+            will-change: auto;
+        }
+
+        .blob-coral {
+            top: -120px;
+            right: -140px;
+            width: 520px;
+            height: 520px;
+            opacity: 0.18;
+            color: var(--coral);
+        }
+
+        .blob-mint {
+            bottom: -160px;
+            left: -160px;
+            width: 560px;
+            height: 560px;
+            opacity: 0.16;
+            color: var(--mint);
+        }
+
+        .blob-lila {
+            top: 38%;
+            right: -240px;
+            width: 320px;
+            height: 320px;
+            opacity: 0.08;
+            color: var(--lila);
+        }
+
+        @media (max-width: 640px) {
+            .blob-coral { width: 360px; height: 360px; top: -100px; right: -120px; }
+            .blob-mint  { width: 380px; height: 380px; bottom: -120px; left: -130px; }
+            .blob-lila  { display: none; }
+        }
+
+        /* ========== FLOATING DECORATIONS (Sterne / Sparkles) ========== */
+        .floating-deco {
+            position: fixed;
+            pointer-events: none;
+            z-index: 1;
+            will-change: transform;
+        }
+
+        .deco-star {
+            width: 32px;
+            height: 32px;
+            animation: float 6s ease-in-out infinite;
+            filter: drop-shadow(0 0 6px rgba(255, 217, 90, 0.45));
+        }
+
+        .deco-circle {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            animation: float-slow 8s ease-in-out infinite;
+        }
+
+        .deco-sparkle {
+            width: 16px;
+            height: 16px;
+            animation: sparkle 4s ease-in-out infinite;
+        }
+
+        .deco-dot {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            animation: float 5s ease-in-out infinite;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50%      { transform: translateY(-18px) rotate(5deg); }
+        }
+
+        @keyframes float-slow {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50%      { transform: translateY(-12px) rotate(-3deg); }
+        }
+
+        @keyframes sparkle {
+            0%, 100% { opacity: 0.35; transform: scale(0.8); }
+            30%      { opacity: 1;    transform: scale(1.15); }
+            50%      { opacity: 0.9;  transform: scale(1.2); }
+            70%      { opacity: 1;    transform: scale(1.1); }
+        }
+
+        @media (max-width: 480px) {
+            .deco-hide-mobile { display: none; }
+        }
+
+        /* ========== HAUPTCONTAINER ========== */
+        main {
+            max-width: 1080px;
+            width: 100%;
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            animation: fadeIn 0.8s ease-out;
+        }
+
+        /* ========== LOGO / BUDDY ========== */
+        .buddy-wrap {
+            display: flex;
+            justify-content: center;
+            margin-bottom: 28px;
+        }
+
+        .logo {
+            width: clamp(140px, 22vw, 180px);
+            height: auto;
+            display: block;
+            transform: rotate(-4deg);
+            /* Sticker-Effekt: weißer Outline-Rand (folgt der Logo-Form) + Lift-Schatten */
+            filter:
+                drop-shadow( 4px  0   0 #FFFFFF)
+                drop-shadow(-4px  0   0 #FFFFFF)
+                drop-shadow( 0    4px 0 #FFFFFF)
+                drop-shadow( 0   -4px 0 #FFFFFF)
+                drop-shadow( 3px  3px 0 #FFFFFF)
+                drop-shadow(-3px -3px 0 #FFFFFF)
+                drop-shadow( 3px -3px 0 #FFFFFF)
+                drop-shadow(-3px  3px 0 #FFFFFF)
+                drop-shadow(0 16px 22px rgba(43, 49, 64, 0.22))
+                drop-shadow(0 4px 6px rgba(43, 49, 64, 0.10));
+            transition: transform 0.45s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .logo:hover {
+            transform: rotate(-4deg) translateY(-8px) scale(1.04);
+        }
+
+        /* ========== STATUS / SECTION BADGE ========== */
+        .status-badge {
+            display: inline-block;
+            background: var(--yellow);
+            color: var(--navy);
+            font-family: var(--font-heading);
+            font-weight: 700;
+            font-size: 1.05rem;
+            line-height: 1.2;
+            padding: 10px 22px;
+            border-radius: 999px;
+            margin-bottom: 28px;
+            box-shadow: 0 4px 14px rgba(255, 217, 90, 0.40);
+        }
+
+        /* ========== HEADLINE ========== */
+        h1 {
+            font-family: var(--font-heading);
+            font-weight: 600;
+            font-size: clamp(2rem, 5.5vw, 3.25rem);
+            line-height: 1.15;
+            letter-spacing: -0.015em;
+            color: var(--navy);
+            margin: 0 auto 22px;
+            max-width: 720px;
+        }
+
+        h1 .highlight {
+            color: var(--lila);
+        }
+
+        .subtitle {
+            font-family: var(--font-body);
+            font-weight: 400;
+            font-size: clamp(1.05rem, 2.2vw, 1.2rem);
+            line-height: 1.6;
+            color: var(--navy);
+            max-width: 620px;
+            margin: 0 auto 56px;
+        }
+
+        /* ========== FEATURE CARDS ========== */
+        .features-wrap {
+            position: relative;
+            margin-bottom: 64px;
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 22px;
+            position: relative;
+            z-index: 2;
+        }
+
+        @media (min-width: 768px) {
+            .features {
+                grid-template-columns: repeat(3, 1fr);
+                gap: 28px;
+            }
+        }
+
+        .feature-card {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            box-shadow: var(--shadow-card);
+            padding: 32px 28px;
+            text-align: left;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .feature-card:hover {
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-card-hover);
+        }
+
+        .icon-box {
+            width: 52px;
+            height: 52px;
+            border-radius: 12px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.55rem;
+            margin-bottom: 18px;
+            color: var(--navy);
+        }
+
+        .icon-mint  { background: rgba(47, 184, 166, 0.22); }
+        .icon-coral { background: rgba(249, 115, 82, 0.22); }
+        .icon-lila  { background: rgba(125, 106, 230, 0.22); }
+
+        .feature-card h3 {
+            font-family: var(--font-heading);
+            font-weight: 600;
+            font-size: 1.2rem;
+            line-height: 1.3;
+            color: var(--navy);
+            margin-bottom: 10px;
+        }
+
+        .feature-card p {
+            font-family: var(--font-body);
+            font-weight: 400;
+            font-size: 0.98rem;
+            line-height: 1.6;
+            color: var(--navy);
+            margin: 0;
+        }
+
+        /* ========== DOTTED PATH (Desktop) ========== */
+        .dotted-path {
+            display: none;
+        }
+
+        @media (min-width: 900px) {
+            .dotted-path {
+                display: block;
+                position: absolute;
+                top: 38px;
+                left: 12%;
+                right: 12%;
+                width: 76%;
+                height: 60px;
+                z-index: 1;
+                pointer-events: none;
+            }
+        }
+
+        /* ========== CARD-IN-CARD TEASER ========== */
+        .teaser {
+            background: var(--white);
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            box-shadow: var(--shadow-card);
+            padding: 40px 32px;
+            text-align: center;
+            max-width: 720px;
+            margin: 0 auto;
+        }
+
+        .teaser-head {
+            font-family: var(--font-heading);
+            font-weight: 600;
+            font-size: clamp(1.3rem, 3vw, 1.65rem);
+            line-height: 1.3;
+            color: var(--navy);
+            margin-bottom: 12px;
+        }
+
+        .teaser-text {
+            font-family: var(--font-body);
+            font-weight: 400;
+            font-size: 1rem;
+            line-height: 1.6;
+            color: var(--navy);
+            opacity: 0.85;
+            margin-bottom: 24px;
+            max-width: 520px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .teaser-inner {
+            background: var(--cream-light);
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 24px 22px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 16px;
+        }
+
+        @media (min-width: 560px) {
+            .teaser-inner {
+                flex-direction: row;
+                justify-content: space-between;
+                text-align: left;
+                gap: 24px;
+            }
+        }
+
+        .teaser-inner-text {
+            font-family: var(--font-body);
+            font-weight: 500;
+            font-size: 0.98rem;
+            line-height: 1.5;
+            color: var(--navy);
+        }
+
+        /* ========== BUTTON ========== */
+        .btn-primary {
+            display: inline-block;
+            font-family: var(--font-body);
+            font-weight: 600;
+            font-size: 1rem;
+            color: var(--navy);
+            background: var(--mint);
+            padding: 16px 32px;
+            border-radius: 999px;
+            text-decoration: none;
+            border: none;
+            cursor: pointer;
+            box-shadow: var(--shadow-btn-mint);
+            transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            white-space: nowrap;
+        }
+
+        .btn-primary:hover,
+        .btn-primary:focus-visible {
+            background: var(--navy);
+            color: var(--white);
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 10px 24px rgba(43, 49, 64, 0.32);
+        }
+
+        /* ========== FOOTER ========== */
+        footer {
+            margin-top: 48px;
+            padding-bottom: 12px;
+            text-align: center;
+            font-family: var(--font-body);
+            font-size: 0.85rem;
+            color: var(--navy);
+            opacity: 0.6;
+            z-index: 1;
+            position: relative;
+        }
+
+        /* ========== ANIMATION ========== */
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(12px); }
+            to   { opacity: 1; transform: translateY(0); }
+        }
+
+        @media (prefers-reduced-motion: reduce) {
+            main, .logo, .feature-card, .btn-primary {
+                animation: none !important;
+                transition: none !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- ===== Organische Blobs ===== -->
+    <svg class="blob blob-coral" aria-hidden="true" viewBox="0 0 600 600" xmlns="http://www.w3.org/2000/svg">
+        <path fill="currentColor" d="M421.5,316.5Q393,383,335,420.5Q277,458,210.5,432Q144,406,108,343Q72,280,99,209Q126,138,194,103.5Q262,69,331,93Q400,117,433,178.5Q466,240,421.5,316.5Z"/>
+    </svg>
+    <svg class="blob blob-mint" aria-hidden="true" viewBox="0 0 600 600" xmlns="http://www.w3.org/2000/svg">
+        <path fill="currentColor" d="M444,318Q416,386,353,420Q290,454,222,427Q154,400,121,338Q88,276,116,210Q144,144,210,114Q276,84,343,109.5Q410,135,442,202.5Q474,270,444,318Z"/>
+    </svg>
+    <svg class="blob blob-lila" aria-hidden="true" viewBox="0 0 600 600" xmlns="http://www.w3.org/2000/svg">
+        <path fill="currentColor" d="M438,310Q406,380,338,415Q270,450,205,418Q140,386,114,318Q88,250,118,184Q148,118,216,98Q284,78,348,108Q412,138,442,204Q472,270,438,310Z"/>
+    </svg>
+
+    <!-- ===== Floating Decorations (Sterne / Sparkles) ===== -->
+    <svg aria-hidden="true" class="floating-deco deco-star" style="top:12%;right:10%;animation-delay:-1s;" viewBox="0 0 32 32"><polygon points="16,2 20,12 30,12 22,19 25,30 16,23 7,30 10,19 2,12 12,12" fill="#FFD95A" opacity="0.55"/></svg>
+    <svg aria-hidden="true" class="floating-deco deco-star deco-hide-mobile" style="top:65%;left:6%;animation-delay:-3s;" viewBox="0 0 32 32"><polygon points="16,2 20,12 30,12 22,19 25,30 16,23 7,30 10,19 2,12 12,12" fill="#F97352" opacity="0.28"/></svg>
+    <svg aria-hidden="true" class="floating-deco deco-sparkle deco-hide-mobile" style="top:28%;right:18%;animation-delay:-2s;" viewBox="0 0 16 16"><circle cx="8" cy="8" r="3" fill="#FFD95A" opacity="0.7"/></svg>
+    <div aria-hidden="true" class="floating-deco deco-circle" style="top:72%;right:15%;background:rgba(249,115,82,0.22);animation-delay:-4s;"></div>
+    <div aria-hidden="true" class="floating-deco deco-dot deco-hide-mobile" style="top:20%;left:14%;background:#FFD95A;opacity:0.5;animation-delay:-2s;"></div>
+    <svg aria-hidden="true" class="floating-deco deco-sparkle" style="top:45%;left:7%;animation-delay:-1.5s;" viewBox="0 0 24 24"><path d="M12,2 L14,10 L22,12 L14,14 L12,22 L10,14 L2,12 L10,10 Z" fill="#FFD95A" opacity="0.5"/></svg>
+    <svg aria-hidden="true" class="floating-deco deco-star" style="bottom:18%;left:18%;animation-delay:-4.5s;" viewBox="0 0 32 32"><polygon points="16,2 20,12 30,12 22,19 25,30 16,23 7,30 10,19 2,12 12,12" fill="#FFD95A" opacity="0.38"/></svg>
+    <div aria-hidden="true" class="floating-deco deco-dot" style="bottom:25%;right:22%;background:#F97352;opacity:0.28;animation-delay:-3.5s;"></div>
+
+    <main>
+        <!-- ===== Buddy ===== -->
+        <div class="buddy-wrap">
+            <img src="bilder/lesekumpel_logo_v2.png" alt="Lesekumpel Buddy — illustrierter Lesefreund mit Buch und Glühbirne" class="logo">
+        </div>
+
+        <!-- ===== Status-Badge ===== -->
+        <div class="status-badge">🚀 Bald verfügbar</div>
+
+        <!-- ===== Headline ===== -->
+        <h1>Lesen lernen<br><span class="highlight">auf eure Art.</span></h1>
+        <p class="subtitle">Schluss mit Frust und Tränen. Wir verwandeln den Lesekampf in ein entspanntes Ritual — mit Geschichten, die euer Kind wirklich begeistern.</p>
+
+        <!-- ===== Feature Cards mit Dotted-Path ===== -->
+        <div class="features-wrap">
+            <svg class="dotted-path" aria-hidden="true" viewBox="0 0 800 60" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M 40 30 Q 200 0 400 30 T 760 30" fill="none" stroke="#F97352" stroke-width="2.5" stroke-dasharray="4 8" stroke-linecap="round" opacity="0.55"/>
+            </svg>
+
+            <div class="features">
+                <div class="feature-card">
+                    <div class="icon-box icon-mint" aria-hidden="true">✏️</div>
+                    <h3>Mitbestimmen &amp; Quatsch</h3>
+                    <p>Ob Märchen oder die Katze, die den Döner klaut: Euer Kind bestimmt das Thema jeder Geschichte. Wir nehmen die Hürden und wecken echte Leselust.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="icon-box icon-coral" aria-hidden="true">💛</div>
+                    <h3>Neuroinklusiv &amp; Barrierefrei</h3>
+                    <p>Werkzeuge, die passen: optimiert für ADHS, Autismus und Legasthenie. Wir geben eurem Kind die Unterstützung, die es braucht.</p>
+                </div>
+                <div class="feature-card">
+                    <div class="icon-box icon-lila" aria-hidden="true">⭐</div>
+                    <h3>Routine ohne Druck</h3>
+                    <p>Vom „Müssen" zum Ritual: Wir feiern die persönliche Lesereise eures Kindes — ganz ohne Vergleiche oder Ranglisten.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- ===== Card-in-Card Teaser ===== -->
+        <section class="teaser" aria-labelledby="teaser-head">
+            <h2 id="teaser-head" class="teaser-head">Wir werkeln gerade an etwas Schönem für euch.</h2>
+            <p class="teaser-text">Hast du Ideen oder willst dich einfach mal dazu austauschen? Wir freuen uns auf eure Nachricht.</p>
+            <div class="teaser-inner">
+                <span class="teaser-inner-text">Schreib uns — wir antworten persönlich.</span>
+                <a class="btn-primary" href="mailto:hallo@lesekumpel.de">Lass uns austauschen!</a>
+            </div>
+        </section>
+    </main>
+
+    <footer>
+        <span>&copy; 2026 Raik Lasner, Marten Losansky, Antje Lasner</span>
+    </footer>
+
+</body>
+</html>
