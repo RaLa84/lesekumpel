@@ -1,0 +1,826 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lesekumpel Design System</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Quicksand:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --accent-coral: #D67171;
+  --accent-coral-light: #FDEAEA;
+  --accent-coral-dark: #B85555;
+  --primary-yellow: #FFD54F;
+  --bg-body: #FFF9E5;
+  --bg-warm-light: #FFF3D0;
+  --bg-card: #ffffff;
+  --text-dark: #2D3436;
+  --text-muted: #5a6368;
+  --border-card: #F5E6A3;
+  --font-heading: 'Fredoka', sans-serif;
+  --font-body: 'Quicksand', sans-serif;
+  --shadow-card: 0 2px 16px rgba(0,0,0,0.04);
+  --shadow-card-hover: 0 8px 24px rgba(0,0,0,0.07);
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: var(--font-body);
+  background: var(--bg-body);
+  color: var(--text-dark);
+  font-weight: 500;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  line-height: 1.2;
+}
+
+code, pre {
+  font-family: 'Consolas', 'Monaco', monospace;
+  font-size: 0.9em;
+}
+
+/* ===== Navbar ===== */
+.navbar {
+  background: #ffffff;
+  border-bottom: 4px solid var(--primary-yellow);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  padding: 16px 24px;
+}
+.navbar-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+.navbar-brand {
+  font-family: var(--font-heading);
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--text-dark);
+  text-decoration: none;
+}
+.navbar-brand span { color: var(--accent-coral); }
+.navbar-links {
+  display: flex;
+  gap: 24px;
+  flex-wrap: wrap;
+}
+.navbar-links a {
+  color: var(--text-muted);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.95rem;
+  transition: color 0.2s ease;
+}
+.navbar-links a:hover { color: var(--accent-coral); }
+
+/* ===== Hero ===== */
+.hero {
+  text-align: center;
+  padding: 100px 24px 80px;
+  max-width: 900px;
+  margin: 0 auto;
+}
+.hero h1 {
+  font-size: clamp(2.5rem, 6vw, 4rem);
+  margin-bottom: 24px;
+  color: var(--text-dark);
+}
+.hero h1 span { color: var(--accent-coral); }
+.hero p {
+  font-size: 1.2rem;
+  color: var(--text-muted);
+  max-width: 600px;
+  margin: 0 auto 32px;
+}
+.hero-badge {
+  display: inline-block;
+  background: var(--primary-yellow);
+  color: var(--text-dark);
+  padding: 8px 18px;
+  border-radius: 40px;
+  font-weight: 700;
+  font-size: 0.85rem;
+  margin-bottom: 24px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+
+/* ===== Sections ===== */
+section {
+  padding: 80px 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+section.warm-bg {
+  background: var(--bg-warm-light);
+  max-width: none;
+  padding-left: 24px;
+  padding-right: 24px;
+}
+.section-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.section-header {
+  margin-bottom: 48px;
+  text-align: center;
+}
+.section-header h2 {
+  font-size: clamp(1.8rem, 4vw, 2.5rem);
+  margin-bottom: 12px;
+}
+.section-header p {
+  color: var(--text-muted);
+  font-size: 1.05rem;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+/* ===== Cards ===== */
+.card {
+  background: var(--bg-card);
+  border: 2px solid var(--border-card);
+  border-radius: 24px;
+  box-shadow: var(--shadow-card);
+  padding: 36px 32px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.card:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-card-hover);
+}
+.card h3 {
+  font-size: 1.3rem;
+  margin-bottom: 12px;
+}
+.card p { color: var(--text-muted); }
+
+.grid {
+  display: grid;
+  gap: 28px;
+}
+.grid-2 { grid-template-columns: 1fr; }
+.grid-3 { grid-template-columns: 1fr; }
+.grid-4 { grid-template-columns: repeat(2, 1fr); }
+
+@media (min-width: 768px) {
+  section { padding: 120px 48px; }
+  .grid-2 { grid-template-columns: repeat(2, 1fr); }
+  .grid-3 { grid-template-columns: repeat(3, 1fr); }
+  .grid-4 { grid-template-columns: repeat(4, 1fr); }
+  .hero { padding: 140px 48px 100px; }
+}
+
+/* ===== Color Swatches ===== */
+.swatch {
+  background: var(--bg-card);
+  border: 2px solid var(--border-card);
+  border-radius: 24px;
+  overflow: hidden;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.swatch:hover {
+  transform: translateY(-4px);
+  box-shadow: var(--shadow-card-hover);
+}
+.swatch-color {
+  height: 120px;
+  display: flex;
+  align-items: flex-end;
+  padding: 16px;
+}
+.swatch-color code {
+  background: rgba(255,255,255,0.85);
+  padding: 4px 10px;
+  border-radius: 8px;
+  font-weight: 600;
+  color: var(--text-dark);
+  font-size: 0.85rem;
+}
+.swatch-info {
+  padding: 18px 20px;
+}
+.swatch-info h4 {
+  font-size: 1rem;
+  margin-bottom: 6px;
+}
+.swatch-info p {
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  line-height: 1.4;
+}
+
+/* ===== Buttons ===== */
+.btn {
+  display: inline-block;
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 1rem;
+  text-decoration: none;
+  cursor: pointer;
+  border: none;
+  border-radius: 28px;
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+}
+.btn-primary {
+  background: var(--accent-coral);
+  color: #ffffff;
+  padding: 20px 52px;
+  box-shadow: 0 4px 14px rgba(214,113,113,0.3);
+}
+.btn-primary:hover {
+  background: var(--accent-coral-dark);
+  transform: translateY(-3px) scale(1.02);
+  box-shadow: 0 8px 22px rgba(214,113,113,0.4);
+}
+.btn-secondary {
+  color: var(--accent-coral);
+  border: 2px solid var(--accent-coral);
+  background: transparent;
+  padding: 18px 48px;
+}
+.btn-secondary:hover {
+  background: var(--accent-coral);
+  color: #ffffff;
+  transform: translateY(-3px) scale(1.02);
+}
+.btn:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(214,113,113,0.4);
+}
+
+/* ===== Icon Boxes ===== */
+.icon-box {
+  background: var(--accent-coral-light);
+  border: 2px solid rgba(214,113,113,0.15);
+  border-radius: 16px;
+  width: 56px;
+  height: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.5rem;
+  margin-bottom: 16px;
+}
+
+/* ===== Typography Sample ===== */
+.type-sample {
+  background: var(--bg-card);
+  border: 2px solid var(--border-card);
+  border-radius: 24px;
+  padding: 36px 32px;
+}
+.type-sample > * + * { margin-top: 12px; }
+.type-sample h1 { font-size: 3rem; }
+.type-sample h2 { font-size: 2.25rem; }
+.type-sample h3 { font-size: 1.5rem; }
+.type-sample p.body { font-family: var(--font-body); font-size: 1rem; color: var(--text-dark); }
+.type-sample p.muted { font-family: var(--font-body); font-size: 0.95rem; color: var(--text-muted); }
+
+/* ===== Tables ===== */
+.spec-table {
+  width: 100%;
+  background: var(--bg-card);
+  border: 2px solid var(--border-card);
+  border-radius: 24px;
+  border-collapse: separate;
+  border-spacing: 0;
+  overflow: hidden;
+}
+.spec-table th,
+.spec-table td {
+  padding: 16px 20px;
+  text-align: left;
+  border-bottom: 1px solid var(--border-card);
+}
+.spec-table th {
+  background: var(--bg-warm-light);
+  font-family: var(--font-heading);
+  font-weight: 600;
+  color: var(--text-dark);
+  font-size: 0.95rem;
+}
+.spec-table tr:last-child td { border-bottom: none; }
+.spec-table td code {
+  background: var(--accent-coral-light);
+  padding: 3px 8px;
+  border-radius: 6px;
+  color: var(--accent-coral-dark);
+  font-weight: 600;
+}
+.spec-table td.muted { color: var(--text-muted); }
+
+/* ===== Code Blocks ===== */
+.code-block {
+  background: var(--text-dark);
+  color: #f8f5e8;
+  padding: 24px 28px;
+  border-radius: 16px;
+  font-family: 'Consolas', 'Monaco', monospace;
+  font-size: 0.9rem;
+  line-height: 1.7;
+  overflow-x: auto;
+}
+.code-block .property { color: #FFD54F; }
+.code-block .value { color: #FDEAEA; }
+.code-block .comment { color: #888; font-style: italic; }
+
+/* ===== Badges ===== */
+.badge {
+  display: inline-block;
+  padding: 8px 18px;
+  border-radius: 40px;
+  font-weight: 700;
+  font-size: 0.8rem;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+}
+.badge-yellow {
+  background: var(--primary-yellow);
+  color: var(--text-dark);
+}
+.badge-coral {
+  background: var(--accent-coral-light);
+  color: var(--accent-coral-dark);
+  border: 2px solid rgba(214,113,113,0.2);
+}
+.badge-row {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+/* ===== Input ===== */
+.input {
+  font-family: var(--font-body);
+  font-size: 1rem;
+  font-weight: 500;
+  padding: 16px 20px;
+  border: 2px solid var(--border-card);
+  border-radius: 20px;
+  background: #ffffff;
+  color: var(--text-dark);
+  width: 100%;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+.input:focus {
+  outline: none;
+  border-color: var(--accent-coral);
+  box-shadow: 0 0 0 3px rgba(214,113,113,0.15);
+}
+
+/* ===== Demo wrappers ===== */
+.demo-row {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.note {
+  background: var(--accent-coral-light);
+  border-left: 4px solid var(--accent-coral);
+  padding: 16px 20px;
+  border-radius: 12px;
+  color: var(--text-dark);
+  font-size: 0.95rem;
+}
+.note strong { color: var(--accent-coral-dark); }
+
+/* ===== Footer ===== */
+footer {
+  text-align: center;
+  padding: 48px 24px;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  border-top: 2px solid var(--border-card);
+  margin-top: 40px;
+}
+footer span { color: var(--accent-coral); font-weight: 600; }
+
+/* Animation for the showcase swatches */
+.swatch-color.coral { background: #D67171; }
+.swatch-color.coral-light { background: #FDEAEA; }
+.swatch-color.coral-dark { background: #B85555; }
+.swatch-color.yellow { background: #FFD54F; }
+.swatch-color.bg-body { background: #FFF9E5; border-bottom: 1px solid var(--border-card); }
+.swatch-color.bg-warm { background: #FFF3D0; }
+.swatch-color.bg-card { background: #ffffff; border-bottom: 1px solid var(--border-card); }
+.swatch-color.text-dark { background: #2D3436; }
+.swatch-color.text-muted { background: #5a6368; }
+.swatch-color.border-card { background: #F5E6A3; }
+
+.swatch-color.coral code,
+.swatch-color.coral-dark code,
+.swatch-color.text-dark code,
+.swatch-color.text-muted code {
+  background: rgba(255,255,255,0.95);
+}
+</style>
+</head>
+<body>
+
+<!-- Navbar -->
+<nav class="navbar">
+  <div class="navbar-inner">
+    <a href="#top" class="navbar-brand">Lese<span>kumpel</span> · Design System</a>
+    <div class="navbar-links">
+      <a href="#farben">Farben</a>
+      <a href="#typografie">Typografie</a>
+      <a href="#geometrie">Geometrie</a>
+      <a href="#komponenten">Komponenten</a>
+      <a href="#interaktion">Interaktion</a>
+      <a href="#a11y">A11y</a>
+    </div>
+  </div>
+</nav>
+
+<!-- Hero -->
+<header class="hero" id="top">
+  <span class="hero-badge">Design Referenz · v1</span>
+  <h1>Das <span>Lesekumpel</span> Design System</h1>
+  <p>Zentrale visuelle Sprache für alle Seiten — warm, kindgerecht, zugänglich. Diese Seite ist mit dem System gebaut, das sie beschreibt.</p>
+  <div class="demo-row" style="justify-content: center;">
+    <a href="#farben" class="btn btn-primary">Tour starten</a>
+    <a href="#komponenten" class="btn btn-secondary">Komponenten ansehen</a>
+  </div>
+</header>
+
+<!-- Farbpalette -->
+<section id="farben">
+  <div class="section-header">
+    <h2>Farbpalette</h2>
+    <p>Warme, freundliche Töne mit Coral als Aktionsfarbe und Pastellgelb als Hintergrund.</p>
+  </div>
+
+  <div class="grid grid-4" style="margin-bottom: 32px;">
+    <div class="swatch">
+      <div class="swatch-color coral"><code>#D67171</code></div>
+      <div class="swatch-info">
+        <h4>Accent Coral</h4>
+        <p>Primäre Aktionsfarbe — Buttons, Links, Highlights</p>
+      </div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color coral-light"><code>#FDEAEA</code></div>
+      <div class="swatch-info">
+        <h4>Coral Light</h4>
+        <p>Icon-Hintergründe, Hover-States</p>
+      </div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color coral-dark"><code>#B85555</code></div>
+      <div class="swatch-info">
+        <h4>Coral Dark</h4>
+        <p>Hover auf Coral-Buttons</p>
+      </div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color yellow"><code>#FFD54F</code></div>
+      <div class="swatch-info">
+        <h4>Primary Yellow</h4>
+        <p>Badges, Borders, Step-Circles</p>
+      </div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color bg-body"><code>#FFF9E5</code></div>
+      <div class="swatch-info">
+        <h4>Background Body</h4>
+        <p>Seitenhintergrund — warmes Pastellgelb</p>
+      </div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color bg-warm"><code>#FFF3D0</code></div>
+      <div class="swatch-info">
+        <h4>Background Warm Light</h4>
+        <p>Abschnittswechsel-Hintergrund</p>
+      </div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color bg-card"><code>#ffffff</code></div>
+      <div class="swatch-info">
+        <h4>Card Background</h4>
+        <p>Reines Weiß für Karten</p>
+      </div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color border-card"><code>#F5E6A3</code></div>
+      <div class="swatch-info">
+        <h4>Border Card</h4>
+        <p>Subtile Kartenborder — warmes Gold</p>
+      </div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color text-dark"><code>#2D3436</code></div>
+      <div class="swatch-info">
+        <h4>Text Dark</h4>
+        <p>Primäre Textfarbe — Kontrast 14:1</p>
+      </div>
+    </div>
+    <div class="swatch">
+      <div class="swatch-color text-muted"><code>#5a6368</code></div>
+      <div class="swatch-info">
+        <h4>Text Muted</h4>
+        <p>Sekundäre/gedämpfte Textfarbe</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="note">
+    <strong>WCAG-Hinweis:</strong> Coral (#D67171) nur für große Texte (≥18px) — Kontrast ~3.5:1 auf Weiß reicht nur für Large Text (AA). Für Fließtext immer <code>--text-dark</code> verwenden.
+  </div>
+</section>
+
+<!-- Typografie -->
+<section id="typografie" class="warm-bg">
+  <div class="section-inner">
+    <div class="section-header">
+      <h2>Typografie</h2>
+      <p>Fredoka für Überschriften — rund, freundlich. Quicksand für Fließtext — klar, lesbar.</p>
+    </div>
+
+    <div class="grid grid-2">
+      <div class="type-sample">
+        <span class="badge badge-yellow">Fredoka · Headings</span>
+        <h1 style="margin-top: 16px;">Aa Überschrift</h1>
+        <h2>Aa Sektion</h2>
+        <h3>Aa Karte</h3>
+        <p class="muted">Gewicht: 600–700 · Google Fonts</p>
+      </div>
+      <div class="type-sample">
+        <span class="badge badge-coral">Quicksand · Body</span>
+        <p class="body" style="margin-top: 16px; font-size: 1.15rem;">Der schnelle braune Fuchs springt über den faulen Hund. Lesen macht Spaß!</p>
+        <p class="body">Quicksand ist die Schrift für alle Fließtexte — warm, weich und sehr gut lesbar in allen Größen.</p>
+        <p class="muted">Gewicht: 500–600 · Google Fonts</p>
+      </div>
+    </div>
+
+    <div style="margin-top: 32px;">
+      <h3 style="font-size: 1.2rem; margin-bottom: 16px;">Import</h3>
+      <pre class="code-block"><span class="comment">/* Google Fonts */</span>
+<span class="property">@import</span> <span class="value">url('https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Quicksand:wght@400;500;600;700&display=swap');</span>
+
+<span class="comment">/* CSS-Variablen */</span>
+<span class="property">--font-heading</span>: <span class="value">'Fredoka', sans-serif</span>;
+<span class="property">--font-body</span>: <span class="value">'Quicksand', sans-serif</span>;</pre>
+    </div>
+  </div>
+</section>
+
+<!-- Geometrie -->
+<section id="geometrie">
+  <div class="section-header">
+    <h2>Geometrie &amp; Abstände</h2>
+    <p>Großzügige Radien, luftige Abstände — lieber Whitespace als Kompaktheit.</p>
+  </div>
+
+  <table class="spec-table">
+    <thead>
+      <tr>
+        <th>Element</th>
+        <th>Border-Radius</th>
+        <th>Padding</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr><td>Karten</td><td><code>24px</code></td><td><code>36px 32px</code></td></tr>
+      <tr><td>Buttons (Pill)</td><td><code>28px</code></td><td><code>20px 52px</code> Primary · <code>18px 48px</code> Secondary</td></tr>
+      <tr><td>Icon-Boxen</td><td><code>16px</code></td><td><code>14px</code></td></tr>
+      <tr><td>Inputs</td><td><code>20px</code></td><td><code>16px 20px</code></td></tr>
+      <tr><td>Badges</td><td><code>40px</code></td><td><code>8px 18px</code></td></tr>
+    </tbody>
+  </table>
+
+  <div style="margin-top: 32px;">
+    <h3 style="font-size: 1.2rem; margin-bottom: 16px;">Spacing-Regeln</h3>
+    <div class="grid grid-3">
+      <div class="card">
+        <div class="icon-box">📐</div>
+        <h3>Sections</h3>
+        <p>Mobile: <code>100px 24px</code> · Desktop: <code>140px 48px</code></p>
+      </div>
+      <div class="card">
+        <div class="icon-box">🎴</div>
+        <h3>Card-Grid-Gap</h3>
+        <p>28–32px zwischen Karten in Grids</p>
+      </div>
+      <div class="card">
+        <div class="icon-box">💨</div>
+        <h3>Allgemein</h3>
+        <p>Luftig halten — Whitespace ist Feature, nicht Lücke</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Schatten -->
+<section class="warm-bg">
+  <div class="section-inner">
+    <div class="section-header">
+      <h2>Schatten</h2>
+      <p>Bewusst subtil. Karten nutzen primär farbige Borders statt starker Schatten.</p>
+    </div>
+
+    <div class="grid grid-2">
+      <div style="background: #fff; padding: 36px; border-radius: 24px; box-shadow: 0 2px 16px rgba(0,0,0,0.04);">
+        <span class="badge badge-yellow">Resting</span>
+        <h3 style="margin-top: 16px;">Card Default</h3>
+        <p style="color: var(--text-muted); margin-top: 8px;"><code>0 2px 16px rgba(0,0,0,0.04)</code></p>
+      </div>
+      <div style="background: #fff; padding: 36px; border-radius: 24px; box-shadow: 0 8px 24px rgba(0,0,0,0.07); transform: translateY(-4px);">
+        <span class="badge badge-coral">Hover</span>
+        <h3 style="margin-top: 16px;">Card Hover</h3>
+        <p style="color: var(--text-muted); margin-top: 8px;"><code>0 8px 24px rgba(0,0,0,0.07)</code></p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Komponenten -->
+<section id="komponenten">
+  <div class="section-header">
+    <h2>Komponenten</h2>
+    <p>Die zentralen Bausteine im Live-Einsatz.</p>
+  </div>
+
+  <!-- Buttons -->
+  <div style="margin-bottom: 48px;">
+    <h3 style="font-size: 1.4rem; margin-bottom: 20px;">Buttons</h3>
+    <div class="card">
+      <div class="demo-row">
+        <button class="btn btn-primary">Geschichte lesen</button>
+        <button class="btn btn-secondary">Mehr erfahren</button>
+      </div>
+      <p style="color: var(--text-muted); margin-top: 20px; font-size: 0.9rem;">
+        Primary: Coral-Fill mit Schatten · Secondary: Outline · Bounce-Animation beim Hover
+      </p>
+    </div>
+  </div>
+
+  <!-- Icon-Boxen -->
+  <div style="margin-bottom: 48px;">
+    <h3 style="font-size: 1.4rem; margin-bottom: 20px;">Karten mit Icon-Boxen</h3>
+    <div class="grid grid-3">
+      <div class="card">
+        <div class="icon-box">📚</div>
+        <h3>Geschichten</h3>
+        <p>Lesen lernen mit KI-generierten Kindergeschichten — passend zum Niveau.</p>
+      </div>
+      <div class="card">
+        <div class="icon-box">🎨</div>
+        <h3>Comics</h3>
+        <p>Bildgestützte Geschichten für visuelle Lerner und Leseanfänger.</p>
+      </div>
+      <div class="card">
+        <div class="icon-box">⭐</div>
+        <h3>Belohnungen</h3>
+        <p>Freischaltbare Bonus-Personas als Motivation beim Lesefortschritt.</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Badges -->
+  <div style="margin-bottom: 48px;">
+    <h3 style="font-size: 1.4rem; margin-bottom: 20px;">Badges</h3>
+    <div class="card">
+      <div class="badge-row">
+        <span class="badge badge-yellow">Neu</span>
+        <span class="badge badge-coral">Empfohlen</span>
+        <span class="badge badge-yellow">Premium</span>
+        <span class="badge badge-coral">Beta</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Input -->
+  <div style="margin-bottom: 48px;">
+    <h3 style="font-size: 1.4rem; margin-bottom: 20px;">Input</h3>
+    <div class="card">
+      <input type="text" class="input" placeholder="Geschichte suchen…">
+      <p style="color: var(--text-muted); margin-top: 16px; font-size: 0.9rem;">
+        Coral-Border + Focus-Ring bei Aktivierung
+      </p>
+    </div>
+  </div>
+
+  <!-- Card-in-Card -->
+  <div>
+    <h3 style="font-size: 1.4rem; margin-bottom: 20px;">Card-in-Card-Pattern</h3>
+    <div class="card">
+      <h3>Äußere Karte</h3>
+      <p style="margin: 12px 0 24px;">Karten können weitere Karten enthalten — gleiche Border-Radius-Logik, aber subtilere Schatten.</p>
+      <div style="background: var(--bg-warm-light); border: 2px solid var(--border-card); border-radius: 20px; padding: 24px;">
+        <h4 style="font-family: var(--font-heading); font-size: 1.1rem; margin-bottom: 8px;">Innere Karte</h4>
+        <p style="color: var(--text-muted); font-size: 0.95rem;">Warmer Hintergrund hebt sie sanft hervor.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Interaktion -->
+<section id="interaktion" class="warm-bg">
+  <div class="section-inner">
+    <div class="section-header">
+      <h2>Hover &amp; Transitions</h2>
+      <p>Sanfte Bewegungen mit Charakter — Buttons haben einen leichten Bounce-Overshoot.</p>
+    </div>
+
+    <table class="spec-table">
+      <thead>
+        <tr>
+          <th>Element</th>
+          <th>Hover-Effekt</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Buttons</td>
+          <td class="muted"><code>translateY(-3px) scale(1.02)</code> + verstärkter Schatten</td>
+        </tr>
+        <tr>
+          <td>Karten</td>
+          <td class="muted"><code>translateY(-4px)</code> + <code>shadow-card-hover</code></td>
+        </tr>
+        <tr>
+          <td>Links</td>
+          <td class="muted">Farbwechsel zu <code>--accent-coral</code></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div style="margin-top: 32px;">
+      <pre class="code-block"><span class="comment">/* Karten — sanft */</span>
+<span class="property">transition</span>: <span class="value">transform 0.3s ease, box-shadow 0.3s ease</span>;
+
+<span class="comment">/* Buttons — Bounce-Overshoot */</span>
+<span class="property">transition</span>: <span class="value">all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1)</span>;</pre>
+    </div>
+
+    <p style="text-align: center; margin-top: 32px; color: var(--text-muted);">
+      💡 Fahre mit der Maus über die Komponenten oben, um die Effekte live zu sehen.
+    </p>
+  </div>
+</section>
+
+<!-- Responsive & A11y -->
+<section id="a11y">
+  <div class="section-header">
+    <h2>Responsive &amp; Barrierefreiheit</h2>
+    <p>Mobile-First, Touch-tauglich, für alle Lesefähigkeiten zugänglich.</p>
+  </div>
+
+  <div class="grid grid-2">
+    <div class="card">
+      <div class="icon-box">📱</div>
+      <h3>Responsive</h3>
+      <ul style="margin-top: 12px; padding-left: 20px; color: var(--text-muted);">
+        <li><strong>Mobile-First</strong> Ansatz</li>
+        <li>Breakpoint: <code>768px</code> min-width</li>
+        <li>Desktop: Column → Row, mehr Padding</li>
+        <li>Touch-Targets: mindestens <code>44px</code> Höhe</li>
+      </ul>
+    </div>
+    <div class="card">
+      <div class="icon-box">♿</div>
+      <h3>Accessibility</h3>
+      <ul style="margin-top: 12px; padding-left: 20px; color: var(--text-muted);">
+        <li>Legasthenie-Modus (Lexend als Alternative)</li>
+        <li>Hoher Kontrast-Modus</li>
+        <li>Schriftgrößen-Anpassung</li>
+        <li>Coral nie für kleinen Fließtext</li>
+        <li>Fokus-Ringe: <code>0 0 0 3px rgba(214,113,113,0.4)</code></li>
+      </ul>
+    </div>
+  </div>
+
+  <div style="margin-top: 32px;">
+    <div class="card" style="text-align: center;">
+      <h3 style="margin-bottom: 16px;">Fokus-Ring testen</h3>
+      <p style="color: var(--text-muted); margin-bottom: 24px;">Mit Tab-Taste auf den Button springen:</p>
+      <button class="btn btn-primary">Fokus mich</button>
+    </div>
+  </div>
+</section>
+
+<footer>
+  Lesekumpel Design System · Built with <span>♥</span> in Vanilla HTML &amp; CSS · 2026
+</footer>
+
+</body>
+</html>

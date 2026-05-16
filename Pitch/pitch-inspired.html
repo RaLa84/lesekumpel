@@ -1,0 +1,1846 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lesekumpel · Pitch INSPIRED 2026</title>
+<link rel="stylesheet" href="../fonts/fonts.css">
+<style>
+:root {
+  --mint:        #2FB8A6;
+  --navy:        #2B3140;
+  --cream:       #FFF6EF;
+  --cream-light: #FEFBF6;
+  --coral:       #F97352;
+  --lila:        #7D6AE6;
+  --yellow:      #FFD95A;
+  --border:      #D9D4CC;
+  --white:       #FFFFFF;
+  --focus-ring:  rgba(43,49,64,0.35);
+
+  --font-heading: 'Fredoka', system-ui, sans-serif;
+  --font-body:    'Lexend', system-ui, sans-serif;
+
+  --shadow-card:       0 2px 12px rgba(43,49,64,0.05);
+  --shadow-card-hover: 0 8px 24px rgba(43,49,64,0.08);
+  --shadow-lift:       0 12px 32px rgba(43,49,64,0.12);
+
+  --slide-w: 1600px;
+  --slide-h: 900px;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { height: 100%; }
+body {
+  font-family: var(--font-body);
+  background: var(--navy);
+  color: var(--navy);
+  font-weight: 400;
+  line-height: 1.55;
+  -webkit-font-smoothing: antialiased;
+  overflow: hidden;
+}
+
+/* ===== Stage (skaliert Slides auf Viewport) ===== */
+.stage {
+  position: fixed;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.deck {
+  position: relative;
+  width: var(--slide-w);
+  height: var(--slide-h);
+  transform-origin: center center;
+}
+
+/* ===== Slide ===== */
+.slide {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  background: var(--cream);
+  padding: 64px 80px;
+  display: flex;
+  flex-direction: column;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.45s ease;
+  overflow: hidden;
+  border-radius: 4px;
+}
+.slide.active {
+  opacity: 1;
+  pointer-events: auto;
+  z-index: 2;
+}
+
+/* ===== Slide-Chrome ===== */
+.slide-head {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 28px;
+}
+.slide-counter {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 1rem;
+  color: var(--navy);
+  opacity: 0.55;
+  letter-spacing: 0.05em;
+}
+.slide-tags {
+  position: absolute;
+  bottom: 32px;
+  left: 80px;
+  display: flex;
+  gap: 18px;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: var(--coral);
+  letter-spacing: 0.01em;
+}
+.slide-brand {
+  position: absolute;
+  bottom: 32px;
+  right: 80px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 0.95rem;
+  color: var(--navy);
+  opacity: 0.6;
+}
+.slide-brand .brand-dot {
+  width: 12px; height: 12px;
+  background: var(--mint);
+  border-radius: 3px;
+  transform: rotate(45deg);
+  display: inline-block;
+}
+
+/* ===== Reusable design tokens ===== */
+.section-badge {
+  display: inline-block;
+  background: var(--mint);
+  color: var(--navy);
+  padding: 10px 22px;
+  border-radius: 999px;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 1.15rem;
+  line-height: 1.2;
+}
+.section-badge.coral  { background: var(--coral);  color: var(--navy); }
+.section-badge.lila   { background: var(--lila);   color: var(--white); }
+.section-badge.yellow { background: var(--yellow); color: var(--navy); }
+
+h1, h2, h3, h4 {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  line-height: 1.1;
+  color: var(--navy);
+  letter-spacing: -0.01em;
+}
+
+.slide h2.slide-title {
+  font-size: 3.4rem;
+  margin-top: 8px;
+  margin-bottom: 8px;
+}
+.slide h2.slide-title span.accent { color: var(--coral); }
+.slide h2.slide-title span.purple { color: var(--lila); }
+.slide p.slide-sub {
+  font-size: 1.25rem;
+  color: var(--navy);
+  opacity: 0.78;
+  max-width: 900px;
+  margin-bottom: 24px;
+}
+
+.slide-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-bottom: 60px;
+}
+
+/* ===== Cards ===== */
+.card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  box-shadow: var(--shadow-card);
+  padding: 28px 30px;
+}
+.card h3 {
+  font-size: 1.35rem;
+  margin-bottom: 8px;
+}
+.card p { font-size: 1rem; line-height: 1.55; }
+
+.card-mint   { background: var(--mint);   color: var(--navy); border-color: transparent; }
+.card-coral  { background: var(--coral);  color: var(--navy); border-color: transparent; }
+.card-yellow { background: var(--yellow); color: var(--navy); border-color: transparent; }
+.card-navy   { background: var(--navy);   color: var(--white); border-color: transparent; }
+.card-navy h3, .card-navy h2, .card-navy h4 { color: var(--white); }
+.card-lila   { background: var(--lila);   color: var(--white); border-color: transparent; }
+.card-lila h3, .card-lila h4 { color: var(--white); }
+.card-cream  { background: var(--cream-light); }
+
+/* ===== Step / Flow ===== */
+.flow {
+  display: grid;
+  gap: 22px;
+  align-items: stretch;
+}
+.flow-arrow {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 2rem;
+  color: var(--mint);
+  font-weight: 700;
+}
+
+.step {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+}
+.step-num {
+  flex-shrink: 0;
+  width: 64px;
+  height: 64px;
+  border-radius: 18px;
+  background: var(--coral);
+  color: var(--navy);
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 1.75rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: var(--shadow-card);
+}
+
+/* ===== Stats ===== */
+.stat {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  color: var(--coral);
+  line-height: 1;
+}
+.stat-xl { font-size: 5rem; }
+.stat-lg { font-size: 3.6rem; }
+.stat-md { font-size: 2.4rem; }
+.stat-label {
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: 0.95rem;
+  color: var(--navy);
+  opacity: 0.75;
+  margin-top: 6px;
+  line-height: 1.4;
+}
+
+/* ===== Pills ===== */
+.pill {
+  display: inline-flex;
+  align-items: center;
+  padding: 12px 22px;
+  border-radius: 999px;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 1.1rem;
+  background: var(--cream-light);
+  border: 1px solid var(--border);
+  color: var(--navy);
+}
+.pill.mint   { background: var(--mint);   border-color: transparent; }
+.pill.coral  { background: var(--coral);  border-color: transparent; }
+.pill.yellow { background: var(--yellow); border-color: transparent; }
+.pill.lila   { background: var(--lila);   color: var(--white); border-color: transparent; }
+.pill-row {
+  display: flex; flex-wrap: wrap; gap: 12px;
+}
+
+/* ===== Section headlines (black on cream) ===== */
+.headline-chip {
+  display: inline-block;
+  background: var(--navy);
+  color: var(--white);
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 1.3rem;
+  padding: 14px 26px;
+  border-radius: 14px;
+  letter-spacing: 0.005em;
+}
+
+/* ===== Slide 1 — Title ===== */
+.title-stage {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 28px;
+}
+.title-stage img.logo {
+  width: 360px;
+  height: auto;
+  filter: drop-shadow(0 12px 32px rgba(43,49,64,0.18));
+}
+.title-stage h1 {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 5.2rem;
+  letter-spacing: -0.02em;
+}
+.title-stage h1 .accent { color: var(--coral); }
+.title-stage p.kicker {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 1.6rem;
+  color: var(--navy);
+  opacity: 0.85;
+  max-width: 800px;
+}
+.title-stage .meta {
+  margin-top: 24px;
+  display: flex;
+  gap: 12px;
+  align-items: center;
+}
+
+/* ===== Slide 2 layout ===== */
+.problem-flow {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 18px;
+  align-items: stretch;
+}
+.problem-card {
+  background: var(--coral);
+  color: var(--navy);
+  border-radius: 20px;
+  padding: 26px 24px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 1.15rem;
+  line-height: 1.35;
+  min-height: 180px;
+  position: relative;
+}
+.problem-card .src {
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: 0.85rem;
+  opacity: 0.78;
+  margin-top: 10px;
+}
+.connector {
+  position: absolute;
+  right: -12px;
+  top: 50%;
+  width: 24px;
+  height: 2px;
+  background: var(--navy);
+  opacity: 0.35;
+}
+.problem-card:last-child .connector { display: none; }
+
+.problem-bottom {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+  margin-top: 28px;
+  align-items: stretch;
+}
+.big-stat {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  padding: 32px 36px;
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  box-shadow: var(--shadow-card);
+}
+.big-stat .num {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 5.5rem;
+  color: var(--coral);
+  line-height: 1;
+}
+.big-stat .txt {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 1.4rem;
+  color: var(--navy);
+  line-height: 1.25;
+}
+.persona-mats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+.persona-card {
+  background: var(--cream-light);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 18px 20px;
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  line-height: 1.45;
+}
+.persona-card strong {
+  display: block;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: var(--coral);
+  margin-bottom: 4px;
+}
+
+/* ===== Slide 3 layout ===== */
+.solution-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.3fr 1.3fr;
+  gap: 28px;
+  align-items: start;
+}
+.solution-col h4 {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--navy);
+  opacity: 0.5;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  margin-bottom: 16px;
+}
+.solution-col .stack > * + * { margin-top: 14px; }
+
+.solution-card {
+  background: var(--coral);
+  color: var(--navy);
+  border-radius: 16px;
+  padding: 22px 24px;
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 1.15rem;
+  line-height: 1.35;
+}
+.solution-card.lila {
+  background: var(--lila);
+  color: var(--white);
+  font-size: 1.2rem;
+}
+.solution-card.split {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 0;
+  padding: 0;
+  overflow: hidden;
+}
+.solution-card.split .a {
+  background: var(--coral);
+  padding: 22px 24px;
+  color: var(--navy);
+  font-size: 1.05rem;
+  font-weight: 600;
+}
+.solution-card.split .b {
+  background: var(--lila);
+  color: var(--white);
+  padding: 22px 24px;
+  display: flex;
+  align-items: center;
+  font-size: 1.15rem;
+  font-weight: 700;
+}
+
+.usp-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+.usp-tile {
+  background: var(--coral);
+  color: var(--navy);
+  border-radius: 16px;
+  padding: 28px 24px;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 1.6rem;
+  text-align: center;
+  line-height: 1.15;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 110px;
+}
+.usp-tile.wide {
+  grid-column: span 2;
+  background: var(--mint);
+  font-size: 1.6rem;
+}
+
+/* ===== Slide 4 layout ===== */
+.howto-grid {
+  display: grid;
+  grid-template-columns: 1fr 1.6fr;
+  gap: 48px;
+  align-items: start;
+}
+.steps {
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+.step-card {
+  display: flex;
+  align-items: center;
+  gap: 22px;
+}
+.step-card .step-num {
+  background: var(--mint);
+  color: var(--navy);
+}
+.step-card .step-text {
+  background: var(--coral);
+  color: var(--navy);
+  border-radius: 16px;
+  padding: 22px 28px;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 1.35rem;
+  flex: 1;
+  line-height: 1.25;
+}
+.step-extra {
+  margin-top: 6px;
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.tag-mini {
+  padding: 6px 12px;
+  border-radius: 999px;
+  background: var(--cream-light);
+  border: 1px solid var(--border);
+  font-family: var(--font-body);
+  font-size: 0.82rem;
+  font-weight: 500;
+}
+
+.preview-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+}
+.preview-card {
+  background: var(--white);
+  border: 2px solid var(--coral);
+  border-radius: 18px;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-height: 380px;
+  position: relative;
+  overflow: hidden;
+}
+.preview-card .img {
+  height: 150px;
+  background: linear-gradient(135deg, #c79a7a, #6b8e7f);
+  border-radius: 10px;
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding: 8px;
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  color: rgba(255,255,255,0.9);
+}
+.preview-card .img.scene1 { background: linear-gradient(160deg, #d4a574 0%, #8b6f47 60%, #4a3520 100%); }
+.preview-card .img.scene2 { background: linear-gradient(160deg, #e0b890 0%, #a98060 50%, #5c4530 100%); }
+.preview-card .img.scene3 { background: linear-gradient(160deg, #d8a878 0%, #9a7550 55%, #4d3a25 100%); }
+.preview-card .label {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 4px 12px;
+  font-family: var(--font-heading);
+  font-size: 0.78rem;
+  font-weight: 700;
+  color: var(--navy);
+}
+.preview-card .text {
+  font-family: var(--font-body);
+  font-size: 0.88rem;
+  line-height: 1.55;
+  color: var(--navy);
+  padding: 0 4px;
+}
+.preview-card .text .hl { color: var(--coral); font-weight: 600; }
+.preview-card .text .hl-l { color: var(--lila); font-weight: 600; }
+.preview-card .toolbar {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  padding: 8px 6px;
+  margin-top: auto;
+  border-top: 1px solid var(--border);
+}
+.toolbar-chip {
+  font-family: var(--font-body);
+  font-size: 0.7rem;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: var(--cream-light);
+  border: 1px solid var(--border);
+}
+.toolbar-chip.mint   { background: var(--mint); border-color: transparent; }
+.toolbar-chip.coral  { background: var(--coral); border-color: transparent; color: var(--navy); }
+.toolbar-chip.lila   { background: var(--lila); color: var(--white); border-color: transparent; }
+.toolbar-chip.yellow { background: var(--yellow); border-color: transparent; }
+.preview-card .magic {
+  position: absolute;
+  bottom: 18px;
+  right: 18px;
+  background: var(--coral);
+  color: var(--navy);
+  border-radius: 999px;
+  padding: 8px 14px;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 0.8rem;
+  box-shadow: 0 4px 12px rgba(249,115,82,0.4);
+}
+
+/* ===== Slide 5 — Team ===== */
+.team-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr) 0.7fr;
+  gap: 22px;
+  align-items: stretch;
+}
+.team-card {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 22px;
+  padding: 28px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  box-shadow: var(--shadow-card);
+}
+.team-card .name {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 2.4rem;
+  color: var(--navy);
+  line-height: 1;
+}
+.team-card .role {
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 0.92rem;
+  color: var(--navy);
+  opacity: 0.8;
+  line-height: 1.4;
+}
+.team-card .skills {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-top: 4px;
+}
+.skill-chip {
+  padding: 5px 12px;
+  border-radius: 999px;
+  background: var(--mint);
+  color: var(--navy);
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 0.78rem;
+}
+.team-card .leseprofil {
+  margin-top: auto;
+  padding-top: 14px;
+  border-top: 1px dashed var(--border);
+}
+.team-card .leseprofil-label {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 0.75rem;
+  color: var(--navy);
+  opacity: 0.55;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+.team-card .leseprofil-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+}
+.lese-tag {
+  padding: 4px 9px;
+  border-radius: 6px;
+  background: var(--yellow);
+  font-family: var(--font-body);
+  font-weight: 600;
+  font-size: 0.74rem;
+  color: var(--navy);
+}
+.team-card.raik   { border-top: 4px solid var(--mint); }
+.team-card.antje  { border-top: 4px solid var(--coral); }
+.team-card.marten { border-top: 4px solid var(--lila); }
+
+.team-open {
+  background: var(--cream-light);
+  border: 2px dashed var(--lila);
+  border-radius: 22px;
+  padding: 28px 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  text-align: center;
+  align-items: center;
+  justify-content: center;
+}
+.team-open .q {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 4.5rem;
+  color: var(--lila);
+  line-height: 1;
+}
+.team-open .open-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  width: 100%;
+}
+.team-open .open-list span {
+  background: var(--lila);
+  color: var(--white);
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 1.05rem;
+  padding: 10px 14px;
+  border-radius: 12px;
+}
+
+/* ===== Slide 6 — Nutzer ===== */
+.users-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1.4fr 1fr;
+  gap: 20px;
+  align-items: stretch;
+}
+.user-col {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.user-head {
+  background: var(--coral);
+  color: var(--navy);
+  border-radius: 16px;
+  padding: 18px 18px;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 1.2rem;
+  text-align: center;
+  line-height: 1.25;
+  min-height: 110px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+}
+.user-head .sub {
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: 0.85rem;
+  display: block;
+  margin-top: 4px;
+  opacity: 0.85;
+}
+.persona-card-2 {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 16px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 1;
+  box-shadow: var(--shadow-card);
+}
+.persona-card-2 .pname {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 1rem;
+}
+.persona-card-2.pink .pname  { color: var(--coral); }
+.persona-card-2.mint .pname  { color: var(--mint); }
+.persona-card-2.lila .pname  { color: var(--lila); }
+.persona-card-2 .quote {
+  font-family: var(--font-body);
+  font-style: italic;
+  font-size: 0.78rem;
+  line-height: 1.5;
+  color: var(--navy);
+  opacity: 0.85;
+  flex: 1;
+}
+.users-corner {
+  position: absolute;
+  top: 110px;
+  right: 80px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.users-corner .plus {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 5rem;
+  color: var(--lila);
+  line-height: 1;
+}
+.users-corner .label {
+  background: var(--coral);
+  color: var(--navy);
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 0.95rem;
+  padding: 10px 14px;
+  border-radius: 12px;
+  line-height: 1.2;
+}
+
+/* ===== Slide 7 — Markt ===== */
+.market-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1.4fr;
+  gap: 32px;
+}
+.market-col h4 {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: var(--white);
+  background: var(--navy);
+  padding: 12px 22px;
+  border-radius: 12px;
+  display: inline-block;
+  margin-bottom: 18px;
+}
+.market-col .stack > * + * { margin-top: 14px; }
+
+.market-stat {
+  background: var(--navy);
+  color: var(--white);
+  border-radius: 16px;
+  padding: 22px 26px;
+}
+.market-stat .big {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 2.6rem;
+  color: var(--mint);
+  line-height: 1.05;
+}
+.market-stat .lbl {
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: 0.85rem;
+  opacity: 0.8;
+  margin-top: 6px;
+  line-height: 1.4;
+}
+.market-stat.alert .big { color: var(--coral); }
+
+.market-tile {
+  background: var(--coral);
+  color: var(--navy);
+  border-radius: 16px;
+  padding: 22px 24px;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 1.4rem;
+  line-height: 1.2;
+}
+.market-tile.lila { background: var(--lila); color: var(--white); }
+.market-tile.body {
+  font-size: 1.05rem;
+  font-weight: 600;
+  line-height: 1.45;
+}
+.usp-block {
+  background: var(--lila);
+  color: var(--white);
+  border-radius: 16px;
+  padding: 26px 28px;
+  position: relative;
+}
+.usp-block .usp-label {
+  position: absolute;
+  top: -16px;
+  right: 20px;
+  background: var(--yellow);
+  color: var(--navy);
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 1rem;
+  padding: 6px 16px;
+  border-radius: 999px;
+}
+.usp-block p {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 1.05rem;
+  line-height: 1.45;
+}
+
+/* ===== Slide 8 — GTM ===== */
+.gtm-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 32px;
+}
+.gtm-phase {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+}
+.gtm-phase .phase-head {
+  background: var(--navy);
+  color: var(--white);
+  border-radius: 16px;
+  padding: 20px 24px;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 1.5rem;
+  text-align: center;
+}
+.gtm-phase .phase-head small {
+  display: block;
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: 0.85rem;
+  margin-top: 4px;
+  opacity: 0.75;
+}
+.gtm-milestone {
+  background: var(--coral);
+  color: var(--navy);
+  border-radius: 14px;
+  padding: 18px 22px;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 1.2rem;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.gtm-milestone.done {
+  background: var(--mint);
+}
+.gtm-milestone.done::before {
+  content: '✓';
+  background: var(--navy);
+  color: var(--white);
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.95rem;
+  flex-shrink: 0;
+}
+.gtm-milestone.future {
+  background: var(--cream-light);
+  border: 2px dashed var(--border);
+  color: var(--navy);
+}
+
+/* ===== Slide 9 — Finanzierung ===== */
+.fin-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1.2fr;
+  gap: 28px;
+}
+.fin-col h4 {
+  background: var(--navy);
+  color: var(--white);
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 1.4rem;
+  padding: 14px 22px;
+  border-radius: 12px;
+  text-align: center;
+  margin-bottom: 18px;
+}
+.fin-col .stack > * + * { margin-top: 14px; }
+
+.fin-box {
+  background: var(--coral);
+  color: var(--navy);
+  border-radius: 14px;
+  padding: 20px 22px;
+}
+.fin-box .head {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 1rem;
+  margin-bottom: 6px;
+}
+.fin-box .val {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 1.6rem;
+  line-height: 1.2;
+}
+.fin-box .val small {
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: 0.85rem;
+}
+.fin-box.highlight {
+  background: var(--mint);
+  text-align: center;
+}
+.fin-box.highlight .val { font-size: 2.8rem; }
+
+.fin-table {
+  background: var(--white);
+  border: 1px solid var(--border);
+  border-radius: 14px;
+  overflow: hidden;
+}
+.fin-table .row {
+  display: grid;
+  grid-template-columns: 1.1fr 1fr 1fr 1fr;
+  padding: 10px 16px;
+  font-family: var(--font-body);
+  font-size: 0.82rem;
+  border-bottom: 1px solid var(--border);
+  align-items: center;
+}
+.fin-table .row.head {
+  background: var(--cream-light);
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 0.78rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+.fin-table .row:last-child { border-bottom: none; }
+.fin-table .row.break {
+  background: rgba(47,184,166,0.18);
+  font-weight: 700;
+  font-family: var(--font-heading);
+}
+.fin-table .row.future {
+  background: rgba(255,217,90,0.35);
+  font-family: var(--font-heading);
+  font-weight: 700;
+}
+.fin-table .row .pos { color: var(--mint); font-weight: 700; }
+.fin-table .row .neg { color: var(--coral); font-weight: 700; }
+
+/* ===== Slide 10 — Vision ===== */
+.vision-grid {
+  display: grid;
+  grid-template-columns: 1.4fr 1fr;
+  gap: 48px;
+  align-items: stretch;
+}
+.outlook-stack { display: flex; flex-direction: column; gap: 24px; }
+.outlook-pill-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+.outlook-pill {
+  background: var(--coral);
+  color: var(--navy);
+  padding: 22px 28px;
+  border-radius: 16px;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 1.4rem;
+}
+.outlook-pill.big { font-size: 1.7rem; }
+.outlook-pill.lila { background: var(--lila); color: var(--white); }
+.outlook-pill.mint { background: var(--mint); }
+.outlook-pill.yellow { background: var(--yellow); }
+
+.vision-card {
+  background: var(--navy);
+  color: var(--white);
+  border-radius: 24px;
+  padding: 48px 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  justify-content: center;
+  position: relative;
+  overflow: hidden;
+}
+.vision-card::before {
+  content: '';
+  position: absolute;
+  top: -60px;
+  right: -60px;
+  width: 200px;
+  height: 200px;
+  background: var(--mint);
+  border-radius: 50%;
+  opacity: 0.15;
+}
+.vision-card .label {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: var(--mint);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.vision-card h3 {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 2.2rem;
+  color: var(--white);
+  line-height: 1.15;
+}
+.vision-card p {
+  font-family: var(--font-body);
+  font-size: 1.05rem;
+  line-height: 1.6;
+  color: var(--white);
+  opacity: 0.9;
+}
+
+/* ===== Navigation UI ===== */
+.nav-bar {
+  position: fixed;
+  bottom: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  padding: 8px 16px;
+  background: rgba(43,49,64,0.85);
+  backdrop-filter: blur(8px);
+  border-radius: 999px;
+  z-index: 100;
+  font-family: var(--font-body);
+  color: var(--cream);
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+.nav-btn {
+  background: transparent;
+  border: none;
+  color: var(--cream);
+  font-size: 1.1rem;
+  cursor: pointer;
+  padding: 6px 10px;
+  border-radius: 8px;
+  transition: background 0.2s;
+}
+.nav-btn:hover { background: rgba(255,255,255,0.12); }
+.nav-btn:disabled { opacity: 0.3; cursor: default; }
+.dots { display: flex; gap: 6px; }
+.dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.3);
+  cursor: pointer;
+  border: none;
+  padding: 0;
+  transition: background 0.2s, transform 0.2s;
+}
+.dot:hover { background: rgba(255,255,255,0.6); }
+.dot.active { background: var(--mint); transform: scale(1.3); }
+
+.hint {
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  font-family: var(--font-body);
+  font-size: 0.75rem;
+  color: rgba(255,246,239,0.5);
+  z-index: 100;
+}
+.hint kbd {
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 4px;
+  padding: 2px 6px;
+  font-family: 'Consolas', monospace;
+  font-size: 0.7rem;
+}
+
+/* ===== Print ===== */
+@media print {
+  body { background: var(--white); overflow: visible; }
+  .stage { position: static; }
+  .deck { transform: none !important; width: 100%; height: auto; }
+  .slide {
+    position: relative;
+    opacity: 1 !important;
+    page-break-after: always;
+    width: 100%;
+    height: 100vh;
+    inset: auto;
+  }
+  .nav-bar, .hint { display: none; }
+}
+</style>
+</head>
+<body>
+
+<div class="hint"><kbd>←</kbd> <kbd>→</kbd> Navigation · <kbd>F</kbd> Fullscreen</div>
+
+<div class="stage">
+  <div class="deck" id="deck">
+
+    <!-- ============ SLIDE 1 — TITEL ============ -->
+    <section class="slide active" data-slide="1">
+      <div class="slide-head">
+        <span class="section-badge yellow">INSPIRED · Ideenwettbewerb MV 2026</span>
+        <span class="slide-counter">01 / 10</span>
+      </div>
+      <div class="title-stage">
+        <img src="assets/logo-lesekumpel.png" alt="Lesekumpel Logo" class="logo">
+        <h1>Lese<span class="accent">kumpel</span></h1>
+        <p class="kicker">KI-gestützte Lese-Bibliothek für jedes Kind —<br>auch das, an dem klassische Lese­förderung scheitert.</p>
+        <div class="meta">
+          <span class="pill mint">Lernen ohne Tränen.</span>
+        </div>
+      </div>
+      <div class="slide-brand"><span class="brand-dot"></span> Lesekumpel · Pitch 2026</div>
+    </section>
+
+    <!-- ============ SLIDE 2 — PROBLEM ============ -->
+    <section class="slide" data-slide="2">
+      <div class="slide-head">
+        <span class="section-badge coral">Das Problem</span>
+        <span class="slide-counter">02 / 10</span>
+      </div>
+      <h2 class="slide-title">Alle Kinder sollen <span class="accent">gleich</span> Lesen lernen.</h2>
+      <p class="slide-sub">Aber sie sind nicht gleich. Das System ignoriert das — und produziert Verlierer­innen und Verlierer.</p>
+
+      <div class="slide-body">
+        <div class="problem-flow">
+          <div class="problem-card">
+            <div>25 % der Viertklässler erreichen nicht den Mindeststandard im Lesen.</div>
+            <div class="src">Quelle: IQB-Studie 2021</div>
+            <span class="connector"></span>
+          </div>
+          <div class="problem-card">
+            <div>Schule konzentriert sich auf die <strong>Technik</strong> des Lesenlernens.</div>
+            <span class="connector"></span>
+          </div>
+          <div class="problem-card">
+            <div>Was fehlt, ist <strong>Routine durch Spaß &amp; Motivation</strong> am Lesen.</div>
+            <span class="connector"></span>
+          </div>
+          <div class="problem-card">
+            <div>Genau das haben wir <strong>persönlich erfahren</strong>.</div>
+          </div>
+        </div>
+
+        <div class="problem-bottom">
+          <div class="big-stat">
+            <div class="num">1<small style="font-size:2.4rem;">/4</small></div>
+            <div class="txt">Jeder vierte Viertklässler liest in Deutschland nicht sicher.</div>
+          </div>
+          <div class="persona-mats">
+            <div class="persona-card">
+              <strong>Mats, 20</strong>
+              Neurodivergent (Autismus &amp; ADHS). Mit klassischem Lese­material kam er nie an.
+            </div>
+            <div class="persona-card">
+              <strong>Lese-Material</strong>
+              Frustrierte ihn — visuell überladen, sprachlich unpassend, Tempo zu starr.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="slide-tags">#Neurodivergenz · #Inklusion</div>
+      <div class="slide-brand"><span class="brand-dot"></span> Lesekumpel · Pitch 2026</div>
+    </section>
+
+    <!-- ============ SLIDE 3 — JEDES KIND LIEST ANDERS ============ -->
+    <section class="slide" data-slide="3">
+      <div class="slide-head">
+        <span class="section-badge">Unser Ansatz</span>
+        <span class="slide-counter">03 / 10</span>
+      </div>
+      <h2 class="slide-title">Jedes Kind liest <span class="accent">anders.</span></h2>
+      <p class="slide-sub">Sicheres Lesen entsteht durch Motivation — und Motivation ist emotional, individuell, hyper­personalisiert.</p>
+
+      <div class="slide-body">
+        <div class="solution-grid">
+          <div class="solution-col">
+            <h4>Ausgangspunkt</h4>
+            <div class="stack">
+              <div class="solution-card">
+                Sicher Lesen lernen über die Steigerung der <strong>Lese-Motivation</strong>.
+              </div>
+            </div>
+          </div>
+          <div class="solution-col">
+            <h4 style="color: var(--white); background: var(--navy); padding: 8px 16px; border-radius: 8px; display: inline-block;">Wie erreichen wir das?</h4>
+            <div class="stack">
+              <div class="solution-card split">
+                <div class="a">Geschichten, die Kinder <strong>mitgestalten &amp; selbst erschaffen</strong> können.</div>
+                <div class="b">Emotional &amp; individuell</div>
+              </div>
+              <div class="solution-card split">
+                <div class="a">Frustrations-Abbau: barriere­frei, drucklos, reiz­arm — <strong>nervensystem­schonend</strong>.</div>
+                <div class="b">Motivation statt Bewertung</div>
+              </div>
+            </div>
+          </div>
+          <div class="solution-col">
+            <h4 style="color: var(--white); background: var(--navy); padding: 8px 16px; border-radius: 8px; display: inline-block;">Wie setzen wir das um?</h4>
+            <div class="stack">
+              <div class="usp-row">
+                <div class="usp-tile">Generative KI</div>
+                <div class="usp-tile">Inklusiv by Design</div>
+                <div class="usp-tile wide">Webbasiert — überall verfügbar</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="slide-tags">#Lese-Motivation · #Hyperindividualisierung</div>
+      <div class="slide-brand"><span class="brand-dot"></span> Lesekumpel · Pitch 2026</div>
+    </section>
+
+    <!-- ============ SLIDE 4 — SO FUNKTIONIERTS ============ -->
+    <section class="slide" data-slide="4">
+      <div class="slide-head">
+        <span class="section-badge yellow">Die Lösung in 3 Schritten</span>
+        <span class="slide-counter">04 / 10</span>
+      </div>
+      <h2 class="slide-title">So <span class="accent">funktionierts.</span></h2>
+      <p class="slide-sub">In unter 30 Sekunden: vom Titel zur fertigen, hyper­individuellen Geschichte mit Bildern und Lese-Hilfen.</p>
+
+      <div class="slide-body">
+        <div class="howto-grid">
+          <div class="steps">
+            <div class="step-card">
+              <div class="step-num">1</div>
+              <div class="step-text">Der Geschichte einen Titel geben</div>
+            </div>
+            <div class="step-card">
+              <div class="step-num">2</div>
+              <div class="step-text">Leseniveau &amp; Neurotyp wählen</div>
+            </div>
+            <div class="step-card">
+              <div class="step-num">3</div>
+              <div class="step-text">Bildstil aussuchen</div>
+            </div>
+            <div class="step-extra">
+              <span class="tag-mini">Aquarell</span>
+              <span class="tag-mini">Cartoon</span>
+              <span class="tag-mini">Anime</span>
+              <span class="tag-mini">Traumwelt</span>
+              <span class="tag-mini">Buntstift</span>
+              <span class="tag-mini">Pixel-Art</span>
+              <span class="tag-mini">Knete</span>
+              <span class="tag-mini">Voxel</span>
+            </div>
+          </div>
+
+          <div class="preview-row">
+            <div class="preview-card">
+              <div class="img scene1">Bild zur Story</div>
+              <div class="label">Standard</div>
+              <div class="text">Sie konnten nicht lange sitzen und mit Messer und Gabel essen. Das machte Kadir nachdenklich.<br><br>Kadir hatte eine gute Idee.</div>
+              <div class="magic">✨ Zauberkasten</div>
+            </div>
+            <div class="preview-card">
+              <div class="img scene2">Bild zur Story</div>
+              <div class="label" style="background: var(--coral); color: var(--navy); border:none;">Zauberkasten</div>
+              <div class="toolbar">
+                <span class="toolbar-chip">Text</span>
+                <span class="toolbar-chip mint">Einfach</span>
+                <span class="toolbar-chip coral">Silben</span>
+                <span class="toolbar-chip yellow">Emojis</span>
+              </div>
+              <div class="toolbar" style="border-top:none; padding-top:0;">
+                <span class="toolbar-chip">Ansicht</span>
+                <span class="toolbar-chip mint">Häppchen</span>
+                <span class="toolbar-chip">Linien</span>
+                <span class="toolbar-chip">Fahrplan</span>
+                <span class="toolbar-chip">A−</span>
+                <span class="toolbar-chip">A+</span>
+              </div>
+              <div class="toolbar" style="border-top:none; padding-top:0;">
+                <span class="toolbar-chip">Extras</span>
+                <span class="toolbar-chip yellow">🔊 Vorlesen</span>
+                <span class="toolbar-chip">Wörter hören</span>
+              </div>
+            </div>
+            <div class="preview-card">
+              <div class="img scene3">Bild zur Story</div>
+              <div class="label" style="background: var(--lila); color: var(--white); border:none;">LRS-Modus</div>
+              <div class="text">Es war <span class="hl">ein</span>mal <span class="hl-l">ein</span> Mann.<br>Der Mann hieß <span class="hl">Ka</span>dir <span class="hl-l">und</span> er <span class="hl">hat</span>te <span class="hl-l">ei</span>nen <span class="hl">klei</span>nen Imbiss.</div>
+              <div class="magic">✨ Zauberkasten</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="slide-tags">#Hyperindividualisierung · #Barrierefreiheit</div>
+      <div class="slide-brand"><span class="brand-dot"></span> Lesekumpel · Pitch 2026</div>
+    </section>
+
+    <!-- ============ SLIDE 5 — TEAM ============ -->
+    <section class="slide" data-slide="5">
+      <div class="slide-head">
+        <span class="section-badge lila">Warum wir glauben, das lösen zu können</span>
+        <span class="slide-counter">05 / 10</span>
+      </div>
+      <h2 class="slide-title">Unser <span class="accent">Team.</span></h2>
+      <p class="slide-sub">Produkt-Trio mit kombinierten 40+ Jahren Erfahrung — plus persönliche Betroffenheit als Eltern und Selbst­hilfegruppen-Aktive.</p>
+
+      <div class="slide-body">
+        <div class="team-grid">
+          <div class="team-card raik">
+            <div class="name">Raik</div>
+            <div class="role">Produktmanager · 16+ Jahre · Ökonom</div>
+            <div class="skills">
+              <span class="skill-chip">Produkt</span>
+              <span class="skill-chip">Strategie</span>
+            </div>
+            <div class="leseprofil">
+              <div class="leseprofil-label">Leseprofil</div>
+              <div class="leseprofil-tags">
+                <span class="lese-tag">Fantasie</span>
+                <span class="lese-tag">Neurodivers</span>
+                <span class="lese-tag">Wissen</span>
+                <span class="lese-tag">Tiefgang</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="team-card antje">
+            <div class="name">Antje</div>
+            <div class="role">UX-/Research-Background · Coach · 14+ Jahre · Medienmanagerin · SHG Autismus</div>
+            <div class="skills">
+              <span class="skill-chip">UX</span>
+              <span class="skill-chip">Research</span>
+              <span class="skill-chip">Coaching</span>
+            </div>
+            <div class="leseprofil">
+              <div class="leseprofil-label">Leseprofil</div>
+              <div class="leseprofil-tags">
+                <span class="lese-tag">Fantasie</span>
+                <span class="lese-tag">Gesellschafts­kritisch</span>
+                <span class="lese-tag">Wälzer ≥500 S.</span>
+                <span class="lese-tag">Buchreihen</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="team-card marten">
+            <div class="name">Marten</div>
+            <div class="role">Full-Stack-Entwickler · KI-Nerd · 10+ Jahre · Informatiker</div>
+            <div class="skills">
+              <span class="skill-chip">Full-Stack</span>
+              <span class="skill-chip">KI</span>
+            </div>
+            <div class="leseprofil">
+              <div class="leseprofil-label">Leseprofil</div>
+              <div class="leseprofil-tags">
+                <span class="lese-tag">Science-Fiction</span>
+                <span class="lese-tag">Wirtschaft</span>
+                <span class="lese-tag">Technologie</span>
+                <span class="lese-tag">Geschichte</span>
+              </div>
+            </div>
+          </div>
+
+          <div class="team-open">
+            <div class="q">?</div>
+            <div class="open-list">
+              <span>MKT &amp; Social Media</span>
+              <span>Pädagogik</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="slide-tags">#ProduktTrio · #Diversität</div>
+      <div class="slide-brand"><span class="brand-dot"></span> Lesekumpel · Pitch 2026</div>
+    </section>
+
+    <!-- ============ SLIDE 6 — NUTZER ============ -->
+    <section class="slide" data-slide="6">
+      <div class="slide-head">
+        <span class="section-badge coral">Für wen wir bauen</span>
+        <span class="slide-counter">06 / 10</span>
+      </div>
+      <div class="users-corner">
+        <span class="plus">+1</span>
+        <span class="label">Erste aktive<br>Nutzerin</span>
+      </div>
+      <h2 class="slide-title">Unsere <span class="accent">Nutzer.</span></h2>
+      <p class="slide-sub">Vier Persona-Gruppen, ein gemeinsames Bedürfnis: ein Werkzeug, das individuell ansetzt — wo Schule an ihre Grenzen stößt.</p>
+
+      <div class="slide-body">
+        <div class="users-grid">
+          <div class="user-col">
+            <div class="user-head">Kinder<span class="sub">neurodivergent &amp; in der Grundschule</span></div>
+            <div class="persona-card-2 pink">
+              <div class="pname">Lina Lese-Labyrinth</div>
+              <div class="quote">"Ich will ja lesen können, wirklich! Aber die Texte in der Schule sind so doof und schwer. Mein Kopf wird dann ganz heiß und ich fühle mich so dumm."</div>
+            </div>
+          </div>
+
+          <div class="user-col">
+            <div class="user-head">Eltern<span class="sub">von neurodivergenten Grundschul­kindern</span></div>
+            <div class="persona-card-2 mint">
+              <div class="pname">Vivien Vielzutun</div>
+              <div class="quote">"Ich will abends einfach nur Mama sein, nicht auch noch Hilfslehrerin. Ich brauche etwas, das meinen Sohn fürs Lesen begeistert — damit ich mal 20 Minuten durchatmen kann, ohne schlechtes Gewissen."</div>
+            </div>
+          </div>
+
+          <div class="user-col">
+            <div class="user-head" style="background: var(--mint);">Eltern (Co-Lesen)<span class="sub">die Familien­alltag entlasten wollen</span></div>
+            <div class="persona-card-2 lila">
+              <div class="pname">Ina &amp; Ingo Inklusionsfreunde</div>
+              <div class="quote">"Wir wollen nicht mehr Dolmetscher zwischen einer starren Schule und unserem Sohn sein. Wir brauchen ein Tool, das sein Gehirn versteht — damit jede Lesesession nicht in einem Nervenzusammen­bruch endet."</div>
+            </div>
+          </div>
+
+          <div class="user-col">
+            <div class="user-head" style="background: var(--lila); color: var(--white);">(Grundschul-)<br>Lehrer<span class="sub">Sonderpädagogik · Inklusion</span></div>
+            <div class="persona-card-2 mint">
+              <div class="pname">Sabine Sonderpädagogin</div>
+              <div class="quote">"Nichts ist schlimmer, als zuzusehen, wie ein Kind die Lust am Lesen verliert, nur weil es kein passendes Material gibt. Wir brauchen adaptive Lösungen — dort, wo die Schule an ihre Grenzen stößt."</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="slide-tags">#PersonaResearch · #B2C+B2B</div>
+      <div class="slide-brand"><span class="brand-dot"></span> Lesekumpel · Pitch 2026</div>
+    </section>
+
+    <!-- ============ SLIDE 7 — MARKT ============ -->
+    <section class="slide" data-slide="7">
+      <div class="slide-head">
+        <span class="section-badge">Marktpotenzial</span>
+        <span class="slide-counter">07 / 10</span>
+      </div>
+      <h2 class="slide-title">Marktpotenzial — <span class="accent">Motivation is the Key.</span></h2>
+      <p class="slide-sub">Großer Markt, viele Anbieter — aber die schwierigste Zielgruppe wird systematisch nicht abgeholt. Genau dort setzen wir an.</p>
+
+      <div class="slide-body">
+        <div class="market-grid">
+          <div class="market-col">
+            <h4>Markt</h4>
+            <div class="stack">
+              <div class="market-stat">
+                <div class="big">3–4 Mrd. €</div>
+                <div class="lbl">Geschätztes Volumen des dt. EdTech-/digitalen Bildungs­markts<br><em>(Quelle: mm1 / Statista)</em></div>
+              </div>
+              <div class="market-tile body">Es gibt sehr viele — auch sehr große — Anbieter im Markt.</div>
+            </div>
+          </div>
+
+          <div class="market-col">
+            <h4 style="background: var(--coral); color: var(--navy);">Zielgruppe nicht abgeholt</h4>
+            <div class="stack">
+              <div class="market-stat alert">
+                <div class="big">25,4 %</div>
+                <div class="lbl">der Viertklässler erreichen nicht den Mindeststandard im Lesen.<br><em>(Quelle: IGLU-Studie 2021, TU Dortmund)</em></div>
+              </div>
+              <div class="market-stat">
+                <div class="big">~1 Mio</div>
+                <div class="lbl">Grundschüler:innen — die der Markt heute übersieht.</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="market-col">
+            <h4>Lesekumpel</h4>
+            <div class="stack">
+              <div class="market-tile body">
+                Lesekumpel vermittelt nicht die <strong>Technik</strong> des Lesens — sondern öffnet Kindern die <strong>Tür zur Freude am Lesen.</strong> Sie erleben hautnah, wie Geschichten unterhalten und Wissen zugänglich machen.
+              </div>
+              <div class="usp-block">
+                <span class="usp-label">USP</span>
+                <p>Barrierefreiheit · Spaß am Lesen · Hyper­individualisierung · kritisches Denken · Umgang mit Texten.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="slide-tags">#EdTech · #Marktlücke</div>
+      <div class="slide-brand"><span class="brand-dot"></span> Lesekumpel · Pitch 2026</div>
+    </section>
+
+    <!-- ============ SLIDE 8 — GO-TO-MARKET ============ -->
+    <section class="slide" data-slide="8">
+      <div class="slide-head">
+        <span class="section-badge yellow">Roadmap</span>
+        <span class="slide-counter">08 / 10</span>
+      </div>
+      <h2 class="slide-title">Go-To-<span class="accent">Market.</span></h2>
+      <p class="slide-sub">Drei Phasen, klare Meilensteine. Proof of Concept ist erreicht — als Nächstes: MVP, erste 100 Nutzer, Gründung.</p>
+
+      <div class="slide-body">
+        <div class="gtm-grid">
+          <div class="gtm-phase">
+            <div class="phase-head">Konzeption<small>Idee · Validierung · Prototyp</small></div>
+            <div class="gtm-milestone done">Proof of Concept</div>
+            <div class="gtm-milestone">MVP</div>
+          </div>
+          <div class="gtm-phase">
+            <div class="phase-head">Validierung<small>&gt; 100 Nutzer · erste Erlöse</small></div>
+            <div class="gtm-milestone">Markteinführung</div>
+            <div class="gtm-milestone">Gründung (GbR)</div>
+          </div>
+          <div class="gtm-phase">
+            <div class="phase-head">Skalierung<small>Break Even · Wachstum</small></div>
+            <div class="gtm-milestone">Break Even (Toolkosten)</div>
+            <div class="gtm-milestone">UG-Umwandlung</div>
+            <div class="gtm-milestone future">Investoren / Kredite — wenn attraktiv</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="slide-tags">#BuildInPublic · #Bootstrapping</div>
+      <div class="slide-brand"><span class="brand-dot"></span> Lesekumpel · Pitch 2026</div>
+    </section>
+
+    <!-- ============ SLIDE 9 — FINANZIERUNG ============ -->
+    <section class="slide" data-slide="9">
+      <div class="slide-head">
+        <span class="section-badge coral">Geschäftsmodell</span>
+        <span class="slide-counter">09 / 10</span>
+      </div>
+      <h2 class="slide-title">Finan<span class="accent">zierung.</span></h2>
+      <p class="slide-sub">Schlanke Fix­kosten, marginale Story-Kosten, klare Preis-Cap. Break Even bei ~94 Premium-Nutzern.</p>
+
+      <div class="slide-body">
+        <div class="fin-grid">
+          <div class="fin-col">
+            <h4>Kosten</h4>
+            <div class="stack">
+              <div class="fin-box">
+                <div class="head">Variable Kosten</div>
+                <div class="val">0,07–0,11 €<br><small>pro Story (LLM + Bilder)</small></div>
+              </div>
+              <div class="fin-box">
+                <div class="head">Fixkosten</div>
+                <div class="val">322 – 381 €<br><small>monatlich (inkl. 250 € Tool-Subscriptions)</small></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="fin-col">
+            <h4>Pricing</h4>
+            <div class="stack">
+              <div class="fin-box">
+                <div class="head">Free + Premium</div>
+                <div class="val">7,99 €<br><small>pro Monat, Cap 30 LLM-Stories</small></div>
+              </div>
+              <div class="fin-box highlight">
+                <div class="head">Ziel-Marge</div>
+                <div class="val">40 %</div>
+              </div>
+            </div>
+          </div>
+
+          <div class="fin-col">
+            <h4>Break Even</h4>
+            <div class="fin-table">
+              <div class="row head">
+                <span>Premium</span><span>Stories</span><span>Income</span><span>Profit</span>
+              </div>
+              <div class="row">
+                <span>50</span><span>450</span><span>400 €</span><span class="neg">−173 €</span>
+              </div>
+              <div class="row break">
+                <span>94</span><span>846</span><span>751 €</span><span>±0 € Break-Even</span>
+              </div>
+              <div class="row">
+                <span>250</span><span>2 250</span><span>1 998 €</span><span class="pos">+664 €</span>
+              </div>
+              <div class="row">
+                <span>500</span><span>4 500</span><span>3 995 €</span><span class="pos">+1 709 €</span>
+              </div>
+              <div class="row future">
+                <span>1 000</span><span>9 000</span><span>7 990 €</span><span class="pos">+3 799 €</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="slide-tags">#Bootstrapping · #Förderung</div>
+      <div class="slide-brand"><span class="brand-dot"></span> Lesekumpel · Pitch 2026</div>
+    </section>
+
+    <!-- ============ SLIDE 10 — VISION ============ -->
+    <section class="slide" data-slide="10">
+      <div class="slide-head">
+        <span class="section-badge lila">Vision</span>
+        <span class="slide-counter">10 / 10</span>
+      </div>
+      <h2 class="slide-title">Vom Lesen zur <span class="accent">Selbstwirksamkeit.</span></h2>
+      <p class="slide-sub">Lesekumpel ist erst der Anfang. Aus der Lese­bibliothek wird eine Plattform für kreatives, kritisches Denken — und für Kinder, die sich gehört fühlen.</p>
+
+      <div class="slide-body">
+        <div class="vision-grid">
+          <div class="outlook-stack">
+            <div>
+              <span class="headline-chip">Ausblick</span>
+            </div>
+            <div class="outlook-pill-row">
+              <span class="outlook-pill big">Lese-Feature ausbauen</span>
+            </div>
+            <div class="outlook-pill-row">
+              <span class="outlook-pill">Dialog-Lesen</span>
+              <span class="outlook-pill">Fortsetzungen</span>
+            </div>
+            <div class="outlook-pill-row">
+              <span class="outlook-pill mint">Community</span>
+              <span class="outlook-pill yellow">Mathe</span>
+              <span class="outlook-pill lila">International</span>
+            </div>
+          </div>
+
+          <div class="vision-card">
+            <span class="label">Unsere Vision</span>
+            <h3>Kinder lernen nicht nur Lesen.</h3>
+            <p>Sie lernen <strong style="color: var(--mint);">kreatives und kritisches Denken</strong>, spüren <strong style="color: var(--mint);">Selbstwirksamkeit</strong> und fühlen sich gehört und gesehen — in ihrer individuellen Weise.</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="slide-tags">#Selbstwirksamkeit · #LeseWelten · #Inklusion</div>
+      <div class="slide-brand"><span class="brand-dot"></span> Lesekumpel · Pitch 2026</div>
+    </section>
+
+  </div>
+</div>
+
+<!-- Navigation -->
+<div class="nav-bar">
+  <button class="nav-btn" id="prev" aria-label="Vorherige Folie">◀</button>
+  <div class="dots" id="dots"></div>
+  <button class="nav-btn" id="next" aria-label="Nächste Folie">▶</button>
+</div>
+
+<script>
+(function() {
+  const deck = document.getElementById('deck');
+  const slides = Array.from(document.querySelectorAll('.slide'));
+  const dotsEl = document.getElementById('dots');
+  const prevBtn = document.getElementById('prev');
+  const nextBtn = document.getElementById('next');
+  let current = 0;
+
+  // Build dots
+  slides.forEach((_, i) => {
+    const b = document.createElement('button');
+    b.className = 'dot' + (i === 0 ? ' active' : '');
+    b.setAttribute('aria-label', 'Zu Folie ' + (i + 1));
+    b.addEventListener('click', () => go(i));
+    dotsEl.appendChild(b);
+  });
+
+  function go(i) {
+    if (i < 0 || i >= slides.length) return;
+    slides[current].classList.remove('active');
+    dotsEl.children[current].classList.remove('active');
+    current = i;
+    slides[current].classList.add('active');
+    dotsEl.children[current].classList.add('active');
+    prevBtn.disabled = current === 0;
+    nextBtn.disabled = current === slides.length - 1;
+    // hash
+    history.replaceState(null, '', '#' + (current + 1));
+  }
+
+  prevBtn.addEventListener('click', () => go(current - 1));
+  nextBtn.addEventListener('click', () => go(current + 1));
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight' || e.key === 'PageDown' || e.key === ' ') { e.preventDefault(); go(current + 1); }
+    if (e.key === 'ArrowLeft'  || e.key === 'PageUp')                    { e.preventDefault(); go(current - 1); }
+    if (e.key === 'Home') { e.preventDefault(); go(0); }
+    if (e.key === 'End')  { e.preventDefault(); go(slides.length - 1); }
+    if (e.key === 'f' || e.key === 'F') {
+      if (!document.fullscreenElement) document.documentElement.requestFullscreen();
+      else document.exitFullscreen();
+    }
+  });
+
+  // Deep-link via hash (initial + hashchange)
+  function goFromHash() {
+    const h = parseInt((location.hash || '').replace('#', ''), 10);
+    if (h && h >= 1 && h <= slides.length && (h - 1) !== current) go(h - 1);
+  }
+  goFromHash();
+  window.addEventListener('hashchange', goFromHash);
+
+  // Responsive scaling
+  function scale() {
+    const sw = 1600, sh = 900;
+    const vw = window.innerWidth, vh = window.innerHeight;
+    const s = Math.min(vw / sw, vh / sh) * 0.96;
+    deck.style.transform = 'scale(' + s + ')';
+  }
+  window.addEventListener('resize', scale);
+  scale();
+
+  prevBtn.disabled = true;
+})();
+</script>
+
+</body>
+</html>
