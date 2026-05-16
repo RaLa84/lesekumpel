@@ -135,7 +135,7 @@ const effWoerter = `${effMin}–${effMax}`;
 
 // Bildanzahl: 0 wenn "Nur Text" gewählt, sonst nach Wortanzahl
 const mitBildern = input['mitBildern'] !== false && input['mitBildern'] !== 'false';
-const imageCount = mitBildern ? (basisMax <= 50 ? 1 : basisMax <= 150 ? 2 : 3) : 0;
+const imageCount = mitBildern ? (basisMax <= 50 ? 1 : basisMax <= 150 ? 3 : 4) : 0;
 
 // Kein Emoji-Hinweis im Prompt — Emojis werden nachträglich per Emoji-Tagger hinzugefügt
 const emojiHinweis = '';
@@ -156,6 +156,7 @@ Titel: "${title}"
 Kurzbeschreibung: ${description || 'Keine Beschreibung angegeben'}
 Wortanzahl: ${effWoerter}
 Tempus: ${p.tempus}
+Absaetze: Schreibe mindestens ${imageCount + 1} eigenstaendige Absaetze, getrennt durch jeweils eine Leerzeile. Jeder Absatz erzaehlt einen klar abgegrenzten Moment der Geschichte. Das ist wichtig fuer die Bildplatzierung — die ${imageCount} Bilder werden jeweils vor einem Absatz im Text angezeigt, und das erste Bild kommt fruehestens nach Absatz 1.
 
 AUFBAU (diese Labels verwenden):
 GESCHICHTE: [vollständiger Text]
@@ -170,6 +171,7 @@ WICHTIG: Verwende ERÖFFNUNGSTYP #${openerType} aus deinem Stil-Toolkit für den
 Titel: "${title}"
 Kurzbeschreibung: ${description || 'Keine Beschreibung angegeben'}
 Wortanzahl: ${p.woerter}
+Absaetze: Schreibe mindestens ${imageCount + 1} eigenstaendige Absaetze, getrennt durch jeweils eine Leerzeile. Jeder Absatz erzaehlt einen klar abgegrenzten Moment der Geschichte. Das ist wichtig fuer die Bildplatzierung — die ${imageCount} Bilder werden jeweils vor einem Absatz im Text angezeigt, und das erste Bild kommt fruehestens nach Absatz 1.
 
 AUFBAU (diese Labels verwenden):
 GESCHICHTE: [vollständiger Text]
