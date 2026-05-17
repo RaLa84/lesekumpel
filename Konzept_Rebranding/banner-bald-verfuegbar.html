@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lesekumpel · Banner — Bald verfügbar</title>
+<link rel="stylesheet" href="../fonts/fonts.css">
+<style>
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+:root {
+  --mint:   #2FB8A6;
+  --navy:   #2B3140;
+  --cream:  #FFF6EF;
+  --coral:  #F97352;
+  --lila:   #7D6AE6;
+  --yellow: #FFD95A;
+  --font-heading: 'Fredoka', system-ui, sans-serif;
+  --font-body:    'Lexend', system-ui, sans-serif;
+}
+
+html, body {
+  width: 1104px;
+  height: 276px;
+  overflow: hidden;
+  background: var(--cream);
+  font-family: var(--font-body);
+  color: var(--navy);
+  -webkit-font-smoothing: antialiased;
+}
+
+.banner {
+  position: relative;
+  width: 1104px;
+  height: 276px;
+  background: var(--cream);
+  display: flex;
+  align-items: center;
+  padding: 0 36px 0 56px;
+  gap: 24px;
+  overflow: hidden;
+  isolation: isolate;
+}
+
+/* === Organische Blobs === */
+.blob {
+  position: absolute;
+  pointer-events: none;
+  z-index: -1;
+}
+.blob svg { display: block; width: 100%; height: 100%; }
+
+.blob-coral {
+  bottom: -130px;
+  left: -90px;
+  width: 280px;
+  height: 280px;
+  opacity: 0.18;
+  color: var(--coral);
+}
+.blob-lila {
+  top: -110px;
+  right: -90px;
+  width: 240px;
+  height: 240px;
+  opacity: 0.16;
+  color: var(--lila);
+}
+.blob-mint {
+  bottom: -100px;
+  right: 160px;
+  width: 180px;
+  height: 180px;
+  opacity: 0.10;
+  color: var(--mint);
+}
+
+/* === Sparkles (statisch) === */
+.sparkle {
+  position: absolute;
+  pointer-events: none;
+  z-index: 1;
+}
+.sparkle-1 { top: 38px;  right: 80px;  width: 22px; height: 22px; }
+.sparkle-2 { top: 200px; right: 380px; width: 16px; height: 16px; opacity: 0.6; }
+.sparkle-3 { top: 30px;  left: 280px;  width: 14px; height: 14px; opacity: 0.55; }
+
+/* === Logo === */
+.logo-wrap {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 300px;
+  height: 100%;
+  position: relative;
+  z-index: 2;
+}
+.logo {
+  width: 300px;
+  height: auto;
+  display: block;
+  transform: rotate(-4deg);
+  filter:
+    drop-shadow( 4px  0   0 #FFFFFF)
+    drop-shadow(-4px  0   0 #FFFFFF)
+    drop-shadow( 0    4px 0 #FFFFFF)
+    drop-shadow( 0   -4px 0 #FFFFFF)
+    drop-shadow( 3px  3px 0 #FFFFFF)
+    drop-shadow(-3px -3px 0 #FFFFFF)
+    drop-shadow( 3px -3px 0 #FFFFFF)
+    drop-shadow(-3px  3px 0 #FFFFFF)
+    drop-shadow(0 14px 22px rgba(43, 49, 64, 0.22))
+    drop-shadow(0 4px 6px rgba(43, 49, 64, 0.10));
+}
+
+/* === Content === */
+.content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-end;
+  text-align: right;
+  gap: 10px;
+  position: relative;
+  z-index: 2;
+  min-width: 0;
+}
+
+.status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background: transparent;
+  color: var(--navy);
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 0.78rem;
+  line-height: 1;
+  padding: 6px 14px 6px 10px;
+  border-radius: 999px;
+  border: 1.5px solid var(--coral);
+  align-self: flex-end;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.status-badge .dot {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--coral);
+  box-shadow: 0 0 0 3px rgba(249, 115, 82, 0.20);
+  flex-shrink: 0;
+}
+
+h1 {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 2.6rem;
+  line-height: 1.05;
+  letter-spacing: -0.02em;
+  color: var(--navy);
+  white-space: nowrap;
+}
+h1 .highlight {
+  color: var(--lila);
+}
+
+.url {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 0.95rem;
+  letter-spacing: 0.04em;
+  color: var(--navy);
+  opacity: 0.55;
+  margin-top: 4px;
+}
+</style>
+</head>
+<body>
+
+<div class="banner">
+
+  <!-- Blobs -->
+  <div class="blob blob-coral" aria-hidden="true">
+    <svg viewBox="0 0 600 600" xmlns="http://www.w3.org/2000/svg">
+      <path fill="currentColor" d="M421.5,316.5Q393,383,335,420.5Q277,458,210.5,432Q144,406,108,343Q72,280,99,209Q126,138,194,103.5Q262,69,331,93Q400,117,433,178.5Q466,240,421.5,316.5Z"/>
+    </svg>
+  </div>
+  <div class="blob blob-lila" aria-hidden="true">
+    <svg viewBox="0 0 600 600" xmlns="http://www.w3.org/2000/svg">
+      <path fill="currentColor" d="M438,310Q406,380,338,415Q270,450,205,418Q140,386,114,318Q88,250,118,184Q148,118,216,98Q284,78,348,108Q412,138,442,204Q472,270,438,310Z"/>
+    </svg>
+  </div>
+  <div class="blob blob-mint" aria-hidden="true">
+    <svg viewBox="0 0 600 600" xmlns="http://www.w3.org/2000/svg">
+      <path fill="currentColor" d="M444,318Q416,386,353,420Q290,454,222,427Q154,400,121,338Q88,276,116,210Q144,144,210,114Q276,84,343,109.5Q410,135,442,202.5Q474,270,444,318Z"/>
+    </svg>
+  </div>
+
+  <!-- Sparkles -->
+  <svg class="sparkle sparkle-1" aria-hidden="true" viewBox="0 0 32 32">
+    <polygon points="16,2 20,12 30,12 22,19 25,30 16,23 7,30 10,19 2,12 12,12" fill="#FFD95A"/>
+  </svg>
+  <svg class="sparkle sparkle-2" aria-hidden="true" viewBox="0 0 24 24">
+    <path d="M12,2 L14,10 L22,12 L14,14 L12,22 L10,14 L2,12 L10,10 Z" fill="#F97352"/>
+  </svg>
+  <svg class="sparkle sparkle-3" aria-hidden="true" viewBox="0 0 24 24">
+    <path d="M12,2 L14,10 L22,12 L14,14 L12,22 L10,14 L2,12 L10,10 Z" fill="#FFD95A"/>
+  </svg>
+
+  <!-- Content -->
+  <div class="content">
+    <div class="status-badge">
+      <span class="dot" aria-hidden="true"></span>
+      <span>Bald verfügbar</span>
+    </div>
+    <h1>Lesen lernen <span class="highlight">auf eure Art.</span></h1>
+    <div class="url">lesekumpel.de</div>
+  </div>
+
+  <!-- Logo -->
+  <div class="logo-wrap">
+    <img src="logo-lesekumpel-banner.webp" alt="Lesekumpel Buddy" class="logo">
+  </div>
+
+</div>
+
+</body>
+</html>
