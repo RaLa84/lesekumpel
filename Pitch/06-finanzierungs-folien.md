@@ -221,17 +221,17 @@
 
 ## SLIDE F10 — Essenz (Pitchfolie)
 
-**Visuell:** Aufgeräumt, viel Weißraum. Vier große Zahlen im 2×2-Raster. Darunter eine kursive Footnote mit dem VC-Hinweis. Lesekumpel-Logo dezent rechts unten.
+**Visuell:** Slide-Tag oben links: *"Essenz · Finanzierung"*. Emotionale Headline: *"Lesekumpel finanziert sich selbst."* (das letzte Wort als Coral-Akzent). 4 **Floating Cards** (weiß, große Rundungen 26px, soft shadow) in einer Reihe — jede mit **Pill + Mini-Icon** oben links (Münze für Kosten, Preis-Tag für Pricing, Glühbirne für Break Even, Sprechblase für Marketing). Pill-Farbsemantik nach Folienmaster: Mint / Coral / Yellow / Lila. Zwischen Kosten ⟶ Pricing ⟶ Break Even verlaufen **geschwungene Reading-Path-SVGs** (dotted, lila, mit kleinem Sparkle an der Verbindung zur Break-Even-Card als Glühbirnen-Vorbote). Marketing-Card durch einen sanften halbkreisförmigen Spacer-Path abgesetzt — eigenständige Säule. Break-Even-Card mit dezentem Yellow-Verlauf im Hintergrund als Ziel-Signal. **Lesebuddy** (Maskottchen) unten rechts leicht gekippt, **Sparkle-Cluster** (Mint/Coral/Yellow/Lila Plus-Zeichen) oben rechts neben Headline, **bunte Punkte-Cluster** unten links — alles als Folienmaster-konforme Deko-Schichten.
 
 **Text:**
-> ### Lesekumpel finanziert sich selbst.
+> ### Lesekumpel finanziert sich **selbst.**
 >
-> **170 €/Mon.** Konzeptions-Kosten — kein Risiko-Pump
-> **105 Premium-Nutzer** für operative Kostendeckung
-> **28 % Marge** — bis zu 42 % mit drei greifbaren Optimierungshebeln
-> **Null Paid Acquisition** — Community-Led Growth über 4 Kanäle: Lehrer, SEO, Instagram, Discord
->
-> *Kein externes Risikokapital — Eigentum und Kontrolle bleiben beim Gründerteam.*
+> | Kategorie | Inhalt |
+> |---|---|
+> | **Kosten** | Fixkosten 170 € Konzeptions-Phase · Fixkosten 700 € Validierungs-Phase |
+> | **Pricing** | Free + **Premium 7,99 €/Monat** (Eltern-Accounts) · **Marge** = ~28–42 % |
+> | **Break Even** | bei **105** Premium-Nutzern |
+> | **Marketing** | **0 € Paid Acquisition** · Community-Led Growth über 4 Kanäle: Lehrer, SEO, Instagram, Discord |
 
 **Pointe (gesprochen, ~30 Sek):**
 > „Was bedeutet das alles? Wir bauen ein nachhaltiges Bildungsgeschäft, keine Wachstums-Inszenierung. 105 zahlende Nutzer bringen uns ins Schwarze. 1.300 ernähren das Gründerteam Teilzeit. Alles dazwischen ist Wachstum aus eigener Kraft. Wir brauchen keinen 2-Millionen-Pitch. Wir brauchen Validierung."
