@@ -2,7 +2,8 @@
 
 **Anlass:** Live-Pitch vor der Jury (~Juni 2026, Termin vom ZfE)
 **Annahme zur Pitch-Dauer:** 5 Minuten Pitch + 5–10 Minuten Q&A (Standard­format vergleichbarer Wettbewerbe — beim ZfE bestätigen lassen)
-**Folienzahl:** 10 Slides + 1 Backup
+**Folienzahl:** 11 Slides + 1 Backup
+**Finanzierungs-Vertiefung:** [`06-finanzierungs-folien.md`](06-finanzierungs-folien.md) — F1–F5 als Anhang/Q&A-Vertiefung, F6 (Essenz) ist als Slide 8 in dieses Hauptdeck integriert
 **Format-Empfehlung:** 16:9, große Schrift, max. 30 Wörter pro Slide, viel Visualität
 
 > Diese Datei ist die **Outline** für die finale Folie (PowerPoint/Keynote/Pitch.com/Slides). Reihenfolge folgt dem AIDA-Bogen Problem → Lösung → Markt → Modell → Team → Ask. Bilder/Screenshots werden in `assets/` gesammelt.
@@ -120,7 +121,28 @@
 
 ---
 
-## SLIDE 8 — Status heute
+## SLIDE 8 — Finanzierung auf den Punkt (Essenz)
+
+**Visuell:** Aufgeräumt, viel Weißraum (Cremegelb `#FFF9E5`). Vier große Zahlen oder Statements in 2×2-Raster. Lesekumpel-Logo dezent rechts unten. Tagline groß zentriert.
+
+**Text:**
+> ### Lesekumpel finanziert sich selbst.
+>
+> **170 €/Mon.** Konzeptions-Kosten — kein Risiko-Pump
+> **105 Premium-Nutzer** für operative Kostendeckung
+> **28 % Marge** — bis zu 42 % mit drei greifbaren Optimierungshebeln
+> **Null Paid Acquisition** — Community-Led Growth über 4 Kanäle: Lehrer, SEO, Instagram, Discord
+>
+> *Kein externes Risikokapital — Eigentum und Kontrolle bleiben beim Gründerteam.*
+
+**Pointe (gesprochen, ~30 Sek):**
+> „Was bedeutet das alles? Wir bauen ein nachhaltiges Bildungsgeschäft, keine Wachstums-Inszenierung. 105 zahlende Nutzer bringen uns ins Schwarze. 1.300 ernähren den Gründer. Alles dazwischen ist Wachstum aus eigener Kraft. Wir brauchen keinen 2-Millionen-Pitch. Wir brauchen Validierung — und genau dafür sitzen wir hier."
+
+*Detail-Folien zur Marketing-Logik, Einnahmen-Struktur, Kosten-Pyramide, Break-Even-Schwellen und Förder-Roadmap: siehe Anhang [`06-finanzierungs-folien.md`](06-finanzierungs-folien.md) F1–F5.*
+
+---
+
+## SLIDE 9 — Status heute
 
 **Visuell:** Zeitstrahl mit Häkchen für Erreichtes, leeren Punkten für Roadmap.
 
@@ -135,7 +157,7 @@
 
 ---
 
-## SLIDE 9 — Team & Vision
+## SLIDE 10 — Team & Vision
 
 **Visuell:** Foto(s) Team links · rechts: Vision-Statement.
 
@@ -153,7 +175,7 @@
 
 ---
 
-## SLIDE 10 — Ask & Schluss
+## SLIDE 11 — Ask & Schluss
 
 **Visuell:** Klar, aufgeräumt. Lesekumpel-Logo groß. Kontakt­zeile unten.
 

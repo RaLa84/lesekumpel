@@ -1,0 +1,1815 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lesekumpel · Finanzierungs-Präsentation</title>
+<link rel="stylesheet" href="../fonts/fonts.css">
+<style>
+:root {
+  --mint:        #2FB8A6;
+  --navy:        #2B3140;
+  --cream:       #FFF6EF;
+  --cream-light: #FEFBF6;
+  --coral:       #F97352;
+  --lila:        #7D6AE6;
+  --yellow:      #FFD95A;
+  --border:      #D9D4CC;
+  --white:       #FFFFFF;
+  --font-heading: 'Fredoka', system-ui, sans-serif;
+  --font-body:    'Quicksand', system-ui, sans-serif;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  height: 100%;
+  background: var(--navy);
+  font-family: var(--font-body);
+  color: var(--navy);
+  overflow: hidden;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  line-height: 1.15;
+  color: var(--navy);
+}
+
+/* ===== Slide Container ===== */
+.deck {
+  width: 100vw;
+  height: 100vh;
+  position: relative;
+}
+
+.slide {
+  position: absolute;
+  inset: 0;
+  background: var(--cream);
+  padding: 4vh 6vw 3vh;
+  display: none;
+  flex-direction: column;
+  overflow: hidden;
+}
+.slide.active { display: flex; }
+
+/* Soft organic blob accent — top right */
+.slide::before {
+  content: '';
+  position: absolute;
+  width: 540px; height: 540px;
+  top: -240px; right: -180px;
+  background: radial-gradient(circle at center, rgba(255,217,90,0.32), rgba(255,217,90,0) 70%);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+}
+/* Second blob accent — bottom left */
+.slide::after {
+  content: '';
+  position: absolute;
+  width: 460px; height: 460px;
+  bottom: -220px; left: -160px;
+  background: radial-gradient(circle at center, rgba(47,184,166,0.22), rgba(47,184,166,0) 65%);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.slide > * { position: relative; z-index: 1; }
+
+/* ===== Slide Header ===== */
+.slide-tag {
+  font-size: 0.8rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--lila);
+  font-weight: 700;
+  margin-bottom: 0.7rem;
+}
+
+h1.slide-title {
+  font-size: clamp(1.8rem, 2.6vw, 2.6rem);
+  font-weight: 600;
+  margin-bottom: 1.2rem;
+  line-height: 1.15;
+  max-width: 90%;
+}
+
+h1.slide-title .accent { color: var(--coral); }
+
+.slide-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 0;
+  gap: 0.9rem;
+}
+
+/* ===== Slide Footer ===== */
+.slide-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.8rem;
+  color: var(--navy);
+  opacity: 0.5;
+  margin-top: 1.4rem;
+}
+.slide-footer .brand {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 1rem;
+  letter-spacing: 0.02em;
+}
+.slide-footer .brand-dot {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  background: var(--mint);
+  border-radius: 3px;
+  transform: rotate(45deg);
+  margin-right: 8px;
+  vertical-align: middle;
+}
+.slide-footer .counter { font-variant-numeric: tabular-nums; }
+
+/* ===== Cover Slide ===== */
+.slide-cover {
+  background: var(--cream);
+  text-align: center;
+  justify-content: center;
+}
+.slide-cover .slide-content {
+  align-items: center;
+  text-align: center;
+  justify-content: center;
+}
+.cover-logo {
+  font-family: var(--font-heading);
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--navy);
+  margin-bottom: 4rem;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.cover-logo .brand-dot {
+  width: 18px; height: 18px;
+  background: var(--mint);
+  border-radius: 5px;
+  transform: rotate(45deg);
+}
+.cover-logo .brand-name { color: var(--lila); }
+.cover-title {
+  font-size: clamp(2.8rem, 5vw, 5.2rem);
+  font-weight: 700;
+  margin-bottom: 1.2rem;
+  line-height: 1.05;
+}
+.cover-title .accent { color: var(--coral); }
+.cover-sub {
+  font-size: clamp(1.1rem, 1.6vw, 1.6rem);
+  color: var(--navy);
+  opacity: 0.75;
+  max-width: 800px;
+  margin: 0 auto 3rem;
+  line-height: 1.4;
+}
+.cover-meta {
+  font-size: 1rem;
+  color: var(--navy);
+  opacity: 0.6;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+/* ===== Reusable Components ===== */
+
+/* 4-column grid (Marketing-Kanäle) */
+.cards-4 {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.4rem;
+}
+.card {
+  background: var(--white);
+  border-radius: 20px;
+  padding: 1.6rem 1.3rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+  box-shadow: 0 6px 24px rgba(43,49,64,0.06);
+  position: relative;
+  overflow: hidden;
+}
+.card .icon {
+  font-size: 2rem;
+  line-height: 1;
+}
+.card h3 {
+  font-size: 1.2rem;
+  color: var(--navy);
+}
+.card .desc {
+  font-size: 0.92rem;
+  line-height: 1.5;
+  color: var(--navy);
+  opacity: 0.78;
+  flex: 1;
+}
+.card .scale-tag {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  padding: 0.35rem 0.7rem;
+  border-radius: 100px;
+  background: var(--cream);
+  align-self: flex-start;
+  color: var(--navy);
+}
+.cards-4-note {
+  margin-top: 1.4rem;
+  padding: 1.1rem 1.5rem;
+  background: var(--white);
+  border-radius: 16px;
+  font-size: 1rem;
+  color: var(--navy);
+  line-height: 1.5;
+  box-shadow: 0 4px 16px rgba(43,49,64,0.04);
+}
+
+/* Pricing Cards (Einnahmen) */
+.pricing-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 1.5rem;
+}
+.pricing-block {
+  background: var(--white);
+  border-radius: 20px;
+  padding: 1.6rem 1.4rem;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 6px 24px rgba(43,49,64,0.06);
+  position: relative;
+  overflow: hidden;
+}
+.pricing-block::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 5px;
+  background: var(--border);
+}
+.pricing-block.b2c::before { background: var(--lila); }
+.pricing-block.b2b::before { background: var(--mint); }
+.pricing-block.coop::before { background: var(--coral); }
+.pricing-block .label {
+  font-size: 0.78rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+.pricing-block.b2c .label { color: var(--lila); }
+.pricing-block.b2b .label { color: var(--mint); }
+.pricing-block.coop .label { color: var(--coral); }
+.pricing-block h3 {
+  font-size: 1.35rem;
+  margin-bottom: 0.9rem;
+}
+.pricing-block .pricing-rows {
+  display: flex; flex-direction: column; gap: 0.65rem;
+}
+.pricing-row-item {
+  display: flex; justify-content: space-between;
+  align-items: baseline; gap: 0.8rem;
+  border-bottom: 1px dashed var(--border);
+  padding-bottom: 0.55rem;
+}
+.pricing-row-item:last-child { border-bottom: none; padding-bottom: 0; }
+.pricing-row-item .name { font-weight: 600; font-size: 0.95rem; }
+.pricing-row-item .name small {
+  display: block;
+  font-weight: 400;
+  font-size: 0.8rem;
+  opacity: 0.7;
+}
+.pricing-row-item .price {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: var(--coral);
+  white-space: nowrap;
+}
+.pricing-block .phase-badge {
+  margin-top: auto;
+  padding-top: 0.9rem;
+  font-size: 0.8rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--coral);
+}
+.coop-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  font-size: 0.92rem;
+  line-height: 1.45;
+}
+.coop-list .coop-item {
+  display: flex;
+  gap: 0.55rem;
+  align-items: baseline;
+}
+.coop-list .coop-bullet {
+  color: var(--coral);
+  font-weight: 700;
+}
+
+/* Cost Pyramid (Kosten) */
+.cost-pyramid {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+  margin-bottom: 1.5rem;
+}
+.cost-step {
+  background: var(--white);
+  border-radius: 20px;
+  padding: 1.4rem 1.8rem;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 1.5rem;
+  box-shadow: 0 6px 20px rgba(43,49,64,0.05);
+  position: relative;
+  overflow: hidden;
+}
+.cost-step::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 5px;
+  background: var(--border);
+}
+.cost-step.s1::before { background: var(--mint); }
+.cost-step.s2::before { background: var(--lila); }
+.cost-step.s3::before { background: var(--coral); }
+.cost-step .step-number {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 1.5rem;
+  width: 48px; height: 48px;
+  border-radius: 50%;
+  background: var(--cream);
+  display: flex; align-items: center; justify-content: center;
+  color: var(--navy);
+}
+.cost-step .step-body h3 { font-size: 1.3rem; margin-bottom: 0.2rem; }
+.cost-step .step-body p { font-size: 0.95rem; opacity: 0.75; }
+.cost-step .step-cost {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 1.8rem;
+  color: var(--coral);
+  white-space: nowrap;
+}
+.cost-step.s1 .step-number { background: var(--mint); color: var(--white); }
+.cost-step.s2 .step-number { background: var(--lila); color: var(--white); }
+.cost-step.s3 .step-number { background: var(--coral); color: var(--white); }
+
+.hebels {
+  background: var(--white);
+  border-radius: 12px;
+  padding: 1.3rem 1.6rem;
+  border: 1px solid var(--border);
+}
+.hebels .hebels-title {
+  font-weight: 700; font-size: 1rem;
+  margin-bottom: 0.7rem;
+  color: var(--navy);
+}
+.hebels ol {
+  margin-left: 1.4rem;
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+.hebels strong { color: var(--coral); }
+
+/* Break-Even Thresholds */
+.thresholds {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  margin-bottom: 2rem;
+}
+.threshold {
+  background: var(--white);
+  border-radius: 20px;
+  padding: 2rem 1.5rem;
+  text-align: center;
+  box-shadow: 0 6px 24px rgba(43,49,64,0.06);
+  position: relative;
+  overflow: hidden;
+}
+.threshold::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 5px;
+  background: var(--border);
+}
+.threshold.t1::before { background: var(--mint); }
+.threshold.t2::before { background: var(--lila); }
+.threshold.t3::before { background: var(--coral); }
+.threshold .big-number {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 3.6rem;
+  line-height: 1;
+  margin-bottom: 0.4rem;
+}
+.threshold .unit {
+  font-size: 0.9rem;
+  opacity: 0.6;
+  margin-bottom: 0.8rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+.threshold .label {
+  font-size: 1.05rem;
+  font-weight: 600;
+  line-height: 1.4;
+}
+.threshold.t1 .big-number { color: var(--mint); }
+.threshold.t2 .big-number { color: var(--lila); }
+.threshold.t3 .big-number { color: var(--coral); }
+
+.margin-box {
+  background: var(--yellow);
+  border-radius: 14px;
+  padding: 1.5rem 2rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1rem;
+}
+.margin-box .margin-label {
+  font-size: 1.1rem;
+  font-weight: 600;
+}
+.margin-box .margin-values {
+  display: flex;
+  align-items: baseline;
+  gap: 1rem;
+  font-family: var(--font-heading);
+}
+.margin-box .margin-values .base {
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: var(--navy);
+  opacity: 0.6;
+}
+.margin-box .margin-values .arrow {
+  font-size: 1.4rem;
+  color: var(--navy);
+}
+.margin-box .margin-values .target {
+  font-size: 3rem;
+  font-weight: 700;
+  color: var(--navy);
+}
+
+/* Funding Phases */
+.phases {
+  display: flex;
+  flex-direction: column;
+  gap: 1.2rem;
+}
+.phase {
+  background: var(--white);
+  border-radius: 14px;
+  padding: 1.4rem 1.6rem;
+  display: grid;
+  grid-template-columns: 1.2fr 2fr;
+  gap: 1.5rem;
+  align-items: start;
+  border-left: 6px solid var(--mint);
+}
+.phase.p2 { border-left-color: var(--lila); }
+.phase.p3 { border-left-color: var(--coral); }
+.phase .phase-head .phase-label {
+  font-size: 0.82rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  font-weight: 700;
+  color: var(--mint);
+  margin-bottom: 0.3rem;
+}
+.phase.p2 .phase-label { color: var(--lila); }
+.phase.p3 .phase-label { color: var(--coral); }
+.phase .phase-head h3 {
+  font-size: 1.3rem;
+  margin-bottom: 0.3rem;
+}
+.phase .phase-head .timing {
+  font-size: 0.9rem;
+  opacity: 0.7;
+}
+.phase .phase-body {
+  font-size: 1rem;
+  line-height: 1.6;
+}
+.phase .phase-body strong { color: var(--navy); font-weight: 700; }
+.phase .phase-body ul {
+  margin-left: 1.1rem;
+  margin-top: 0.4rem;
+}
+
+/* Essence Slide (2x2 grid) */
+.essence-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr 1fr;
+  gap: 1.8rem;
+}
+.essence-card {
+  background: var(--white);
+  border-radius: 22px;
+  padding: 1.8rem 1.6rem;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.5rem;
+  box-shadow: 0 6px 24px rgba(43,49,64,0.06);
+  position: relative;
+  overflow: hidden;
+}
+.essence-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 5px;
+  background: var(--border);
+}
+.essence-card .ess-number {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 2.8rem;
+  line-height: 1;
+}
+.essence-card .ess-label {
+  font-size: 1.05rem;
+  font-weight: 600;
+  line-height: 1.35;
+}
+.essence-card .ess-note {
+  font-size: 0.88rem;
+  opacity: 0.68;
+  line-height: 1.4;
+}
+.essence-card.c1::before { background: var(--mint); }
+.essence-card.c1 .ess-number { color: var(--mint); }
+.essence-card.c2::before { background: var(--lila); }
+.essence-card.c2 .ess-number { color: var(--lila); }
+.essence-card.c3::before { background: var(--coral); }
+.essence-card.c3 .ess-number { color: var(--coral); }
+.essence-card.c4::before { background: var(--yellow); }
+.essence-card.c4 .ess-number { color: var(--navy); }
+
+/* Cost-Detail Tabelle (F4) */
+.cost-detail {
+  background: var(--white);
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+.cost-detail-row {
+  display: grid;
+  grid-template-columns: 1.6fr 1fr 1fr 1fr;
+  gap: 0.5rem;
+  padding: 0.9rem 1.4rem;
+  align-items: center;
+  border-top: 1px solid var(--border);
+  font-size: 1rem;
+}
+.cost-detail-row:first-child { border-top: none; }
+.cost-detail-row.header {
+  background: var(--navy);
+  color: var(--cream);
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+.cost-detail-row.header .col-phase {
+  text-align: right;
+  letter-spacing: 0.04em;
+}
+.cost-detail-row .col-cat {
+  font-weight: 600;
+}
+.cost-detail-row .col-phase {
+  text-align: right;
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+.cost-detail-row.total {
+  background: var(--yellow);
+  font-weight: 700;
+  border-top: 2px solid var(--navy);
+}
+.cost-detail-row.total .col-phase {
+  font-size: 1.05rem;
+}
+
+/* Margenhebel-Karten (F5) */
+.hebel-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+.hebel-card {
+  background: var(--white);
+  border-radius: 20px;
+  padding: 1.6rem 1.4rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+  box-shadow: 0 6px 24px rgba(43,49,64,0.06);
+  position: relative;
+  overflow: hidden;
+}
+.hebel-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 5px;
+  background: var(--border);
+}
+.hebel-card.h1::before { background: var(--mint); }
+.hebel-card.h2::before { background: var(--lila); }
+.hebel-card.h3::before { background: var(--coral); }
+.hebel-card .hebel-num {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 0.85rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.hebel-card.h1 .hebel-num { color: var(--mint); }
+.hebel-card.h2 .hebel-num { color: var(--lila); }
+.hebel-card.h3 .hebel-num { color: var(--coral); }
+.hebel-card h3 {
+  font-size: 1.3rem;
+  line-height: 1.2;
+}
+.hebel-card .hebel-desc {
+  font-size: 0.95rem;
+  line-height: 1.5;
+  flex: 1;
+}
+.hebel-card .hebel-effect {
+  background: var(--cream);
+  border-radius: 8px;
+  padding: 0.8rem 1rem;
+  font-size: 0.9rem;
+}
+.hebel-card .hebel-effect strong {
+  display: block;
+  font-family: var(--font-heading);
+  font-size: 1.1rem;
+  margin-bottom: 0.15rem;
+}
+.hebel-card.h1 .hebel-effect strong { color: var(--mint); }
+.hebel-card.h2 .hebel-effect strong { color: var(--lila); }
+.hebel-card.h3 .hebel-effect strong { color: var(--coral); }
+
+.hebel-summary {
+  margin-top: 1.4rem;
+  padding: 1rem 1.4rem;
+  background: var(--yellow);
+  border-radius: 10px;
+  font-size: 1.05rem;
+  font-weight: 600;
+  text-align: center;
+}
+.hebel-summary strong {
+  font-family: var(--font-heading);
+  font-size: 1.25rem;
+}
+
+/* Break-Even-Rechnung (F6) */
+.be-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+.be-block {
+  background: var(--white);
+  border-radius: 16px;
+  padding: 1rem 1.2rem;
+  box-shadow: 0 4px 16px rgba(43,49,64,0.05);
+  position: relative;
+  overflow: hidden;
+}
+.be-block::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 4px;
+  background: var(--border);
+}
+.be-block h3 {
+  font-size: 1rem;
+  margin-bottom: 0.5rem;
+  color: var(--navy);
+}
+.be-block.fix h3 { color: var(--mint); }
+.be-block.fix::before { background: var(--mint); }
+.be-block.var h3 { color: var(--lila); }
+.be-block.var::before { background: var(--lila); }
+.be-line {
+  display: flex;
+  justify-content: space-between;
+  padding: 0.25rem 0;
+  font-size: 0.88rem;
+  border-bottom: 1px dashed var(--border);
+}
+.be-line:last-child { border-bottom: none; }
+.be-line .num {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-variant-numeric: tabular-nums;
+}
+.be-line.sum {
+  font-weight: 700;
+  border-top: 1.5px solid var(--navy);
+  margin-top: 0.3rem;
+  padding-top: 0.4rem;
+  border-bottom: none;
+  font-size: 0.95rem;
+}
+.be-formula {
+  background: var(--navy);
+  color: var(--cream);
+  border-radius: 12px;
+  padding: 1.4rem 1.8rem;
+  font-family: var(--font-heading);
+  font-size: 1.15rem;
+  line-height: 1.7;
+  text-align: center;
+}
+.be-formula .calc {
+  display: block;
+  margin: 0.4rem 0;
+  font-size: 1rem;
+  opacity: 0.85;
+}
+.be-formula .result {
+  display: block;
+  margin-top: 0.7rem;
+  font-size: 1.6rem;
+  color: var(--yellow);
+  font-weight: 700;
+}
+
+/* Break-Even-Chart (SVG-Diagramm in F7) */
+.be-chart-wrap {
+  background: var(--white);
+  border-radius: 16px;
+  padding: 0.6rem 0.9rem 0.4rem;
+  box-shadow: 0 4px 16px rgba(43,49,64,0.05);
+  min-height: 0;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  flex: 1 1 auto;
+}
+.be-chart {
+  width: 100%;
+  height: 100%;
+  flex: 1 1 auto;
+  display: block;
+}
+.be-formula-mini {
+  margin-top: 0.5rem;
+  padding: 0.55rem 0.9rem;
+  background: var(--navy);
+  color: var(--cream);
+  border-radius: 10px;
+  font-family: var(--font-heading);
+  font-size: 0.88rem;
+  text-align: center;
+  font-weight: 500;
+}
+.be-formula-mini strong { color: var(--yellow); font-weight: 700; }
+
+/* Markt-Folie (F2) */
+.market-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+  margin-bottom: 1.8rem;
+}
+.market-stat {
+  background: var(--white);
+  border-radius: 20px;
+  padding: 1.8rem 1.5rem;
+  text-align: center;
+  box-shadow: 0 6px 24px rgba(43,49,64,0.06);
+  position: relative;
+  overflow: hidden;
+}
+.market-stat::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 5px;
+  background: var(--border);
+}
+.market-stat.m1::before { background: var(--mint); }
+.market-stat.m2::before { background: var(--lila); }
+.market-stat.m3::before { background: var(--coral); }
+.market-stat .stat-num {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 3.4rem;
+  line-height: 1;
+  margin-bottom: 0.4rem;
+}
+.market-stat.m1 .stat-num { color: var(--mint); }
+.market-stat.m2 .stat-num { color: var(--lila); }
+.market-stat.m3 .stat-num { color: var(--coral); }
+.market-stat .stat-label {
+  font-size: 1.05rem;
+  font-weight: 600;
+  line-height: 1.4;
+}
+.market-stat .stat-note {
+  font-size: 0.85rem;
+  opacity: 0.65;
+  margin-top: 0.4rem;
+  line-height: 1.4;
+}
+.validation-block {
+  background: var(--yellow);
+  border-radius: 12px;
+  padding: 1.2rem 1.6rem;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 1.2rem;
+  align-items: center;
+}
+.validation-block .val-tag {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 0.85rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  background: var(--navy);
+  color: var(--cream);
+  padding: 0.5rem 0.9rem;
+  border-radius: 6px;
+  white-space: nowrap;
+}
+.validation-block .val-text {
+  font-size: 1.05rem;
+  font-weight: 500;
+  line-height: 1.45;
+}
+.validation-block .val-text strong { font-weight: 700; }
+
+/* Timing-Linie auf F8 Break-Even */
+.timing-line {
+  margin-top: 1.8rem;
+  background: var(--white);
+  border-radius: 12px;
+  border: 1px solid var(--border);
+  padding: 1.2rem 1.6rem;
+}
+.timing-line .timing-title {
+  font-family: var(--font-heading);
+  font-size: 0.95rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--navy);
+  opacity: 0.7;
+  margin-bottom: 0.8rem;
+}
+.timing-line .timing-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
+.timing-line .timing-pt {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+.timing-line .timing-pt .when {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+.timing-line .timing-pt.t1 .when { color: var(--mint); }
+.timing-line .timing-pt.t2 .when { color: var(--lila); }
+.timing-line .timing-pt.t3 .when { color: var(--coral); }
+.timing-line .timing-pt .what {
+  font-size: 0.95rem;
+  opacity: 0.8;
+}
+
+/* Risiken-Karten (F9) */
+.risk-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1rem;
+}
+.risk-card {
+  background: var(--white);
+  border-radius: 18px;
+  padding: 1.1rem 1.3rem;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 1rem;
+  align-items: start;
+  box-shadow: 0 5px 20px rgba(43,49,64,0.05);
+  position: relative;
+  overflow: hidden;
+}
+.risk-card::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 4px;
+  background: var(--coral);
+  opacity: 0.7;
+}
+.risk-card .risk-icon {
+  font-size: 1.6rem;
+  line-height: 1.2;
+}
+.risk-card h3 {
+  font-size: 1.05rem;
+  margin-bottom: 0.35rem;
+  color: var(--coral);
+}
+.risk-card .risk-desc {
+  font-size: 0.85rem;
+  line-height: 1.45;
+  margin-bottom: 0.5rem;
+}
+.risk-card .risk-plan {
+  font-size: 0.85rem;
+  line-height: 1.4;
+  padding-top: 0.5rem;
+  border-top: 1px dashed var(--border);
+}
+.risk-card .risk-plan strong {
+  color: var(--mint);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  font-size: 0.78rem;
+  display: block;
+  margin-bottom: 0.2rem;
+}
+
+/* Tables (Backup-Folien) */
+table.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--white);
+  border-radius: 12px;
+  overflow: hidden;
+  font-size: 1.05rem;
+}
+table.data-table th {
+  background: var(--navy);
+  color: var(--cream);
+  text-align: left;
+  padding: 0.9rem 1.2rem;
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 1rem;
+}
+table.data-table td {
+  padding: 0.85rem 1.2rem;
+  border-top: 1px solid var(--border);
+  vertical-align: top;
+}
+table.data-table tr:nth-child(even) td { background: var(--cream-light); }
+table.data-table .num {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  text-align: right;
+  white-space: nowrap;
+}
+table.data-table .total td {
+  background: var(--yellow) !important;
+  font-weight: 700;
+  border-top: 2px solid var(--navy);
+}
+
+.risk-box {
+  margin-top: 1.5rem;
+  padding: 1.2rem 1.5rem;
+  background: var(--white);
+  border-left: 4px solid var(--coral);
+  border-radius: 8px;
+  font-size: 0.95rem;
+  line-height: 1.6;
+}
+.risk-box strong { color: var(--coral); }
+
+/* ===== Navigation ===== */
+.nav-hint {
+  position: fixed;
+  bottom: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.75rem;
+  color: var(--navy);
+  opacity: 0.35;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  pointer-events: none;
+  z-index: 100;
+}
+
+.nav-buttons {
+  position: fixed;
+  bottom: 16px;
+  right: 24px;
+  display: flex;
+  gap: 8px;
+  z-index: 100;
+}
+.nav-btn {
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  background: var(--white);
+  font-family: var(--font-heading);
+  font-size: 1rem;
+  cursor: pointer;
+  color: var(--navy);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s ease;
+}
+.nav-btn:hover { background: var(--coral); color: var(--white); border-color: var(--coral); }
+.nav-btn:disabled { opacity: 0.3; cursor: default; }
+.nav-btn:disabled:hover { background: var(--white); color: var(--navy); border-color: var(--border); }
+
+/* ===== Utility classes ===== */
+.brand-name-lila { color: var(--lila); }
+.price-free { color: var(--lila); }
+.text-right { text-align: right; }
+.dim { opacity: 0.7; }
+.threshold .label small { opacity: 0.7; }
+.margin-hint {
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  font-weight: 500;
+  opacity: 0.75;
+  margin-left: 0.5rem;
+}
+.risk-box.success { border-left-color: var(--mint); }
+.risk-box.success strong { color: var(--mint); }
+
+/* Subline unter slide-title */
+.slide-subtitle {
+  font-size: 1.15rem;
+  margin-top: -1.8rem;
+  margin-bottom: 2rem;
+  opacity: 0.75;
+  font-weight: 500;
+}
+
+/* Fazit-Block unter Marketing-Cards (F1) */
+.marketing-fazit {
+  margin-top: 1.6rem;
+  padding: 1.1rem 1.6rem;
+  background: var(--yellow);
+  border-radius: 10px;
+  font-size: 1.05rem;
+  text-align: center;
+  font-weight: 500;
+  line-height: 1.5;
+}
+.marketing-fazit strong {
+  font-family: var(--font-heading);
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+/* Footnote unter Essence-Grid (F8) */
+.essence-footnote {
+  margin-top: 1.6rem;
+  text-align: center;
+  font-size: 1rem;
+  opacity: 0.72;
+  font-style: italic;
+  line-height: 1.5;
+}
+
+/* Step-Cost mit deutlichem Monatsbezug */
+.step-cost .amount {
+  display: block;
+  font-size: 1.9rem;
+  line-height: 1;
+  text-align: right;
+}
+.step-cost .period {
+  display: block;
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: 0.8rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 0.65;
+  margin-top: 0.3rem;
+  text-align: right;
+}
+
+/* ===== Responsive: scale on small screens ===== */
+@media (max-width: 1100px) {
+  .slide { padding: 4vh 5vw; }
+  h1.slide-title { font-size: 2.2rem; }
+  .cover-title { font-size: 3.5rem; }
+  .essence-card .ess-number { font-size: 2.4rem; }
+  .threshold .big-number { font-size: 2.6rem; }
+  .cards-4 { grid-template-columns: repeat(2, 1fr); }
+}
+
+/* ===== Print (PDF Export) ===== */
+@media print {
+  html, body { background: var(--cream); overflow: visible; }
+  .slide {
+    display: flex !important;
+    position: relative;
+    page-break-after: always;
+    height: 100vh;
+    width: 100vw;
+  }
+  .nav-hint, .nav-buttons { display: none !important; }
+}
+</style>
+</head>
+<body>
+
+<div class="deck" id="deck">
+
+<!-- ============================================ -->
+<!-- SLIDE 0 — Cover                              -->
+<!-- ============================================ -->
+<section class="slide slide-cover active" data-slide="0">
+  <div class="slide-content">
+    <div class="cover-logo">
+      <span class="brand-dot"></span>
+      <span><span class="brand-name">Lese</span>kumpel</span>
+    </div>
+    <h1 class="cover-title">Wirtschaftlichkeit <span class="accent">auf den Punkt.</span></h1>
+    <p class="cover-sub">Wie Lesekumpel sich aus eigener Kraft trägt — von 170&nbsp;Euro Konzeptions­kosten bis zur 42-%-Marge.</p>
+    <div class="cover-meta">Finanzierungs-Präsentation · INSPIRED Ideenwettbewerb MV 2026</div>
+  </div>
+  <div class="slide-footer">
+    <span class="brand"><span class="brand-dot"></span><span class="brand-name brand-name-lila">Lese</span>kumpel</span>
+    <span class="counter" id="counter-0">Cover</span>
+  </div>
+</section>
+
+<!-- ============================================ -->
+<!-- SLIDE 1 — Essenz (Hauptaussage)              -->
+<!-- ============================================ -->
+<section class="slide" data-slide="1">
+  <div class="slide-tag">Essenz</div>
+  <h1 class="slide-title">Lesekumpel finanziert sich <span class="accent">selbst.</span></h1>
+  <div class="slide-content">
+    <div class="essence-grid">
+      <div class="essence-card c1">
+        <div class="ess-number">170 €</div>
+        <div class="ess-label">Konzeptions-Kosten pro Monat</div>
+        <div class="ess-note">Kein Risiko-Pump. Lean Bootstrap mit Free-Tier-Services.</div>
+      </div>
+      <div class="essence-card c2">
+        <div class="ess-number">105</div>
+        <div class="ess-label">Premium-Nutzer für operative Kostendeckung</div>
+        <div class="ess-note">Erreichbar in 6–12 Monaten mit SEO und Lehrer-Akquise.</div>
+      </div>
+      <div class="essence-card c3">
+        <div class="ess-number">28 %</div>
+        <div class="ess-label">Operative Marge</div>
+        <div class="ess-note">Bis zu <strong>42 %</strong> möglich. Drei greifbare Hebel: Empfehlungs-Cache, günstigere Bildmodelle, Cap-Gewichtung.</div>
+      </div>
+      <div class="essence-card c4">
+        <div class="ess-number">0 €</div>
+        <div class="ess-label">Paid Acquisition</div>
+        <div class="ess-note">Community-Led Growth über 4 Kanäle: Lehrer, SEO, Instagram, Discord.</div>
+      </div>
+    </div>
+    <div class="essence-footnote">
+      Kein externes Risikokapital — Eigentum und Kontrolle bleiben beim Gründerteam.
+    </div>
+  </div>
+  <div class="slide-footer">
+    <span class="brand"><span class="brand-dot"></span><span class="brand-name brand-name-lila">Lese</span>kumpel · Finanzierung</span>
+    <span class="counter">Essenz</span>
+  </div>
+</section>
+
+<!-- ============================================ -->
+<!-- SLIDE 2 — Anhang 1 · Marketing               -->
+<!-- ============================================ -->
+<section class="slide" data-slide="2">
+  <div class="slide-tag">Anhang 1 · Marketing &amp; Akquise</div>
+  <h1 class="slide-title">Vier Kanäle. <span class="accent">Kein Performance-Budget.</span></h1>
+  <div class="slide-content">
+    <div class="cards-4">
+      <div class="card">
+        <div class="icon">👩‍🏫</div>
+        <h3>Lehrer-Multiplikator</h3>
+        <p class="desc">Lehrer testen im Unterricht, teilen Texte mit Eltern als Hausaufgabe. Eltern werden zu B2C-Nutzern.</p>
+        <span class="scale-tag">linear</span>
+      </div>
+      <div class="card">
+        <div class="icon">🔍</div>
+        <h3>SEO via User-Stories</h3>
+        <p class="desc">Geteilte Geschichten werden indexiert. Mehr Nutzer → mehr Stories → mehr Sichtbarkeit.</p>
+        <span class="scale-tag">kompound</span>
+      </div>
+      <div class="card">
+        <div class="icon">📱</div>
+        <h3>Instagram</h3>
+        <p class="desc">Content für Eltern neurodivergenter Kinder. Aufklärung, Lesehacks, Aktivismus.</p>
+        <span class="scale-tag">linear</span>
+      </div>
+      <div class="card">
+        <div class="icon">💬</div>
+        <h3>Discord</h3>
+        <p class="desc">Community-Selbsthilfe, Workshops, Feedback-Loop. Eltern fühlen sich als Mitgestalter.</p>
+        <span class="scale-tag">Retention</span>
+      </div>
+    </div>
+    <div class="marketing-fazit">
+      <strong>Community-Led Growth</strong> — keine Performance-Ads, dafür vier strukturelle Wachstums-Mechaniken.
+    </div>
+  </div>
+  <div class="slide-footer">
+    <span class="brand"><span class="brand-dot"></span><span class="brand-name brand-name-lila">Lese</span>kumpel · Finanzierung</span>
+    <span class="counter">Anhang 1 / 9</span>
+  </div>
+</section>
+
+<!-- ============================================ -->
+<!-- SLIDE 3 — Anhang 2 · Markt & Validierung     -->
+<!-- ============================================ -->
+<section class="slide" data-slide="3">
+  <div class="slide-tag">Anhang 2 · Markt &amp; Validierung</div>
+  <h1 class="slide-title">Wir sind nicht im Konzept — <span class="accent">wir sind im Einsatz.</span></h1>
+  <div class="slide-content">
+    <div class="market-stats">
+      <div class="market-stat m1">
+        <div class="stat-num">4 Mrd €</div>
+        <div class="stat-label">EdTech-Umsatz</div>
+        <div class="stat-note">Deutschland · jährlich</div>
+      </div>
+      <div class="market-stat m2">
+        <div class="stat-num">3 Mio</div>
+        <div class="stat-label">Grundschüler:innen</div>
+        <div class="stat-note">Gesamt-Zielgruppe in Deutschland</div>
+      </div>
+      <div class="market-stat m3">
+        <div class="stat-num">1 Mio</div>
+        <div class="stat-label">mit Leseförderbedarf</div>
+        <div class="stat-note">unser unmittelbares Kernsegment</div>
+      </div>
+    </div>
+    <div class="validation-block">
+      <span class="val-tag">Validierung</span>
+      <span class="val-text">Lesekumpel ist <strong>aktiv im Einsatz in einer Schulwerkstatt</strong> — kein Pilot in Vorbereitung, sondern reales Lehrer- und Schüler-Feedback aus dem laufenden Unterricht.</span>
+    </div>
+  </div>
+  <div class="slide-footer">
+    <span class="brand"><span class="brand-dot"></span><span class="brand-name brand-name-lila">Lese</span>kumpel · Finanzierung</span>
+    <span class="counter">Anhang 2 / 9</span>
+  </div>
+</section>
+
+<!-- ============================================ -->
+<!-- SLIDE 4 — Anhang 3 · Einnahmen               -->
+<!-- ============================================ -->
+<section class="slide" data-slide="4">
+  <div class="slide-tag">Anhang 3 · Einnahmen</div>
+  <h1 class="slide-title">Wer zahlt was — <span class="accent">und warum.</span></h1>
+  <div class="slide-content">
+    <div class="pricing-row">
+      <div class="pricing-block b2c">
+        <div class="label">B2C · Eltern</div>
+        <h3>Premium-Abo</h3>
+        <div class="pricing-rows">
+          <div class="pricing-row-item">
+            <div class="name">Free<small>Lesen + Empfehlungen</small></div>
+            <div class="price price-free">0 €</div>
+          </div>
+          <div class="pricing-row-item">
+            <div class="name">Premium<small>30 Story-Credits · bis zu 4 Kinderkonten</small></div>
+            <div class="price">7,99 €</div>
+          </div>
+        </div>
+      </div>
+      <div class="pricing-block b2b">
+        <div class="label">B2B · Lehrer &amp; Schulen</div>
+        <h3>Lizenztarife</h3>
+        <div class="pricing-rows">
+          <div class="pricing-row-item">
+            <div class="name">Lehrer-Tarif<small>30 Schüler-Subaccounts + Tracking + Versand</small></div>
+            <div class="price">29,99 €</div>
+          </div>
+          <div class="pricing-row-item">
+            <div class="name">Schullizenz<small>5 Lehrer + 150 Schüler</small></div>
+            <div class="price">99 €</div>
+          </div>
+        </div>
+      </div>
+      <div class="pricing-block coop">
+        <div class="label">Optionale Streams</div>
+        <h3>Partnermodelle</h3>
+        <div class="coop-list">
+          <div class="coop-item"><span class="coop-bullet">›</span><span><strong>Verlags-Co-Branding</strong> mit Stil-Imitation</span></div>
+          <div class="coop-item"><span class="coop-bullet">›</span><span><strong>Affiliate</strong> für Lehrmittel &amp; Bücher</span></div>
+          <div class="coop-item"><span class="coop-bullet">›</span><span><strong>Print-on-Demand</strong> — eigene Geschichte als Buch</span></div>
+          <div class="coop-item"><span class="coop-bullet">›</span><span><strong>Creator-Plan</strong> für Power-User</span></div>
+        </div>
+        <div class="phase-badge">Validierung in Phase 3</div>
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer">
+    <span class="brand"><span class="brand-dot"></span><span class="brand-name brand-name-lila">Lese</span>kumpel · Finanzierung</span>
+    <span class="counter">Anhang 3 / 9</span>
+  </div>
+</section>
+
+<!-- ============================================ -->
+<!-- SLIDE 5 — Anhang 4 · Kosten                  -->
+<!-- ============================================ -->
+<section class="slide" data-slide="5">
+  <div class="slide-tag">Anhang 4 · Kosten</div>
+  <h1 class="slide-title">Lean starten. <span class="accent">Skalieren wenn validiert.</span></h1>
+  <div class="slide-subtitle">Laufende Kosten pro Monat — nach Phase.</div>
+  <div class="slide-content">
+    <div class="cost-pyramid">
+      <div class="cost-step s1">
+        <div class="step-number">1</div>
+        <div class="step-body">
+          <h3>Konzeption</h3>
+          <p>Bootstrap, Free-Tier-Services, Eigenmittel</p>
+        </div>
+        <div class="step-cost"><span class="amount">~170 €</span><span class="period">pro Monat</span></div>
+      </div>
+      <div class="cost-step s2">
+        <div class="step-number">2</div>
+        <div class="step-body">
+          <h3>Validierung</h3>
+          <p>GbR-Gründung, ≤ 100 zahlende Nutzer, erste B2B-Pilot-Verträge</p>
+        </div>
+        <div class="step-cost"><span class="amount">~700 €</span><span class="period">pro Monat</span></div>
+      </div>
+      <div class="cost-step s3">
+        <div class="step-number">3</div>
+        <div class="step-body">
+          <h3>Skalierung</h3>
+          <p>UG/GmbH, 1.000 Premium + 10.000 Free · 3 Gründer:innen mit Teilzeit-Entnahme</p>
+        </div>
+        <div class="step-cost"><span class="amount">~9.000 €</span><span class="period">pro Monat</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer">
+    <span class="brand"><span class="brand-dot"></span><span class="brand-name brand-name-lila">Lese</span>kumpel · Finanzierung</span>
+    <span class="counter">Anhang 4 / 9</span>
+  </div>
+</section>
+
+<!-- ============================================ -->
+<!-- SLIDE 6 — Anhang 5 · Kosten im Detail        -->
+<!-- ============================================ -->
+<section class="slide" data-slide="6">
+  <div class="slide-tag">Anhang 5 · Kosten im Detail</div>
+  <h1 class="slide-title">Wo das Geld <span class="accent">hinfließt.</span></h1>
+  <div class="slide-content">
+    <div class="cost-detail">
+      <div class="cost-detail-row header">
+        <div class="col-cat">Kategorie</div>
+        <div class="col-phase">Konzeption</div>
+        <div class="col-phase">Validierung</div>
+        <div class="col-phase">Skalierung</div>
+      </div>
+      <div class="cost-detail-row">
+        <div class="col-cat">Infrastruktur · Hosting · DB · CDN</div>
+        <div class="col-phase">25 €</div>
+        <div class="col-phase">~75 €</div>
+        <div class="col-phase">~400 €</div>
+      </div>
+      <div class="cost-detail-row">
+        <div class="col-cat">LLM-Token + Bildgenerierung</div>
+        <div class="col-phase">25 €</div>
+        <div class="col-phase">~200 €</div>
+        <div class="col-phase">~1.700 €</div>
+      </div>
+      <div class="cost-detail-row">
+        <div class="col-cat">Recommendation Engine (Embeddings)</div>
+        <div class="col-phase">–</div>
+        <div class="col-phase">–</div>
+        <div class="col-phase">~50 €</div>
+      </div>
+      <div class="cost-detail-row">
+        <div class="col-cat">Rechtliches · Buchhaltung · Versicherung</div>
+        <div class="col-phase">~20 €</div>
+        <div class="col-phase">~145 €</div>
+        <div class="col-phase">~500 €</div>
+      </div>
+      <div class="cost-detail-row">
+        <div class="col-cat">Dev-Tools · Subscriptions (Claude Max, Canva)</div>
+        <div class="col-phase">~100 €</div>
+        <div class="col-phase">~120 €</div>
+        <div class="col-phase">~150 €</div>
+      </div>
+      <div class="cost-detail-row">
+        <div class="col-cat">Merch &amp; Messe-Materialien (Hoodies, Aufkleber, Banner)</div>
+        <div class="col-phase">–</div>
+        <div class="col-phase">~100 €</div>
+        <div class="col-phase">~500 €</div>
+      </div>
+      <div class="cost-detail-row">
+        <div class="col-cat">Personal (3 Gründer:innen)</div>
+        <div class="col-phase">Eigenleistung</div>
+        <div class="col-phase">Eigenleistung</div>
+        <div class="col-phase">~5.000 € Teilzeit</div>
+      </div>
+      <div class="cost-detail-row total">
+        <div class="col-cat">Laufende Kosten pro Monat</div>
+        <div class="col-phase">~170 €</div>
+        <div class="col-phase">~700 €</div>
+        <div class="col-phase">~9.000 €</div>
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer">
+    <span class="brand"><span class="brand-dot"></span><span class="brand-name brand-name-lila">Lese</span>kumpel · Finanzierung</span>
+    <span class="counter">Anhang 5 / 9</span>
+  </div>
+</section>
+
+<!-- ============================================ -->
+<!-- SLIDE 7 — Anhang 6 · Margenhebel             -->
+<!-- ============================================ -->
+<section class="slide" data-slide="7">
+  <div class="slide-tag">Anhang 6 · Margenhebel</div>
+  <h1 class="slide-title">Drei Hebel auf <span class="accent">42 % Marge.</span></h1>
+  <div class="slide-content">
+    <div class="hebel-grid">
+      <div class="hebel-card h1">
+        <div class="hebel-num">Hebel 1</div>
+        <h3>Empfehlungs-Cache</h3>
+        <p class="hebel-desc">Mit wachsender Bibliothek finden Nutzer:innen passende Stories statt neu zu generieren. Sofort lesbar, höhere Qualität, kein Token-Verbrauch.</p>
+        <div class="hebel-effect"><strong>−30 % Token-Last</strong>Embedding-Suche kostet nur ~50 €/Monat</div>
+      </div>
+      <div class="hebel-card h2">
+        <div class="hebel-num">Hebel 2</div>
+        <h3>Günstigere Bildmodelle</h3>
+        <p class="hebel-desc">FLUX schnell, DeepSeek oder Qwen statt teurer Premium-Modelle. Bildqualität für Kinder-Illustrationen reicht — Stil-Konsistenz zählt mehr als Fotorealismus.</p>
+        <div class="hebel-effect"><strong>−60 bis −85 % Bildkosten</strong>0,037 € → 0,005–0,015 € pro Bild</div>
+      </div>
+      <div class="hebel-card h3">
+        <div class="hebel-num">Hebel 3</div>
+        <h3>Cap-Gewichtung</h3>
+        <p class="hebel-desc">Komplexe Personas verbrauchen mehr Story-Credits. Finja Feder = 2 Credits, Pip Punkt = 1. Faires Modell, stabilisiert Marge gegen Power-User-Spitzen.</p>
+        <div class="hebel-effect"><strong>Marge-Stabilisierung</strong>verhindert Worst-Case-Ausreißer</div>
+      </div>
+    </div>
+    <div class="hebel-summary">
+      Story-Kosten von <strong>0,11 €</strong> auf <strong>0,06 €</strong> · Operative Marge Phase 3 von <strong>28 %</strong> auf <strong>42 %</strong>
+    </div>
+  </div>
+  <div class="slide-footer">
+    <span class="brand"><span class="brand-dot"></span><span class="brand-name brand-name-lila">Lese</span>kumpel · Finanzierung</span>
+    <span class="counter">Anhang 6 / 9</span>
+  </div>
+</section>
+
+<!-- ============================================ -->
+<!-- SLIDE 8 — Anhang 7 · Break-Even-Rechnung     -->
+<!-- ============================================ -->
+<section class="slide" data-slide="8">
+  <div class="slide-tag">Anhang 7 · Break-Even-Rechnung</div>
+  <h1 class="slide-title">Die Rechnung <span class="accent">in drei Schritten.</span></h1>
+  <div class="slide-content">
+    <div class="be-grid">
+      <div class="be-block fix">
+        <h3>Fixkosten pro Monat</h3>
+        <div class="be-line"><span>Infrastruktur, Hosting, DB</span><span class="num">~75 €</span></div>
+        <div class="be-line"><span>Dev-Tools, Subscriptions</span><span class="num">~120 €</span></div>
+        <div class="be-line"><span>Recht, Buchhaltung, Versicherung</span><span class="num">~145 €</span></div>
+        <div class="be-line"><span>Marketing-Sockel</span><span class="num">~40 €</span></div>
+        <div class="be-line sum"><span>Summe</span><span class="num">~380 €</span></div>
+      </div>
+      <div class="be-block var">
+        <h3>Variable Kosten pro Premium-Nutzer:in</h3>
+        <div class="be-line"><span>30 Stories Cap × 0,11 €</span><span class="num">3,30 €</span></div>
+        <div class="be-line"><span>Backend (Auth, Hosting-Anteil)</span><span class="num">0,10 €</span></div>
+        <div class="be-line"><span>+ 9 Free-Nutzer-Anteil (1:9-Kohorte)</span><span class="num">0,90 €</span></div>
+        <div class="be-line sum"><span>Effektive Kosten je Premium</span><span class="num">4,30 €</span></div>
+      </div>
+    </div>
+    <div class="be-chart-wrap">
+      <svg class="be-chart" viewBox="0 0 800 350" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Break-Even-Diagramm: Einnahmen kreuzen Kosten bei 105 Premium-Nutzern">
+
+        <!-- Horizontale Gridlines -->
+        <g stroke="#D9D4CC" stroke-width="1" stroke-dasharray="3,4">
+          <line x1="85" y1="30" x2="755" y2="30"/>
+          <line x1="85" y1="97.5" x2="755" y2="97.5"/>
+          <line x1="85" y1="165" x2="755" y2="165"/>
+          <line x1="85" y1="232.5" x2="755" y2="232.5"/>
+        </g>
+
+        <!-- X-Achse + Y-Achse -->
+        <line x1="85" y1="30" x2="85" y2="300" stroke="#2B3140" stroke-width="2"/>
+        <line x1="85" y1="300" x2="755" y2="300" stroke="#2B3140" stroke-width="2"/>
+
+        <!-- Y-Achsen-Beschriftung -->
+        <g font-family="Quicksand, sans-serif" font-size="12" fill="#2B3140" text-anchor="end" font-weight="500">
+          <text x="75" y="34">2.000 €</text>
+          <text x="75" y="101">1.500 €</text>
+          <text x="75" y="169">1.000 €</text>
+          <text x="75" y="236">500 €</text>
+          <text x="75" y="304">0 €</text>
+        </g>
+
+        <!-- X-Achsen-Beschriftung -->
+        <g font-family="Quicksand, sans-serif" font-size="12" fill="#2B3140" text-anchor="middle" font-weight="500">
+          <text x="85" y="318">0</text>
+          <text x="219" y="318">50</text>
+          <text x="353" y="318">100</text>
+          <text x="487" y="318">150</text>
+          <text x="621" y="318">200</text>
+          <text x="755" y="318">250</text>
+        </g>
+
+        <!-- Achsen-Titel -->
+        <text x="420" y="342" font-family="Fredoka, sans-serif" font-size="13" fill="#2B3140" text-anchor="middle" font-weight="600">
+          Premium-Nutzer:innen
+        </text>
+        <text transform="rotate(-90, 22, 165)" x="22" y="165" font-family="Fredoka, sans-serif" font-size="13" fill="#2B3140" text-anchor="middle" font-weight="600">
+          € pro Monat
+        </text>
+
+        <!-- Einnahmen-Linie (Mint) -->
+        <line x1="85" y1="300" x2="755" y2="30" stroke="#2FB8A6" stroke-width="3.5" stroke-linecap="round"/>
+        <text x="755" y="22" font-family="Fredoka, sans-serif" font-size="13" font-weight="700" fill="#2FB8A6" text-anchor="end">Einnahmen · 7,99 € × P</text>
+
+        <!-- Kosten-Linie (Coral) -->
+        <line x1="85" y1="248.7" x2="755" y2="103.6" stroke="#F97352" stroke-width="3.5" stroke-linecap="round"/>
+        <text x="755" y="96" font-family="Fredoka, sans-serif" font-size="13" font-weight="700" fill="#F97352" text-anchor="end">Kosten · 380 € + 4,30 € × P</text>
+
+        <!-- Break-Even-Markierung: gestrichelte Linie nach unten -->
+        <line x1="366" y1="187" x2="366" y2="300" stroke="#7D6AE6" stroke-width="2" stroke-dasharray="5,5" opacity="0.7"/>
+
+        <!-- Break-Even-Punkt -->
+        <circle cx="366" cy="187" r="9" fill="#FFD95A" stroke="#2B3140" stroke-width="2.5"/>
+
+        <!-- Break-Even-Label -->
+        <g transform="translate(382, 152)">
+          <rect x="0" y="0" width="200" height="56" fill="#FFD95A" rx="8" stroke="#2B3140" stroke-width="1.5"/>
+          <text x="100" y="22" font-family="Fredoka, sans-serif" font-size="14" font-weight="700" fill="#2B3140" text-anchor="middle">Break-Even</text>
+          <text x="100" y="42" font-family="Quicksand, sans-serif" font-size="13" fill="#2B3140" text-anchor="middle" font-weight="500">≈ 105 Premium · 839 €/Mon.</text>
+        </g>
+      </svg>
+      <div class="be-formula-mini">
+        Fixkosten 380 € + variable 4,30 € × P = Einnahmen 7,99 € × P&nbsp;&nbsp;→&nbsp;&nbsp;<strong>P ≈ 105 Premium-Nutzer:innen</strong>
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer">
+    <span class="brand"><span class="brand-dot"></span><span class="brand-name brand-name-lila">Lese</span>kumpel · Finanzierung</span>
+    <span class="counter">Anhang 7 / 9</span>
+  </div>
+</section>
+
+<!-- ============================================ -->
+<!-- SLIDE 9 — Anhang 8 · Break-Even & Skalierung -->
+<!-- ============================================ -->
+<section class="slide" data-slide="9">
+  <div class="slide-tag">Anhang 8 · Break-Even &amp; Skalierung</div>
+  <h1 class="slide-title">Wann wir uns <span class="accent">selbst tragen.</span></h1>
+  <div class="slide-content">
+    <div class="thresholds">
+      <div class="threshold t1">
+        <div class="big-number">~105</div>
+        <div class="unit">Premium-Nutzer</div>
+        <div class="label">Operativ kostendeckend<br><small>Tools · Hosting · Token · Bilder</small></div>
+      </div>
+      <div class="threshold t2">
+        <div class="big-number">~1.300</div>
+        <div class="unit">Premium-Nutzer</div>
+        <div class="label">Teilzeit-Entnahme<br><small>3 Gründer:innen leben mit vom Geschäft</small></div>
+      </div>
+      <div class="threshold t3">
+        <div class="big-number">~5.000</div>
+        <div class="unit">Premium-Nutzer</div>
+        <div class="label">Vollzeit-tragfähig<br><small>Team-Aufbau aus eigener Kraft</small></div>
+      </div>
+    </div>
+    <div class="timing-line">
+      <div class="timing-title">Realistischer Zeitpfad — basierend auf aktuellem Tempo</div>
+      <div class="timing-row">
+        <div class="timing-pt t1"><span class="when">Monat 12</span><span class="what">~105 Premium-Nutzer:innen</span></div>
+        <div class="timing-pt t2"><span class="when">Monat 24</span><span class="what">~1.300 Premium-Nutzer:innen</span></div>
+        <div class="timing-pt t3"><span class="when">Monat 36+</span><span class="what">~5.000 Premium-Nutzer:innen</span></div>
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer">
+    <span class="brand"><span class="brand-dot"></span><span class="brand-name brand-name-lila">Lese</span>kumpel · Finanzierung</span>
+    <span class="counter">Anhang 8 / 9</span>
+  </div>
+</section>
+
+<!-- ============================================ -->
+<!-- SLIDE 10 — Anhang 9 · Risiken & Gegenmaßnahmen -->
+<!-- ============================================ -->
+<section class="slide" data-slide="10">
+  <div class="slide-tag">Anhang 9 · Risiken &amp; Gegenmaßnahmen</div>
+  <h1 class="slide-title">Was schiefgehen kann — <span class="accent">und wie wir reagieren.</span></h1>
+  <div class="slide-content">
+    <div class="risk-grid">
+      <div class="risk-card">
+        <div class="risk-icon">🔁</div>
+        <div>
+          <h3>Retention</h3>
+          <p class="risk-desc">Wenn Geschichten geteilt und frei lesbar sind, fehlt Premium-Anreiz. Warum sollten Nutzer:innen zahlen?</p>
+          <div class="risk-plan"><strong>Gegenmaßnahme</strong>Belohnungssystem · Jahres-Rabatt · neue Formate · Special Features (Texte bearbeiten) · Community-Bindung über Discord</div>
+        </div>
+      </div>
+      <div class="risk-card">
+        <div class="risk-icon">⚖️</div>
+        <div>
+          <h3>DSA / DMA / AI Act</h3>
+          <p class="risk-desc">Regelwerk ist neu und komplex — selbst Experten verstehen nicht alle Anforderungen.</p>
+          <div class="risk-plan"><strong>Gegenmaßnahme</strong>Tracking minimieren · starke Governance · AI-Act-Risikostufen aktiv vermeiden · Datenschutz by design</div>
+        </div>
+      </div>
+      <div class="risk-card">
+        <div class="risk-icon">🪙</div>
+        <div>
+          <h3>Token- &amp; KI-Markt</h3>
+          <p class="risk-desc">Unklar, wie sich Inferenz-Preise entwickeln. Bricht das Strom­netz? Wird KI teurer oder günstiger?</p>
+          <div class="risk-plan"><strong>Gegenmaßnahme</strong>Modell-Agnostik · drei Optimierungs­hebel als Reserve · Bibliothek-Cache reduziert Abhängigkeit mit jedem Monat</div>
+        </div>
+      </div>
+      <div class="risk-card">
+        <div class="risk-icon">📋</div>
+        <div>
+          <h3>Kopierbarkeit</h3>
+          <p class="risk-desc">Angreifbar durch Konzerne — aber <strong>Neuroinklusion by design</strong> lässt sich nicht ohne gelebte Erfahrung nachbauen.</p>
+          <div class="risk-plan"><strong>Gegenmaßnahme</strong>Persönliche Betroffenheit im Gründerteam · Geschwindigkeit · Community-Lock-in · Stil-Engine als IP</div>
+        </div>
+      </div>
+      <div class="risk-card">
+        <div class="risk-icon">©️</div>
+        <div>
+          <h3>IP-Missbrauch</h3>
+          <p class="risk-desc">Stil-Imitation und User-Generierung können Verlage triggern (z.B. Disney-Abmahnung).</p>
+          <div class="risk-plan"><strong>Gegenmaßnahme</strong>Content-Governance · klare Stil-Policies · Verlags-Kooperationen statt -Konflikte</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer">
+    <span class="brand"><span class="brand-dot"></span><span class="brand-name brand-name-lila">Lese</span>kumpel · Finanzierung</span>
+    <span class="counter">Anhang 9 / 9</span>
+  </div>
+</section>
+
+<!-- ============================================ -->
+<!-- BACKUP B1 — Annahmen & Sensitivitäten        -->
+<!-- ============================================ -->
+<section class="slide" data-slide="11">
+  <div class="slide-tag">Backup · für Q&amp;A</div>
+  <h1 class="slide-title">Womit wir rechnen — <span class="accent">unsere Annahmen.</span></h1>
+  <div class="slide-content">
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Annahme</th>
+          <th>Wert</th>
+          <th>Sensitivität / Quelle</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr><td>Premium-Preis</td><td class="num">7,99 €/Mon.</td><td>marktüblich, Antolin-Niveau, intern validiert</td></tr>
+        <tr><td>Conversion Free → Premium</td><td class="num">10 %</td><td>EdTech-Mittel; 8 % wäre kritisch, 12 % exzellent</td></tr>
+        <tr><td>Story-Cap Premium</td><td class="num">30 Credits</td><td>Finja-Stories kosten 2 Credits</td></tr>
+        <tr><td>Token-Kost pro Story (Baseline)</td><td class="num">0,110 €</td><td>inkl. 2 Bilder à 0,037 € · gemessen</td></tr>
+        <tr><td>Token-Kost mit Optimierung</td><td class="num">0,060 €</td><td>Empfehlungs-Cache + FLUX-Bildmodell</td></tr>
+        <tr><td>Stories pro aktivem Nutzer / Monat</td><td class="num">~10</td><td>Schätzung — wird in Phase 2 validiert</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="slide-footer">
+    <span class="brand"><span class="brand-dot"></span><span class="brand-name brand-name-lila">Lese</span>kumpel · Finanzierung</span>
+    <span class="counter">Backup B1</span>
+  </div>
+</section>
+
+</div>
+
+<!-- Navigation -->
+<div class="nav-hint">← →  ·  Leertaste  ·  Home / End</div>
+<div class="nav-buttons">
+  <button type="button" class="nav-btn" id="prevBtn" aria-label="Vorherige Folie">‹</button>
+  <button type="button" class="nav-btn" id="nextBtn" aria-label="Nächste Folie">›</button>
+</div>
+
+<script>
+(function() {
+  const slides = document.querySelectorAll('.slide');
+  const total = slides.length;
+  let current = 0;
+
+  const prevBtn = document.getElementById('prevBtn');
+  const nextBtn = document.getElementById('nextBtn');
+
+  function show(idx) {
+    if (idx < 0 || idx >= total) return;
+    slides[current].classList.remove('active');
+    current = idx;
+    slides[current].classList.add('active');
+    updateButtons();
+    // URL hash so deep-linking and refresh stay on the same slide
+    if (history.replaceState) history.replaceState(null, '', '#' + current);
+  }
+
+  function updateButtons() {
+    prevBtn.disabled = current === 0;
+    nextBtn.disabled = current === total - 1;
+  }
+
+  function next() { show(Math.min(current + 1, total - 1)); }
+  function prev() { show(Math.max(current - 1, 0)); }
+
+  document.addEventListener('keydown', function(e) {
+    switch (e.key) {
+      case 'ArrowRight':
+      case 'PageDown':
+      case ' ':
+        e.preventDefault(); next(); break;
+      case 'ArrowLeft':
+      case 'PageUp':
+        e.preventDefault(); prev(); break;
+      case 'Home':
+        e.preventDefault(); show(0); break;
+      case 'End':
+        e.preventDefault(); show(total - 1); break;
+    }
+  });
+
+  prevBtn.addEventListener('click', prev);
+  nextBtn.addEventListener('click', next);
+
+  // Touch swipe support
+  let touchStartX = 0;
+  document.addEventListener('touchstart', e => { touchStartX = e.changedTouches[0].screenX; }, {passive: true});
+  document.addEventListener('touchend', e => {
+    const dx = e.changedTouches[0].screenX - touchStartX;
+    if (Math.abs(dx) > 60) { dx < 0 ? next() : prev(); }
+  }, {passive: true});
+
+  // Deep-link via hash
+  const initial = parseInt(location.hash.slice(1), 10);
+  if (!isNaN(initial) && initial >= 0 && initial < total) {
+    slides[0].classList.remove('active');
+    slides[initial].classList.add('active');
+    current = initial;
+  }
+  updateButtons();
+})();
+</script>
+
+</body>
+</html>
