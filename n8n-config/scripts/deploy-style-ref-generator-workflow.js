@@ -132,14 +132,22 @@ const nodes = [
       sendBody: true,
       specifyBody: 'json',
       jsonBody: '={\n  "model": "gpt-image-2",\n  "prompt": {{ JSON.stringify($json.prompt) }},\n  "size": "1024x1024",\n  "quality": "low",\n  "moderation": "low",\n  "n": 1\n}',
-      options: { timeout: 120000 }
+      options: { timeout: 120000 },
+      // Rate-Limit: gpt-image-2 erlaubt max 5 input-images/min.
+      // batchSize=1 + batchInterval=13000ms => 1 Request alle 13s, sicher unter 5/min.
+      batching: {
+        batch: {
+          batchSize: 1,
+          batchInterval: 13000
+        }
+      }
     },
     credentials: {
       openAiApi: { id: OPENAI_CRED_ID, name: OPENAI_CRED_NAME }
     },
     retryOnFail: true,
-    maxTries: 3,
-    waitBetweenTries: 3000
+    maxTries: 5,
+    waitBetweenTries: 15000
   },
   {
     id: 'extract',
