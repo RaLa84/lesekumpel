@@ -101,6 +101,14 @@ if (!b64) {
 
 return { json: { filename: meta.filename, key: meta.key, b64 } };`;
 
+// Topologie (sequentielle Schleife mit 14s Wait pro Iteration):
+//
+//   Manuell starten -> Stile vorbereiten -> Loop -> [main:done?]
+//                                            |
+//                                          [main:next] -> Bild generieren -> b64 extrahieren -> GitHub commit -> Wait 14s -> Loop
+//
+// Das garantiert exakt 1 OpenAI-Aufruf alle ~14s = max ~4.3 Aufrufe/min,
+// sicher unter dem Rate-Limit von 5/min fuer gpt-image-2.
 const nodes = [
   {
     id: 'trigger',
@@ -119,11 +127,19 @@ const nodes = [
     parameters: { jsCode: itemsPrepCode }
   },
   {
+    id: 'loop',
+    name: 'Loop pro Stil',
+    type: 'n8n-nodes-base.splitInBatches',
+    typeVersion: 3,
+    position: [800, 320],
+    parameters: { batchSize: 1, options: {} }
+  },
+  {
     id: 'image-gen',
     name: 'Bild generieren',
     type: 'n8n-nodes-base.httpRequest',
     typeVersion: 4.2,
-    position: [800, 320],
+    position: [1040, 320],
     parameters: {
       method: 'POST',
       url: 'https://api.openai.com/v1/images/generations',
@@ -132,15 +148,7 @@ const nodes = [
       sendBody: true,
       specifyBody: 'json',
       jsonBody: '={\n  "model": "gpt-image-2",\n  "prompt": {{ JSON.stringify($json.prompt) }},\n  "size": "1024x1024",\n  "quality": "low",\n  "moderation": "low",\n  "n": 1\n}',
-      options: { timeout: 120000 },
-      // Rate-Limit: gpt-image-2 erlaubt max 5 input-images/min.
-      // batchSize=1 + batchInterval=13000ms => 1 Request alle 13s, sicher unter 5/min.
-      batching: {
-        batch: {
-          batchSize: 1,
-          batchInterval: 13000
-        }
-      }
+      options: { timeout: 120000 }
     },
     credentials: {
       openAiApi: { id: OPENAI_CRED_ID, name: OPENAI_CRED_NAME }
@@ -148,8 +156,6 @@ const nodes = [
     retryOnFail: true,
     maxTries: 5,
     waitBetweenTries: 15000,
-    // Bei Safety-Block oder anderem Fehler: nur dieses Item ueberspringen,
-    // alle anderen 7 sollen trotzdem committed werden.
     onError: 'continueRegularOutput'
   },
   {
@@ -157,7 +163,7 @@ const nodes = [
     name: 'b64 extrahieren',
     type: 'n8n-nodes-base.code',
     typeVersion: 2,
-    position: [1040, 320],
+    position: [1280, 320],
     parameters: { jsCode: extractCode }
   },
   {
@@ -165,7 +171,7 @@ const nodes = [
     name: 'GitHub: Stilreferenz committen',
     type: 'n8n-nodes-base.github',
     typeVersion: 1.1,
-    position: [1280, 320],
+    position: [1520, 320],
     parameters: {
       authentication: 'oAuth2',
       resource: 'file',
@@ -180,15 +186,35 @@ const nodes = [
     },
     retryOnFail: true,
     maxTries: 3,
-    waitBetweenTries: 3000
+    waitBetweenTries: 3000,
+    onError: 'continueRegularOutput'
+  },
+  {
+    id: 'wait',
+    name: 'Pause 14s',
+    type: 'n8n-nodes-base.wait',
+    typeVersion: 1.1,
+    position: [1760, 320],
+    parameters: { amount: 14, unit: 'seconds' },
+    webhookId: 'style-ref-wait-' + Date.now()
   }
 ];
 
+// SplitInBatches hat 2 Output-Slots:
+//   main[0] = "done" (alle Items durch, einmaliger Output am Ende)
+//   main[1] = "loop"  (jedes naechste Item)
+// Wir verbinden main[1] -> Bild generieren -> ... -> Wait -> zurueck zu Loop
 const connections = {
   'Manuell starten':                 { main: [[{ node: 'Stile vorbereiten', type: 'main', index: 0 }]] },
-  'Stile vorbereiten':               { main: [[{ node: 'Bild generieren',   type: 'main', index: 0 }]] },
-  'Bild generieren':                 { main: [[{ node: 'b64 extrahieren',   type: 'main', index: 0 }]] },
-  'b64 extrahieren':                 { main: [[{ node: 'GitHub: Stilreferenz committen', type: 'main', index: 0 }]] }
+  'Stile vorbereiten':               { main: [[{ node: 'Loop pro Stil',     type: 'main', index: 0 }]] },
+  'Loop pro Stil':                   { main: [
+                                         [],  // main[0] = done (kein Folge-Knoten)
+                                         [{ node: 'Bild generieren', type: 'main', index: 0 }]  // main[1] = loop
+                                       ] },
+  'Bild generieren':                 { main: [[{ node: 'b64 extrahieren', type: 'main', index: 0 }]] },
+  'b64 extrahieren':                 { main: [[{ node: 'GitHub: Stilreferenz committen', type: 'main', index: 0 }]] },
+  'GitHub: Stilreferenz committen':  { main: [[{ node: 'Pause 14s', type: 'main', index: 0 }]] },
+  'Pause 14s':                       { main: [[{ node: 'Loop pro Stil', type: 'main', index: 0 }]] }
 };
 
 const workflowBody = {
