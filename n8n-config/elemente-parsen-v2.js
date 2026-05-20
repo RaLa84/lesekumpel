@@ -22,6 +22,19 @@ function indent2(s) {
   return clean(s).split('\n').map(l => '    ' + l).join('\n');
 }
 
+function filterVisualOnlyDF(arr) {
+  // Filtert Eintraege heraus, die Verhalten/Biologie statt visueller Merkmale beschreiben.
+  // Verhaltens-Eintraege ("One eye remains open while sleeping") werden vom Bildmodell
+  // visuell umgesetzt und produzieren Uncanny-Valley-Artefakte.
+  const BEHAVIOR_RE = /\b(while|when|during|whenever|always|sometimes|remains?|stays?|becomes?|sleeps?|sleeping|asleep|dreams?|dreaming|swims?|swimming|flies|flying|flew|walking|running|jumping|jumps?|dancing|dances?|sings?|singing|breathes?|breathing|breath|observes?|observing|watches?|watching|listens?|listening|hunts?|hunting|hides?|hiding|eats?|eating|drinks?|drinking|rests?|resting|awake|alert|active|asleep|half\s*of\s*its\s*brain|brain\s*rests)\b/i;
+  return (arr || []).filter(s => {
+    const t = String(s || '').trim();
+    if (!t) return false;
+    if (BEHAVIOR_RE.test(t)) return false;
+    return true;
+  });
+}
+
 function buildHumanBlock(c, idx) {
   const lines = [];
   const name  = clean(c.name) || ('Character #' + idx);
@@ -52,7 +65,7 @@ function buildHumanBlock(c, idx) {
   lines.push(`    FOOTWEAR:    ${footwear}`);
   lines.push(`    ACCESSORIES: ${accessories}`);
 
-  const dfArr = Array.isArray(c.distinguishingFeatures) ? c.distinguishingFeatures.filter(has) : [];
+  const dfArr = filterVisualOnlyDF(Array.isArray(c.distinguishingFeatures) ? c.distinguishingFeatures.filter(has) : []);
   if (dfArr.length > 0) lines.push(`  DISTINGUISHING: ${dfArr.join('; ')}`);
   return lines.join('\n');
 }
@@ -68,7 +81,7 @@ function buildAnimalBlock(c, idx) {
   }
   if (c.eyes && has(c.eyes.color)) lines.push(`  EYES:        ${clean(c.eyes.color)}`);
   if (c.body && has(c.body.build)) lines.push(`  BODY:        ${clean(c.body.build)}`);
-  const dfArr = Array.isArray(c.distinguishingFeatures) ? c.distinguishingFeatures.filter(has) : [];
+  const dfArr = filterVisualOnlyDF(Array.isArray(c.distinguishingFeatures) ? c.distinguishingFeatures.filter(has) : []);
   if (dfArr.length > 0) lines.push(`  DISTINGUISHING: ${dfArr.join('; ')}`);
   return lines.join('\n');
 }
@@ -92,7 +105,7 @@ function buildCreatureBlock(c, idx) {
     if (has(c.outfit.top))    lines.push(`    TOP:    ${clean(c.outfit.top)}`);
     if (has(c.outfit.bottom)) lines.push(`    BOTTOM: ${clean(c.outfit.bottom)}`);
   }
-  const dfArr = Array.isArray(c.distinguishingFeatures) ? c.distinguishingFeatures.filter(has) : [];
+  const dfArr = filterVisualOnlyDF(Array.isArray(c.distinguishingFeatures) ? c.distinguishingFeatures.filter(has) : []);
   if (dfArr.length > 0) lines.push(`  DISTINGUISHING: ${dfArr.join('; ')}`);
   return lines.join('\n');
 }
@@ -129,9 +142,9 @@ function buildPropBlock(p, idx) {
 function buildSettingBlock(s) {
   if (!s) return '';
   if (typeof s === 'string') {
-    return `SETTING ANCHOR (identical place/light across scenes):\n  ${clean(s)}`;
+    return `SETTING ANCHOR (global atmosphere stays constant; micro-location varies per scene per 'Setting focus'):\n  ${clean(s)}`;
   }
-  const lines = ['SETTING ANCHOR (identical place/light across scenes):'];
+  const lines = ['SETTING ANCHOR (global atmosphere stays constant; micro-location varies per scene per 'Setting focus'):'];
   if (has(s.location))       lines.push(`  LOCATION:        ${clean(s.location)}`);
   if (has(s.timeOfDay))      lines.push(`  TIME-OF-DAY:     ${clean(s.timeOfDay)}`);
   if (has(s.weather))        lines.push(`  WEATHER:         ${clean(s.weather)}`);
