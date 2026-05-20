@@ -4,16 +4,18 @@ if (!prev.imageCount || prev.imageCount === 0) {
   return [{ json: { ...prev, skipImages: true } }];
 }
 
-// Style-Reference-URL aus Bildstil ableiten (unverändert)
+// Style-Reference-URL aus Bildstil ableiten.
+// WICHTIG: charakterfreie neutral/-Vorschauen — keine Menschen, Tiere oder Figuren auf den Stilreferenzen,
+// damit Gemini keine Charakter-Eigenschaften aus der Referenz uebernimmt.
 const STYLE_REFS = {
-  'Aquarell':  'bilder/bildstil-vorschau/aquarell.webp',
-  'Cartoon':   'bilder/bildstil-vorschau/cartoon.webp',
-  'Buntstift': 'bilder/bildstil-vorschau/buntstift.webp',
-  'Pixel-Art': 'bilder/bildstil-vorschau/pixel-art.webp',
-  'Anime':     'bilder/bildstil-vorschau/anime.webp',
-  'Traumwelt': 'bilder/bildstil-vorschau/traumwelt.webp',
-  'Knete':     'bilder/bildstil-vorschau/knete.webp',
-  'Voxel':     'bilder/bildstil-vorschau/voxel.webp'
+  'Aquarell':  'bilder/bildstil-vorschau/neutral/aquarell.png',
+  'Cartoon':   'bilder/bildstil-vorschau/neutral/cartoon.png',
+  'Buntstift': 'bilder/bildstil-vorschau/neutral/buntstift.png',
+  'Pixel-Art': 'bilder/bildstil-vorschau/neutral/pixel-art.png',
+  'Anime':     'bilder/bildstil-vorschau/neutral/anime.png',
+  'Traumwelt': 'bilder/bildstil-vorschau/neutral/traumwelt.png',
+  'Knete':     'bilder/bildstil-vorschau/neutral/knete.png',
+  'Voxel':     'bilder/bildstil-vorschau/neutral/voxel.png'
 };
 const bildstilFromWebhook = $('Webhook: Geschichte anfordern').first().json.body?.Bildstil || prev.imageStyle || 'Cartoon';
 const styleRefPath = STYLE_REFS[bildstilFromWebhook] || STYLE_REFS['Cartoon'];
@@ -25,9 +27,17 @@ const imageStyleNegative = prev.imageStyleNegative || "no text, no watermarks, n
 const imageCount = prev.imageCount || 1;
 const sceneRules = Array.isArray(prev.sceneRules) ? prev.sceneRules : [];
 
-const rulesBlock = sceneRules.length > 0
-  ? sceneRules.map((r, i) => `${i+1}. ${r}`).join('\n')
-  : '(no explicit invariants — infer plausibility from story)';
+// Pflicht-Plausibilitaetsregeln, die IMMER gelten — verhindern Setting-Halluzinationen
+// wie "Mensch unter Wasser neben Delfin" oder "Mensch im Lavasee".
+const PLAUSIBILITY_INVARIANTS = [
+  "Humans (if present in VISUAL LOCK) appear only in plausible settings; humans cannot be underwater, in lava, in outer space without a suit, inside walls, or sharing the same physical space as wild animals in their hostile habitat.",
+  "For underwater animals (dolphin, whale, fish, octopus), if a human is in VISUAL LOCK, the human OBSERVES from a boat, pier, shore, or aquarium glass — never swims alongside the animal.",
+  "For polar, glacier, volcano, jungle or space settings, humans wear plausible gear OR are positioned at a safe vantage point.",
+  "If VISUAL LOCK lists ONLY animals or objects (no humans), do NOT add a human observer to any scene — the scene shows only the animals/objects in their natural setting."
+];
+
+const allRules = [...sceneRules, ...PLAUSIBILITY_INVARIANTS];
+const rulesBlock = allRules.map((r, i) => `${i+1}. ${r}`).join('\n');
 
 const sceneUserPrompt = `You are a scene-slot compiler for a children's book illustrator. You receive a fixed VISUAL LOCK (characters, props, setting) and your job is to choose ${imageCount} story moment(s) and fill a small action/composition slot per moment. You do NOT describe characters, outfits, props or settings — those come from the VISUAL LOCK and are inserted verbatim downstream.
 
@@ -122,6 +132,13 @@ HARD CONSTRAINTS (never violate):
 - "props_shown.name" must match a PROP #n name from the VISUAL LOCK; if unsure, return an empty array.
 - camera, pose AND framingType MUST be unique across scenes; characters_present MAY repeat across scenes (same character in different moments).
 - paragraphIndex MUST be distinct AND strictly increasing AND >= 1 — see PARAGRAPH-INDEX RULES above.
+
+PLAUSIBILITY (final check before output — every scene must pass):
+- Inspect VISUAL LOCK: are there humans, animals, both, or only objects?
+- If ONLY animals are listed in VISUAL LOCK: NO scene may add a human. The image shows animals in their natural habitat, period.
+- If humans are listed: their setting_focus must be a place where they could plausibly exist. No humans underwater (use boat/pier/aquarium glass instead), no humans in lava, no humans in vacuum.
+- For wild-animal stories (ocean, polar ice, jungle), if a human is in VISUAL LOCK, the human is on a safe vantage point — never inside the animal's habitat alongside it.
+- If you cannot satisfy plausibility, REWRITE setting_focus to a plausible alternative (boat, shore, aquarium, lookout, classroom) before emitting the scene.
 
 Output ONLY the JSON array, no markdown, no explanation.`;
 
