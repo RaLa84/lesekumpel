@@ -127,7 +127,7 @@ function patchPrepScenes(node, label) {
 
   // (c) PLAUSIBILITY-Block im sceneUserPrompt-Template einfuegen, vor "Output ONLY the JSON array"
   if (!code.includes(PLAUSIBILITY_PROMPT_MARKER)) {
-    const anchor = '\\nOutput ONLY the JSON array';
+    const anchor = '\nOutput ONLY the JSON array';
     if (code.includes(anchor)) {
       code = code.replace(anchor, PLAUSIBILITY_PROMPT_INSERTION + anchor);
       changed = true;
