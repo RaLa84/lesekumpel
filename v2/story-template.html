@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{STORY_TITLE}} — Lesekumpel</title>
+  <meta name="description" content="{{META_DESCRIPTION}}">
+  <meta name="author" content="{{PERSONA_NAME}}">
+  <meta name="date" content="{{STORY_DATE}}">
+  <meta name="reading-level" content="{{READING_LEVEL_LABEL}}">
+  <meta name="neurotype" content="{{NEUROTYP}}">
+  <meta name="demo" content="true">
+
+  <link rel="icon" type="image/webp" href="../Konzept_Rebranding/logo-lesekumpel-512.webp">
+  <link rel="stylesheet" href="../fonts/fonts.css">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    /* Story-Layout */
+    .story-wrap {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 32px 24px 80px;
+    }
+
+    .story-hero {
+      position: relative;
+      border-radius: var(--radius-card);
+      overflow: hidden;
+      margin-bottom: 32px;
+      background: var(--lila);
+      min-height: 280px;
+      display: flex;
+      align-items: flex-end;
+      box-shadow: var(--shadow-card);
+    }
+    .story-hero-img {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      object-fit: cover;
+      z-index: 0;
+    }
+    .story-hero-overlay {
+      position: absolute; inset: 0;
+      background: linear-gradient(180deg, rgba(43,49,64,0) 30%, rgba(43,49,64,0.85) 100%);
+      z-index: 1;
+    }
+    .story-hero-text {
+      position: relative;
+      z-index: 2;
+      padding: 32px 28px 28px;
+      color: var(--cream);
+      width: 100%;
+    }
+    .story-hero-text .story-title-h1 {
+      font-family: var(--font-heading);
+      font-weight: 700;
+      font-size: clamp(1.7rem, 4.5vw, 2.6rem);
+      line-height: 1.15;
+      color: var(--cream);
+      margin: 0;
+    }
+    .story-hero-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 14px;
+      font-size: 0.85rem;
+    }
+    .story-hero-meta .badge {
+      background: rgba(255,246,239,0.92);
+      color: var(--navy);
+      font-size: 0.8rem;
+      padding: 5px 12px;
+    }
+
+    .author-line {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-card);
+      padding: 16px 18px;
+      margin-bottom: 24px;
+      box-shadow: var(--shadow-card);
+    }
+    .author-line-avatar {
+      width: 56px; height: 56px;
+      border-radius: 50%;
+      object-fit: cover;
+      flex-shrink: 0;
+      border: 2px solid var(--cream);
+      background: var(--cream-light);
+    }
+    .author-line-info { flex: 1; min-width: 0; }
+    .author-line-credit { font-size: 0.85rem; opacity: 0.7; }
+    .author-line-name {
+      font-family: var(--font-heading);
+      font-weight: 600;
+      font-size: 1.05rem;
+    }
+    .author-line-tag {
+      background: rgba(47,184,166,0.18);
+      color: var(--navy);
+      font-size: 0.78rem;
+      font-weight: 700;
+      padding: 4px 12px;
+      border-radius: var(--radius-pill);
+      align-self: flex-start;
+    }
+
+    /* Lese-Toolbar */
+    .reading-toolbar {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-card);
+      padding: 14px 16px;
+      margin-bottom: 28px;
+      box-shadow: var(--shadow-card);
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    .reading-toolbar .toolbar-label {
+      font-size: 0.78rem;
+      font-weight: 700;
+      opacity: 0.6;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-right: 4px;
+    }
+    .tool-btn {
+      background: var(--cream-light);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-pill);
+      padding: 8px 16px;
+      font-family: var(--font-body);
+      font-weight: 600;
+      font-size: 0.85rem;
+      color: var(--navy);
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .tool-btn:hover {
+      border-color: var(--mint);
+      background: var(--white);
+    }
+    .tool-btn.active {
+      background: var(--mint);
+      border-color: var(--mint);
+    }
+    .tool-btn-divider {
+      width: 1px;
+      height: 24px;
+      background: var(--border);
+      margin: 0 4px;
+    }
+
+    /* Story-Text */
+    .story-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-card);
+      padding: 36px 32px;
+      box-shadow: var(--shadow-card);
+      margin-bottom: 32px;
+    }
+    .story-text {
+      font-size: 1.18rem;
+      line-height: 1.85;
+      color: var(--navy);
+    }
+    .story-text p { margin-bottom: 1.2em; }
+    .story-text p:last-child { margin-bottom: 0; }
+    .story-text strong { font-weight: 700; color: var(--lila); }
+
+    /* Lese-Modi */
+    body.text-large .story-text { font-size: 1.4rem; line-height: 1.95; }
+    body.text-x-large .story-text { font-size: 1.6rem; line-height: 2; }
+    body.high-contrast .story-card { background: var(--white); border-color: var(--navy); }
+    body.high-contrast .story-text { color: #000; }
+    body.dyslexia .story-text {
+      font-family: 'Atkinson Hyperlegible', 'Lexend', system-ui, sans-serif;
+      letter-spacing: 0.03em;
+      word-spacing: 0.08em;
+    }
+
+    /* Silbentrennung — visuell */
+    .syllable { color: var(--lila); }
+    .syllable + .syllable { color: var(--coral); }
+
+    /* Activity Hub */
+    .activity-hub {
+      background: var(--cream-light);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-card);
+      padding: 28px 26px;
+      margin-bottom: 28px;
+    }
+    .activity-hub-title {
+      font-family: var(--font-heading);
+      font-size: 1.3rem;
+      margin-bottom: 18px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .activity-tabs {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      margin-bottom: 20px;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 14px;
+    }
+    .activity-tab {
+      background: none;
+      border: none;
+      padding: 8px 16px;
+      border-radius: var(--radius-pill);
+      font-family: var(--font-body);
+      font-weight: 600;
+      font-size: 0.9rem;
+      color: var(--navy);
+      cursor: pointer;
+      transition: all 0.2s;
+      display: flex; align-items: center; gap: 6px;
+    }
+    .activity-tab:hover { background: var(--white); }
+    .activity-tab.active { background: var(--mint); }
+    .activity-intro { font-size: 0.95rem; line-height: 1.7; margin-bottom: 14px; }
+
+    .quiz-question {
+      margin-bottom: 24px;
+      padding-bottom: 20px;
+      border-bottom: 1px dashed var(--border);
+    }
+    .quiz-question:last-child { border-bottom: none; }
+    .quiz-question .q-text {
+      font-weight: 600;
+      margin-bottom: 12px;
+      font-size: 1rem;
+    }
+    .quiz-options {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .quiz-option {
+      background: var(--white);
+      border: 1.5px solid var(--border);
+      border-radius: 12px;
+      padding: 12px 16px;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-size: 0.95rem;
+    }
+    .quiz-option:hover {
+      border-color: var(--mint);
+      background: var(--cream-light);
+    }
+    .quiz-option.correct {
+      background: rgba(47,184,166,0.18);
+      border-color: var(--mint);
+    }
+    .quiz-option.wrong {
+      opacity: 0.6;
+      background: var(--cream-light);
+    }
+
+    /* Survey */
+    .survey {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-card);
+      padding: 28px 26px;
+      margin-bottom: 28px;
+      text-align: center;
+      box-shadow: var(--shadow-card);
+    }
+    .survey-title {
+      font-family: var(--font-heading);
+      font-size: 1.2rem;
+      margin-bottom: 18px;
+    }
+    .vote-wrap {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+    }
+    .vote-btn {
+      background: var(--cream-light);
+      border: 2px solid var(--border);
+      border-radius: 20px;
+      width: 78px; height: 78px;
+      font-size: 2.2rem;
+      cursor: pointer;
+      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+    }
+    .vote-btn:hover {
+      transform: translateY(-4px) scale(1.06);
+      border-color: var(--mint);
+      background: var(--white);
+    }
+
+    /* Related */
+    .related {
+      margin-bottom: 28px;
+    }
+    .related-title {
+      font-family: var(--font-heading);
+      font-size: 1.2rem;
+      margin-bottom: 16px;
+    }
+    .related-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 14px;
+    }
+    @media (min-width: 600px) {
+      .related-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (min-width: 768px) {
+      .story-hero { min-height: 360px; }
+      .story-hero-text { padding: 40px 36px 36px; }
+    }
+  </style>
+</head>
+<body data-page="story">
+
+  <a href="#main" class="skip-link">Zum Inhalt springen</a>
+
+  <div class="sandbox-banner">
+  Du bist im Redesign-Sandbox <strong>v2</strong>. <a href="../index.html">Zur Live-Version wechseln &rarr;</a>
+</div>
+<nav class="navbar" aria-label="Hauptnavigation">
+  <div class="navbar-inner">
+    <a href="index.html" class="navbar-brand">
+      <img src="../Konzept_Rebranding/logo-lesekumpel-512.webp" alt="Lesekumpel Logo" class="navbar-logo">
+      <span>Lese<span class="brand-name">kumpel</span></span>
+    </a>
+    <div class="navbar-links">
+      <a href="index.html#mission" data-nav="mission">F&uuml;r euch</a>
+      <a href="index.html#how-it-works" data-nav="how">So funktioniert&rsquo;s</a>
+      <a href="ueber-uns.html" data-nav="ueber-uns">&Uuml;ber uns</a>
+      <a href="demo.html" data-nav="demo">Demo-Texte</a>
+      <a href="preise.html" data-nav="preise">Preise</a>
+      <a href="#" data-nav="erstellen" onclick="comingSoon(event)">Geschichte erstellen</a>
+      <a href="mein-konto.html" data-nav="mein-konto">Mein Konto</a>
+    </div>
+    <a href="index.html#registrieren" class="btn btn-primary navbar-cta">Jetzt registrieren</a>
+    <button type="button" class="burger" aria-label="Men&uuml; &ouml;ffnen" aria-expanded="false" aria-controls="mobile-menu" onclick="toggleMenu()">&#9776;</button>
+  </div>
+  <div id="mobile-menu" class="mobile-menu">
+    <a href="index.html#mission" onclick="toggleMenu()">F&uuml;r euch</a>
+    <a href="index.html#how-it-works" onclick="toggleMenu()">So funktioniert&rsquo;s</a>
+    <a href="ueber-uns.html" onclick="toggleMenu()">&Uuml;ber uns</a>
+    <a href="demo.html" onclick="toggleMenu()">Demo-Texte</a>
+    <a href="preise.html" onclick="toggleMenu()">Preise</a>
+    <a href="#" onclick="comingSoon(event); toggleMenu()">Geschichte erstellen</a>
+    <a href="mein-konto.html" onclick="toggleMenu()">Mein Konto</a>
+    <a href="index.html#registrieren" class="mobile-menu-cta" onclick="toggleMenu()">Jetzt registrieren &rarr;</a>
+  </div>
+</nav>
+
+  <main id="main">
+    <article class="story-wrap">
+
+      <!-- Hero -->
+      <div class="story-hero">
+        <img class="story-hero-img" src="{{HERO_IMAGE_URL}}" alt="" aria-hidden="true" onerror="this.style.display='none'">
+        <div class="story-hero-overlay" aria-hidden="true"></div>
+        <div class="story-hero-text">
+          <h1 class="story-title-h1">{{STORY_TITLE}}</h1>
+          <div class="story-hero-meta">
+            <span class="badge">{{READING_LEVEL_LABEL}}</span>
+            <span class="badge">{{NEUROTYP}}</span>
+            <span class="badge">{{GENRE}}</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Author -->
+      <div class="author-line">
+        <img class="author-line-avatar" src="{{PERSONA_IMG_URL}}" alt="{{PERSONA_NAME}}">
+        <div class="author-line-info">
+          <div class="author-line-credit">geschrieben von</div>
+          <div class="author-line-name">{{PERSONA_NAME}}</div>
+        </div>
+        <span class="author-line-tag">&#10003; F&uuml;r {{NEUROTYP}} optimiert</span>
+      </div>
+
+      <!-- Lese-Toolbar -->
+      <div class="reading-toolbar" id="toolbar">
+        <span class="toolbar-label">Text</span>
+        <button type="button" class="tool-btn" onclick="toggleClass('syllables-on')" id="btn-syl">&#9986; Silben</button>
+        <button type="button" class="tool-btn" onclick="cycleFontSize()" id="btn-size">A&plus;</button>
+        <button type="button" class="tool-btn" onclick="toggleClass('dyslexia')" id="btn-dys">&#127859; Dyslexie</button>
+        <span class="tool-btn-divider" aria-hidden="true"></span>
+        <span class="toolbar-label">Mehr</span>
+        <button type="button" class="tool-btn" onclick="toggleClass('high-contrast')" id="btn-contrast">&#127769; Kontrast</button>
+        <button type="button" class="tool-btn" onclick="speakStory()" id="btn-tts">&#128266; Vorlesen</button>
+      </div>
+
+      <!-- Story Text -->
+      <div class="story-card">
+        <div class="story-text" id="story-text">
+          {{STORY_HTML}}
+        </div>
+      </div>
+
+      <!-- Activity Hub -->
+      <div class="activity-hub" id="activity-hub">
+        <h2 class="activity-hub-title">&#127918; Spielzeit!</h2>
+        <div class="activity-tabs" role="tablist" aria-label="Spielformate">
+          <button type="button" class="activity-tab active" role="tab" aria-selected="true" aria-controls="panel-quiz" data-panel="quiz" onclick="switchPanel('quiz')">&#129504; Quiz</button>
+          <button type="button" class="activity-tab" role="tab" aria-selected="false" aria-controls="panel-weiterdenken" data-panel="weiterdenken" onclick="switchPanel('weiterdenken')">&#127775; Weiterdenken</button>
+          <button type="button" class="activity-tab" role="tab" aria-selected="false" aria-controls="panel-wortschatz" data-panel="wortschatz" onclick="switchPanel('wortschatz')">&#128218; Wortschatz</button>
+        </div>
+        <div id="panel-quiz" class="activity-panel" role="tabpanel">
+          <div id="quiz-body">{{QUIZ_HTML}}</div>
+        </div>
+        <div id="panel-weiterdenken" class="activity-panel" role="tabpanel" hidden>
+          <p class="activity-intro">Hier gibt es kein richtig oder falsch &mdash; w&auml;hle, was dir am besten gef&auml;llt!</p>
+          {{WEITERDENKEN_HTML}}
+        </div>
+        <div id="panel-wortschatz" class="activity-panel" role="tabpanel" hidden>
+          {{WORTSCHATZ_HTML}}
+        </div>
+      </div>
+
+      <!-- Survey -->
+      <div class="survey">
+        <div class="survey-title">Hat dir die Geschichte gefallen?</div>
+        <div class="vote-wrap">
+          <button type="button" class="vote-btn" onclick="vote('up')" aria-label="Daumen hoch">&#128077;</button>
+          <button type="button" class="vote-btn" onclick="vote('down')" aria-label="Daumen runter">&#128078;</button>
+        </div>
+      </div>
+
+      <!-- Related -->
+      <div class="related">
+        <h2 class="related-title">Das k&ouml;nnte dir auch gefallen</h2>
+        <div class="related-grid">{{RELATED_STORIES_HTML}}</div>
+      </div>
+
+      <!-- Back -->
+      <p class="text-center">
+        <a href="bibliothek.html" class="btn btn-secondary">&larr; Zur Bibliothek</a>
+      </p>
+
+    </article>
+  </main>
+
+  <footer class="modern-footer">
+  <svg class="deco-blob deco-hide-mobile footer-deco-blob" viewBox="0 0 200 200" aria-hidden="true">
+    <path fill="#2FB8A6" d="M44.7,-69.7C58.6,-62.3,71.4,-51.9,79.3,-38.5C87.2,-25.1,90.2,-8.6,87.7,6.4C85.2,21.4,77.2,34.9,67.2,46.7C57.2,58.5,45.2,68.5,31.7,73.8C18.2,79.1,3.1,79.7,-12,77.2C-27.2,74.6,-42.5,69.1,-54.2,59.3C-65.9,49.5,-74,35.5,-78,20.3C-82,5,-81.9,-11.5,-76.4,-25.8C-70.9,-40,-60,-52,-46.8,-60.2C-33.7,-68.4,-18.3,-72.7,-2.5,-69.2C13.4,-65.6,30.8,-77.1,44.7,-69.7Z" transform="translate(100 100)"/>
+  </svg>
+
+  <div class="footer-grid">
+    <div class="footer-brand-block">
+      <div class="footer-brand-row">
+        <img src="../Konzept_Rebranding/logo-lesekumpel-512.webp" alt="Lesekumpel Logo">
+        <span>Lese<span class="brand-yellow">kumpel</span></span>
+      </div>
+      <p class="footer-tagline">Die inklusive Lese-App, die jedes Kind lieben lernt. Neurodivers gestaltet, immer kostenlos.</p>
+      <div class="footer-newsletter">
+        <input type="email" placeholder="Deine E-Mail-Adresse" aria-label="E-Mail f&uuml;r Newsletter">
+        <button type="button" onclick="alert('📬 Danke! Wir melden uns, sobald es losgeht.')">Anmelden &rarr;</button>
+      </div>
+      <div class="footer-social">
+        <a href="https://www.instagram.com/lesekumpel.de/" target="_blank" rel="noopener" aria-label="Lesekumpel auf Instagram">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none"/></svg>
+        </a>
+        <a href="https://discord.gg/sAr6KEsg" target="_blank" rel="noopener" aria-label="Lesekumpel Discord Community">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.095 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.095 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg>
+        </a>
+      </div>
+    </div>
+
+    <div>
+      <h4>Entdecken</h4>
+      <ul>
+        <li><a href="demo.html">Demo-Texte</a></li>
+        <li><a href="index.html#mission">F&uuml;r euch</a></li>
+        <li><a href="index.html#how-it-works">So funktioniert&apos;s</a></li>
+        <li><a href="index.html#faq">FAQ</a></li>
+      </ul>
+    </div>
+
+    <div>
+      <h4>Mehr</h4>
+      <ul>
+        <li><a href="ueber-uns.html">&Uuml;ber uns</a></li>
+        <li><a href="preise.html">Preise</a></li>
+        <li><a href="mein-konto.html">Mein Konto</a></li>
+        <li><a href="../blog-warum-lesekumpel.html">Blog</a></li>
+      </ul>
+    </div>
+
+    <div>
+      <h4>Rechtliches</h4>
+      <ul>
+        <li><a href="impressum.html">Impressum</a></li>
+        <li><a href="datenschutz.html">Datenschutz</a></li>
+        <li><a href="../knowledge-base/snacks/index.html">Wissen</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <span>&copy; 2026 Lesekumpel &middot; Inklusive Lese-App f&uuml;r jedes Gehirn</span>
+    <span><a href="../index.html">&larr; Zur Live-Version</a> &middot; <span class="footer-sandbox-label">v2 Sandbox</span></span>
+  </div>
+</footer>
+
+  <script src="scripts.js?v=4"></script>
+  <script>
+    /* ============================================================
+       Story-Template — vereinfachte Lese-Logik
+       ============================================================ */
+
+    /* Toggle body classes */
+    function toggleClass(cls) {
+      document.body.classList.toggle(cls);
+      const btnMap = { 'syllables-on': 'btn-syl', 'dyslexia': 'btn-dys', 'high-contrast': 'btn-contrast' };
+      const btn = document.getElementById(btnMap[cls]);
+      if (btn) btn.classList.toggle('active');
+    }
+
+    /* Font size cycle: normal → large → x-large → normal */
+    let fontStep = 0;
+    function cycleFontSize() {
+      const body = document.body;
+      body.classList.remove('text-large', 'text-x-large');
+      fontStep = (fontStep + 1) % 3;
+      if (fontStep === 1) body.classList.add('text-large');
+      if (fontStep === 2) body.classList.add('text-x-large');
+      const btn = document.getElementById('btn-size');
+      if (btn) btn.textContent = ['A+', 'A++', 'A'][fontStep];
+    }
+
+    /* Activity tabs */
+    function switchPanel(name) {
+      document.querySelectorAll('.activity-tab').forEach(t => t.classList.remove('active'));
+      document.querySelector('.activity-tab[data-panel="' + name + '"]').classList.add('active');
+      ['quiz', 'weiterdenken', 'wortschatz'].forEach(p => {
+        const el = document.getElementById('panel-' + p);
+        if (el) el.hidden = (p !== name);
+      });
+    }
+
+    /* TTS — Web Speech API */
+    let ttsActive = false;
+    let ttsUtterance = null;
+    function speakStory() {
+      const btn = document.getElementById('btn-tts');
+      if (ttsActive) {
+        window.speechSynthesis.cancel();
+        ttsActive = false;
+        btn.classList.remove('active');
+        return;
+      }
+      const text = document.getElementById('story-text').innerText;
+      if (!text) return;
+      ttsUtterance = new SpeechSynthesisUtterance(text);
+      ttsUtterance.lang = 'de-DE';
+      ttsUtterance.rate = 0.95;
+      ttsUtterance.onend = () => {
+        ttsActive = false;
+        btn.classList.remove('active');
+      };
+      window.speechSynthesis.speak(ttsUtterance);
+      ttsActive = true;
+      btn.classList.add('active');
+    }
+
+    /* Vote */
+    function vote(dir) {
+      alert(dir === 'up' ? '🎉 Toll! Danke für dein Feedback.' : '😢 Schade — sag uns gern, was nicht gepasst hat.');
+    }
+  </script>
+</body>
+</html>

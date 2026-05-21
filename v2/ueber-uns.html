@@ -1,0 +1,392 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>&Uuml;ber uns — Lesekumpel</title>
+  <meta name="description" content="Die Menschen hinter Lesekumpel: Eltern, Entwickler und &Uuml;berzeugte. Unsere Mission: Inklusive, KI-gest&uuml;tzte Lesef&ouml;rderung f&uuml;r alle Kinder.">
+
+  <link rel="icon" type="image/webp" href="../Konzept_Rebranding/logo-lesekumpel-512.webp">
+  <link rel="stylesheet" href="../fonts/fonts.css">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .team-card {
+      text-align: center;
+      transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.3s ease, border-color 0.3s;
+      position: relative;
+    }
+    .team-card:hover {
+      transform: translateY(-8px) rotate(-0.6deg);
+      box-shadow: var(--shadow-card-hover);
+      border-color: var(--mint);
+    }
+    .team-card:nth-child(2):hover { border-color: var(--coral); transform: translateY(-8px) rotate(0.6deg); }
+    .team-card:nth-child(3):hover { border-color: var(--lila); }
+    .team-photo {
+      width: 132px; height: 132px; border-radius: 50%;
+      object-fit: cover; margin: 0 auto 18px;
+      border: 4px solid var(--cream);
+      box-shadow: 0 8px 18px rgba(43,49,64,0.12);
+      transition: transform 0.4s cubic-bezier(0.34,1.56,0.64,1);
+    }
+    .team-card:hover .team-photo { transform: scale(1.05) rotate(3deg); }
+    .team-name { font-family: var(--font-heading); font-size: 1.2rem; margin-bottom: 4px; }
+    .team-role { font-size: 0.88rem; color: var(--lila); font-weight: 600; margin-bottom: 10px; }
+    .team-bio { font-size: 0.93rem; line-height: 1.65; margin-bottom: 16px; }
+    .team-linkedin {
+      display: inline-flex; align-items: center; gap: 6px;
+      color: var(--navy); text-decoration: none; font-weight: 600;
+      font-size: 0.88rem;
+    }
+    .team-linkedin:hover { color: var(--lila); }
+    .team-badge { font-size: 0.78rem; }
+    .mission-inner { max-width: 760px; margin: 0 auto; text-align: center; }
+    .mission-h2 { margin: 18px 0 24px; }
+    .mission-quote {
+      font-family: 'Playfair Display', Georgia, serif;
+      font-style: italic;
+      font-weight: 700;
+      font-size: 1.15rem;
+      line-height: 1.55;
+      margin-bottom: 28px;
+    }
+    .mission-text {
+      font-size: 1rem;
+      line-height: 1.8;
+      opacity: 0.9;
+    }
+    .story-block { max-width: 720px; margin: 0 auto; }
+    .story-layout {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 32px;
+      align-items: start;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+    .story-image-wrap {
+      position: relative;
+      max-width: 360px;
+      margin: 0 auto;
+      width: 100%;
+    }
+    .story-image {
+      width: 100%;
+      aspect-ratio: 4 / 5;
+      object-fit: cover;
+      border-radius: 24px;
+      border: 4px solid var(--coral);
+      box-shadow: 0 16px 32px rgba(43,49,64,0.12), 0 4px 10px rgba(43,49,64,0.06);
+    }
+    .story-image-tag {
+      position: absolute;
+      bottom: 16px; left: 16px;
+      background: var(--white);
+      border-radius: var(--radius-pill);
+      padding: 6px 14px;
+      font-family: var(--font-heading);
+      font-weight: 700;
+      font-size: 0.85rem;
+      color: var(--navy);
+      box-shadow: var(--shadow-card-hover);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .story-image-tag .heart { color: var(--coral); }
+    @media (min-width: 900px) {
+      .story-layout {
+        grid-template-columns: 360px 1fr;
+        gap: 56px;
+      }
+      .story-image-wrap { position: sticky; top: 120px; }
+    }
+    .story-chapter {
+      font-family: var(--font-heading);
+      font-weight: 600;
+      color: var(--lila);
+      font-size: 1rem;
+      margin: 30px 0 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+    .story-chapter:first-of-type { margin-top: 0; }
+    .story-block p { font-size: 1.02rem; line-height: 1.8; margin-bottom: 14px; }
+    .quote-block {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-left: 5px solid var(--coral);
+      border-radius: var(--radius-card);
+      padding: 24px 28px;
+      margin: 26px 0;
+      font-style: italic;
+      font-weight: 600;
+      color: var(--navy);
+      font-size: 1.08rem;
+      line-height: 1.7;
+    }
+    .quote-block::before {
+      content: '\201C';
+      font-family: var(--font-heading);
+      font-size: 2.4rem;
+      color: var(--coral);
+      line-height: 0.6;
+      display: block;
+      margin-bottom: 6px;
+    }
+    .timeline-step {
+      position: relative;
+      padding-left: 70px;
+      padding-bottom: 32px;
+      border-left: 2px dashed var(--border);
+      margin-left: 22px;
+    }
+    .timeline-step:last-child { border-left-color: transparent; padding-bottom: 0; }
+    .timeline-dot {
+      position: absolute;
+      left: -23px;
+      top: -4px;
+      width: 44px; height: 44px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-heading);
+      font-weight: 700;
+      font-size: 1.2rem;
+      color: var(--white);
+      box-shadow: 0 6px 14px rgba(43,49,64,0.18);
+      transform: rotate(-4deg);
+    }
+    .timeline-dot.coral { background: var(--coral); }
+    .timeline-dot.lila  { background: var(--lila); }
+    .timeline-dot.mint  { background: var(--mint); color: var(--navy); }
+    .timeline-title {
+      font-family: var(--font-heading);
+      font-weight: 700;
+      font-size: 1.3rem;
+      margin-bottom: 12px;
+      color: var(--navy);
+    }
+    .timeline-step p { font-size: 1rem; line-height: 1.7; margin-bottom: 12px; }
+    .mission-section { position: relative; overflow: hidden; }
+    .mission-deco-1 { top: 14%; right: 12%; }
+    .mission-deco-2 { bottom: 16%; left: 12%; }
+    .mission-sticker-wrap {
+      width: 100px;
+      margin: 0 auto 28px;
+    }
+  </style>
+</head>
+<body data-page="ueber-uns">
+
+  <a href="#main" class="skip-link">Zum Inhalt springen</a>
+
+  <div class="sandbox-banner">
+  Du bist im Redesign-Sandbox <strong>v2</strong>. <a href="../index.html">Zur Live-Version wechseln &rarr;</a>
+</div>
+<nav class="navbar" aria-label="Hauptnavigation">
+  <div class="navbar-inner">
+    <a href="index.html" class="navbar-brand">
+      <img src="../Konzept_Rebranding/logo-lesekumpel-512.webp" alt="Lesekumpel Logo" class="navbar-logo">
+      <span>Lese<span class="brand-name">kumpel</span></span>
+    </a>
+    <div class="navbar-links">
+      <a href="index.html#mission" data-nav="mission">F&uuml;r euch</a>
+      <a href="index.html#how-it-works" data-nav="how">So funktioniert&rsquo;s</a>
+      <a href="ueber-uns.html" data-nav="ueber-uns">&Uuml;ber uns</a>
+      <a href="demo.html" data-nav="demo">Demo-Texte</a>
+      <a href="preise.html" data-nav="preise">Preise</a>
+      <a href="#" data-nav="erstellen" onclick="comingSoon(event)">Geschichte erstellen</a>
+      <a href="mein-konto.html" data-nav="mein-konto">Mein Konto</a>
+    </div>
+    <a href="index.html#registrieren" class="btn btn-primary navbar-cta">Jetzt registrieren</a>
+    <button type="button" class="burger" aria-label="Men&uuml; &ouml;ffnen" aria-expanded="false" aria-controls="mobile-menu" onclick="toggleMenu()">&#9776;</button>
+  </div>
+  <div id="mobile-menu" class="mobile-menu">
+    <a href="index.html#mission" onclick="toggleMenu()">F&uuml;r euch</a>
+    <a href="index.html#how-it-works" onclick="toggleMenu()">So funktioniert&rsquo;s</a>
+    <a href="ueber-uns.html" onclick="toggleMenu()">&Uuml;ber uns</a>
+    <a href="demo.html" onclick="toggleMenu()">Demo-Texte</a>
+    <a href="preise.html" onclick="toggleMenu()">Preise</a>
+    <a href="#" onclick="comingSoon(event); toggleMenu()">Geschichte erstellen</a>
+    <a href="mein-konto.html" onclick="toggleMenu()">Mein Konto</a>
+    <a href="index.html#registrieren" class="mobile-menu-cta" onclick="toggleMenu()">Jetzt registrieren &rarr;</a>
+  </div>
+</nav>
+
+  <main id="main">
+
+    <!-- HERO -->
+    <header class="hero">
+      <span class="section-badge coral reveal">&#128150; Hinter den Kulissen</span>
+      <h1 class="reveal">Die Menschen hinter <span class="accent"><span class="scribble-underline">Lesekumpel</span></span>.</h1>
+      <p class="lead reveal">Wir sind Eltern, Entwickler und &Uuml;berzeugte: Jedes Kind verdient die Chance, <span class="marker">Lesen zu lieben</span>. Das ist unsere Geschichte.</p>
+    </header>
+
+    <!-- STORY -->
+    <section class="section alt-bg">
+      <div class="section-inner">
+        <div class="section-header reveal">
+          <span class="eyebrow coral">Unsere Story</span>
+          <h2>Wie alles begann.</h2>
+        </div>
+
+        <div class="story-layout">
+          <div class="story-image-wrap reveal">
+            <img src="../bilder/team/AntjeRaik.jpg" alt="Antje und Raik Lasner" class="story-image">
+            <span class="story-image-tag"><span class="heart">&#10084;</span> Antje &amp; Raik</span>
+          </div>
+
+          <div class="story-block reveal-stagger">
+            <div class="timeline-step">
+              <span class="timeline-dot coral">1</span>
+              <h3 class="timeline-title">Der Kampf</h3>
+              <p>Unser Sohn ist Autist und hat ADHS. Lesen war f&uuml;r ihn lange ein Kampf &mdash; bis wir anfingen, Texte zu finden, die ihn <strong>wirklich interessieren</strong>.</p>
+              <div class="big-quote">Pl&ouml;tzlich las er freiwillig, regelm&auml;&szlig;ig und mit Begeisterung.</div>
+            </div>
+
+            <div class="timeline-step">
+              <span class="timeline-dot lila">2</span>
+              <h3 class="timeline-title">Die Erkenntnis</h3>
+              <p>So entstand die Idee zum Lesekumpel: KI-Texte, die sich den Interessen und F&auml;higkeiten jedes Kindes anpassen. Nicht das Kind passt sich der App an &mdash; die App passt sich dem Kind an.</p>
+            </div>
+
+            <div class="timeline-step">
+              <span class="timeline-dot mint">3</span>
+              <h3 class="timeline-title">Die Mission</h3>
+              <p>Wir leiten die Selbsthilfegruppe f&uuml;r Eltern autistischer Kinder in Nordwest-Mecklenburg. Unser Sohn ist kein Einzelschicksal &mdash; wir wissen, dass viele Kinder aus der Regelschule ausgeschlossen werden und kaum Zugang zu passender F&ouml;rderung haben. Dem m&ouml;chten wir etwas entgegensetzen.</p>
+              <p>Heute liest unser Sohn regelm&auml;&szlig;ig. Und wir m&ouml;chten, dass auch andere Kinder diese Erfahrung machen k&ouml;nnen.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TEAM -->
+    <section class="section">
+      <div class="section-header reveal">
+        <span class="eyebrow">Das Team</span>
+        <h2>Drei Menschen, <span class="marker coral">ein Ziel</span>.</h2>
+      </div>
+      <div class="grid grid-3 reveal-stagger">
+        <div class="card team-card">
+          <img src="../bilder/team/raik.jpg" alt="Raik Lasner" class="team-photo">
+          <div class="team-name">Raik Lasner</div>
+          <div class="team-role">Product &amp; Marketing</div>
+          <span class="badge badge-mint mb-2 team-badge">&#128640; Visions-Architekt</span>
+          <p class="team-bio">Raik m&ouml;chte die Erfahrung mit seinem Sohn an andere Familien weitergeben und Lesef&ouml;rderung f&uuml;r alle zug&auml;nglich machen.</p>
+          <a href="https://www.linkedin.com/in/raik-lasner-productmanager/" target="_blank" rel="noopener" class="team-linkedin">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+            LinkedIn
+          </a>
+        </div>
+        <div class="card team-card">
+          <img src="../bilder/team/antje.jpg" alt="Antje Lasner" class="team-photo">
+          <div class="team-name">Antje Lasner</div>
+          <div class="team-role">User Research &amp; Coach</div>
+          <span class="badge badge-coral mb-2 team-badge">&#128150; Empathie-Expertin</span>
+          <p class="team-bio">Antje bringt ihre Erfahrung als Coach und aus der Selbsthilfearbeit ein, damit Lesekumpel wirklich bei den Kindern ankommt, die es am meisten brauchen.</p>
+          <a href="https://www.linkedin.com/in/antje-lasner-91470359/" target="_blank" rel="noopener" class="team-linkedin">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+            LinkedIn
+          </a>
+        </div>
+        <div class="card team-card">
+          <img src="../bilder/team/Marten.jpg" alt="Marten Losansky" class="team-photo">
+          <div class="team-name">Marten Losansky</div>
+          <div class="team-role">Developer</div>
+          <span class="badge badge-lila mb-2 team-badge">&#128187; Tech-Enthusiast</span>
+          <p class="team-bio">Marten liebt B&uuml;cher &mdash; Lesen ist ein wichtiger Teil seiner Pers&ouml;nlichkeit. Er m&ouml;chte, dass jedes Kind Lesen zu seinem Hobby machen kann.</p>
+          <a href="https://www.linkedin.com/in/marten-losansky-8baa17167/" target="_blank" rel="noopener" class="team-linkedin">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 01-2.063-2.065 2.064 2.064 0 112.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+            LinkedIn
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- MISSION -->
+    <section class="section dark mission-section">
+      <svg class="deco-star mission-deco-1 deco-hide-mobile" width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><polygon points="16,2 20,12 30,12 22,19 25,30 16,23 7,30 10,19 2,12 12,12" fill="#FFD95A" opacity="0.18"/></svg>
+      <svg class="deco-sparkle mission-deco-2 deco-hide-mobile" width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="M12,2 L14,10 L22,12 L14,14 L12,22 L10,14 L2,12 L10,10 Z" fill="#2FB8A6" opacity="0.25"/></svg>
+      <div class="section-inner mission-inner reveal">
+        <div class="mission-sticker-wrap">
+          <img src="../Konzept_Rebranding/logo-lesekumpel-512.webp" alt="" class="sticker-logo">
+        </div>
+        <span class="section-badge yellow">Unsere Mission</span>
+        <h2 class="mission-h2">Lesenlernen darf keine Frage von <span class="marker yellow">Gl&uuml;ck, Geld oder Voraussetzungen</span> sein.</h2>
+        <p class="mission-quote">
+          &bdquo;Die inklusive, KI-gest&uuml;tzte Lernplattform, die Lesenlernen leicht, individuell und spielerisch macht.&ldquo;
+        </p>
+        <p class="mission-text">Wir alle sehen in KI das Potenzial zu mehr Teilhabe und Inklusion. Lesekumpel ist unser Beitrag dazu &mdash; und Teil einer Lernreise, wie wir Technologie besser nutzen k&ouml;nnen, damit kein Kind zur&uuml;ckgelassen wird.</p>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="modern-footer">
+  <svg class="deco-blob deco-hide-mobile footer-deco-blob" viewBox="0 0 200 200" aria-hidden="true">
+    <path fill="#2FB8A6" d="M44.7,-69.7C58.6,-62.3,71.4,-51.9,79.3,-38.5C87.2,-25.1,90.2,-8.6,87.7,6.4C85.2,21.4,77.2,34.9,67.2,46.7C57.2,58.5,45.2,68.5,31.7,73.8C18.2,79.1,3.1,79.7,-12,77.2C-27.2,74.6,-42.5,69.1,-54.2,59.3C-65.9,49.5,-74,35.5,-78,20.3C-82,5,-81.9,-11.5,-76.4,-25.8C-70.9,-40,-60,-52,-46.8,-60.2C-33.7,-68.4,-18.3,-72.7,-2.5,-69.2C13.4,-65.6,30.8,-77.1,44.7,-69.7Z" transform="translate(100 100)"/>
+  </svg>
+
+  <div class="footer-grid">
+    <div class="footer-brand-block">
+      <div class="footer-brand-row">
+        <img src="../Konzept_Rebranding/logo-lesekumpel-512.webp" alt="Lesekumpel Logo">
+        <span>Lese<span class="brand-yellow">kumpel</span></span>
+      </div>
+      <p class="footer-tagline">Die inklusive Lese-App, die jedes Kind lieben lernt. Neurodivers gestaltet, immer kostenlos.</p>
+      <div class="footer-newsletter">
+        <input type="email" placeholder="Deine E-Mail-Adresse" aria-label="E-Mail f&uuml;r Newsletter">
+        <button type="button" onclick="alert('📬 Danke! Wir melden uns, sobald es losgeht.')">Anmelden &rarr;</button>
+      </div>
+      <div class="footer-social">
+        <a href="https://www.instagram.com/lesekumpel.de/" target="_blank" rel="noopener" aria-label="Lesekumpel auf Instagram">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none"/></svg>
+        </a>
+        <a href="https://discord.gg/sAr6KEsg" target="_blank" rel="noopener" aria-label="Lesekumpel Discord Community">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.095 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.095 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg>
+        </a>
+      </div>
+    </div>
+
+    <div>
+      <h4>Entdecken</h4>
+      <ul>
+        <li><a href="demo.html">Demo-Texte</a></li>
+        <li><a href="index.html#mission">F&uuml;r euch</a></li>
+        <li><a href="index.html#how-it-works">So funktioniert&apos;s</a></li>
+        <li><a href="index.html#faq">FAQ</a></li>
+      </ul>
+    </div>
+
+    <div>
+      <h4>Mehr</h4>
+      <ul>
+        <li><a href="ueber-uns.html">&Uuml;ber uns</a></li>
+        <li><a href="preise.html">Preise</a></li>
+        <li><a href="mein-konto.html">Mein Konto</a></li>
+        <li><a href="../blog-warum-lesekumpel.html">Blog</a></li>
+      </ul>
+    </div>
+
+    <div>
+      <h4>Rechtliches</h4>
+      <ul>
+        <li><a href="impressum.html">Impressum</a></li>
+        <li><a href="datenschutz.html">Datenschutz</a></li>
+        <li><a href="../knowledge-base/snacks/index.html">Wissen</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <span>&copy; 2026 Lesekumpel &middot; Inklusive Lese-App f&uuml;r jedes Gehirn</span>
+    <span><a href="../index.html">&larr; Zur Live-Version</a> &middot; <span class="footer-sandbox-label">v2 Sandbox</span></span>
+  </div>
+</footer>
+
+  <script src="scripts.js?v=4"></script>
+</body>
+</html>

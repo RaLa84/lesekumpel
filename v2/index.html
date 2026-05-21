@@ -1,0 +1,1264 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lesekumpel — Lernen ohne Tr&auml;nen, Lesenlernen f&uuml;r jedes Gehirn</title>
+  <meta name="description" content="Lesekumpel ist die inklusive Lese-App, die ADHS, Autismus und Legasthenie als St&auml;rke feiert. KI-Geschichten f&uuml;r jedes Kind — kostenlos.">
+  <meta property="og:title" content="Lesekumpel — Lernen ohne Tr&auml;nen">
+  <meta property="og:description" content="St&auml;rkenorientiertes Lesenlernen: frustfrei, individuell und voller Freude.">
+  <meta property="og:image" content="../Konzept_Rebranding/logo-lesekumpel-1024.webp">
+  <meta property="og:type" content="website">
+
+  <link rel="icon" type="image/webp" href="../Konzept_Rebranding/logo-lesekumpel-512.webp">
+  <link rel="stylesheet" href="../fonts/fonts.css">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    /* ===== Landing-spezifische Komponenten ===== */
+    .lp-hero {
+      background: linear-gradient(180deg, var(--cream) 0%, var(--cream-light) 70%, var(--cream) 100%);
+      padding: 48px 24px 80px;
+      position: relative;
+      /* overflow: visible — der Mint-Blob darf in die n&auml;chste Section
+         (Werte) ausgreifen, damit der Hintergrund nicht hart abgeschnitten
+         wirkt. body { overflow-x: hidden } sichert gegen horizontales
+         Scrollen ab. */
+    }
+
+    /* ===== Hero-Background-Texture =====
+       Große pastellige Blobs + ein paar statische Sterne. Komplett ohne
+       Animation (auch ohne reduced-motion). Nur Brand-Identity, keine
+       Aufmerksamkeit ziehen. */
+    .hero-bg {
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      /* H&ouml;he &uuml;berragt den Hero unten, damit der Mint-Blob
+         durchg&auml;ngig sichtbar bleibt. */
+      bottom: -240px;
+      pointer-events: none;
+      z-index: 0;
+      /* kein overflow:hidden — Blobs d&uuml;rfen rausragen */
+    }
+    .hero-blob {
+      position: absolute;
+      opacity: 0.16;
+    }
+    .hero-blob-coral {
+      color: var(--coral);
+      top: -180px; right: -120px;
+      width: 480px; height: 480px;
+    }
+    .hero-blob-mint {
+      color: var(--mint);
+      bottom: -200px; left: -160px;
+      width: 520px; height: 520px;
+      opacity: 0.13;
+    }
+    .hero-blob-yellow {
+      color: var(--yellow);
+      top: 35%; right: 12%;
+      width: 180px; height: 180px;
+      opacity: 0.22;
+    }
+    .hero-star { position: absolute; opacity: 0.45; }
+    .hero-star-1 {
+      color: var(--yellow);
+      top: 18%; left: 6%;
+      width: 22px; height: 22px;
+    }
+    .hero-star-2 {
+      color: var(--coral);
+      top: 55%; left: 3%;
+      width: 18px; height: 18px;
+      opacity: 0.35;
+    }
+    .hero-star-3 {
+      color: var(--yellow);
+      bottom: 22%; right: 4%;
+      width: 26px; height: 26px;
+      opacity: 0.4;
+    }
+    @media (max-width: 767px) {
+      /* Mobile: weniger Decorations, kleinere Blobs */
+      .hero-blob-coral { width: 280px; height: 280px; top: -100px; right: -80px; }
+      .hero-blob-mint { width: 280px; height: 280px; bottom: -120px; left: -100px; }
+      .hero-blob-yellow { display: none; }
+      .hero-star-2 { display: none; }
+    }
+    .lp-hero-inner {
+      max-width: 1240px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 40px;
+      align-items: center;
+      position: relative;
+      z-index: 2;
+    }
+    .lp-hero-text { text-align: left; }
+    /* Headline: leicht positives letter-spacing für bessere Buchstaben-
+       erkennung bei LRS (WCAG 1.4.12). line-height 1.15 → drei klare
+       Zeilen mit Atempausen. Kein Scribble unter "jedes Gehirn". */
+    .lp-hero h1.hero-h1 {
+      font-size: clamp(2.4rem, 6.5vw, 4.4rem);
+      line-height: 1.15;
+      margin: 22px 0 24px;
+      letter-spacing: 0.005em;
+      font-weight: 700;
+    }
+    .lp-hero h1.hero-h1 .accent { color: var(--lila); }
+
+    /* ===== Hero-Image-Frame =====
+       Leicht angeschrägt (-2deg) → Polaroid-Vibe. Weißer Rand wie ein
+       gerahmtes Foto. On hover: richtet sich auf (rotate 0) und hebt
+       leicht ab (translateY) → "lebendiges" Foto-Gefühl.
+       Bei prefers-reduced-motion: keine Schräglage, kein Hover-Lift. */
+    .hero-image-frame {
+      width: 100%;
+      border-radius: 24px;
+      overflow: hidden;
+      background: var(--white);
+      padding: 10px 10px 14px; /* Polaroid-Rand: unten leicht mehr */
+      box-shadow:
+        0 18px 38px rgba(43,49,64,0.16),
+        0 6px 14px rgba(43,49,64,0.08);
+      transform: rotate(-2deg);
+      transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1),
+                  box-shadow 0.4s ease;
+      will-change: transform;
+    }
+    .hero-image-frame:hover {
+      transform: rotate(0deg) translateY(-10px);
+      box-shadow:
+        0 28px 50px rgba(43,49,64,0.22),
+        0 10px 20px rgba(43,49,64,0.12);
+    }
+    .hero-image-frame img {
+      display: block;
+      width: 100%;
+      aspect-ratio: 4 / 5; /* Hero-Hochformat — Bild ist quadratisch,
+                              object-fit:cover beschneidet zentriert */
+      object-fit: cover;
+      object-position: center;
+      border-radius: 16px;
+    }
+    /* Reduced-Motion: gerade ausrichten, kein Hover-Lift */
+    @media (prefers-reduced-motion: reduce) {
+      .hero-image-frame,
+      .hero-image-frame:hover {
+        transform: none !important;
+      }
+    }
+
+    /* Hero-CTA: ein Button, fokussiert. Mint + Navy = 6.06:1 (AA). */
+    .hero-cta {
+      align-self: flex-start;
+    }
+
+    /* WCAG 1.4.3 + 1.4.12: feste Farbe statt opacity,
+       line-height ≥ 1.5 für LRS-Lesekomfort */
+    .lp-hero-lead {
+      font-size: clamp(1rem, 1.6vw, 1.15rem);
+      line-height: 1.65;
+      max-width: 560px;
+      margin: 0 0 28px;
+      color: var(--text-soft); /* 10.6:1 auf Cream — AAA */
+    }
+    .lp-hero-lead strong { color: var(--text-strong); font-weight: 700; }
+    .lp-hero-actions {
+      display: flex; gap: 14px;
+      flex-wrap: wrap;
+      margin-bottom: 24px;
+    }
+    /* WCAG 1.3.1: Liste reset + flex layout */
+    .neuro-row {
+      list-style: none;
+      padding: 0;
+      margin: 8px 0 0;
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+    .neuro-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--white);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-pill);
+      padding: 8px 16px;
+      font-size: 0.86rem;
+      font-weight: 600;
+      color: var(--text-strong);
+    }
+    .neuro-badge .dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      display: inline-block;
+    }
+    .neuro-badge.adhs .dot     { background: var(--coral); }
+    .neuro-badge.dyslexie .dot { background: var(--mint); }
+    .neuro-badge.autismus .dot { background: var(--lila); }
+    .neuro-badge.daz .dot      { background: var(--yellow); }
+    .neuro-badge.multi .dot    { background: #5B9BD5; }
+    .neuro-badge.vision .dot   { background: var(--navy); }
+    /* WCAG 1.4.3: feste Farbe statt opacity — 7.1:1 Kontrast auf Cream (AAA Large) */
+    .neuro-label {
+      font-family: var(--font-heading);
+      font-weight: 700;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      letter-spacing: 0.04em;
+      margin: 18px 0 0;
+    }
+
+    /* Hero Visual Stack */
+    .lp-hero-visual {
+      position: relative;
+      max-width: 540px;
+      margin: 0 auto;
+      width: 100%;
+    }
+    .lp-hero-visual .tilt-frame { width: 100%; }
+    .lp-hero-visual .tilt-frame img {
+      aspect-ratio: 4 / 5;
+      object-fit: cover;
+    }
+    .lp-hero-mascot {
+      position: absolute;
+      top: -32px; right: -20px;
+      width: 130px;
+      z-index: 7;
+    }
+    .lp-hero-floating-1 {
+      position: absolute;
+      bottom: -28px; left: -32px;
+      z-index: 6;
+    }
+    .lp-hero-floating-2 {
+      position: absolute;
+      top: 38%; right: -38px;
+      z-index: 6;
+    }
+
+    @media (min-width: 900px) {
+      .lp-hero { padding: 80px 48px 120px; }
+      .lp-hero-inner {
+        grid-template-columns: 1.05fr 1fr;
+        gap: 64px;
+      }
+    }
+
+    /* ===== Wiederverwendbare Section-Background-Texture =====
+       Statische Blobs + Sterne. Identisches Pattern wie im Hero,
+       aber pro Section andere Farben/Positionen für Rhythmus.
+       Komplett ohne Animation. */
+    .section-bg {
+      position: absolute; inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+    .section-bg > * { position: absolute; }
+    .bg-blob { opacity: 0.12; }
+    .bg-blob-coral-l { color: var(--coral); top: -120px; left: -140px; width: 380px; height: 380px; }
+    .bg-blob-mint-r  { color: var(--mint);  bottom: -140px; right: -120px; width: 420px; height: 420px; }
+    .bg-blob-yellow-tr { color: var(--yellow); top: -80px; right: -80px; width: 240px; height: 240px; opacity: 0.18; }
+    .bg-star { opacity: 0.35; }
+    .bg-star-bl { color: var(--coral); bottom: 12%; left: 4%; width: 22px; height: 22px; }
+    @media (max-width: 767px) {
+      .bg-blob-coral-l { width: 260px; height: 260px; left: -100px; top: -80px; }
+      .bg-blob-mint-r { width: 280px; height: 280px; right: -100px; bottom: -100px; }
+      .bg-blob-yellow-tr { width: 180px; height: 180px; }
+    }
+    /* Innerer Content muss über dem Background liegen */
+    .personas-section > .section-text,
+    .personas-section > .marquee,
+    .compare-section > .section-text,
+    .compare-section > .compare-grid { position: relative; z-index: 1; }
+
+    /* Persona-Marquee Section */
+    .personas-section {
+      padding: 80px 0 100px;
+      background: var(--cream-light);
+      position: relative;
+      overflow: hidden;
+    }
+    .personas-section .section-text {
+      max-width: 720px;
+      margin: 0 auto 48px;
+      text-align: center;
+      padding: 0 24px;
+    }
+    .personas-section h2 {
+      font-size: clamp(1.8rem, 4vw, 2.6rem);
+      margin-bottom: 12px;
+    }
+    .personas-section p {
+      font-size: 1.05rem;
+      opacity: 0.85;
+    }
+
+    /* ===== Werte-Section (3 emotionale Karten) =====
+       Ersetzt die alte Bento-Section. Pastellige Hand-drawn-Karten mit
+       Inline-SVG-Icons. Statisch dekoriert (1 Blob + 1 Stern), kein
+       Aufmerksamkeits-Stehlen. */
+    .values-section {
+      padding: 80px 24px;
+      max-width: 1240px;
+      margin: 0 auto;
+      position: relative;
+    }
+    @media (min-width: 768px) {
+      .values-section { padding: 120px 48px; }
+    }
+    .values-section .section-bg {
+      position: absolute; inset: 0;
+      pointer-events: none;
+      z-index: 0;
+      overflow: hidden;
+    }
+    .values-section .section-bg .bg-blob-yellow-br {
+      position: absolute;
+      bottom: -120px; right: -100px;
+      width: 360px; height: 360px;
+      color: var(--yellow);
+      opacity: 0.18;
+    }
+    .values-section .section-bg .bg-star-tl {
+      position: absolute;
+      top: 60px; left: 5%;
+      width: 28px; height: 28px;
+      color: var(--mint);
+      opacity: 0.35;
+    }
+    .values-header {
+      text-align: center;
+      max-width: 760px;
+      margin: 0 auto 56px;
+      position: relative;
+      z-index: 2;
+    }
+    .values-header h2 {
+      font-size: clamp(1.9rem, 4.2vw, 2.8rem);
+      margin-bottom: 14px;
+      line-height: 1.2;
+    }
+    .values-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 24px;
+      position: relative;
+      z-index: 2;
+    }
+    @media (min-width: 768px) {
+      .values-grid { grid-template-columns: repeat(3, 1fr); gap: 32px; }
+    }
+    .value-card {
+      position: relative;
+      border-radius: 28px;
+      padding: 36px 32px;
+      transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
+                  box-shadow 0.35s ease;
+      overflow: hidden;
+    }
+    .value-card:hover {
+      transform: translateY(-4px) rotate(-0.3deg);
+      box-shadow: 0 18px 40px rgba(43,49,64,0.10);
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .value-card,
+      .value-card:hover { transform: none; transition: none; }
+    }
+    .value-card.mint {
+      background: rgba(47,184,166,0.12);
+      border: 1.5px solid rgba(47,184,166,0.30);
+    }
+    .value-card.yellow {
+      background: rgba(255,217,90,0.22);
+      border: 1.5px solid rgba(255,217,90,0.50);
+    }
+    .value-card.coral {
+      background: rgba(249,115,82,0.12);
+      border: 1.5px solid rgba(249,115,82,0.28);
+    }
+    .value-icon {
+      width: 80px; height: 80px;
+      margin-bottom: 20px;
+      display: block;
+    }
+    .value-card.mint   .value-icon { color: var(--mint); }
+    .value-card.yellow .value-icon { color: var(--coral); }
+    .value-card.coral  .value-icon { color: var(--coral); }
+    .value-card h3 {
+      font-family: var(--font-heading);
+      font-weight: 600;
+      font-size: 1.4rem;
+      line-height: 1.25;
+      margin-bottom: 12px;
+      color: var(--text-strong);
+    }
+    .value-card p {
+      font-size: 1rem;
+      line-height: 1.65;
+      color: var(--text-soft);
+    }
+    .value-card p strong { color: var(--text-strong); font-weight: 600; }
+    /* Sparkle-Decorations in den Kartenecken */
+    .value-sparkle {
+      position: absolute;
+      width: 14px; height: 14px;
+      opacity: 0.35;
+      pointer-events: none;
+    }
+    .value-sparkle.tr { top: 16px; right: 18px; }
+    .value-sparkle.bl { bottom: 18px; left: 20px; width: 12px; height: 12px; opacity: 0.28; }
+    .value-card.mint   .value-sparkle { color: var(--mint); }
+    .value-card.yellow .value-sparkle { color: var(--coral); }
+    .value-card.coral  .value-sparkle { color: var(--coral); }
+
+    /* ===== Discord-Community-Stripe ===== */
+    .community-stripe {
+      max-width: 980px;
+      margin: 40px auto 0;
+      padding: 22px 28px;
+      background: rgba(125,106,230,0.08);
+      border-top: 1px solid rgba(125,106,230,0.25);
+      border-bottom: 1px solid rgba(125,106,230,0.25);
+      border-radius: 18px;
+      display: flex;
+      align-items: center;
+      gap: 18px;
+      position: relative;
+      z-index: 2;
+    }
+    .community-stripe .community-icon {
+      flex-shrink: 0;
+      width: 44px; height: 44px;
+      border-radius: 14px;
+      background: rgba(125,106,230,0.16);
+      color: var(--lila);
+      display: flex; align-items: center; justify-content: center;
+    }
+    .community-stripe p {
+      margin: 0;
+      font-size: 0.98rem;
+      line-height: 1.55;
+      color: var(--text-soft);
+    }
+    .community-stripe p strong { color: var(--text-strong); font-weight: 600; }
+    .community-stripe a {
+      color: #5644C9;
+      font-weight: 600;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      white-space: nowrap;
+    }
+    .community-stripe a:hover { color: var(--navy); }
+    @media (max-width: 700px) {
+      .community-stripe {
+        flex-direction: column;
+        text-align: center;
+        padding: 22px 22px 24px;
+        margin: 32px 16px 0;
+      }
+    }
+
+    /* Comparison Section */
+    .compare-section {
+      padding: 100px 24px;
+      max-width: 1100px;
+      margin: 0 auto;
+      position: relative;
+      overflow: hidden;
+    }
+    .compare-section .section-text { text-align: center; max-width: 720px; margin: 0 auto 40px; }
+    .compare-section h2 { font-size: clamp(1.8rem, 4vw, 2.6rem); margin-bottom: 14px; }
+    .compare-section h2 .accent { color: var(--coral); }
+
+    /* Zielgruppen */
+    .audience-section {
+      padding: 100px 24px;
+      background: var(--cream-light);
+      position: relative;
+    }
+    .audience-inner { max-width: 1200px; margin: 0 auto; }
+    .audience-header { text-align: center; max-width: 720px; margin: 0 auto 56px; }
+    .audience-header h2 { font-size: clamp(1.9rem, 4.2vw, 2.6rem); margin-bottom: 14px; }
+    .audience-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 20px;
+    }
+    @media (min-width: 700px) { .audience-grid { grid-template-columns: repeat(2, 1fr); } }
+    @media (min-width: 1100px) { .audience-grid { grid-template-columns: repeat(4, 1fr); } }
+    .audience-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 28px 26px;
+      box-shadow: var(--shadow-card);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+    .audience-card:hover { transform: translateY(-6px); box-shadow: var(--shadow-card-hover); }
+    .audience-card .a-icon {
+      width: 56px; height: 56px;
+      border-radius: 16px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.7rem;
+      margin-bottom: 16px;
+    }
+    .audience-card.coral  .a-icon { background: rgba(249,115,82,0.22); }
+    .audience-card.mint   .a-icon { background: rgba(47,184,166,0.22); }
+    .audience-card.yellow .a-icon { background: rgba(255,217,90,0.5); }
+    .audience-card.lila   .a-icon { background: rgba(125,106,230,0.22); }
+    .audience-card h3 { font-size: 1.15rem; margin-bottom: 10px; }
+    .audience-card p { font-size: 0.95rem; opacity: 0.85; line-height: 1.65; }
+
+    /* How-it-works */
+    .how-section {
+      padding: 100px 24px;
+      max-width: 1100px;
+      margin: 0 auto;
+    }
+    .how-header { text-align: center; max-width: 680px; margin: 0 auto 56px; }
+    .how-header h2 { font-size: clamp(1.9rem, 4.2vw, 2.6rem); margin-bottom: 14px; }
+    .how-steps {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 28px;
+    }
+    @media (min-width: 800px) { .how-steps { grid-template-columns: repeat(3, 1fr); gap: 32px; } }
+    .how-step {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 32px 28px;
+      box-shadow: var(--shadow-card);
+      position: relative;
+      transition: transform 0.3s ease;
+    }
+    .how-step:hover { transform: translateY(-4px); }
+    .how-step .step-num {
+      position: absolute;
+      top: -20px; left: 28px;
+      width: 48px; height: 48px;
+      border-radius: 14px;
+      background: var(--lila);
+      color: var(--white);
+      font-family: var(--font-heading);
+      font-weight: 700;
+      font-size: 1.4rem;
+      display: flex; align-items: center; justify-content: center;
+      transform: rotate(-4deg);
+      box-shadow: 0 6px 16px rgba(125,106,230,0.35);
+    }
+    .how-step.s2 .step-num { background: var(--coral); box-shadow: 0 6px 16px rgba(249,115,82,0.35); }
+    .how-step.s3 .step-num { background: var(--mint); box-shadow: 0 6px 16px rgba(47,184,166,0.35); }
+    .how-step .step-icon {
+      font-size: 2.5rem;
+      margin-top: 18px;
+      margin-bottom: 14px;
+    }
+    .how-step h3 { font-size: 1.2rem; margin-bottom: 10px; }
+    .how-step p { font-size: 0.95rem; line-height: 1.65; opacity: 0.85; }
+
+    /* Testimonials */
+    .testimonials-section {
+      padding: 100px 24px;
+      background: var(--cream-light);
+      position: relative;
+      overflow: hidden;
+    }
+    .testimonials-inner { max-width: 1200px; margin: 0 auto; }
+    .testimonials-header { text-align: center; max-width: 680px; margin: 0 auto 48px; }
+    .testimonials-header h2 { font-size: clamp(1.9rem, 4.2vw, 2.6rem); margin-bottom: 14px; }
+    .testimonial-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 22px;
+    }
+    @media (min-width: 800px) { .testimonial-grid { grid-template-columns: repeat(3, 1fr); } }
+    .testimonial-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      padding: 32px 28px;
+      box-shadow: var(--shadow-card);
+      position: relative;
+      transition: transform 0.3s ease;
+    }
+    .testimonial-card:hover { transform: translateY(-4px); }
+    .testimonial-card .t-quote-mark {
+      font-family: var(--font-heading);
+      font-size: 3.5rem;
+      color: var(--lila);
+      line-height: 0.8;
+      margin-bottom: 4px;
+      opacity: 0.6;
+    }
+    .testimonial-card p.t-body { font-size: 1rem; line-height: 1.7; margin-bottom: 18px; }
+    .testimonial-card .t-author {
+      display: flex; align-items: center; gap: 12px;
+      font-size: 0.88rem; font-weight: 600; color: var(--navy);
+      padding-top: 14px; border-top: 1px solid var(--border);
+    }
+    .testimonial-card .t-author-avatar {
+      width: 36px; height: 36px;
+      border-radius: 50%;
+      background: var(--cream-light);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.2rem;
+      flex-shrink: 0;
+    }
+    .testimonial-card.lila .t-author-avatar { background: rgba(125,106,230,0.2); }
+    .testimonial-card.coral .t-author-avatar { background: rgba(249,115,82,0.2); }
+    .testimonial-card.mint .t-author-avatar { background: rgba(47,184,166,0.2); }
+
+    /* FAQ */
+    .faq-section {
+      padding: 100px 24px;
+      max-width: 920px;
+      margin: 0 auto;
+    }
+    .faq-header { text-align: center; margin-bottom: 48px; }
+    .faq-header h2 { font-size: clamp(1.9rem, 4.2vw, 2.6rem); margin-bottom: 14px; }
+
+    /* CTA-Newsletter */
+    .lp-cta {
+      background: linear-gradient(135deg, var(--coral) 0%, var(--lila) 100%);
+      padding: 100px 24px;
+      color: var(--white);
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .lp-cta-inner { max-width: 720px; margin: 0 auto; position: relative; z-index: 2; }
+    .lp-cta .sticker-logo-wrap {
+      width: 120px;
+      margin: 0 auto 32px;
+    }
+    .lp-cta h2 {
+      color: var(--white);
+      font-size: clamp(2rem, 5vw, 3rem);
+      margin-bottom: 18px;
+      line-height: 1.1;
+    }
+    .lp-cta p { font-size: 1.1rem; margin-bottom: 32px; opacity: 0.92; line-height: 1.6; }
+    .lp-cta-form {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+      max-width: 560px;
+      margin: 0 auto;
+    }
+    @media (min-width: 600px) {
+      .lp-cta-form { grid-template-columns: 1fr 1fr auto; }
+    }
+    .lp-cta-form input {
+      padding: 16px 20px;
+      border: none;
+      border-radius: var(--radius-input);
+      background: rgba(255,255,255,0.95);
+      color: var(--navy);
+      font-family: var(--font-body);
+      font-size: 1rem;
+      font-weight: 500;
+    }
+    .lp-cta-form input:focus {
+      outline: none;
+      box-shadow: 0 0 0 4px rgba(255,255,255,0.45);
+    }
+    .lp-cta-form button {
+      background: var(--navy);
+      color: var(--white);
+      border: none;
+      border-radius: var(--radius-pill);
+      padding: 16px 36px;
+      font-family: var(--font-body);
+      font-weight: 700;
+      font-size: 1rem;
+      cursor: pointer;
+      transition: transform 0.3s cubic-bezier(0.34,1.56,0.64,1), background 0.2s;
+      white-space: nowrap;
+    }
+    .lp-cta-form button:hover { background: var(--cream); color: var(--navy); transform: translateY(-2px); }
+    .lp-cta-hint { font-size: 0.85rem; opacity: 0.85; margin-top: 18px; }
+    .lp-cta-success {
+      display: none;
+      background: var(--white);
+      color: var(--navy);
+      padding: 28px 24px;
+      border-radius: var(--radius-card);
+      margin-top: 20px;
+    }
+    .lp-cta-success.visible { display: block; }
+    .lp-cta-success h3 { color: var(--navy); margin-bottom: 6px; }
+
+    /* Hero floating-deco-Positionen */
+    .hero-deco-star-1 { top: 12%; right: 6%; }
+    .hero-deco-star-2 { top: 62%; left: 2%; }
+    .hero-deco-sparkle-1 { top: 28%; left: 8%; }
+    .hero-deco-sparkle-2 { bottom: 18%; right: 4%; }
+    .hero-deco-circle-1 { top: 50%; right: 14%; width: 24px; height: 24px; background: rgba(125,106,230,0.18); border-radius: 50%; }
+
+    .audience-deco-blob {
+      top: -120px; left: -100px;
+      width: 320px; height: 320px;
+      opacity: 0.18;
+    }
+    .testimonials-deco-blob {
+      bottom: -160px; right: -120px;
+      width: 360px; height: 360px;
+      opacity: 0.15;
+    }
+    .cta-deco-star { width: 36px; height: 36px; opacity: 0.18; }
+    .cta-deco-star.s1 { top: 12%; left: 8%; }
+    .cta-deco-star.s2 { bottom: 14%; right: 10%; }
+    .cta-deco-sparkle { width: 22px; height: 22px; opacity: 0.2; }
+    .cta-deco-sparkle.s1 { top: 30%; right: 14%; }
+    .cta-deco-sparkle.s2 { bottom: 25%; left: 12%; }
+  </style>
+</head>
+<body data-page="start">
+
+  <a href="#main" class="skip-link">Zum Inhalt springen</a>
+
+  <div class="sandbox-banner">
+  Du bist im Redesign-Sandbox <strong>v2</strong>. <a href="../index.html">Zur Live-Version wechseln &rarr;</a>
+</div>
+<nav class="navbar" aria-label="Hauptnavigation">
+  <div class="navbar-inner">
+    <a href="index.html" class="navbar-brand">
+      <img src="../Konzept_Rebranding/logo-lesekumpel-512.webp" alt="Lesekumpel Logo" class="navbar-logo">
+      <span>Lese<span class="brand-name">kumpel</span></span>
+    </a>
+    <div class="navbar-links">
+      <a href="index.html#mission" data-nav="mission">F&uuml;r euch</a>
+      <a href="index.html#how-it-works" data-nav="how">So funktioniert&rsquo;s</a>
+      <a href="ueber-uns.html" data-nav="ueber-uns">&Uuml;ber uns</a>
+      <a href="demo.html" data-nav="demo">Demo-Texte</a>
+      <a href="preise.html" data-nav="preise">Preise</a>
+      <a href="#" data-nav="erstellen" onclick="comingSoon(event)">Geschichte erstellen</a>
+      <a href="mein-konto.html" data-nav="mein-konto">Mein Konto</a>
+    </div>
+    <!-- Radical Simplicity: Login als dezenter Text-Link. Kein Button-Style →
+         kein Konflikt mit dem Hero-CTA. -->
+    <a href="mein-konto.html" class="nav-login">Login &middot; Registrieren</a>
+    <button type="button" class="burger" aria-label="Men&uuml; &ouml;ffnen" aria-expanded="false" aria-controls="mobile-menu" onclick="toggleMenu()">&#9776;</button>
+  </div>
+  <div id="mobile-menu" class="mobile-menu">
+    <a href="index.html#mission" onclick="toggleMenu()">F&uuml;r euch</a>
+    <a href="index.html#how-it-works" onclick="toggleMenu()">So funktioniert&rsquo;s</a>
+    <a href="ueber-uns.html" onclick="toggleMenu()">&Uuml;ber uns</a>
+    <a href="demo.html" onclick="toggleMenu()">Demo-Texte</a>
+    <a href="preise.html" onclick="toggleMenu()">Preise</a>
+    <a href="#" onclick="comingSoon(event); toggleMenu()">Geschichte erstellen</a>
+    <a href="mein-konto.html" onclick="toggleMenu()">Mein Konto</a>
+    <a href="index.html#registrieren" class="mobile-menu-cta" onclick="toggleMenu()">Jetzt registrieren &rarr;</a>
+  </div>
+</nav>
+
+  <main id="main">
+
+    <!-- ============ HERO — Radical Simplicity ============
+         Ein Job, ein Ziel: Eltern überzeugen, "Demo-Texte entdecken" zu klicken.
+         Hintergrund-Blobs + statische Sterne als Brand-Texture (groß, blass,
+         keine Animation → ADHS-freundlich). Alle aria-hidden. -->
+    <section class="lp-hero" aria-labelledby="hero-heading">
+      <!-- Statische Background-Decorations: kein Float, kein Sparkle.
+           prefers-reduced-motion-konform, da gar keine Animation. -->
+      <div class="hero-bg" aria-hidden="true">
+        <svg class="hero-blob hero-blob-coral" viewBox="0 0 200 200">
+          <path fill="currentColor" d="M44.7,-69.7C58.6,-62.3,71.4,-51.9,79.3,-38.5C87.2,-25.1,90.2,-8.6,87.7,6.4C85.2,21.4,77.2,34.9,67.2,46.7C57.2,58.5,45.2,68.5,31.7,73.8C18.2,79.1,3.1,79.7,-12,77.2C-27.2,74.6,-42.5,69.1,-54.2,59.3C-65.9,49.5,-74,35.5,-78,20.3C-82,5,-81.9,-11.5,-76.4,-25.8C-70.9,-40,-60,-52,-46.8,-60.2C-33.7,-68.4,-18.3,-72.7,-2.5,-69.2C13.4,-65.6,30.8,-77.1,44.7,-69.7Z" transform="translate(100 100)"/>
+        </svg>
+        <svg class="hero-blob hero-blob-mint" viewBox="0 0 200 200">
+          <path fill="currentColor" d="M44.7,-69.7C58.6,-62.3,71.4,-51.9,79.3,-38.5C87.2,-25.1,90.2,-8.6,87.7,6.4C85.2,21.4,77.2,34.9,67.2,46.7C57.2,58.5,45.2,68.5,31.7,73.8C18.2,79.1,3.1,79.7,-12,77.2C-27.2,74.6,-42.5,69.1,-54.2,59.3C-65.9,49.5,-74,35.5,-78,20.3C-82,5,-81.9,-11.5,-76.4,-25.8C-70.9,-40,-60,-52,-46.8,-60.2C-33.7,-68.4,-18.3,-72.7,-2.5,-69.2C13.4,-65.6,30.8,-77.1,44.7,-69.7Z" transform="translate(100 100)"/>
+        </svg>
+        <svg class="hero-blob hero-blob-yellow" viewBox="0 0 200 200">
+          <circle cx="100" cy="100" r="90" fill="currentColor"/>
+        </svg>
+        <svg class="hero-star hero-star-1" viewBox="0 0 32 32">
+          <polygon points="16,2 20,12 30,12 22,19 25,30 16,23 7,30 10,19 2,12 12,12" fill="currentColor"/>
+        </svg>
+        <svg class="hero-star hero-star-2" viewBox="0 0 32 32">
+          <polygon points="16,2 20,12 30,12 22,19 25,30 16,23 7,30 10,19 2,12 12,12" fill="currentColor"/>
+        </svg>
+        <svg class="hero-star hero-star-3" viewBox="0 0 32 32">
+          <polygon points="16,2 20,12 30,12 22,19 25,30 16,23 7,30 10,19 2,12 12,12" fill="currentColor"/>
+        </svg>
+      </div>
+
+      <div class="lp-hero-inner">
+        <div class="lp-hero-text reveal">
+          <!-- Badge: Yellow (Brand-Look). Navy auf Yellow = 10.09:1 (AAA). -->
+          <span class="section-badge yellow">&#128640; Alpha-Phase &middot; jetzt dabei sein</span>
+
+          <!-- Semantische Umbrüche f. kognitive Entlastung (3 klare Atempausen).
+               Anführungszeichen weg → ruhigerer Lesefluss.
+               "jedes Gehirn" nur farbig (Lila), keine zusätzliche Unterstreichung. -->
+          <h1 id="hero-heading" class="hero-h1">
+            Wenn Lesen endlich<br>
+            <span class="marker">Klick</span> macht &ndash;<br>
+            f&uuml;r <span class="accent">jedes Gehirn</span>.
+          </h1>
+
+          <p class="lp-hero-lead">
+            Lesekumpel ist der sichere Hafen f&uuml;r kleine Entdecker, die ihren
+            eigenen Weg gehen. KI-Geschichten, die sich an <strong>ADHS, Autismus
+            und Legasthenie</strong> anpassen &mdash; ohne Druck, voller
+            kleiner Erfolgserlebnisse.
+          </p>
+
+          <!-- Single primary CTA. Mint + Navy = 6.06:1 (AA). -->
+          <a href="demo.html" class="btn btn-primary btn-large hero-cta">
+            Demo-Texte entdecken &rarr;
+          </a>
+        </div>
+
+        <!-- Hero-Visual: rebranded Brand-Bild. 540×675 (1x) + 1080×1350 (2x Retina).
+             WebP primär, JPG-Fallback. Display-Größe = native 1x → keine Skalierung im Browser. -->
+        <div class="lp-hero-visual reveal">
+          <div class="hero-image-frame">
+            <picture>
+              <source type="image/webp"
+                      srcset="../bilder/marketing/Junge_liest_rebranded_540.webp 1x,
+                              ../bilder/marketing/Junge_liest_rebranded_1080.webp 2x">
+              <img src="../bilder/marketing/Junge_liest_rebranded_540.jpg"
+                   srcset="../bilder/marketing/Junge_liest_rebranded_540.jpg 1x,
+                           ../bilder/marketing/Junge_liest_rebranded_1080.jpg 2x"
+                   width="540" height="675"
+                   loading="eager" fetchpriority="high"
+                   alt="Ein Junge sitzt entspannt auf einem Sofa und liest l&auml;chelnd eine Lesekumpel-Geschichte auf seinem Tablet.">
+            </picture>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ WERTE-SECTION (3 emotionale Karten) ============
+         Direkt unter dem Hero: emotionaler Einstieg statt Stats. -->
+    <section class="values-section" id="mission" aria-labelledby="values-heading">
+      <div class="section-bg" aria-hidden="true">
+        <svg class="bg-blob-yellow-br" viewBox="0 0 200 200"><circle cx="100" cy="100" r="90" fill="currentColor"/></svg>
+        <svg class="bg-star-tl" viewBox="0 0 32 32"><polygon points="16,2 20,12 30,12 22,19 25,30 16,23 7,30 10,19 2,12 12,12" fill="currentColor"/></svg>
+      </div>
+
+      <div class="values-header reveal">
+        <span class="eyebrow coral">Was uns wichtig ist</span>
+        <h2 id="values-heading">Drei Versprechen, an die wir <span class="marker">glauben</span>.</h2>
+      </div>
+
+      <div class="values-grid reveal-stagger">
+
+        <!-- Card 1: Mint &mdash; St&auml;rken -->
+        <article class="value-card mint">
+          <svg class="value-sparkle tr" viewBox="0 0 24 24" aria-hidden="true"><path d="M12,2 L14,10 L22,12 L14,14 L12,22 L10,14 L2,12 L10,10 Z" fill="currentColor"/></svg>
+          <svg class="value-sparkle bl" viewBox="0 0 24 24" aria-hidden="true"><path d="M12,2 L14,10 L22,12 L14,14 L12,22 L10,14 L2,12 L10,10 Z" fill="currentColor"/></svg>
+          <svg class="value-icon" viewBox="0 0 80 80" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M18 62 Q40 58 62 62"/>
+            <path d="M34 62 Q32 68 28 70"/>
+            <path d="M46 62 Q48 68 52 70"/>
+            <path d="M40 62 Q40 48 40 28"/>
+            <path d="M40 44 Q28 40 22 30 Q32 28 40 34"/>
+            <path d="M40 34 Q52 28 58 18 Q48 16 40 24"/>
+            <circle cx="40" cy="22" r="3"/>
+          </svg>
+          <h3>Jedes Kind hat St&auml;rken.</h3>
+          <p>Lesekumpel ist kein Lern-Drill. Wir entdecken gemeinsam, was dein Kind bereits kann &mdash; und bauen darauf auf. Spielerisch, geduldig und individuell.</p>
+        </article>
+
+        <!-- Card 2: Yellow &mdash; Kostenlos -->
+        <article class="value-card yellow">
+          <svg class="value-sparkle tr" viewBox="0 0 24 24" aria-hidden="true"><path d="M12,2 L14,10 L22,12 L14,14 L12,22 L10,14 L2,12 L10,10 Z" fill="currentColor"/></svg>
+          <svg class="value-sparkle bl" viewBox="0 0 24 24" aria-hidden="true"><path d="M12,2 L14,10 L22,12 L14,14 L12,22 L10,14 L2,12 L10,10 Z" fill="currentColor"/></svg>
+          <svg class="value-icon" viewBox="0 0 80 80" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M14 42 Q12 22 32 14 Q52 8 64 22 Q72 36 66 52 Q56 68 38 66 Q18 64 14 42 Z" stroke-dasharray="5 3"/>
+            <ellipse cx="32" cy="42" rx="9" ry="13"/>
+            <path d="M58 30 Q48 30 46 42 Q48 54 58 54"/>
+            <path d="M44 38 H56"/>
+            <path d="M44 46 H54"/>
+          </svg>
+          <h3>Heute und in Zukunft.</h3>
+          <p>Bildung darf kein Luxus sein. Unser Versprechen: Der volle Zugang zu allen Geschichten bleibt f&uuml;r jedes Kind <strong>dauerhaft kostenlos</strong>.</p>
+        </article>
+
+        <!-- Card 3: Coral &mdash; Von Eltern f&uuml;r Eltern -->
+        <article class="value-card coral">
+          <svg class="value-sparkle tr" viewBox="0 0 24 24" aria-hidden="true"><path d="M12,2 L14,10 L22,12 L14,14 L12,22 L10,14 L2,12 L10,10 Z" fill="currentColor"/></svg>
+          <svg class="value-sparkle bl" viewBox="0 0 24 24" aria-hidden="true"><path d="M12,2 L14,10 L22,12 L14,14 L12,22 L10,14 L2,12 L10,10 Z" fill="currentColor"/></svg>
+          <svg class="value-icon" viewBox="0 0 80 80" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+            <path d="M40 34 Q32 24 24 28 Q18 32 22 40 Q28 48 40 56 Q52 48 58 40 Q62 32 56 28 Q48 24 40 34 Z"/>
+            <path d="M10 52 Q12 62 22 66 Q30 68 38 64"/>
+            <path d="M16 50 Q14 56 18 62"/>
+            <path d="M70 52 Q68 62 58 66 Q50 68 42 64"/>
+            <path d="M64 50 Q66 56 62 62"/>
+          </svg>
+          <h3>Von Eltern f&uuml;r Eltern.</h3>
+          <p>Wir kennen den Kampf mit Hausaufgaben. Deshalb haben wir Lesekumpel so gebaut, dass Frust durch Neugier ersetzt wird &mdash; f&uuml;r Abende ohne Tr&auml;nen.</p>
+        </article>
+
+      </div>
+
+      <!-- Discord-Community-Stripe -->
+      <aside class="community-stripe reveal" aria-label="Lesekumpel-Community auf Discord">
+        <span class="community-icon" aria-hidden="true">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.095 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.095 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg>
+        </span>
+        <p>
+          <strong>Du bist nicht allein.</strong> In unserer Discord-Community findest du Eltern, Lehrkr&auml;fte und Fachpersonen, die wissen, wovon sie reden.
+          <a href="https://discord.gg/sAr6KEsg" target="_blank" rel="noopener">Zur Community &rarr;</a>
+        </p>
+      </aside>
+    </section>
+
+    <!-- ============ PERSONA MARQUEE ============ -->
+    <section class="personas-section">
+      <!-- Dezente Background-Texture: 2 Blobs, 1 Stern. Statisch. -->
+      <div class="section-bg" aria-hidden="true">
+        <svg class="bg-blob bg-blob-coral-l" viewBox="0 0 200 200"><path fill="currentColor" d="M44.7,-69.7C58.6,-62.3,71.4,-51.9,79.3,-38.5C87.2,-25.1,90.2,-8.6,87.7,6.4C85.2,21.4,77.2,34.9,67.2,46.7C57.2,58.5,45.2,68.5,31.7,73.8C18.2,79.1,3.1,79.7,-12,77.2C-27.2,74.6,-42.5,69.1,-54.2,59.3C-65.9,49.5,-74,35.5,-78,20.3C-82,5,-81.9,-11.5,-76.4,-25.8C-70.9,-40,-60,-52,-46.8,-60.2C-33.7,-68.4,-18.3,-72.7,-2.5,-69.2C13.4,-65.6,30.8,-77.1,44.7,-69.7Z" transform="translate(100 100)"/></svg>
+        <svg class="bg-blob bg-blob-mint-r" viewBox="0 0 200 200"><path fill="currentColor" d="M44.7,-69.7C58.6,-62.3,71.4,-51.9,79.3,-38.5C87.2,-25.1,90.2,-8.6,87.7,6.4C85.2,21.4,77.2,34.9,67.2,46.7C57.2,58.5,45.2,68.5,31.7,73.8C18.2,79.1,3.1,79.7,-12,77.2C-27.2,74.6,-42.5,69.1,-54.2,59.3C-65.9,49.5,-74,35.5,-78,20.3C-82,5,-81.9,-11.5,-76.4,-25.8C-70.9,-40,-60,-52,-46.8,-60.2C-33.7,-68.4,-18.3,-72.7,-2.5,-69.2C13.4,-65.6,30.8,-77.1,44.7,-69.7Z" transform="translate(100 100)"/></svg>
+      </div>
+      <div class="section-text reveal">
+        <span class="eyebrow">Unsere KI-Autor:innen</span>
+        <h2>9 Pers&ouml;nlichkeiten &mdash; eine f&uuml;r jedes Kind.</h2>
+        <p>Von einfachen S&auml;tzen bis zur literarischen Erz&auml;hlung. Jede Persona hat ein Lese-Niveau, einen eigenen Ton und Varianten f&uuml;r ADHS, Autismus und LRS.</p>
+      </div>
+      <div class="marquee">
+        <div class="marquee-track">
+          <!-- Original-Cards -->
+          <a href="demo.html" class="persona-card p-pip">
+            <img src="../avatars/pip-punkt.webp" alt="" class="persona-avatar-lg">
+            <div class="persona-name-big">Pip Punkt</div>
+            <span class="persona-tag">Einfach lesen</span>
+          </a>
+          <a href="demo.html" class="persona-card p-mia">
+            <img src="../avatars/mia-mitte.webp" alt="" class="persona-avatar-lg">
+            <div class="persona-name-big">Mia Mitte</div>
+            <span class="persona-tag">Fl&uuml;ssig lesen</span>
+          </a>
+          <a href="demo.html" class="persona-card p-peter">
+            <img src="../avatars/peter-past.webp" alt="" class="persona-avatar-lg">
+            <div class="persona-name-big">Peter Past</div>
+            <span class="persona-tag">Erz&auml;hlzeit</span>
+          </a>
+          <a href="demo.html" class="persona-card p-stella">
+            <img src="../avatars/stella-stimmenreich.webp" alt="" class="persona-avatar-lg">
+            <div class="persona-name-big">Stella Stimmenreich</div>
+            <span class="persona-tag">Dialoge</span>
+          </a>
+          <a href="demo.html" class="persona-card p-finja">
+            <img src="../avatars/finja-feder.webp" alt="" class="persona-avatar-lg">
+            <div class="persona-name-big">Finja Feder</div>
+            <span class="persona-tag">Anspruchsvoll</span>
+          </a>
+          <a href="demo.html" class="persona-card p-samira">
+            <img src="../avatars/samira-wissensfreund.webp" alt="" class="persona-avatar-lg">
+            <div class="persona-name-big">Samira Wissensfreund</div>
+            <span class="persona-tag">Sachtexte</span>
+          </a>
+          <a href="demo.html" class="persona-card p-holzi">
+            <img src="../avatars/holzi-pixelkopf.webp" alt="" class="persona-avatar-lg">
+            <div class="persona-name-big">Holzi Pixelkopf</div>
+            <span class="persona-tag">Gaming</span>
+          </a>
+          <a href="demo.html" class="persona-card p-deniz">
+            <img src="../avatars/deniz-traumfaenger.webp" alt="" class="persona-avatar-lg">
+            <div class="persona-name-big">Deniz Traumf&auml;nger</div>
+            <span class="persona-tag">Fantasy</span>
+          </a>
+          <a href="demo.html" class="persona-card p-jonas">
+            <img src="../avatars/jonas-entdecker.webp" alt="" class="persona-avatar-lg">
+            <div class="persona-name-big">Jonas Entdecker</div>
+            <span class="persona-tag">Abenteuer</span>
+          </a>
+          <!-- Duplikat für endless loop -->
+          <a href="demo.html" class="persona-card p-pip" aria-hidden="true">
+            <img src="../avatars/pip-punkt.webp" alt="" class="persona-avatar-lg">
+            <div class="persona-name-big">Pip Punkt</div>
+            <span class="persona-tag">Einfach lesen</span>
+          </a>
+          <a href="demo.html" class="persona-card p-mia" aria-hidden="true">
+            <img src="../avatars/mia-mitte.webp" alt="" class="persona-avatar-lg">
+            <div class="persona-name-big">Mia Mitte</div>
+            <span class="persona-tag">Fl&uuml;ssig lesen</span>
+          </a>
+          <a href="demo.html" class="persona-card p-peter" aria-hidden="true">
+            <img src="../avatars/peter-past.webp" alt="" class="persona-avatar-lg">
+            <div class="persona-name-big">Peter Past</div>
+            <span class="persona-tag">Erz&auml;hlzeit</span>
+          </a>
+          <a href="demo.html" class="persona-card p-stella" aria-hidden="true">
+            <img src="../avatars/stella-stimmenreich.webp" alt="" class="persona-avatar-lg">
+            <div class="persona-name-big">Stella Stimmenreich</div>
+            <span class="persona-tag">Dialoge</span>
+          </a>
+          <a href="demo.html" class="persona-card p-finja" aria-hidden="true">
+            <img src="../avatars/finja-feder.webp" alt="" class="persona-avatar-lg">
+            <div class="persona-name-big">Finja Feder</div>
+            <span class="persona-tag">Anspruchsvoll</span>
+          </a>
+          <a href="demo.html" class="persona-card p-samira" aria-hidden="true">
+            <img src="../avatars/samira-wissensfreund.webp" alt="" class="persona-avatar-lg">
+            <div class="persona-name-big">Samira</div>
+            <span class="persona-tag">Sachtexte</span>
+          </a>
+          <a href="demo.html" class="persona-card p-holzi" aria-hidden="true">
+            <img src="../avatars/holzi-pixelkopf.webp" alt="" class="persona-avatar-lg">
+            <div class="persona-name-big">Holzi</div>
+            <span class="persona-tag">Gaming</span>
+          </a>
+          <a href="demo.html" class="persona-card p-deniz" aria-hidden="true">
+            <img src="../avatars/deniz-traumfaenger.webp" alt="" class="persona-avatar-lg">
+            <div class="persona-name-big">Deniz</div>
+            <span class="persona-tag">Fantasy</span>
+          </a>
+          <a href="demo.html" class="persona-card p-jonas" aria-hidden="true">
+            <img src="../avatars/jonas-entdecker.webp" alt="" class="persona-avatar-lg">
+            <div class="persona-name-big">Jonas</div>
+            <span class="persona-tag">Abenteuer</span>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ COMPARISON ============ -->
+    <section class="compare-section">
+      <!-- Eine sehr blasse Yellow-Blob seitlich + 1 kleiner Stern -->
+      <div class="section-bg" aria-hidden="true">
+        <svg class="bg-blob bg-blob-yellow-tr" viewBox="0 0 200 200"><circle cx="100" cy="100" r="90" fill="currentColor"/></svg>
+        <svg class="bg-star bg-star-bl" viewBox="0 0 32 32"><polygon points="16,2 20,12 30,12 22,19 25,30 16,23 7,30 10,19 2,12 12,12" fill="currentColor"/></svg>
+      </div>
+      <div class="section-text reveal">
+        <span class="eyebrow">Aus eigener Erfahrung</span>
+        <h2>Lesen war ein Kampf.<br>Jetzt ist es ein <span class="accent">Lieblingsmoment</span>.</h2>
+      </div>
+      <div class="compare-grid reveal-stagger">
+        <div class="compare-card before">
+          <span class="compare-label">Vorher</span>
+          <p>&bdquo;Mama, ich kann das nicht. Die W&ouml;rter sind zu lang. Ich will nicht mehr lesen.&ldquo; Schultag-Drama, T&auml;nen vor dem B&uuml;cher-Regal, vermeidende Strategien &mdash; und das schlechte Gewissen der Eltern.</p>
+        </div>
+        <div class="compare-arrow" aria-hidden="true">&rarr;</div>
+        <div class="compare-card after">
+          <span class="compare-label">Mit Lesekumpel</span>
+          <p>&bdquo;Mama, darf ich noch eine Geschichte lesen?&ldquo; Pl&ouml;tzlich werden zwei Minuten zu zwanzig. Pl&ouml;tzlich ist das schwierige Wort kein Stolperstein, sondern eine Frage an Pino, das Maskottchen. Pl&ouml;tzlich liest dein Kind <strong>freiwillig</strong>.</p>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ============ HOW IT WORKS ============ -->
+    <section class="how-section" id="how-it-works">
+      <div class="how-header reveal">
+        <span class="eyebrow mint">So einfach geht Lesefreude</span>
+        <h2>Drei Schritte, kein Anmeldedrama.</h2>
+        <p>Probier&apos;s mit deinem Kind &mdash; wenn es Spa&szlig; macht, registriert ihr euch sp&auml;ter f&uuml;r mehr.</p>
+      </div>
+      <div class="how-steps reveal-stagger">
+        <div class="how-step s1">
+          <div class="step-num">1</div>
+          <div class="step-icon">&#128269;</div>
+          <h3>Entdecken, was begeistert</h3>
+          <p>St&ouml;bere durch die Demo-Texte oder lass die KI Geschichten vorschlagen &mdash; passend zum Lieblingsthema deines Kindes.</p>
+        </div>
+        <div class="how-step s2">
+          <div class="step-num">2</div>
+          <div class="step-icon">&#128214;</div>
+          <h3>Lesen im eigenen Tempo</h3>
+          <p>Dein Kind liest allein oder mit dir. Schwieriges Wort? Antippen &mdash; vorgelesen, in Silben zerlegt, kindgerecht erkl&auml;rt.</p>
+        </div>
+        <div class="how-step s3">
+          <div class="step-num">3</div>
+          <div class="step-icon">&#127881;</div>
+          <h3>Stolz sein &mdash; zusammen</h3>
+          <p>Mit jeder Geschichte w&auml;chst das Selbstvertrauen. Dein Kind erlebt: &bdquo;Ich kann das!&ldquo;</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ TESTIMONIALS ============ -->
+    <section class="testimonials-section">
+      <svg class="deco-blob testimonials-deco-blob deco-hide-mobile" viewBox="0 0 200 200" aria-hidden="true">
+        <path fill="#7D6AE6" d="M44.7,-69.7C58.6,-62.3,71.4,-51.9,79.3,-38.5C87.2,-25.1,90.2,-8.6,87.7,6.4C85.2,21.4,77.2,34.9,67.2,46.7C57.2,58.5,45.2,68.5,31.7,73.8C18.2,79.1,3.1,79.7,-12,77.2C-27.2,74.6,-42.5,69.1,-54.2,59.3C-65.9,49.5,-74,35.5,-78,20.3C-82,5,-81.9,-11.5,-76.4,-25.8C-70.9,-40,-60,-52,-46.8,-60.2C-33.7,-68.4,-18.3,-72.7,-2.5,-69.2C13.4,-65.6,30.8,-77.1,44.7,-69.7Z" transform="translate(100 100)"/>
+      </svg>
+      <div class="testimonials-inner">
+        <div class="testimonials-header reveal">
+          <span class="eyebrow coral">Familien erz&auml;hlen</span>
+          <h2>Lesen, ohne Tr&auml;nen.</h2>
+        </div>
+        <div class="testimonial-grid reveal-stagger">
+          <div class="testimonial-card lila">
+            <div class="t-quote-mark">&ldquo;</div>
+            <p class="t-body">Leon hat ADHS &mdash; und eine riesige Fantasie. Bei Lesekumpel hat er zum ersten Mal freiwillig nach der n&auml;chsten Geschichte gefragt. Nicht zwei Minuten, sondern zwanzig.</p>
+            <div class="t-author">
+              <div class="t-author-avatar">&#128105;</div>
+              <span>Julia &middot; Mama von Leon (7)</span>
+            </div>
+          </div>
+          <div class="testimonial-card coral">
+            <div class="t-quote-mark">&ldquo;</div>
+            <p class="t-body">Elif ist sehr reiz-empfindlich. Bei anderen Apps wurde sie unruhig. Bei Lesekumpel ist sie entspannt, konzentriert &mdash; und stolz auf jede Geschichte.</p>
+            <div class="t-author">
+              <div class="t-author-avatar">&#128105;&#127995;</div>
+              <span>Ay&#351;e &middot; Mama von Elif (6)</span>
+            </div>
+          </div>
+          <div class="testimonial-card mint">
+            <div class="t-quote-mark">&ldquo;</div>
+            <p class="t-body">Mila hat Dyslexie und hat sich lange vor B&uuml;chern gedr&uuml;ckt. Seit der Silbentrennung sagt sie: &bdquo;Mama, Lesen ist gar nicht so schwer!&ldquo; Ich hatte Tr&auml;nen in den Augen.</p>
+            <div class="t-author">
+              <div class="t-author-avatar">&#128105;&#127996;</div>
+              <span>Sandra &middot; Mama von Mila (8)</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ============ FAQ ============ -->
+    <section class="faq-section" id="faq">
+      <div class="faq-header reveal">
+        <span class="eyebrow">H&auml;ufige Fragen</span>
+        <h2>Antworten f&uuml;r Eltern.</h2>
+      </div>
+      <div class="faq-list reveal-stagger">
+        <details class="faq-item">
+          <summary>Ist Lesekumpel wirklich kostenlos?</summary>
+          <div class="faq-body">Ja. Lesen bleibt dauerhaft gratis &mdash; das ist unser Versprechen. Mit Konto kommen kostenlose Features wie Lesefortschritt-Speichern dazu. Optional gibt es ein Abo f&uuml;r eigene Story-Generierung.</div>
+        </details>
+        <details class="faq-item">
+          <summary>Wie sicher ist Lesekumpel f&uuml;r mein Kind?</summary>
+          <div class="faq-body">Komplett sicher. Keine Pop-ups, kein Tracking, keine Werbung und keine In-App-K&auml;ufe. Wir setzen keine Cookies und geben keine Daten an Dritte. Schriften sind lokal gehostet, der Kinderdatenschutz ist von Anfang an mitgedacht &mdash; Lesekumpel ist ein ruhiger, werbefreier Raum.</div>
+        </details>
+        <details class="faq-item">
+          <summary>F&uuml;r welche Altersgruppen ist Lesekumpel gemacht?</summary>
+          <div class="faq-body">Hauptsächlich 5&ndash;10 Jahre. Die 5 Skill-Personas decken von ersten W&ouml;rtern (Pip Punkt, 20&ndash;50 W) bis zu literarischen Texten (Finja Feder, 250&ndash;400 W) ab.</div>
+        </details>
+        <details class="faq-item">
+          <summary>Wie unterscheidet sich Lesekumpel von Antolin oder ABCmouse?</summary>
+          <div class="faq-body">Lesekumpel ist neurodivers gestaltet &mdash; ADHS, Autismus und LRS sind Erste-Klasse-Optionen, nicht Add-ons. Die KI-Geschichten passen sich Interessen an, statt sie zu pr&auml;destinieren.</div>
+        </details>
+        <details class="faq-item">
+          <summary>Was passiert mit den Daten meines Kindes?</summary>
+          <div class="faq-body">Kurz: nichts. Lesekumpel nutzt keine Cookies, kein Tracking, keine Pixel. Schriften sind lokal gehostet. Das Registrierungsformular ist DSGVO-konform, Daten gehen nicht an Dritte.</div>
+        </details>
+        <details class="faq-item">
+          <summary>Brauche ich eine App oder einen Account?</summary>
+          <div class="faq-body">Nein. Browser auf, Demo-Texte lesen &mdash; fertig. Account ist optional und schaltet Lesefortschritt + Profile frei.</div>
+        </details>
+        <details class="faq-item">
+          <summary>Wer steckt hinter Lesekumpel?</summary>
+          <div class="faq-body">Ein kleines Team aus Eltern (Antje &amp; Raik Lasner) und Entwickler (Marten Losansky). Die Lasners leiten die Selbsthilfegruppe f&uuml;r Eltern autistischer Kinder in Nordwest-Mecklenburg.</div>
+        </details>
+      </div>
+    </section>
+
+    <!-- ============ CTA NEWSLETTER ============ -->
+    <section class="lp-cta" id="registrieren">
+      <svg class="deco-star cta-deco-star s1" viewBox="0 0 32 32" aria-hidden="true"><polygon points="16,2 20,12 30,12 22,19 25,30 16,23 7,30 10,19 2,12 12,12" fill="#fff"/></svg>
+      <svg class="deco-star cta-deco-star s2" viewBox="0 0 32 32" aria-hidden="true"><polygon points="16,2 20,12 30,12 22,19 25,30 16,23 7,30 10,19 2,12 12,12" fill="#fff"/></svg>
+      <svg class="deco-sparkle cta-deco-sparkle s1" viewBox="0 0 24 24" aria-hidden="true"><path d="M12,2 L14,10 L22,12 L14,14 L12,22 L10,14 L2,12 L10,10 Z" fill="#fff"/></svg>
+      <svg class="deco-sparkle cta-deco-sparkle s2" viewBox="0 0 24 24" aria-hidden="true"><path d="M12,2 L14,10 L22,12 L14,14 L12,22 L10,14 L2,12 L10,10 Z" fill="#fff"/></svg>
+
+      <div class="lp-cta-inner reveal">
+        <div class="sticker-logo-wrap">
+          <img src="../Konzept_Rebranding/logo-lesekumpel-512.webp" alt="Lesekumpel Maskottchen" class="sticker-logo">
+        </div>
+        <span class="section-badge yellow">Sei mit dabei</span>
+        <h2>Bereit f&uuml;r Lernen ohne Tr&auml;nen?</h2>
+        <p>Lesekumpel startet bald &mdash; die ersten Familien sind als Erstes dabei. Trag dich ein und wir melden uns, sobald dein Kind loslegen kann.</p>
+        <form class="lp-cta-form" id="register-form" onsubmit="handleRegister(event)">
+          <input type="text" name="vorname" placeholder="Dein Vorname" required aria-label="Dein Vorname">
+          <input type="email" name="email" placeholder="Deine E-Mail" required aria-label="Deine E-Mail-Adresse">
+          <button type="submit">Anmelden &rarr;</button>
+        </form>
+        <p class="lp-cta-hint">Kein Spam, versprochen. Nur eine Nachricht, wenn es losgeht.</p>
+        <div class="lp-cta-success" id="register-success">
+          <h3>&#127881; Danke f&uuml;r deine Anmeldung!</h3>
+          <p>Wir melden uns, sobald Lesekumpel startet.</p>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer class="modern-footer">
+  <svg class="deco-blob deco-hide-mobile footer-deco-blob" viewBox="0 0 200 200" aria-hidden="true">
+    <path fill="#2FB8A6" d="M44.7,-69.7C58.6,-62.3,71.4,-51.9,79.3,-38.5C87.2,-25.1,90.2,-8.6,87.7,6.4C85.2,21.4,77.2,34.9,67.2,46.7C57.2,58.5,45.2,68.5,31.7,73.8C18.2,79.1,3.1,79.7,-12,77.2C-27.2,74.6,-42.5,69.1,-54.2,59.3C-65.9,49.5,-74,35.5,-78,20.3C-82,5,-81.9,-11.5,-76.4,-25.8C-70.9,-40,-60,-52,-46.8,-60.2C-33.7,-68.4,-18.3,-72.7,-2.5,-69.2C13.4,-65.6,30.8,-77.1,44.7,-69.7Z" transform="translate(100 100)"/>
+  </svg>
+
+  <div class="footer-grid">
+    <div class="footer-brand-block">
+      <div class="footer-brand-row">
+        <img src="../Konzept_Rebranding/logo-lesekumpel-512.webp" alt="Lesekumpel Logo">
+        <span>Lese<span class="brand-yellow">kumpel</span></span>
+      </div>
+      <p class="footer-tagline">Die inklusive Lese-App, die jedes Kind lieben lernt. Neurodivers gestaltet, immer kostenlos.</p>
+      <div class="footer-newsletter">
+        <input type="email" placeholder="Deine E-Mail-Adresse" aria-label="E-Mail f&uuml;r Newsletter">
+        <button type="button" onclick="alert('📬 Danke! Wir melden uns, sobald es losgeht.')">Anmelden &rarr;</button>
+      </div>
+      <div class="footer-social">
+        <a href="https://www.instagram.com/lesekumpel.de/" target="_blank" rel="noopener" aria-label="Lesekumpel auf Instagram">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none"/></svg>
+        </a>
+        <a href="https://discord.gg/sAr6KEsg" target="_blank" rel="noopener" aria-label="Lesekumpel Discord Community">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.095 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.095 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg>
+        </a>
+      </div>
+    </div>
+
+    <div>
+      <h4>Entdecken</h4>
+      <ul>
+        <li><a href="demo.html">Demo-Texte</a></li>
+        <li><a href="index.html#mission">F&uuml;r euch</a></li>
+        <li><a href="index.html#how-it-works">So funktioniert&apos;s</a></li>
+        <li><a href="index.html#faq">FAQ</a></li>
+      </ul>
+    </div>
+
+    <div>
+      <h4>Mehr</h4>
+      <ul>
+        <li><a href="ueber-uns.html">&Uuml;ber uns</a></li>
+        <li><a href="preise.html">Preise</a></li>
+        <li><a href="mein-konto.html">Mein Konto</a></li>
+        <li><a href="../blog-warum-lesekumpel.html">Blog</a></li>
+      </ul>
+    </div>
+
+    <div>
+      <h4>Rechtliches</h4>
+      <ul>
+        <li><a href="impressum.html">Impressum</a></li>
+        <li><a href="datenschutz.html">Datenschutz</a></li>
+        <li><a href="../knowledge-base/snacks/index.html">Wissen</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <span>&copy; 2026 Lesekumpel &middot; Inklusive Lese-App f&uuml;r jedes Gehirn</span>
+    <span><a href="../index.html">&larr; Zur Live-Version</a> &middot; <span class="footer-sandbox-label">v2 Sandbox</span></span>
+  </div>
+</footer>
+
+  <!-- Sticky Mobile-CTA -->
+  <a href="#registrieren" class="sticky-cta">
+    <span>Sei mit dabei &mdash; Lesekumpel startet bald.</span>
+    <span class="sticky-cta-arrow">&rarr;</span>
+  </a>
+
+  <script src="scripts.js?v=4"></script>
+  <script>
+    function handleRegister(ev) {
+      ev.preventDefault();
+      document.getElementById('register-form').style.display = 'none';
+      document.querySelector('.lp-cta-hint').style.display = 'none';
+      document.getElementById('register-success').classList.add('visible');
+    }
+  </script>
+</body>
+</html>

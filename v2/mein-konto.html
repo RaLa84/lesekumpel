@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mein Konto — Lesekumpel</title>
+  <meta name="description" content="Dein Lesekumpel-Konto: Kinderprofile, Statistiken, geplante Geschichten und eigene Autoren.">
+
+  <link rel="icon" type="image/webp" href="../Konzept_Rebranding/logo-lesekumpel-512.webp">
+  <link rel="stylesheet" href="../fonts/fonts.css">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    /* Dashboard Layout */
+    .dashboard {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 24px;
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 32px 24px 80px;
+    }
+
+    .dash-sidebar {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-card);
+      box-shadow: var(--shadow-card);
+      padding: 20px 16px;
+    }
+    .dash-user {
+      display: flex; align-items: center; gap: 12px;
+      padding: 4px 8px 18px;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 14px;
+    }
+    .dash-avatar {
+      width: 44px; height: 44px; border-radius: 50%;
+      background: rgba(125,106,230,0.18);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.3rem; flex-shrink: 0;
+    }
+    .dash-user-name { font-family: var(--font-heading); font-weight: 600; font-size: 1rem; }
+    .dash-user-email { font-size: 0.78rem; opacity: 0.65; }
+    .dash-nav { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 4px; }
+    .dash-nav-item {
+      display: flex; align-items: center; gap: 12px;
+      padding: 12px 14px;
+      border-radius: 12px;
+      font-weight: 600;
+      font-size: 0.94rem;
+      color: var(--navy);
+      cursor: pointer;
+      transition: background 0.2s, color 0.2s;
+      background: none; border: none; width: 100%;
+      font-family: var(--font-body);
+      text-align: left;
+    }
+    .dash-nav-item:hover { background: var(--cream-light); }
+    .dash-nav-item.active { background: var(--mint); color: var(--navy); }
+    .dash-nav-icon { font-size: 1.1rem; width: 22px; text-align: center; }
+
+    .dash-content { min-width: 0; }
+    .dash-section { display: none; }
+    .dash-section.active { display: block; }
+    .dash-section > h1 {
+      font-size: clamp(1.6rem, 4vw, 2.2rem);
+      margin-bottom: 24px;
+    }
+
+    .account-header {
+      display: flex; align-items: center; gap: 20px;
+      flex-wrap: wrap; margin-bottom: 24px;
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-card);
+      box-shadow: var(--shadow-card);
+      padding: 28px 26px;
+    }
+    .account-avatar-lg {
+      width: 72px; height: 72px; border-radius: 50%;
+      background: rgba(47,184,166,0.2);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 2rem; flex-shrink: 0;
+    }
+    .account-info h2 { font-size: 1.4rem; margin-bottom: 2px; }
+    .account-email { opacity: 0.7; font-size: 0.92rem; margin-bottom: 10px; }
+
+    .tier-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 6px 16px; border-radius: var(--radius-pill);
+      font-weight: 700; font-size: 0.82rem;
+    }
+    .tier-entdecker  { background: var(--cream-light); color: var(--navy); border: 1px solid var(--border); }
+    .tier-lesefreund { background: rgba(125,106,230,0.18); color: var(--navy); }
+    .tier-leseheld   { background: var(--yellow); color: var(--navy); }
+
+    .stat-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+    .stat-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-card);
+      padding: 22px 18px;
+      text-align: center;
+      box-shadow: var(--shadow-card);
+    }
+    .stat-num {
+      font-family: var(--font-heading);
+      font-size: 1.9rem;
+      font-weight: 700;
+      color: var(--lila);
+      display: block;
+      margin-bottom: 4px;
+    }
+    .stat-label { font-size: 0.82rem; opacity: 0.7; font-weight: 600; }
+
+    .actions { display: flex; gap: 14px; flex-wrap: wrap; }
+
+    .children-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+    .child-card {
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-card);
+      padding: 22px 22px;
+      box-shadow: var(--shadow-card);
+      display: flex; align-items: center; gap: 16px;
+      cursor: pointer;
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+      border-left: 4px solid var(--mint);
+    }
+    .child-card:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--shadow-card-hover);
+    }
+    .child-avatar {
+      width: 52px; height: 52px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.6rem; flex-shrink: 0;
+    }
+    .child-name { font-family: var(--font-heading); font-size: 1.1rem; font-weight: 600; margin-bottom: 2px; }
+    .child-meta { font-size: 0.82rem; opacity: 0.7; }
+    .lesestufe-badge {
+      display: inline-block;
+      background: var(--yellow);
+      color: var(--navy);
+      font-weight: 700; font-size: 0.74rem;
+      padding: 3px 12px; border-radius: var(--radius-pill);
+      margin-top: 6px;
+    }
+
+    /* Progress + Chart */
+    .progress {
+      height: 14px;
+      background: var(--cream-light);
+      border-radius: 7px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+    }
+    .progress-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--mint), var(--lila));
+      border-radius: 7px;
+      transition: width 0.6s ease;
+    }
+    .progress-label {
+      display: flex; justify-content: space-between;
+      font-size: 0.84rem; opacity: 0.75;
+      margin-bottom: 8px; font-weight: 600;
+    }
+    .activity-chart {
+      display: flex; align-items: flex-end; gap: 8px;
+      height: 130px; padding: 0 6px; margin-bottom: 6px;
+    }
+    .chart-bar-wrap {
+      flex: 1; display: flex; flex-direction: column;
+      align-items: center; height: 100%; justify-content: flex-end;
+    }
+    .chart-bar {
+      width: 100%; max-width: 36px;
+      border-radius: 8px 8px 0 0;
+      background: linear-gradient(180deg, var(--coral), var(--yellow));
+      transition: height 0.5s ease;
+      min-height: 4px;
+    }
+    .chart-day { font-size: 0.72rem; opacity: 0.65; font-weight: 600; margin-top: 6px; }
+    .chart-count { font-size: 0.7rem; color: var(--lila); font-weight: 700; margin-bottom: 4px; }
+
+    .counter-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+    .counter-card {
+      background: var(--cream-light);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-inner);
+      padding: 20px 14px;
+      text-align: center;
+    }
+    .counter-icon { font-size: 1.4rem; margin-bottom: 6px; }
+    .counter-num { font-family: var(--font-heading); font-size: 1.5rem; font-weight: 700; color: var(--lila); }
+    .counter-label { font-size: 0.74rem; opacity: 0.7; font-weight: 600; }
+
+    .planned-item {
+      display: flex; align-items: center; gap: 14px;
+      padding: 16px 18px;
+      background: var(--white);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-inner);
+      margin-bottom: 12px;
+    }
+    .planned-icon { font-size: 1.4rem; flex-shrink: 0; }
+    .planned-info { flex: 1; }
+    .planned-title { font-weight: 700; font-size: 0.95rem; margin-bottom: 2px; }
+    .planned-meta { font-size: 0.78rem; opacity: 0.7; }
+    .status-pill {
+      font-size: 0.74rem; font-weight: 700;
+      padding: 4px 12px; border-radius: var(--radius-pill);
+    }
+    .status-geplant { background: rgba(125,106,230,0.18); color: var(--navy); }
+    .status-generiert { background: rgba(47,184,166,0.22); color: var(--navy); }
+
+    .info-card {
+      background: var(--cream-light);
+      border-left: 4px solid var(--lila);
+      border-radius: var(--radius-inner);
+      padding: 20px 22px;
+      margin-bottom: 22px;
+      font-size: 0.95rem;
+      line-height: 1.7;
+    }
+    .info-card strong { color: var(--lila); }
+
+    /* Sub tabs */
+    .sub-tabs {
+      display: flex; gap: 8px; margin-bottom: 22px; flex-wrap: wrap;
+    }
+    .sub-tab {
+      background: var(--white);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius-pill);
+      padding: 8px 18px;
+      font-family: var(--font-body);
+      font-size: 0.88rem; font-weight: 600;
+      color: var(--navy);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .sub-tab:hover { border-color: var(--mint); }
+    .sub-tab.active { background: var(--mint); border-color: var(--mint); }
+
+    .history-item {
+      display: flex; align-items: center; gap: 14px;
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--border);
+    }
+    .history-item:last-child { border-bottom: none; }
+    .history-icon { font-size: 1.2rem; flex-shrink: 0; }
+    .history-title { font-weight: 700; font-size: 0.94rem; }
+    .history-meta { font-size: 0.78rem; opacity: 0.7; }
+    .child-name-badge {
+      display: inline-block;
+      background: rgba(125,106,230,0.18);
+      color: var(--navy);
+      font-weight: 700; font-size: 0.7rem;
+      padding: 2px 10px; border-radius: var(--radius-pill);
+      margin-left: 6px;
+    }
+
+    /* Avatar Picker */
+    .avatar-picker {
+      display: flex; gap: 10px; flex-wrap: wrap;
+    }
+    .avatar-option {
+      width: 48px; height: 48px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.4rem; cursor: pointer;
+      border: 3px solid transparent;
+      background: var(--cream-light);
+      transition: all 0.2s;
+    }
+    .avatar-option:hover { border-color: var(--mint); transform: scale(1.08); }
+    .avatar-option.selected {
+      border-color: var(--lila);
+      background: rgba(125,106,230,0.15);
+    }
+
+    .author-row {
+      display: flex; align-items: center; gap: 14px;
+      background: var(--cream-light);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-inner);
+      padding: 14px 16px;
+      margin-bottom: 10px;
+    }
+    .author-row-avatar {
+      width: 42px; height: 42px; border-radius: 50%;
+      background: var(--white);
+      border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.2rem; flex-shrink: 0;
+    }
+    .author-row-name { font-weight: 700; font-size: 0.94rem; }
+    .author-row-style { font-size: 0.82rem; opacity: 0.7; }
+
+    .friend-chip {
+      background: var(--cream-light);
+      border: 1px solid var(--border);
+      padding: 6px 16px; border-radius: var(--radius-pill);
+      font-size: 0.82rem; font-weight: 600;
+    }
+
+    .stats-child-select { max-width: 280px; margin-bottom: 24px; }
+    .section-subhead {
+      font-family: var(--font-heading);
+      font-size: 1.15rem;
+      margin-bottom: 14px;
+    }
+
+    /* Desktop */
+    @media (min-width: 900px) {
+      .dashboard { grid-template-columns: 260px 1fr; padding: 40px 24px 100px; }
+      .dash-sidebar { position: sticky; top: 100px; align-self: flex-start; }
+      .children-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    /* Mobile sticky nav */
+    @media (max-width: 899px) {
+      .dash-user { display: none; }
+      .dash-nav {
+        flex-direction: row; overflow-x: auto;
+        gap: 8px;
+      }
+      .dash-nav::-webkit-scrollbar { display: none; }
+      .dash-nav-item {
+        white-space: nowrap;
+        padding: 8px 14px;
+        font-size: 0.84rem;
+        border-radius: var(--radius-pill);
+        flex-shrink: 0;
+      }
+      .dash-nav-icon { display: none; }
+    }
+  </style>
+</head>
+<body data-page="mein-konto">
+
+  <a href="#main" class="skip-link">Zum Inhalt springen</a>
+
+  <div class="sandbox-banner">
+  Du bist im Redesign-Sandbox <strong>v2</strong>. <a href="../index.html">Zur Live-Version wechseln &rarr;</a>
+</div>
+<nav class="navbar" aria-label="Hauptnavigation">
+  <div class="navbar-inner">
+    <a href="index.html" class="navbar-brand">
+      <img src="../Konzept_Rebranding/logo-lesekumpel-512.webp" alt="Lesekumpel Logo" class="navbar-logo">
+      <span>Lese<span class="brand-name">kumpel</span></span>
+    </a>
+    <div class="navbar-links">
+      <a href="index.html#mission" data-nav="mission">F&uuml;r euch</a>
+      <a href="index.html#how-it-works" data-nav="how">So funktioniert&rsquo;s</a>
+      <a href="ueber-uns.html" data-nav="ueber-uns">&Uuml;ber uns</a>
+      <a href="demo.html" data-nav="demo">Demo-Texte</a>
+      <a href="preise.html" data-nav="preise">Preise</a>
+      <a href="#" data-nav="erstellen" onclick="comingSoon(event)">Geschichte erstellen</a>
+      <a href="mein-konto.html" data-nav="mein-konto">Mein Konto</a>
+    </div>
+    <a href="index.html#registrieren" class="btn btn-primary navbar-cta">Jetzt registrieren</a>
+    <button type="button" class="burger" aria-label="Men&uuml; &ouml;ffnen" aria-expanded="false" aria-controls="mobile-menu" onclick="toggleMenu()">&#9776;</button>
+  </div>
+  <div id="mobile-menu" class="mobile-menu">
+    <a href="index.html#mission" onclick="toggleMenu()">F&uuml;r euch</a>
+    <a href="index.html#how-it-works" onclick="toggleMenu()">So funktioniert&rsquo;s</a>
+    <a href="ueber-uns.html" onclick="toggleMenu()">&Uuml;ber uns</a>
+    <a href="demo.html" onclick="toggleMenu()">Demo-Texte</a>
+    <a href="preise.html" onclick="toggleMenu()">Preise</a>
+    <a href="#" onclick="comingSoon(event); toggleMenu()">Geschichte erstellen</a>
+    <a href="mein-konto.html" onclick="toggleMenu()">Mein Konto</a>
+    <a href="index.html#registrieren" class="mobile-menu-cta" onclick="toggleMenu()">Jetzt registrieren &rarr;</a>
+  </div>
+</nav>
+
+  <main id="main">
+    <div class="dashboard">
+
+      <aside class="dash-sidebar" aria-label="Kontobereiche">
+        <div class="dash-user">
+          <div class="dash-avatar" id="sb-avatar"></div>
+          <div>
+            <div class="dash-user-name" id="sb-name"></div>
+            <div class="dash-user-email" id="sb-email"></div>
+          </div>
+        </div>
+        <nav class="dash-nav">
+          <button type="button" class="dash-nav-item active" data-tab="konto" onclick="navTo('konto')"><span class="dash-nav-icon">&#127968;</span>&Uuml;bersicht</button>
+          <button type="button" class="dash-nav-item" data-tab="kinder" onclick="navTo('kinder')"><span class="dash-nav-icon">&#128118;</span>Kinderkonten</button>
+          <button type="button" class="dash-nav-item" data-tab="statistiken" onclick="navTo('statistiken')"><span class="dash-nav-icon">&#128200;</span>Statistiken</button>
+          <button type="button" class="dash-nav-item" data-tab="planen" onclick="navTo('planen')"><span class="dash-nav-icon">&#128197;</span>Planen</button>
+          <button type="button" class="dash-nav-item" data-tab="autoren" onclick="navTo('autoren')"><span class="dash-nav-icon">&#9997;&#65039;</span>Autoren</button>
+          <button type="button" class="dash-nav-item" data-tab="historie" onclick="navTo('historie')"><span class="dash-nav-icon">&#128214;</span>Historie</button>
+        </nav>
+      </aside>
+
+      <div class="dash-content">
+
+        <section class="dash-section active" data-section="konto">
+          <span class="eyebrow">Dein Bereich</span>
+          <h1>Willkommen zur&uuml;ck, <span class="accent">Maria</span>. &#128075;</h1>
+          <div id="account-header"></div>
+          <div class="stat-grid" id="stat-overview"></div>
+          <div class="actions">
+            <a href="demo.html" class="btn btn-primary">Zu den Demo-Texten</a>
+            <a href="#" class="btn btn-secondary" onclick="comingSoon(event)">Geschichte erstellen</a>
+          </div>
+        </section>
+
+        <section class="dash-section" data-section="kinder">
+          <h1>Kinderkonten</h1>
+          <div class="children-grid" id="children-grid"></div>
+          <button type="button" class="btn btn-secondary" onclick="comingSoon()">+ Kind hinzuf&uuml;gen</button>
+        </section>
+
+        <section class="dash-section" data-section="statistiken">
+          <h1>Statistiken</h1>
+          <select class="select stats-child-select" id="stats-child" onchange="renderStats()"></select>
+          <div id="stats-body"></div>
+        </section>
+
+        <section class="dash-section" data-section="planen">
+          <h1>Geschichten planen</h1>
+          <div id="planned-list"></div>
+          <button type="button" class="btn btn-primary mt-3" onclick="comingSoon()">+ Geschichte planen</button>
+        </section>
+
+        <section class="dash-section" data-section="autoren">
+          <h1>Autorengenerator</h1>
+          <div class="info-card">
+            Erstelle <strong>eigene Autoren-Pers&ouml;nlichkeiten</strong> mit individuellem Schreibstil. Beschreibe, wie dein Autor schreiben soll &mdash; von poetisch bis sachlich, von lustig bis spannend. Der Schreibstil wird als Systemprompt f&uuml;r die KI-Generierung verwendet.
+          </div>
+          <div class="card mb-3">
+            <div class="mb-2">
+              <label class="field-label" for="ai-name">Autorenname</label>
+              <input id="ai-name" class="input" type="text" placeholder="z. B. Frau Sonnenschein">
+            </div>
+            <div class="mb-2">
+              <label class="field-label" for="ai-style">Schreibstil</label>
+              <textarea id="ai-style" class="textarea" placeholder="Beschreibe den Schreibstil: z. B. &laquo;Schreibt fr&ouml;hlich und farbenfroh, nutzt viele Naturmetaphern und einfache Satzstrukturen.&raquo;"></textarea>
+            </div>
+            <div class="mb-3">
+              <label class="field-label">Avatar w&auml;hlen</label>
+              <div class="avatar-picker" id="avatar-picker"></div>
+            </div>
+            <button type="button" class="btn btn-primary" onclick="comingSoon()">Autor erstellen</button>
+          </div>
+          <h2 class="section-subhead">Erstellte Autoren</h2>
+          <div id="custom-authors"></div>
+        </section>
+
+        <section class="dash-section" data-section="historie">
+          <h1>Historie</h1>
+          <div class="sub-tabs">
+            <button type="button" class="sub-tab active" data-sub="gelesen" onclick="switchHistTab('gelesen')">Gelesen</button>
+            <button type="button" class="sub-tab" data-sub="empfohlen" onclick="switchHistTab('empfohlen')">Empfohlen</button>
+            <button type="button" class="sub-tab" data-sub="erstellt" onclick="switchHistTab('erstellt')">Erstellt</button>
+          </div>
+          <div class="card" id="history-body"></div>
+        </section>
+
+        <section class="dash-section" data-section="kind-detail">
+          <button type="button" class="btn btn-ghost" onclick="navTo('kinder')">&larr; Zur&uuml;ck zu Kinderkonten</button>
+          <div id="kind-detail-body" class="mt-3"></div>
+        </section>
+
+      </div>
+    </div>
+  </main>
+
+  <footer class="modern-footer">
+  <svg class="deco-blob deco-hide-mobile footer-deco-blob" viewBox="0 0 200 200" aria-hidden="true">
+    <path fill="#2FB8A6" d="M44.7,-69.7C58.6,-62.3,71.4,-51.9,79.3,-38.5C87.2,-25.1,90.2,-8.6,87.7,6.4C85.2,21.4,77.2,34.9,67.2,46.7C57.2,58.5,45.2,68.5,31.7,73.8C18.2,79.1,3.1,79.7,-12,77.2C-27.2,74.6,-42.5,69.1,-54.2,59.3C-65.9,49.5,-74,35.5,-78,20.3C-82,5,-81.9,-11.5,-76.4,-25.8C-70.9,-40,-60,-52,-46.8,-60.2C-33.7,-68.4,-18.3,-72.7,-2.5,-69.2C13.4,-65.6,30.8,-77.1,44.7,-69.7Z" transform="translate(100 100)"/>
+  </svg>
+
+  <div class="footer-grid">
+    <div class="footer-brand-block">
+      <div class="footer-brand-row">
+        <img src="../Konzept_Rebranding/logo-lesekumpel-512.webp" alt="Lesekumpel Logo">
+        <span>Lese<span class="brand-yellow">kumpel</span></span>
+      </div>
+      <p class="footer-tagline">Die inklusive Lese-App, die jedes Kind lieben lernt. Neurodivers gestaltet, immer kostenlos.</p>
+      <div class="footer-newsletter">
+        <input type="email" placeholder="Deine E-Mail-Adresse" aria-label="E-Mail f&uuml;r Newsletter">
+        <button type="button" onclick="alert('📬 Danke! Wir melden uns, sobald es losgeht.')">Anmelden &rarr;</button>
+      </div>
+      <div class="footer-social">
+        <a href="https://www.instagram.com/lesekumpel.de/" target="_blank" rel="noopener" aria-label="Lesekumpel auf Instagram">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none"/></svg>
+        </a>
+        <a href="https://discord.gg/sAr6KEsg" target="_blank" rel="noopener" aria-label="Lesekumpel Discord Community">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.095 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.095 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg>
+        </a>
+      </div>
+    </div>
+
+    <div>
+      <h4>Entdecken</h4>
+      <ul>
+        <li><a href="demo.html">Demo-Texte</a></li>
+        <li><a href="index.html#mission">F&uuml;r euch</a></li>
+        <li><a href="index.html#how-it-works">So funktioniert&apos;s</a></li>
+        <li><a href="index.html#faq">FAQ</a></li>
+      </ul>
+    </div>
+
+    <div>
+      <h4>Mehr</h4>
+      <ul>
+        <li><a href="ueber-uns.html">&Uuml;ber uns</a></li>
+        <li><a href="preise.html">Preise</a></li>
+        <li><a href="mein-konto.html">Mein Konto</a></li>
+        <li><a href="../blog-warum-lesekumpel.html">Blog</a></li>
+      </ul>
+    </div>
+
+    <div>
+      <h4>Rechtliches</h4>
+      <ul>
+        <li><a href="impressum.html">Impressum</a></li>
+        <li><a href="datenschutz.html">Datenschutz</a></li>
+        <li><a href="../knowledge-base/snacks/index.html">Wissen</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <span>&copy; 2026 Lesekumpel &middot; Inklusive Lese-App f&uuml;r jedes Gehirn</span>
+    <span><a href="../index.html">&larr; Zur Live-Version</a> &middot; <span class="footer-sandbox-label">v2 Sandbox</span></span>
+  </div>
+</footer>
+
+  <script src="scripts.js?v=4"></script>
+  <script>
+    /* ============================================================
+       Dashboard — Mock-Daten + Tab-Steuerung
+       ============================================================ */
+    const MOCK = {
+      account: {
+        name: 'Maria Musterfrau',
+        email: 'maria@example.de',
+        emoji: '🧑‍💻',
+        tier: 'leseheld',
+        tierLabel: 'Leseheld',
+        credits: 18
+      },
+      children: [
+        { id: 1, name: 'Lena', emoji: '🦊', lesestufe: 3, maxStufe: 5, lastActive: '19. März 2026',
+          storiesRead: 24, quizzesSolved: 12, storiesRated: 8,
+          weekActivity: [3, 1, 2, 0, 4, 2, 1],
+          history: [
+            { title: 'Der Elefant im Pool', date: '18.03.2026', icon: '🐘' },
+            { title: 'Die Schatzkarte', date: '16.03.2026', icon: '🗺️' },
+            { title: 'Reise zum Mond', date: '14.03.2026', icon: '🌙' },
+            { title: 'Amelie und der Regenbogen', date: '12.03.2026', icon: '🌈' }
+          ],
+          friends: ['Max', 'Sophie', 'Tim']
+        },
+        { id: 2, name: 'Jonas', emoji: '🐻', lesestufe: 1, maxStufe: 5, lastActive: '18. März 2026',
+          storiesRead: 8, quizzesSolved: 3, storiesRated: 2,
+          weekActivity: [1, 0, 1, 1, 0, 2, 0],
+          history: [
+            { title: 'Die Döner-Diebe', date: '16.03.2026', icon: '🌯' },
+            { title: 'Piraten-Abenteuer', date: '13.03.2026', icon: '🏴‍☠️' }
+          ],
+          friends: ['Tim']
+        }
+      ],
+      planned: [
+        { title: 'Der magische Wald', child: 'Lena', date: '22.03.2026', status: 'geplant', icon: '🌳' },
+        { title: 'Roboter im Weltraum', child: 'Jonas', date: '25.03.2026', status: 'geplant', icon: '🤖' },
+        { title: 'Das Geheimnis der alten Bibliothek', child: 'Lena', date: '15.03.2026', status: 'generiert', icon: '📚' }
+      ],
+      customAuthors: [
+        { name: 'Frau Sonnenschein', emoji: '🌻', style: 'Fröhlich und voller Naturmetaphern, einfache Satzstrukturen' },
+        { name: 'Kapitän Abenteuer', emoji: '⚓', style: 'Spannend, kurze Sätze, viele Cliffhanger und Dialoge' }
+      ],
+      history: {
+        gelesen: [
+          { title: 'Der Elefant im Pool', date: '18.03.2026', child: 'Lena', icon: '🐘' },
+          { title: 'Die Döner-Diebe', date: '16.03.2026', child: 'Jonas', icon: '🌯' },
+          { title: 'Die Schatzkarte', date: '16.03.2026', child: 'Lena', icon: '🗺️' },
+          { title: 'Piraten-Abenteuer', date: '13.03.2026', child: 'Jonas', icon: '🏴‍☠️' }
+        ],
+        empfohlen: [
+          { title: 'Der kleine Drache lernt fliegen', date: '20.03.2026', child: 'Lena', icon: '🐉' },
+          { title: 'Zahlen im Zoo', date: '20.03.2026', child: 'Jonas', icon: '🦁' }
+        ],
+        erstellt: [
+          { title: 'Das Geheimnis der alten Bibliothek', date: '15.03.2026', child: 'Lena', icon: '📚' },
+          { title: 'Roboter im Weltraum', date: '10.03.2026', child: 'Jonas', icon: '🤖' }
+        ]
+      },
+      avatars: ['🦉', '🦄', '🐰', '🐱', '🐼', '🐧', '🦋', '🌟']
+    };
+
+    let currentTab = 'konto';
+    let currentHistTab = 'gelesen';
+    let selectedChild = null;
+
+    function navTo(name) {
+      document.querySelectorAll('.dash-section').forEach(s => s.classList.remove('active'));
+      const sec = document.querySelector('[data-section="' + name + '"]');
+      if (sec) sec.classList.add('active');
+      document.querySelectorAll('.dash-nav-item').forEach(n => n.classList.remove('active'));
+      const nav = document.querySelector('.dash-nav-item[data-tab="' + name + '"]');
+      if (nav) nav.classList.add('active');
+      if (name === 'kind-detail') {
+        const kn = document.querySelector('.dash-nav-item[data-tab="kinder"]');
+        if (kn) kn.classList.add('active');
+      }
+      currentTab = name;
+      render(name);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function render(name) {
+      switch (name) {
+        case 'konto': renderKonto(); break;
+        case 'kinder': renderKinder(); break;
+        case 'statistiken': renderStats(); break;
+        case 'planen': renderPlanen(); break;
+        case 'autoren': renderAutoren(); break;
+        case 'historie': renderHistorie(); break;
+        case 'kind-detail': renderKindDetail(); break;
+      }
+    }
+
+    function renderKonto() {
+      const a = MOCK.account;
+      const totalStories = MOCK.children.reduce((s, c) => s + c.storiesRead, 0);
+      document.getElementById('account-header').innerHTML =
+        '<div class="account-header">' +
+          '<div class="account-avatar-lg">' + a.emoji + '</div>' +
+          '<div class="account-info">' +
+            '<h2>' + a.name + '</h2>' +
+            '<div class="account-email">' + a.email + '</div>' +
+            '<span class="tier-badge tier-' + a.tier + '">' + a.tierLabel + '</span>' +
+          '</div>' +
+        '</div>';
+      document.getElementById('stat-overview').innerHTML =
+        '<div class="stat-card"><span class="stat-num">' + a.credits + '</span><span class="stat-label">Credits</span></div>' +
+        '<div class="stat-card"><span class="stat-num">' + MOCK.children.length + '</span><span class="stat-label">Kinder</span></div>' +
+        '<div class="stat-card"><span class="stat-num">' + totalStories + '</span><span class="stat-label">Gelesen</span></div>';
+    }
+
+    function renderKinder() {
+      document.getElementById('children-grid').innerHTML = MOCK.children.map(c =>
+        '<div class="child-card" onclick="showChild(' + c.id + ')" tabindex="0" role="button">' +
+          '<div class="child-avatar">' + c.emoji + '</div>' +
+          '<div>' +
+            '<div class="child-name">' + c.name + '</div>' +
+            '<div class="child-meta">Zuletzt aktiv: ' + c.lastActive + '</div>' +
+            '<span class="lesestufe-badge">Lesestufe ' + c.lesestufe + '</span>' +
+          '</div>' +
+        '</div>'
+      ).join('');
+    }
+
+    function renderStats() {
+      const sel = document.getElementById('stats-child');
+      if (sel.options.length === 0) {
+        MOCK.children.forEach(c => {
+          const o = document.createElement('option');
+          o.value = c.id; o.textContent = c.name;
+          sel.appendChild(o);
+        });
+      }
+      const id = parseInt(sel.value);
+      const c = MOCK.children.find(x => x.id === id);
+      if (!c) return;
+      const pct = Math.round((c.lesestufe / c.maxStufe) * 100);
+      const maxAct = Math.max(...c.weekActivity, 1);
+      const days = ['Mo', 'Di', 'Mi', 'Do', 'Fr', 'Sa', 'So'];
+      const bars = c.weekActivity.map((v, i) => {
+        const h = Math.round((v / maxAct) * 100);
+        return '<div class="chart-bar-wrap">' +
+          '<span class="chart-count">' + (v > 0 ? v : '') + '</span>' +
+          '<div class="chart-bar" style="height:' + (h > 0 ? h : 4) + 'px;' + (v === 0 ? 'opacity:0.25;' : '') + '"></div>' +
+          '<span class="chart-day">' + days[i] + '</span>' +
+        '</div>';
+      }).join('');
+      document.getElementById('stats-body').innerHTML =
+        '<div class="card mb-3">' +
+          '<h3 style="margin-bottom:14px;">Lesestufe</h3>' +
+          '<div class="progress-label"><span>Stufe ' + c.lesestufe + '</span><span>Stufe ' + c.maxStufe + '</span></div>' +
+          '<div class="progress"><div class="progress-fill" style="width:' + pct + '%"></div></div>' +
+        '</div>' +
+        '<div class="card mb-3">' +
+          '<h3 style="margin-bottom:14px;">Aktivität diese Woche</h3>' +
+          '<div class="activity-chart">' + bars + '</div>' +
+        '</div>' +
+        '<div class="counter-grid">' +
+          '<div class="counter-card"><div class="counter-icon">✅</div><div class="counter-num">' + c.quizzesSolved + '</div><div class="counter-label">Quizze</div></div>' +
+          '<div class="counter-card"><div class="counter-icon">⭐</div><div class="counter-num">' + c.storiesRated + '</div><div class="counter-label">Bewertungen</div></div>' +
+          '<div class="counter-card"><div class="counter-icon">📖</div><div class="counter-num">' + c.storiesRead + '</div><div class="counter-label">Gelesen</div></div>' +
+        '</div>';
+    }
+
+    function renderPlanen() {
+      document.getElementById('planned-list').innerHTML = MOCK.planned.map(p =>
+        '<div class="planned-item">' +
+          '<span class="planned-icon">' + p.icon + '</span>' +
+          '<div class="planned-info">' +
+            '<div class="planned-title">' + p.title + '</div>' +
+            '<div class="planned-meta">Für ' + p.child + ' · ' + p.date + '</div>' +
+          '</div>' +
+          '<span class="status-pill status-' + p.status + '">' + p.status.charAt(0).toUpperCase() + p.status.slice(1) + '</span>' +
+        '</div>'
+      ).join('');
+    }
+
+    function renderAutoren() {
+      document.getElementById('avatar-picker').innerHTML = MOCK.avatars.map(e =>
+        '<button type="button" class="avatar-option" onclick="selectAvatar(this)" aria-label="Avatar ' + e + '">' + e + '</button>'
+      ).join('');
+      document.getElementById('custom-authors').innerHTML = MOCK.customAuthors.map(a =>
+        '<div class="author-row">' +
+          '<div class="author-row-avatar">' + a.emoji + '</div>' +
+          '<div>' +
+            '<div class="author-row-name">' + a.name + '</div>' +
+            '<div class="author-row-style">' + a.style + '</div>' +
+          '</div>' +
+        '</div>'
+      ).join('');
+    }
+
+    function selectAvatar(el) {
+      document.querySelectorAll('.avatar-option').forEach(o => o.classList.remove('selected'));
+      el.classList.add('selected');
+    }
+
+    function renderHistorie() {
+      const items = MOCK.history[currentHistTab] || [];
+      document.getElementById('history-body').innerHTML = items.length === 0
+        ? '<p class="text-center" style="opacity:0.65;padding:30px 0;">Noch keine Einträge.</p>'
+        : items.map(i =>
+            '<div class="history-item">' +
+              '<span class="history-icon">' + i.icon + '</span>' +
+              '<div>' +
+                '<div class="history-title">' + i.title + '<span class="child-name-badge">' + i.child + '</span></div>' +
+                '<div class="history-meta">' + i.date + '</div>' +
+              '</div>' +
+            '</div>'
+          ).join('');
+    }
+
+    function switchHistTab(t) {
+      currentHistTab = t;
+      document.querySelectorAll('.sub-tab').forEach(x => x.classList.remove('active'));
+      document.querySelector('.sub-tab[data-sub="' + t + '"]').classList.add('active');
+      renderHistorie();
+    }
+
+    function showChild(id) { selectedChild = id; navTo('kind-detail'); }
+    function renderKindDetail() {
+      const c = MOCK.children.find(x => x.id === selectedChild);
+      if (!c) return;
+      const pct = Math.round((c.lesestufe / c.maxStufe) * 100);
+      const friends = c.friends.map(f => '<span class="friend-chip">' + f + '</span>').join(' ');
+      const history = c.history.map(h =>
+        '<div class="history-item">' +
+          '<span class="history-icon">' + h.icon + '</span>' +
+          '<div>' +
+            '<div class="history-title">' + h.title + '</div>' +
+            '<div class="history-meta">' + h.date + '</div>' +
+          '</div>' +
+        '</div>'
+      ).join('');
+      document.getElementById('kind-detail-body').innerHTML =
+        '<div class="card">' +
+          '<div style="display:flex; align-items:center; gap:20px; flex-wrap:wrap; margin-bottom:28px;">' +
+            '<div class="child-avatar" style="width:72px; height:72px; font-size:2.2rem;">' + c.emoji + '</div>' +
+            '<div>' +
+              '<h2 style="font-size:1.6rem; margin:0;">' + c.name + '</h2>' +
+              '<span class="lesestufe-badge">Lesestufe ' + c.lesestufe + '</span>' +
+              '<div class="child-meta" style="margin-top:6px;">Zuletzt aktiv: ' + c.lastActive + '</div>' +
+            '</div>' +
+          '</div>' +
+          '<h3 style="margin-bottom:10px;">Lesefortschritt</h3>' +
+          '<div class="progress-label"><span>Stufe ' + c.lesestufe + '</span><span>Stufe ' + c.maxStufe + '</span></div>' +
+          '<div class="progress mb-3"><div class="progress-fill" style="width:' + pct + '%"></div></div>' +
+          '<h3 style="margin: 22px 0 12px;">Lesehistorie</h3>' +
+          '<div style="margin-bottom:24px;">' + history + '</div>' +
+          '<h3 style="margin-bottom:12px;">Freunde</h3>' +
+          '<div style="display:flex; gap:8px; flex-wrap:wrap;">' + friends + '</div>' +
+        '</div>';
+    }
+
+    /* Init */
+    document.getElementById('sb-avatar').textContent = MOCK.account.emoji;
+    document.getElementById('sb-name').textContent = MOCK.account.name;
+    document.getElementById('sb-email').textContent = MOCK.account.email;
+    renderKonto();
+  </script>
+</body>
+</html>
