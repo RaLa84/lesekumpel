@@ -1,0 +1,1544 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lesekumpel · Wettbewerbsanalyse</title>
+<link rel="stylesheet" href="../fonts/fonts.css">
+<style>
+:root {
+  --mint:        #2FB8A6;
+  --navy:        #2B3140;
+  --cream:       #FFF6EF;
+  --cream-light: #FEFBF6;
+  --coral:       #F97352;
+  --lila:        #7D6AE6;
+  --yellow:      #FFD95A;
+  --border:      #D9D4CC;
+  --white:       #FFFFFF;
+  --font-heading: 'Fredoka', system-ui, sans-serif;
+  --font-body:    'Quicksand', system-ui, sans-serif;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  height: 100%;
+  background: var(--navy);
+  font-family: var(--font-body);
+  color: var(--navy);
+  overflow: hidden;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  line-height: 1.15;
+  color: var(--navy);
+}
+
+/* ===== Slide Container ===== */
+.deck { width: 100vw; height: 100vh; position: relative; }
+
+.slide {
+  position: absolute;
+  inset: 0;
+  background: var(--cream);
+  padding: 4vh 6vw 3vh;
+  display: none;
+  flex-direction: column;
+  overflow: hidden;
+}
+.slide.active { display: flex; }
+
+/* Organic Blob Accents */
+.slide > .blob {
+  position: absolute;
+  pointer-events: none;
+  z-index: 0;
+}
+.blob.tr-lg { top: -28vh; right: -18vw; width: 30vw; height: 30vw; max-width: 460px; max-height: 460px; }
+.blob.tr-md { top: -18vh; right: -12vw; width: 22vw; height: 22vw; max-width: 320px; max-height: 320px; }
+.blob.tl-lg { top: -28vh; left: -18vw;  width: 30vw; height: 30vw; max-width: 460px; max-height: 460px; }
+.blob.tl-md { top: -18vh; left: -12vw;  width: 22vw; height: 22vw; max-width: 320px; max-height: 320px; }
+.blob.br-md { bottom: -18vh; right: -12vw; width: 24vw; height: 24vw; max-width: 360px; max-height: 360px; }
+.blob.bl-md { bottom: -18vh; left: -12vw;  width: 24vw; height: 24vw; max-width: 360px; max-height: 360px; }
+
+.blob.shape-1 { border-radius: 62% 38% 30% 70% / 58% 38% 62% 42%; }
+.blob.shape-2 { border-radius: 38% 62% 70% 30% / 55% 45% 55% 45%; }
+.blob.shape-3 { border-radius: 35% 65% 50% 50% / 62% 38% 62% 38%; transform: rotate(-12deg); }
+.blob.shape-4 { border-radius: 55% 45% 35% 65% / 40% 62% 38% 60%; transform: rotate(8deg); }
+
+.blob.mint   { background: #2FB8A6; opacity: 0.10; }
+.blob.coral  { background: #F97352; opacity: 0.08; }
+.blob.yellow { background: #FFD95A; opacity: 0.20; }
+.blob.lila   { background: #7D6AE6; opacity: 0.09; }
+
+.slide > * { position: relative; z-index: 1; }
+
+/* ===== Slide Header ===== */
+.slide-tag {
+  font-size: 0.78rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--lila);
+  font-weight: 700;
+  margin-bottom: 0.5rem;
+}
+
+h1.slide-title {
+  font-size: clamp(1.7rem, 2.4vw, 2.3rem);
+  font-weight: 600;
+  margin-bottom: 1rem;
+  line-height: 1.15;
+  max-width: 90%;
+}
+h1.slide-title .accent { color: var(--coral); }
+
+h1.slide-title:has(+ .slide-subtitle) { margin-bottom: 0.5rem; }
+.slide-subtitle {
+  font-size: 1.05rem;
+  margin-top: 0;
+  margin-bottom: 1.4rem;
+  opacity: 0.7;
+  font-weight: 500;
+  line-height: 1.4;
+}
+
+.slide-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 0;
+  gap: 0.9rem;
+}
+
+/* ===== Slide Footer ===== */
+.slide-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 0.78rem;
+  color: var(--navy);
+  opacity: 0.5;
+  margin-top: 1rem;
+}
+.slide-footer .brand {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 1rem;
+  letter-spacing: 0.02em;
+}
+.slide-footer .brand-dot {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  background: var(--mint);
+  border-radius: 3px;
+  transform: rotate(45deg);
+  margin-right: 8px;
+  vertical-align: middle;
+}
+.slide-footer .counter { font-variant-numeric: tabular-nums; }
+.brand-name-lila { color: var(--lila); }
+
+/* ===== Cover Slide ===== */
+.slide-cover { background: var(--cream); justify-content: center; }
+.slide-cover .slide-content {
+  align-items: flex-start;
+  text-align: left;
+  justify-content: center;
+  max-width: 60%;
+}
+.cover-logo {
+  font-family: var(--font-heading);
+  font-size: 1.6rem;
+  font-weight: 700;
+  color: var(--navy);
+  margin-bottom: 4rem;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.cover-logo .brand-dot {
+  width: 18px; height: 18px;
+  background: var(--mint);
+  border-radius: 5px;
+  transform: rotate(45deg);
+}
+.cover-logo .brand-name { color: var(--lila); }
+.cover-title {
+  font-size: clamp(2.8rem, 5vw, 5.2rem);
+  font-weight: 700;
+  margin-bottom: 1.2rem;
+  line-height: 1.05;
+}
+.cover-title .accent { color: var(--coral); }
+.cover-sub {
+  font-size: clamp(1.1rem, 1.6vw, 1.6rem);
+  color: var(--navy);
+  opacity: 0.75;
+  max-width: 800px;
+  margin: 0 0 3rem;
+  line-height: 1.4;
+}
+.cover-meta {
+  font-size: 1rem;
+  color: var(--navy);
+  opacity: 0.6;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.cover-buddy {
+  position: absolute;
+  bottom: 8vh;
+  right: 7vw;
+  width: clamp(200px, 24vw, 360px);
+  height: auto;
+  z-index: 2;
+  pointer-events: none;
+  filter: drop-shadow(0 18px 40px rgba(43,49,64,0.15));
+  transform: rotate(-4deg);
+}
+.essence-buddy {
+  position: absolute;
+  bottom: 6vh;
+  right: 4vw;
+  width: clamp(100px, 11vw, 160px);
+  height: auto;
+  z-index: 2;
+  pointer-events: none;
+  filter: drop-shadow(0 12px 28px rgba(43,49,64,0.14));
+  transform: rotate(-3deg);
+}
+.deco-sparkle { position: absolute; pointer-events: none; z-index: 1; opacity: 0.7; }
+.deco-dots    { position: absolute; pointer-events: none; z-index: 1; opacity: 0.55; }
+.deco-cover-sparkle   { top: 14vh; left: 12vw; width: 120px; }
+.deco-cover-dots      { top: 22vh; right: 8vw; width: 130px; }
+.deco-essence-sparkle { top: 12vh; right: 26vw; width: 90px; }
+
+/* ===== Whitespace-Matrix (Essenz) ===== */
+.matrix-wrap {
+  background: var(--white);
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: 0 6px 24px rgba(43,49,64,0.06);
+}
+.matrix-row {
+  display: grid;
+  grid-template-columns: 1.8fr repeat(4, 1fr);
+  gap: 0;
+  align-items: center;
+  border-top: 1px solid var(--border);
+  font-size: 0.88rem;
+}
+.matrix-row:first-child { border-top: none; }
+.matrix-row.header {
+  background: var(--navy);
+  color: var(--cream);
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 0.85rem;
+}
+.matrix-row.header .cell { color: var(--cream); }
+.matrix-row.highlight {
+  background: var(--yellow);
+  font-weight: 700;
+}
+.matrix-row.highlight .cell { color: var(--navy); }
+.matrix-row .cell {
+  padding: 0.6rem 1rem;
+  text-align: center;
+}
+.matrix-row .cell.name {
+  text-align: left;
+  font-weight: 600;
+  color: var(--navy);
+}
+.matrix-row .cell .mark-yes { color: var(--mint); font-weight: 700; font-size: 1.2rem; }
+.matrix-row .cell .mark-no  { color: var(--coral); opacity: 0.55; font-size: 1.1rem; }
+.matrix-row.highlight .cell .mark-yes { color: var(--navy); font-size: 1.3rem; }
+
+.matrix-takeaway {
+  margin-top: 1.1rem;
+  padding: 1rem 1.4rem;
+  background: var(--yellow);
+  border-radius: 12px;
+  font-size: 1rem;
+  font-weight: 500;
+  line-height: 1.5;
+  text-align: center;
+}
+.matrix-takeaway strong { font-family: var(--font-heading); font-size: 1.15rem; }
+
+/* ===== Top-6 Übersicht ===== */
+.competitor-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.1rem;
+}
+.competitor-card {
+  background: var(--white);
+  border-radius: 18px;
+  padding: 1.2rem 1.2rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  box-shadow: 0 6px 20px rgba(43,49,64,0.05);
+  position: relative;
+  overflow: hidden;
+  min-height: 12rem;
+}
+.competitor-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 5px;
+  background: var(--border);
+}
+.competitor-card.c1::before { background: var(--coral); }
+.competitor-card.c2::before { background: var(--lila); }
+.competitor-card.c3::before { background: var(--mint); }
+.competitor-card.c4::before { background: var(--yellow); }
+.competitor-card.c5::before { background: var(--coral); opacity: 0.7; }
+.competitor-card.c6::before { background: var(--lila); opacity: 0.7; }
+.competitor-card .comp-rank {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.competitor-card.c1 .comp-rank { color: var(--coral); }
+.competitor-card.c2 .comp-rank { color: var(--lila); }
+.competitor-card.c3 .comp-rank { color: var(--mint); }
+.competitor-card.c4 .comp-rank { color: var(--navy); }
+.competitor-card.c5 .comp-rank { color: var(--coral); opacity: 0.85; }
+.competitor-card.c6 .comp-rank { color: var(--lila); opacity: 0.85; }
+.competitor-card h3 {
+  font-size: 1.2rem;
+  line-height: 1.15;
+}
+.competitor-card h3 small {
+  display: block;
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: 0.82rem;
+  opacity: 0.65;
+  margin-top: 0.15rem;
+}
+.competitor-card .comp-usp {
+  font-size: 0.85rem;
+  line-height: 1.45;
+  flex: 1;
+}
+.competitor-card .comp-tag {
+  align-self: flex-start;
+  background: var(--cream);
+  border-radius: 100px;
+  padding: 0.3rem 0.75rem;
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--navy);
+  letter-spacing: 0.05em;
+}
+
+/* ===== Wettbewerber-Profil-Slide ===== */
+.profile-grid {
+  display: grid;
+  grid-template-columns: 1.05fr 1fr;
+  gap: 1.4rem;
+  flex: 1;
+  min-height: 0;
+}
+.profile-shot {
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: 0 10px 32px rgba(43,49,64,0.18);
+  position: relative;
+  background: var(--white);
+  border: 1px solid var(--border);
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+.profile-shot img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+  display: block;
+}
+.profile-shot .shot-overlay {
+  position: absolute;
+  top: 0.9rem;
+  left: 0.9rem;
+  background: rgba(43,49,64,0.86);
+  color: var(--cream);
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 0.75rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 0.35rem 0.75rem;
+  border-radius: 6px;
+  z-index: 2;
+}
+.profile-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+  min-height: 0;
+}
+
+.profile-rank {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 0.78rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.profile-rank.coral  { color: var(--coral); }
+.profile-rank.lila   { color: var(--lila); }
+.profile-rank.mint   { color: var(--mint); }
+.profile-rank.yellow { color: #C99A00; }
+.profile-rank.navy   { color: var(--navy); }
+
+.profile-name {
+  font-size: 2rem;
+  line-height: 1.05;
+  font-weight: 700;
+}
+.profile-name small {
+  display: block;
+  font-family: var(--font-body);
+  font-weight: 500;
+  font-size: 0.9rem;
+  opacity: 0.65;
+  margin-top: 0.2rem;
+}
+
+.profile-facts {
+  background: var(--white);
+  border-radius: 14px;
+  padding: 0.95rem 1.2rem;
+  box-shadow: 0 4px 16px rgba(43,49,64,0.05);
+  display: grid;
+  grid-template-columns: auto 1fr;
+  row-gap: 0.45rem;
+  column-gap: 0.9rem;
+  font-size: 0.86rem;
+}
+.profile-facts dt {
+  font-weight: 700;
+  color: var(--navy);
+  opacity: 0.7;
+  font-size: 0.7rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  padding-top: 0.1rem;
+}
+.profile-facts dd { line-height: 1.4; }
+.profile-facts dd strong { color: var(--coral); }
+
+.profile-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.9rem;
+}
+.profile-box {
+  background: var(--white);
+  border-radius: 12px;
+  padding: 0.85rem 1rem;
+  box-shadow: 0 3px 12px rgba(43,49,64,0.04);
+  position: relative;
+}
+.profile-box::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; bottom: 0;
+  width: 3px;
+  border-radius: 12px 0 0 12px;
+}
+.profile-box.angriffe::before { background: var(--coral); }
+.profile-box.strategie::before { background: var(--mint); }
+.profile-box .pb-label {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 0.7rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 0.4rem;
+}
+.profile-box.angriffe .pb-label { color: var(--coral); }
+.profile-box.strategie .pb-label { color: var(--mint); }
+.profile-box ul {
+  list-style: none;
+  font-size: 0.82rem;
+  line-height: 1.4;
+}
+.profile-box ul li {
+  padding-left: 0.95rem;
+  position: relative;
+  margin-bottom: 0.28rem;
+}
+.profile-box ul li::before {
+  position: absolute;
+  left: 0;
+  font-weight: 700;
+}
+.profile-box.angriffe ul li::before { content: '×'; color: var(--coral); }
+.profile-box.strategie ul li::before { content: '→'; color: var(--mint); }
+.profile-box.strategie p {
+  font-size: 0.85rem;
+  line-height: 1.45;
+}
+.profile-box.strategie p em {
+  display: block;
+  margin-top: 0.4rem;
+  font-style: normal;
+  font-family: var(--font-heading);
+  font-weight: 600;
+  color: var(--mint);
+  font-size: 0.88rem;
+}
+
+/* ===== Marktbewegungen ===== */
+.move-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.move {
+  background: var(--white);
+  border-radius: 18px;
+  padding: 1.2rem 1.6rem;
+  display: grid;
+  grid-template-columns: 70px 1fr 1.4fr;
+  gap: 1.3rem;
+  align-items: center;
+  box-shadow: 0 5px 18px rgba(43,49,64,0.05);
+  position: relative;
+  overflow: hidden;
+}
+.move::before {
+  content: '';
+  position: absolute;
+  left: 0; top: 0; bottom: 0;
+  width: 5px;
+}
+.move.m1::before { background: var(--coral); }
+.move.m2::before { background: var(--lila); }
+.move.m3::before { background: var(--mint); }
+.move .move-icon {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 2.1rem;
+  width: 58px; height: 58px;
+  border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  background: var(--cream);
+}
+.move.m1 .move-icon { background: var(--coral); color: var(--white); }
+.move.m2 .move-icon { background: var(--lila); color: var(--white); }
+.move.m3 .move-icon { background: var(--mint); color: var(--white); }
+.move .move-body h3 { font-size: 1.1rem; margin-bottom: 0.25rem; }
+.move .move-body p { font-size: 0.88rem; line-height: 1.45; opacity: 0.85; }
+.move .move-impact {
+  background: var(--cream);
+  border-radius: 10px;
+  padding: 0.75rem 1rem;
+  font-size: 0.84rem;
+  line-height: 1.45;
+}
+.move .move-impact strong {
+  display: block;
+  font-family: var(--font-heading);
+  font-size: 0.74rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  margin-bottom: 0.2rem;
+}
+.move.m1 .move-impact strong { color: var(--coral); }
+.move.m2 .move-impact strong { color: var(--lila); }
+.move.m3 .move-impact strong { color: var(--mint); }
+
+/* ===== Pricing-Anker ===== */
+.price-row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.4rem;
+  flex: 1;
+  min-height: 0;
+}
+.price-col {
+  background: var(--white);
+  border-radius: 18px;
+  padding: 1.3rem 1.5rem;
+  box-shadow: 0 6px 24px rgba(43,49,64,0.06);
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  position: relative;
+  overflow: hidden;
+}
+.price-col::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 5px;
+}
+.price-col.b2c::before { background: var(--lila); }
+.price-col.b2b::before { background: var(--mint); }
+.price-col .col-tag {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 0.78rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.price-col.b2c .col-tag { color: var(--lila); }
+.price-col.b2b .col-tag { color: var(--mint); }
+.price-col h3 { font-size: 1.2rem; margin-bottom: 0.4rem; }
+.price-line {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 0.8rem;
+  border-bottom: 1px dashed var(--border);
+  padding: 0.45rem 0;
+}
+.price-line:last-child { border-bottom: none; }
+.price-line .who { font-weight: 600; font-size: 0.9rem; }
+.price-line .who small {
+  display: block;
+  font-weight: 400;
+  font-size: 0.75rem;
+  opacity: 0.7;
+}
+.price-line .amt {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 1rem;
+  color: var(--coral);
+  white-space: nowrap;
+}
+.lk-recommend {
+  margin-top: auto;
+  background: var(--yellow);
+  border-radius: 10px;
+  padding: 0.85rem 1.05rem;
+  font-size: 0.85rem;
+  line-height: 1.45;
+}
+.lk-recommend strong {
+  display: block;
+  font-family: var(--font-heading);
+  margin-bottom: 0.25rem;
+  font-size: 0.75rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--navy);
+}
+
+/* ===== Schluss-Slide Synthese ===== */
+.synthesis-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.4rem;
+  flex: 1;
+}
+.synth-card {
+  background: var(--white);
+  border-radius: 20px;
+  padding: 1.5rem 1.6rem;
+  box-shadow: 0 6px 24px rgba(43,49,64,0.06);
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+  position: relative;
+  overflow: hidden;
+}
+.synth-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 5px;
+}
+.synth-card.s1::before { background: var(--mint); }
+.synth-card.s2::before { background: var(--coral); }
+.synth-card .synth-label {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 0.78rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.synth-card.s1 .synth-label { color: var(--mint); }
+.synth-card.s2 .synth-label { color: var(--coral); }
+.synth-card h3 { font-size: 1.3rem; line-height: 1.2; }
+.synth-card ul {
+  list-style: none;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+.synth-card ul li {
+  padding-left: 1.3rem;
+  position: relative;
+  margin-bottom: 0.45rem;
+}
+.synth-card.s1 ul li::before {
+  content: '✓';
+  position: absolute;
+  left: 0;
+  color: var(--mint);
+  font-weight: 700;
+}
+.synth-card.s2 ul li::before {
+  content: '!';
+  position: absolute;
+  left: 0;
+  color: var(--coral);
+  font-weight: 700;
+}
+.synth-fazit {
+  margin-top: 1.2rem;
+  padding: 1.1rem 1.5rem;
+  background: var(--yellow);
+  border-radius: 12px;
+  font-size: 1.05rem;
+  font-weight: 500;
+  line-height: 1.5;
+  text-align: center;
+}
+.synth-fazit strong {
+  font-family: var(--font-heading);
+  font-size: 1.25rem;
+  font-weight: 700;
+}
+
+/* ===== Navigation ===== */
+.nav-hint {
+  position: fixed;
+  bottom: 16px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.75rem;
+  color: var(--navy);
+  opacity: 0.35;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  pointer-events: none;
+  z-index: 100;
+}
+.nav-buttons {
+  position: fixed;
+  bottom: 16px;
+  right: 24px;
+  display: flex;
+  gap: 8px;
+  z-index: 100;
+}
+.nav-btn {
+  width: 36px; height: 36px;
+  border-radius: 50%;
+  border: 1px solid var(--border);
+  background: var(--white);
+  font-family: var(--font-heading);
+  font-size: 1rem;
+  cursor: pointer;
+  color: var(--navy);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.15s ease;
+}
+.nav-btn:hover { background: var(--coral); color: var(--white); border-color: var(--coral); }
+.nav-btn:disabled { opacity: 0.3; cursor: default; }
+.nav-btn:disabled:hover { background: var(--white); color: var(--navy); border-color: var(--border); }
+
+/* Responsive */
+@media (max-width: 1100px) {
+  .slide { padding: 4vh 5vw; }
+  h1.slide-title { font-size: 2rem; }
+  .cover-title { font-size: 3.5rem; }
+  .competitor-grid { grid-template-columns: repeat(2, 1fr); }
+  .profile-grid { grid-template-columns: 1fr; }
+  .profile-shot { max-height: 40vh; }
+}
+
+@media print {
+  html, body { background: var(--cream); overflow: visible; }
+  .slide {
+    display: flex !important;
+    position: relative;
+    page-break-after: always;
+    height: 100vh;
+    width: 100vw;
+  }
+  .nav-hint, .nav-buttons { display: none !important; }
+}
+</style>
+</head>
+<body>
+
+<div class="deck" id="deck">
+
+<!-- ============================================ -->
+<!-- 0 — Cover                                     -->
+<!-- ============================================ -->
+<section class="slide slide-cover active" data-slide="0">
+  <div class="blob mint tr-lg shape-1" aria-hidden="true"></div>
+  <svg class="deco-sparkle deco-cover-sparkle" viewBox="0 0 120 120" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <g stroke="#FFD95A" stroke-width="3" stroke-linecap="round" fill="none"><path d="M60 18 L60 42 M48 30 L72 30"/></g>
+    <g stroke="#F97352" stroke-width="2.5" stroke-linecap="round" fill="none" opacity="0.85"><path d="M92 60 L92 76 M84 68 L100 68"/></g>
+    <g stroke="#7D6AE6" stroke-width="2" stroke-linecap="round" fill="none" opacity="0.7"><path d="M28 78 L28 92 M21 85 L35 85"/></g>
+  </svg>
+  <svg class="deco-dots deco-cover-dots" viewBox="0 0 130 100" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <circle cx="18" cy="60" r="7"  fill="#2FB8A6"/>
+    <circle cx="48" cy="28" r="5"  fill="#F97352"/>
+    <circle cx="76" cy="70" r="6"  fill="#FFD95A"/>
+    <circle cx="104" cy="42" r="5" fill="#7D6AE6"/>
+    <circle cx="122" cy="78" r="4" fill="#2FB8A6" opacity="0.7"/>
+  </svg>
+  <img src="assets/logo-lesekumpel.png" alt="" class="cover-buddy" aria-hidden="true">
+
+  <div class="slide-content">
+    <div class="cover-logo">
+      <span class="brand-dot"></span>
+      <span><span class="brand-name">Lese</span>kumpel</span>
+    </div>
+    <h1 class="cover-title">Wettbewerb <span class="accent">auf der Landkarte.</span></h1>
+    <p class="cover-sub">Wo der Markt schon besetzt ist — und wo der Whitespace für Lesekumpel liegt. Sechs deutsche Spezialisten, ein Allzweck-Riese, ein internationales Vorbild, eine Lücke.</p>
+    <div class="cover-meta">Wettbewerbsanalyse · Mai 2026</div>
+  </div>
+  <div class="slide-footer">
+    <span class="brand"><span class="brand-dot"></span><span class="brand-name brand-name-lila">Lese</span>kumpel</span>
+    <span class="counter">Cover</span>
+  </div>
+</section>
+
+<!-- ============================================ -->
+<!-- 1 — Essenz / Whitespace-Matrix                -->
+<!-- ============================================ -->
+<section class="slide" data-slide="1">
+  <div class="blob coral tr-md shape-2" aria-hidden="true"></div>
+  <svg class="deco-sparkle deco-essence-sparkle" viewBox="0 0 90 90" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <g stroke="#FFD95A" stroke-width="2.5" stroke-linecap="round" fill="none"><path d="M45 12 L45 28 M37 20 L53 20"/></g>
+    <g stroke="#F97352" stroke-width="2" stroke-linecap="round" fill="none" opacity="0.8"><path d="M68 38 L68 50 M62 44 L74 44"/></g>
+  </svg>
+
+  <div class="slide-tag">Essenz · Whitespace</div>
+  <h1 class="slide-title">Niemand kombiniert mehr als <span class="accent">zwei</span> dieser Achsen.</h1>
+  <p class="slide-subtitle">Generativ · Deutsch · Neurotyp-Differenzierung · Persona-Charakter</p>
+
+  <div class="slide-content">
+    <div class="matrix-wrap">
+      <div class="matrix-row header"><div class="cell name">Wettbewerber</div><div class="cell">Generativ</div><div class="cell">Deutsch</div><div class="cell">Neurotyp</div><div class="cell">Persona</div></div>
+      <div class="matrix-row"><div class="cell name">eKidz.eu</div><div class="cell"><span class="mark-no">—</span></div><div class="cell"><span class="mark-yes">✓</span></div><div class="cell"><span class="mark-no">—</span></div><div class="cell"><span class="mark-no">—</span></div></div>
+      <div class="matrix-row"><div class="cell name">CLELO (Hardware)</div><div class="cell"><span class="mark-no">—</span></div><div class="cell"><span class="mark-yes">✓</span></div><div class="cell"><span class="mark-no">—</span></div><div class="cell"><span class="mark-no">—</span></div></div>
+      <div class="matrix-row"><div class="cell name">Leseludi</div><div class="cell"><span class="mark-no">—</span></div><div class="cell"><span class="mark-yes">✓</span></div><div class="cell"><span class="mark-no">—</span></div><div class="cell"><span class="mark-no">—</span></div></div>
+      <div class="matrix-row"><div class="cell name">Antolin</div><div class="cell"><span class="mark-no">—</span></div><div class="cell"><span class="mark-yes">✓</span></div><div class="cell"><span class="mark-no">—</span></div><div class="cell"><span class="mark-no">—</span></div></div>
+      <div class="matrix-row"><div class="cell name">Polylino (70+ Sprachen)</div><div class="cell"><span class="mark-no">—</span></div><div class="cell"><span class="mark-yes">✓</span></div><div class="cell"><span class="mark-no">—</span></div><div class="cell"><span class="mark-no">—</span></div></div>
+      <div class="matrix-row"><div class="cell name">Onilo</div><div class="cell"><span class="mark-no">—</span></div><div class="cell"><span class="mark-yes">✓</span></div><div class="cell"><span class="mark-no">—</span></div><div class="cell"><span class="mark-no">—</span></div></div>
+      <div class="matrix-row"><div class="cell name">ANTON (Allzweck)</div><div class="cell"><span class="mark-no">—</span></div><div class="cell"><span class="mark-yes">✓</span></div><div class="cell"><span class="mark-no">—</span></div><div class="cell"><span class="mark-no">—</span></div></div>
+      <div class="matrix-row"><div class="cell name">Google Read Along</div><div class="cell"><span class="mark-no">—</span></div><div class="cell"><span class="mark-no">—</span></div><div class="cell"><span class="mark-no">—</span></div><div class="cell"><span class="mark-yes">✓</span></div></div>
+      <div class="matrix-row highlight"><div class="cell name">Lesekumpel</div><div class="cell"><span class="mark-yes">✓</span></div><div class="cell"><span class="mark-yes">✓</span></div><div class="cell"><span class="mark-yes">✓</span></div><div class="cell"><span class="mark-yes">✓</span></div></div>
+    </div>
+
+    <div class="matrix-takeaway">
+      Lesekumpel ist der <strong>einzige</strong> Player, der alle vier Achsen kombiniert — eine strukturelle Positionierungs-Lücke im deutschsprachigen Markt.
+    </div>
+  </div>
+
+  <div class="slide-footer">
+    <span class="brand"><span class="brand-dot"></span><span class="brand-name brand-name-lila">Lese</span>kumpel · Wettbewerb</span>
+    <span class="counter">01 / 13</span>
+  </div>
+</section>
+
+<!-- ============================================ -->
+<!-- 2 — Top 6 Übersicht                           -->
+<!-- ============================================ -->
+<section class="slide" data-slide="2">
+  <div class="blob lila tl-md shape-3" aria-hidden="true"></div>
+  <div class="blob yellow br-md shape-4" aria-hidden="true"></div>
+
+  <div class="slide-tag">Top 6 · Deutschland</div>
+  <h1 class="slide-title">Die direktesten Spezialisten <span class="accent">im Überblick.</span></h1>
+  <p class="slide-subtitle">Auswahlkriterium: eigene Lese-Inhalte · Personalisierung · Kind als Selbstleser · KI/Adaption</p>
+
+  <div class="slide-content">
+    <div class="competitor-grid">
+      <div class="competitor-card c1">
+        <span class="comp-rank">#1 · Hauptkonkurrent</span>
+        <h3>eKidz.eu <small>München · KI-Spracherkennung</small></h3>
+        <p class="comp-usp">Eigene Stories, KI-Lesediagnose, in Niedersachsen seit 2023 alle 1.900 Grundschulen kostenlos.</p>
+        <span class="comp-tag">Forschung mit Uni Regensburg</span>
+      </div>
+      <div class="competitor-card c2">
+        <span class="comp-rank">#2 · Hardware-KI</span>
+        <h3>CLELO <small>Regensburg · Leselerngerät</small></h3>
+        <p class="comp-usp">279 € Einmalkauf, KI-Spracherkennung erkennt B/P-Unterschied auch in Kinderstimmen.</p>
+        <span class="comp-tag">Sales-Launch Nov 2025</span>
+      </div>
+      <div class="competitor-card c3">
+        <span class="comp-rank">#3 · Schul-Plattform</span>
+        <h3>Leseludi <small>+ Schreibsusi · Individualisierung</small></h3>
+        <p class="comp-usp">Web-Lernportal mit gestaffelten Niveaustufen, auf Samsung Chancentablet vorinstalliert.</p>
+        <span class="comp-tag">Startchancen-Reichweite</span>
+      </div>
+      <div class="competitor-card c4">
+        <span class="comp-rank">#4 · Marktführer</span>
+        <h3>Antolin <small>Westermann · Quiz-Mindshare</small></h3>
+        <p class="comp-usp">Quiz-Programm zu 121.000+ Büchern. Quasi-Monopol bei Grundschullehrer*innen.</p>
+        <span class="comp-tag">237 € / Schule / Jahr</span>
+      </div>
+      <div class="competitor-card c5">
+        <span class="comp-rank">#5 · Mehrsprachig</span>
+        <h3>Polylino <small>ILT, Schweden · 70+ Sprachen</small></h3>
+        <p class="comp-usp">2.000+ Bilderbücher mit Audio. WGKD-Rahmenvertrag für öffentliche Beschaffung.</p>
+        <span class="comp-tag">Startchancen-Lieferant</span>
+      </div>
+      <div class="competitor-card c6">
+        <span class="comp-rank">#6 · Klassenzimmer</span>
+        <h3>Onilo <small>Boardstories für Whiteboard</small></h3>
+        <p class="comp-usp">Animierte Bilderbuch-Adaptionen renommierter Verlage (Oetinger, Carlsen, Ravensburger).</p>
+        <span class="comp-tag">In BW via SESAM kostenlos</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide-footer">
+    <span class="brand"><span class="brand-dot"></span><span class="brand-name brand-name-lila">Lese</span>kumpel · Wettbewerb</span>
+    <span class="counter">02 / 13</span>
+  </div>
+</section>
+
+<!-- ============================================ -->
+<!-- 3 — eKidz.eu                                  -->
+<!-- ============================================ -->
+<section class="slide" data-slide="3">
+  <div class="blob coral tr-md shape-2" aria-hidden="true"></div>
+
+  <div class="slide-tag">Spezialist #1 · Hauptkonkurrent</div>
+  <h1 class="slide-title">eKidz.eu <span class="accent">— die ernsthafteste Bedrohung.</span></h1>
+
+  <div class="slide-content">
+    <div class="profile-grid">
+      <div class="profile-shot">
+        <span class="shot-overlay">ekidz.eu</span>
+        <img src="assets/competitors/ekidz.jpg" alt="eKidz.eu Webseite">
+      </div>
+      <div class="profile-body">
+        <span class="profile-rank coral">#1 · München · gegründet 2017</span>
+        <h2 class="profile-name">eKidz.eu <small>KI-Lesediagnose mit Spracherkennung</small></h2>
+        <dl class="profile-facts">
+          <dt>Modell</dt><dd>Eigene illustrierte Geschichten + KI-Lesetraining mit Spracherkennung</dd>
+          <dt>Sprachen</dt><dd>Deutsch + Englisch (DaZ und Native abgedeckt)</dd>
+          <dt>Preis</dt><dd>Familien-Abo via App-Stores (3/6/12 Monate); Schullizenzen auf Anfrage</dd>
+          <dt>Reichweite</dt><dd><strong>Niedersachsen: alle 1.900 Grundschulen kostenlos seit 2023</strong></dd>
+          <dt>Wissenschaft</dt><dd>Uni Regensburg, Fraunhofer IDMT Oldenburg, Uni Flensburg</dd>
+        </dl>
+        <div class="profile-row">
+          <div class="profile-box angriffe">
+            <div class="pb-label">Lücken</div>
+            <ul>
+              <li>Generische Personas, keine Charaktere</li>
+              <li>Keine Neurotyp-Differenzierung</li>
+              <li>Bibliothek statisch, nicht generativ</li>
+            </ul>
+          </div>
+          <div class="profile-box strategie">
+            <div class="pb-label">Strategie</div>
+            <p>B2C-Eltern-Lücke besetzen mit Persona-Charakteren und Neurotyp-Modi.
+            <em>"Was eKidz für Schulen ist, wird Lesekumpel für Familien."</em></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide-footer">
+    <span class="brand"><span class="brand-dot"></span><span class="brand-name brand-name-lila">Lese</span>kumpel · Wettbewerb</span>
+    <span class="counter">03 / 13</span>
+  </div>
+</section>
+
+<!-- ============================================ -->
+<!-- 4 — CLELO                                     -->
+<!-- ============================================ -->
+<section class="slide" data-slide="4">
+  <div class="blob lila tl-md shape-3" aria-hidden="true"></div>
+
+  <div class="slide-tag">Spezialist #2 · Hardware-KI</div>
+  <h1 class="slide-title">CLELO <span class="accent">— KI-Spracherkennung als Gerät.</span></h1>
+
+  <div class="slide-content">
+    <div class="profile-grid">
+      <div class="profile-shot">
+        <span class="shot-overlay">clelo.de</span>
+        <img src="assets/competitors/clelo.jpg" alt="CLELO Webseite">
+      </div>
+      <div class="profile-body">
+        <span class="profile-rank lila">#2 · Regensburg · gemeinnützig</span>
+        <h2 class="profile-name">CLELO <small>Hardware-Leselerngerät · Dr. Herbert Endres</small></h2>
+        <dl class="profile-facts">
+          <dt>Modell</dt><dd>Hardware-Leselerngerät mit KI-Spracherkennung und eigener Bibliothek</dd>
+          <dt>Preis</dt><dd><strong>279 € Einmalkauf</strong> (statt Abo)</dd>
+          <dt>KI-Edge</dt><dd>Erkennt B/P-Unterschied auch in Kinderstimmen</dd>
+          <dt>Studie</dt><dd>Uni Regensburg: signifikante Verbesserung Lesegeschwindigkeit, Genauigkeit, Motivation</dd>
+          <dt>Vertrieb</dt><dd>Sales-Launch Nov 2025; Klassensätze über Startchancen-Chancenbudget</dd>
+        </dl>
+        <div class="profile-row">
+          <div class="profile-box angriffe">
+            <div class="pb-label">Lücken</div>
+            <ul>
+              <li>279 € Premium-Hürde</li>
+              <li>Geschlossenes Hardware-Ökosystem</li>
+              <li>Eltern erwarten App-First</li>
+            </ul>
+          </div>
+          <div class="profile-box strategie">
+            <div class="pb-label">Strategie</div>
+            <p>Software-Alternative ohne Hardware-Kauf, mit Persona-Charakteren statt Aufnahme-Funktion.
+            <em>"Auf jedem Tablet, das ihr schon habt."</em></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide-footer">
+    <span class="brand"><span class="brand-dot"></span><span class="brand-name brand-name-lila">Lese</span>kumpel · Wettbewerb</span>
+    <span class="counter">04 / 13</span>
+  </div>
+</section>
+
+<!-- ============================================ -->
+<!-- 5 — Leseludi                                  -->
+<!-- ============================================ -->
+<section class="slide" data-slide="5">
+  <div class="blob mint tr-md shape-2" aria-hidden="true"></div>
+
+  <div class="slide-tag">Spezialist #3 · Schul-Plattform</div>
+  <h1 class="slide-title">Leseludi <span class="accent">— Individualisierung im Klassenzimmer.</span></h1>
+
+  <div class="slide-content">
+    <div class="profile-grid">
+      <div class="profile-shot">
+        <span class="shot-overlay">leseludi.de</span>
+        <img src="assets/competitors/leseludi.jpg" alt="Leseludi Webseite">
+      </div>
+      <div class="profile-body">
+        <span class="profile-rank mint">#3 · Lernportal + Schreibsusi</span>
+        <h2 class="profile-name">Leseludi <small>Systematische Online-Leseaufgaben</small></h2>
+        <dl class="profile-facts">
+          <dt>Modell</dt><dd>Web-Lernportal mit gestaffelten Niveaustufen, individuelle Aufgaben-Zuweisung</dd>
+          <dt>Zielgruppe</dt><dd>Klasse 1–4, inkl. sonderpädagogische Förderung</dd>
+          <dt>Preis</dt><dd>Lizenzmodell für Schulen + Heimnutzung</dd>
+          <dt>Reichweite</dt><dd><strong>Auf Samsung Chancentablet vorinstalliert</strong> — geht an Startchancen-Schulen</dd>
+          <dt>Hardware</dt><dd>Plattform-agnostisch (PC/Tablet/Smartphone)</dd>
+        </dl>
+        <div class="profile-row">
+          <div class="profile-box angriffe">
+            <div class="pb-label">Lücken</div>
+            <ul>
+              <li>Aufgaben-zentriert, kein Story-Erlebnis</li>
+              <li>Keine narrative Kontinuität / Personas</li>
+              <li>Schwache Eltern-UX, Lehrer-getrieben</li>
+            </ul>
+          </div>
+          <div class="profile-box strategie">
+            <div class="pb-label">Strategie</div>
+            <p>Emotionale Story-Brücke neben Leseludis Übungs-Plattform.
+            <em>"Leseludi für Übungen, Lesekumpel für Lese-Spaß zuhause."</em></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide-footer">
+    <span class="brand"><span class="brand-dot"></span><span class="brand-name brand-name-lila">Lese</span>kumpel · Wettbewerb</span>
+    <span class="counter">05 / 13</span>
+  </div>
+</section>
+
+<!-- ============================================ -->
+<!-- 6 — Antolin                                   -->
+<!-- ============================================ -->
+<section class="slide" data-slide="6">
+  <div class="blob yellow tl-lg shape-1" aria-hidden="true"></div>
+
+  <div class="slide-tag">Spezialist #4 · Marktführer</div>
+  <h1 class="slide-title">Antolin <span class="accent">— der Mindshare-Riese.</span></h1>
+
+  <div class="slide-content">
+    <div class="profile-grid">
+      <div class="profile-shot">
+        <span class="shot-overlay">antolin.westermann.de</span>
+        <img src="assets/competitors/antolin.jpg" alt="Antolin Webseite">
+      </div>
+      <div class="profile-body">
+        <span class="profile-rank yellow">#4 · Westermann · seit 2000</span>
+        <h2 class="profile-name">Antolin <small>Quiz zu echten Büchern · Klasse 1–10</small></h2>
+        <dl class="profile-facts">
+          <dt>Modell</dt><dd>Quiz-Programm zu <strong>121.000+ Büchern</strong>, Punkte/Urkunden, Lehrer-Dashboard</dd>
+          <dt>Preis</dt><dd>237 €/Schule/Jahr · Klassenlizenz günstiger · Schulträgerlizenz für Verbünde</dd>
+          <dt>Reichweite</dt><dd>Quasi-Monopol in deutschen Grundschulen — "die Lese-App, die Lehrer kennen"</dd>
+          <dt>Schwäche</dt><dd>Kein Inhalt selbst — Kinder brauchen physische Bücher</dd>
+        </dl>
+        <div class="profile-row">
+          <div class="profile-box angriffe">
+            <div class="pb-label">Lücken</div>
+            <ul>
+              <li>Keine eigenen Texte</li>
+              <li>UI seit ~15 Jahren kaum modernisiert</li>
+              <li>Schwache Leser scheitern am Buch</li>
+            </ul>
+          </div>
+          <div class="profile-box strategie">
+            <div class="pb-label">Strategie</div>
+            <p>Komplementär statt Ersatz — besonders für schwächere Leser, die Antolins Buch-Hürde nicht schaffen.
+            <em>"Antolin testet ab, Lesekumpel liefert den Lesestoff."</em></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide-footer">
+    <span class="brand"><span class="brand-dot"></span><span class="brand-name brand-name-lila">Lese</span>kumpel · Wettbewerb</span>
+    <span class="counter">06 / 13</span>
+  </div>
+</section>
+
+<!-- ============================================ -->
+<!-- 7 — Polylino                                  -->
+<!-- ============================================ -->
+<section class="slide" data-slide="7">
+  <div class="blob coral br-md shape-4" aria-hidden="true"></div>
+
+  <div class="slide-tag">Spezialist #5 · Mehrsprachige Bibliothek</div>
+  <h1 class="slide-title">Polylino <span class="accent">— 70 Sprachen, ein Vertriebs-Moat.</span></h1>
+
+  <div class="slide-content">
+    <div class="profile-grid">
+      <div class="profile-shot">
+        <span class="shot-overlay">ilteducation.com/de/polylino-schule</span>
+        <img src="assets/competitors/polylino.jpg" alt="Polylino Webseite">
+      </div>
+      <div class="profile-body">
+        <span class="profile-rank coral">#5 · ILT Education · Schweden</span>
+        <h2 class="profile-name">Polylino <small>2.000+ Bilderbücher mit Audio in 70+ Sprachen</small></h2>
+        <dl class="profile-facts">
+          <dt>Modell</dt><dd>Kuratierte Bibliothek aus Verlagslizenzen, Audio-Vorlesen, adaptive Lesegeschwindigkeit</dd>
+          <dt>Preis</dt><dd>Schul-Lizenz, <strong>WGKD-Rahmenvertrag</strong> für öffentliche Beschaffung</dd>
+          <dt>Reichweite</dt><dd>Etablierter Anbieter für Startchancen-Schulen (eigene Programm-Landingpage)</dd>
+          <dt>Spezialgebiet</dt><dd>DaZ-Kinder, mehrsprachige Familien, Migrations-Kontext (auch UA, AR, TR)</dd>
+        </dl>
+        <div class="profile-row">
+          <div class="profile-box angriffe">
+            <div class="pb-label">Lücken</div>
+            <ul>
+              <li>Statische Bibliothek, nicht generativ</li>
+              <li>Audio-Vorlesen → Kind = Konsument</li>
+              <li>Keine Adaption pro Kind</li>
+            </ul>
+          </div>
+          <div class="profile-box strategie">
+            <div class="pb-label">Strategie</div>
+            <p>Generativ-Achse: unendlicher Story-Nachschub bei fundamental anderer Kostenstruktur.
+            <em>"70 Sprachen brauchen Lizenzen — Lesekumpel generiert."</em></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide-footer">
+    <span class="brand"><span class="brand-dot"></span><span class="brand-name brand-name-lila">Lese</span>kumpel · Wettbewerb</span>
+    <span class="counter">07 / 13</span>
+  </div>
+</section>
+
+<!-- ============================================ -->
+<!-- 8 — Onilo                                     -->
+<!-- ============================================ -->
+<section class="slide" data-slide="8">
+  <div class="blob lila bl-md shape-3" aria-hidden="true"></div>
+
+  <div class="slide-tag">Spezialist #6 · Klassenzimmer</div>
+  <h1 class="slide-title">Onilo <span class="accent">— Boardstories für die Whiteboard-Wand.</span></h1>
+
+  <div class="slide-content">
+    <div class="profile-grid">
+      <div class="profile-shot">
+        <span class="shot-overlay">onilo.de</span>
+        <img src="assets/competitors/onilo.jpg" alt="Onilo Webseite">
+      </div>
+      <div class="profile-body">
+        <span class="profile-rank lila">#6 · Animierte Bilderbücher · ab 2007</span>
+        <h2 class="profile-name">Onilo <small>Boardstories für Klassenzimmer (Klasse 1–6)</small></h2>
+        <dl class="profile-facts">
+          <dt>Modell</dt><dd>Animierte Bilderbuch-Adaptionen für Whiteboard/Beamer + pädagogisches Begleitmaterial</dd>
+          <dt>Verlage</dt><dd>Oetinger, Carlsen, Ravensburger — starke Verlagskooperationen</dd>
+          <dt>Preis</dt><dd>Schullizenz; <strong>in BW via SESAM kostenlos</strong> bis Ende 2026</dd>
+          <dt>Spezialgebiet</dt><dd>DaZ und sonderpädagogische Förderung, fächerübergreifend einsetzbar</dd>
+        </dl>
+        <div class="profile-row">
+          <div class="profile-box angriffe">
+            <div class="pb-label">Lücken</div>
+            <ul>
+              <li>Lehrer-zentriert → Kind = Zuhörer</li>
+              <li>B2B-only, kein Eltern-Markt</li>
+              <li>Statisches Repertoire, keine KI</li>
+            </ul>
+          </div>
+          <div class="profile-box strategie">
+            <div class="pb-label">Strategie</div>
+            <p>Komplementär: Onilo im Klassenzimmer, Lesekumpel für individuelles Üben zuhause.
+            <em>"Onilo gemeinsam, Lesekumpel selbst."</em></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide-footer">
+    <span class="brand"><span class="brand-dot"></span><span class="brand-name brand-name-lila">Lese</span>kumpel · Wettbewerb</span>
+    <span class="counter">08 / 13</span>
+  </div>
+</section>
+
+<!-- ============================================ -->
+<!-- 9 — ANTON (Umfeld)                            -->
+<!-- ============================================ -->
+<section class="slide" data-slide="9">
+  <div class="blob yellow tr-md shape-2" aria-hidden="true"></div>
+
+  <div class="slide-tag">Umfeld · Allzweck-Lern-App</div>
+  <h1 class="slide-title">ANTON <span class="accent">— der schlafende Riese.</span></h1>
+
+  <div class="slide-content">
+    <div class="profile-grid">
+      <div class="profile-shot">
+        <span class="shot-overlay">anton.app</span>
+        <img src="assets/competitors/anton.jpg" alt="ANTON Webseite">
+      </div>
+      <div class="profile-body">
+        <span class="profile-rank navy">Umfeld · solocode GmbH</span>
+        <h2 class="profile-name">ANTON <small>Allzweck-Lern-App, Lesen ist 1 Modul unter vielen</small></h2>
+        <dl class="profile-facts">
+          <dt>Modell</dt><dd>Alle Fächer Klasse 1–10 mit Klassenraum-Funktion für Lehrer</dd>
+          <dt>Preis</dt><dd>Kostenlos · Plus 9,99 €/Jahr · <strong>Familie 19,99 €/Jahr</strong> · Schule 500–1.000 €/Jahr</dd>
+          <dt>Reichweite</dt><dd><strong>10 Mio+ Downloads</strong>, 4,8★ — meistgenutzte Lern-App in DE</dd>
+          <dt>Schwäche</dt><dd>Keine narrative Tiefe, keine eigene Lese-Methodik</dd>
+        </dl>
+        <div class="profile-row">
+          <div class="profile-box angriffe">
+            <div class="pb-label">Warum kein Spezialist</div>
+            <ul>
+              <li>Lesen ist Nebenfach</li>
+              <li>Generisches Quiz-Modell</li>
+              <li>Keine Persona / Neurotyp-Logik</li>
+            </ul>
+          </div>
+          <div class="profile-box strategie">
+            <div class="pb-label">Relevanz</div>
+            <p>Pricing-Anker nach unten (19,99 €/Jahr). Risiko-Monitor falls eigenes Lese-Modul kommt.
+            <em>"ANTON für Mathe, Lesekumpel für die Lese-Routine."</em></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide-footer">
+    <span class="brand"><span class="brand-dot"></span><span class="brand-name brand-name-lila">Lese</span>kumpel · Wettbewerb</span>
+    <span class="counter">09 / 13</span>
+  </div>
+</section>
+
+<!-- ============================================ -->
+<!-- 10 — Google Read Along (International)        -->
+<!-- ============================================ -->
+<section class="slide" data-slide="10">
+  <div class="blob mint tl-lg shape-1" aria-hidden="true"></div>
+
+  <div class="slide-tag">International · Vorbild</div>
+  <h1 class="slide-title">Google Read Along <span class="accent">— die Blaupause aus Indien.</span></h1>
+
+  <div class="slide-content">
+    <div class="profile-grid">
+      <div class="profile-shot">
+        <span class="shot-overlay">readalong.google</span>
+        <img src="assets/competitors/readalong.jpg" alt="Google Read Along Webseite">
+      </div>
+      <div class="profile-body">
+        <span class="profile-rank mint">International · Google · ehem. "Bolo"</span>
+        <h2 class="profile-name">Read Along <small>Free Reading Buddy "Diya" mit On-Device-Spracherkennung</small></h2>
+        <dl class="profile-facts">
+          <dt>Modell</dt><dd>Free Reading Buddy, On-Device-Spracherkennung, gamifizierte Belohnungen</dd>
+          <dt>Preis</dt><dd><strong>0 € — keine Ads, keine Upsells</strong></dd>
+          <dt>Sprachen</dt><dd>EN, ES, PT, Hindi, Bangla, Urdu, Telugu, Marathi, Tamil — <strong>kein Deutsch</strong></dd>
+          <dt>Verbreitung</dt><dd>Emerging Markets, Indien-Launch 2019 als "Bolo"</dd>
+        </dl>
+        <div class="profile-row">
+          <div class="profile-box angriffe">
+            <div class="pb-label">Warum (heute) kein Konkurrent</div>
+            <ul>
+              <li>Kein Deutsch (Stand Mai 2026)</li>
+              <li>Statischer Content, nicht generativ</li>
+              <li>Keine Neurotyp-Differenzierung</li>
+            </ul>
+          </div>
+          <div class="profile-box strategie">
+            <div class="pb-label">Inspiration & Verteidigung</div>
+            <p>Bestätigt Produktwette (Persona + Spracherkennung). Verteidigung: generativ + Neurotyp + Eltern-Hybrid.
+            <em>"Diya als Vorbild, nicht als Vorlage."</em></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide-footer">
+    <span class="brand"><span class="brand-dot"></span><span class="brand-name brand-name-lila">Lese</span>kumpel · Wettbewerb</span>
+    <span class="counter">10 / 13</span>
+  </div>
+</section>
+
+<!-- ============================================ -->
+<!-- 11 — Drei Marktbewegungen 2026                -->
+<!-- ============================================ -->
+<section class="slide" data-slide="11">
+  <div class="blob mint br-md shape-3" aria-hidden="true"></div>
+
+  <div class="slide-tag">Marktbewegungen · 2026</div>
+  <h1 class="slide-title">Drei Verschiebungen, die <span class="accent">Lesekumpel betreffen.</span></h1>
+
+  <div class="slide-content">
+    <div class="move-grid">
+      <div class="move m1">
+        <div class="move-icon">⚠</div>
+        <div class="move-body">
+          <h3>LegaKids verschwindet Ende 2026</h3>
+          <p>Der bekannteste kostenlose LRS-Helfer im deutschsprachigen Raum ist seit 01.01.2026 in Liquidation. Seiten gehen voraussichtlich Ende 2026 offline.</p>
+        </div>
+        <div class="move-impact">
+          <strong>Chance für Lesekumpel</strong>
+          Konkrete LRS-Marktlücke für den Neurotyp-LRS-Modus. Community-Akquise über BVL, Lehrerforen, LinkedIn.
+        </div>
+      </div>
+
+      <div class="move m2">
+        <div class="move-icon">→</div>
+        <div class="move-body">
+          <h3>eKidz baut Bundesland-Vollabdeckung auf</h3>
+          <p>Niedersachsen 1.900 Schulen kostenlos seit 2023. Wenn weitere Bundesländer nachziehen, wird eKidz im Schul-Markt strukturell uneinholbar.</p>
+        </div>
+        <div class="move-impact">
+          <strong>Strategische Konsequenz</strong>
+          B2B-Schul-Markt nicht frontal angreifen. Als B2C-Eltern-Marke groß werden + eKidz-Lücken besetzen.
+        </div>
+      </div>
+
+      <div class="move m3">
+        <div class="move-icon">⌂</div>
+        <div class="move-body">
+          <h3>Startchancen-Programm 2024–2034 (20 Mrd. €)</h3>
+          <p>Bund-Länder-Programm für ~4.000 Schulen. Polylino, Leseludi, CLELO, Anybook haben ihre Lieferanten-Position bis 2034 zementiert.</p>
+        </div>
+        <div class="move-impact">
+          <strong>Burgmauer für Etablierte</strong>
+          Für Lesekumpel ohne Bedeutung (keine Schulakquise) — bestätigt die Wahl des B2C-Eltern-Felds.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide-footer">
+    <span class="brand"><span class="brand-dot"></span><span class="brand-name brand-name-lila">Lese</span>kumpel · Wettbewerb</span>
+    <span class="counter">11 / 13</span>
+  </div>
+</section>
+
+<!-- ============================================ -->
+<!-- 12 — Pricing-Anker                            -->
+<!-- ============================================ -->
+<section class="slide" data-slide="12">
+  <div class="blob lila tr-md shape-2" aria-hidden="true"></div>
+
+  <div class="slide-tag">Pricing-Anker</div>
+  <h1 class="slide-title">Was der Markt zahlt — <span class="accent">und wo Lesekumpel sich einordnet.</span></h1>
+
+  <div class="slide-content">
+    <div class="price-row">
+      <div class="price-col b2c">
+        <span class="col-tag">B2C · Familien-Markt</span>
+        <h3>Lesekumpels Spielfeld</h3>
+        <div class="price-line"><div class="who">ANTON Plus Familie<small>Allzweck-Lern-App</small></div><div class="amt">19,99 €/Jahr</div></div>
+        <div class="price-line"><div class="who">TigerBooks / Tigertones<small>Bibliotheks-Abo + Audio</small></div><div class="amt">36–60 €/Jahr</div></div>
+        <div class="price-line"><div class="who">Reading Eggs<small>USA — Phonics-Adaption</small></div><div class="amt">~100 €/Jahr</div></div>
+        <div class="price-line"><div class="who">Epic! Family<small>USA — 40k+ Bücher</small></div><div class="amt">~140 €/Jahr</div></div>
+        <div class="price-line"><div class="who">CLELO Hardware<small>Einmalkauf</small></div><div class="amt">279 €</div></div>
+        <div class="lk-recommend">
+          <strong>Lesekumpel-Empfehlung</strong>
+          7,99–9,99 € / Monat oder 79–89 € / Jahr — über ANTON, unter Reading Eggs/Epic. Freemium: 1–2 Stories pro Tag kostenlos.
+        </div>
+      </div>
+
+      <div class="price-col b2b">
+        <span class="col-tag">B2B · Schul-Kontext</span>
+        <h3>Nur Marktverständnis</h3>
+        <div class="price-line"><div class="who">Antolin Schullizenz<small>ganze Schule</small></div><div class="amt">237 €/Jahr</div></div>
+        <div class="price-line"><div class="who">ANTON Schullizenz<small>bis 500 SuS</small></div><div class="amt">500 €/Jahr</div></div>
+        <div class="price-line"><div class="who">ANTON Schullizenz<small>ab 500 SuS</small></div><div class="amt">~1.000 €/Jahr</div></div>
+        <div class="price-line"><div class="who">eKidz Schullizenz<small>Niedersachsen via Land</small></div><div class="amt">0 € (Land)</div></div>
+        <div class="price-line"><div class="who">Onilo BW-Schule<small>via SESAM bis Ende 2026</small></div><div class="amt">0 € (Land)</div></div>
+        <div class="lk-recommend">
+          <strong>Strategischer Hinweis</strong>
+          Lesekumpel macht <strong>keine Schulakquise</strong>. Schul-Preise dienen nur dem Marktverständnis. Lehrer = Multiplikatoren für Eltern.
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide-footer">
+    <span class="brand"><span class="brand-dot"></span><span class="brand-name brand-name-lila">Lese</span>kumpel · Wettbewerb</span>
+    <span class="counter">12 / 13</span>
+  </div>
+</section>
+
+<!-- ============================================ -->
+<!-- 13 — Synthese                                 -->
+<!-- ============================================ -->
+<section class="slide" data-slide="13">
+  <div class="blob mint tr-lg shape-1" aria-hidden="true"></div>
+  <div class="blob yellow bl-md shape-4" aria-hidden="true"></div>
+
+  <svg class="deco-sparkle deco-essence-sparkle" viewBox="0 0 90 90" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <g stroke="#FFD95A" stroke-width="2.5" stroke-linecap="round" fill="none"><path d="M45 12 L45 28 M37 20 L53 20"/></g>
+    <g stroke="#F97352" stroke-width="2" stroke-linecap="round" fill="none" opacity="0.8"><path d="M68 38 L68 50 M62 44 L74 44"/></g>
+  </svg>
+
+  <img src="assets/logo-lesekumpel.png" alt="" class="essence-buddy" aria-hidden="true">
+
+  <div class="slide-tag">Synthese</div>
+  <h1 class="slide-title">Lesekumpel besetzt <span class="accent">den unbesetzten Slot.</span></h1>
+
+  <div class="slide-content">
+    <div class="synthesis-grid">
+      <div class="synth-card s1">
+        <span class="synth-label">Was Lesekumpel kombiniert</span>
+        <h3>Vier Achsen, die niemand zusammen hat</h3>
+        <ul>
+          <li><strong>Generativ:</strong> unbegrenzte Story-Vielfalt statt teurer Lizenz-Bibliothek</li>
+          <li><strong>Deutsch:</strong> nativ, nicht Übersetzung</li>
+          <li><strong>Neurotyp-Differenzierung:</strong> LRS, ADHS, Autismus als didaktische Domäne</li>
+          <li><strong>Persona-Charaktere:</strong> Pip Punkt, Mia Mitte, Stella Stimmenreich — narrative Bindung statt generischem Reading Buddy</li>
+        </ul>
+      </div>
+
+      <div class="synth-card s2">
+        <span class="synth-label">Was die Konkurrenz nicht angreifen kann</span>
+        <h3>Verteidigungs-Linien</h3>
+        <ul>
+          <li>eKidz kann B2C-Eltern nicht via Bundesland-Vertrag erreichen</li>
+          <li>Polylino braucht 70×2.000 Bücher Lizenz-Kosten — wir generieren</li>
+          <li>Antolin braucht physische Bücher — wir liefern den Text gleich mit</li>
+          <li>CLELO braucht 279 € Hardware-Kauf — wir laufen auf jedem Tablet</li>
+          <li>Google Read Along hat (noch) kein Deutsch und keine Neurotyp-Expertise</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="synth-fazit">
+      Der Markt ist segmentiert — aber der wertvollste Slot ist frei.<br>
+      <strong>Lesekumpel: generativ + deutsch + neurodivergent-freundlich + charaktergetrieben.</strong>
+    </div>
+  </div>
+
+  <div class="slide-footer">
+    <span class="brand"><span class="brand-dot"></span><span class="brand-name brand-name-lila">Lese</span>kumpel · Wettbewerb</span>
+    <span class="counter">13 / 13</span>
+  </div>
+</section>
+
+</div>
+
+<!-- Navigation -->
+<div class="nav-hint">← →  ·  Leertaste  ·  Home / End</div>
+<div class="nav-buttons">
+  <button type="button" class="nav-btn" id="prevBtn" aria-label="Vorherige Folie">‹</button>
+  <button type="button" class="nav-btn" id="nextBtn" aria-label="Nächste Folie">›</button>
+</div>
+
+<script>
+(function() {
+  const slides = document.querySelectorAll('.slide');
+  const total = slides.length;
+  let current = 0;
+
+  const prevBtn = document.getElementById('prevBtn');
+  const nextBtn = document.getElementById('nextBtn');
+
+  function show(idx) {
+    if (idx < 0 || idx >= total) return;
+    slides[current].classList.remove('active');
+    current = idx;
+    slides[current].classList.add('active');
+    updateButtons();
+    if (history.replaceState) history.replaceState(null, '', '#' + current);
+  }
+
+  function updateButtons() {
+    prevBtn.disabled = current === 0;
+    nextBtn.disabled = current === total - 1;
+  }
+
+  function next() { show(Math.min(current + 1, total - 1)); }
+  function prev() { show(Math.max(current - 1, 0)); }
+
+  document.addEventListener('keydown', function(e) {
+    switch (e.key) {
+      case 'ArrowRight':
+      case 'PageDown':
+      case ' ':
+        e.preventDefault(); next(); break;
+      case 'ArrowLeft':
+      case 'PageUp':
+        e.preventDefault(); prev(); break;
+      case 'Home':
+        e.preventDefault(); show(0); break;
+      case 'End':
+        e.preventDefault(); show(total - 1); break;
+    }
+  });
+
+  prevBtn.addEventListener('click', prev);
+  nextBtn.addEventListener('click', next);
+
+  let touchStartX = 0;
+  document.addEventListener('touchstart', e => { touchStartX = e.changedTouches[0].screenX; }, {passive: true});
+  document.addEventListener('touchend', e => {
+    const dx = e.changedTouches[0].screenX - touchStartX;
+    if (Math.abs(dx) > 60) { dx < 0 ? next() : prev(); }
+  }, {passive: true});
+
+  const initial = parseInt(location.hash.slice(1), 10);
+  if (!isNaN(initial) && initial >= 0 && initial < total) {
+    slides[0].classList.remove('active');
+    slides[initial].classList.add('active');
+    current = initial;
+  }
+  updateButtons();
+})();
+</script>
+
+</body>
+</html>

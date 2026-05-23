@@ -131,12 +131,12 @@
 > | Kategorie | Inhalt |
 > |---|---|
 > | **Kosten** | Fixkosten 170 € Konzeptions-Phase · Fixkosten 700 € Validierungs-Phase |
-> | **Pricing** | Free + **Premium 7,99 €/Monat** (Eltern-Accounts) · **Marge** = ~28–42 % |
-> | **Break Even** | bei **105** Premium-Nutzern |
+> | **Pricing** | Free · **Kaffeekasse 1 €/2 Credits** · **Premium 7,99 €/Mon.** (4 Kinderkonten) · **Pro-Account 14,99 €/Mon.** (30 Kinderkonten) |
+> | **Break Even** | bei **114** Premium-Nutzern · ~28–42 % Marge |
 > | **Marketing** | **0 € Paid Acquisition** · Community-Led Growth über 4 Kanäle: Lehrer, SEO, Instagram, Discord |
 
 **Pointe (gesprochen, ~30 Sek):**
-> „Was bedeutet das alles? Wir bauen ein nachhaltiges Bildungsgeschäft, keine Wachstums-Inszenierung. 105 zahlende Nutzer bringen uns ins Schwarze. 1.300 ernähren den Gründer. Alles dazwischen ist Wachstum aus eigener Kraft. Wir brauchen keinen 2-Millionen-Pitch. Wir brauchen Validierung — und genau dafür sitzen wir hier."
+> „Was bedeutet das alles? Wir bauen ein nachhaltiges Bildungsgeschäft, keine Wachstums-Inszenierung. 114 zahlende Nutzer bringen uns ins Schwarze. 1.300 ernähren den Gründer. Alles dazwischen ist Wachstum aus eigener Kraft. Wir brauchen keinen 2-Millionen-Pitch. Wir brauchen Validierung — und genau dafür sitzen wir hier."
 
 *Detail-Folien zur Marketing-Logik, Einnahmen-Struktur, Kosten-Pyramide, Break-Even-Schwellen und Förder-Roadmap: siehe Anhang [`06-finanzierungs-folien.md`](06-finanzierungs-folien.md) F1–F5.*
 
