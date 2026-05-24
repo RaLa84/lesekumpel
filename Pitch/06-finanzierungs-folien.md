@@ -109,7 +109,7 @@
 **Text:**
 > ### Wo das Geld hinfließt.
 >
-> | Kategorie | Konzeption | Validierung | Skalierung |
+> | Kategorie | Konzeption *(bis 20 Test-Nutzer)* | Validierung *(bis 100 Premium)* | Skalierung *(1.000 Premium · 10k Free)* |
 > |---|---|---|---|
 > | Infrastruktur, Hosting, DB, CDN | 25 € | ~75 € | ~400 € |
 > | LLM-Token + Bildgenerierung | 25 € | ~200 € | ~1.700 € |
@@ -143,7 +143,7 @@
 >
 > ---
 >
-> **Story-Kosten von 0,11 € auf 0,06 € · Operative Marge Phase 3 von 28 % auf 42 %**
+> **Story-Kosten von 0,12 € auf 0,07 € · Operative Marge Phase 3 von ~25 % auf ~42 %**
 
 **Pointe (gesprochen):**
 > „Wir haben drei strukturelle Hebel — keiner ist Wunschdenken. Hebel 1 wächst automatisch mit der Bibliothek. Hebel 2 testen wir mit FLUX schnell. Hebel 3 ist eine Modell-Entscheidung. Zusammen halbieren sie die variablen Kosten."
@@ -152,7 +152,7 @@
 
 ## SLIDE F7 — Break-Even-Rechnung
 
-**Visuell:** Zwei Blöcke oben nebeneinander (Fixkosten links Mint, Variable Kosten rechts Lila). Darunter ein großes Break-Even-Diagramm als SVG: Kosten-Linie (Coral) und Einnahmen-Linie (Mint) schneiden sich bei 114 Premium-Nutzern — der Schnittpunkt ist als gelber Markerpunkt mit Beschriftung "Break-Even ≈ 114 Premium · 911 €/Mon." hervorgehoben. Unter dem Diagramm eine kompakte Formel-Zeile.
+**Visuell:** Zwei Blöcke oben nebeneinander (Fixkosten links Mint, Variable Kosten rechts Lila). Darunter ein großes Break-Even-Diagramm als SVG: Kosten-Linie (Coral) und Einnahmen-Linie (Mint) schneiden sich bei 117 Premium-Nutzern — der Schnittpunkt ist als gelber Markerpunkt mit Beschriftung "Break-Even ≈ 117 Premium · 935 €/Mon." hervorgehoben. Unter dem Diagramm eine kompakte Formel-Zeile.
 
 **Text:**
 > ### Die Rechnung — als Bild und Zahl.
@@ -161,37 +161,40 @@
 > Infrastruktur 75 € · Dev-Tools 120 € · Recht/Buchhaltung/Versich. 145 € · Marketing-Sockel 40 € · **Summe ~380 €**
 >
 > **Variable Kosten pro Premium-Nutzer:in:**
-> 30 Stories Cap × 0,11 € = 3,30 € · Backend 0,10 € · + 9 Free-Anteil 0,90 € · Stripe-Gebühr 0,36 € · **Effektiv 4,66 €**
+> 30 Stories Cap × 0,12 € = 3,60 € · Backend 0,10 € · + 9 Free-Anteil 0,90 € · Stripe-Gebühr 0,36 € · **Effektiv 4,96 €**
+>
+> **Stream-Beiträge integriert (reduzieren Fixlast):**
+> 3 Pro-Accounts × 6,13 € DB = 18,39 € · 15 Kaffeekassen × 0,50 € DB = 7,50 € · **Netto-Fix 354 € (statt 380 €)**
 >
 > ---
 >
-> **[Break-Even-Kurve]** — Kosten- und Einnahmen-Linie kreuzen sich bei 114 Premium-Nutzer:innen / 911 €/Monat.
+> **[Break-Even-Kurve]** — Kosten- und Einnahmen-Linie kreuzen sich bei 117 Premium-Nutzer:innen / 935 €/Monat.
 >
-> *Formel:* 380 € + 4,66 € × P = 7,99 € × P → **P ≈ 114 Premium-Nutzer:innen**
+> *Formel:* 354 € + 4,96 € × P = 7,99 € × P → **P ≈ 117 Premium-Nutzer:innen** *(mit 3 Pro + 15 Kaffeekassen integriert)*
 
 **Pointe (gesprochen):**
-> „Hier sehen Sie die Mathematik visualisiert: Kosten-Linie in Coral, Einnahmen-Linie in Mint. Wo sie sich treffen, sind wir kostendeckend. Bei 114 Premium-Nutzer:innen, rund 911 Euro Umsatz im Monat. Das ist keine Hochrechnung — das ist Algebra."
+> „Hier sehen Sie die Mathematik visualisiert: Kosten-Linie in Coral, Einnahmen-Linie in Mint. Wo sie sich treffen, sind wir kostendeckend. Bei 117 Premium-Nutzer:innen, rund 911 Euro Umsatz im Monat. Das ist keine Hochrechnung — das ist Algebra."
 
 ---
 
 ## SLIDE F8 — Break-Even & Skalierung
 
-**Visuell:** Drei große Schwellen-Karten (114 / 1.300 / 5.000 Premium-Nutzer). Darunter eine Timing-Linie mit Monatsangaben Monat 12 / 24 / 36+.
+**Visuell:** Drei große Schwellen-Karten (117 / 1.300 / 5.000 Premium-Nutzer). Darunter eine Timing-Linie mit Monatsangaben Monat 12 / 24 / 36+.
 
 **Text:**
 > ### Wann wir uns selbst tragen.
 >
-> **~114 Premium-Nutzer:innen** — operativ kostendeckend (Tools · Hosting · Token · Bilder)
+> **~117 Premium-Nutzer:innen** — operativ kostendeckend (Tools · Hosting · Token · Bilder)
 > **~1.300 Premium-Nutzer:innen** — Teilzeit-Entnahme: 3 Gründer:innen leben mit vom Geschäft
 > **~5.000 Premium-Nutzer:innen** — vollzeit-tragfähig, Team-Aufbau aus eigener Kraft
 >
 > ---
 >
 > **Realistischer Zeitpfad — basierend auf aktuellem Tempo**
-> Monat 12 → 114 · Monat 24 → 1.300 · Monat 36+ → 5.000
+> Monat 12 → 117 · Monat 24 → 1.300 · Monat 36+ → 5.000
 
 **Pointe (gesprochen):**
-> „Drei Schwellen: 114 sind die operative Tragfähigkeit, in 12 Monaten erreichbar. 1.300 — Teilzeit für das gesamte Gründerteam, in 24 Monaten. 5.000 — Vollzeit-Phase, in 36+ Monaten. Alles dazwischen ist organisches Wachstum ohne externes Kapital."
+> „Drei Schwellen: 117 sind die operative Tragfähigkeit, in 12 Monaten erreichbar. 1.300 — Teilzeit für das gesamte Gründerteam, in 24 Monaten. 5.000 — Vollzeit-Phase, in 36+ Monaten. Alles dazwischen ist organisches Wachstum ohne externes Kapital."
 
 ---
 
@@ -232,12 +235,12 @@
 > | Kategorie | Inhalt |
 > |---|---|
 > | **Kosten** | Fixkosten 170 € Konzeptions-Phase · Fixkosten 700 € Validierungs-Phase |
-> | **Pricing** | Free + **Premium 7,99 €/Monat** (Eltern-Accounts) · **Marge** = ~28–42 % |
-> | **Break Even** | bei **114** Premium-Nutzern |
+> | **Pricing** | **Premium 7,99 €/Mon.** (4 Kinderkonten) · **Kaffeekasse 1 €** (2 Credits, ohne Abo) |
+> | **Break Even** | bei **117** Premium-Nutzern (mit 3 Pro + 15 Kaffeekassen) · **Marge ~25–42 %** |
 > | **Marketing** | **0 € Paid Acquisition** · Community-Led Growth über 4 Kanäle: Lehrer, SEO, Instagram, Discord |
 
 **Pointe (gesprochen, ~30 Sek):**
-> „Was bedeutet das alles? Wir bauen ein nachhaltiges Bildungsgeschäft, keine Wachstums-Inszenierung. 114 zahlende Nutzer bringen uns ins Schwarze. 1.300 ernähren das Gründerteam Teilzeit. Alles dazwischen ist Wachstum aus eigener Kraft. Wir brauchen keinen 2-Millionen-Pitch. Wir brauchen Validierung."
+> „Was bedeutet das alles? Wir bauen ein nachhaltiges Bildungsgeschäft, keine Wachstums-Inszenierung. 117 zahlende Nutzer bringen uns ins Schwarze. 1.300 ernähren das Gründerteam Teilzeit. Alles dazwischen ist Wachstum aus eigener Kraft. Wir brauchen keinen 2-Millionen-Pitch. Wir brauchen Validierung."
 
 ---
 
@@ -253,8 +256,10 @@
 > | Premium-Preis | 7,99 €/Mon. | marktüblich, Antolin-Niveau |
 > | Conversion Free → Premium | 10 % | EdTech-Mittel; 8 % kritisch, 12 % exzellent |
 > | Story-Cap Premium | 30 Credits | Finja-Stories kosten 2 Credits |
-> | Token-Kost pro Story (Baseline) | 0,110 € | inkl. 2 Bilder à 0,037 € · gemessen |
-> | Token-Kost mit Optimierung | 0,060 € | Empfehlungs-Cache + FLUX |
+> | Token-Kost pro Story (Persona-Mix) | ~0,12 € | gewichteter Mittel: 30 % Pip · 30 % Mia · 20 % Peter · 10 % Stella · 5 % Finja · 5 % Bonus |
+> | Token-Kost Phase 2 (Modell-Wechsel) | ~0,07 € | Gemini Flash + Imagen 2 statt Pro + Flash Image |
+> | Pro-Accounts / Monat (Annahme) | 3 | engagierte Lehrer in 12 Monaten realistisch |
+> | Kaffeekassen / Monat (Annahme) | 15 | 0,15 % Conversion bei 10k Free-Nutzern |
 > | Stories pro aktivem Nutzer/Monat | ~10 | Schätzung, wird in Phase 2 validiert |
 
 *Risiken & Gegenmaßnahmen siehe Hauptfolie F9.*

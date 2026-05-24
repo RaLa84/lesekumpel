@@ -27,7 +27,7 @@ Hardware (CLELO) ist eingeschlossen, weil es konzeptionell sehr nah dran ist —
 |--------|-------|
 | Modell | KI-Lesediagnose + Lesetraining mit Spracherkennung, eigene illustrierte Geschichten |
 | Sprachen | Deutsch + Englisch (DaZ + Native abgedeckt) |
-| Preis | Familien-Abo via App-Stores (3/6/12 Monate); Schul-Lizenzen über info@ekidz.eu |
+| Preis | **Klasse ab 299 €/Jahr** (bis 30 SuS) · **Schule ab 499 €/Jahr** (skaliert 100/200/300 SuS) · **Förderschule ab 199 €/Jahr** (bis 35 SuS, 13 Niveaustufen) — jeweils pro Sprache |
 | Reichweite | **In Niedersachsen seit 2023 für alle 1.900 Grundschulen kostenlos** |
 | Wissenschaft | Forschungspartner: Uni Regensburg, Fraunhofer IDMT Oldenburg, Uni Flensburg |
 | Status | Seit Okt 2024 automatisierte KI-Einstufung in Lesestufen produktiv |
@@ -48,22 +48,30 @@ Hardware (CLELO) ist eingeschlossen, weil es konzeptionell sehr nah dran ist —
 
 | Aspekt | Daten |
 |--------|-------|
+| Mission | **Eltern entlasten beim Lesenlernen** — geteilt mit Lesekumpel |
 | Modell | Hardware-Leselerngerät mit KI-Spracherkennung, eigene Bibliothek |
-| Preis | **279 € (Einmalkauf)** |
+| Preis | **279 € Tablet (Einmalkauf) + 3–8 € pro Geschichte** |
 | Reichweite | Sales-Launch Nov 2025, Klassensätze werden von Startchancen-Schulen aus dem Chancenbudget beschafft |
 | Träger | Gemeinnützige Organisation, Gründer Dr. Herbert Endres (Regensburg) |
 | KI-Differenzierung | Erkennt B/P-Unterschied auch in Kinderstimmen |
 | Studienlage | Uni Regensburg: signifikante Verbesserung Lesegeschwindigkeit/Genauigkeit/Motivation |
 
-**Warum #2:** Wissenschaftlich validiert, KI-Spracherkennung wie geplant in Lesekumpels Roadmap, Eltern-Markt direkt adressiert. Aber: andere Wettbewerbslogik (einmalige Hardware vs. Software-Abo).
+**Was CLELO teilt — und wo es trotzdem klemmt:** CLELOs Mission ist Lesekumpels Mission — **Eltern beim Lesenlernen entlasten**. Wissenschaftlich validiert, KI-Spracherkennung wie geplant in Lesekumpels Roadmap, Eltern-Markt direkt adressiert. Aber: das Geschäftsmodell ist sehr gemauert. **Die hohen Anschaffungskosten (279 €) und Kosten pro Text (3–8 €) schließen einkommensschwache Familien systematisch aus** — genau die Familien, die Leseförderung am dringendsten brauchen.
 
 **Lücken / Angriffsflächen:**
-- 279 € Einstiegspreis = Premium-Hürde, Lesekumpel kann darunter pricen
-- Geschlossenes Ökosystem (Hardware-Lock-in)
-- Kein Smartphone/Tablet-Native — neueste Generation Eltern erwartet App-First
-- Aufnahme-Feature für Familie ist Charme-Punkt, aber keine Skalier-Story
+- 279 € Hardware-Hürde + Per-Story-Kosten = unzugänglich für einkommensschwache Familien
+- Geschlossenes Ökosystem (Hardware-Lock-in, kein eigenes Tablet/Smartphone nutzbar)
+- Kein App-First — moderne Eltern erwarten Browser/Tablet
+- Per-Story-Pricing diszipliniert die Nutzung (Eltern denken bei jedem "Soll ich's wirklich kaufen?")
+- Keine Neurotyp-Differenzierung, keine Persona-Charaktere
 
-**Strategie:** Lesekumpel als Software-Alternative — niedrigerer Einstieg, keine Hardware-Anschaffung, gleiche KI-Spracherkennungs-Vision, aber zusätzlich Neurotyp-Differenzierung und Persona-Charaktere. *Anti-These zu CLELO: "Lesekumpel auf jedem Tablet, das ihr schon habt."*
+**Strategie:** Lesekumpel adressiert die gleiche Mission ("Eltern entlasten") — aber **inklusiv statt premium**. Konkreter Pricing-Vergleich:
+
+> **Für die Kosten von 1 CLELO-Text bei Lesekumpel: 6–30 individuelle Texte. Und kein extra Gerät.**
+
+Damit ist Lesekumpel das echte Inklusions-Werkzeug, das CLELO sein wollte. Das ist nicht nur Marketing-Argument, sondern strategischer Anschluss an die Aktion-Mensch-Förderlogik (Inklusion durch Digitalisierung — siehe Förderprogramme).
+
+*"CLELO will Eltern entlasten. Lesekumpel kann es sich auch leisten, das zu tun."*
 
 ---
 
@@ -93,21 +101,38 @@ Hardware (CLELO) ist eingeschlossen, weil es konzeptionell sehr nah dran ist —
 
 | Aspekt | Daten |
 |--------|-------|
-| Modell | Quiz-Programm zu 121.000+ echten Büchern, Punkte/Urkunden |
-| Preis | 237 €/Schule/Jahr; Klassenlizenz günstiger |
+| Modell | Primär Quiz zu echten Büchern (**156.400+ Quizzes**), zusätzlich ~168 eigene Online-Lesetexte, Antolin Wissen (Sachtexte), Shortys (Kurzgeschichten für leseschwache Kinder als **statische PDFs** mit 5–10 Kapiteln, Verlags-Bilderbuch-Stil), Nachrichten |
+| Preis | **Klassenlizenz 54 €/Jahr** (35 SuS) · **Schullizenz 237 €/Jahr** (alle Lehrer + SuS eines Hauses) · Schulträgerlizenz auf Anfrage |
+| Vertriebsweg | **Nur an Lehrkräfte/Schulen/Büchereien — explizit NICHT an Eltern/Privatpersonen** |
 | Reichweite | Quasi-Monopol in deutschen Grundschulen, "die Lese-App, die Lehrer kennen" |
-| Schwäche | Kein Inhalt selbst — Kinder brauchen physische Bücher |
+| Schwäche | Hauptmodell: Kind braucht physisches Buch. Eigene Texte nur ~168 (statisch, nicht generativ) |
 
 **Warum #4 (trotz indirektem Konkurrenz-Profil):** Wer in DE über Leseförderung redet, muss Antolin erwähnen. Mindshare-Konkurrenz. Antolin definiert den mentalen Standard "Was ist eine Lese-App?" bei Lehrer*innen und Eltern.
 
 **Lücken / Angriffsflächen:**
-- Keine eigenen Texte — Lesekumpel liefert die Geschichte gleich mit
+- Eigene Texte nur ~168 (statische PDFs) vs. Lesekumpels unbegrenzte generative Vielfalt
+- Hauptmodell setzt physisches Buch voraus — Hürde für schwache Leser
 - Quiz-Mechanik veraltet, UI seit ~15 Jahren kaum modernisiert
-- Keine Differenzierung nach Neurotyp
-- Eltern haben keine sinnvolle eigene Rolle (reines B2B-Lock-in)
-- Schwächere Leser scheitern: sie kommen nicht zum Quiz, weil sie das Buch nicht schaffen
+- Keine Differenzierung nach Neurotyp (LRS/ADHS/Autismus)
+- Keine Persona-Charaktere — Geschichten-Figuren statt durchgehender Lese-Buddy
+- **Verkauft nicht an Eltern/Privatpersonen** — kompletter B2C-Markt liegt brach
 
-**Strategie:** Lesekumpel als **Komplementär**, nicht Ersatz. "Antolin testet ab, Lesekumpel liefert den Lesestoff." Besonders für *schwächere* Leser, die mit Antolins Buch-Aufgabe überfordert sind — Lesekumpel meets them where they are (kurze, generierte, niveau-angepasste Stories).
+**Strategie:** Lesekumpel im **B2C-Eltern-Markt**, den Antolin gar nicht bedient. Zusätzlich: für leseschwache Kinder hat Antolin nur "Shortys" (statische Kurzgeschichten ohne Neurotyp-Logik) — Lesekumpel kann mit Persona-LRS/ADHS-Modi und generativer Vielfalt einen viel reicheren Förder-Pfad bieten. *"Antolin in der Schule, Lesekumpel zuhause — und für jeden Lese-Typ den richtigen Buddy."*
+
+### Vergleich: Antolin-Shorty vs. Lesekumpel-Story (gleiches Niveau)
+
+| Dimension | Antolin "Maja und Schoko" | Lesekumpel mit Pip Punkt |
+|-----------|---------------------------|--------------------------|
+| **Format** | Statisches PDF, 6 Seiten | Interaktive Web-Story |
+| **Versionen** | 1 fest geschriebene Version | Beliebig viele Variationen pro Kind |
+| **Niveau** | Fest (~Klasse 1–2) | Wählbar via Skill-Persona (Pip → Mia → Peter → Stella → Finja) |
+| **Neurotyp** | Eine Variante für alle | 4 Modi (Standard, LRS, ADHS, Autismus) — Silbentrennung, Tempo, Reizreduktion |
+| **Begleitung** | Geschichten-Figuren (Maja, Lisa) | Persona-Charakter (Pip) führt durchgehend |
+| **Themen-Vielfalt** | Was im PDF steht | Beliebig — Pony, Dinos, Weltraum, Familie … |
+| **Aktualität** | Statisch seit Veröffentlichung | Generativ aktuell (z.B. Themen wie KI, Klima) |
+| **Wenn Kind die Geschichte mag** | Eine Pony-Story, dann Ende | Unbegrenzte neue Pony-Stories im gleichen Niveau |
+
+*Beispiel-PDF:* "Maja und Schoko (1–5)" von Eva Mallmann/Gesa Hennies, Illustrationen Iris Blanck (© 2026 Westermann Gruppe). Westermann-Vogel-Branding oben rechts, 5 Kapitel mit je einer Illustration und 5–10 kurzen Abschnitten in einfacher Sprache.
 
 ---
 
@@ -115,46 +140,64 @@ Hardware (CLELO) ist eingeschlossen, weil es konzeptionell sehr nah dran ist —
 
 | Aspekt | Daten |
 |--------|-------|
-| Modell | 2.000+ Bilderbücher in 70+ Sprachen mit Audio |
-| Preis | Schul-Lizenz, WGKD-Rahmenvertrag für öffentliche Beschaffung |
+| Modell | 2.000+ Bilderbücher in 70+ Sprachen, **Hörbuch-Audiothek zum Mitlesen** — Text ist vertont, keine eigentlichen Lesehilfen |
+| Preis | **699 €/Schule/Jahr** (zzgl. 7 % MwSt, ermäßigter Bildungsmedien-Satz), unabhängig von Schülerzahl · WGKD-Rahmenvertrag für öffentliche Beschaffung · Custom für Träger/Verbund (Bundle mit Kide Science) auf Anfrage |
 | Reichweite | Etablierter Anbieter für Startchancen-Schulen (eigene Programm-Landingpage), integriert mit Antolin |
+| Service | Digitale + **Vor-Ort-Schulungen** — Premium-Service-Modell |
 | Spezialgebiet | DaZ-Kinder, mehrsprachige Familien, Migrations-Kontext |
 
-**Warum #5:** Polylino ist der heimliche Vertriebssieger im DE-Schulmarkt 2026 — Rahmenvertrag mit der WGKD (öffentliche Beschaffung) ist ein Vertriebs-Moat, das Lesekumpel nicht über Nacht repliziert. Sie besetzen die "moderne Leseförderungs-Bibliothek"-Nische.
+**Warum #5:** Polylino ist der heimliche Vertriebssieger im DE-Schulmarkt 2026 — Rahmenvertrag mit der WGKD (öffentliche Beschaffung) ist ein Vertriebs-Moat, das Lesekumpel nicht über Nacht repliziert. Sie besetzen die "moderne Leseförderungs-Bibliothek"-Nische und positionieren sich bewusst **Premium**: Mit 699 €/Schule sind sie deutlich teurer als Leseludi (140 €) oder Antolin (237 €) — der Preis wird durch Service (Vor-Ort-Schulungen), Sprach-USP (70+ Sprachen) und Beschaffungs-Moat (WGKD/Startchancen) gerechtfertigt.
 
 **Lücken / Angriffsflächen:**
 - Kuratierte Bibliothek (statisch), nicht generativ
 - Keine KI/Adaption pro Kind
-- Audio-Vorlesen dominiert — Kind ist Konsument, nicht Selbstleser
+- Hörbuch-Modell: Text wird vorgelesen → Kind ist Konsument, nicht Selbstleser
+- Keine eigentlichen Lesehilfen (keine Silbentrennung, keine LRS-Modi)
 - Keine Neurotyp-Differenzierung
 - Persona-System fehlt
+- **Premium-Preis schließt Eltern-Markt aus** — kein B2C-Angebot sichtbar
 
 **Strategie:** Lesekumpel greift auf der **Generativ-Achse** an. Polylino braucht 70 Sprachen × 2.000 Bücher = teure Lizenzen. Lesekumpel generiert Inhalte — also unendlicher Nachschub bei fundamental anderer Kostenstruktur. Mehrsprachigkeit ist legitime Lesekumpel-Roadmap-Ergänzung (z.B. Ukrainisch, Arabisch, Türkisch).
 
 ---
 
-### 6. Onilo — Klassenraum-Boardstories mit Verlagsstärke
+### 6. Onilo — direkter Konkurrent mit "Lernerfolg durch Lesespaß"
 
 | Aspekt | Daten |
 |--------|-------|
-| Modell | Animierte Boardstories (Whiteboard/Beamer), Adaptionen renommierter Bilderbücher |
-| Zielgruppe | Klasse 1–6, inkl. DaZ und sonderpädagogische Förderung |
-| Preis | In BW via SESAM kostenlos bis Ende 2026; sonst Schullizenz-Modell |
+| Markenversprechen | **"Lernerfolg durch Lesespaß"** — direkt Lesekumpels Versprechen |
+| Modell | **200+ animierte und vertonte Boardstories** — Adaptionen renommierter Bilderbücher, Niveau-Filter |
+| Nutzungs-Modi | Vorlesen · Gemeinsames Lesen mit verteilten Rollen · Selbstlesen · Aufnahme-Funktion · Bildbeschreibung mit ausgeblendetem Text |
+| Eltern-Zugang | **Über Onilo-Codes vom Lehrer** (B2B2C — kein direkter Eltern-Verkauf) · eigene werbefreie Kinder-App · anonyme Nutzung, keine Datensammlung |
+| Zielgruppe | Schule (Klasse 1–6), auch Kita und Bibliothek |
+| Preis | Einzellizenz **249 €** · Teamlizenz **379 €** (5 Zugänge) · **Schullizenz 599 €/Jahr** (ganze Schule) |
+| Sonderkondition | In BW via SESAM bis Ende 2026 kostenlos |
 | Reichweite | Etabliert in Klassenzimmern, starke Verlagskooperationen (Oetinger, Carlsen, Ravensburger) |
-| Begleitmaterial | Pädagogische Materialien fächerübergreifend |
+| Begleitmaterial | Umfangreiche didaktische Tipps für Eltern (Vorlese-Rituale, Empathie-Übungen, Sprachförderung) |
 
-**Warum #6:** Onilo ist im Use-Case eher Lehrer-zentriert (Whiteboard-Vorlesung, Kind als Zuhörer), aber es ist *die* etablierte digitale Plattform für hochwertige Bilderbuch-Inhalte in deutschen Klassenzimmern. Mindshare bei Grundschullehrer*innen, und die SESAM-Bundesland-Förderlogik (kostenlos via Land) ist strategisch interessant — gleiches Modell wie eKidz in Niedersachsen.
+**Warum #6 — und warum direkter Konkurrent:** Onilos Markenversprechen ist **buchstäblich "Lernerfolg durch Lesespaß"** — exakt das, was auch Lesekumpel verspricht. Sie haben hochwertige, animierte und vertonte Boardstories, etablierte Verlagskooperationen und sind in deutschen Grundschulen die bekannteste digitale Lese-Spaß-Marke. **Preislich zweitteuerster Schulkonkurrent** (599 € Schullizenz, knapp unter Polylino 699 €) — gemeinsam mit Polylino die Premium-Phalanx im DE-Schulmarkt.
+
+**Was Onilo wirklich gut löst (und was wir anerkennen müssen):**
+Das **gemeinsame Lesen an der Tafel** ist Onilos Königsdisziplin. Animation, Kamerafahrten, Zoom auf Bilddetails, Pausen-Knopf für Diskussion, Aufnahme-Funktion — alles für die Klassenraum-Vorlese-Stunde optimiert. Ein Lehrer mit Onilo-Schullizenz hat ein hochwertiges, sofort einsatzbereites Werkzeug für die Lesestunde. Das ist kein Schaufenster-USP, sondern echte Substanz.
 
 **Lücken / Angriffsflächen:**
-- Lehrer-zentriert — Kind ist Konsument, nicht Selbstleser
-- B2B-only — Eltern-Markt wird gar nicht adressiert
-- Statisches Repertoire (Verlagslizenzen statt generativ)
+- 200+ Boardstories sind viel — aber **statisch und endlich**, nicht generativ
+- **Können nicht auf aktuelle Themen eingehen** (Sportfest in 2 Wochen, neue Klassen-Hamster, Klimademo)
+- Verlagslizenzen statt generativ — neuer Content braucht Deals
 - Keine KI/Adaption pro Kind
-- Keine Differenzierung nach Neurotyp
+- Keine Differenzierung nach Neurotyp (LRS/ADHS/Autismus)
+- Kein durchgehender Persona-Charakter (jede Story hat eigene Figuren)
+- **Eltern brauchen Onilo-Code vom Lehrer** — kein direkter B2C-Zugang (Familien ohne Onilo-nutzende Schule kommen nicht ran)
 
-**Strategie:** Onilo und Lesekumpel sind **komplementär**, nicht direkt konkurrierend. Onilo ist das "Lehrer-Vorlese-Tool im Klassenzimmer", Lesekumpel ist die "Selbstleser-App für zuhause/individuelle Übungszeit".
+**Strategie:** Lesekumpel greift Onilo auf drei Achsen an:
 
-**Wichtige Beobachtung:** Onilo + Polylino + eKidz besetzen drei verschiedene Schul-Sub-Märkte (Klassenraum-Lehrer-Vorlesen / mehrsprachige Bibliothek / individuelles KI-Selbstleser-Training). Der Schulmarkt ist also bereits in Nischen segmentiert — Lesekumpels Slot dort wäre "generativ + Neurotyp-differenziert", was *niemand* besetzt.
+**1. Aktualität + Individualität:** Lesekumpel generiert heute einen Text zum Sportfest in zwei Wochen — in der richtigen Skill-Persona, ggf. mit LRS-Modus. Onilo bietet das Bilderbuch, das vor 5 Jahren erschienen ist. Beide versprechen "Lesespaß" — aber nur Lesekumpel kann den Spaß **an dem festmachen, was das Kind diese Woche tatsächlich beschäftigt**.
+
+**2. Direkter Eltern-Zugang:** Lesekumpel ist für Familien direkt nutzbar, ohne Code-Vermittlung über die Schule. Eltern, deren Schule kein Onilo nutzt, haben keinen Zugang — bei Lesekumpel reicht ein Browser.
+
+**3. Auch im Klassenzimmer — aber generativ:** Onilos Königsdisziplin (gemeinsames Lesen an der Tafel) attackieren wir mit einem **Tafel-Modus für generative Stories**. Lehrer projizieren Lesekumpel auf das Whiteboard und generieren *gemeinsam mit der Klasse* eine Geschichte — zum heutigen Projektthema, zum Geburtstagskind, zum bevorstehenden Ausflug. Onilo bietet 200 fertige Geschichten; Lesekumpel bietet die Geschichte, die diese Klasse heute braucht. *Pädagogisch sogar reichhaltiger: das Kind ist Co-Autor, nicht nur Zuhörer.*
+
+*"Onilo bringt das Bilderbuch ins Klassenzimmer. Lesekumpel bringt die Welt deines Kindes in eine Geschichte — auch an der Tafel."*
 
 ---
 
@@ -226,13 +269,19 @@ Bund-Länder-Programm für ~4.000 Schulen mit besonderen Herausforderungen. För
 
 | Anbieter | Preis | Kanal |
 |----------|-------|-------|
-| Antolin Schullizenz | 237 €/Jahr | B2B-Schule |
+| Antolin Klassenlizenz | 54 €/Jahr (35 SuS) | B2B-Schule |
+| Antolin Schullizenz | 237 €/Jahr (ganze Schule) | B2B-Schule |
 | ANTON Schullizenz | 500–1.000 €/Jahr | B2B-Schule |
-| eKidz Schullizenz | (Niedersachsen kostenlos durch Land) | B2B-Schule, sonst auf Anfrage |
+| Polylino Schullizenz | 699 €/Jahr (zzgl. 7 % MwSt) | B2B-Schule (Premium) |
+| Onilo Schullizenz | 599 €/Jahr (ganze Schule) | B2B-Schule (Premium) |
+| eKidz Klasse | ab 299 €/Jahr (bis 30 SuS, pro Sprache) | B2B-Schule |
+| eKidz Schule | ab 499 €/Jahr (skaliert 100/200/300 SuS) | B2B-Schule |
+| eKidz Förderschule | ab 199 €/Jahr (bis 35 SuS, 13 Niveaustufen) | B2B-Schule |
+| eKidz Niedersachsen | 0 € (durch Land finanziert) | B2B-Schule |
 | ANTON Plus Familie | 19,99 €/Jahr | B2C |
 | TigerBooks/Tones | 36–60 €/Jahr (3–5 €/Monat) | B2C |
 | Reading Eggs (Vergleich int.) | ~100 €/Jahr | B2C |
-| CLELO Hardware | 279 € einmalig | B2C-Hardware |
+| CLELO Hardware + Texte | 279 € einmalig + 3–8 € pro Geschichte | B2C-Hardware (Premium) |
 
 **Lesekumpel-Empfehlung (vorläufig):**
 - B2C-Familie: 7,99–9,99 €/Monat oder 79–89 €/Jahr → über ANTON, unter Reading Eggs/Epic
