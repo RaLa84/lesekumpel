@@ -95,7 +95,7 @@
 > |---|---|---|
 > | **Konzeption** | Bootstrap, Free-Tier-Services | **~170 €** |
 > | **Validierung** | GbR, ≤ 100 zahlende Nutzer:innen | **~650 €** |
-> | **Skalierung** | UG, 1.000 Premium + 10k Free · 3 Gründer:innen Teilzeit | **~8.500 €** |
+> | **Skalierung** | UG, 1.700 Premium + 10k Free · 3 Gründer:innen Teilzeit | **~8.500 €** |
 
 **Pointe (gesprochen):**
 > „Wir starten mit 170 Euro im Monat. Skalieren erst, wenn wir validiert haben. Selbst in Phase 3 — bei 11.000 Nutzern — bleiben wir bei rund 9.000 Euro, weil unser 3-köpfiges Gründerteam mit Teilzeit-Entnahmen arbeitet."
@@ -109,7 +109,7 @@
 **Text:**
 > ### Wo das Geld hinfließt.
 >
-> | Kategorie | Konzeption *(bis 20 Test-Nutzer)* | Validierung *(bis 100 Premium)* | Skalierung *(1.000 Premium · 10k Free)* |
+> | Kategorie | Konzeption *(bis 20 Test-Nutzer)* | Validierung *(bis 100 Premium)* | Skalierung *(1.700 Premium · 10k Free)* |
 > |---|---|---|---|
 > | Infrastruktur, Hosting, DB, CDN | 25 € | ~75 € | ~400 € |
 > | LLM-Token + Bildgenerierung | 25 € | ~150 € | ~1.300 € |
@@ -118,10 +118,14 @@
 > | Dev-Tools, Subscriptions | ~100 € | ~120 € | ~150 € |
 > | Merch &amp; Messe-Materialien (Hoodies, Aufkleber, Banner) | – | ~100 € | ~500 € |
 > | Personal (3 Gründer:innen) | Eigenleistung | Eigenleistung | ~5.000 € Teilzeit |
-> | **Summe** | **~170 €** | **~650 €** | **~8.500 €** |
+> | **Laufende Kosten / Monat** | **~170 €** | **~650 €** | **~8.500 €** |
+> | **↑ Brutto-Umsatz / Monat** *(Premium-Abos)* | 0 € | ~500 € | **~8.500 €** |
+> | **Bilanz** | −170 € *(Eigenmittel)* | −150 € *(Eigenmittel)* | **±0 € · tragfähig** |
+
+*Brutto-Umsatz Skalierung: 1.700 × 4,99 € = 8.483 €. Plus Pro-Accounts, Kaffeekassen und Förderprogramme als zusätzliche Streams (siehe F3 + F7). Ab Phase 3 selbsttragend — Personal-Entnahme deckt sich aus operativem Umsatz.*
 
 **Pointe (gesprochen):**
-> „Größter variabler Block: Token plus Bilder. Personal ist Teilzeit-Entnahme — keine Vollzeit-Gehälter. Werbemittel sind Merch und Messe-Materialien für Lehrer-Outreach, nicht Performance-Ads."
+> „Größter variabler Block: Token plus Bilder. Personal ist Teilzeit-Entnahme — keine Vollzeit-Gehälter. Werbemittel sind Merch und Messe-Materialien für Lehrer-Outreach, nicht Performance-Ads. Phase 3 trägt sich aus eigener Kraft: 1.700 Premium-Nutzer × 4,99 € decken exakt die Skalierungs-Kosten."
 
 ---
 

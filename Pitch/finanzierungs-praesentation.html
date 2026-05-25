@@ -810,6 +810,44 @@ h1.slide-title .accent { color: var(--coral); }
 .cost-detail-row.total .col-phase {
   font-size: 1.05rem;
 }
+.cost-detail-row.revenue {
+  background: rgba(47, 184, 166, 0.10);
+  font-weight: 700;
+  border-top: 2px solid var(--mint);
+  color: var(--navy);
+}
+.cost-detail-row.revenue .col-cat::before {
+  content: "↑ ";
+  color: var(--mint);
+  font-weight: 700;
+}
+.cost-detail-row.revenue .col-phase {
+  color: var(--mint);
+}
+.cost-detail-row.balance {
+  background: rgba(125, 106, 230, 0.08);
+  font-weight: 700;
+  font-style: italic;
+  border-top: 1px dashed var(--lila);
+}
+.cost-detail-row.balance .col-cat {
+  color: var(--lila);
+}
+.cost-detail-row.balance .col-phase {
+  color: var(--lila);
+  font-style: normal;
+}
+.cost-detail-row.balance .col-phase.neg {
+  color: var(--coral);
+}
+.cost-detail-note {
+  margin-top: 0.8rem;
+  font-size: 0.78rem;
+  line-height: 1.5;
+  color: var(--navy);
+  opacity: 0.75;
+  font-style: italic;
+}
 
 /* Margenhebel-Karten (F5) */
 .hebel-grid {
@@ -1749,7 +1787,7 @@ h1.slide-title:has(+ .slide-subtitle) {
         <div class="step-number">3</div>
         <div class="step-body">
           <h3>Skalierung</h3>
-          <p>UG/GmbH, 1.000 Premium + 10.000 Free · 3 Gründer:innen mit Teilzeit-Entnahme</p>
+          <p>UG/GmbH, 1.700 Premium + 10.000 Free · 3 Gründer:innen mit Teilzeit-Entnahme</p>
         </div>
         <div class="step-cost"><span class="amount">~8.500 €</span><span class="period">pro Monat</span></div>
       </div>
@@ -1774,7 +1812,7 @@ h1.slide-title:has(+ .slide-subtitle) {
         <div class="col-cat">Kategorie</div>
         <div class="col-phase">Konzeption<br><span class="phase-users">Test &middot; bis 20 Nutzer</span></div>
         <div class="col-phase">Validierung<br><span class="phase-users">bis 100 Premium</span></div>
-        <div class="col-phase">Skalierung<br><span class="phase-users">1.000 Premium &middot; 10k Free</span></div>
+        <div class="col-phase">Skalierung<br><span class="phase-users">1.700 Premium &middot; 10k Free</span></div>
       </div>
       <div class="cost-detail-row">
         <div class="col-cat">Infrastruktur · Hosting · DB · CDN</div>
@@ -1824,7 +1862,20 @@ h1.slide-title:has(+ .slide-subtitle) {
         <div class="col-phase">~650 €</div>
         <div class="col-phase">~8.500 €</div>
       </div>
+      <div class="cost-detail-row revenue">
+        <div class="col-cat">Brutto-Umsatz pro Monat *</div>
+        <div class="col-phase">0 €</div>
+        <div class="col-phase">~500 €</div>
+        <div class="col-phase">~8.500 €</div>
+      </div>
+      <div class="cost-detail-row balance">
+        <div class="col-cat">Bilanz · aus Eigenmitteln vs. selbsttragend</div>
+        <div class="col-phase neg">−170 €</div>
+        <div class="col-phase neg">−150 €</div>
+        <div class="col-phase">±0 € · tragfähig</div>
+      </div>
     </div>
+    <p class="cost-detail-note">* Brutto-Umsatz aus Premium-Abos · 1.700 × 4,99 € = 8.483 €. Plus Pro-Accounts, Kaffeekassen und Förderprogramme als zusätzliche Streams (siehe Anhang 3 + 7). Phase 3 ist ab dieser Schwelle selbsttragend — Personal-Entnahme deckt sich aus operativem Umsatz.</p>
   </div>
   <div class="slide-footer">
     <span class="brand"><span class="brand-dot"></span><span class="brand-name brand-name-lila">Lese</span>kumpel · Finanzierung</span>
