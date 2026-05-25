@@ -79,7 +79,7 @@
 > Verlags-Co-Branding · Affiliate · Print-on-Demand · Creator-Plan
 
 **Pointe (gesprochen):**
-> „Premium-Preis ist marktüblich — Antolin-Niveau, intern validiert. B2B-Tarife sind das, was Schulen heute für Antolin oder Anton zahlen, mit deutlich mehr Wert. Die dritte Spalte sind optionale Streams — Möglichkeiten, die wir in Phase 3 testen, aber nicht voreingerechnet."
+> „Familienpaket-Preis liegt unter 5 Euro — günstiger als ANTON Premium, deutlich unter eKidz und CLELO. Eine bewusste Ansage gegen die Konkurrenz, gleichzeitig ehrlicher Cap-Wert. B2B-Tarife sind das, was Schulen heute für Antolin oder Anton zahlen, mit deutlich mehr Wert. Die dritte Spalte sind optionale Streams — Möglichkeiten, die wir in Phase 3 testen, aber nicht voreingerechnet."
 
 ---
 
