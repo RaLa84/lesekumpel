@@ -1029,15 +1029,15 @@
             rawDictionaryEntry.forEach(item => {
                 let key = "", value = "";
                 if (typeof item === 'object' && item.wort) {
-                    key = item.wort.replace(/-/g, "");
+                    key = item.wort.replace(/­/g, "").replace(/-/g, "");
                     value = item.bedeutung || "";
                 } else if (typeof item === 'string' && item.includes('(') && item.includes(')')) {
                     let parts = item.split('(');
-                    key = parts[0].trim().replace(/-/g, "");
+                    key = parts[0].trim().replace(/­/g, "").replace(/-/g, "");
                     value = parts[1].replace(')', '').trim();
                 } else if (typeof item === 'string' && item.includes(':')) {
                     let parts = item.split(':');
-                    key = parts[0].trim().replace(/-/g, "");
+                    key = parts[0].trim().replace(/­/g, "").replace(/-/g, "");
                     value = parts.slice(1).join(':').trim();
                 }
                 if (key && value) dictionary[key] = value;
@@ -1206,10 +1206,11 @@
             let isBold = false;
             if (raw.includes('**')) { isBold = true; raw = raw.replace(/\*\*/g, ""); }
             else if (raw.includes('*')) { isBold = true; raw = raw.replace(/\*/g, ""); }
-            let clean = raw.replace(/-/g, "").replace(/[.,!?:;„"()]/g, "");
-            let display = raw.replace(/-/g, "");
+            // Silben-Trenner = U+00AD (Soft Hyphen); echter "-" ist Bindestrich aus Komposita und muss erhalten bleiben.
+            let clean = raw.replace(/­/g, "").replace(/-/g, "").replace(/[.,!?:;„"()]/g, "");
+            let display = raw.replace(/­/g, "");
             if(state.syllables) {
-                let parts = raw.split('-');
+                let parts = raw.split('­');
                 if(parts.length > 1) display = parts.map((p,i) => `<span class="${i%2===0?'syl-blue':'syl-red'}">${p}</span>`).join('');
             }
             let style = isBold ? "font-weight:bold;" : "";
@@ -1318,7 +1319,7 @@
             const entries = (typeof rawDictionaryEntry !== 'undefined' && Array.isArray(rawDictionaryEntry)) ? rawDictionaryEntry : [];
             const items = entries.map(item => {
                 if (!item || typeof item !== 'object') return null;
-                const wort = (item.wort || '').replace(/-/g, '').trim();
+                const wort = (item.wort || '').replace(/­/g, '').replace(/-/g, '').trim();
                 const bedeutung = (item.bedeutung || '').trim();
                 if (!wort || !bedeutung) return null;
                 return { wort: wort, bedeutung: bedeutung };
