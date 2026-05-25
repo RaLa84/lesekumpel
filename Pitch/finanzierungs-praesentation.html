@@ -323,6 +323,33 @@ h1.slide-title .accent { color: var(--coral); }
   text-transform: uppercase;
   color: var(--coral);
 }
+.market-benchmark {
+  margin-top: 1.2rem;
+  padding: 0.75rem 1.1rem;
+  border-radius: 14px;
+  background: rgba(125, 106, 230, 0.08);
+  border: 1px dashed rgba(125, 106, 230, 0.3);
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--navy);
+  text-align: center;
+  line-height: 1.5;
+}
+.market-benchmark strong {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  color: var(--coral);
+}
+.market-benchmark .mb-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--lila);
+  display: block;
+  margin-bottom: 0.3rem;
+}
 .coop-list {
   display: flex;
   flex-direction: column;
@@ -1380,7 +1407,7 @@ h1.slide-title:has(+ .slide-subtitle) {
       <span><span class="brand-name">Lese</span>kumpel</span>
     </div>
     <h1 class="cover-title">Wirtschaftlichkeit <span class="accent">auf den Punkt.</span></h1>
-    <p class="cover-sub">Wie Lesekumpel sich aus eigener Kraft trägt — von 170&nbsp;Euro Konzeptions­kosten bis zu 42&nbsp;%&nbsp;Marge.</p>
+    <p class="cover-sub">Wie Lesekumpel sich aus eigener Kraft trägt — von 170&nbsp;Euro Konzeptions­kosten bis zu 50&nbsp;%&nbsp;Marge.</p>
     <div class="cover-meta">Finanzierungs-Präsentation · INSPIRED Ideenwettbewerb MV 2026</div>
   </div>
   <div class="slide-footer">
@@ -1470,8 +1497,8 @@ h1.slide-title:has(+ .slide-subtitle) {
         </span>
         <div class="flow-stats">
           <div class="flow-stat">
-            <span class="num">7,99 €</span>
-            <span class="lbl">Premium / Monat · 4 Kinderkonten</span>
+            <span class="num">4,99 €</span>
+            <span class="lbl">Familienpaket · 15 Credits · 4 Kinderkonten</span>
           </div>
           <div class="flow-stat">
             <span class="num">1 €</span>
@@ -1504,11 +1531,11 @@ h1.slide-title:has(+ .slide-subtitle) {
         </span>
         <div class="flow-stats">
           <div class="flow-stat">
-            <span class="num">~117</span>
+            <span class="num">~189</span>
             <span class="lbl">Premium-Nutzer (mit 3 Pro + 15 Kaffeekassen)</span>
           </div>
           <div class="flow-stat">
-            <span class="num">~25–42 %</span>
+            <span class="num">~35–50 %</span>
             <span class="lbl">Operative Marge bei 1.000 Premium</span>
           </div>
         </div>
@@ -1653,8 +1680,8 @@ h1.slide-title:has(+ .slide-subtitle) {
             <div class="price">1 €</div>
           </div>
           <div class="pricing-row-item">
-            <div class="name">Premium<small>30 Story-Credits/Mon. · bis zu 4 Kinderkonten</small></div>
-            <div class="price">7,99 €</div>
+            <div class="name">Familienpaket<small>15 Story-Credits/Mon. · bis zu 4 Kinderkonten · Sub-5 € als Ansage</small></div>
+            <div class="price">4,99 €</div>
           </div>
         </div>
       </div>
@@ -1680,6 +1707,10 @@ h1.slide-title:has(+ .slide-subtitle) {
         </div>
         <div class="phase-badge">Validierung in Phase 3</div>
       </div>
+    </div>
+    <div class="market-benchmark">
+      <span class="mb-label">Marktbenchmark Familien-Apps / Monat</span>
+      ANTON Premium 3,90 € · <strong>Lesekumpel 4,99 €</strong> · eKidz 5,99 € · CLELO 7,99 € — als einzige mit Neuro-Inklusion.
     </div>
   </div>
   <div class="slide-footer">
@@ -1807,7 +1838,7 @@ h1.slide-title:has(+ .slide-subtitle) {
 <section class="slide" data-slide="7">
   <div class="blob yellow tr-md shape-1" aria-hidden="true"></div>
   <div class="slide-tag">Anhang 6 · Margenhebel</div>
-  <h1 class="slide-title">Drei Hebel auf <span class="accent">42 % Marge.</span></h1>
+  <h1 class="slide-title">Drei Hebel auf <span class="accent">über 50 % Marge.</span></h1>
   <div class="slide-content">
     <div class="hebel-grid">
       <div class="hebel-card h1">
@@ -1830,7 +1861,7 @@ h1.slide-title:has(+ .slide-subtitle) {
       </div>
     </div>
     <div class="hebel-summary">
-      Story-Kosten von <strong>0,12 €</strong> auf <strong>0,07 €</strong> · Operative Marge Phase 3 von <strong>~25 %</strong> auf <strong>~42 %</strong>
+      Story-Kosten von <strong>0,12 €</strong> auf <strong>0,07 €</strong> · Operative Marge Phase 3 von <strong>~37 %</strong> auf <strong>~52 %</strong>
     </div>
   </div>
   <div class="slide-footer">
@@ -1857,22 +1888,21 @@ h1.slide-title:has(+ .slide-subtitle) {
       </div>
       <div class="be-block var">
         <h3>Variable Kosten pro Premium-Nutzer:in</h3>
-        <div class="be-line"><span>30 Stories Cap × 0,12 € *</span><span class="num">3,60 €</span></div>
+        <div class="be-line"><span>15 Stories Cap × 0,12 € *</span><span class="num">1,80 €</span></div>
         <div class="be-line"><span>Backend (Auth, Hosting-Anteil)</span><span class="num">0,10 €</span></div>
         <div class="be-line"><span>+ 9 Free-Nutzer-Anteil (1:9-Kohorte)</span><span class="num">0,90 €</span></div>
-        <div class="be-line"><span>Stripe-Gebühr (1,4 % + 0,25 €)</span><span class="num">0,36 €</span></div>
-        <div class="be-line sum"><span>Effektive Kosten je Premium</span><span class="num">4,96 €</span></div>
+        <div class="be-line"><span>Stripe-Gebühr (1,4 % + 0,25 €)</span><span class="num">0,32 €</span></div>
+        <div class="be-line sum"><span>Effektive Kosten je Premium</span><span class="num">3,12 €</span></div>
       </div>
     </div>
     <div class="be-chart-wrap">
-      <svg class="be-chart" viewBox="0 0 800 350" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Break-Even-Diagramm: Einnahmen kreuzen Kosten bei 117 Premium-Nutzern (mit 3 Pro + 15 Kaffeekassen integriert)">
+      <svg class="be-chart" viewBox="0 0 800 350" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet" role="img" aria-label="Break-Even-Diagramm: Einnahmen kreuzen Kosten bei 189 Premium-Nutzern (mit 3 Pro + 15 Kaffeekassen integriert)">
 
-        <!-- Horizontale Gridlines -->
+        <!-- Horizontale Gridlines (Y-Skala 0-1500 €) -->
         <g stroke="#D9D4CC" stroke-width="1" stroke-dasharray="3,4">
           <line x1="85" y1="30" x2="755" y2="30"/>
-          <line x1="85" y1="97.5" x2="755" y2="97.5"/>
-          <line x1="85" y1="165" x2="755" y2="165"/>
-          <line x1="85" y1="232.5" x2="755" y2="232.5"/>
+          <line x1="85" y1="120" x2="755" y2="120"/>
+          <line x1="85" y1="210" x2="755" y2="210"/>
         </g>
 
         <!-- X-Achse + Y-Achse -->
@@ -1881,21 +1911,21 @@ h1.slide-title:has(+ .slide-subtitle) {
 
         <!-- Y-Achsen-Beschriftung -->
         <g font-family="Quicksand, sans-serif" font-size="12" fill="#2B3140" text-anchor="end" font-weight="500">
-          <text x="75" y="34">2.000 €</text>
-          <text x="75" y="101">1.500 €</text>
-          <text x="75" y="169">1.000 €</text>
-          <text x="75" y="236">500 €</text>
+          <text x="75" y="34">1.500 €</text>
+          <text x="75" y="124">1.000 €</text>
+          <text x="75" y="214">500 €</text>
           <text x="75" y="304">0 €</text>
         </g>
 
-        <!-- X-Achsen-Beschriftung -->
+        <!-- X-Achsen-Beschriftung (0-300 Premium) -->
         <g font-family="Quicksand, sans-serif" font-size="12" fill="#2B3140" text-anchor="middle" font-weight="500">
           <text x="85" y="318">0</text>
-          <text x="219" y="318">50</text>
-          <text x="353" y="318">100</text>
-          <text x="487" y="318">150</text>
-          <text x="621" y="318">200</text>
-          <text x="755" y="318">250</text>
+          <text x="197" y="318">50</text>
+          <text x="308" y="318">100</text>
+          <text x="420" y="318">150</text>
+          <text x="532" y="318">200</text>
+          <text x="643" y="318">250</text>
+          <text x="755" y="318">300</text>
         </g>
 
         <!-- Achsen-Titel -->
@@ -1906,30 +1936,30 @@ h1.slide-title:has(+ .slide-subtitle) {
           € pro Monat
         </text>
 
-        <!-- Einnahmen-Linie (Mint) -->
-        <line x1="85" y1="300" x2="755" y2="30" stroke="#2FB8A6" stroke-width="3.5" stroke-linecap="round"/>
-        <text x="755" y="22" font-family="Fredoka, sans-serif" font-size="13" font-weight="700" fill="#2FB8A6" text-anchor="end">Einnahmen · 7,99 € × P</text>
+        <!-- Einnahmen-Linie (Mint) — y = 4,99 € × P, bei P=300 → 1.497 € → y=31 -->
+        <line x1="85" y1="300" x2="755" y2="31" stroke="#2FB8A6" stroke-width="3.5" stroke-linecap="round"/>
+        <text x="755" y="22" font-family="Fredoka, sans-serif" font-size="13" font-weight="700" fill="#2FB8A6" text-anchor="end">Einnahmen · 4,99 € × P</text>
 
-        <!-- Kosten-Linie (Coral) — y = 354 + 4,96 € × P (nach Stream-Reduktion), bei x=250 y=1594 -->
-        <line x1="85" y1="252.2" x2="755" y2="84.8" stroke="#F97352" stroke-width="3.5" stroke-linecap="round"/>
-        <text x="755" y="78" font-family="Fredoka, sans-serif" font-size="13" font-weight="700" fill="#F97352" text-anchor="end">Kosten · 354 € + 4,96 € × P</text>
+        <!-- Kosten-Linie (Coral) — y = 354 + 3,12 € × P, bei P=0 → 354 € → y=236; bei P=300 → 1.290 € → y=68 -->
+        <line x1="85" y1="236" x2="755" y2="68" stroke="#F97352" stroke-width="3.5" stroke-linecap="round"/>
+        <text x="755" y="60" font-family="Fredoka, sans-serif" font-size="13" font-weight="700" fill="#F97352" text-anchor="end">Kosten · 354 € + 3,12 € × P</text>
 
-        <!-- Break-Even-Markierung: gestrichelte Linie nach unten (x=117 → pixel 399) -->
-        <line x1="399" y1="174" x2="399" y2="300" stroke="#7D6AE6" stroke-width="2" stroke-dasharray="5,5" opacity="0.7"/>
+        <!-- Break-Even-Markierung: gestrichelte Linie nach unten (P=189 → x=507) -->
+        <line x1="507" y1="130" x2="507" y2="300" stroke="#7D6AE6" stroke-width="2" stroke-dasharray="5,5" opacity="0.7"/>
 
         <!-- Break-Even-Punkt -->
-        <circle cx="399" cy="174" r="9" fill="#FFD95A" stroke="#2B3140" stroke-width="2.5"/>
+        <circle cx="507" cy="130" r="9" fill="#FFD95A" stroke="#2B3140" stroke-width="2.5"/>
 
-        <!-- Break-Even-Label -->
-        <g transform="translate(415, 138)">
+        <!-- Break-Even-Label (links vom Marker, weil Marker jetzt weiter rechts sitzt) -->
+        <g transform="translate(275, 94)">
           <rect x="0" y="0" width="220" height="56" fill="#FFD95A" rx="8" stroke="#2B3140" stroke-width="1.5"/>
           <text x="110" y="22" font-family="Fredoka, sans-serif" font-size="14" font-weight="700" fill="#2B3140" text-anchor="middle">Break-Even</text>
-          <text x="110" y="42" font-family="Quicksand, sans-serif" font-size="13" fill="#2B3140" text-anchor="middle" font-weight="500">≈ 117 Premium · 935 €/Mon.</text>
+          <text x="110" y="42" font-family="Quicksand, sans-serif" font-size="13" fill="#2B3140" text-anchor="middle" font-weight="500">≈ 189 Premium · 943 €/Mon.</text>
         </g>
       </svg>
       <div class="be-formula-mini">
-        Netto-Fix 354 € + variable 4,96 € × P = Einnahmen 7,99 € × P&nbsp;&nbsp;→&nbsp;&nbsp;<strong>P ≈ 117 Premium-Nutzer:innen</strong>
-        <span class="be-formula-note">* Story-Cost 0,12 € = Persona-Mix-gewichteter Durchschnitt. Mit Modell-Wechsel auf Flash + Imagen 2 (Phase 2) sinkt der Wert auf ~0,07 €.</span>
+        Netto-Fix 354 € + variable 3,12 € × P = Einnahmen 4,99 € × P&nbsp;&nbsp;→&nbsp;&nbsp;<strong>P ≈ 189 Premium-Nutzer:innen</strong>
+        <span class="be-formula-note">* Story-Cost 0,12 € = Persona-Mix-gewichteter Durchschnitt. Mit Modell-Wechsel auf Flash + Imagen 2 (Phase 2) sinkt der Wert auf ~0,07 € → Break-Even ~135.</span>
       </div>
     </div>
   </div>
@@ -1949,17 +1979,17 @@ h1.slide-title:has(+ .slide-subtitle) {
   <div class="slide-content">
     <div class="thresholds">
       <div class="threshold t1">
-        <div class="big-number">~117</div>
+        <div class="big-number">~189</div>
         <div class="unit">Premium-Nutzer</div>
         <div class="label">Operativ kostendeckend<br><small>Bei 3 Pro-Accounts + 15 Kaffeekassen / Monat</small></div>
       </div>
       <div class="threshold t2">
-        <div class="big-number">~1.300</div>
+        <div class="big-number">~1.600</div>
         <div class="unit">Premium-Nutzer</div>
         <div class="label">Teilzeit-Entnahme<br><small>3 Gründer:innen leben mit vom Geschäft</small></div>
       </div>
       <div class="threshold t3">
-        <div class="big-number">~5.000</div>
+        <div class="big-number">~8.000</div>
         <div class="unit">Premium-Nutzer</div>
         <div class="label">Vollzeit-tragfähig<br><small>Team-Aufbau aus eigener Kraft</small></div>
       </div>
@@ -1967,9 +1997,9 @@ h1.slide-title:has(+ .slide-subtitle) {
     <div class="timing-line">
       <div class="timing-title">Realistischer Zeitpfad — basierend auf aktuellem Tempo</div>
       <div class="timing-row">
-        <div class="timing-pt t1"><span class="when">Monat 12</span><span class="what">~117 Premium-Nutzer:innen</span></div>
-        <div class="timing-pt t2"><span class="when">Monat 24</span><span class="what">~1.300 Premium-Nutzer:innen</span></div>
-        <div class="timing-pt t3"><span class="when">Monat 36+</span><span class="what">~5.000 Premium-Nutzer:innen</span></div>
+        <div class="timing-pt t1"><span class="when">Monat 12</span><span class="what">~189 Premium-Nutzer:innen</span></div>
+        <div class="timing-pt t2"><span class="when">Monat 24</span><span class="what">~1.600 Premium-Nutzer:innen</span></div>
+        <div class="timing-pt t3"><span class="when">Monat 36+</span><span class="what">~8.000 Premium-Nutzer:innen</span></div>
       </div>
     </div>
   </div>
@@ -2053,12 +2083,12 @@ h1.slide-title:has(+ .slide-subtitle) {
         </tr>
       </thead>
       <tbody>
-        <tr><td>Premium-Preis</td><td class="num">7,99 €/Mon.</td><td>30 Credits · bis zu 4 Kinderkonten · marktüblich</td></tr>
+        <tr><td>Premium-Preis (Familienpaket)</td><td class="num">4,99 €/Mon.</td><td>15 Credits · bis zu 4 Kinderkonten · Sub-5-€-Positionierung gegen ANTON/eKidz/CLELO</td></tr>
         <tr><td>Pro-Account (Lehrer)</td><td class="num">14,99 €/Mon.</td><td>45 Credits · bis zu 30 Kinderkonten · Tracking + Versand · individuell verkaufbar</td></tr>
         <tr><td>Schul-Lizenzen</td><td class="num">individuell</td><td>auf Anfrage · Förderverein, Schul-Budget oder Eltern-Pool</td></tr>
         <tr><td>Kaffeekasse (On-Demand)</td><td class="num">1 € / 2 Credits</td><td>Spende mit Gegenleistung · 52 % Bruttomarge · ohne Abo</td></tr>
         <tr><td>Conversion Free → Premium</td><td class="num">10 %</td><td>EdTech-Mittel; 8 % wäre kritisch, 12 % exzellent</td></tr>
-        <tr><td>Story-Cap Premium</td><td class="num">30 Credits</td><td>Finja-Stories kosten 2 Credits</td></tr>
+        <tr><td>Story-Cap Premium</td><td class="num">15 Credits</td><td>Finja-Stories kosten 2 Credits · ehrlicher Cap statt überdimensioniertem 30er</td></tr>
         <tr><td>Token-Kost pro Story (Persona-Mix-Mittel)</td><td class="num">~0,12 €</td><td>gewichtet: 30 % Pip · 30 % Mia · 20 % Peter · 10 % Stella · 5 % Finja · 5 % Bonus</td></tr>
         <tr><td>Token-Kost Phase 2 (nach Modell-Wechsel)</td><td class="num">~0,07 €</td><td>Gemini Flash + Imagen 2 statt Pro + Flash Image</td></tr>
         <tr><td>Pro-Accounts / Monat (Annahme)</td><td class="num">3</td><td>5 engagierte Lehrer in 12 Monaten realistisch</td></tr>
@@ -2067,7 +2097,7 @@ h1.slide-title:has(+ .slide-subtitle) {
       </tbody>
     </table>
     <div class="risk-box success">
-      <strong>Break-Even-Mathematik integriert:</strong> Die 117-Premium-Schwelle berücksichtigt bereits 3 Pro-Accounts (DB 6,13 €/Verkauf) und 15 Kaffeekassen (DB 0,50 €/Verkauf) pro Monat — gemeinsam reduzieren sie die Netto-Fixlast von 380 € auf ~354 €. <strong>Premium-only-Schwelle (ohne diese Streams):</strong> ~126 Premium-Nutzer. <strong>Hebel-Potenzial:</strong> Mit Modell-Wechsel auf Gemini Flash + Imagen 2 (Phase-2-Optimierung) sinkt die Story-Cost von 0,12 € auf ~0,07 € → Schwelle dann <80 Premium.
+      <strong>Break-Even-Mathematik integriert:</strong> Die 189-Premium-Schwelle berücksichtigt bereits 3 Pro-Accounts (DB 6,13 €/Verkauf) und 15 Kaffeekassen (DB 0,50 €/Verkauf) pro Monat — gemeinsam reduzieren sie die Netto-Fixlast von 380 € auf ~354 €. <strong>Premium-only-Schwelle (ohne diese Streams):</strong> ~203 Premium-Nutzer. <strong>Hebel-Potenzial:</strong> Mit Modell-Wechsel auf Gemini Flash + Imagen 2 (Phase-2-Optimierung) sinkt die Story-Cost von 0,12 € auf ~0,07 € → Schwelle dann ~135 Premium.
     </div>
   </div>
   <div class="slide-footer">

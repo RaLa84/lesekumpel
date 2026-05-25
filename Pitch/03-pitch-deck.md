@@ -131,12 +131,12 @@
 > | Kategorie | Inhalt |
 > |---|---|
 > | **Kosten** | Fixkosten 170 € Konzeptions-Phase · Fixkosten 700 € Validierungs-Phase |
-> | **Pricing** | Free · **Kaffeekasse 1 €/2 Credits** · **Premium 7,99 €/Mon.** (4 Kinderkonten) · **Pro-Account 14,99 €/Mon.** (30 Kinderkonten) |
-> | **Break Even** | bei **117** Premium-Nutzern *(mit 3 Pro + 15 Kaffeekassen)* · ~25–42 % Marge |
+> | **Pricing** | Free · **Kaffeekasse 1 €/2 Credits** · **Familienpaket 4,99 €/Mon.** (15 Credits · 4 Kinderkonten) · **Pro-Account 14,99 €/Mon.** (30 Kinderkonten) |
+> | **Break Even** | bei **189** Premium-Nutzern *(mit 3 Pro + 15 Kaffeekassen)* · ~35–50 % Marge |
 > | **Marketing** | **0 € Paid Acquisition** · Community-Led Growth über 4 Kanäle: Lehrer, SEO, Instagram, Discord |
 
 **Pointe (gesprochen, ~30 Sek):**
-> „Was bedeutet das alles? Wir bauen ein nachhaltiges Bildungsgeschäft, keine Wachstums-Inszenierung. 117 zahlende Nutzer bringen uns ins Schwarze. 1.300 ernähren den Gründer. Alles dazwischen ist Wachstum aus eigener Kraft. Wir brauchen keinen 2-Millionen-Pitch. Wir brauchen Validierung — und genau dafür sitzen wir hier."
+> „Was bedeutet das alles? Wir bauen ein nachhaltiges Bildungsgeschäft, keine Wachstums-Inszenierung. 189 zahlende Nutzer bringen uns ins Schwarze — bei einem Preis unter 5 Euro. Das ist die Ansage gegen Antolin, ANTON und CLELO. 1.600 ernähren das Gründerteam Teilzeit. Alles dazwischen ist Wachstum aus eigener Kraft. Wir brauchen keinen 2-Millionen-Pitch. Wir brauchen Validierung — und genau dafür sitzen wir hier."
 
 *Detail-Folien zur Marketing-Logik, Einnahmen-Struktur, Kosten-Pyramide, Break-Even-Schwellen und Förder-Roadmap: siehe Anhang [`06-finanzierungs-folien.md`](06-finanzierungs-folien.md) F1–F5.*
 

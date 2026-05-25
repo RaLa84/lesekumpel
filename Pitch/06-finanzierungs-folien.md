@@ -67,7 +67,7 @@
 > **B2C · Eltern (Drei Stufen):**
 > · Free — Lesen + Empfehlungen aus der Bibliothek
 > · **Kaffeekasse 1 € / 2 Credits** — ohne Abo, „Spende mit Gegenleistung" (Einstiegs-Bridge für Gelegenheits- und Spenden-Eltern)
-> · Premium 7,99 €/Mon. — 30 Credits + bis zu 4 Kinderkonten
+> · **Familienpaket 4,99 €/Mon.** — 15 Credits + bis zu 4 Kinderkonten · Sub-5-€-Ansage gegen ANTON (3,90 €) / eKidz (5,99 €) / CLELO (7,99 €)
 >
 > **B2B (Lehrer):**
 > | Tarif | Preis |
@@ -152,7 +152,7 @@
 
 ## SLIDE F7 — Break-Even-Rechnung
 
-**Visuell:** Zwei Blöcke oben nebeneinander (Fixkosten links Mint, Variable Kosten rechts Lila). Darunter ein großes Break-Even-Diagramm als SVG: Kosten-Linie (Coral) und Einnahmen-Linie (Mint) schneiden sich bei 117 Premium-Nutzern — der Schnittpunkt ist als gelber Markerpunkt mit Beschriftung "Break-Even ≈ 117 Premium · 935 €/Mon." hervorgehoben. Unter dem Diagramm eine kompakte Formel-Zeile.
+**Visuell:** Zwei Blöcke oben nebeneinander (Fixkosten links Mint, Variable Kosten rechts Lila). Darunter ein großes Break-Even-Diagramm als SVG: Kosten-Linie (Coral) und Einnahmen-Linie (Mint) schneiden sich bei 189 Premium-Nutzern — der Schnittpunkt ist als gelber Markerpunkt mit Beschriftung "Break-Even ≈ 189 Premium · 943 €/Mon." hervorgehoben. Unter dem Diagramm eine kompakte Formel-Zeile.
 
 **Text:**
 > ### Die Rechnung — als Bild und Zahl.
@@ -161,40 +161,40 @@
 > Infrastruktur 75 € · Dev-Tools 120 € · Recht/Buchhaltung/Versich. 145 € · Marketing-Sockel 40 € · **Summe ~380 €**
 >
 > **Variable Kosten pro Premium-Nutzer:in:**
-> 30 Stories Cap × 0,12 € = 3,60 € · Backend 0,10 € · + 9 Free-Anteil 0,90 € · Stripe-Gebühr 0,36 € · **Effektiv 4,96 €**
+> 15 Stories Cap × 0,12 € = 1,80 € · Backend 0,10 € · + 9 Free-Anteil 0,90 € · Stripe-Gebühr 0,32 € · **Effektiv 3,12 €**
 >
 > **Stream-Beiträge integriert (reduzieren Fixlast):**
 > 3 Pro-Accounts × 6,13 € DB = 18,39 € · 15 Kaffeekassen × 0,50 € DB = 7,50 € · **Netto-Fix 354 € (statt 380 €)**
 >
 > ---
 >
-> **[Break-Even-Kurve]** — Kosten- und Einnahmen-Linie kreuzen sich bei 117 Premium-Nutzer:innen / 935 €/Monat.
+> **[Break-Even-Kurve]** — Kosten- und Einnahmen-Linie kreuzen sich bei 189 Premium-Nutzer:innen / 943 €/Monat.
 >
-> *Formel:* 354 € + 4,96 € × P = 7,99 € × P → **P ≈ 117 Premium-Nutzer:innen** *(mit 3 Pro + 15 Kaffeekassen integriert)*
+> *Formel:* 354 € + 3,12 € × P = 4,99 € × P → **P ≈ 189 Premium-Nutzer:innen** *(mit 3 Pro + 15 Kaffeekassen integriert)*
 
 **Pointe (gesprochen):**
-> „Hier sehen Sie die Mathematik visualisiert: Kosten-Linie in Coral, Einnahmen-Linie in Mint. Wo sie sich treffen, sind wir kostendeckend. Bei 117 Premium-Nutzer:innen, rund 911 Euro Umsatz im Monat. Das ist keine Hochrechnung — das ist Algebra."
+> „Hier sehen Sie die Mathematik visualisiert: Kosten-Linie in Coral, Einnahmen-Linie in Mint. Wo sie sich treffen, sind wir kostendeckend. Bei 189 Premium-Nutzer:innen, rund 943 Euro Umsatz im Monat — und der Preis liegt unter 5 Euro. Damit unterbieten wir CLELO und eKidz deutlich. Das ist keine Hochrechnung — das ist Algebra."
 
 ---
 
 ## SLIDE F8 — Break-Even & Skalierung
 
-**Visuell:** Drei große Schwellen-Karten (117 / 1.300 / 5.000 Premium-Nutzer). Darunter eine Timing-Linie mit Monatsangaben Monat 12 / 24 / 36+.
+**Visuell:** Drei große Schwellen-Karten (189 / 1.600 / 8.000 Premium-Nutzer). Darunter eine Timing-Linie mit Monatsangaben Monat 12 / 24 / 36+.
 
 **Text:**
 > ### Wann wir uns selbst tragen.
 >
-> **~117 Premium-Nutzer:innen** — operativ kostendeckend (Tools · Hosting · Token · Bilder)
-> **~1.300 Premium-Nutzer:innen** — Teilzeit-Entnahme: 3 Gründer:innen leben mit vom Geschäft
-> **~5.000 Premium-Nutzer:innen** — vollzeit-tragfähig, Team-Aufbau aus eigener Kraft
+> **~189 Premium-Nutzer:innen** — operativ kostendeckend (Tools · Hosting · Token · Bilder)
+> **~1.600 Premium-Nutzer:innen** — Teilzeit-Entnahme: 3 Gründer:innen leben mit vom Geschäft
+> **~8.000 Premium-Nutzer:innen** — vollzeit-tragfähig, Team-Aufbau aus eigener Kraft
 >
 > ---
 >
 > **Realistischer Zeitpfad — basierend auf aktuellem Tempo**
-> Monat 12 → 117 · Monat 24 → 1.300 · Monat 36+ → 5.000
+> Monat 12 → 189 · Monat 24 → 1.600 · Monat 36+ → 8.000
 
 **Pointe (gesprochen):**
-> „Drei Schwellen: 117 sind die operative Tragfähigkeit, in 12 Monaten erreichbar. 1.300 — Teilzeit für das gesamte Gründerteam, in 24 Monaten. 5.000 — Vollzeit-Phase, in 36+ Monaten. Alles dazwischen ist organisches Wachstum ohne externes Kapital."
+> „Drei Schwellen: 189 sind die operative Tragfähigkeit, in 12 Monaten erreichbar. 1.600 — Teilzeit für das gesamte Gründerteam, in 24 Monaten. 8.000 — Vollzeit-Phase, in 36+ Monaten. Alles dazwischen ist organisches Wachstum ohne externes Kapital."
 
 ---
 
@@ -235,12 +235,12 @@
 > | Kategorie | Inhalt |
 > |---|---|
 > | **Kosten** | Fixkosten 170 € Konzeptions-Phase · Fixkosten 700 € Validierungs-Phase |
-> | **Pricing** | **Premium 7,99 €/Mon.** (4 Kinderkonten) · **Kaffeekasse 1 €** (2 Credits, ohne Abo) |
-> | **Break Even** | bei **117** Premium-Nutzern (mit 3 Pro + 15 Kaffeekassen) · **Marge ~25–42 %** |
+> | **Pricing** | **Familienpaket 4,99 €/Mon.** (15 Credits · 4 Kinderkonten) · **Kaffeekasse 1 €** (2 Credits, ohne Abo) |
+> | **Break Even** | bei **189** Premium-Nutzern (mit 3 Pro + 15 Kaffeekassen) · **Marge ~35–50 %** |
 > | **Marketing** | **0 € Paid Acquisition** · Community-Led Growth über 4 Kanäle: Lehrer, SEO, Instagram, Discord |
 
 **Pointe (gesprochen, ~30 Sek):**
-> „Was bedeutet das alles? Wir bauen ein nachhaltiges Bildungsgeschäft, keine Wachstums-Inszenierung. 117 zahlende Nutzer bringen uns ins Schwarze. 1.300 ernähren das Gründerteam Teilzeit. Alles dazwischen ist Wachstum aus eigener Kraft. Wir brauchen keinen 2-Millionen-Pitch. Wir brauchen Validierung."
+> „Was bedeutet das alles? Wir bauen ein nachhaltiges Bildungsgeschäft, keine Wachstums-Inszenierung. 189 zahlende Nutzer bringen uns ins Schwarze — bei einem Preis unter 5 Euro. Das ist die Ansage gegen Antolin, ANTON und CLELO. 1.600 ernähren das Gründerteam Teilzeit. Alles dazwischen ist Wachstum aus eigener Kraft. Wir brauchen keinen 2-Millionen-Pitch. Wir brauchen Validierung."
 
 ---
 
@@ -253,9 +253,9 @@
 >
 > | Annahme | Wert | Sensitivität / Quelle |
 > |---|---|---|
-> | Premium-Preis | 7,99 €/Mon. | marktüblich, Antolin-Niveau |
+> | Premium-Preis (Familienpaket) | 4,99 €/Mon. | 15 Credits · 4 Kinderkonten · Sub-5-€-Positionierung gegen ANTON/eKidz/CLELO |
 > | Conversion Free → Premium | 10 % | EdTech-Mittel; 8 % kritisch, 12 % exzellent |
-> | Story-Cap Premium | 30 Credits | Finja-Stories kosten 2 Credits |
+> | Story-Cap Premium | 15 Credits | Finja-Stories kosten 2 Credits · ehrlicher Cap statt überdimensioniertem 30er |
 > | Token-Kost pro Story (Persona-Mix) | ~0,12 € | gewichteter Mittel: 30 % Pip · 30 % Mia · 20 % Peter · 10 % Stella · 5 % Finja · 5 % Bonus |
 > | Token-Kost Phase 2 (Modell-Wechsel) | ~0,07 € | Gemini Flash + Imagen 2 statt Pro + Flash Image |
 > | Pro-Accounts / Monat (Annahme) | 3 | engagierte Lehrer in 12 Monaten realistisch |
