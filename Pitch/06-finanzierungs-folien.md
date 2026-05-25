@@ -94,8 +94,8 @@
 > | Phase | Status | pro Monat |
 > |---|---|---|
 > | **Konzeption** | Bootstrap, Free-Tier-Services | **~170 €** |
-> | **Validierung** | GbR, ≤ 100 zahlende Nutzer:innen | **~700 €** |
-> | **Skalierung** | UG, 1.000 Premium + 10k Free · 3 Gründer:innen Teilzeit | **~9.000 €** |
+> | **Validierung** | GbR, ≤ 100 zahlende Nutzer:innen | **~650 €** |
+> | **Skalierung** | UG, 1.000 Premium + 10k Free · 3 Gründer:innen Teilzeit | **~8.500 €** |
 
 **Pointe (gesprochen):**
 > „Wir starten mit 170 Euro im Monat. Skalieren erst, wenn wir validiert haben. Selbst in Phase 3 — bei 11.000 Nutzern — bleiben wir bei rund 9.000 Euro, weil unser 3-köpfiges Gründerteam mit Teilzeit-Entnahmen arbeitet."
@@ -112,13 +112,13 @@
 > | Kategorie | Konzeption *(bis 20 Test-Nutzer)* | Validierung *(bis 100 Premium)* | Skalierung *(1.000 Premium · 10k Free)* |
 > |---|---|---|---|
 > | Infrastruktur, Hosting, DB, CDN | 25 € | ~75 € | ~400 € |
-> | LLM-Token + Bildgenerierung | 25 € | ~200 € | ~1.700 € |
+> | LLM-Token + Bildgenerierung | 25 € | ~150 € | ~1.300 € |
 > | Recommendation Engine (Embeddings) | – | – | ~50 € |
 > | Recht, Buchhaltung, Versicherung | ~20 € | ~145 € | ~500 € |
 > | Dev-Tools, Subscriptions | ~100 € | ~120 € | ~150 € |
 > | Merch &amp; Messe-Materialien (Hoodies, Aufkleber, Banner) | – | ~100 € | ~500 € |
 > | Personal (3 Gründer:innen) | Eigenleistung | Eigenleistung | ~5.000 € Teilzeit |
-> | **Summe** | **~170 €** | **~700 €** | **~9.000 €** |
+> | **Summe** | **~170 €** | **~650 €** | **~8.500 €** |
 
 **Pointe (gesprochen):**
 > „Größter variabler Block: Token plus Bilder. Personal ist Teilzeit-Entnahme — keine Vollzeit-Gehälter. Werbemittel sind Merch und Messe-Materialien für Lehrer-Outreach, nicht Performance-Ads."
@@ -234,7 +234,7 @@
 >
 > | Kategorie | Inhalt |
 > |---|---|
-> | **Kosten** | Fixkosten 170 € Konzeptions-Phase · Fixkosten 700 € Validierungs-Phase |
+> | **Kosten** | Fixkosten 170 € Konzeptions-Phase · Fixkosten 650 € Validierungs-Phase |
 > | **Pricing** | **Familienpaket 4,99 €/Mon.** (15 Credits · 4 Kinderkonten) · **Kaffeekasse 1 €** (2 Credits, ohne Abo) |
 > | **Break Even** | bei **189** Premium-Nutzern (mit 3 Pro + 15 Kaffeekassen) · **Marge ~35–50 %** |
 > | **Marketing** | **0 € Paid Acquisition** · Community-Led Growth über 4 Kanäle: Lehrer, SEO, Instagram, Discord |

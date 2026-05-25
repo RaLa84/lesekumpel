@@ -130,7 +130,7 @@
 >
 > | Kategorie | Inhalt |
 > |---|---|
-> | **Kosten** | Fixkosten 170 € Konzeptions-Phase · Fixkosten 700 € Validierungs-Phase |
+> | **Kosten** | Fixkosten 170 € Konzeptions-Phase · Fixkosten 650 € Validierungs-Phase |
 > | **Pricing** | Free · **Kaffeekasse 1 €/2 Credits** · **Familienpaket 4,99 €/Mon.** (15 Credits · 4 Kinderkonten) · **Pro-Account 14,99 €/Mon.** (30 Kinderkonten) |
 > | **Break Even** | bei **189** Premium-Nutzern *(mit 3 Pro + 15 Kaffeekassen)* · ~35–50 % Marge |
 > | **Marketing** | **0 € Paid Acquisition** · Community-Led Growth über 4 Kanäle: Lehrer, SEO, Instagram, Discord |
