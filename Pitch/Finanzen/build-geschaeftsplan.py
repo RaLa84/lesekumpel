@@ -237,7 +237,7 @@ def build_tab1(wb):
         ("LLM-Token + Bildgenerierung", token_jahr(1), token_jahr(2), token_jahr(3)),
         ("Stripe-Gebühren (1,4 % + 0,25 €)", stripe_jahr(1), stripe_jahr(2), stripe_jahr(3)),
         ("Hosting · Backend · CDN", 25*12, 75*12, 400*12),
-        ("Recht · Buchhaltung · Versicherung", 20*12, 145*12, 500*12),
+        ("Recht · Buchhaltung · Versicherung (GbR ab J1 · UG ab J2)", 50*12, 250*12, 500*12),
         ("Dev-Tools · Subscriptions (Claude Max etc.)", 100*12, 120*12, 150*12),
         ("Marketing · Merch · Messen", 10*12, 100*12, 500*12),
         ("Strom · Internet · Reisekosten · Sonstige", 50*12, 80*12, 170*12),
@@ -467,8 +467,8 @@ def build_tab3(wb):
         ausg_stripe = 0.014 * umsatz_m + 0.25 * transaktionen
         # Hosting
         ausg_hosting = 25
-        # Recht
-        ausg_recht = 20
+        # Recht (GbR-Phase: 50 €/Mon)
+        ausg_recht = 50
         # Dev-Tools
         ausg_tools = 100
         # Marketing
@@ -530,7 +530,7 @@ def build_tab3(wb):
         # Skalierende Fixkosten
         hosting = {2: 75, 3: 400}.get(jahr, 600)
         d['ausg_hosting'] = hosting * 12
-        recht = {2: 145, 3: 500}.get(jahr, 600)
+        recht = {2: 250, 3: 500}.get(jahr, 600)
         d['ausg_recht'] = recht * 12
         tools = {2: 120, 3: 150}.get(jahr, 200)
         d['ausg_tools'] = tools * 12
@@ -805,7 +805,7 @@ def build_tab4(wb):
         d['aufw_stripe'] = 0.014 * umsatz_j + 0.25 * transaktionen_j
         hosting = {2: 75, 3: 400}.get(jahr, 600)
         d['aufw_hosting'] = hosting * 12
-        recht = {2: 145, 3: 500}.get(jahr, 600)
+        recht = {2: 250, 3: 500}.get(jahr, 600)
         d['aufw_recht'] = recht * 12
         tools = {2: 120, 3: 150}.get(jahr, 200)
         d['aufw_tools'] = tools * 12
@@ -965,9 +965,9 @@ def build_uebersicht(wb):
     info = [
         ("Geschäftsmodell:", "Neuroinklusive Lese-Bibliothek für Kinder 5-10 (LRS · ADHS · Autismus)"),
         ("Pricing:", "Familienpaket 4,99 €/Mon · Pro-Account 14,99 €/Mon · Kaffeekasse 1 €/2 Credits"),
-        ("Phasen:", "Konzeption (Eigenmittel) → Validierung (GbR) → Skalierung (UG + Mikromezzanin)"),
+        ("Phasen:", "Konzeption (GbR · Eigenmittel) → Validierung (UG-Umfirmierung) → Skalierung (Mikromezzanin)"),
         ("Finanzierung Phase 3:", "Mikromezzaninfonds II · 50.000 € · 8% p.a. · 10 J endfällig (MBG MV)"),
-        ("Break-Even:", "189 Premium-Nutzer:innen (mit 3 Pro + 15 Kaffeekassen/Mon. integriert)"),
+        ("Break-Even:", "~200 Premium (moderate Ratio: 1 Pro + 5 Kaffee pro 100 Premium → 2 Pro + 10 Kaffee/Mon.)"),
         ("Tragfähig (Skalierung):", "1.700 Premium · 8.500 €/Monat Umsatz = 8.500 € Kosten"),
         ("", ""),
         ("Sheet-Struktur:", ""),

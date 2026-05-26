@@ -142,9 +142,9 @@ Finanzierung: Eigenmittel (Bootstrap, 3.000 € Start-Puffer plus laufende Priva
 - J3: 400 €/Mon (Skalierung, Recommendation-Engine-Embeddings)
 
 ### Recht/Buchhaltung/Versicherung
-- J1: 20 €/Mon (DPMA-Marke verteilt + Privatversicherung)
-- J2: 145 €/Mon (GbR-Gründung-Anteil + Cyber + Berufshaftpflicht)
-- J3: 500 €/Mon (Anwalt-AGB/DSGVO einmalig + Steuerberater + Buchhaltung + Versicherungen)
+- J1: 50 €/Mon (**GbR ab Phase 1!** — Berufshaftpflicht + Cyber-Versicherung + DPMA-Marke verteilt + GbR-Vertrag eRecht24)
+- J2: 250 €/Mon (**UG-Umfirmierung Anfang Phase 2!** — UG-Buchhaltungspflicht + Steuerberater-Mandant + Anwalts-AGB/DSGVO einmalig)
+- J3: 500 €/Mon (laufende UG-Buchhaltung + erweiterte Versicherungen + Anwalt für AGB-Updates)
 
 ### Dev-Tools
 - Claude Max (Cursor, Claude Code): ~50 €/Mon

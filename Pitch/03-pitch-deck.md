@@ -130,13 +130,13 @@
 >
 > | Kategorie | Inhalt |
 > |---|---|
-> | **Kosten** | Fixkosten 170 € Konzeptions-Phase · Fixkosten 650 € Validierungs-Phase |
+> | **Kosten** | 200 €/Mon Konzeption (GbR) · 800 €/Mon Validierung (UG-Umfirmierung) |
 > | **Pricing** | Free · **Kaffeekasse 1 €/2 Credits** · **Familienpaket 4,99 €/Mon.** (15 Credits · 4 Kinderkonten) · **Pro-Account 14,99 €/Mon.** (30 Kinderkonten) |
-> | **Break Even** | bei **189** Premium-Nutzern *(mit 3 Pro + 15 Kaffeekassen)* · ~35–50 % Marge |
+> | **Break Even** | bei **~200** Premium-Nutzern *(moderat: 2 Pro + 10 Kaffee/Mon.)* · ~35–50 % Marge |
 > | **Finanzierung Phase 3** | **50.000 € Mikromezzanin** (MBG MV · 8 % · 10 J endfällig) · **0 € VC** · keine Verwässerung · plus Fördermittel (Aktion Mensch, DATIpilot) |
 
 **Pointe (gesprochen, ~30 Sek):**
-> „Was bedeutet das alles? Wir machen die ersten 24 Monate sauber aus eigener Kraft. Bei 189 zahlenden Nutzern decken wir die Validierungs-Phase — bei einem Preis unter 5 Euro. Das ist die Ansage gegen Antolin, ANTON und CLELO. Ab Phase 3 hängen wir uns voll rein: 50.000 Euro Mikromezzanin von der MBG MV, stille Beteiligung, keine Sicherheiten, keine Verwässerung — plus Fördermittel von Aktion Mensch oder DATIpilot. Kein VC. Keine 2-Millionen-Story. Sondern ehrliche Förderung für ehrliche Wirkung — und genau dafür sitzen wir hier."
+> „Was bedeutet das alles? Wir machen die ersten 24 Monate sauber aus eigener Kraft — GbR vom ersten Tag, UG-Umfirmierung sobald die ersten zahlenden Kunden da sind. Bei rund 200 Premium-Nutzern decken wir die Validierungs-Phase — bei einem Preis unter 5 Euro. Das ist die Ansage gegen Antolin, ANTON und CLELO. Ab Phase 3 hängen wir uns voll rein: 50.000 Euro Mikromezzanin von der MBG MV, stille Beteiligung, keine Sicherheiten, keine Verwässerung — plus Fördermittel von Aktion Mensch oder DATIpilot. Kein VC. Keine 2-Millionen-Story. Sondern ehrliche Förderung für ehrliche Wirkung — und genau dafür sitzen wir hier."
 
 *Detail-Folien zur Marketing-Logik, Einnahmen-Struktur, Kosten-Pyramide, Break-Even-Schwellen und Förder-Roadmap: siehe Anhang [`06-finanzierungs-folien.md`](06-finanzierungs-folien.md) F1–F5.*
 

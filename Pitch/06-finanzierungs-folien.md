@@ -93,8 +93,8 @@
 >
 > | Phase | Status | pro Monat |
 > |---|---|---|
-> | **Konzeption** | Bootstrap, Free-Tier-Services | **~170 €** |
-> | **Validierung** | GbR, ≤ 100 zahlende Nutzer:innen | **~650 €** |
+> | **Konzeption** | GbR-Gründung, Eigenmittel, Free-Tier-Services | **~200 €** |
+> | **Validierung** | UG-Umfirmierung, ≤ 100 zahlende Nutzer:innen, AGB-Anwalt | **~800 €** |
 > | **Skalierung** | UG, 1.700 Premium + 10k Free · 3 Gründer:innen Teilzeit | **~8.500 €** |
 
 **Pointe (gesprochen):**
@@ -118,9 +118,9 @@
 > | Dev-Tools, Subscriptions | ~100 € | ~120 € | ~150 € |
 > | Merch &amp; Messe-Materialien (Hoodies, Aufkleber, Banner) | – | ~100 € | ~500 € |
 > | Personal (3 Gründer:innen) | Eigenleistung | Eigenleistung | ~5.000 € Teilzeit |
-> | **Laufende Kosten / Monat** | **~170 €** | **~650 €** | **~8.500 €** |
+> | **Laufende Kosten / Monat** | **~200 €** | **~800 €** | **~8.500 €** |
 > | **↑ Brutto-Umsatz / Monat** *(Premium-Abos)* | 0 € | ~500 € | **~8.500 €** |
-> | **Bilanz** | −170 € *(Eigenmittel)* | −150 € *(Eigenmittel)* | **±0 € · tragfähig** |
+> | **Bilanz** | −200 € *(Eigenmittel)* | −300 € *(Eigenmittel)* | **±0 € · tragfähig** |
 
 *Brutto-Umsatz Skalierung: 1.700 × 4,99 € = 8.483 €. Plus Pro-Accounts, Kaffeekassen und Förderprogramme als zusätzliche Streams (siehe F3 + F7). Ab Phase 3 selbsttragend — Personal-Entnahme deckt sich aus operativem Umsatz.*
 
@@ -156,7 +156,7 @@
 
 ## SLIDE F7 — Break-Even-Rechnung
 
-**Visuell:** Zwei Blöcke oben nebeneinander (Fixkosten links Mint, Variable Kosten rechts Lila). Darunter ein großes Break-Even-Diagramm als SVG: Kosten-Linie (Coral) und Einnahmen-Linie (Mint) schneiden sich bei 189 Premium-Nutzern — der Schnittpunkt ist als gelber Markerpunkt mit Beschriftung "Break-Even ≈ 189 Premium · 943 €/Mon." hervorgehoben. Unter dem Diagramm eine kompakte Formel-Zeile.
+**Visuell:** Zwei Blöcke oben nebeneinander (Fixkosten links Mint, Variable Kosten rechts Lila). Darunter ein großes Break-Even-Diagramm als SVG: Kosten-Linie (Coral) und Einnahmen-Linie (Mint) schneiden sich bei ~200 Premium-Nutzern — der Schnittpunkt ist als gelber Markerpunkt mit Beschriftung "Break-Even ≈ 200 Premium · 998 €/Mon." hervorgehoben. Unter dem Diagramm eine kompakte Formel-Zeile.
 
 **Text:**
 > ### Die Rechnung — als Bild und Zahl.
@@ -168,37 +168,37 @@
 > 15 Stories Cap × 0,12 € = 1,80 € · Backend 0,10 € · + 9 Free-Anteil 0,90 € · Stripe-Gebühr 0,32 € · **Effektiv 3,12 €**
 >
 > **Stream-Beiträge integriert (reduzieren Fixlast):**
-> 3 Pro-Accounts × 6,13 € DB = 18,39 € · 15 Kaffeekassen × 0,50 € DB = 7,50 € · **Netto-Fix 354 € (statt 380 €)**
+> **Moderate Ratio-Annahme:** 1 Pro-Account + 5 Kaffeekassen pro 100 Premium → bei BE-Schwelle 2 Pro × 6,13 € = 12,26 € + 10 Kaffee × 0,50 € = 5 € · **Netto-Fix ~363 € (statt 380 €)**
 >
 > ---
 >
-> **[Break-Even-Kurve]** — Kosten- und Einnahmen-Linie kreuzen sich bei 189 Premium-Nutzer:innen / 943 €/Monat.
+> **[Break-Even-Kurve]** — Kosten- und Einnahmen-Linie kreuzen sich bei ~200 Premium-Nutzer:innen / 998 €/Monat.
 >
-> *Formel:* 354 € + 3,12 € × P = 4,99 € × P → **P ≈ 189 Premium-Nutzer:innen** *(mit 3 Pro + 15 Kaffeekassen integriert)*
+> *Formel:* 363 € + 3,12 € × P = 4,99 € × P → **P ≈ 200 Premium-Nutzer:innen** *(moderate Ratio: 2 Pro + 10 Kaffeekassen integriert)*
 
 **Pointe (gesprochen):**
-> „Hier sehen Sie die Mathematik visualisiert: Kosten-Linie in Coral, Einnahmen-Linie in Mint. Wo sie sich treffen, sind wir kostendeckend. Bei 189 Premium-Nutzer:innen, rund 943 Euro Umsatz im Monat — und der Preis liegt unter 5 Euro. Damit unterbieten wir CLELO und eKidz deutlich. Das ist keine Hochrechnung — das ist Algebra."
+> „Hier sehen Sie die Mathematik visualisiert: Kosten-Linie in Coral, Einnahmen-Linie in Mint. Wo sie sich treffen, sind wir kostendeckend. Bei rund 200 Premium-Nutzer:innen, knapp 1.000 Euro Umsatz im Monat — und der Preis liegt unter 5 Euro. Damit unterbieten wir CLELO und eKidz deutlich. Das ist keine Hochrechnung — das ist Algebra."
 
 ---
 
 ## SLIDE F8 — Break-Even & Skalierung
 
-**Visuell:** Drei große Schwellen-Karten (189 / 1.600 / 8.000 Premium-Nutzer). Darunter eine Timing-Linie mit Monatsangaben Monat 12 / 24 / 36+.
+**Visuell:** Drei große Schwellen-Karten (200 / 1.600 / 8.000 Premium-Nutzer). Darunter eine Timing-Linie mit Monatsangaben Monat 12 / 24 / 36+.
 
 **Text:**
 > ### Wann wir uns selbst tragen.
 >
-> **~189 Premium-Nutzer:innen** — operativ kostendeckend (Tools · Hosting · Token · Bilder)
+> **~200 Premium-Nutzer:innen** — operativ kostendeckend (moderate Ratio: 2 Pro + 10 Kaffee/Mon.)
 > **~1.600 Premium-Nutzer:innen** — Teilzeit-Entnahme: 3 Gründer:innen leben mit vom Geschäft
 > **~8.000 Premium-Nutzer:innen** — vollzeit-tragfähig, Team-Aufbau aus eigener Kraft
 >
 > ---
 >
 > **Realistischer Zeitpfad — basierend auf aktuellem Tempo**
-> Monat 12 → 189 · Monat 24 → 1.600 · Monat 36+ → 8.000
+> Monat 12 → 200 · Monat 24 → 1.600 · Monat 36+ → 8.000
 
 **Pointe (gesprochen):**
-> „Drei Schwellen: 189 sind die operative Tragfähigkeit, in 12 Monaten aus eigener Kraft erreichbar. 1.600 — Teilzeit für das gesamte Gründerteam, in 24 Monaten. 8.000 — Vollzeit-Phase, in 36+ Monaten. Phase 3 wird durch Mikromezzanin der MBG MV und Fördermittel getragen — kein VC, keine Verwässerung."
+> „Drei Schwellen: 200 sind die operative Tragfähigkeit, in 12 Monaten aus eigener Kraft erreichbar. 1.600 — Teilzeit für das gesamte Gründerteam, in 24 Monaten. 8.000 — Vollzeit-Phase, in 36+ Monaten. Phase 3 wird durch Mikromezzanin der MBG MV und Fördermittel getragen — kein VC, keine Verwässerung."
 
 ---
 
@@ -238,13 +238,13 @@
 >
 > | Kategorie | Inhalt |
 > |---|---|
-> | **Kosten** | Fixkosten 170 € Konzeptions-Phase · Fixkosten 650 € Validierungs-Phase |
+> | **Kosten** | 200 €/Mon Konzeption (GbR) · 800 €/Mon Validierung (UG-Umfirmierung) |
 > | **Pricing** | **Familienpaket 4,99 €/Mon.** (15 Credits · 4 Kinderkonten) · **Kaffeekasse 1 €** (2 Credits, ohne Abo) |
-> | **Break Even** | bei **189** Premium-Nutzern (mit 3 Pro + 15 Kaffeekassen) · **Marge ~35–50 %** |
+> | **Break Even** | bei **~200** Premium-Nutzern (moderat: 2 Pro + 10 Kaffeekassen/Mon.) · **Marge ~35–50 %** |
 > | **Finanzierung Phase 3** | **50.000 € Mikromezzanin** (MBG MV · 8 % · 10 J endfällig) · **0 € VC** · keine Verwässerung · plus Fördermittel (Aktion Mensch, DATIpilot) |
 
 **Pointe (gesprochen, ~30 Sek):**
-> „Was bedeutet das alles? Wir machen die ersten 24 Monate sauber aus eigener Kraft. Bei 189 zahlenden Nutzern decken wir die Validierungs-Phase — bei einem Preis unter 5 Euro. Das ist die Ansage gegen Antolin, ANTON und CLELO. Ab Phase 3 hängen wir uns voll rein: 50.000 Euro Mikromezzanin von der MBG MV, stille Beteiligung, keine Sicherheiten, keine Verwässerung — plus Fördermittel von Aktion Mensch oder DATIpilot. Kein VC. Keine 2-Millionen-Story. Sondern ehrliche Förderung für ehrliche Wirkung."
+> „Was bedeutet das alles? Wir machen die ersten 24 Monate sauber aus eigener Kraft — GbR vom ersten Tag, UG-Umfirmierung sobald die ersten zahlenden Kunden da sind. Bei rund 200 Premium-Nutzern decken wir die Validierungs-Phase — bei einem Preis unter 5 Euro. Das ist die Ansage gegen Antolin, ANTON und CLELO. Ab Phase 3 hängen wir uns voll rein: 50.000 Euro Mikromezzanin von der MBG MV, stille Beteiligung, keine Sicherheiten, keine Verwässerung — plus Fördermittel von Aktion Mensch oder DATIpilot. Kein VC. Keine 2-Millionen-Story. Sondern ehrliche Förderung für ehrliche Wirkung."
 
 ---
 
