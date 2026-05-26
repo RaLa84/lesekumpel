@@ -14,6 +14,7 @@
   <link rel="icon" type="image/webp" href="../Konzept_Rebranding/logo-lesekumpel-512.webp">
   <link rel="stylesheet" href="../fonts/fonts.css">
   <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="tafel.css">
   <style>
     /* Story-Layout */
     .story-wrap {
@@ -585,5 +586,14 @@
       alert(dir === 'up' ? '🎉 Toll! Danke für dein Feedback.' : '😢 Schade — sag uns gern, was nicht gepasst hat.');
     }
   </script>
+
+  <!-- Tafel-Modus: Story-Bilder als versteckter Pool (werden im Tafel-Modus in die Stage links gepoolt) -->
+  <div hidden aria-hidden="true" class="tafel-image-pool">
+    {{STORY_IMAGES_HTML}}
+  </div>
+
+  <!-- Tafel-Modus: imagePositions auf window expose, dann tafel.js initialisieren -->
+  <script>window.imagePositions = {{IMAGE_POSITIONS_JSON}};</script>
+  <script src="tafel.js?v=1" defer></script>
 </body>
 </html>
