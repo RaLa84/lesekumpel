@@ -638,7 +638,8 @@ h1.slide-title .accent { color: var(--coral); }
   min-width: 0;
   min-height: 16rem;
 }
-.flow-card.marketing { flex: 1.15 1 0; }
+.flow-card.marketing,
+.flow-card.finanzierung { flex: 1.15 1 0; }
 .flow-link {
   flex: 0 0 3.5rem;
   display: flex;
@@ -698,7 +699,8 @@ h1.slide-title .accent { color: var(--coral); }
 .flow-card.kosten   .flow-stat .num { color: var(--mint);  }
 .flow-card.pricing  .flow-stat .num { color: var(--coral); }
 .flow-card.breakeven .flow-stat .num { color: var(--navy); }
-.flow-card.marketing .flow-stat .num { color: var(--lila); }
+.flow-card.marketing .flow-stat .num,
+.flow-card.finanzierung .flow-stat .num { color: var(--lila); }
 
 .flow-stat .lbl {
   display: block;
@@ -1445,7 +1447,7 @@ h1.slide-title:has(+ .slide-subtitle) {
       <span><span class="brand-name">Lese</span>kumpel</span>
     </div>
     <h1 class="cover-title">Wirtschaftlichkeit <span class="accent">auf den Punkt.</span></h1>
-    <p class="cover-sub">Wie Lesekumpel sich aus eigener Kraft trägt — von 170&nbsp;Euro Konzeptions­kosten bis zu 50&nbsp;%&nbsp;Marge.</p>
+    <p class="cover-sub">Phase 1+2 aus eigener Kraft validieren. Phase 3 mit <strong>Mikromezzanin und Fördermitteln</strong> voll skalieren. Kein VC, keine Verwässerung.</p>
     <div class="cover-meta">Finanzierungs-Präsentation · INSPIRED Ideenwettbewerb MV 2026</div>
   </div>
   <div class="slide-footer">
@@ -1491,7 +1493,7 @@ h1.slide-title:has(+ .slide-subtitle) {
        aria-hidden="true">
 
   <div class="slide-tag">Essenz · Finanzierung</div>
-  <h1 class="slide-title">Lesekumpel finanziert sich <span class="accent">selbst.</span></h1>
+  <h1 class="slide-title">Validieren. <span class="accent">Voll reinhängen.</span></h1>
   <div class="slide-content">
     <div class="essence-flow">
 
@@ -1580,7 +1582,7 @@ h1.slide-title:has(+ .slide-subtitle) {
       </div>
 
       <div class="flow-spacer" aria-hidden="true">
-        <!-- Sanfter Dotted-Path-Bogen visualisiert die eigenständige Marketing-Säule -->
+        <!-- Sanfter Dotted-Path-Bogen markiert den Phasen-Übergang (Validierung → Skalierung) -->
         <svg viewBox="0 0 60 120" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid meet" class="flow-spacer-svg">
           <path d="M 8 105 Q 30 25, 52 105"
                 stroke="#7D6AE6" stroke-width="2" fill="none"
@@ -1588,22 +1590,21 @@ h1.slide-title:has(+ .slide-subtitle) {
         </svg>
       </div>
 
-      <div class="flow-card marketing">
+      <div class="flow-card finanzierung">
         <span class="flow-pill pill-lila">
           <svg class="pill-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <path d="M21 14a2 2 0 0 1-2 2H8l-4 4V5a2 2 0 0 1 2-2h13a2 2 0 0 1 2 2z"/>
-            <path d="M8.5 8.5h7M8.5 11.5h4"/>
+            <path d="M3 21h18M5 21V7l8-4 8 4v14M9 9h.01M9 12h.01M9 15h.01M9 18h.01M15 9h.01M15 12h.01M15 15h.01M15 18h.01"/>
           </svg>
-          Marketing
+          Finanzierung Phase 3
         </span>
         <div class="flow-stats">
           <div class="flow-stat">
-            <span class="num">0 €</span>
-            <span class="lbl">Paid Acquisition</span>
+            <span class="num">50.000 €</span>
+            <span class="lbl">Mikromezzanin · MBG MV · 8 % · 10 J endfällig</span>
           </div>
           <div class="flow-stat">
-            <span class="num">4 Kanäle</span>
-            <span class="lbl">Community-Led Growth: Lehrer · SEO · Instagram · Discord</span>
+            <span class="num">0 € VC</span>
+            <span class="lbl">Keine Verwässerung · stille Beteiligung · plus Fördermittel</span>
           </div>
         </div>
       </div>

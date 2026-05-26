@@ -123,20 +123,20 @@
 
 ## SLIDE 8 — Finanzierung (Essenz)
 
-**Visuell:** Slide-Tag *"Essenz · Finanzierung"* oben links, emotionale Headline *"Lesekumpel finanziert sich selbst."* (mit Coral-Akzent auf "selbst"). 4 **Floating Cards** (weiß, große Rundungen, soft shadow) auf Cremegelb-Hintergrund. Jede Card mit **Pill + Mini-Icon** oben (Münze/Preis-Tag/Glühbirne/Sprechblase) und farbiger Brand-Pill (Mint/Coral/Yellow/Lila). Zwischen Kosten ⟶ Pricing ⟶ Break Even verlaufen **geschwungene Reading-Path-SVGs** (dotted, lila) statt harter Linien — am Übergang Pricing → Break Even ein kleiner Sparkle als Glühbirnenmoment-Vorbote. Marketing-Card durch sanften halbkreisförmigen Spacer-Path abgesetzt. Break-Even-Card mit dezentem Yellow-Verlauf als Zielsignal.
+**Visuell:** Slide-Tag *"Essenz · Finanzierung"* oben links, emotionale Headline *"Validieren. Voll reinhängen."* (mit Coral-Akzent auf zweitem Statement). 4 **Floating Cards** (weiß, große Rundungen, soft shadow) auf Cremegelb-Hintergrund. Jede Card mit **Pill + Mini-Icon** oben (Münze/Preis-Tag/Glühbirne/Gebäude) und farbiger Brand-Pill (Mint/Coral/Yellow/Lila). Zwischen Kosten ⟶ Pricing ⟶ Break Even verlaufen **geschwungene Reading-Path-SVGs** (dotted, lila) statt harter Linien — am Übergang Pricing → Break Even ein kleiner Sparkle als Glühbirnenmoment-Vorbote. Finanzierungs-Card durch sanften halbkreisförmigen Spacer-Path abgesetzt — markiert den Phasen-Übergang Validierung → Skalierung. Break-Even-Card mit dezentem Yellow-Verlauf als Zielsignal.
 
 **Text:**
-> ### Lesekumpel finanziert sich **selbst.**
+> ### Validieren. **Voll reinhängen.**
 >
 > | Kategorie | Inhalt |
 > |---|---|
 > | **Kosten** | Fixkosten 170 € Konzeptions-Phase · Fixkosten 650 € Validierungs-Phase |
 > | **Pricing** | Free · **Kaffeekasse 1 €/2 Credits** · **Familienpaket 4,99 €/Mon.** (15 Credits · 4 Kinderkonten) · **Pro-Account 14,99 €/Mon.** (30 Kinderkonten) |
 > | **Break Even** | bei **189** Premium-Nutzern *(mit 3 Pro + 15 Kaffeekassen)* · ~35–50 % Marge |
-> | **Marketing** | **0 € Paid Acquisition** · Community-Led Growth über 4 Kanäle: Lehrer, SEO, Instagram, Discord |
+> | **Finanzierung Phase 3** | **50.000 € Mikromezzanin** (MBG MV · 8 % · 10 J endfällig) · **0 € VC** · keine Verwässerung · plus Fördermittel (Aktion Mensch, DATIpilot) |
 
 **Pointe (gesprochen, ~30 Sek):**
-> „Was bedeutet das alles? Wir bauen ein nachhaltiges Bildungsgeschäft, keine Wachstums-Inszenierung. 189 zahlende Nutzer bringen uns ins Schwarze — bei einem Preis unter 5 Euro. Das ist die Ansage gegen Antolin, ANTON und CLELO. 1.600 ernähren das Gründerteam Teilzeit. Alles dazwischen ist Wachstum aus eigener Kraft. Wir brauchen keinen 2-Millionen-Pitch. Wir brauchen Validierung — und genau dafür sitzen wir hier."
+> „Was bedeutet das alles? Wir machen die ersten 24 Monate sauber aus eigener Kraft. Bei 189 zahlenden Nutzern decken wir die Validierungs-Phase — bei einem Preis unter 5 Euro. Das ist die Ansage gegen Antolin, ANTON und CLELO. Ab Phase 3 hängen wir uns voll rein: 50.000 Euro Mikromezzanin von der MBG MV, stille Beteiligung, keine Sicherheiten, keine Verwässerung — plus Fördermittel von Aktion Mensch oder DATIpilot. Kein VC. Keine 2-Millionen-Story. Sondern ehrliche Förderung für ehrliche Wirkung — und genau dafür sitzen wir hier."
 
 *Detail-Folien zur Marketing-Logik, Einnahmen-Struktur, Kosten-Pyramide, Break-Even-Schwellen und Förder-Roadmap: siehe Anhang [`06-finanzierungs-folien.md`](06-finanzierungs-folien.md) F1–F5.*
 

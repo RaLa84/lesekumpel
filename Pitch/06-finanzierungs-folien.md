@@ -198,7 +198,7 @@
 > Monat 12 → 189 · Monat 24 → 1.600 · Monat 36+ → 8.000
 
 **Pointe (gesprochen):**
-> „Drei Schwellen: 189 sind die operative Tragfähigkeit, in 12 Monaten erreichbar. 1.600 — Teilzeit für das gesamte Gründerteam, in 24 Monaten. 8.000 — Vollzeit-Phase, in 36+ Monaten. Alles dazwischen ist organisches Wachstum ohne externes Kapital."
+> „Drei Schwellen: 189 sind die operative Tragfähigkeit, in 12 Monaten aus eigener Kraft erreichbar. 1.600 — Teilzeit für das gesamte Gründerteam, in 24 Monaten. 8.000 — Vollzeit-Phase, in 36+ Monaten. Phase 3 wird durch Mikromezzanin der MBG MV und Fördermittel getragen — kein VC, keine Verwässerung."
 
 ---
 
@@ -231,20 +231,20 @@
 
 ## SLIDE F10 — Essenz (Pitchfolie)
 
-**Visuell:** Slide-Tag oben links: *"Essenz · Finanzierung"*. Emotionale Headline: *"Lesekumpel finanziert sich selbst."* (das letzte Wort als Coral-Akzent). 4 **Floating Cards** (weiß, große Rundungen 26px, soft shadow) in einer Reihe — jede mit **Pill + Mini-Icon** oben links (Münze für Kosten, Preis-Tag für Pricing, Glühbirne für Break Even, Sprechblase für Marketing). Pill-Farbsemantik nach Folienmaster: Mint / Coral / Yellow / Lila. Zwischen Kosten ⟶ Pricing ⟶ Break Even verlaufen **geschwungene Reading-Path-SVGs** (dotted, lila, mit kleinem Sparkle an der Verbindung zur Break-Even-Card als Glühbirnen-Vorbote). Marketing-Card durch einen sanften halbkreisförmigen Spacer-Path abgesetzt — eigenständige Säule. Break-Even-Card mit dezentem Yellow-Verlauf im Hintergrund als Ziel-Signal. **Lesebuddy** (Maskottchen) unten rechts leicht gekippt, **Sparkle-Cluster** (Mint/Coral/Yellow/Lila Plus-Zeichen) oben rechts neben Headline, **bunte Punkte-Cluster** unten links — alles als Folienmaster-konforme Deko-Schichten.
+**Visuell:** Slide-Tag oben links: *"Essenz · Finanzierung"*. Emotionale Headline: *"Validieren. Voll reinhängen."* (das zweite Statement als Coral-Akzent). 4 **Floating Cards** (weiß, große Rundungen 26px, soft shadow) in einer Reihe — jede mit **Pill + Mini-Icon** oben links (Münze für Kosten, Preis-Tag für Pricing, Glühbirne für Break Even, Gebäude/Bank für Finanzierung Phase 3). Pill-Farbsemantik nach Folienmaster: Mint / Coral / Yellow / Lila. Zwischen Kosten ⟶ Pricing ⟶ Break Even verlaufen **geschwungene Reading-Path-SVGs** (dotted, lila, mit kleinem Sparkle an der Verbindung zur Break-Even-Card als Glühbirnen-Vorbote). Finanzierungs-Card durch einen sanften halbkreisförmigen Spacer-Path abgesetzt — markiert den Phasen-Übergang (Validierung → Skalierung). Break-Even-Card mit dezentem Yellow-Verlauf im Hintergrund als Ziel-Signal. **Lesebuddy** (Maskottchen) unten rechts leicht gekippt, **Sparkle-Cluster** (Mint/Coral/Yellow/Lila Plus-Zeichen) oben rechts neben Headline, **bunte Punkte-Cluster** unten links — alles als Folienmaster-konforme Deko-Schichten.
 
 **Text:**
-> ### Lesekumpel finanziert sich **selbst.**
+> ### Validieren. **Voll reinhängen.**
 >
 > | Kategorie | Inhalt |
 > |---|---|
 > | **Kosten** | Fixkosten 170 € Konzeptions-Phase · Fixkosten 650 € Validierungs-Phase |
 > | **Pricing** | **Familienpaket 4,99 €/Mon.** (15 Credits · 4 Kinderkonten) · **Kaffeekasse 1 €** (2 Credits, ohne Abo) |
 > | **Break Even** | bei **189** Premium-Nutzern (mit 3 Pro + 15 Kaffeekassen) · **Marge ~35–50 %** |
-> | **Marketing** | **0 € Paid Acquisition** · Community-Led Growth über 4 Kanäle: Lehrer, SEO, Instagram, Discord |
+> | **Finanzierung Phase 3** | **50.000 € Mikromezzanin** (MBG MV · 8 % · 10 J endfällig) · **0 € VC** · keine Verwässerung · plus Fördermittel (Aktion Mensch, DATIpilot) |
 
 **Pointe (gesprochen, ~30 Sek):**
-> „Was bedeutet das alles? Wir bauen ein nachhaltiges Bildungsgeschäft, keine Wachstums-Inszenierung. 189 zahlende Nutzer bringen uns ins Schwarze — bei einem Preis unter 5 Euro. Das ist die Ansage gegen Antolin, ANTON und CLELO. 1.600 ernähren das Gründerteam Teilzeit. Alles dazwischen ist Wachstum aus eigener Kraft. Wir brauchen keinen 2-Millionen-Pitch. Wir brauchen Validierung."
+> „Was bedeutet das alles? Wir machen die ersten 24 Monate sauber aus eigener Kraft. Bei 189 zahlenden Nutzern decken wir die Validierungs-Phase — bei einem Preis unter 5 Euro. Das ist die Ansage gegen Antolin, ANTON und CLELO. Ab Phase 3 hängen wir uns voll rein: 50.000 Euro Mikromezzanin von der MBG MV, stille Beteiligung, keine Sicherheiten, keine Verwässerung — plus Fördermittel von Aktion Mensch oder DATIpilot. Kein VC. Keine 2-Millionen-Story. Sondern ehrliche Förderung für ehrliche Wirkung."
 
 ---
 
