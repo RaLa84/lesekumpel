@@ -183,22 +183,22 @@
 
 ## SLIDE F8 — Break-Even & Skalierung
 
-**Visuell:** Drei große Schwellen-Karten (200 / 1.600 / 8.000 Premium-Nutzer). Darunter eine Timing-Linie mit Monatsangaben Monat 12 / 24 / 36+.
+**Visuell:** Drei große Schwellen-Karten (200 / 1.700 / 8.000 Premium-Nutzer). Darunter eine Timing-Linie mit Monatsangaben Monat 12 / 24 / 36+.
 
 **Text:**
 > ### Wann wir uns selbst tragen.
 >
 > **~200 Premium-Nutzer:innen** — operativ kostendeckend (moderate Ratio: 2 Pro + 10 Kaffee/Mon.)
-> **~1.600 Premium-Nutzer:innen** — Teilzeit-Entnahme: 3 Gründer:innen leben mit vom Geschäft
+> **~1.700 Premium-Nutzer:innen** — Teilzeit-Entnahme: 3 Gründer:innen leben mit vom Geschäft
 > **~8.000 Premium-Nutzer:innen** — vollzeit-tragfähig, Team-Aufbau aus eigener Kraft
 >
 > ---
 >
 > **Realistischer Zeitpfad — basierend auf aktuellem Tempo**
-> Monat 12 → 200 · Monat 24 → 1.600 · Monat 36+ → 8.000
+> Monat 12 → 200 · Monat 24 → 1.700 · Monat 36+ → 8.000
 
 **Pointe (gesprochen):**
-> „Drei Schwellen: 200 sind die operative Tragfähigkeit, in 12 Monaten aus eigener Kraft erreichbar. 1.600 — Teilzeit für das gesamte Gründerteam, in 24 Monaten. 8.000 — Vollzeit-Phase, in 36+ Monaten. Phase 3 wird durch Mikromezzanin der MBG MV und Fördermittel getragen — kein VC, keine Verwässerung."
+> „Drei Schwellen: 200 sind die operative Tragfähigkeit, in 12 Monaten aus eigener Kraft erreichbar. 1.700 — Teilzeit für das gesamte Gründerteam, in 24 Monaten. 8.000 — Vollzeit-Phase, in 36+ Monaten. Phase 3 wird durch Mikromezzanin der MBG MV und Fördermittel getragen — kein VC, keine Verwässerung."
 
 ---
 
