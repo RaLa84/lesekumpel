@@ -1180,22 +1180,24 @@
         .tafel-games-trigger:hover { transform: translateY(-2px); }
         body:not(.view-tafel) .tafel-games-trigger { display: none; }
 
-        /* Activity-Hub im Tafel-Modus: breites Floating Panel, unten zentriert */
+        /* Activity-Hub im Tafel-Modus: Floating Panel links unten,
+           gleiche Breite wie die Bild-Spalte (verdeckt Text rechts nicht — wichtig für Schatz-Suche),
+           höher positioniert (Platz für Pagination-Pfeile darunter) */
         body.view-tafel .activity-hub {
             position: fixed;
-            bottom: 32px; left: 50%;
-            transform: translateX(-50%);
+            bottom: 200px; left: 32px;
             z-index: 100;
-            width: min(2100px, calc(100vw - 64px));
-            max-height: 82vh;
+            width: min(1200px, calc(50vw - 40px));
+            max-height: calc(100vh - 240px);
             overflow-y: auto;
             border-radius: 36px;
-            padding: 36px 40px;
+            padding: 32px 36px;
             box-shadow: 0 20px 56px rgba(0,0,0,0.28);
+            transform-origin: bottom left;
             transition: transform 0.28s ease, opacity 0.28s ease;
         }
         body.view-tafel .activity-hub.tafel-collapsed {
-            transform: translateX(-50%) scale(0.05);
+            transform: scale(0.05);
             opacity: 0;
             pointer-events: none;
         }

@@ -41,11 +41,41 @@ def extract_tafel_script(src: str) -> str:
     return m.group(0)
 
 
-def apply_to_target(target_path: Path, css_block: str, js_block: str) -> tuple[bool, str]:
+def strip_existing_tafel(src: str) -> str:
+    """Entfernt den bestehenden Tafel-Block (CSS + JS + window-Export), damit neu eingefügt werden kann."""
+    # CSS: von /* === TAFEL-ANSICHT v2: bis (exklusive) </style>
+    src = re.sub(
+        r"\n\s*/\* === TAFEL-ANSICHT v2:.*?(?=\s*</style>)",
+        "",
+        src,
+        count=1,
+        flags=re.DOTALL,
+    )
+    # JS: <script> mit Tafel-Marker
+    src = re.sub(
+        r"\n\s*<script>\s*\n\s*// === TAFEL-ANSICHT v2:.*?</script>",
+        "",
+        src,
+        count=1,
+        flags=re.DOTALL,
+    )
+    # window.imagePositions Export-Zeile (idempotent)
+    src = re.sub(
+        r"\n\s*window\.imagePositions = imagePositions;[^\n]*",
+        "",
+        src,
+        count=1,
+    )
+    return src
+
+
+def apply_to_target(target_path: Path, css_block: str, js_block: str, force: bool = False) -> tuple[bool, str]:
     src = target_path.read_text(encoding="utf-8")
 
     if TAFEL_MARKER in src:
-        return False, "schon angewendet (Marker gefunden)"
+        if not force:
+            return False, "schon angewendet (--force zum Aktualisieren)"
+        src = strip_existing_tafel(src)
 
     # 1) CSS-Block direkt vor dem letzten </style> einfügen
     style_close = src.rfind("</style>")
@@ -78,12 +108,14 @@ def apply_to_target(target_path: Path, css_block: str, js_block: str) -> tuple[b
 
 
 def main() -> int:
+    force = "--force" in sys.argv
     src_html = SOURCE.read_text(encoding="utf-8")
     css_block = extract_tafel_css(src_html)
     js_block = extract_tafel_script(src_html)
 
     print(f"Tafel-CSS-Block:  {len(css_block):>6} Zeichen")
     print(f"Tafel-JS-Block:   {len(js_block):>6} Zeichen")
+    print(f"Mode: {'UPDATE (--force)' if force else 'APPLY (nur neue)'}")
     print()
 
     for fname in TARGETS:
@@ -91,7 +123,7 @@ def main() -> int:
         if not target.exists():
             print(f"  [missing] {fname}: nicht gefunden")
             continue
-        ok, msg = apply_to_target(target, css_block, js_block)
+        ok, msg = apply_to_target(target, css_block, js_block, force=force)
         mark = "[ok]" if ok else "[skip]"
         print(f"  {mark} {fname}: {msg}")
 
