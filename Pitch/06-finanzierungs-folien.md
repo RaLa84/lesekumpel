@@ -93,12 +93,12 @@
 >
 > | Phase | Status | pro Monat |
 > |---|---|---|
-> | **Konzeption** | GbR-Gründung, Eigenmittel, Free-Tier-Services | **~200 €** |
-> | **Validierung** | UG-Umfirmierung, ≤ 100 zahlende Nutzer:innen, AGB-Anwalt | **~800 €** |
-> | **Skalierung** | UG, 1.700 Premium + 10k Free · 3 Gründer:innen Teilzeit | **~8.500 €** |
+> | **Konzeption** | GbR · Eigenmittel · Berufshaftpflicht. *Einmalig: 290 € DPMA-Marke + 700 € Setup* | **~200 €** |
+> | **Validierung** | UG-Umfirmierung · ≤ 100 zahlende Nutzer:innen · AGB-Anwalt. *Sacheinlage 1.000 € (alte Hardware)* | **~800 €** |
+> | **Skalierung** | 1.700 Premium · 3 Gründer:innen Teilzeit + 1 Junior · Mikromezzanin. *Hardware-Invest 6.000 €* | **~8.500 €** |
 
 **Pointe (gesprochen):**
-> „Wir starten mit 170 Euro im Monat. Skalieren erst, wenn wir validiert haben. Selbst in Phase 3 — bei 11.000 Nutzern — bleiben wir bei rund 9.000 Euro, weil unser 3-köpfiges Gründerteam mit Teilzeit-Entnahmen arbeitet."
+> „Wir starten mit 200 Euro im Monat — plus einmal 990 Euro Setup für DPMA-Marke, Domain und Rechts-Templates. Skalieren erst, wenn wir validiert haben. In Phase 2 kommen die alten Rechner als Sacheinlage in die UG, ein kleiner aber ehrlicher Eigenbeitrag. Phase 3 bringt 6.000 Euro neue Hardware für 4 Arbeitsplätze aus dem Mikromezzanin-Topf. Selbst bei 11.000 Nutzern bleiben wir bei rund 8.500 Euro laufenden Kosten — weil unser 3-köpfiges Gründerteam mit Teilzeit-Entnahmen arbeitet."
 
 ---
 
@@ -114,7 +114,7 @@
 > | Infrastruktur, Hosting, DB, CDN | 25 € | ~75 € | ~400 € |
 > | LLM-Token + Bildgenerierung | 25 € | ~150 € | ~1.300 € |
 > | Recommendation Engine (Embeddings) | – | – | ~50 € |
-> | Recht, Buchhaltung, Versicherung | ~20 € | ~145 € | ~500 € |
+> | Recht, Buchhaltung, Versicherung *(GbR ab K · UG ab V)* | ~50 € | ~250 € | ~500 € |
 > | Dev-Tools, Subscriptions | ~100 € | ~120 € | ~150 € |
 > | Merch &amp; Messe-Materialien (Hoodies, Aufkleber, Banner) | – | ~100 € | ~500 € |
 > | Personal (3 Gründer:innen) | Eigenleistung | Eigenleistung | ~5.000 € Teilzeit |
@@ -123,6 +123,13 @@
 > | **Bilanz** | −200 € *(Eigenmittel)* | −300 € *(Eigenmittel)* | **±0 € · tragfähig** |
 
 *Brutto-Umsatz Skalierung: 1.700 × 4,99 € = 8.483 €. Plus Pro-Accounts, Kaffeekassen und Förderprogramme als zusätzliche Streams (siehe F3 + F7). Ab Phase 3 selbsttragend — Personal-Entnahme deckt sich aus operativem Umsatz.*
+
+**Einmalige Posten (nicht in monatlichen Kosten):**
+- **Konzeption:** 290 € DPMA-Markenanmeldung + 700 € Setup/Templates (Domain, eRecht24)
+- **Validierung:** 1.000 € Sacheinlage (2 alte Rechner + 2 alte Monitore zum Zeitwert, bei UG-Umfirmierung)
+- **Skalierung:** 6.000 € Hardware-Invest (3 neue Rechner + 3 neue Monitore für Gründer:innen + Junior — aus Mikromezzanin-Tranche)
+
+**AfA (kalkulatorisch, in Rentabilitätsplan):** J1+J2: 29 €/Jahr (nur Marke) · ab J3: 2.029 €/Jahr (Marke + Hardware über 3 Jahre)
 
 **Pointe (gesprochen):**
 > „Größter variabler Block: Token plus Bilder. Personal ist Teilzeit-Entnahme — keine Vollzeit-Gehälter. Werbemittel sind Merch und Messe-Materialien für Lehrer-Outreach, nicht Performance-Ads. Phase 3 trägt sich aus eigener Kraft: 1.700 Premium-Nutzer × 4,99 € decken exakt die Skalierungs-Kosten."

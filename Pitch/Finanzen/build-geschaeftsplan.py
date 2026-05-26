@@ -40,18 +40,24 @@ PREIS_KAFFEE = 1.00
 # Story-Kosten (mit Phase-2-Hebel ab J3)
 STORY_KOSTEN = {1: 0.12, 2: 0.12, 3: 0.07, 4: 0.07}
 
-# Investitionen (einmalig)
-INVEST_MACBOOKS = 4000
-INVEST_MONITORE = 1000
-INVEST_MARKE = 290
-INVEST_DOMAIN = 200
-INVEST_TEMPLATES = 500
-INVEST_SUMME = INVEST_MACBOOKS + INVEST_MONITORE + INVEST_MARKE + INVEST_DOMAIN + INVEST_TEMPLATES
+# Investitionen Phase 1 (einmalig, nur immaterielles Anlagegut)
+# Hardware wird als Sacheinlage der Gründer:innen eingebracht (siehe SACHEINLAGE), nicht als Invest
+INVEST_MARKE = 290  # DPMA-Markenanmeldung
+INVEST_P1_SUMME = INVEST_MARKE
 
-# Abschreibungen (Jahre)
-AFA_MACBOOKS_JAHRE = 3
-AFA_MONITORE_JAHRE = 5
+# Einmal-Aufwand Phase 1 (kein Anlagegut, direkt in GuV)
+EINMAL_AUFWAND_J1 = 200 + 500  # Domain/Setup + Rechts-Templates eRecht24
+
+# Sacheinlage bei UG-Umfirmierung (Phase 2)
+SACHEINLAGE_HARDWARE_J2 = 1000  # 2 alte Rechner + 2 alte Monitore (Zeitwert)
+
+# Investitionen Phase 3 (Skalierung — neue Arbeitsmittel für 3 Gründer + 1 Mitarbeiter)
+INVEST_HARDWARE_J3 = 6000  # 3 neue Rechner (~1800 €) + 3 neue Monitore (~200 €)
+INVEST_P3_SUMME = INVEST_HARDWARE_J3
+
+# Abschreibungen (Nutzungsdauer in Jahren, lineare AfA)
 AFA_MARKE_JAHRE = 10
+AFA_HARDWARE_JAHRE = 3
 
 # Mikromezzanin (Phase 3, Monat 25)
 MEZZ_KAPITAL = 50000
@@ -120,57 +126,78 @@ def percent_fmt():
 def build_tab1(wb):
     ws = wb.create_sheet("Personal, Investitionen etc.")
 
-    # Block A: Investitionen
+    # Block A: Investitionen (Anlagevermögen der Gesellschaft — KEINE privaten Geräte!)
     ws['A1'] = "Investitionen:"
     ws['A1'].font = font_section
-    ws['C1'] = "Betrag"
+    ws['C1'] = "Phase 1 (Konzeption)"
     ws['C1'].font = font_section
+    ws['D1'] = "Phase 3 (Skalierung)"
+    ws['D1'].font = font_section
 
     row = 2
     invest = [
-        ("Rechner (2× MacBooks):", INVEST_MACBOOKS),
-        ("Monitore/Peripherie:", INVEST_MONITORE),
-        ("Markenanmeldung DPMA:", INVEST_MARKE),
-        ("Domain/Hosting-Setup:", INVEST_DOMAIN),
-        ("Rechts-Templates (eRecht24):", INVEST_TEMPLATES),
+        ("DPMA-Markenanmeldung 'Lesekumpel'", INVEST_MARKE, 0),
+        ("3 neue Rechner (Gründer:innen + Junior, J3)", 0, 5400),
+        ("3 neue Monitore (Junior + Ersatz, J3)", 0, 600),
     ]
-    for label, value in invest:
+    for label, p1, p3 in invest:
         ws.cell(row=row, column=2, value=label).font = font_normal
-        ws.cell(row=row, column=3, value=value).number_format = euro_fmt()
-        ws.cell(row=row, column=3).font = font_normal
-        ws.cell(row=row, column=3).alignment = align_right
+        if p1:
+            ws.cell(row=row, column=3, value=p1).number_format = euro_fmt()
+            ws.cell(row=row, column=3).font = font_normal
+            ws.cell(row=row, column=3).alignment = align_right
+        if p3:
+            ws.cell(row=row, column=4, value=p3).number_format = euro_fmt()
+            ws.cell(row=row, column=4).font = font_normal
+            ws.cell(row=row, column=4).alignment = align_right
         row += 1
 
-    ws.cell(row=row, column=2, value="Summe").font = font_sum
-    ws.cell(row=row, column=3, value=INVEST_SUMME).number_format = euro_fmt()
+    ws.cell(row=row, column=2, value="Summe Investitionen").font = font_sum
+    ws.cell(row=row, column=3, value=INVEST_P1_SUMME).number_format = euro_fmt()
     ws.cell(row=row, column=3).font = font_sum
     ws.cell(row=row, column=3).fill = fill_sum
     ws.cell(row=row, column=3).alignment = align_right
-    ws.cell(row=row, column=5, value="Finanzierung Phase 1+2: Eigenmittel (Bootstrap). Phase 3: Mikromezzanin 50.000 € (siehe Tab 2).").font = font_normal
+    ws.cell(row=row, column=4, value=INVEST_P3_SUMME).number_format = euro_fmt()
+    ws.cell(row=row, column=4).font = font_sum
+    ws.cell(row=row, column=4).fill = fill_sum
+    ws.cell(row=row, column=4).alignment = align_right
+    ws.cell(row=row, column=6, value="Phase 1: Eigenmittel. Phase 3: aus Mikromezzanin-Tranche (siehe Tab 2).").font = font_normal
+    row += 2
+
+    # Block A.2: Sacheinlage + Einmal-Aufwand (BWL-Hinweis)
+    ws.cell(row=row, column=2, value="Sacheinlage Phase 2 (UG-Umfirmierung)").font = font_normal
+    ws.cell(row=row, column=3, value=SACHEINLAGE_HARDWARE_J2).number_format = euro_fmt()
+    ws.cell(row=row, column=3).font = font_normal
+    ws.cell(row=row, column=6, value="2 alte Rechner + 2 alte Monitore — Zeitwert, eingebracht von den Gründer:innen").font = font_normal
+    row += 1
+    ws.cell(row=row, column=2, value="Einmal-Aufwand Phase 1 (kein Anlagegut)").font = font_normal
+    ws.cell(row=row, column=3, value=EINMAL_AUFWAND_J1).number_format = euro_fmt()
+    ws.cell(row=row, column=3).font = font_normal
+    ws.cell(row=row, column=6, value="Domain/Setup + Rechts-Templates eRecht24 — direkt in GuV, keine AfA").font = font_normal
     row += 2
 
     # Block B: Kalkulatorische Abschreibungen
     ws.cell(row=row, column=1, value="Kalkulatorische Abschreibung:").font = font_section
-    ws.cell(row=row, column=3, value="Rechner").font = font_section
-    ws.cell(row=row, column=4, value="Monitore").font = font_section
-    ws.cell(row=row, column=5, value="Marke DPMA").font = font_section
+    ws.cell(row=row, column=3, value="Marke DPMA").font = font_section
+    ws.cell(row=row, column=4, value="Hardware (ab J3)").font = font_section
     row += 1
-    ws.cell(row=row, column=2, value="Jahre:").font = font_normal
-    ws.cell(row=row, column=3, value=AFA_MACBOOKS_JAHRE).font = font_normal
-    ws.cell(row=row, column=4, value=AFA_MONITORE_JAHRE).font = font_normal
-    ws.cell(row=row, column=5, value=AFA_MARKE_JAHRE).font = font_normal
+    ws.cell(row=row, column=2, value="Nutzungsdauer (Jahre):").font = font_normal
+    ws.cell(row=row, column=3, value=AFA_MARKE_JAHRE).font = font_normal
+    ws.cell(row=row, column=4, value=AFA_HARDWARE_JAHRE).font = font_normal
     row += 1
     ws.cell(row=row, column=2, value="Abschreibungsbetrag je Jahr:").font = font_normal
-    afa_macbooks = INVEST_MACBOOKS / AFA_MACBOOKS_JAHRE
-    afa_monitore = INVEST_MONITORE / AFA_MONITORE_JAHRE
     afa_marke = INVEST_MARKE / AFA_MARKE_JAHRE
-    ws.cell(row=row, column=3, value=afa_macbooks).number_format = euro_fmt()
-    ws.cell(row=row, column=4, value=afa_monitore).number_format = euro_fmt()
-    ws.cell(row=row, column=5, value=afa_marke).number_format = euro_fmt()
+    afa_hardware = INVEST_HARDWARE_J3 / AFA_HARDWARE_JAHRE
+    ws.cell(row=row, column=3, value=afa_marke).number_format = euro_fmt()
+    ws.cell(row=row, column=4, value=afa_hardware).number_format = euro_fmt()
     row += 2
-    ws.cell(row=row, column=2, value="Summe AfA pro Jahr:").font = font_sum
-    afa_summe = afa_macbooks + afa_monitore + afa_marke
-    ws.cell(row=row, column=3, value=afa_summe).number_format = euro_fmt()
+    ws.cell(row=row, column=2, value="AfA J1+J2 (nur Marke):").font = font_sum
+    ws.cell(row=row, column=3, value=afa_marke).number_format = euro_fmt()
+    ws.cell(row=row, column=3).font = font_sum
+    ws.cell(row=row, column=3).fill = fill_sum
+    row += 1
+    ws.cell(row=row, column=2, value="AfA ab J3 (Marke + Hardware):").font = font_sum
+    ws.cell(row=row, column=3, value=afa_marke + afa_hardware).number_format = euro_fmt()
     ws.cell(row=row, column=3).font = font_sum
     ws.cell(row=row, column=3).fill = fill_sum
     row += 3
@@ -237,7 +264,7 @@ def build_tab1(wb):
         ("LLM-Token + Bildgenerierung", token_jahr(1), token_jahr(2), token_jahr(3)),
         ("Stripe-Gebühren (1,4 % + 0,25 €)", stripe_jahr(1), stripe_jahr(2), stripe_jahr(3)),
         ("Hosting · Backend · CDN", 25*12, 75*12, 400*12),
-        ("Recht · Buchhaltung · Versicherung (GbR ab J1 · UG ab J2)", 50*12, 250*12, 500*12),
+        ("Recht · Buchhaltung · Versicherung (GbR ab J1 · UG ab J2)", 50*12 + EINMAL_AUFWAND_J1, 250*12, 500*12),
         ("Dev-Tools · Subscriptions (Claude Max etc.)", 100*12, 120*12, 150*12),
         ("Marketing · Merch · Messen", 10*12, 100*12, 500*12),
         ("Strom · Internet · Reisekosten · Sonstige", 50*12, 80*12, 170*12),
@@ -477,13 +504,10 @@ def build_tab3(wb):
         ausg_sonst = 50
         # Personal
         ausg_personal = 0
-        # Investitionen (in Monat 1-3 verteilt)
+        # Investitionen + Einmal-Aufwand Phase 1 (alle in Monat 1)
+        # Hardware-Invest Phase 3 erfolgt in J3 (siehe jahr_data, nicht hier)
         if m == 1:
-            invest = INVEST_MACBOOKS + INVEST_MONITORE
-        elif m == 2:
-            invest = INVEST_MARKE + INVEST_DOMAIN
-        elif m == 3:
-            invest = INVEST_TEMPLATES
+            invest = INVEST_P1_SUMME + EINMAL_AUFWAND_J1  # 290 € Marke + 700 € Setup+Templates
         else:
             invest = 0
         # Mikromezzanin: noch nicht in J1
@@ -518,7 +542,7 @@ def build_tab3(wb):
             'einn_kaffee': 12 * PREIS_KAFFEE * KAFFEE_AVG.get(jahr, 80),
             'einn_foerd': 5000 if jahr == 3 else (3000 if jahr >= 4 else 0),
             'einn_darlehen': MEZZ_KAPITAL if jahr == 3 else 0,  # Auszahlung in Monat 25
-            'invest': 0,
+            'invest': INVEST_HARDWARE_J3 if jahr == 3 else 0,  # Hardware-Invest in J3
         }
         prem_avg = PREMIUM_AVG.get(jahr, 1700)
         free_avg = prem_avg * FREE_RATIO
@@ -752,10 +776,9 @@ def build_tab4(wb):
         jahr = min(jahr, 4)
         return STORY_KOSTEN[jahr]
 
-    # Monatliche AfA (kalkulatorisch)
-    afa_monat = (INVEST_MACBOOKS / AFA_MACBOOKS_JAHRE +
-                 INVEST_MONITORE / AFA_MONITORE_JAHRE +
-                 INVEST_MARKE / AFA_MARKE_JAHRE) / 12
+    # Monatliche AfA (kalkulatorisch) — J1+J2: nur Marke (Hardware = Sacheinlage privat)
+    afa_monat_j1_j2 = (INVEST_MARKE / AFA_MARKE_JAHRE) / 12
+    afa_monat = afa_monat_j1_j2  # für J1-Monatswerte
 
     # Monatliche Daten
     monate_data = []
@@ -819,13 +842,16 @@ def build_tab4(wb):
             d['aufw_personal'] = 4500 * 12 + MITARBEITER_J3 * 12
         else:
             d['aufw_personal'] = 0
-        # AfA: bis Jahr 3 voll, ab Jahr 4 ohne MacBooks (sind dann abgeschrieben)
-        if jahr <= 3:
-            d['aufw_afa'] = afa_monat * 12
-        elif jahr <= 5:
-            d['aufw_afa'] = (INVEST_MONITORE / AFA_MONITORE_JAHRE + INVEST_MARKE / AFA_MARKE_JAHRE)
-        elif jahr <= 10:
-            d['aufw_afa'] = INVEST_MARKE / AFA_MARKE_JAHRE
+        # AfA: J1+J2 nur Marke (Hardware = Sacheinlage privat)
+        # Ab J3: Marke + neu angeschaffte Hardware (3 Jahre AfA → J3, J4, J5)
+        afa_marke_jahr = INVEST_MARKE / AFA_MARKE_JAHRE
+        afa_hardware_jahr = INVEST_HARDWARE_J3 / AFA_HARDWARE_JAHRE
+        if jahr <= 2:
+            d['aufw_afa'] = afa_marke_jahr
+        elif jahr <= 5:  # J3, J4, J5: Marke + Hardware
+            d['aufw_afa'] = afa_marke_jahr + afa_hardware_jahr
+        elif jahr <= 10:  # J6-J10: nur Marke (Hardware abgeschrieben)
+            d['aufw_afa'] = afa_marke_jahr
         else:
             d['aufw_afa'] = 0
         # Zinsen Mikromezzanin
@@ -966,6 +992,7 @@ def build_uebersicht(wb):
         ("Geschäftsmodell:", "Neuroinklusive Lese-Bibliothek für Kinder 5-10 (LRS · ADHS · Autismus)"),
         ("Pricing:", "Familienpaket 4,99 €/Mon · Pro-Account 14,99 €/Mon · Kaffeekasse 1 €/2 Credits"),
         ("Phasen:", "Konzeption (GbR · Eigenmittel) → Validierung (UG-Umfirmierung) → Skalierung (Mikromezzanin)"),
+        ("Investitionen:", "Phase 1: 290 € (DPMA-Marke). Phase 3: 6.000 € (3 neue Rechner + Monitore). Hardware Phase 1+2 = Sacheinlage (1.000 €)."),
         ("Finanzierung Phase 3:", "Mikromezzaninfonds II · 50.000 € · 8% p.a. · 10 J endfällig (MBG MV)"),
         ("Break-Even:", "~200 Premium (moderate Ratio: 1 Pro + 5 Kaffee pro 100 Premium → 2 Pro + 10 Kaffee/Mon.)"),
         ("Tragfähig (Skalierung):", "1.700 Premium · 8.500 €/Monat Umsatz = 8.500 € Kosten"),

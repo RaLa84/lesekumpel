@@ -63,18 +63,30 @@ Ab Jahr 3: Modell-Wechsel auf Gemini Flash + Imagen 2 senkt Story-Kosten von 0,1
 
 ---
 
-## 4. Investitionen (einmalig, Monat 1–3)
+## 4. Investitionen, Sacheinlage, Einmal-Aufwand
 
-| Posten | Wert | Abschreibung | AfA/Jahr |
-|---|---|---|---|
-| 2× MacBooks | 4.000 € | 3 Jahre | 1.333 € |
-| Monitore/Peripherie | 1.000 € | 5 Jahre | 200 € |
-| Markenanmeldung DPMA | 290 € | 10 Jahre | 29 € |
-| Domain/Setup | 200 € | sofort | – |
-| Templates (eRecht24) | 500 € | sofort | – |
-| **Summe** | **5.990 €** | | **~1.562 €/J** |
+**BWL-Logik:** Nur Anlagegüter der Gesellschaft (Nutzungsdauer > 1 Jahr, von der Gesellschaft gekauft) sind echte Investitionen. Privatvermögen der Gründer:innen, das betrieblich mitgenutzt wird, ist **Sacheinlage** (bei UG-Gründung) oder bleibt schlicht im Privatvermögen.
 
-Finanzierung: Eigenmittel (Bootstrap, 3.000 € Start-Puffer plus laufende Privateinlagen Phase 1).
+**Echte Investitionen (Anlagegüter der GbR/UG):**
+
+| Posten | Phase | Wert | Nutzungsdauer | AfA/Jahr |
+|---|---|---|---|---|
+| DPMA-Markenanmeldung „Lesekumpel" | 1 (J1, M1) | 290 € | 10 Jahre | 29 € |
+| 3 neue Rechner (Skalierungs-Setup) | 3 (J3) | 5.400 € | 3 Jahre | 1.800 € |
+| 3 neue Monitore | 3 (J3) | 600 € | 3 Jahre | 200 € |
+| **Summe Investitionen** | | **6.290 €** | | **AfA J1+J2: 29 €/J · ab J3: 2.029 €/J** |
+
+**Sacheinlage Phase 2 (bei UG-Umfirmierung):** ~1.000 €
+- 2 alte Rechner (Zeitwert ~600–800 €) + 2 alte Monitore (Zeitwert ~100–200 €)
+- Eingebracht von den Gründer:innen — kein Cashflow, aber bilanzwirksam als Sacheinlage zum UG-Stammkapital
+
+**Einmal-Aufwand Phase 1 (kein Anlagegut, direkt in GuV):** ~700 €
+- Domain/Hosting-Setup: 200 €
+- Rechts-Templates eRecht24: 500 €
+
+**Finanzierung:**
+- Phase 1: Eigenmittel (Bootstrap, ~3.000 € Start-Puffer + laufende Privateinlagen)
+- Phase 3 Hardware-Invest 6.000 €: aus Mikromezzanin-Tranche (Auszahlung M25)
 
 ---
 
