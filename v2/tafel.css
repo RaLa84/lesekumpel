@@ -152,8 +152,8 @@ body.view-tafel-cover .story-wrap > *:not(.tafel-image-stage):not(.activity-hub)
     display: none;
 }
 body.view-tafel-cover .tafel-image-stage {
-    width: 100%;
-    max-width: 1200px;
+    width: min(2000px, 95vw);
+    max-width: none;
     justify-self: center;
 }
 
