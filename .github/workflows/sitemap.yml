@@ -6,6 +6,7 @@ on:
     paths:
       - 'texte/**.html'
       - 'comicgeschichten/**.html'
+      - 'demo-texte/**.html'
       - 'index.html'
       - 'landingpage.html'
       - 'demo.html'

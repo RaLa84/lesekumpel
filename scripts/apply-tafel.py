@@ -13,6 +13,12 @@ TARGETS = [
     "der-junge-mit-dem-gelben-regenmantel-1lvp.html",
 ]
 
+# Zusätzliche Ziele außerhalb von demo-texte/ (z.B. das n8n-Template, aus dem
+# künftige Stories generiert werden — strukturell identisch zu Standalone-Stories)
+EXTRA_TARGETS = [
+    Path("n8n-config/demo-template.html"),
+]
+
 # Marker zum Erkennen ob Tafel-Code schon eingebaut ist (Idempotenz)
 TAFEL_MARKER = "/* === TAFEL-ANSICHT v2:"
 TAFEL_JS_MARKER = "// === TAFEL-ANSICHT v2:"
@@ -84,8 +90,9 @@ def apply_to_target(target_path: Path, css_block: str, js_block: str, force: boo
 
     new_src = src[:style_close].rstrip() + "\n\n        " + css_block + "\n    " + src[style_close:]
 
-    # 2) window.imagePositions = imagePositions; nach dem const imagePositions = [...] Statement
-    m = re.search(r"(const imagePositions = \[[^\];]*?\];)", new_src)
+    # 2) window.imagePositions = imagePositions; nach dem const imagePositions = ... Statement
+    # Matched sowohl konkrete Werte (Standalone-Story) als auch n8n-Platzhalter im Template
+    m = re.search(r"(const imagePositions = (?:\[[^\];]*?\]|\{\{IMAGE_POSITIONS_JSON\}\});)", new_src)
     if not m:
         return False, "imagePositions-Variable nicht gefunden"
 
@@ -126,6 +133,15 @@ def main() -> int:
         ok, msg = apply_to_target(target, css_block, js_block, force=force)
         mark = "[ok]" if ok else "[skip]"
         print(f"  {mark} {fname}: {msg}")
+
+    for rel in EXTRA_TARGETS:
+        target = REPO / rel
+        if not target.exists():
+            print(f"  [missing] {rel}: nicht gefunden")
+            continue
+        ok, msg = apply_to_target(target, css_block, js_block, force=force)
+        mark = "[ok]" if ok else "[skip]"
+        print(f"  {mark} {rel}: {msg}")
 
     return 0
 

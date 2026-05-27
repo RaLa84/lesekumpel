@@ -23,10 +23,11 @@ const STATIC_PAGES = [
   { path: 'datenschutz.html', priority: '0.3', changefreq: 'yearly' },
 ];
 
-// Story-Verzeichnisse (demo-texte bewusst weggelassen — Demo-Charakter würde Index verwässern)
+// Story-Verzeichnisse — demo-texte/ ist das Live-Angebot der Plattform und gehört in den Index
 const STORY_DIRS = [
   { dir: 'texte', priority: '0.8', changefreq: 'monthly' },
   { dir: 'comicgeschichten', priority: '0.8', changefreq: 'monthly' },
+  { dir: 'demo-texte', priority: '0.7', changefreq: 'monthly' },
 ];
 
 function escapeXml(s) {
