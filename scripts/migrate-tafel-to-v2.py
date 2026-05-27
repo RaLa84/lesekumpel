@@ -125,7 +125,53 @@ def main() -> int:
         "   ============================================================ */\n\n"
     )
 
-    OUT_CSS.write_text(header_css + css_v2 + "\n", encoding="utf-8")
+    # v2-spezifische CSS-Overrides (am Ende, übersteuern die portierten Standalone-Regeln)
+    v2_overrides = """
+/* === v2-spezifische Anpassungen (Selektoren existieren in Standalone nicht oder anders) === */
+
+/* Navbar: v2 hat .navbar-logo (nicht .nav-logo) und .navbar-brand-Container */
+body.view-tafel .navbar-logo { height: 70px; }
+body.view-tafel .navbar-brand { white-space: nowrap; gap: 12px; font-size: 2rem; }
+body.view-tafel .navbar-brand .brand-name { display: inline; font-size: 1em; }
+body.view-tafel .navbar-brand > span { display: inline-flex; align-items: baseline; gap: 4px; white-space: nowrap; }
+body.view-tafel .navbar-links a { font-size: 1.2rem; }
+
+/* Story-Card ist in v2 der Wrapper um #story-text — im Tafel-Modus
+   wird #story-text in .tafel-story-col verschoben, .story-card bleibt leer.
+   Verstecken, damit kein leerer weißer Container im Layout bleibt. */
+body.view-tafel .story-card { display: none; }
+
+/* Sandbox-Banner oben raus — lenkt im Klassenraum ab */
+body.view-tafel .sandbox-banner { display: none; }
+
+/* Reading-Toolbar: in v2 flache horizontale Bar (kein Zauberkasten). Im Tafel-Modus
+   als Floating-Bubble rechts unten positionieren, gut erreichbar für Lehrkraft. */
+body.view-tafel .reading-toolbar {
+    position: fixed;
+    bottom: 36px; right: 36px;
+    z-index: 99;
+    flex-direction: column;
+    align-items: stretch;
+    background: #fff;
+    border-radius: 28px;
+    padding: 16px;
+    gap: 10px;
+    max-width: 360px;
+    box-shadow: 0 10px 28px rgba(0,0,0,0.14);
+    border: none;
+    margin: 0;
+}
+body.view-tafel .reading-toolbar .toolbar-label,
+body.view-tafel .reading-toolbar .tool-btn-divider { display: none; }
+body.view-tafel .reading-toolbar .tool-btn {
+    min-height: 56px;
+    padding: 14px 22px;
+    font-size: 1.1rem;
+    border-radius: 14px;
+    justify-content: flex-start;
+}
+"""
+    OUT_CSS.write_text(header_css + css_v2 + v2_overrides + "\n", encoding="utf-8")
     OUT_JS.write_text(header_js + js_v2 + "\n", encoding="utf-8")
 
     print(f"[ok] v2/tafel.css ({len(css_v2)} Zeichen)")
