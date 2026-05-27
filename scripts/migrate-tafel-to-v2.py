@@ -144,8 +144,18 @@ body.view-tafel .story-card { display: none; }
 /* Sandbox-Banner oben raus — lenkt im Klassenraum ab */
 body.view-tafel .sandbox-banner { display: none; }
 
-/* Reading-Toolbar: in v2 flache horizontale Bar (kein Zauberkasten). Im Tafel-Modus
-   als Floating-Bubble rechts unten positionieren, gut erreichbar für Lehrkraft. */
+/* Micro-Survey ("Hat dir die Geschichte gefallen?") raus — passt nicht zum Klassen-Setting */
+body.view-tafel .survey { display: none; }
+
+/* Navbar-CTA: Button-Text nicht umbrechen ("Jetzt registrieren") */
+body.view-tafel .navbar-cta {
+    white-space: nowrap;
+    padding: 12px 24px;
+    font-size: 1.1rem;
+}
+
+/* Reading-Toolbar als Zauberkasten-Bubble (Original-Look): groß, rechts unten,
+   mit "Zauberkasten"-Header und großen Touch-Buttons */
 body.view-tafel .reading-toolbar {
     position: fixed;
     bottom: 36px; right: 36px;
@@ -153,22 +163,38 @@ body.view-tafel .reading-toolbar {
     flex-direction: column;
     align-items: stretch;
     background: #fff;
-    border-radius: 28px;
-    padding: 16px;
-    gap: 10px;
-    max-width: 360px;
-    box-shadow: 0 10px 28px rgba(0,0,0,0.14);
+    border-radius: 36px;
+    padding: 28px 32px;
+    gap: 14px;
+    min-width: 320px;
+    max-width: 480px;
+    box-shadow: 0 12px 32px rgba(0,0,0,0.16);
     border: none;
     margin: 0;
+}
+/* "Zauberkasten"-Header oben hinzufügen via ::before */
+body.view-tafel .reading-toolbar::before {
+    content: "✨ Zauberkasten";
+    display: block;
+    font-family: var(--font-heading, 'Fredoka', sans-serif);
+    font-weight: 700;
+    font-size: 1.5rem;
+    color: var(--accent-coral, #D67171);
+    text-align: center;
+    margin-bottom: 8px;
+    padding-bottom: 12px;
+    border-bottom: 2px dashed rgba(214, 113, 113, 0.18);
 }
 body.view-tafel .reading-toolbar .toolbar-label,
 body.view-tafel .reading-toolbar .tool-btn-divider { display: none; }
 body.view-tafel .reading-toolbar .tool-btn {
-    min-height: 56px;
-    padding: 14px 22px;
-    font-size: 1.1rem;
-    border-radius: 14px;
+    min-height: 64px;
+    padding: 18px 26px;
+    font-size: 1.2rem;
+    font-weight: 600;
+    border-radius: 16px;
     justify-content: flex-start;
+    gap: 12px;
 }
 """
     OUT_CSS.write_text(header_css + css_v2 + v2_overrides + "\n", encoding="utf-8")
