@@ -154,51 +154,132 @@ body.view-tafel .navbar-cta {
     font-size: 1.1rem;
 }
 
-/* Reading-Toolbar als Zauberkasten-Bubble (Original-Look): groß, rechts unten,
-   mit "Zauberkasten"-Header und großen Touch-Buttons */
-body.view-tafel .reading-toolbar {
+/* Back-Link "Zur Bibliothek" unter dem Story-Text raus */
+body.view-tafel .btn-secondary,
+body.view-tafel .text-center:has(.btn-secondary) { display: none; }
+
+/* Reading-Toolbar wird zu collapsable Zauberkasten: default versteckt,
+   wird per JS-Trigger geöffnet (siehe v2/tafel.js Append). */
+body.view-tafel .reading-toolbar { display: none; }
+body.view-tafel .reading-toolbar.is-tafel-open {
+    display: flex;
     position: fixed;
-    bottom: 36px; right: 36px;
-    z-index: 99;
+    bottom: 170px; right: 36px;
+    z-index: 100;
     flex-direction: column;
     align-items: stretch;
     background: #fff;
-    border-radius: 36px;
+    border-radius: 32px;
     padding: 28px 32px;
-    gap: 14px;
-    min-width: 320px;
+    gap: 12px;
+    min-width: 360px;
     max-width: 480px;
-    box-shadow: 0 12px 32px rgba(0,0,0,0.16);
+    max-height: calc(100vh - 220px);
+    overflow-y: auto;
+    box-shadow: 0 16px 40px rgba(0,0,0,0.22);
     border: none;
     margin: 0;
+    transform-origin: bottom right;
+    animation: tafelZauberkastenOpen 0.22s cubic-bezier(0.2, 0.7, 0.3, 1);
 }
-/* "Zauberkasten"-Header oben hinzufügen via ::before */
-body.view-tafel .reading-toolbar::before {
-    content: "✨ Zauberkasten";
+@keyframes tafelZauberkastenOpen {
+    from { transform: scale(0.6); opacity: 0; }
+    to   { transform: scale(1);   opacity: 1; }
+}
+/* Toolbar-Labels ("Text", "Mehr") als Section-Header sichtbar */
+body.view-tafel .reading-toolbar.is-tafel-open .toolbar-label {
     display: block;
     font-family: var(--font-heading, 'Fredoka', sans-serif);
-    font-weight: 700;
-    font-size: 1.5rem;
-    color: var(--accent-coral, #D67171);
-    text-align: center;
-    margin-bottom: 8px;
-    padding-bottom: 12px;
-    border-bottom: 2px dashed rgba(214, 113, 113, 0.18);
-}
-body.view-tafel .reading-toolbar .toolbar-label,
-body.view-tafel .reading-toolbar .tool-btn-divider { display: none; }
-body.view-tafel .reading-toolbar .tool-btn {
-    min-height: 64px;
-    padding: 18px 26px;
-    font-size: 1.2rem;
+    font-size: 0.95rem;
     font-weight: 600;
-    border-radius: 16px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--accent-coral, #D67171);
+    margin: 6px 0 2px;
+}
+body.view-tafel .reading-toolbar.is-tafel-open .toolbar-label:first-child { margin-top: 0; }
+body.view-tafel .reading-toolbar.is-tafel-open .tool-btn-divider { display: none; }
+body.view-tafel .reading-toolbar.is-tafel-open .tool-btn {
+    min-height: 60px;
+    padding: 16px 22px;
+    font-size: 1.15rem;
+    font-weight: 600;
+    border-radius: 14px;
     justify-content: flex-start;
     gap: 12px;
 }
+
+/* Trigger-Button "Zauberkasten" rechts unten — symmetrisch zur Spiele-Bubble */
+body.view-tafel .tafel-zauberkasten-trigger {
+    position: fixed;
+    bottom: 36px; right: 36px;
+    z-index: 99;
+    min-width: 130px; min-height: 130px;
+    border-radius: 36px;
+    background: #fff;
+    border: none;
+    box-shadow: 0 10px 28px rgba(0,0,0,0.14);
+    display: flex; align-items: center; justify-content: center; gap: 16px;
+    padding: 24px 32px;
+    cursor: pointer;
+    font-family: var(--font-heading, 'Fredoka', sans-serif);
+    font-size: 1.5rem;
+    color: var(--accent-coral, #D67171);
+    font-weight: 600;
+}
+body.view-tafel .tafel-zauberkasten-trigger .zk-icon { font-size: 2.6em; line-height: 1; }
+body.view-tafel .tafel-zauberkasten-trigger:hover { transform: translateY(-2px); }
+body:not(.view-tafel) .tafel-zauberkasten-trigger { display: none; }
 """
     OUT_CSS.write_text(header_css + css_v2 + v2_overrides + "\n", encoding="utf-8")
-    OUT_JS.write_text(header_js + js_v2 + "\n", encoding="utf-8")
+    # v2-spezifischer JS-Append: Zauberkasten-Trigger erzeugen
+    v2_js_append = """
+
+/* === v2-spezifisch: Reading-Toolbar als kollabierbarer Zauberkasten === */
+(function setupV2Zauberkasten() {
+    function init() {
+        if (document.querySelector('.tafel-zauberkasten-trigger')) return;
+        if (!document.querySelector('.reading-toolbar')) return;
+        const trigger = document.createElement('button');
+        trigger.type = 'button';
+        trigger.className = 'tafel-zauberkasten-trigger';
+        trigger.setAttribute('aria-label', 'Zauberkasten öffnen');
+        trigger.innerHTML = '<span class="zk-icon">✨</span> Zauberkasten';
+        trigger.onclick = function () {
+            const tb = document.querySelector('.reading-toolbar');
+            if (!tb) return;
+            const isOpen = tb.classList.toggle('is-tafel-open');
+            trigger.style.display = isOpen ? 'none' : '';
+            if (isOpen && !tb.querySelector('.tafel-zk-close')) {
+                const close = document.createElement('button');
+                close.type = 'button';
+                close.className = 'tafel-zk-close';
+                close.setAttribute('aria-label', 'Zauberkasten schließen');
+                close.textContent = '×';
+                Object.assign(close.style, {
+                    position: 'absolute', top: '16px', right: '16px',
+                    width: '44px', height: '44px', borderRadius: '50%',
+                    border: '2px solid #ddd', background: '#fff',
+                    fontSize: '1.6rem', cursor: 'pointer', lineHeight: '1',
+                });
+                close.onclick = function () {
+                    tb.classList.remove('is-tafel-open');
+                    trigger.style.display = '';
+                };
+                tb.style.position = 'fixed';
+                tb.appendChild(close);
+            }
+        };
+        document.body.appendChild(trigger);
+    }
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+    } else {
+        init();
+    }
+})();
+"""
+    OUT_JS.write_text(header_js + js_v2 + v2_js_append + "\n", encoding="utf-8")
 
     print(f"[ok] v2/tafel.css ({len(css_v2)} Zeichen)")
     print(f"[ok] v2/tafel.js  ({len(js_v2)} Zeichen)")

@@ -600,3 +600,48 @@ if (document.readyState === 'loading') {
 } else {
     initTafelOnce();
 }
+
+/* === v2-spezifisch: Reading-Toolbar als kollabierbarer Zauberkasten === */
+(function setupV2Zauberkasten() {
+    function init() {
+        if (document.querySelector('.tafel-zauberkasten-trigger')) return;
+        if (!document.querySelector('.reading-toolbar')) return;
+        const trigger = document.createElement('button');
+        trigger.type = 'button';
+        trigger.className = 'tafel-zauberkasten-trigger';
+        trigger.setAttribute('aria-label', 'Zauberkasten öffnen');
+        trigger.innerHTML = '<span class="zk-icon">✨</span> Zauberkasten';
+        trigger.onclick = function () {
+            const tb = document.querySelector('.reading-toolbar');
+            if (!tb) return;
+            const isOpen = tb.classList.toggle('is-tafel-open');
+            trigger.style.display = isOpen ? 'none' : '';
+            if (isOpen && !tb.querySelector('.tafel-zk-close')) {
+                const close = document.createElement('button');
+                close.type = 'button';
+                close.className = 'tafel-zk-close';
+                close.setAttribute('aria-label', 'Zauberkasten schließen');
+                close.textContent = '×';
+                Object.assign(close.style, {
+                    position: 'absolute', top: '16px', right: '16px',
+                    width: '44px', height: '44px', borderRadius: '50%',
+                    border: '2px solid #ddd', background: '#fff',
+                    fontSize: '1.6rem', cursor: 'pointer', lineHeight: '1',
+                });
+                close.onclick = function () {
+                    tb.classList.remove('is-tafel-open');
+                    trigger.style.display = '';
+                };
+                tb.style.position = 'fixed';
+                tb.appendChild(close);
+            }
+        };
+        document.body.appendChild(trigger);
+    }
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', init);
+    } else {
+        init();
+    }
+})();
+
