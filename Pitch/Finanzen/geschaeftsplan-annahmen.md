@@ -1,241 +1,250 @@
 # Geschäftsplan Lesekumpel — Annahmen-Dokumentation
 
-**Stand:** Mai 2026 · **Sheet-Version:** v1.0 · **Anlass:** INSPIRED-Wettbewerb MV 2026
+**Stand:** Mai 2026 · **Sheet-Version:** v2.0 · **Anlass:** INSPIRED-Wettbewerb MV 2026
 
-Dieses Dokument erläutert die Annahmen hinter `geschaeftsplan-lesekumpel.xlsx`. Die Excel-Datei selbst ist mit `build-geschaeftsplan.py` reproduzierbar.
+Dieses Dokument erläutert die Annahmen hinter der Pitch-Präsentation `Pitch/finanzierungs-pitch-v2.html`. Quelle der Wahrheit für die Zahlen: dieses Dokument + Memory `project_finanzierungs_phasen.md`.
+
+**Was sich gegenüber v1 geändert hat:**
+- Pricing 4,99 € → **6,99 €** Premium, 14,99 € → **19,99 €** Pro
+- Mikromezzanin verworfen → **KfW-Gründerkredit 100 k (2 J tilgungsfrei)**
+- Lernfeld-Expansion: **J3 Sprachen+DaZ**, **J4 Mathe**
+- Personal-Aufbau: Sprachen-Lead, Mathe-Lead, Marketing 3-stufig
+- Hardware-Vollausstattung 6 MA in J3 (24 k €)
 
 ---
 
 ## 1. Geschäftsmodell
 
-**Lesekumpel** — neuroinklusive Lese-Bibliothek für Kinder 5–10 Jahre mit Fokus auf LRS, ADHS und Autismus.
+**Lesekumpel** — neuroinklusive Lese-, Sprach- und Lernplattform für Kinder 5–10 Jahre mit Fokus auf LRS, ADHS, Autismus und DaZ.
 
-Drei Einnahmestreams:
-- **Familienpaket** 4,99 €/Monat · 15 Story-Credits · bis zu 4 Kinderkonten
-- **Pro-Account** 14,99 €/Monat · 45 Credits · bis zu 30 Kinderkonten · für Lehrer:innen
-- **Kaffeekasse** 1 €/2 Credits On-Demand · ohne Abo · „Spende mit Gegenleistung"
+**Einnahmenstreams:**
+- **Familienpaket Premium:** 6,99 €/Monat · Cap 20 Stories · Jahres-Abo 69 € (−18 %)
+- **Multi-Sprach-Tier** (ab J3): 8,99 €/Monat · alle Sprachen inkl. · Jahres-Abo 89 € (−17 %)
+- **Pro-Account** (Lehrer): 19,99 €/Monat · Cap 45 Stories · Jahres-Abo 199 € (−17 %)
+- **Kaffeekasse:** 1 €/2 Credits On-Demand
 
-Zusätzlich: Förderprogramme (Aktion Mensch, DATIpilot) als Wachstumshebel.
+**Force Commitments:** 60 % aller Premium- und Pro-Abos wählen Jahres-Abo (Discount-Anreiz).
+**Avg Umsatz/Jahr/Kunde:** Premium J1-2: 74,95 € → J3: 78 € → J4: 85 € → J5: 89 € · Pro: 211,26 €
 
 ---
 
-## 2. Wachstumsannahmen (konservativ)
+## 2. Wachstumsannahmen (konservativ, mit Sprachen J3 + Mathe J4)
 
-| Stream | Avg J1 | Avg J2 | Avg J3 | Avg J4+ |
-|---|---|---|---|---|
-| Premium-Abos | 50 | 300 | 1.000 | 1.700 |
-| Pro-Accounts | 1 | 5 | 20 | 30 |
-| Kaffeekassen/Monat | 3 | 15 | 50 | 80 |
-| Free-Nutzer (Faktor) | 10× Premium | 10× | 10× | 10× |
+| Stream | Ende J1 | Ende J2 | Ende J3 | Ende J4 | Ende J5 |
+|---|---|---|---|---|---|
+| Premium-Abos | 50 | 450 | 2.200 | 4.800 | 7.500 |
+| Pro-Accounts | 8 | 70 | 500 | 1.200 | 2.200 |
+| Avg Premium/Jahr | 20 | 250 | 1.325 | 3.500 | 6.150 |
+| Avg Pro/Jahr | 4 | 39 | 285 | 850 | 1.700 |
+| Free-Nutzer (Faktor) | 15× Premium | 15× | 12× | 12× | 12× |
 
-**Premium-Wachstum** linear interpoliert: Monat 1: 0 · Monat 12: 100 · Monat 24: 500 · Monat 36: 1.700.
+**Wachstumstreiber:**
+- **J3 Sprachen + DaZ:** TAM-Verdopplung über DACH-Markt + DaZ-Schul-Vertriebskanal mit eigenem Förderbudget. Pro:Premium-Ratio steigt von 2 % auf 4 % (DaZ-Lehrer-Boost).
+- **J4 Mathe:** Retention-Hebel (Netto-Churn von 4 % auf 3 %). ARPU steigt durch Multi-Sprach-Tier-Adoption.
+- **Force Commitments + Win-Back:** Effektiver Netto-Churn 4 % statt 7 % Brutto.
 
 **Stories pro Nutzer/Monat:**
-- Premium: 10 (Cap 15 — Worst-Case Cap voll genutzt nur bei Power-Usern)
-- Free: 3 (Cap 5)
-
-**Begründung der Schwellen:**
-- 100 Premium nach 12 Monaten = realistische Validierungs-Phase (Bootstrap mit Lehrer-Multiplikator + SEO via User-Stories)
-- 500 Premium nach 24 Monaten = organisches Wachstum durch Community-Led Growth
-- 1.700 Premium nach 36 Monaten = Schwelle der Selbsttragfähigkeit (1.700 × 4,99 € ≈ 8.500 € = Skalierungs-Fixkosten)
+- Premium: avg 15 (Cap 20)
+- Pro: avg 30 (Cap 45)
+- Free: 1 (Cap 3)
 
 ---
 
 ## 3. Preismodell & Marge
 
-### Familienpaket — Worst-Case-Mathematik
-- Preis: 4,99 €/Monat
-- Variable Kosten: 15 Stories × 0,12 € + 0,10 € Backend + 0,90 € Free-Anteil (1:9-Kohorte) + 0,32 € Stripe = **3,12 €**
-- **Deckungsbeitrag: 1,87 €/Premium** · Marge ~37,5 %
+### Familienpaket Premium — Worst-Case-Mathematik
+
+- Preis: 6,99 €/Monat
+- Variable Kosten: 20 Stories × 0,07 € (ab J3) + 0,12 € Backend + 0,90 € Free-Anteil + 0,32 € Stripe = **2,74 €**
+- **Deckungsbeitrag: 4,25 €/Premium** · Marge ~61 %
+
+### Multi-Sprach-Tier (ab J3)
+
+- Preis: 8,99 €/Monat
+- Variable Kosten: 20 × 0,07 € + 0,15 € TTS-Lizenzen + 0,12 € Backend + 0,90 € Free-Anteil + 0,38 € Stripe = **2,95 €**
+- **Deckungsbeitrag: 6,04 €/Premium** · Marge ~67 %
 
 ### Pro-Account
-- Preis: 14,99 €/Monat
-- Variable Kosten: 45 × 0,12 € + 0,46 € Stripe + 3,00 € Subaccounts = **8,86 €**
-- **Deckungsbeitrag: 6,13 €/Pro** · Marge ~41 %
+
+- Preis: 19,99 €/Monat
+- Variable Kosten: 45 × 0,07 € + 0,52 € Stripe + 3,00 € Subaccounts = **6,67 €**
+- **Deckungsbeitrag: 13,32 €/Pro** · Marge ~67 %
 
 ### Kaffeekasse
-- Preis: 1,00 €
-- Variable Kosten: 2 × 0,12 € + 0,26 € Stripe = **0,50 €**
-- **Deckungsbeitrag: 0,50 €/Kauf** · Marge 50 %
 
-### Phase-2-Hebel
-Ab Jahr 3: Modell-Wechsel auf Gemini Flash + Imagen 2 senkt Story-Kosten von 0,12 € auf **0,07 €**. Hebt Marge auf ~52 % Worst-Case. Im Sheet ab Jahr 3 angesetzt.
+- Preis: 1,00 € · Variable Kosten: 2 × 0,07 € + 0,26 € Stripe = **0,40 €**
+- **Deckungsbeitrag: 0,60 €/Kauf** · Marge 60 %
+
+### Token-Hebel
+
+| Phase | Story-Kosten | Begründung |
+|---|---|---|
+| J1 | 0,12 €/Story | GPT-4 + Imagen 2 |
+| J2 | 0,09 €/Story | Modell-Wechsel + erste Cache-Effekte (−25 %) |
+| ab J3 | 0,07 €/Story | Gemini Flash + Recommendation-Cache (voller Hebel) |
 
 ---
 
-## 4. Investitionen, Sacheinlage, Einmal-Aufwand
+## 4. Investitionen + Sacheinlage + Einmal-Aufwand
 
-**BWL-Logik:** Nur Anlagegüter der Gesellschaft (Nutzungsdauer > 1 Jahr, von der Gesellschaft gekauft) sind echte Investitionen. Privatvermögen der Gründer:innen, das betrieblich mitgenutzt wird, ist **Sacheinlage** (bei UG-Gründung) oder bleibt schlicht im Privatvermögen.
+**BWL-Logik:** Nur Anlagegüter der Gesellschaft (Nutzungsdauer > 1 Jahr) sind echte Investitionen.
 
-**Echte Investitionen (Anlagegüter der GbR/UG):**
+**Echte Investitionen (Anlagegüter):**
 
 | Posten | Phase | Wert | Nutzungsdauer | AfA/Jahr |
 |---|---|---|---|---|
-| DPMA-Markenanmeldung „Lesekumpel" | 1 (J1, M1) | 290 € | 10 Jahre | 29 € |
-| 3 neue Rechner (Skalierungs-Setup) | 3 (J3) | 5.400 € | 3 Jahre | 1.800 € |
-| 3 neue Monitore | 3 (J3) | 600 € | 3 Jahre | 200 € |
-| **Summe Investitionen** | | **6.290 €** | | **AfA J1+J2: 29 €/J · ab J3: 2.029 €/J** |
+| DPMA-Markenanmeldung | J1 (M1) | 290 € | 10 Jahre | 29 € |
+| Hardware-Vollausstattung 6 MA | J3 | 24.000 € | 3 Jahre | 8.000 € |
+| Hardware-Erweiterung (Mathe-Lead + Marketing-VZ) | J4 | 8.000 € | 3 Jahre | +2.667 € |
+| Hardware-Refresh Gründer-Notebooks | J5 | 8.000 € | 3 Jahre | +2.667 € |
+| **Summe Investitionen** | | **40.290 €** | | |
 
-**Sacheinlage Phase 2 (bei UG-Umfirmierung):** ~1.000 €
-- 2 alte Rechner (Zeitwert ~600–800 €) + 2 alte Monitore (Zeitwert ~100–200 €)
-- Eingebracht von den Gründer:innen — kein Cashflow, aber bilanzwirksam als Sacheinlage zum UG-Stammkapital
+**Hardware pro MA:** ~4.000 € (Notebook Business 1.800 + 2 Monitore 700 + Headset 200 + Tisch+Stuhl 800 + Software-Lizenzen 500).
 
-**Einmal-Aufwand Phase 1 (kein Anlagegut, direkt in GuV):** ~700 €
-- Domain/Hosting-Setup: 200 €
-- Rechts-Templates eRecht24: 500 €
+**Sacheinlage Phase 2 (bei GbR-Gründung):** ~1.000 €
+- Alte Hardware der Gründer:innen, eingebracht als Sacheinlage zum Gesellschaftsvermögen.
 
-**Finanzierung:**
-- Phase 1: Eigenmittel (Bootstrap, ~3.000 € Start-Puffer + laufende Privateinlagen)
-- Phase 3 Hardware-Invest 6.000 €: aus Mikromezzanin-Tranche (Auszahlung M25)
+**Einmal-Aufwand Phase 1:** ~700 €
+- Domain/Hosting-Setup, Rechts-Templates eRecht24.
 
 ---
 
-## 5. Finanzierung Phase 3 — Mikromezzaninfonds II
+## 5. Finanzierung — KfW-Gründerkredit (statt Mikromezzanin)
 
-**Bewusste Wahl gegen klassischen Bankkredit:**
+**Bewusste Wahl gegen Mikromezzanin:**
 
-| Aspekt | Bankkredit (verworfen) | **Mikromezzanin (gewählt)** |
+| Aspekt | Mikromezzanin (verworfen) | **KfW-Gründerkredit (gewählt)** |
 |---|---|---|
-| Kapital | 30.000 € | **50.000 €** |
-| Zins | 5 % p.a. | 8 % p.a. fix |
-| Laufzeit | 5 Jahre | **10 Jahre** |
-| Tilgung | Annuität 566 €/Mon | **endfällig in Jahr 10** |
-| Sicherheiten | nötig | **keine** |
-| Stimmrechte | – | keine (stille Beteiligung) |
-| Verwässerung | – | keine |
-| Monatslast (Cashflow) | 566 € | **333 € (nur Zins)** |
+| Kapital | 50.000 € | **100.000 €** |
+| Zins | 8 % p.a. fix | **5 % p.a. fix** |
+| Laufzeit | 10 Jahre | 10 Jahre |
+| Tilgungsfreiheit | endfällig (10 J) | **2 Jahre tilgungsfrei**, dann Annuität |
+| Haftung | 100 % Gründer | 80 % KfW-Haftungsfreistellung |
+| Verwässerung | 0 % (stille Beteiligung) | 0 % (klassischer Kredit) |
+| Zinslast 5 J | ~32.000 € | **~16.000 € (bis M50)** |
+| Antragsdauer | 8–12 Wochen | 4–6 Wochen (über Hausbank) |
 
-### Mikromezzanin-Konditionen
-- Programm: **Mikromezzaninfonds II Deutschland** (Bundesförderung)
-- Antragsstelle: **MBG MV (Mittelständische Beteiligungsgesellschaft Mecklenburg-Vorpommern)**
-- Variante: Erweiterte Variante (bis 150 k) — qualifiziert wegen:
-  - Inklusionsorientierung (Neuroinklusion by design)
-  - Strukturschwache Region (MV)
-- Auszahlung: einmalig in Monat 25 (Phase-3-Start) = 50.000 €
-- Zinsphase: Monat 26–143 → 333,33 €/Monat (50.000 × 8 % / 12) konstant
-- Tilgungsphase: Monat 144 → einmalige Rückzahlung 50.000 €
-- Gesamtkosten 10 Jahre: 39.999 € Zinsen + 50.000 € Rückzahlung = **89.999 €**
+**KfW-Mechanik:**
+- Auszahlung M27 (Anfang J3)
+- 2 Jahre tilgungsfrei (M27–M50): nur ~417 €/Mon Zinsen
+- Annuität ab M51 (Mitte J5): ~1.260 €/Mon über 8 Jahre
+- Persönliche Bürgschaft 4 Gesellschafter:innen gesamtschuldnerisch
 
-### Verwendung der 50 k €
-- Marketing-Push (Merch, Messen, Discord-Community): ~15.000 €
-- Erste Junior-Anstellung (Q3-Q4 J3 → 6 Monate brutto): ~18.000 €
-- Liquiditätspuffer Jahr 3–4: ~17.000 €
+**Gesamter Finanzierungsmix über 5 Jahre:**
 
----
+| Phase | Quelle | Betrag |
+|---|---|---|
+| J1 | Eigenmittel (4 Gründer) | 2.500 € |
+| J2 (M13) | Mikrokredit Start | 10.000 € |
+| J2 (M19) | Mikrokredit-Aufstockung (nach 6 Tilgungen) | +15.000 € |
+| J3 (M27) | KfW-Gründerkredit | 100.000 € |
+| J3 | Förderung (z. B. DATIpilot) | 3.000 € |
+| **Total externes Kapital** | | **130.500 €** |
+| davon Kredit | | 127.500 € |
 
-## 6. Personal
-
-| Jahr | Annahme |
-|---|---|
-| 1–2 | 3 Gründer:innen, Eigenleistung (Entnahme 0 €) |
-| 3 | Teilzeit-Entnahme 3 × 1.000 € = 3.000 €/Monat (36.000 €/J) |
-| 3 Q3+ | 1 Junior-Mitarbeiter:in 3.000 €/Mon. brutto inkl. AG-Anteil (≈ 2.300 € netto) → 9.000 € im J3 (3 Monate) |
-| 4+ | Skalierung mit Userzahl (außerhalb 3-Jahres-Plan) |
-
-**Begründung:** Bootstrap-Strategie aus [project_finanzierungs_phasen]. Vollzeit-Entnahme erst ab F8-Schwelle 8.000 Premium = realistisch ab Jahr 5–6.
+**Aktion Mensch ausgeschlossen** — kein Träger-Anschluss verfügbar.
 
 ---
 
-## 7. Laufende Kosten
+## 6. Personal-Plan
 
-### Token + Bildgenerierung
-| Jahr | Avg Premium | Stories Premium | Stories Free | Cost/Story | Token-Kost |
+**Stunden-Verteilung Gründer:innen:**
+- J1-J2: 20h externer Teilzeit-Job + 20h Lesekumpel (Eigenleistung, keine Bezahlung)
+- J3: 20h externer Job + 30h Lesekumpel · 1.500 €/Mon brutto je Gründer
+- J4: 15h externer Job + 35h Lesekumpel · 2.500 €/Mon brutto je Gründer
+- J5: Vollzeit Lesekumpel (40h) · 3.500 €/Mon brutto je Gründer
+
+**Team-Aufbau:**
+
+| Rolle | J1 | J2 | J3 | J4 | J5 |
 |---|---|---|---|---|---|
-| 1 | 50 | 6.000 | 1.800 | 0,12 € | ~720 € |
-| 2 | 300 | 36.000 | 10.800 | 0,12 € | ~9.000 € *(weniger als rechnerisch, weil Q1-Q2 noch niedriger)* |
-| 3 | 1.000 | 120.000 | 36.000 | 0,07 € *(Hebel)* | ~22.000 € |
-
-### Stripe-Gebühren
-1,4 % vom Umsatz + 0,25 €/Transaktion. Bei steigendem Volumen anteilig höher.
-
-### Hosting/Backend
-- J1: 25 €/Mon (Free-Tier + Cloudfront)
-- J2: 75 €/Mon (Supabase + n8n + Domains)
-- J3: 400 €/Mon (Skalierung, Recommendation-Engine-Embeddings)
-
-### Recht/Buchhaltung/Versicherung
-- J1: 50 €/Mon (**GbR ab Phase 1!** — Berufshaftpflicht + Cyber-Versicherung + DPMA-Marke verteilt + GbR-Vertrag eRecht24)
-- J2: 250 €/Mon (**UG-Umfirmierung Anfang Phase 2!** — UG-Buchhaltungspflicht + Steuerberater-Mandant + Anwalts-AGB/DSGVO einmalig)
-- J3: 500 €/Mon (laufende UG-Buchhaltung + erweiterte Versicherungen + Anwalt für AGB-Updates)
-
-### Dev-Tools
-- Claude Max (Cursor, Claude Code): ~50 €/Mon
-- Canva Pro, Figma: ~30 €/Mon
-- Sonstige Subscriptions: ~30 €/Mon
-- Skaliert leicht J1 → J3 (100 → 150 €)
-
-### Marketing/Merch
-- J1: 10 €/Mon (Aufkleber, Visitenkarten)
-- J2: 100 €/Mon (Discord-Community, ggf. Messe-Stand klein)
-- J3: 500 €/Mon (Mit Mikromezzanin-Push: Merch, Messen, Verbands-Mitgliedschaften)
-
-### Sonstige (kleiner)
-- Strom/Internet (anteilig Homeoffice): 50 €/Mon J3
-- Porto/Telekom: 20 €/Mon
-- Reisekosten (Messen, Hochschul-Termine): 100 €/Mon J3
+| 4 Gründer-Bezahlung/Jahr | 0 | 0 | 72.000 € | 120.000 € | 168.000 € |
+| Backoffice Halbtags | 0 | 0 | 18.000 € | 18.000 € | 18.000 € |
+| Sprachen-Lead Halbtags | 0 | 0 | 24.000 € | 24.000 € | 24.000 € |
+| Mathe-Lead Halbtags (ab M40) | 0 | 0 | 0 | 14.000 € | 24.000 € |
+| Marketing (HT → VZ → Sr.) | 0 | 0 | 12.000 € | 36.000 € | 42.000 € |
+| **Total Personal/Jahr** | 0 € | 0 € | **126.000 €** | **212.000 €** | **276.000 €** |
+| **Team-Größe** | 4 | 4 | 6 | 7 | 7 |
 
 ---
 
-## 8. MwSt-Behandlung
+## 7. Churn-Modell mit Win-Back
 
-**Bildungsmedien:** 7 % MwSt (statt 19 %) — siehe [reference_bildungsmedien_mwst].
+| Jahr | Brutto-Churn/Mon | Win-Back-Rate | Netto-Churn |
+|---|---|---|---|
+| J1 | 7 % | 0 % | 7 % |
+| J2 | 6 % | 0 % | 6 % |
+| J3 | 5 % | 20 % | **4 %** |
+| J4 | 5 % | 30 % | **3,5 %** |
+| J5 | 5 % | 40 % | **3 %** |
 
-Im Sheet vereinfacht:
-- Alle Einnahmen sind **netto** dargestellt
-- MwSt-Anteil wird in separater Zeile ausgewiesen (zur Information für Bankgespräche)
-- 4,99 € brutto = 4,66 € netto + 0,33 € MwSt
+**Win-Back-Kampagnen:**
+- **August–September:** Schulbeginn-Kampagne (35 % Marketing-Budget)
+- **Februar–März:** Halbjahres-Zeugnis-Kampagne (25 % Marketing-Budget)
+- **Rest:** Always-On (40 %)
 
-Für GbR/Kleinunternehmer-Regelung (Phase 1–2):
-- Optional: § 19 UStG-Befreiung bis 22.000 €/J Vorjahresumsatz
-- Empfohlen erst ab Phase 2 zu prüfen — ggf. Vorsteuerabzug bei Investitionen sinnvoller
-
----
-
-## 9. Erwartete Bilanz
-
-### Kumulierte Liquidität
-- Ende Jahr 1: ~−2.800 € (Eigenmittel-Defizit aus 3.000 € Startpuffer)
-- Ende Jahr 2: ~+760 € (knapp positiv)
-- Ende Jahr 3 mit Mikromezzanin 50k: ~+25.000 € (Auszahlung minus Verlust)
-- Ende Jahr 10 (Mikromezzanin-Rückzahlung): erfordert ausreichende Reserve aus J4-J10 Cashflow
-
-### Kumulierte Rentabilität
-- Ende Jahr 1: ~−1.130 €
-- Ende Jahr 2: ~+2.430 € (Eigenleistung trägt, GuV knapp positiv)
-- Ende Jahr 3: ~−19.300 € (Personal-Investment, Marketing-Push, Anlauf-Verluste)
-- Ende Jahr 4+: positiv bei 1.700+ Premium konstant
+**KEINE** Geschenk-Saison (Lesekumpel positioniert sich nicht als Geschenk-Produkt).
 
 ---
 
-## 10. Konsistenz mit Pitch-Folien
+## 8. CRM- und Marketing-Tools (laufende Kosten)
 
-Alle Annahmen sind konsistent mit:
-- `Pitch/finanzierungs-praesentation.html` (F1 Essenz, F5 Kosten, F7 Break-Even, F8 Schwellen)
-- `Pitch/06-finanzierungs-folien.md`
-- `Pitch/03-pitch-deck.md` Slide 8
+| Phase | Tool | €/Monat |
+|---|---|---|
+| J1 | MailerLite Free | 0 € |
+| J2 | MailerLite Growing | 30 € |
+| J3 | MailerLite Advanced | 50 € |
+| J4-J5 | HubSpot Marketing Hub Starter | 80 € |
 
-Kennzahlen-Sync:
-- Familienpaket 4,99 € · 15 Credits · 4 Kinderkonten ✓
-- Variable Kosten Premium 3,12 € (Worst-Case) ✓
-- Break-Even bei 189 Premium (mit Stream-Mix) ✓
-- Skalierungs-Phase: 1.700 Premium = 8.500 €/Mon Umsatz = 8.500 €/Mon Kosten ✓
+**Marketing-Budget je Jahr:** J1 0,12 k · J2 10 k · J3 30 k · J4 30 k · J5 15 k €
 
 ---
 
-## 11. Quellen & Referenzen
+## 9. Lernfeld-Expansion Investitionen
 
-- [project_finanzierungs_phasen.md](../../C:/Users/raikl/.claude/projects/c--Users-raikl-Dev-lesekumpel/memory/project_finanzierungs_phasen.md) — 3-Phasen-Strategie
-- [project_foerderprogramme.md](../../C:/Users/raikl/.claude/projects/c--Users-raikl-Dev-lesekumpel/memory/project_foerderprogramme.md) — Mikromezzanin Top-3
-- [reference_bildungsmedien_mwst.md](../../C:/Users/raikl/.claude/projects/c--Users-raikl-Dev-lesekumpel/memory/reference_bildungsmedien_mwst.md) — 7 % MwSt
-- Mikromezzaninfonds II: https://www.mikromezzaninfonds-deutschland.de
-- MBG MV: https://www.mbg-mv.de
+| Position | J3 | J4 | J5 |
+|---|---|---|---|
+| TTS-Voice-Lizenzen (ElevenLabs Pro) | 4.000 € | 4.000 € | 5.000 € |
+| Native-Speaker-QA (einmalig J3) | 8.000 € | 0 € | 0 € |
+| Token-Mehrkosten Sprachen + Mathe | 5.000 € | 8.000 € | 10.000 € |
+| Mathe-Setup einmalig | 0 € | 5.000 € | 0 € |
+| **Total Lernfeld-Invest** | **17.000 €** | **17.000 €** | **15.000 €** |
 
 ---
 
-## 12. Aktualisierungs-Hinweise
+## 10. Steuern (UG ab J3)
 
-Wenn sich Annahmen ändern (z.B. Preis, Wachstum, Hebel):
-1. Diese `geschaeftsplan-annahmen.md` aktualisieren
-2. Konstanten oben in `build-geschaeftsplan.py` anpassen
-3. `python build-geschaeftsplan.py` neu ausführen
-4. Commit mit Hinweis auf veränderte Annahmen
+- Körperschaftsteuer 15 % + Gewerbesteuer ~14 % = **~29 % Effektiv-Steuersatz** auf positiven EBT
+- Verlustvortrag J3 (~−46 k Op-Marge) reduziert J4-Steuerlast
+- AfA: Marke 29 €/J, Hardware ~8.000 €/J ab J3
+
+---
+
+## 11. Finale 5-Jahres-Ergebnisse (Konsens)
+
+| Kennzahl | J1 | J2 | J3 | J4 | J5 |
+|---|---|---|---|---|---|
+| Brutto-Umsatz | 2.400 € | 27.000 € | 168.000 € | 487.000 € | **921.000 €** |
+| Personalausgaben | 0 € | 0 € | 126.000 € | 212.000 € | 276.000 € |
+| Kreditkosten | 0 € | 3.700 € | 11.500 € | 12.250 € | 11.750 € |
+| EBITDA operativ | −1.700 € | −100 € | +81.000 € | +327.000 € | +671.000 € |
+| Operative Marge (nach Personal) | −1.700 € | −100 € | −46.000 € | +115.000 € | +395.000 € |
+| Cashflow Jahr | −2.700 € | +21.900 € | +22.000 € | +77.000 € | +272.000 € |
+| Liquidität Ende | 0 € | +22.000 € | +44.000 € | +121.000 € | **+393.000 €** |
+
+**Pitch-Story für die Jury:**
+
+> *„Aus 2.500 € Eigenmitteln + 127.500 € Kredit (Mikrokredit + KfW) zu 921 k € Umsatz und 393 k € Liquidität in Jahr 5. Kein VC, keine Verwässerung, kein Burnout-Risiko durch externes Job-Standbein in Phase 1-2."*
+
+---
+
+## 12. Konsistenz-Mapping
+
+| Quelle | Inhalt |
+|---|---|
+| `Pitch/finanzierungs-pitch-v2.html` | 10-Folien-Pitch-Präsentation (Master-Stand) |
+| `Memory: project_finanzierungs_phasen.md` | Vollständige Strategie + Lessons aus Iterationen |
+| `Pitch/Finanzen/geschaeftsplan-annahmen.md` | Dieses Dokument — Detail-Annahmen + Mathematik |
+| `Pitch/finanzierungs-praesentation.html` *(alt)* | Archiv-Version, nicht mehr aktuell |
+
+Bei Wertänderungen: zuerst Memory + Annahmen-MD anpassen, dann Pitch-HTML.

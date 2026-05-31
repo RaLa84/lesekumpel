@@ -1,0 +1,1353 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Lesekumpel · Pitch INSPIRED MV 2026</title>
+<link rel="stylesheet" href="../fonts/fonts.css">
+<style>
+:root {
+  --mint:        #2FB8A6;
+  --navy:        #2B3140;
+  --cream:       #FFF6EF;
+  --cream-light: #FEFBF6;
+  --coral:       #F97352;
+  --lila:        #7D6AE6;
+  --yellow:      #FFD95A;
+  --border:      #D9D4CC;
+  --white:       #FFFFFF;
+  --font-heading: 'Fredoka', system-ui, sans-serif;
+  --font-body:    'Quicksand', system-ui, sans-serif;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+html, body {
+  height: 100%;
+  background: var(--navy);
+  font-family: var(--font-body);
+  color: var(--navy);
+  overflow: hidden;
+}
+
+h1, h2, h3, h4 {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  line-height: 1.15;
+  color: var(--navy);
+}
+
+.deck { width: 100vw; height: 100vh; position: relative; }
+
+.slide {
+  position: absolute;
+  inset: 0;
+  background: var(--cream);
+  padding: 4vh 6vw 3vh;
+  display: none;
+  flex-direction: column;
+  overflow: hidden;
+}
+.slide.active { display: flex; }
+
+/* Blob Background */
+.slide > .blob { position: absolute; pointer-events: none; z-index: 0; }
+.blob.tr-lg { top: -28vh; right: -18vw; width: 30vw; height: 30vw; max-width: 460px; max-height: 460px; }
+.blob.tl-lg { top: -28vh; left: -18vw;  width: 30vw; height: 30vw; max-width: 460px; max-height: 460px; }
+.blob.br-md { bottom: -18vh; right: -12vw; width: 24vw; height: 24vw; max-width: 360px; max-height: 360px; }
+.blob.bl-md { bottom: -18vh; left: -12vw;  width: 24vw; height: 24vw; max-width: 360px; max-height: 360px; }
+.blob.shape-1 { border-radius: 62% 38% 30% 70% / 58% 38% 62% 42%; }
+.blob.shape-2 { border-radius: 38% 62% 70% 30% / 55% 45% 55% 45%; }
+.blob.shape-3 { border-radius: 35% 65% 50% 50% / 62% 38% 62% 38%; transform: rotate(-12deg); }
+.blob.mint   { background: #2FB8A6; opacity: 0.10; }
+.blob.coral  { background: #F97352; opacity: 0.08; }
+.blob.yellow { background: #FFD95A; opacity: 0.20; }
+.blob.lila   { background: #7D6AE6; opacity: 0.09; }
+.slide > * { position: relative; z-index: 1; }
+
+/* Slide Header */
+.slide-tag {
+  font-size: 0.8rem; letter-spacing: 0.16em; text-transform: uppercase;
+  color: var(--lila); font-weight: 700; margin-bottom: 0.7rem;
+}
+h1.slide-title {
+  font-size: clamp(1.6rem, 2.4vw, 2.4rem);
+  font-weight: 600; margin-bottom: 1.2rem;
+  line-height: 1.15; max-width: 90%;
+}
+h1.slide-title .accent { color: var(--coral); }
+.slide-content {
+  flex: 1; display: flex; flex-direction: column;
+  justify-content: center; min-height: 0; gap: 0.9rem;
+}
+
+/* Slide Footer */
+.slide-footer {
+  display: flex; justify-content: space-between; align-items: center;
+  font-size: 0.8rem; color: var(--navy); opacity: 0.5; margin-top: 1.4rem;
+}
+.slide-footer .brand {
+  font-family: var(--font-heading); font-weight: 700;
+  font-size: 1rem; letter-spacing: 0.02em;
+}
+.slide-footer .brand-dot {
+  display: inline-block; width: 10px; height: 10px;
+  background: var(--mint); border-radius: 3px;
+  transform: rotate(45deg); margin-right: 8px; vertical-align: middle;
+}
+.slide-footer .counter { font-variant-numeric: tabular-nums; }
+
+/* Cover */
+.slide-cover { background: var(--cream); justify-content: center; }
+.slide-cover .slide-content {
+  align-items: flex-start; text-align: left;
+  justify-content: center; max-width: 75%;
+}
+.cover-logo {
+  font-family: var(--font-heading); font-size: 1.6rem; font-weight: 700;
+  color: var(--navy); margin-bottom: 4rem;
+  display: flex; align-items: center; gap: 14px;
+}
+.cover-logo .brand-dot { width: 18px; height: 18px; background: var(--mint); border-radius: 5px; transform: rotate(45deg); }
+.cover-logo .brand-name { color: var(--lila); }
+.cover-title { font-size: clamp(2.6rem, 4.5vw, 4.8rem); font-weight: 700; margin-bottom: 1.2rem; line-height: 1.05; }
+.cover-title .accent { color: var(--coral); }
+.cover-sub {
+  font-size: clamp(1.05rem, 1.5vw, 1.5rem); color: var(--navy);
+  opacity: 0.75; max-width: 850px; margin: 0 0 3rem; line-height: 1.4;
+}
+.cover-meta { font-size: 1rem; color: var(--navy); opacity: 0.6; letter-spacing: 0.05em; text-transform: uppercase; }
+
+/* Master Table (Folie 2) */
+.master-table {
+  width: 100%; border-collapse: collapse; font-size: 0.78rem;
+  background: var(--white); border-radius: 10px; overflow: hidden;
+  box-shadow: 0 4px 16px rgba(43,49,64,0.06);
+}
+.master-table thead th {
+  background: var(--navy); color: var(--white);
+  padding: 0.45rem 0.55rem; font-family: var(--font-heading);
+  font-weight: 700; text-align: center; font-size: 0.85rem;
+  letter-spacing: 0.02em; border: none;
+}
+.master-table thead th:first-child { text-align: left; }
+.master-table tbody td {
+  padding: 0.32rem 0.55rem;
+  border-bottom: 1px solid rgba(217,212,204,0.5);
+  font-variant-numeric: tabular-nums; text-align: right;
+}
+.master-table tbody td:first-child {
+  text-align: left; font-weight: 500; color: var(--navy);
+}
+.master-table .row-key { background: rgba(255,217,90,0.15); font-weight: 700; }
+.master-table .row-key td { font-weight: 700; }
+.master-table .row-result {
+  background: rgba(47,184,166,0.10);
+  font-weight: 700; border-top: 2px solid var(--mint);
+}
+.master-table .row-result td { font-weight: 700; color: var(--navy); }
+.master-table .row-result td:first-child { color: var(--mint); }
+.master-table .negative { color: var(--coral); }
+.master-table .check { color: var(--mint); font-weight: 700; }
+
+.master-pointe {
+  margin-top: 1rem;
+  background: linear-gradient(135deg, rgba(47,184,166,0.10) 0%, rgba(125,106,230,0.08) 100%);
+  border: 1px solid rgba(47,184,166,0.30);
+  border-radius: 12px; padding: 0.85rem 1.1rem;
+  display: grid; grid-template-columns: 1fr 2fr; gap: 1.2rem; align-items: center;
+}
+.master-pointe-num {
+  font-family: var(--font-heading); font-weight: 700;
+  font-size: 1rem; color: var(--mint); line-height: 1.4;
+}
+.master-pointe-num strong { font-size: 1.4rem; color: var(--coral); }
+.master-pointe-text { font-family: var(--font-body); font-size: 0.85rem; color: var(--navy); line-height: 1.45; }
+.master-pointe-text strong { color: var(--mint); font-family: var(--font-heading); }
+
+/* Chart Container (Folien 3, 6) */
+.chart-wrap {
+  background: var(--white); border-radius: 16px;
+  padding: 1.5rem; box-shadow: 0 4px 20px rgba(43,49,64,0.06);
+  display: grid; grid-template-columns: 2fr 1fr; gap: 1.5rem; align-items: center;
+}
+.chart-svg-box { min-height: 380px; }
+.chart-svg { width: 100%; height: 100%; min-height: 380px; }
+.chart-side {
+  display: flex; flex-direction: column; gap: 0.9rem;
+}
+.chart-legend {
+  display: flex; flex-direction: column; gap: 0.4rem;
+  padding-bottom: 1rem; border-bottom: 1px solid var(--border);
+}
+.legend-item { display: flex; align-items: center; gap: 0.5rem; font-size: 0.9rem; }
+.legend-swatch { width: 14px; height: 14px; border-radius: 3px; }
+.legend-swatch.premium { background: var(--coral); }
+.legend-swatch.pro { background: var(--mint); }
+.legend-swatch.free { background: var(--lila); }
+.legend-swatch.revenue { background: var(--mint); }
+.legend-swatch.costs { background: var(--coral); }
+
+.chart-notes { font-size: 0.85rem; line-height: 1.5; color: var(--navy); }
+.chart-notes h4 {
+  font-size: 0.95rem; margin-bottom: 0.4rem; color: var(--lila);
+  text-transform: uppercase; letter-spacing: 0.06em; font-weight: 700;
+}
+.chart-notes ul { margin-left: 1.2rem; }
+.chart-notes li { margin-bottom: 0.3rem; }
+.chart-notes strong { color: var(--coral); }
+
+/* 4-Card Grid (Folie 4 Kanal-Mix) */
+.cards-4 { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.2rem; }
+.card {
+  background: var(--white); border-radius: 18px;
+  padding: 1.4rem 1.2rem; display: flex; flex-direction: column; gap: 0.6rem;
+  box-shadow: 0 6px 24px rgba(43,49,64,0.06);
+  position: relative; overflow: hidden;
+}
+.card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0;
+  height: 4px; background: var(--border);
+}
+.card.k1::before { background: var(--mint); }
+.card.k2::before { background: var(--lila); }
+.card.k3::before { background: var(--coral); }
+.card.k4::before { background: var(--yellow); }
+.card .icon { font-size: 1.8rem; line-height: 1; }
+.card h3 { font-size: 1.1rem; color: var(--navy); }
+.card .desc { font-size: 0.88rem; line-height: 1.5; color: var(--navy); opacity: 0.78; flex: 1; }
+.card .scale-tag {
+  font-size: 0.7rem; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.1em; padding: 0.3rem 0.65rem; border-radius: 100px;
+  background: var(--cream); align-self: flex-start; color: var(--navy);
+}
+.season-bar {
+  margin-top: 1rem; padding: 1rem 1.4rem;
+  background: var(--white); border-radius: 14px;
+  font-size: 0.9rem; color: var(--navy); line-height: 1.5;
+  box-shadow: 0 4px 16px rgba(43,49,64,0.04);
+  display: flex; align-items: center; gap: 1.2rem; flex-wrap: wrap;
+}
+.season-bar strong { color: var(--coral); }
+.season-pill {
+  background: var(--yellow); padding: 0.25rem 0.8rem;
+  border-radius: 100px; font-size: 0.82rem; font-weight: 700;
+}
+
+/* Pyramide (Folie 5) */
+.pyramid-stack {
+  display: flex; flex-direction: column; gap: 0.8rem;
+  align-items: center; padding: 1rem 0;
+}
+.pyramid-tier {
+  background: var(--white); border-radius: 14px;
+  padding: 1rem 1.6rem; box-shadow: 0 4px 16px rgba(43,49,64,0.06);
+  display: grid; grid-template-columns: auto 1fr auto; gap: 1.5rem;
+  align-items: center; position: relative; overflow: hidden;
+}
+.pyramid-tier::before {
+  content: ''; position: absolute; top: 0; bottom: 0; left: 0;
+  width: 6px; background: var(--border);
+}
+.pyramid-tier.p1 { width: 96%; }
+.pyramid-tier.p1::before { background: var(--mint); }
+.pyramid-tier.p2 { width: 80%; }
+.pyramid-tier.p2::before { background: var(--lila); }
+.pyramid-tier.p3 { width: 64%; }
+.pyramid-tier.p3::before { background: var(--coral); }
+.pyramid-tier.p4 { width: 48%; }
+.pyramid-tier.p4::before { background: var(--yellow); }
+.pyramid-tier .pt-phase {
+  font-family: var(--font-heading); font-weight: 700; font-size: 1.05rem;
+  color: var(--navy); min-width: 60px;
+}
+.pyramid-tier .pt-body h3 {
+  font-size: 1.1rem; margin-bottom: 0.15rem; color: var(--navy);
+}
+.pyramid-tier .pt-body p {
+  font-size: 0.85rem; opacity: 0.75; line-height: 1.4;
+}
+.pyramid-tier .pt-hebel {
+  font-family: var(--font-heading); font-weight: 700;
+  font-size: 0.95rem; color: var(--coral); white-space: nowrap;
+}
+.tam-banner {
+  margin-top: 1.5rem; padding: 1.1rem 1.6rem;
+  background: linear-gradient(135deg, rgba(47,184,166,0.15) 0%, rgba(125,106,230,0.10) 100%);
+  border: 1px solid rgba(47,184,166,0.30); border-radius: 14px;
+  font-size: 0.95rem; line-height: 1.5; color: var(--navy);
+  display: flex; gap: 1.5rem; align-items: center; flex-wrap: wrap;
+}
+.tam-banner strong { color: var(--mint); font-family: var(--font-heading); font-size: 1.1rem; }
+
+/* Finanzierung Cards (Folie 7) */
+.fin-cards { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.4rem; }
+.fin-card {
+  background: var(--white); border-radius: 20px;
+  padding: 1.6rem 1.4rem; box-shadow: 0 6px 24px rgba(43,49,64,0.06);
+  position: relative; overflow: hidden;
+  display: flex; flex-direction: column;
+}
+.fin-card::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0;
+  height: 6px; background: var(--border);
+}
+.fin-card.f1::before { background: var(--lila); }
+.fin-card.f2::before { background: var(--mint); }
+.fin-card.f3::before { background: var(--coral); }
+.fin-card .fc-label {
+  font-size: 0.75rem; letter-spacing: 0.12em; text-transform: uppercase;
+  font-weight: 700; margin-bottom: 0.6rem;
+}
+.fin-card.f1 .fc-label { color: var(--lila); }
+.fin-card.f2 .fc-label { color: var(--mint); }
+.fin-card.f3 .fc-label { color: var(--coral); }
+.fin-card .fc-amount {
+  font-family: var(--font-heading); font-weight: 700;
+  font-size: 2.4rem; color: var(--navy); line-height: 1; margin-bottom: 0.4rem;
+}
+.fin-card .fc-amount .fc-currency { font-size: 1.4rem; opacity: 0.6; }
+.fin-card .fc-phase {
+  font-family: var(--font-heading); font-weight: 600;
+  font-size: 1rem; margin-bottom: 0.8rem; color: var(--navy);
+}
+.fin-card .fc-details {
+  font-size: 0.85rem; line-height: 1.55; color: var(--navy);
+  opacity: 0.85;
+}
+.fin-card .fc-details li { margin-bottom: 0.25rem; margin-left: 1.1rem; }
+.fin-banner {
+  margin-top: 1.5rem; padding: 1.2rem 1.8rem;
+  background: var(--coral); color: var(--white);
+  border-radius: 14px; font-size: 1.05rem; font-weight: 600;
+  text-align: center; line-height: 1.5;
+}
+.fin-banner strong {
+  font-family: var(--font-heading); font-weight: 700; font-size: 1.2rem;
+}
+
+/* Use-of-Funds Donut (Folie 8) */
+.uof-grid { display: grid; grid-template-columns: 1fr 1.2fr; gap: 2rem; align-items: center; }
+.uof-svg { width: 100%; max-width: 380px; margin: 0 auto; }
+.uof-list { display: flex; flex-direction: column; gap: 0.7rem; }
+.uof-item {
+  background: var(--white); border-radius: 12px;
+  padding: 0.9rem 1.2rem; display: grid;
+  grid-template-columns: auto 1fr auto; gap: 1rem; align-items: center;
+  box-shadow: 0 3px 12px rgba(43,49,64,0.05);
+  position: relative; overflow: hidden;
+}
+.uof-item::before {
+  content: ''; position: absolute; left: 0; top: 0; bottom: 0; width: 5px;
+}
+.uof-item.u1::before { background: var(--coral); }
+.uof-item.u2::before { background: var(--mint); }
+.uof-item.u3::before { background: var(--lila); }
+.uof-item.u4::before { background: var(--yellow); }
+.uof-item .uof-pct {
+  font-family: var(--font-heading); font-weight: 700;
+  font-size: 1.4rem; color: var(--navy); min-width: 60px;
+}
+.uof-item .uof-name h4 { font-size: 1rem; margin-bottom: 0.1rem; }
+.uof-item .uof-name p { font-size: 0.82rem; opacity: 0.7; line-height: 1.4; }
+.uof-item .uof-amount {
+  font-family: var(--font-heading); font-weight: 700;
+  font-size: 1.1rem; color: var(--coral);
+}
+
+/* Personal (Folie 9) */
+.personal-grid { display: grid; grid-template-columns: 2fr 1fr; gap: 1.5rem; }
+.personal-table {
+  width: 100%; background: var(--white); border-radius: 12px;
+  overflow: hidden; box-shadow: 0 4px 16px rgba(43,49,64,0.06);
+  font-size: 0.82rem; border-collapse: collapse;
+}
+.personal-table thead th {
+  background: var(--navy); color: var(--white);
+  padding: 0.5rem 0.6rem; font-family: var(--font-heading);
+  font-weight: 700; font-size: 0.85rem; text-align: center;
+}
+.personal-table thead th:first-child { text-align: left; }
+.personal-table tbody td {
+  padding: 0.35rem 0.6rem;
+  border-bottom: 1px solid rgba(217,212,204,0.5);
+  text-align: right; font-variant-numeric: tabular-nums;
+}
+.personal-table tbody td:first-child {
+  text-align: left; font-weight: 500;
+}
+.personal-table .row-total {
+  background: rgba(47,184,166,0.10); font-weight: 700;
+  border-top: 2px solid var(--mint);
+}
+.personal-table .row-total td { font-weight: 700; }
+.personal-table .row-total td:first-child { color: var(--mint); }
+.personal-side { display: flex; flex-direction: column; gap: 1rem; }
+.personal-card {
+  background: var(--white); border-radius: 14px;
+  padding: 1.1rem 1.3rem; box-shadow: 0 4px 16px rgba(43,49,64,0.05);
+  border-left: 4px solid var(--mint);
+}
+.personal-card h4 {
+  font-size: 1rem; margin-bottom: 0.5rem; color: var(--lila);
+  text-transform: uppercase; letter-spacing: 0.05em; font-size: 0.78rem; font-weight: 700;
+}
+.personal-card .pc-big {
+  font-family: var(--font-heading); font-weight: 700;
+  font-size: 1.4rem; color: var(--navy); margin-bottom: 0.25rem;
+}
+.personal-card p { font-size: 0.85rem; line-height: 1.45; color: var(--navy); opacity: 0.85; }
+
+/* Annahmen-Tabelle (Folie 10) */
+.assumptions-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; }
+.assumption-block {
+  background: var(--white); border-radius: 14px;
+  padding: 1.1rem 1.3rem; box-shadow: 0 4px 16px rgba(43,49,64,0.05);
+  position: relative; overflow: hidden;
+}
+.assumption-block::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0;
+  height: 4px; background: var(--border);
+}
+.assumption-block.a1::before { background: var(--mint); }
+.assumption-block.a2::before { background: var(--lila); }
+.assumption-block.a3::before { background: var(--coral); }
+.assumption-block.a4::before { background: var(--yellow); }
+.assumption-block h3 {
+  font-size: 1rem; margin-bottom: 0.6rem;
+  color: var(--navy);
+}
+.assumption-block .a-tag {
+  font-size: 0.7rem; letter-spacing: 0.1em;
+  text-transform: uppercase; font-weight: 700;
+  margin-bottom: 0.4rem;
+}
+.assumption-block.a1 .a-tag { color: var(--mint); }
+.assumption-block.a2 .a-tag { color: var(--lila); }
+.assumption-block.a3 .a-tag { color: var(--coral); }
+.assumption-block.a4 .a-tag { color: #C9A300; }
+.a-table {
+  width: 100%; font-size: 0.82rem; border-collapse: collapse;
+}
+.a-table td {
+  padding: 0.28rem 0.4rem;
+  border-bottom: 1px dashed var(--border);
+  font-variant-numeric: tabular-nums;
+}
+.a-table td:first-child { font-weight: 500; }
+.a-table td:last-child { text-align: right; font-weight: 600; color: var(--coral); }
+.a-table tr:last-child td { border-bottom: none; }
+
+/* Navigation */
+.nav-hint {
+  position: fixed; bottom: 16px; left: 50%; transform: translateX(-50%);
+  font-size: 0.75rem; color: var(--navy); opacity: 0.35;
+  letter-spacing: 0.1em; text-transform: uppercase;
+  pointer-events: none; z-index: 100;
+}
+.nav-buttons { position: fixed; bottom: 16px; right: 24px; display: flex; gap: 8px; z-index: 100; }
+.nav-btn {
+  width: 36px; height: 36px; border-radius: 50%;
+  border: 1px solid var(--border); background: var(--white);
+  font-family: var(--font-heading); font-size: 1rem;
+  cursor: pointer; color: var(--navy);
+  display: flex; align-items: center; justify-content: center;
+  transition: all 0.15s ease;
+}
+.nav-btn:hover { background: var(--coral); color: var(--white); border-color: var(--coral); }
+.nav-btn:disabled { opacity: 0.3; cursor: default; }
+.nav-btn:disabled:hover { background: var(--white); color: var(--navy); border-color: var(--border); }
+
+@media (max-width: 900px) {
+  .cards-4 { grid-template-columns: repeat(2, 1fr); }
+  .fin-cards { grid-template-columns: 1fr; }
+  .uof-grid { grid-template-columns: 1fr; }
+  .personal-grid { grid-template-columns: 1fr; }
+  .assumptions-grid { grid-template-columns: 1fr; }
+  .chart-wrap { grid-template-columns: 1fr; }
+  .nav-hint, .nav-buttons { display: none !important; }
+}
+</style>
+</head>
+<body>
+
+<div class="deck">
+
+<!-- ==================== FOLIE 1: COVER ==================== -->
+<section class="slide slide-cover active" data-slide="0">
+  <div class="blob tr-lg shape-1 mint"></div>
+  <div class="blob bl-md shape-2 coral"></div>
+  <div class="blob br-md shape-3 yellow"></div>
+
+  <div class="slide-content">
+    <div class="cover-logo">
+      <span class="brand-dot"></span>
+      <span>Lese<span class="brand-name">kumpel</span></span>
+    </div>
+    <h1 class="cover-title">Aus 2.500 € zu <span class="accent">393 k Liquidität</span><br>in 5 Jahren.</h1>
+    <p class="cover-sub">Neuroinklusive Lese-, Sprach- und Lernplattform für Kinder mit LRS, ADHS, Autismus oder DaZ. Bootstrap-finanziert ohne VC, ohne Verwässerung — schrittweise validiert.</p>
+    <div class="cover-meta">Pitch · INSPIRED MV 2026 · Stand 31. Mai 2026</div>
+  </div>
+
+  <div class="slide-footer">
+    <div class="brand"><span class="brand-dot"></span>Lesekumpel · Pitch v2</div>
+    <div class="counter">01 / 10</div>
+  </div>
+</section>
+
+<!-- ==================== FOLIE 2: 10 KENNZAHLEN MASTER-TABELLE ==================== -->
+<section class="slide" data-slide="1">
+  <div class="blob tr-lg shape-2 lila"></div>
+  <div class="blob bl-md shape-1 mint"></div>
+
+  <div class="slide-tag">Folie 02 · Master-Übersicht</div>
+  <h1 class="slide-title">Die <span class="accent">5-Jahres-Zahlen</span> auf einen Blick</h1>
+
+  <div class="slide-content">
+    <table class="master-table">
+      <thead>
+        <tr>
+          <th>Kennzahl</th>
+          <th>Jahr 1</th>
+          <th>Jahr 2</th>
+          <th>Jahr 3</th>
+          <th>Jahr 4</th>
+          <th>Jahr 5</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Phase / Rechtsform</td>
+          <td>Konzept · Privat</td>
+          <td>Validierung · GbR</td>
+          <td>Skalier.+Sprachen · UG</td>
+          <td>Skalier.+Mathe · UG</td>
+          <td>Vollzeit · UG</td>
+        </tr>
+        <tr>
+          <td>Lernfeld</td>
+          <td>Lesen</td>
+          <td>Lesen</td>
+          <td>+ Sprachen + DaZ</td>
+          <td>+ Mathe</td>
+          <td>Komplett</td>
+        </tr>
+        <tr class="row-key">
+          <td>Premium-Nutzer (Ende)</td>
+          <td>50</td>
+          <td>450</td>
+          <td>2.200</td>
+          <td>4.800</td>
+          <td>7.500</td>
+        </tr>
+        <tr class="row-key">
+          <td>Pro-Accounts (Ende)</td>
+          <td>8</td>
+          <td>70</td>
+          <td>500</td>
+          <td>1.200</td>
+          <td>2.200</td>
+        </tr>
+        <tr class="row-key">
+          <td>Brutto-Umsatz</td>
+          <td>2.400 €</td>
+          <td>27.000 €</td>
+          <td>168.000 €</td>
+          <td>487.000 €</td>
+          <td>921.000 €</td>
+        </tr>
+        <tr>
+          <td>Personalausgaben</td>
+          <td>0 €</td>
+          <td>0 €</td>
+          <td>126.000 €</td>
+          <td>212.000 €</td>
+          <td>276.000 €</td>
+        </tr>
+        <tr>
+          <td>Kreditkosten (Zins + Tilgung)</td>
+          <td>0 €</td>
+          <td>3.700 €</td>
+          <td>11.500 €</td>
+          <td>12.250 €</td>
+          <td>11.750 €</td>
+        </tr>
+        <tr>
+          <td>EBITDA operativ</td>
+          <td class="negative">−1.700 €</td>
+          <td class="negative">−100 €</td>
+          <td>+81.000 €</td>
+          <td>+327.000 €</td>
+          <td>+671.000 €</td>
+        </tr>
+        <tr>
+          <td>Operative Marge (nach Personal)</td>
+          <td class="negative">−1.700 €</td>
+          <td class="negative">−100 €</td>
+          <td class="negative">−46.000 €</td>
+          <td>+115.000 €</td>
+          <td>+395.000 €</td>
+        </tr>
+        <tr>
+          <td>Cashflow Jahr</td>
+          <td class="negative">−2.700 €</td>
+          <td>+21.900 €</td>
+          <td>+22.000 €</td>
+          <td>+77.000 €</td>
+          <td>+272.000 €</td>
+        </tr>
+        <tr class="row-result">
+          <td>Liquidität Ende</td>
+          <td>0 €</td>
+          <td>22.000 €</td>
+          <td>44.000 €</td>
+          <td>121.000 €</td>
+          <td>393.000 €</td>
+        </tr>
+        <tr>
+          <td>Break-Even / Tragfähig</td>
+          <td>–</td>
+          <td><span class="check">knapp ✓</span></td>
+          <td>– / –</td>
+          <td><span class="check">✓ / ✓</span></td>
+          <td><span class="check">✓ / ✓</span></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="master-pointe">
+      <div class="master-pointe-num">2.500 € Eigenmittel<br>+ 127.500 € <strong>Kredit</strong></div>
+      <div class="master-pointe-text">… führen zu <strong>921 k € Umsatz</strong> und <strong>393 k € Liquidität</strong> in Jahr 5 — ohne VC, ohne Verwässerung, ohne Burnout durch externes Job-Standbein.</div>
+    </div>
+  </div>
+
+  <div class="slide-footer">
+    <div class="brand"><span class="brand-dot"></span>Lesekumpel · Pitch v2</div>
+    <div class="counter">02 / 10</div>
+  </div>
+</section>
+
+<!-- ==================== FOLIE 3: NUTZERZAHLEN-ENTWICKLUNG ==================== -->
+<section class="slide" data-slide="2">
+  <div class="blob tl-lg shape-1 mint"></div>
+  <div class="blob br-md shape-2 coral"></div>
+
+  <div class="slide-tag">Folie 03 · Wachstum</div>
+  <h1 class="slide-title">Nutzerzahlen-Entwicklung mit <span class="accent">Lernfeld-Sprüngen</span></h1>
+
+  <div class="slide-content">
+    <div class="chart-wrap">
+      <div class="chart-svg-box">
+        <svg class="chart-svg" viewBox="0 0 600 380" preserveAspectRatio="xMidYMid meet">
+          <!-- Axes -->
+          <line x1="50" y1="340" x2="580" y2="340" stroke="#2B3140" stroke-width="1.5"/>
+          <line x1="50" y1="20"  x2="50"  y2="340" stroke="#2B3140" stroke-width="1.5"/>
+
+          <!-- Y-Achsen-Labels (Skala: 0–8000) -->
+          <text x="42" y="345" font-size="10" fill="#2B3140" text-anchor="end">0</text>
+          <text x="42" y="265" font-size="10" fill="#2B3140" text-anchor="end">2.000</text>
+          <text x="42" y="185" font-size="10" fill="#2B3140" text-anchor="end">4.000</text>
+          <text x="42" y="105" font-size="10" fill="#2B3140" text-anchor="end">6.000</text>
+          <text x="42" y="28"  font-size="10" fill="#2B3140" text-anchor="end">8.000</text>
+
+          <!-- Gridlines -->
+          <line x1="50" y1="260" x2="580" y2="260" stroke="#D9D4CC" stroke-width="0.5" stroke-dasharray="3,3"/>
+          <line x1="50" y1="180" x2="580" y2="180" stroke="#D9D4CC" stroke-width="0.5" stroke-dasharray="3,3"/>
+          <line x1="50" y1="100" x2="580" y2="100" stroke="#D9D4CC" stroke-width="0.5" stroke-dasharray="3,3"/>
+
+          <!-- X-Achsen-Labels (J1-J5) -->
+          <text x="100" y="358" font-size="11" fill="#2B3140" text-anchor="middle" font-weight="600">J1</text>
+          <text x="200" y="358" font-size="11" fill="#2B3140" text-anchor="middle" font-weight="600">J2</text>
+          <text x="300" y="358" font-size="11" fill="#2B3140" text-anchor="middle" font-weight="600">J3</text>
+          <text x="400" y="358" font-size="11" fill="#2B3140" text-anchor="middle" font-weight="600">J4</text>
+          <text x="500" y="358" font-size="11" fill="#2B3140" text-anchor="middle" font-weight="600">J5</text>
+
+          <!-- Lernfeld-Marker J3 (Sprachen + DaZ) -->
+          <line x1="300" y1="20" x2="300" y2="340" stroke="#7D6AE6" stroke-width="1.5" stroke-dasharray="5,4" opacity="0.6"/>
+          <rect x="220" y="22" width="160" height="20" rx="10" fill="#7D6AE6" opacity="0.85"/>
+          <text x="300" y="36" font-size="10" fill="#FFFFFF" text-anchor="middle" font-weight="700">J3: + Sprachen + DaZ</text>
+
+          <!-- Lernfeld-Marker J4 (Mathe) -->
+          <line x1="400" y1="60" x2="400" y2="340" stroke="#F97352" stroke-width="1.5" stroke-dasharray="5,4" opacity="0.6"/>
+          <rect x="340" y="62" width="120" height="20" rx="10" fill="#F97352" opacity="0.85"/>
+          <text x="400" y="76" font-size="10" fill="#FFFFFF" text-anchor="middle" font-weight="700">J4: + Mathe</text>
+
+          <!-- Premium-Linie (Coral) — 50/450/2.200/4.800/7.500 → y = 340 - (val/8000)*320 -->
+          <polyline fill="none" stroke="#F97352" stroke-width="3"
+            points="100,338 200,322 300,252 400,148 500,40"/>
+          <circle cx="100" cy="338" r="5" fill="#F97352"/>
+          <circle cx="200" cy="322" r="5" fill="#F97352"/>
+          <circle cx="300" cy="252" r="5" fill="#F97352"/>
+          <circle cx="400" cy="148" r="5" fill="#F97352"/>
+          <circle cx="500" cy="40"  r="5" fill="#F97352"/>
+          <text x="510" y="44" font-size="11" fill="#F97352" font-weight="700">7.500</text>
+
+          <!-- Pro-Linie (Mint) — 8/70/500/1.200/2.200 -->
+          <polyline fill="none" stroke="#2FB8A6" stroke-width="3"
+            points="100,340 200,337 300,320 400,292 500,252"/>
+          <circle cx="100" cy="340" r="4" fill="#2FB8A6"/>
+          <circle cx="200" cy="337" r="4" fill="#2FB8A6"/>
+          <circle cx="300" cy="320" r="4" fill="#2FB8A6"/>
+          <circle cx="400" cy="292" r="4" fill="#2FB8A6"/>
+          <circle cx="500" cy="252" r="4" fill="#2FB8A6"/>
+          <text x="510" y="256" font-size="11" fill="#2FB8A6" font-weight="700">2.200</text>
+
+          <!-- Free-Linie (Lila, kleiner) — 750/6.750/26.400/57.600/90.000 → skaliert auf eigene Achse rechts oder als Andeutung -->
+          <!-- Vereinfacht: Free linear angedeutet, skala wäre zu groß; skaliert auf 0-8000 Achse abgeschnitten -->
+          <polyline fill="none" stroke="#7D6AE6" stroke-width="2.5" stroke-dasharray="6,3" opacity="0.7"
+            points="100,340 200,330 300,235 400,80 500,5"/>
+          <text x="500" y="12" font-size="10" fill="#7D6AE6" font-weight="700">~90k Free</text>
+
+          <!-- Y-Achsen-Titel -->
+          <text x="15" y="180" font-size="11" fill="#2B3140" text-anchor="middle" transform="rotate(-90, 15, 180)" font-weight="600">Nutzer (kumuliert)</text>
+        </svg>
+      </div>
+
+      <div class="chart-side">
+        <div class="chart-legend">
+          <div class="legend-item"><span class="legend-swatch premium"></span>Premium (Familien)</div>
+          <div class="legend-item"><span class="legend-swatch pro"></span>Pro (Lehrer / Schulen)</div>
+          <div class="legend-item"><span class="legend-swatch free"></span>Free (kostenlose Nutzer)</div>
+        </div>
+
+        <div class="chart-notes">
+          <h4>Was die Sprünge erklärt</h4>
+          <ul>
+            <li><strong>J3:</strong> Sprachen + DaZ doppeln das adressierbare Publikum (DACH + DaZ-Schulen)</li>
+            <li><strong>J3:</strong> DaZ-Schul-Vertriebskanal verdoppelt Pro-Ratio von 2 % → 4 %</li>
+            <li><strong>J4:</strong> Mathe stabilisiert Retention (Netto-Churn 4 % → 3 %)</li>
+            <li><strong>J4:</strong> ARPU-Boost durch Multi-Sprach-Tier (75 € → 89 €)</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide-footer">
+    <div class="brand"><span class="brand-dot"></span>Lesekumpel · Pitch v2</div>
+    <div class="counter">03 / 10</div>
+  </div>
+</section>
+
+<!-- ==================== FOLIE 4: KANAL-MIX AKQUISE ==================== -->
+<section class="slide" data-slide="3">
+  <div class="blob tr-lg shape-3 yellow"></div>
+  <div class="blob bl-md shape-1 lila"></div>
+
+  <div class="slide-tag">Folie 04 · Akquise</div>
+  <h1 class="slide-title">Wie Nutzer:innen zu uns kommen — <span class="accent">4 Kanäle</span></h1>
+
+  <div class="slide-content">
+    <div class="cards-4">
+      <div class="card k1">
+        <div class="icon">📚</div>
+        <h3>Lehrer-Outreach</h3>
+        <p class="desc">LinkedIn-Direktansprache, DaZ-Fachverbände, Pädagogen-Communities. Schulen kaufen Pro-Accounts aus eigenen Förderbudgets.</p>
+        <span class="scale-tag">B2B · Akquise</span>
+      </div>
+      <div class="card k2">
+        <div class="icon">🔍</div>
+        <h3>SEO / UGC-Loop</h3>
+        <p class="desc">Story-Vielfalt erzeugt Long-Tail-SEO. Eltern teilen Geschichten in Communities. Selbstverstärkender Effekt.</p>
+        <span class="scale-tag">B2C · Skalierung</span>
+      </div>
+      <div class="card k3">
+        <div class="icon">📸</div>
+        <h3>Instagram</h3>
+        <p class="desc">Eltern-Influencer für Reichweite, Reels mit Lesefortschritts-Momenten. Awareness und Brand-Building.</p>
+        <span class="scale-tag">B2C · Awareness</span>
+      </div>
+      <div class="card k4">
+        <div class="icon">💬</div>
+        <h3>Discord-Community</h3>
+        <p class="desc">Geschlossene Eltern-Community für Retention. Direktes Feedback, Word-of-Mouth, niedrige Abwanderung.</p>
+        <span class="scale-tag">B2C · Retention</span>
+      </div>
+    </div>
+
+    <div class="season-bar">
+      <strong>Saisonale Verteilung des Marketing-Budgets:</strong>
+      <span class="season-pill">35 % Schulbeginn (Aug + Sep)</span>
+      <span class="season-pill">25 % Halbjahres-Zeugnis (Feb + Mar)</span>
+      <span class="season-pill">40 % restliche 8 Monate</span>
+    </div>
+
+    <div class="season-bar" style="margin-top:0.8rem;">
+      <strong>Marketing-Budget je Jahr:</strong>
+      <span>J2: 10 k · J3: 30 k · J4: 30 k · J5: 15 k €</span>
+      <span style="margin-left:auto;color:var(--lila);font-weight:700;">Total 5J: 85 k €</span>
+    </div>
+  </div>
+
+  <div class="slide-footer">
+    <div class="brand"><span class="brand-dot"></span>Lesekumpel · Pitch v2</div>
+    <div class="counter">04 / 10</div>
+  </div>
+</section>
+
+<!-- ==================== FOLIE 5: LERNFELD-ROADMAP (PYRAMIDE) ==================== -->
+<section class="slide" data-slide="4">
+  <div class="blob tl-lg shape-2 mint"></div>
+  <div class="blob br-md shape-1 coral"></div>
+
+  <div class="slide-tag">Folie 05 · Vision &amp; Roadmap</div>
+  <h1 class="slide-title">Vom Lesekumpel zum <span class="accent">Lernkumpel</span></h1>
+
+  <div class="slide-content">
+    <div class="pyramid-stack">
+      <div class="pyramid-tier p1">
+        <div class="pt-phase">J1-2</div>
+        <div class="pt-body">
+          <h3>Lesekumpel — Fundament</h3>
+          <p>Neuroinklusive Lese-App für DE-Grundschule mit LRS, ADHS, Autismus. 9 Personas, 4 Neurotypen.</p>
+        </div>
+        <div class="pt-hebel">~3 M Kinder DE</div>
+      </div>
+
+      <div class="pyramid-tier p2">
+        <div class="pt-phase">J3</div>
+        <div class="pt-body">
+          <h3>+ Sprachen + DaZ</h3>
+          <p>Mehrsprachiger Lesekumpel. DaZ-Schul-Vertriebskanal mit eigenen Förderbudgets — niemand sonst neuroinklusiv.</p>
+        </div>
+        <div class="pt-hebel">+ DACH + DaZ ≈ 5 M</div>
+      </div>
+
+      <div class="pyramid-tier p3">
+        <div class="pt-phase">J4</div>
+        <div class="pt-body">
+          <h3>+ Mathe (Rechen-Geschichten)</h3>
+          <p>Eingebettete Matheaufgaben in Stories. Dyskalkulie-Markt ohne neuroinklusive Konkurrenz.</p>
+        </div>
+        <div class="pt-hebel">Retention + ARPU↑</div>
+      </div>
+
+      <div class="pyramid-tier p4">
+        <div class="pt-phase">J5</div>
+        <div class="pt-body">
+          <h3>Marktführer DACH neuroinklusiv</h3>
+          <p>Komplettes Lernpaket. 7.500 Familien, 2.200 Schul-Accounts.</p>
+        </div>
+        <div class="pt-hebel">~1 M € Umsatz</div>
+      </div>
+    </div>
+
+    <div class="tam-banner">
+      <strong>TAM-Verdreifachung:</strong>
+      <span>Lesen-only (3 M) → + Sprachen + DaZ (5 M + Schulbudget) → + Mathe (Dyskalkulie 5–7 % der Kinder) — jede Stufe nutzt die bestehende Tech-Basis, Marginal-Cost bleibt niedrig.</span>
+    </div>
+  </div>
+
+  <div class="slide-footer">
+    <div class="brand"><span class="brand-dot"></span>Lesekumpel · Pitch v2</div>
+    <div class="counter">05 / 10</div>
+  </div>
+</section>
+
+<!-- ==================== FOLIE 6: KOSTEN/ERTRÄGE + BREAK-EVEN ==================== -->
+<section class="slide" data-slide="5">
+  <div class="blob tr-lg shape-1 coral"></div>
+  <div class="blob bl-md shape-3 mint"></div>
+
+  <div class="slide-tag">Folie 06 · GuV-Logik</div>
+  <h1 class="slide-title">Kosten, Erträge und der <span class="accent">Break-Even-Punkt</span></h1>
+
+  <div class="slide-content">
+    <div class="chart-wrap">
+      <div class="chart-svg-box">
+        <svg class="chart-svg" viewBox="0 0 600 380" preserveAspectRatio="xMidYMid meet">
+          <!-- Axes -->
+          <line x1="50" y1="340" x2="580" y2="340" stroke="#2B3140" stroke-width="1.5"/>
+          <line x1="50" y1="20"  x2="50"  y2="340" stroke="#2B3140" stroke-width="1.5"/>
+
+          <!-- Y-Achsen-Labels (Skala: 0–1.000 k €) -->
+          <text x="42" y="345" font-size="10" fill="#2B3140" text-anchor="end">0</text>
+          <text x="42" y="277" font-size="10" fill="#2B3140" text-anchor="end">200k</text>
+          <text x="42" y="213" font-size="10" fill="#2B3140" text-anchor="end">400k</text>
+          <text x="42" y="149" font-size="10" fill="#2B3140" text-anchor="end">600k</text>
+          <text x="42" y="85"  font-size="10" fill="#2B3140" text-anchor="end">800k</text>
+          <text x="42" y="28"  font-size="10" fill="#2B3140" text-anchor="end">1.000k</text>
+
+          <!-- Gridlines -->
+          <line x1="50" y1="272" x2="580" y2="272" stroke="#D9D4CC" stroke-width="0.5" stroke-dasharray="3,3"/>
+          <line x1="50" y1="208" x2="580" y2="208" stroke="#D9D4CC" stroke-width="0.5" stroke-dasharray="3,3"/>
+          <line x1="50" y1="144" x2="580" y2="144" stroke="#D9D4CC" stroke-width="0.5" stroke-dasharray="3,3"/>
+          <line x1="50" y1="80"  x2="580" y2="80"  stroke="#D9D4CC" stroke-width="0.5" stroke-dasharray="3,3"/>
+
+          <!-- X-Achsen-Labels -->
+          <text x="100" y="358" font-size="11" fill="#2B3140" text-anchor="middle" font-weight="600">J1</text>
+          <text x="200" y="358" font-size="11" fill="#2B3140" text-anchor="middle" font-weight="600">J2</text>
+          <text x="300" y="358" font-size="11" fill="#2B3140" text-anchor="middle" font-weight="600">J3</text>
+          <text x="400" y="358" font-size="11" fill="#2B3140" text-anchor="middle" font-weight="600">J4</text>
+          <text x="500" y="358" font-size="11" fill="#2B3140" text-anchor="middle" font-weight="600">J5</text>
+
+          <!-- Umsatz-Kurve (Mint) — 2.4/27/168/487/921 (k €) → y = 340 - (val/1000)*320 -->
+          <polyline fill="none" stroke="#2FB8A6" stroke-width="3.5"
+            points="100,339 200,331 300,286 400,184 500,45"/>
+          <circle cx="100" cy="339" r="5" fill="#2FB8A6"/>
+          <circle cx="200" cy="331" r="5" fill="#2FB8A6"/>
+          <circle cx="300" cy="286" r="5" fill="#2FB8A6"/>
+          <circle cx="400" cy="184" r="5" fill="#2FB8A6"/>
+          <circle cx="500" cy="45"  r="5" fill="#2FB8A6"/>
+          <text x="510" y="49" font-size="11" fill="#2FB8A6" font-weight="700">921 k €</text>
+
+          <!-- Gesamtkosten-Kurve (Coral) — 4.1/27.1/214/372/526 (k €) — Op-Kosten + Personal + Hardware + Investitionen -->
+          <polyline fill="none" stroke="#F97352" stroke-width="3.5"
+            points="100,339 200,331 300,272 400,221 500,172"/>
+          <circle cx="100" cy="339" r="5" fill="#F97352"/>
+          <circle cx="200" cy="331" r="5" fill="#F97352"/>
+          <circle cx="300" cy="272" r="5" fill="#F97352"/>
+          <circle cx="400" cy="221" r="5" fill="#F97352"/>
+          <circle cx="500" cy="172" r="5" fill="#F97352"/>
+          <text x="510" y="176" font-size="11" fill="#F97352" font-weight="700">~526 k €</text>
+
+          <!-- Break-Even-Marker (Schnittpunkt ungefähr Q2 J4 zwischen Kurven, hier visuell zwischen J3 und J4 markiert) -->
+          <line x1="340" y1="20" x2="340" y2="340" stroke="#FFD95A" stroke-width="2" stroke-dasharray="6,4" opacity="0.9"/>
+          <circle cx="340" cy="250" r="8" fill="#FFD95A" stroke="#2B3140" stroke-width="2"/>
+          <text x="345" y="240" font-size="11" fill="#2B3140" font-weight="700">Break-Even</text>
+          <text x="345" y="255" font-size="9" fill="#2B3140">~Mitte J3</text>
+
+          <!-- Y-Achsen-Titel -->
+          <text x="15" y="180" font-size="11" fill="#2B3140" text-anchor="middle" transform="rotate(-90, 15, 180)" font-weight="600">EUR (in Tausend)</text>
+        </svg>
+      </div>
+
+      <div class="chart-side">
+        <div class="chart-legend">
+          <div class="legend-item"><span class="legend-swatch revenue"></span>Brutto-Umsatz</div>
+          <div class="legend-item"><span class="legend-swatch costs"></span>Gesamtkosten (Op + Personal + Invest)</div>
+          <div class="legend-item"><span class="legend-swatch" style="background:#FFD95A;"></span>Break-Even-Punkt</div>
+        </div>
+
+        <div class="chart-notes">
+          <h4>Break-Even-Logik</h4>
+          <ul>
+            <li><strong>Cash:</strong> ab Q2 J3 (mit KfW-Tranche)</li>
+            <li><strong>Op-Marge:</strong> ab J4 positiv (+115 k €)</li>
+            <li><strong>EBITDA:</strong> bereits ab J3 positiv (+81 k €)</li>
+            <li><strong>Marge J5:</strong> ~43 % auf den Umsatz (395 k auf 921 k)</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide-footer">
+    <div class="brand"><span class="brand-dot"></span>Lesekumpel · Pitch v2</div>
+    <div class="counter">06 / 10</div>
+  </div>
+</section>
+
+<!-- ==================== FOLIE 7: FINANZIERUNG ==================== -->
+<section class="slide" data-slide="6">
+  <div class="blob tr-lg shape-2 lila"></div>
+  <div class="blob bl-md shape-1 yellow"></div>
+
+  <div class="slide-tag">Folie 07 · Finanzierungs-Mix</div>
+  <h1 class="slide-title">3 Phasen · <span class="accent">Kein VC</span> · keine Verwässerung</h1>
+
+  <div class="slide-content">
+    <div class="fin-cards">
+      <div class="fin-card f1">
+        <div class="fc-label">Phase 1 · Bootstrap</div>
+        <div class="fc-amount">2.500 <span class="fc-currency">€</span></div>
+        <div class="fc-phase">Eigenmittel · Jahr 1</div>
+        <ul class="fc-details">
+          <li>4 Gründer · Privatpersonen</li>
+          <li>DPMA-Marke 290 €</li>
+          <li>Setup, Domains, Hardware 700 €</li>
+          <li>Keine Gründer-Bezahlung</li>
+        </ul>
+      </div>
+
+      <div class="fin-card f2">
+        <div class="fc-label">Phase 2 · GbR · Mikrokredit</div>
+        <div class="fc-amount">25.000 <span class="fc-currency">€</span></div>
+        <div class="fc-phase">Mikrokredit · Jahr 2</div>
+        <ul class="fc-details">
+          <li>10 k Start (M13) · 7 % Zins</li>
+          <li>Aufstockung auf 25 k (M19)<br>nach 6 erfolgreichen Tilgungen</li>
+          <li>Verwendung: Marketing 10 k + Operations</li>
+          <li>Beweist Kreditwürdigkeit für KfW</li>
+        </ul>
+      </div>
+
+      <div class="fin-card f3">
+        <div class="fc-label">Phase 3 · UG · KfW-Kredit</div>
+        <div class="fc-amount">100.000 <span class="fc-currency">€</span></div>
+        <div class="fc-phase">KfW-Gründerkredit · Jahr 3</div>
+        <ul class="fc-details">
+          <li>5 % Zins p.a. fix · 10 Jahre Laufzeit</li>
+          <li><strong>2 Jahre tilgungsfrei</strong> (M27 – M50)</li>
+          <li>80 % KfW-Haftungsfreistellung</li>
+          <li>Annuität ab M51 ≈ 1.260 €/Monat</li>
+          <li>Persönliche Bürgschaft 4 Gesellschafter:innen</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="fin-banner">
+      Total externes Kapital über 5 Jahre: <strong>127.500 €</strong> · Liquidität Ende J5: <strong>393.000 €</strong>
+    </div>
+  </div>
+
+  <div class="slide-footer">
+    <div class="brand"><span class="brand-dot"></span>Lesekumpel · Pitch v2</div>
+    <div class="counter">07 / 10</div>
+  </div>
+</section>
+
+<!-- ==================== FOLIE 8: USE-OF-FUNDS (KfW 100k) ==================== -->
+<section class="slide" data-slide="7">
+  <div class="blob tl-lg shape-3 coral"></div>
+  <div class="blob br-md shape-2 mint"></div>
+
+  <div class="slide-tag">Folie 08 · Use-of-Funds</div>
+  <h1 class="slide-title">Wohin gehen die <span class="accent">100.000 € KfW</span>?</h1>
+
+  <div class="slide-content">
+    <div class="uof-grid">
+      <div>
+        <svg class="uof-svg" viewBox="0 0 240 240">
+          <!-- Donut Chart: Personal 60% / Marketing 25% / Hardware 10% / Reserve 5%
+               Total circumference = 2π·r = 2π·85 ≈ 534.07
+               Stroke-dasharray segments:
+                 Personal:  60% → 320.4
+                 Marketing: 25% → 133.5
+                 Hardware:  10% → 53.4
+                 Reserve:   5%  → 26.7
+          -->
+          <circle cx="120" cy="120" r="85" fill="none" stroke="#F0EBE3" stroke-width="38"/>
+          <!-- Personal (60%) Coral, beginnt oben -->
+          <circle cx="120" cy="120" r="85" fill="none" stroke="#F97352" stroke-width="38"
+                  stroke-dasharray="320.4 213.67" stroke-dashoffset="0"
+                  transform="rotate(-90 120 120)"/>
+          <!-- Marketing (25%) Mint -->
+          <circle cx="120" cy="120" r="85" fill="none" stroke="#2FB8A6" stroke-width="38"
+                  stroke-dasharray="133.5 400.57" stroke-dashoffset="-320.4"
+                  transform="rotate(-90 120 120)"/>
+          <!-- Hardware (10%) Lila -->
+          <circle cx="120" cy="120" r="85" fill="none" stroke="#7D6AE6" stroke-width="38"
+                  stroke-dasharray="53.4 480.67" stroke-dashoffset="-453.9"
+                  transform="rotate(-90 120 120)"/>
+          <!-- Reserve (5%) Yellow -->
+          <circle cx="120" cy="120" r="85" fill="none" stroke="#FFD95A" stroke-width="38"
+                  stroke-dasharray="26.7 507.37" stroke-dashoffset="-507.3"
+                  transform="rotate(-90 120 120)"/>
+
+          <!-- Center Text -->
+          <text x="120" y="118" font-size="28" fill="#2B3140" text-anchor="middle" font-weight="700" font-family="Fredoka, sans-serif">100 k</text>
+          <text x="120" y="140" font-size="13" fill="#2B3140" text-anchor="middle" opacity="0.7">KfW-Tranche</text>
+        </svg>
+      </div>
+
+      <div class="uof-list">
+        <div class="uof-item u1">
+          <div class="uof-pct">60 %</div>
+          <div class="uof-name">
+            <h4>Personal</h4>
+            <p>Gründer-Bezahlung J3 + Marketing-Asst + Sprachen-Lead</p>
+          </div>
+          <div class="uof-amount">60.000 €</div>
+        </div>
+
+        <div class="uof-item u2">
+          <div class="uof-pct">25 %</div>
+          <div class="uof-name">
+            <h4>Marketing</h4>
+            <p>J3 30 k Saisonkampagnen + Anteil J4-Vorlauf</p>
+          </div>
+          <div class="uof-amount">25.000 €</div>
+        </div>
+
+        <div class="uof-item u3">
+          <div class="uof-pct">10 %</div>
+          <div class="uof-name">
+            <h4>Hardware + Büro</h4>
+            <p>Vollausstattung 6 MA · Notebooks, Monitore, Möbel</p>
+          </div>
+          <div class="uof-amount">10.000 €</div>
+        </div>
+
+        <div class="uof-item u4">
+          <div class="uof-pct">5 %</div>
+          <div class="uof-name">
+            <h4>Liquiditätsreserve</h4>
+            <p>Steuern, Buchhalter, Puffer</p>
+          </div>
+          <div class="uof-amount">5.000 €</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide-footer">
+    <div class="brand"><span class="brand-dot"></span>Lesekumpel · Pitch v2</div>
+    <div class="counter">08 / 10</div>
+  </div>
+</section>
+
+<!-- ==================== FOLIE 9: PERSONAL ==================== -->
+<section class="slide" data-slide="8">
+  <div class="blob tr-lg shape-1 mint"></div>
+  <div class="blob bl-md shape-2 lila"></div>
+
+  <div class="slide-tag">Folie 09 · Personal-Aufbau</div>
+  <h1 class="slide-title">Team-Wachstum &amp; <span class="accent">Gründer-Bezahlung</span></h1>
+
+  <div class="slide-content">
+    <div class="personal-grid">
+      <table class="personal-table">
+        <thead>
+          <tr>
+            <th>Rolle / Position</th>
+            <th>J1</th>
+            <th>J2</th>
+            <th>J3</th>
+            <th>J4</th>
+            <th>J5</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>4 Gründer:innen (brutto/Mon)</td>
+            <td>0</td>
+            <td>0</td>
+            <td>1.500</td>
+            <td>2.500</td>
+            <td>3.500</td>
+          </tr>
+          <tr>
+            <td>Gründer-Personal/Jahr</td>
+            <td>0</td>
+            <td>0</td>
+            <td>72.000</td>
+            <td>120.000</td>
+            <td>168.000</td>
+          </tr>
+          <tr>
+            <td>Backoffice Halbtags</td>
+            <td>0</td>
+            <td>0</td>
+            <td>18.000</td>
+            <td>18.000</td>
+            <td>18.000</td>
+          </tr>
+          <tr>
+            <td>Sprachen-Lead Halbtags</td>
+            <td>0</td>
+            <td>0</td>
+            <td>24.000</td>
+            <td>24.000</td>
+            <td>24.000</td>
+          </tr>
+          <tr>
+            <td>Mathe-Lead Halbtags</td>
+            <td>0</td>
+            <td>0</td>
+            <td>0</td>
+            <td>14.000</td>
+            <td>24.000</td>
+          </tr>
+          <tr>
+            <td>Marketing (HT → VZ → Sr.)</td>
+            <td>0</td>
+            <td>0</td>
+            <td>12.000</td>
+            <td>36.000</td>
+            <td>42.000</td>
+          </tr>
+          <tr class="row-total">
+            <td>Total Personal/Jahr</td>
+            <td>0 €</td>
+            <td>0 €</td>
+            <td>126.000 €</td>
+            <td>212.000 €</td>
+            <td>276.000 €</td>
+          </tr>
+          <tr class="row-total">
+            <td>Team-Größe (Personen)</td>
+            <td>4</td>
+            <td>4</td>
+            <td>6</td>
+            <td>7</td>
+            <td>7</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="personal-side">
+        <div class="personal-card">
+          <h4>Stunden-Verteilung Gründer</h4>
+          <div class="pc-big">20h → 30h → 40h</div>
+          <p>Externer Teilzeit-Job (20h) bleibt J3-J4 als Standbein. Lesekumpel-Stunden steigen schrittweise. Vollzeit-Übergang erst J5 — kein Burnout-Risiko, kein Nullfall.</p>
+        </div>
+
+        <div class="personal-card" style="border-left-color:var(--coral);">
+          <h4>Hardware-Vollausstattung</h4>
+          <div class="pc-big">24 k €</div>
+          <p>Erstinvest J3 für 6 Mitarbeiter (Notebook, 2 Monitore, Headset, höhenverstellbarer Tisch, ergonomischer Stuhl, Software-Lizenzen). +8 k J4 (Mathe-Lead + Marketing-VZ). +8 k J5 (Refresh).</p>
+        </div>
+
+        <div class="personal-card" style="border-left-color:var(--lila);">
+          <h4>Externes Job-Standbein</h4>
+          <div class="pc-big">J1-2: 20h · J3: 20h · J4: 15h · J5: 0h</div>
+          <p>Schrittweise Reduktion auf max. 50 % statt radikaler Cut. Gute Gehälter werden nicht aufgegeben, bevor Lesekumpel trägt.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide-footer">
+    <div class="brand"><span class="brand-dot"></span>Lesekumpel · Pitch v2</div>
+    <div class="counter">09 / 10</div>
+  </div>
+</section>
+
+<!-- ==================== FOLIE 10: ANNAHMEN ==================== -->
+<section class="slide" data-slide="9">
+  <div class="blob tl-lg shape-2 yellow"></div>
+  <div class="blob br-md shape-1 lila"></div>
+
+  <div class="slide-tag">Folie 10 · Mathematische Basis</div>
+  <h1 class="slide-title">Die <span class="accent">Annahmen</span> hinter den Zahlen</h1>
+
+  <div class="slide-content">
+    <div class="assumptions-grid">
+      <div class="assumption-block a1">
+        <div class="a-tag">Pricing</div>
+        <h3>Preise &amp; Pakete</h3>
+        <table class="a-table">
+          <tr><td>Familienpaket Premium</td><td>6,99 €/Mon · Cap 20 Stories</td></tr>
+          <tr><td>Premium Jahres-Abo</td><td>69 € · −18 % Discount</td></tr>
+          <tr><td>Multi-Sprach-Tier (ab J3)</td><td>8,99 €/Mon · alle Sprachen</td></tr>
+          <tr><td>Pro-Account (Lehrer)</td><td>19,99 €/Mon · Cap 45 Stories</td></tr>
+          <tr><td>Pro Jahres-Abo</td><td>199 € · −17 % Discount</td></tr>
+          <tr><td>Kaffeekasse On-Demand</td><td>1 € / 2 Credits</td></tr>
+          <tr><td>Force-Commitment-Quote</td><td>60 % wählen Jahres-Abo</td></tr>
+        </table>
+      </div>
+
+      <div class="assumption-block a2">
+        <div class="a-tag">Churn &amp; Win-Back</div>
+        <h3>Kundenbindung</h3>
+        <table class="a-table">
+          <tr><td>Brutto-Churn J1</td><td>7 % / Monat</td></tr>
+          <tr><td>Brutto-Churn J2</td><td>6 % / Monat</td></tr>
+          <tr><td>Brutto-Churn ab J3</td><td>5 % / Monat</td></tr>
+          <tr><td>Win-Back-Rate Saisonkampagnen</td><td>20 %</td></tr>
+          <tr><td>Netto-Churn J3</td><td>4 % / Monat</td></tr>
+          <tr><td>Netto-Churn J4</td><td>3,5 % / Monat</td></tr>
+          <tr><td>Netto-Churn J5</td><td>3 % / Monat</td></tr>
+        </table>
+      </div>
+
+      <div class="assumption-block a3">
+        <div class="a-tag">Conversion &amp; ARPU</div>
+        <h3>Umsatzlogik</h3>
+        <table class="a-table">
+          <tr><td>Free → Premium J1-2</td><td>6,7 %</td></tr>
+          <tr><td>Free → Premium J3</td><td>8 %</td></tr>
+          <tr><td>Free → Premium J4</td><td>10 %</td></tr>
+          <tr><td>Free → Premium J5</td><td>11 %</td></tr>
+          <tr><td>ARPU Premium J1-2</td><td>74,95 €/Jahr</td></tr>
+          <tr><td>ARPU Premium J3 → J5</td><td>78 → 85 → 89 €</td></tr>
+          <tr><td>ARPU Pro</td><td>211,26 €/Jahr</td></tr>
+          <tr><td>Pro:Premium-Ratio ab J3</td><td>4 % (DaZ-Schul-Boost)</td></tr>
+        </table>
+      </div>
+
+      <div class="assumption-block a4">
+        <div class="a-tag">Tech &amp; Kosten</div>
+        <h3>Wachstumstreiber</h3>
+        <table class="a-table">
+          <tr><td>Token-Hebel ab J2</td><td>−25 % (andere Modelle + Cache)</td></tr>
+          <tr><td>Token J1</td><td>0,12 € / Story</td></tr>
+          <tr><td>Token J2</td><td>0,09 € / Story</td></tr>
+          <tr><td>Token ab J3</td><td>0,07 € / Story</td></tr>
+          <tr><td>UG-Steuerlast (KSt + GewSt)</td><td>~29 % auf positiven EBT</td></tr>
+          <tr><td>KfW-Konditionen</td><td>5 % · 10 J · 2 J tilgungsfrei</td></tr>
+          <tr><td>Mikrokredit-Konditionen</td><td>7 % · 4 J Laufzeit</td></tr>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide-footer">
+    <div class="brand"><span class="brand-dot"></span>Lesekumpel · Pitch v2</div>
+    <div class="counter">10 / 10</div>
+  </div>
+</section>
+
+</div>
+
+<div class="nav-hint">← →  ·  Leertaste  ·  Home / End</div>
+<div class="nav-buttons">
+  <button type="button" class="nav-btn" id="prevBtn" aria-label="Vorherige Folie">‹</button>
+  <button type="button" class="nav-btn" id="nextBtn" aria-label="Nächste Folie">›</button>
+</div>
+
+<script>
+(function() {
+  const slides = document.querySelectorAll('.slide');
+  const total = slides.length;
+  let current = 0;
+
+  const prevBtn = document.getElementById('prevBtn');
+  const nextBtn = document.getElementById('nextBtn');
+
+  function show(idx) {
+    if (idx < 0 || idx >= total) return;
+    slides[current].classList.remove('active');
+    current = idx;
+    slides[current].classList.add('active');
+    updateButtons();
+    if (history.replaceState) history.replaceState(null, '', '#' + current);
+  }
+
+  function updateButtons() {
+    prevBtn.disabled = current === 0;
+    nextBtn.disabled = current === total - 1;
+  }
+
+  function next() { show(Math.min(current + 1, total - 1)); }
+  function prev() { show(Math.max(current - 1, 0)); }
+
+  document.addEventListener('keydown', function(e) {
+    switch (e.key) {
+      case 'ArrowRight':
+      case 'PageDown':
+      case ' ':
+        e.preventDefault(); next(); break;
+      case 'ArrowLeft':
+      case 'PageUp':
+        e.preventDefault(); prev(); break;
+      case 'Home':
+        e.preventDefault(); show(0); break;
+      case 'End':
+        e.preventDefault(); show(total - 1); break;
+    }
+  });
+
+  prevBtn.addEventListener('click', prev);
+  nextBtn.addEventListener('click', next);
+
+  let touchStartX = 0;
+  document.addEventListener('touchstart', e => { touchStartX = e.changedTouches[0].screenX; }, {passive: true});
+  document.addEventListener('touchend', e => {
+    const dx = e.changedTouches[0].screenX - touchStartX;
+    if (Math.abs(dx) > 60) { dx < 0 ? next() : prev(); }
+  }, {passive: true});
+
+  const initial = parseInt(location.hash.slice(1), 10);
+  if (!isNaN(initial) && initial >= 0 && initial < total) {
+    slides[0].classList.remove('active');
+    slides[initial].classList.add('active');
+    current = initial;
+  }
+  updateButtons();
+})();
+</script>
+
+</body>
+</html>

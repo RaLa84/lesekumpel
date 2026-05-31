@@ -967,6 +967,112 @@ h1.slide-title .accent { color: var(--coral); }
   opacity: 0.9;
 }
 
+/* Master-Tabelle (B0) — 5-Jahres-Übersicht */
+.master-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.7rem;
+  background: var(--white);
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 4px 16px rgba(43,49,64,0.06);
+}
+.master-table thead th {
+  background: var(--navy);
+  color: var(--white);
+  padding: 0.35rem 0.5rem;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  text-align: center;
+  font-size: 0.78rem;
+  letter-spacing: 0.02em;
+  border: none;
+}
+.master-table thead th:first-child {
+  text-align: left;
+}
+.master-table tbody td {
+  padding: 0.22rem 0.5rem;
+  border-bottom: 1px solid rgba(217,212,204,0.5);
+  font-variant-numeric: tabular-nums;
+  text-align: right;
+}
+.master-table tbody td:first-child {
+  text-align: left;
+  font-weight: 500;
+  color: var(--navy);
+}
+.master-table .row-group td {
+  background: rgba(125,106,230,0.10);
+  font-family: var(--font-heading);
+  font-weight: 700;
+  color: var(--lila);
+  text-transform: uppercase;
+  font-size: 0.62rem;
+  letter-spacing: 0.06em;
+  padding: 0.28rem 0.5rem;
+  text-align: left;
+}
+.master-table .row-key {
+  background: rgba(255,217,90,0.15);
+  font-weight: 700;
+}
+.master-table .row-key td {
+  font-weight: 700;
+}
+.master-table .row-result {
+  background: rgba(47,184,166,0.10);
+  font-weight: 700;
+  border-top: 2px solid var(--mint);
+}
+.master-table .row-result td {
+  font-weight: 700;
+  color: var(--navy);
+}
+.master-table .row-result td:first-child {
+  color: var(--mint);
+}
+.master-table .negative { color: var(--coral); }
+.master-table .check { color: var(--mint); font-weight: 700; }
+.master-table .pending { color: var(--lila); font-style: italic; }
+.master-table .meta-cell {
+  background: rgba(43,49,64,0.04);
+  font-size: 0.72rem;
+  color: var(--navy);
+}
+.master-pointe {
+  margin-top: 0.7rem;
+  background: linear-gradient(135deg, rgba(47,184,166,0.10) 0%, rgba(125,106,230,0.08) 100%);
+  border: 1px solid rgba(47,184,166,0.30);
+  border-radius: 12px;
+  padding: 0.7rem 1rem;
+  display: grid;
+  grid-template-columns: 1fr 2fr;
+  gap: 1rem;
+  align-items: center;
+}
+.master-pointe-num {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: var(--mint);
+  line-height: 1.4;
+}
+.master-pointe-num strong {
+  font-size: 1.3rem;
+  color: var(--coral);
+}
+.master-pointe-text {
+  font-family: var(--font-body);
+  font-size: 0.78rem;
+  color: var(--navy);
+  line-height: 1.45;
+}
+.master-pointe-text strong {
+  color: var(--mint);
+  font-family: var(--font-heading);
+}
+
 /* Break-Even-Rechnung (F6) */
 .be-grid {
   display: grid;
@@ -1487,7 +1593,7 @@ h1.slide-title:has(+ .slide-subtitle) {
       <span><span class="brand-name">Lese</span>kumpel</span>
     </div>
     <h1 class="cover-title">Wirtschaftlichkeit <span class="accent">auf den Punkt.</span></h1>
-    <p class="cover-sub">Phase 1+2 aus eigener Kraft validieren. Phase 3 mit <strong>Mikromezzanin und Fördermitteln</strong> voll skalieren. Kein VC, keine Verwässerung.</p>
+    <p class="cover-sub">Bootstrap mit 2.500&nbsp;€ Eigenmitteln. Mikrokredit für Marketing in Phase 2. <strong>KfW-Gründerkredit ab Jahr 3</strong> für Vollzeit-Übergang. Kein VC, keine Verwässerung.</p>
     <div class="cover-meta">Finanzierungs-Präsentation · INSPIRED Ideenwettbewerb MV 2026</div>
   </div>
   <div class="slide-footer">
@@ -2164,9 +2270,234 @@ h1.slide-title:has(+ .slide-subtitle) {
 </section>
 
 <!-- ============================================ -->
-<!-- BACKUP B1 — Annahmen & Sensitivitäten        -->
+<!-- MASTER B0 — 5-Jahres-Übersicht auf einen Blick -->
 <!-- ============================================ -->
 <section class="slide" data-slide="11">
+  <div class="blob mint tr-md shape-1" aria-hidden="true"></div>
+  <div class="slide-tag">Master · 5-Jahres-Plan</div>
+  <h1 class="slide-title">Lesekumpel in 5 Jahren — <span class="accent">auf einen Blick.</span></h1>
+  <div class="slide-content">
+    <table class="master-table">
+      <thead>
+        <tr>
+          <th>Kennzahl</th>
+          <th>Jahr 1</th>
+          <th>Jahr 2</th>
+          <th>Jahr 3</th>
+          <th>Jahr 4</th>
+          <th>Jahr 5</th>
+        </tr>
+      </thead>
+      <tbody>
+        <!-- Phase / Rechtsform -->
+        <tr class="row-group"><td colspan="6">Status</td></tr>
+        <tr>
+          <td>Phase</td>
+          <td class="meta-cell">Konzeption</td>
+          <td class="meta-cell">Validierung</td>
+          <td class="meta-cell">Skalierung</td>
+          <td class="meta-cell">Skalierung+</td>
+          <td class="meta-cell">Vollzeit</td>
+        </tr>
+        <tr>
+          <td>Rechtsform</td>
+          <td class="meta-cell">Privat</td>
+          <td class="meta-cell">GbR</td>
+          <td class="meta-cell">UG</td>
+          <td class="meta-cell">UG</td>
+          <td class="meta-cell">UG</td>
+        </tr>
+        <tr>
+          <td>Gründer (Stunden Lesekumpel/Wo)</td>
+          <td class="meta-cell">20h</td>
+          <td class="meta-cell">20h</td>
+          <td class="meta-cell">30h</td>
+          <td class="meta-cell">35h</td>
+          <td class="meta-cell">40h Vollzeit</td>
+        </tr>
+        <tr>
+          <td>Gründer-Bezahlung (€/Mon brutto)</td>
+          <td class="meta-cell">0 €</td>
+          <td class="meta-cell">0 €</td>
+          <td class="meta-cell">1.500 €</td>
+          <td class="meta-cell">2.500 €</td>
+          <td class="meta-cell">3.500 €</td>
+        </tr>
+
+        <!-- Nutzer -->
+        <tr class="row-group"><td colspan="6">Nutzer (Endwert)</td></tr>
+        <tr>
+          <td>Premium-Nutzer (6,99 €/Mon)</td>
+          <td>50</td>
+          <td>450</td>
+          <td>1.800</td>
+          <td>3.700</td>
+          <td>5.500</td>
+        </tr>
+        <tr>
+          <td>Pro-Accounts Lehrer (19,99 €/Mon)</td>
+          <td>8</td>
+          <td>70</td>
+          <td>350</td>
+          <td>750</td>
+          <td>1.100</td>
+        </tr>
+
+        <!-- Geld-Flow -->
+        <tr class="row-group"><td colspan="6">Geld-Flow</td></tr>
+        <tr>
+          <td>Brutto-Umsatz</td>
+          <td>2.400 €</td>
+          <td>27.000 €</td>
+          <td>135.000 €</td>
+          <td>331.000 €</td>
+          <td>554.000 €</td>
+        </tr>
+        <tr>
+          <td>Operative Kosten</td>
+          <td class="negative">−4.100 €</td>
+          <td class="negative">−27.100 €</td>
+          <td class="negative">−80.000 €</td>
+          <td class="negative">−145.000 €</td>
+          <td class="negative">−195.000 €</td>
+        </tr>
+        <tr class="row-key">
+          <td>EBITDA operativ</td>
+          <td class="negative">−1.700 €</td>
+          <td class="negative">−100 €</td>
+          <td>+55.000 €</td>
+          <td>+186.000 €</td>
+          <td>+359.000 €</td>
+        </tr>
+        <tr>
+          <td>Personal-Kosten (4 Gründer + ½ Backoffice)</td>
+          <td>–</td>
+          <td>–</td>
+          <td class="negative">−90.000 €</td>
+          <td class="negative">−138.000 €</td>
+          <td class="negative">−186.000 €</td>
+        </tr>
+        <tr class="row-key">
+          <td>Operative Marge (nach Personal)</td>
+          <td class="negative">−1.700 €</td>
+          <td class="negative">−100 €</td>
+          <td class="negative">−35.000 €</td>
+          <td>+48.000 €</td>
+          <td>+173.000 €</td>
+        </tr>
+        <tr>
+          <td>Steuern UG (29 % auf EBT)</td>
+          <td>–</td>
+          <td>–</td>
+          <td>0 €</td>
+          <td class="negative">−14.000 €</td>
+          <td class="negative">−50.000 €</td>
+        </tr>
+
+        <!-- Finanzierung -->
+        <tr class="row-group"><td colspan="6">Finanzierung</td></tr>
+        <tr>
+          <td>Eigenmittel</td>
+          <td>+2.500 €</td>
+          <td>–</td>
+          <td>–</td>
+          <td>–</td>
+          <td>–</td>
+        </tr>
+        <tr>
+          <td>Mikrokredit (10k → 25k Aufstockung)</td>
+          <td>–</td>
+          <td>+22.500 €</td>
+          <td class="negative">−6.000 €</td>
+          <td class="negative">−6.000 €</td>
+          <td class="negative">−6.000 €</td>
+        </tr>
+        <tr>
+          <td>KfW-Gründerkredit (100k, 2 J tilgungsfrei)</td>
+          <td>–</td>
+          <td>–</td>
+          <td>+98.000 €</td>
+          <td class="negative">−5.000 €</td>
+          <td class="negative">−5.000 €</td>
+        </tr>
+        <tr>
+          <td>Förderung (z. B. DATIpilot)</td>
+          <td>–</td>
+          <td>–</td>
+          <td>+3.000 €</td>
+          <td>–</td>
+          <td>–</td>
+        </tr>
+        <tr>
+          <td>Investitionen</td>
+          <td class="negative">−990 €</td>
+          <td class="negative">−500 €</td>
+          <td class="negative">−8.000 €</td>
+          <td class="negative">−3.000 €</td>
+          <td class="negative">−3.000 €</td>
+        </tr>
+
+        <!-- Ergebnis -->
+        <tr class="row-result">
+          <td>Cashflow Jahr</td>
+          <td class="negative">−2.700 €</td>
+          <td>+21.900 €</td>
+          <td>+53.000 €</td>
+          <td>+20.000 €</td>
+          <td>+109.000 €</td>
+        </tr>
+        <tr class="row-result">
+          <td>Liquidität Bank Ende</td>
+          <td>0 €</td>
+          <td>+22.000 €</td>
+          <td>+75.000 €</td>
+          <td>+95.000 €</td>
+          <td>+204.000 €</td>
+        </tr>
+
+        <!-- Meilensteine -->
+        <tr class="row-group"><td colspan="6">Meilensteine</td></tr>
+        <tr>
+          <td>Break-Even</td>
+          <td>–</td>
+          <td><span class="check">✓ knapp</span></td>
+          <td><span class="check">✓</span></td>
+          <td><span class="check">✓</span></td>
+          <td><span class="check">✓</span></td>
+        </tr>
+        <tr>
+          <td>Vollzeit-tragfähig (alle 4 Gründer)</td>
+          <td>–</td>
+          <td>–</td>
+          <td>–</td>
+          <td>–</td>
+          <td><span class="check">✓</span></td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="master-pointe">
+      <div class="master-pointe-num">
+        2.500 € Eigenmittel<br>
+        + 25k Mikrokredit<br>
+        + 100k KfW<br>
+        = <strong>127.500 €</strong> total
+      </div>
+      <div class="master-pointe-text">
+        <strong>Kein VC. Keine Verwässerung. Kein Burnout.</strong> Wir starten mit 2.500 € Eigenmitteln neben Teilzeit-Job. Beweisen mit Mikrokredit-Tilgung unsere Kreditwürdigkeit. Mit KfW-Gründerkredit ab Jahr 3 übernehmen wir bis zu 50 % der Lebenshaltungskosten ins Unternehmen — der externe Job bleibt als Standbein. <strong>Ende Jahr 5: 5.500 Premium-Familien, 1.100 Lehrer-Accounts, über 200.000 € Liquidität</strong>, alle 4 Gründer:innen in Vollzeit.
+      </div>
+    </div>
+  </div>
+  <div class="slide-footer">
+    <span class="brand"><span class="brand-dot"></span><span class="brand-name brand-name-lila">Lese</span>kumpel · Finanzierung</span>
+    <span class="counter">Master B0</span>
+  </div>
+</section>
+
+<!-- ============================================ -->
+<!-- BACKUP B1 — Annahmen & Sensitivitäten        -->
+<!-- ============================================ -->
+<section class="slide" data-slide="12">
   <div class="blob lila tr-md shape-2" aria-hidden="true"></div>
   <div class="slide-tag">Backup · für Q&amp;A</div>
   <h1 class="slide-title">Womit wir rechnen — <span class="accent">unsere Annahmen.</span></h1>
