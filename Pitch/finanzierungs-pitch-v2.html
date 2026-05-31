@@ -497,6 +497,100 @@ h1.slide-title .accent { color: var(--coral); }
 .anhang-table tbody tr.row-total td { font-weight: 700; color: var(--navy); }
 .anhang-table tbody tr.row-total td.month-label { color: var(--mint); }
 
+/* Sensitivitätsanalyse (A9) */
+.sens-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 1rem;
+  margin-bottom: 1rem;
+}
+.sens-col {
+  background: var(--white);
+  border-radius: 16px;
+  padding: 1rem 1.1rem;
+  box-shadow: 0 4px 16px rgba(43,49,64,0.06);
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+.sens-col::before {
+  content: '';
+  position: absolute; top: 0; left: 0; right: 0;
+  height: 5px;
+  background: var(--border);
+}
+.sens-col.sens-bull::before { background: var(--mint); }
+.sens-col.sens-base::before { background: var(--lila); }
+.sens-col.sens-bear::before { background: var(--coral); }
+.sens-header {
+  display: flex; align-items: center; gap: 0.6rem;
+  padding-bottom: 0.4rem;
+  border-bottom: 1px solid var(--border);
+}
+.sens-emoji { font-size: 1.5rem; line-height: 1; }
+.sens-label {
+  font-family: var(--font-heading);
+  font-weight: 700; font-size: 1.3rem;
+}
+.sens-bull .sens-label { color: var(--mint); }
+.sens-base .sens-label { color: var(--lila); }
+.sens-bear .sens-label { color: var(--coral); }
+.sens-name {
+  font-size: 0.72rem; opacity: 0.7;
+  margin-left: auto;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.sens-table {
+  width: 100%; font-size: 0.75rem; border-collapse: collapse;
+}
+.sens-table td {
+  padding: 0.25rem 0.3rem;
+  border-bottom: 1px dashed var(--border);
+}
+.sens-table td:first-child { color: var(--navy); opacity: 0.85; }
+.sens-table td:last-child { text-align: right; font-weight: 600; color: var(--navy); }
+.sens-table td em { font-size: 0.7rem; opacity: 0.7; font-style: italic; }
+.sens-table tr:last-child td { border-bottom: none; }
+.sens-kpis {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.4rem;
+  margin-top: 0.3rem;
+}
+.sens-kpi {
+  background: var(--cream);
+  border-radius: 10px;
+  padding: 0.5rem 0.6rem;
+  text-align: center;
+}
+.sens-kpi.sens-val-hi { background: rgba(255,217,90,0.30); }
+.sens-val {
+  font-family: var(--font-heading);
+  font-weight: 700; font-size: 1rem;
+  color: var(--navy);
+  line-height: 1.1;
+}
+.sens-bull .sens-val { color: var(--mint); }
+.sens-bear .sens-val { color: var(--coral); }
+.sens-key {
+  font-size: 0.68rem; opacity: 0.7; text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-top: 0.15rem;
+}
+.bear-banner {
+  background: linear-gradient(135deg, rgba(125,106,230,0.10) 0%, rgba(47,184,166,0.08) 100%);
+  border: 1px solid rgba(125,106,230,0.25);
+  border-radius: 12px;
+  padding: 0.8rem 1.1rem;
+  font-size: 0.88rem;
+  line-height: 1.5;
+  color: var(--navy);
+}
+.bear-banner strong { color: var(--lila); font-family: var(--font-heading); }
+
 /* Navigation */
 .nav-hint {
   position: fixed; bottom: 16px; left: 50%; transform: translateX(-50%);
@@ -543,7 +637,7 @@ h1.slide-title .accent { color: var(--coral); }
       <span class="brand-dot"></span>
       <span>Lese<span class="brand-name">kumpel</span></span>
     </div>
-    <h1 class="cover-title">Aus 2.500 € zu <span class="accent">393 k Liquidität</span><br>in 5 Jahren.</h1>
+    <h1 class="cover-title">Aus 2.500 € zu <span class="accent">349 k Liquidität</span><br>in 5 Jahren.</h1>
     <p class="cover-sub">Neuroinklusive Lese-, Sprach- und Lernplattform für Kinder mit LRS, ADHS, Autismus oder DaZ. Bootstrap-finanziert ohne VC, ohne Verwässerung — schrittweise validiert.</p>
     <div class="cover-meta">Pitch · INSPIRED MV 2026 · Stand 31. Mai 2026</div>
   </div>
@@ -619,17 +713,17 @@ h1.slide-title .accent { color: var(--coral); }
           <td>Personalausgaben</td>
           <td>0 €</td>
           <td>0 €</td>
-          <td>126.000 €</td>
-          <td>212.000 €</td>
-          <td>276.000 €</td>
+          <td>129.000 €</td>
+          <td>233.000 €</td>
+          <td>297.000 €</td>
         </tr>
         <tr>
           <td>Kreditkosten (Zins + Tilgung)</td>
           <td>0 €</td>
-          <td>3.700 €</td>
-          <td>11.500 €</td>
-          <td>12.250 €</td>
-          <td>11.750 €</td>
+          <td>4.400 €</td>
+          <td>13.050 €</td>
+          <td>13.700 €</td>
+          <td>13.100 €</td>
         </tr>
         <tr>
           <td>EBITDA operativ</td>
@@ -643,25 +737,25 @@ h1.slide-title .accent { color: var(--coral); }
           <td>Operative Marge (nach Personal)</td>
           <td class="negative">−1.700 €</td>
           <td class="negative">−100 €</td>
-          <td class="negative">−46.000 €</td>
-          <td>+115.000 €</td>
-          <td>+395.000 €</td>
+          <td class="negative">−49.000 €</td>
+          <td>+94.000 €</td>
+          <td>+374.000 €</td>
         </tr>
         <tr>
           <td>Cashflow Jahr</td>
           <td class="negative">−2.700 €</td>
           <td>+21.900 €</td>
           <td>+22.000 €</td>
-          <td>+77.000 €</td>
-          <td>+272.000 €</td>
+          <td>+60.000 €</td>
+          <td>+240.000 €</td>
         </tr>
         <tr class="row-result">
           <td>Liquidität Ende</td>
           <td>0 €</td>
-          <td>22.000 €</td>
-          <td>44.000 €</td>
-          <td>121.000 €</td>
-          <td>393.000 €</td>
+          <td>27.000 €</td>
+          <td>49.000 €</td>
+          <td>109.000 €</td>
+          <td>349.000 €</td>
         </tr>
         <tr>
           <td>Break-Even / Tragfähig</td>
@@ -675,8 +769,8 @@ h1.slide-title .accent { color: var(--coral); }
     </table>
 
     <div class="master-pointe">
-      <div class="master-pointe-num">2.500 € Eigenmittel<br>+ 127.500 € <strong>Kredit</strong></div>
-      <div class="master-pointe-text">… führen zu <strong>921 k € Umsatz</strong> und <strong>393 k € Liquidität</strong> in Jahr 5 — ohne VC, ohne Verwässerung, ohne Burnout durch externes Job-Standbein.</div>
+      <div class="master-pointe-num">2.500 € Eigenmittel<br>+ 130.000 € <strong>Kredit</strong></div>
+      <div class="master-pointe-text">… führen zu <strong>921 k € Umsatz</strong> und <strong>349 k € Liquidität</strong> in Jahr 5 — ohne VC, ohne Verwässerung, ohne Burnout durch externes Job-Standbein.</div>
     </div>
   </div>
 
@@ -1021,12 +1115,12 @@ h1.slide-title .accent { color: var(--coral); }
 
       <div class="fin-card f2">
         <div class="fc-label">Phase 2 · GbR · Mikrokredit</div>
-        <div class="fc-amount">25.000 <span class="fc-currency">€</span></div>
+        <div class="fc-amount">30.000 <span class="fc-currency">€</span></div>
         <div class="fc-phase">Mikrokredit · Jahr 2</div>
         <ul class="fc-details">
           <li>10 k Start (M13) · 7 % Zins</li>
-          <li>Aufstockung auf 25 k (M19)<br>nach 6 erfolgreichen Tilgungen</li>
-          <li>Verwendung: Marketing 10 k + Operations</li>
+          <li>Aufstockung auf 30 k (M19)<br>nach 6 erfolgreichen Tilgungen</li>
+          <li>Verwendung: Marketing 15 k + 5 k Liquiditätsreserve</li>
           <li>Beweist Kreditwürdigkeit für KfW</li>
         </ul>
       </div>
@@ -1046,7 +1140,7 @@ h1.slide-title .accent { color: var(--coral); }
     </div>
 
     <div class="fin-banner">
-      Total externes Kapital über 5 Jahre: <strong>127.500 €</strong> · Liquidität Ende J5: <strong>393.000 €</strong>
+      Total externes Kapital über 5 Jahre: <strong>132.500 €</strong> · Liquidität Ende J5: <strong>349.000 €</strong>
     </div>
   </div>
 
@@ -1185,12 +1279,12 @@ h1.slide-title .accent { color: var(--coral); }
             <td>168.000</td>
           </tr>
           <tr>
-            <td>Backoffice Halbtags</td>
+            <td>Backoffice (HT J3 → VZ ab J4)</td>
             <td>0</td>
             <td>0</td>
             <td>18.000</td>
-            <td>18.000</td>
-            <td>18.000</td>
+            <td>36.000</td>
+            <td>36.000</td>
           </tr>
           <tr>
             <td>Sprachen-Lead Halbtags</td>
@@ -1216,21 +1310,29 @@ h1.slide-title .accent { color: var(--coral); }
             <td>36.000</td>
             <td>42.000</td>
           </tr>
+          <tr>
+            <td>Externer DSB (Datenschutz)</td>
+            <td>0</td>
+            <td>0</td>
+            <td>3.000</td>
+            <td>3.000</td>
+            <td>3.000</td>
+          </tr>
           <tr class="row-total">
             <td>Total Personal/Jahr</td>
             <td>0 €</td>
             <td>0 €</td>
-            <td>126.000 €</td>
-            <td>212.000 €</td>
-            <td>276.000 €</td>
+            <td>129.000 €</td>
+            <td>233.000 €</td>
+            <td>297.000 €</td>
           </tr>
           <tr class="row-total">
             <td>Team-Größe (Personen)</td>
             <td>4</td>
             <td>4</td>
-            <td>6</td>
-            <td>7</td>
-            <td>7</td>
+            <td>6 + DSB</td>
+            <td>7 + DSB</td>
+            <td>7 + DSB</td>
           </tr>
         </tbody>
       </table>
@@ -1244,14 +1346,14 @@ h1.slide-title .accent { color: var(--coral); }
 
         <div class="personal-card" style="border-left-color:var(--coral);">
           <h4>Hardware-Vollausstattung</h4>
-          <div class="pc-big">24 k €</div>
-          <p>Erstinvest J3 für 6 Mitarbeiter (Notebook, 2 Monitore, Headset, höhenverstellbarer Tisch, ergonomischer Stuhl, Software-Lizenzen). +8 k J4 (Mathe-Lead + Marketing-VZ). +8 k J5 (Refresh).</p>
+          <div class="pc-big">24 k € in M3 J3</div>
+          <p>Erstinvest 6 MA nach KfW-Tranche M27 (Notebook, 2 Monitore, Headset, höhenverstellbarer Tisch, ergonomischer Stuhl, Software-Lizenzen). +8 k J4 (Mathe-Lead + Marketing-VZ). +8 k J5 (Refresh).</p>
         </div>
 
         <div class="personal-card" style="border-left-color:var(--lila);">
-          <h4>Externes Job-Standbein</h4>
-          <div class="pc-big">J1-2: 20h · J3: 20h · J4: 15h · J5: 0h</div>
-          <p>Schrittweise Reduktion auf max. 50 % statt radikaler Cut. Gute Gehälter werden nicht aufgegeben, bevor Lesekumpel trägt.</p>
+          <h4>DSGVO-Compliance + Support</h4>
+          <div class="pc-big">Externer DSB + Backoffice-VZ</div>
+          <p>Externer Datenschutzbeauftragter ab J3 (3 k/J Pauschale) für Kinder-App-Compliance. Backoffice ab J4 von Halbtags auf Vollzeit (36 k/J) für Support von 5.000+ Kunden.</p>
         </div>
       </div>
     </div>
@@ -1274,7 +1376,7 @@ h1.slide-title .accent { color: var(--coral); }
   <div class="slide-content">
     <div class="assumptions-grid">
       <div class="assumption-block a1">
-        <div class="a-tag">Pricing</div>
+        <div class="a-tag">Pricing (Brutto inkl. 7 % MwSt)</div>
         <h3>Preise &amp; Pakete</h3>
         <table class="a-table">
           <tr><td>Familienpaket Premium</td><td>6,99 €/Mon · Cap 20 Stories</td></tr>
@@ -1284,6 +1386,7 @@ h1.slide-title .accent { color: var(--coral); }
           <tr><td>Pro Jahres-Abo</td><td>199 € · −17 % Discount</td></tr>
           <tr><td>Kaffeekasse On-Demand</td><td>1 € / 2 Credits</td></tr>
           <tr><td>Force-Commitment-Quote</td><td>60 % wählen Jahres-Abo</td></tr>
+          <tr><td><strong>MwSt-Hinweis</strong></td><td><strong>7 % ermäßigter Satz · Bildungsmedien §12 UStG</strong></td></tr>
         </table>
       </div>
 
@@ -1346,15 +1449,15 @@ h1.slide-title .accent { color: var(--coral); }
   <div class="slide-content">
     <div class="cover-logo"><span class="brand-dot"></span><span>Lese<span class="brand-name">kumpel</span></span></div>
     <h1 class="cover-title">Anhang: <span class="accent">Monatliche Rohdaten</span></h1>
-    <p class="cover-sub">Für jede der 8 Kennzahlen die monatlichen Werte über 60 Monate (Jahr 1 bis Jahr 5). Quelle: <code>Pitch/Finanzen/calc-monatsdaten.py</code>. Alle Jahres-Endsummen stimmen mit der Master-Tabelle (Folie 2) überein.</p>
-    <div class="cover-meta">8 Anhangs-Folien · 5 Jahre × 12 Monate = 60 Datenpunkte je Kennzahl</div>
+    <p class="cover-sub">Für jede der 8 Kennzahlen die monatlichen Werte über 60 Monate (Jahr 1 bis Jahr 5) plus Sensitivitätsanalyse. Quelle: <code>Pitch/Finanzen/calc-monatsdaten.py</code>. Alle Jahres-Endsummen stimmen mit der Master-Tabelle (Folie 2) überein.</p>
+    <div class="cover-meta">9 Anhangs-Folien · 5 Jahre × 12 Monate + Sensitivität Bull/Base/Bear</div>
   </div>
-  <div class="slide-footer"><div class="brand"><span class="brand-dot"></span>Lesekumpel · Pitch v2</div><div class="counter">A0 / 8</div></div>
+  <div class="slide-footer"><div class="brand"><span class="brand-dot"></span>Lesekumpel · Pitch v2</div><div class="counter">A0 / 9</div></div>
 </section>
 
-<!-- ==================== FOLIE A1: Premium-Nutzer (Ende Monat) ==================== -->
+<!-- FOLIE A1: Premium-Nutzer (Ende Monat) -->
 <section class="slide" data-slide="11">
-  <div class="blob tr-lg shape-1 mint"></div>
+  <div class="blob tr-lg shape-2 lila"></div>
   <div class="slide-tag">Anhang A1 · Rohdaten</div>
   <h1 class="slide-title">Premium-Nutzer (Ende Monat)</h1>
   <div class="slide-content">
@@ -1378,12 +1481,12 @@ h1.slide-title .accent { color: var(--coral); }
       </tbody>
     </table>
   </div>
-  <div class="slide-footer"><div class="brand"><span class="brand-dot"></span>Lesekumpel · Pitch v2</div><div class="counter">A1 / 8</div></div>
+  <div class="slide-footer"><div class="brand"><span class="brand-dot"></span>Lesekumpel · Pitch v2</div><div class="counter">A1 / 9</div></div>
 </section>
 
-<!-- ==================== FOLIE A2: Pro-Accounts (Ende Monat) ==================== -->
+<!-- FOLIE A2: Pro-Accounts (Ende Monat) -->
 <section class="slide" data-slide="12">
-  <div class="blob tr-lg shape-2 lila"></div>
+  <div class="blob tr-lg shape-3 coral"></div>
   <div class="slide-tag">Anhang A2 · Rohdaten</div>
   <h1 class="slide-title">Pro-Accounts (Ende Monat)</h1>
   <div class="slide-content">
@@ -1407,16 +1510,16 @@ h1.slide-title .accent { color: var(--coral); }
       </tbody>
     </table>
   </div>
-  <div class="slide-footer"><div class="brand"><span class="brand-dot"></span>Lesekumpel · Pitch v2</div><div class="counter">A2 / 8</div></div>
+  <div class="slide-footer"><div class="brand"><span class="brand-dot"></span>Lesekumpel · Pitch v2</div><div class="counter">A2 / 9</div></div>
 </section>
 
-<!-- ==================== FOLIE A3: Brutto-Umsatz / Monat ==================== -->
+<!-- FOLIE A3: Brutto-Umsatz / Monat (Netto, ohne MwSt) -->
 <section class="slide" data-slide="13">
-  <div class="blob tr-lg shape-3 coral"></div>
+  <div class="blob tr-lg shape-1 yellow"></div>
   <div class="slide-tag">Anhang A3 · Rohdaten</div>
-  <h1 class="slide-title">Brutto-Umsatz / Monat</h1>
+  <h1 class="slide-title">Brutto-Umsatz / Monat (Netto, ohne MwSt)</h1>
   <div class="slide-content">
-    <p class="anhang-desc">Premium × ARPU/Mon + Pro × 17,60 € + Kaffeekasse · ARPU steigt von 6,25 € auf 7,42 €</p>
+    <p class="anhang-desc">Premium × ARPU/Mon + Pro × 17,60 € + Kaffeekasse · ARPU steigt von 6,25 € auf 7,42 € Netto</p>
     <table class="anhang-table">
       <thead><tr><th>Monat</th><th>Jahr 1</th><th>Jahr 2</th><th>Jahr 3</th><th>Jahr 4</th><th>Jahr 5</th></tr></thead>
       <tbody>
@@ -1436,74 +1539,74 @@ h1.slide-title .accent { color: var(--coral); }
       </tbody>
     </table>
   </div>
-  <div class="slide-footer"><div class="brand"><span class="brand-dot"></span>Lesekumpel · Pitch v2</div><div class="counter">A3 / 8</div></div>
+  <div class="slide-footer"><div class="brand"><span class="brand-dot"></span>Lesekumpel · Pitch v2</div><div class="counter">A3 / 9</div></div>
 </section>
 
-<!-- ==================== FOLIE A4: Personalausgaben / Monat ==================== -->
+<!-- FOLIE A4: Personalausgaben / Monat -->
 <section class="slide" data-slide="14">
-  <div class="blob tr-lg shape-1 yellow"></div>
+  <div class="blob tr-lg shape-2 mint"></div>
   <div class="slide-tag">Anhang A4 · Rohdaten</div>
   <h1 class="slide-title">Personalausgaben / Monat</h1>
   <div class="slide-content">
-    <p class="anhang-desc">Ab J3: 4 Gründer × 1.500/2.500/3.500 € + Backoffice + Sprachen-Lead + Mathe-Lead + Marketing 3-stufig</p>
+    <p class="anhang-desc">Ab J3: 4 Gründer + Backoffice + Sprachen-Lead + Marketing + DSB · J4: Backoffice-VZ + Mathe-Lead</p>
     <table class="anhang-table">
       <thead><tr><th>Monat</th><th>Jahr 1</th><th>Jahr 2</th><th>Jahr 3</th><th>Jahr 4</th><th>Jahr 5</th></tr></thead>
       <tbody>
-        <tr><td class="month-label">M1</td><td>0</td><td>0</td><td>9.500</td><td>16.365</td><td>23.000</td></tr>
-        <tr><td class="month-label">M2</td><td>0</td><td>0</td><td>9.500</td><td>16.365</td><td>23.000</td></tr>
-        <tr><td class="month-label">M3</td><td>0</td><td>0</td><td>9.500</td><td>16.365</td><td>23.000</td></tr>
-        <tr><td class="month-label">M4</td><td>0</td><td>0</td><td>9.500</td><td>18.101</td><td>23.000</td></tr>
-        <tr><td class="month-label">M5</td><td>0</td><td>0</td><td>9.500</td><td>18.101</td><td>23.000</td></tr>
-        <tr><td class="month-label">M6</td><td>0</td><td>0</td><td>9.500</td><td>18.101</td><td>23.000</td></tr>
-        <tr><td class="month-label">M7</td><td>0</td><td>0</td><td>11.500</td><td>18.101</td><td>23.000</td></tr>
-        <tr><td class="month-label">M8</td><td>0</td><td>0</td><td>11.500</td><td>18.101</td><td>23.000</td></tr>
-        <tr><td class="month-label">M9</td><td>0</td><td>0</td><td>11.500</td><td>18.101</td><td>23.000</td></tr>
-        <tr><td class="month-label">M10</td><td>0</td><td>0</td><td>11.500</td><td>18.101</td><td>23.000</td></tr>
-        <tr><td class="month-label">M11</td><td>0</td><td>0</td><td>11.500</td><td>18.101</td><td>23.000</td></tr>
-        <tr><td class="month-label">M12</td><td>0</td><td>0</td><td>11.500</td><td>18.101</td><td>23.000</td></tr>
-        <tr class="row-total"><td class="month-label">Σ Jahr</td><td>0</td><td>0</td><td>126.000</td><td>212.004</td><td>276.000</td></tr>
+        <tr><td class="month-label">M1</td><td>0</td><td>0</td><td>9.750</td><td>18.114</td><td>24.750</td></tr>
+        <tr><td class="month-label">M2</td><td>0</td><td>0</td><td>9.750</td><td>18.114</td><td>24.750</td></tr>
+        <tr><td class="month-label">M3</td><td>0</td><td>0</td><td>9.750</td><td>18.114</td><td>24.750</td></tr>
+        <tr><td class="month-label">M4</td><td>0</td><td>0</td><td>9.750</td><td>19.851</td><td>24.750</td></tr>
+        <tr><td class="month-label">M5</td><td>0</td><td>0</td><td>9.750</td><td>19.851</td><td>24.750</td></tr>
+        <tr><td class="month-label">M6</td><td>0</td><td>0</td><td>9.750</td><td>19.851</td><td>24.750</td></tr>
+        <tr><td class="month-label">M7</td><td>0</td><td>0</td><td>11.750</td><td>19.851</td><td>24.750</td></tr>
+        <tr><td class="month-label">M8</td><td>0</td><td>0</td><td>11.750</td><td>19.851</td><td>24.750</td></tr>
+        <tr><td class="month-label">M9</td><td>0</td><td>0</td><td>11.750</td><td>19.851</td><td>24.750</td></tr>
+        <tr><td class="month-label">M10</td><td>0</td><td>0</td><td>11.750</td><td>19.851</td><td>24.750</td></tr>
+        <tr><td class="month-label">M11</td><td>0</td><td>0</td><td>11.750</td><td>19.851</td><td>24.750</td></tr>
+        <tr><td class="month-label">M12</td><td>0</td><td>0</td><td>11.750</td><td>19.851</td><td>24.750</td></tr>
+        <tr class="row-total"><td class="month-label">Σ Jahr</td><td>0</td><td>0</td><td>129.000</td><td>233.001</td><td>297.000</td></tr>
       </tbody>
     </table>
   </div>
-  <div class="slide-footer"><div class="brand"><span class="brand-dot"></span>Lesekumpel · Pitch v2</div><div class="counter">A4 / 8</div></div>
+  <div class="slide-footer"><div class="brand"><span class="brand-dot"></span>Lesekumpel · Pitch v2</div><div class="counter">A4 / 9</div></div>
 </section>
 
-<!-- ==================== FOLIE A5: Kreditkosten / Monat ==================== -->
+<!-- FOLIE A5: Kreditkosten / Monat -->
 <section class="slide" data-slide="15">
-  <div class="blob tr-lg shape-2 mint"></div>
+  <div class="blob tr-lg shape-3 lila"></div>
   <div class="slide-tag">Anhang A5 · Rohdaten</div>
   <h1 class="slide-title">Kreditkosten / Monat</h1>
   <div class="slide-content">
-    <p class="anhang-desc">Zinsen + Tilgung Mikrokredit (ab J2) + KfW-Zinsen (ab M27) · KfW 2 J tilgungsfrei bis M50</p>
+    <p class="anhang-desc">Zinsen + Tilgung Mikrokredit 30k (ab J2) + KfW-Zinsen (ab M27) · KfW 2 J tilgungsfrei bis M50</p>
     <table class="anhang-table">
       <thead><tr><th>Monat</th><th>Jahr 1</th><th>Jahr 2</th><th>Jahr 3</th><th>Jahr 4</th><th>Jahr 5</th></tr></thead>
       <tbody>
-        <tr><td class="month-label">M1</td><td>0</td><td>308</td><td>958</td><td>1.021</td><td>979</td></tr>
-        <tr><td class="month-label">M2</td><td>0</td><td>308</td><td>958</td><td>1.021</td><td>979</td></tr>
-        <tr><td class="month-label">M3</td><td>0</td><td>308</td><td>958</td><td>1.021</td><td>979</td></tr>
-        <tr><td class="month-label">M4</td><td>0</td><td>308</td><td>958</td><td>1.021</td><td>979</td></tr>
-        <tr><td class="month-label">M5</td><td>0</td><td>308</td><td>958</td><td>1.021</td><td>979</td></tr>
-        <tr><td class="month-label">M6</td><td>0</td><td>308</td><td>958</td><td>1.021</td><td>979</td></tr>
-        <tr><td class="month-label">M7</td><td>0</td><td>308</td><td>958</td><td>1.021</td><td>979</td></tr>
-        <tr><td class="month-label">M8</td><td>0</td><td>308</td><td>958</td><td>1.021</td><td>979</td></tr>
-        <tr><td class="month-label">M9</td><td>0</td><td>308</td><td>958</td><td>1.021</td><td>979</td></tr>
-        <tr><td class="month-label">M10</td><td>0</td><td>308</td><td>958</td><td>1.021</td><td>979</td></tr>
-        <tr><td class="month-label">M11</td><td>0</td><td>308</td><td>958</td><td>1.021</td><td>979</td></tr>
-        <tr><td class="month-label">M12</td><td>0</td><td>308</td><td>958</td><td>1.021</td><td>979</td></tr>
-        <tr class="row-total"><td class="month-label">Σ Jahr</td><td>0</td><td>3.696</td><td>11.496</td><td>12.252</td><td>11.748</td></tr>
+        <tr><td class="month-label">M1</td><td>0</td><td>367</td><td>1.088</td><td>1.142</td><td>1.092</td></tr>
+        <tr><td class="month-label">M2</td><td>0</td><td>367</td><td>1.088</td><td>1.142</td><td>1.092</td></tr>
+        <tr><td class="month-label">M3</td><td>0</td><td>367</td><td>1.088</td><td>1.142</td><td>1.092</td></tr>
+        <tr><td class="month-label">M4</td><td>0</td><td>367</td><td>1.088</td><td>1.142</td><td>1.092</td></tr>
+        <tr><td class="month-label">M5</td><td>0</td><td>367</td><td>1.088</td><td>1.142</td><td>1.092</td></tr>
+        <tr><td class="month-label">M6</td><td>0</td><td>367</td><td>1.088</td><td>1.142</td><td>1.092</td></tr>
+        <tr><td class="month-label">M7</td><td>0</td><td>367</td><td>1.088</td><td>1.142</td><td>1.092</td></tr>
+        <tr><td class="month-label">M8</td><td>0</td><td>367</td><td>1.088</td><td>1.142</td><td>1.092</td></tr>
+        <tr><td class="month-label">M9</td><td>0</td><td>367</td><td>1.088</td><td>1.142</td><td>1.092</td></tr>
+        <tr><td class="month-label">M10</td><td>0</td><td>367</td><td>1.088</td><td>1.142</td><td>1.092</td></tr>
+        <tr><td class="month-label">M11</td><td>0</td><td>367</td><td>1.088</td><td>1.142</td><td>1.092</td></tr>
+        <tr><td class="month-label">M12</td><td>0</td><td>367</td><td>1.088</td><td>1.142</td><td>1.092</td></tr>
+        <tr class="row-total"><td class="month-label">Σ Jahr</td><td>0</td><td>4.404</td><td>13.056</td><td>13.704</td><td>13.104</td></tr>
       </tbody>
     </table>
   </div>
-  <div class="slide-footer"><div class="brand"><span class="brand-dot"></span>Lesekumpel · Pitch v2</div><div class="counter">A5 / 8</div></div>
+  <div class="slide-footer"><div class="brand"><span class="brand-dot"></span>Lesekumpel · Pitch v2</div><div class="counter">A5 / 9</div></div>
 </section>
 
-<!-- ==================== FOLIE A6: EBITDA operativ / Monat ==================== -->
+<!-- FOLIE A6: EBITDA operativ / Monat -->
 <section class="slide" data-slide="16">
-  <div class="blob tr-lg shape-3 lila"></div>
+  <div class="blob tr-lg shape-1 coral"></div>
   <div class="slide-tag">Anhang A6 · Rohdaten</div>
   <h1 class="slide-title">EBITDA operativ / Monat</h1>
   <div class="slide-content">
-    <p class="anhang-desc">Brutto-Umsatz − Op-Kosten ohne Personal (Token + Marketing + Hosting + Lizenzen + AfA + Zinsen)</p>
+    <p class="anhang-desc">Brutto-Umsatz Netto − Op-Kosten ohne Personal (Token + Marketing + Hosting + Lizenzen + AfA + Zinsen)</p>
     <table class="anhang-table">
       <thead><tr><th>Monat</th><th>Jahr 1</th><th>Jahr 2</th><th>Jahr 3</th><th>Jahr 4</th><th>Jahr 5</th></tr></thead>
       <tbody>
@@ -1523,65 +1626,142 @@ h1.slide-title .accent { color: var(--coral); }
       </tbody>
     </table>
   </div>
-  <div class="slide-footer"><div class="brand"><span class="brand-dot"></span>Lesekumpel · Pitch v2</div><div class="counter">A6 / 8</div></div>
+  <div class="slide-footer"><div class="brand"><span class="brand-dot"></span>Lesekumpel · Pitch v2</div><div class="counter">A6 / 9</div></div>
 </section>
 
-<!-- ==================== FOLIE A7: Operative Marge / Monat ==================== -->
+<!-- FOLIE A7: Operative Marge / Monat -->
 <section class="slide" data-slide="17">
-  <div class="blob tr-lg shape-1 coral"></div>
+  <div class="blob tr-lg shape-2 yellow"></div>
   <div class="slide-tag">Anhang A7 · Rohdaten</div>
   <h1 class="slide-title">Operative Marge / Monat</h1>
   <div class="slide-content">
-    <p class="anhang-desc">EBITDA − Personal · ab J4 dauerhaft positiv durch Sprachen-Adoption + Lehrer-Vertrieb</p>
+    <p class="anhang-desc">EBITDA − Personal · J3 negativ wegen Investitionen, ab J4 dauerhaft positiv</p>
     <table class="anhang-table">
       <thead><tr><th>Monat</th><th>Jahr 1</th><th>Jahr 2</th><th>Jahr 3</th><th>Jahr 4</th><th>Jahr 5</th></tr></thead>
       <tbody>
-        <tr><td class="month-label">M1</td><td class="neg">−333</td><td class="neg">−1.358</td><td class="neg">−10.697</td><td class="neg">−1.835</td><td>16.161</td></tr>
-        <tr><td class="month-label">M2</td><td class="neg">−330</td><td class="neg">−1.918</td><td class="neg">−11.975</td><td class="neg">−1.876</td><td>17.837</td></tr>
-        <tr><td class="month-label">M3</td><td class="neg">−315</td><td class="neg">−1.663</td><td class="neg">−10.882</td><td>332</td><td>20.842</td></tr>
-        <tr><td class="month-label">M4</td><td class="neg">−282</td><td class="neg">−614</td><td class="neg">−7.202</td><td>3.310</td><td>25.082</td></tr>
-        <tr><td class="month-label">M5</td><td class="neg">−254</td><td class="neg">−298</td><td class="neg">−5.510</td><td>5.748</td><td>28.264</td></tr>
-        <tr><td class="month-label">M6</td><td class="neg">−216</td><td>34</td><td class="neg">−3.629</td><td>8.059</td><td>31.497</td></tr>
-        <tr><td class="month-label">M7</td><td class="neg">−159</td><td>390</td><td class="neg">−3.661</td><td>10.638</td><td>34.774</td></tr>
-        <tr><td class="month-label">M8</td><td class="neg">−113</td><td class="neg">−493</td><td class="neg">−5.380</td><td>9.678</td><td>36.212</td></tr>
-        <tr><td class="month-label">M9</td><td class="neg">−46</td><td class="neg">−103</td><td class="neg">−3.165</td><td>12.639</td><td>39.566</td></tr>
-        <tr><td class="month-label">M10</td><td>35</td><td>1.561</td><td>2.966</td><td>19.491</td><td>44.831</td></tr>
-        <tr><td class="month-label">M11</td><td>115</td><td>1.969</td><td>5.341</td><td>22.728</td><td>48.249</td></tr>
-        <tr><td class="month-label">M12</td><td>198</td><td>2.393</td><td>7.791</td><td>26.087</td><td>51.685</td></tr>
-        <tr class="row-total"><td class="month-label">Σ Jahr</td><td class="neg">−1.700</td><td class="neg">−100</td><td class="neg">−46.003</td><td>114.999</td><td>395.000</td></tr>
+        <tr><td class="month-label">M1</td><td class="neg">−333</td><td class="neg">−1.358</td><td class="neg">−10.937</td><td class="neg">−3.584</td><td>14.411</td></tr>
+        <tr><td class="month-label">M2</td><td class="neg">−330</td><td class="neg">−1.918</td><td class="neg">−12.214</td><td class="neg">−3.625</td><td>16.087</td></tr>
+        <tr><td class="month-label">M3</td><td class="neg">−315</td><td class="neg">−1.663</td><td class="neg">−11.122</td><td class="neg">−1.417</td><td>19.092</td></tr>
+        <tr><td class="month-label">M4</td><td class="neg">−282</td><td class="neg">−614</td><td class="neg">−7.447</td><td>1.560</td><td>23.332</td></tr>
+        <tr><td class="month-label">M5</td><td class="neg">−254</td><td class="neg">−298</td><td class="neg">−5.758</td><td>3.998</td><td>26.514</td></tr>
+        <tr><td class="month-label">M6</td><td class="neg">−216</td><td>34</td><td class="neg">−3.879</td><td>6.309</td><td>29.747</td></tr>
+        <tr><td class="month-label">M7</td><td class="neg">−159</td><td>390</td><td class="neg">−3.911</td><td>8.888</td><td>33.024</td></tr>
+        <tr><td class="month-label">M8</td><td class="neg">−113</td><td class="neg">−493</td><td class="neg">−5.628</td><td>7.928</td><td>34.462</td></tr>
+        <tr><td class="month-label">M9</td><td class="neg">−46</td><td class="neg">−103</td><td class="neg">−3.416</td><td>10.889</td><td>37.816</td></tr>
+        <tr><td class="month-label">M10</td><td>35</td><td>1.561</td><td>2.707</td><td>17.741</td><td>43.081</td></tr>
+        <tr><td class="month-label">M11</td><td>115</td><td>1.969</td><td>5.079</td><td>20.978</td><td>46.499</td></tr>
+        <tr><td class="month-label">M12</td><td>198</td><td>2.393</td><td>7.526</td><td>24.336</td><td>49.935</td></tr>
+        <tr class="row-total"><td class="month-label">Σ Jahr</td><td class="neg">−1.700</td><td class="neg">−100</td><td class="neg">−49.000</td><td>94.001</td><td>374.000</td></tr>
       </tbody>
     </table>
   </div>
-  <div class="slide-footer"><div class="brand"><span class="brand-dot"></span>Lesekumpel · Pitch v2</div><div class="counter">A7 / 8</div></div>
+  <div class="slide-footer"><div class="brand"><span class="brand-dot"></span>Lesekumpel · Pitch v2</div><div class="counter">A7 / 9</div></div>
 </section>
 
-<!-- ==================== FOLIE A8: Cashflow / Monat ==================== -->
+<!-- FOLIE A8: Cashflow / Monat -->
 <section class="slide" data-slide="18">
-  <div class="blob tr-lg shape-2 yellow"></div>
+  <div class="blob tr-lg shape-3 mint"></div>
   <div class="slide-tag">Anhang A8 · Rohdaten</div>
   <h1 class="slide-title">Cashflow / Monat</h1>
   <div class="slide-content">
-    <p class="anhang-desc">Op-Marge ± Schedule-Events: KfW +100k M27, Mikrokredit +10k M13/+15k M19, Hardware -24k/8k/8k</p>
+    <p class="anhang-desc">Op-Marge ± Schedule-Events: KfW +100k M27, Mikrokredit +10k M13/+20k M19, Hardware -24k M3/-8k/-8k</p>
     <table class="anhang-table">
       <thead><tr><th>Monat</th><th>Jahr 1</th><th>Jahr 2</th><th>Jahr 3</th><th>Jahr 4</th><th>Jahr 5</th></tr></thead>
       <tbody>
-        <tr><td class="month-label">M1</td><td class="neg">−529</td><td>7.601</td><td class="neg">−23.133</td><td class="neg">−7.078</td><td>5.736</td></tr>
-        <tr><td class="month-label">M2</td><td class="neg">−524</td><td class="neg">−1.687</td><td class="neg">−7.984</td><td class="neg">−1.350</td><td>12.537</td></tr>
-        <tr><td class="month-label">M3</td><td class="neg">−500</td><td class="neg">−1.463</td><td>59.417</td><td>239</td><td>14.649</td></tr>
-        <tr><td class="month-label">M4</td><td class="neg">−448</td><td class="neg">−540</td><td class="neg">−4.802</td><td>2.382</td><td>17.629</td></tr>
-        <tr><td class="month-label">M5</td><td class="neg">−403</td><td class="neg">−262</td><td class="neg">−3.674</td><td>4.136</td><td>19.865</td></tr>
-        <tr><td class="month-label">M6</td><td class="neg">−343</td><td>30</td><td class="neg">−2.420</td><td>5.800</td><td>22.137</td></tr>
-        <tr><td class="month-label">M7</td><td class="neg">−253</td><td>13.536</td><td class="neg">−2.441</td><td>7.655</td><td>24.441</td></tr>
-        <tr><td class="month-label">M8</td><td class="neg">−179</td><td class="neg">−434</td><td class="neg">−3.587</td><td>6.965</td><td>25.451</td></tr>
-        <tr><td class="month-label">M9</td><td class="neg">−73</td><td class="neg">−91</td><td class="neg">−2.110</td><td>9.095</td><td>27.809</td></tr>
-        <tr><td class="month-label">M10</td><td>56</td><td>1.373</td><td>1.978</td><td>14.026</td><td>31.509</td></tr>
-        <tr><td class="month-label">M11</td><td>183</td><td>1.732</td><td>3.561</td><td>16.356</td><td>33.911</td></tr>
-        <tr><td class="month-label">M12</td><td>314</td><td>2.105</td><td>7.195</td><td>18.773</td><td>36.326</td></tr>
-        <tr class="row-total"><td class="month-label">Σ Jahr</td><td class="neg">−2.699</td><td>21.900</td><td>22.000</td><td>76.999</td><td>272.000</td></tr>
+        <tr><td class="month-label">M1</td><td class="neg">−529</td><td>6.330</td><td class="neg">−8.020</td><td class="neg">−8.082</td><td>4.204</td></tr>
+        <tr><td class="month-label">M2</td><td class="neg">−524</td><td class="neg">−1.405</td><td class="neg">−8.957</td><td class="neg">−2.529</td><td>10.549</td></tr>
+        <tr><td class="month-label">M3</td><td class="neg">−500</td><td class="neg">−1.218</td><td>47.577</td><td class="neg">−989</td><td>12.519</td></tr>
+        <tr><td class="month-label">M4</td><td class="neg">−448</td><td class="neg">−450</td><td class="neg">−5.461</td><td>1.088</td><td>15.300</td></tr>
+        <tr><td class="month-label">M5</td><td class="neg">−403</td><td class="neg">−218</td><td class="neg">−4.223</td><td>2.789</td><td>17.386</td></tr>
+        <tr><td class="month-label">M6</td><td class="neg">−343</td><td>25</td><td class="neg">−2.845</td><td>4.402</td><td>19.506</td></tr>
+        <tr><td class="month-label">M7</td><td class="neg">−253</td><td>14.934</td><td class="neg">−2.868</td><td>6.201</td><td>21.655</td></tr>
+        <tr><td class="month-label">M8</td><td class="neg">−179</td><td class="neg">−361</td><td class="neg">−4.127</td><td>5.531</td><td>22.598</td></tr>
+        <tr><td class="month-label">M9</td><td class="neg">−73</td><td class="neg">−75</td><td class="neg">−2.505</td><td>7.597</td><td>24.797</td></tr>
+        <tr><td class="month-label">M10</td><td>56</td><td>1.143</td><td>1.985</td><td>12.377</td><td>28.250</td></tr>
+        <tr><td class="month-label">M11</td><td>183</td><td>1.442</td><td>3.725</td><td>14.636</td><td>30.491</td></tr>
+        <tr><td class="month-label">M12</td><td>314</td><td>1.753</td><td>7.719</td><td>16.978</td><td>32.744</td></tr>
+        <tr class="row-total"><td class="month-label">Σ Jahr</td><td class="neg">−2.699</td><td>21.900</td><td>22.000</td><td>59.999</td><td>239.999</td></tr>
       </tbody>
     </table>
   </div>
-  <div class="slide-footer"><div class="brand"><span class="brand-dot"></span>Lesekumpel · Pitch v2</div><div class="counter">A8 / 8</div></div>
+  <div class="slide-footer"><div class="brand"><span class="brand-dot"></span>Lesekumpel · Pitch v2</div><div class="counter">A8 / 9</div></div>
+</section>
+<!-- FOLIE A9: Sensitivitätsanalyse -->
+<section class="slide" data-slide="19">
+  <div class="blob tl-lg shape-2 lila"></div>
+  <div class="blob br-md shape-1 yellow"></div>
+  <div class="slide-tag">Anhang A9 · Sensitivität</div>
+  <h1 class="slide-title">Bull / Base / <span class="accent">Bear</span> Szenarien</h1>
+  <div class="slide-content">
+    <p class="anhang-desc">Was passiert bei Abweichungen von den Base-Annahmen? Wir testen drei Szenarien mit unterschiedlichen Conversion-Raten, Win-Back und KfW-Timing. Selbst im Bear-Case bleibt das Geschäft tragfähig — durch externes Job-Standbein und EXIST-Backup.</p>
+
+    <div class="sens-grid">
+      <div class="sens-col sens-bull">
+        <div class="sens-header">
+          <div class="sens-emoji">🚀</div>
+          <div class="sens-label">Bull</div>
+          <div class="sens-name">Best Case</div>
+        </div>
+        <table class="sens-table">
+          <tr><td>Conversion Free→Premium</td><td>12 %</td></tr>
+          <tr><td>Win-Back-Rate</td><td>30 %</td></tr>
+          <tr><td>KfW-Timing</td><td>pünktlich M27</td></tr>
+          <tr><td>DaZ-Adoption</td><td>Boom-Szenario</td></tr>
+        </table>
+        <div class="sens-kpis">
+          <div class="sens-kpi"><div class="sens-val">~10.000</div><div class="sens-key">Premium J5</div></div>
+          <div class="sens-kpi"><div class="sens-val">~1,3 M €</div><div class="sens-key">Umsatz J5</div></div>
+          <div class="sens-kpi"><div class="sens-val">+500 k €</div><div class="sens-key">Op-Marge J5</div></div>
+          <div class="sens-kpi sens-val-hi"><div class="sens-val">~600 k €</div><div class="sens-key">Liquidität J5</div></div>
+        </div>
+      </div>
+
+      <div class="sens-col sens-base">
+        <div class="sens-header">
+          <div class="sens-emoji">🎯</div>
+          <div class="sens-label">Base</div>
+          <div class="sens-name">Aktueller Plan</div>
+        </div>
+        <table class="sens-table">
+          <tr><td>Conversion Free→Premium</td><td>8 – 11 %</td></tr>
+          <tr><td>Win-Back-Rate</td><td>20 %</td></tr>
+          <tr><td>KfW-Timing</td><td>M27</td></tr>
+          <tr><td>DaZ-Adoption</td><td>steady (Pro-Ratio 4 %)</td></tr>
+        </table>
+        <div class="sens-kpis">
+          <div class="sens-kpi"><div class="sens-val">7.500</div><div class="sens-key">Premium J5</div></div>
+          <div class="sens-kpi"><div class="sens-val">921 k €</div><div class="sens-key">Umsatz J5</div></div>
+          <div class="sens-kpi"><div class="sens-val">+374 k €</div><div class="sens-key">Op-Marge J5</div></div>
+          <div class="sens-kpi sens-val-hi"><div class="sens-val">349 k €</div><div class="sens-key">Liquidität J5</div></div>
+        </div>
+      </div>
+
+      <div class="sens-col sens-bear">
+        <div class="sens-header">
+          <div class="sens-emoji">🛡</div>
+          <div class="sens-label">Bear</div>
+          <div class="sens-name">Worst Case</div>
+        </div>
+        <table class="sens-table">
+          <tr><td>Conversion Free→Premium</td><td>4 – 5 % <em>(halbiert)</em></td></tr>
+          <tr><td>Win-Back-Rate</td><td>10 %</td></tr>
+          <tr><td>KfW-Timing</td><td>+6 Monate Verzögerung</td></tr>
+          <tr><td>DaZ-Adoption</td><td>schwächer als geplant</td></tr>
+        </table>
+        <div class="sens-kpis">
+          <div class="sens-kpi"><div class="sens-val">~3.800</div><div class="sens-key">Premium J5</div></div>
+          <div class="sens-kpi"><div class="sens-val">~480 k €</div><div class="sens-key">Umsatz J5</div></div>
+          <div class="sens-kpi"><div class="sens-val">+90 k €</div><div class="sens-key">Op-Marge J5</div></div>
+          <div class="sens-kpi sens-val-hi"><div class="sens-val">~100 k €</div><div class="sens-key">Liquidität J5</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="bear-banner">
+      <strong>Bear-Robustheit:</strong> Externes Job-Standbein verhindert Nullfall · EXIST-Stipendium als KfW-Backup · Plan verlängert sich um 12-18 Monate, Geschäft bleibt tragfähig.
+    </div>
+  </div>
+  <div class="slide-footer"><div class="brand"><span class="brand-dot"></span>Lesekumpel · Pitch v2</div><div class="counter">A9 / 9</div></div>
 </section>
 
 </div>

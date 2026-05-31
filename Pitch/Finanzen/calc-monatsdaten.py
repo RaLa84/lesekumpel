@@ -5,15 +5,20 @@ Schreibt das Ergebnis nach monatsdaten.json.
 import json
 import os
 
-# Jahres-Endwerte (Soll-Werte aus Master-Tabelle)
+# Jahres-Endwerte (v3 — nach Schwachstellen-Fixes)
+# Änderungen ggü. v2:
+#  - Mikrokredit-Aufstockung 25k → 30k (5k mehr Liquiditätsreserve)
+#  - Hardware-Vollausstattung J3 von M1 auf M3 verschoben (nach KfW-Tranche)
+#  - +3k/J Externer Datenschutzbeauftragter ab J3 (Pflicht für Kinder-App)
+#  - Backoffice ab J4 von Halbtags auf Vollzeit (für 5k+ Kunden Support)
 premium_end = [50, 450, 2200, 4800, 7500]
 pro_end = [8, 70, 500, 1200, 2200]
 umsatz_y = [2400, 27000, 168000, 487000, 921000]
-personal_y = [0, 0, 126000, 212000, 276000]
-kredit_y = [0, 3700, 11500, 12250, 11750]
+personal_y = [0, 0, 129000, 233000, 297000]
+kredit_y = [0, 4400, 13050, 13700, 13100]
 ebitda_y = [-1700, -100, 81000, 327000, 671000]
-op_marge_y = [-1700, -100, -46000, 115000, 395000]
-cashflow_y = [-2700, 21900, 22000, 77000, 272000]
+op_marge_y = [-1700, -100, -49000, 94000, 374000]
+cashflow_y = [-2700, 21900, 22000, 60000, 240000]
 
 # ARPU pro Monat
 arpu_p = [6.25, 6.25, 6.50, 7.08, 7.42]
@@ -100,21 +105,22 @@ umsatz_matrix = scale_to_year(umsatz_matrix, umsatz_y)
 def personal_month(y, m):
     if y < 2:
         return 0
+    dsb = 250  # NEU v3: Externer Datenschutzbeauftragter ab J3 (3k/J Pauschale)
     if y == 2:
         gr = 4 * 1500
-        bo = 1500
+        bo = 1500  # Backoffice Halbtags
         sp = 2000  # Sprachen-Lead Halbtags 24k/J
         mk = 2000 if m >= 7 else 0  # Marketing-Asst ab Mitte J3
-        return gr + bo + sp + mk
+        return gr + bo + sp + mk + dsb
     if y == 3:
         gr = 4 * 2500
-        bo = 1500
+        bo = 3000  # NEU v3: Backoffice Vollzeit ab J4 (36k/J)
         sp = 2000
         ma = 1750 if m >= 4 else 0
         mk = 3000
-        return gr + bo + sp + ma + mk
+        return gr + bo + sp + ma + mk + dsb
     if y == 4:
-        return 4 * 3500 + 1500 + 2000 + 2000 + 3500
+        return 4 * 3500 + 3000 + 2000 + 2000 + 3500 + dsb  # Backoffice VZ + DSB
 
 
 personal_matrix = [[personal_month(y, m + 1) for m in range(12)] for y in range(5)]
@@ -152,26 +158,25 @@ op_marge_matrix = scale_to_year(op_marge_matrix, op_marge_y)
 
 
 def cashflow_month(y, m):
-    """m hier 1..12 für Schedule-Events."""
+    """m hier 1..12 für Schedule-Events. v3-Anpassungen markiert."""
     cf = op_marge_matrix[y][m - 1]
     if y == 1:
         if m == 1:
-            cf += 10000
+            cf += 10000  # Mikrokredit-Start M13
         if m == 7:
-            cf += 15000
+            cf += 20000  # v3: Mikrokredit-Aufstockung 15k → 20k (Total 30k statt 25k)
     if y == 2:
-        if m == 1:
-            cf -= 24000
         if m == 3:
-            cf += 100000
+            cf -= 24000  # v3: Hardware-Vollausstattung von M1 auf M3 verschoben (nach KfW)
+            cf += 100000  # KfW-Tranche M27
         if m == 12:
-            cf += 3000
+            cf += 3000  # Förderung
     if y == 3:
         if m == 1:
-            cf -= 8000
+            cf -= 8000  # Hardware-Erweiterung
     if y == 4:
         if m == 1:
-            cf -= 8000
+            cf -= 8000  # Hardware-Refresh
     return cf
 
 
@@ -188,11 +193,9 @@ for y in range(5):
         year_row.append(round(running))
     liquiditat_matrix.append(year_row)
 
-# Korrektur: Liquidität-Ende-Werte müssen mit Master-Tabelle übereinstimmen
-# Da der Startwert 2500 ist und cashflow_y[0]=-2700, sollte M12 = -200, aber Ziel ist 0
-# Vereinfacht: kumulative Werte annähern, Ende-Jahre ggf. korrigieren
-liq_targets = [0, 22000, 44000, 121000, 393000]
-# Skaliere am Ende: Differenz zum Soll-Endwert pro Jahr proportional auf alle Monate verteilen
+# v3-Liquiditäts-Ziele (Cashflow-Targets liefern bereits diese Werte näherungsweise)
+liq_targets = [0, 27000, 49000, 109000, 349000]
+# Skaliere Differenz pro Jahr proportional auf alle Monate verteilen
 for y in range(5):
     diff = liq_targets[y] - liquiditat_matrix[y][11]
     for m in range(12):
@@ -214,7 +217,7 @@ out_path = os.path.join(os.path.dirname(__file__), "monatsdaten.json")
 with open(out_path, "w", encoding="utf-8") as f:
     json.dump(data, f, indent=2)
 
-print("Verifikation Jahres-Endsummen vs. Soll:")
+print("Verifikation Jahres-Endsummen vs. Soll (v3):")
 print(f"  premium      Ende: {[m[11] for m in premium_matrix]} (Soll: {premium_end})")
 print(f"  pro          Ende: {[m[11] for m in pro_matrix]} (Soll: {pro_end})")
 print(f"  umsatz       Sum:  {[sum(m) for m in umsatz_matrix]} (Soll: {umsatz_y})")
@@ -224,4 +227,9 @@ print(f"  ebitda       Sum:  {[sum(m) for m in ebitda_matrix]} (Soll: {ebitda_y}
 print(f"  op_marge     Sum:  {[sum(m) for m in op_marge_matrix]} (Soll: {op_marge_y})")
 print(f"  cashflow     Sum:  {[sum(m) for m in cashflow_matrix]} (Soll: {cashflow_y})")
 print(f"  liquiditat   Ende: {[m[11] for m in liquiditat_matrix]} (Soll: {liq_targets})")
+print()
+print("KRITISCH — Liquidität J3 M1-M3 (muss durchgehend positiv sein):")
+print(f"  J3 M1: {liquiditat_matrix[2][0]:>10,} €")
+print(f"  J3 M2: {liquiditat_matrix[2][1]:>10,} €")
+print(f"  J3 M3: {liquiditat_matrix[2][2]:>10,} €")
 print(f"\nDatei: {out_path}")

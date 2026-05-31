@@ -1,13 +1,19 @@
 # Geschäftsplan Lesekumpel — Annahmen-Dokumentation
 
-**Stand:** Mai 2026 · **Sheet-Version:** v2.0 · **Anlass:** INSPIRED-Wettbewerb MV 2026
+**Stand:** Mai 2026 · **Sheet-Version:** v3.0 · **Anlass:** INSPIRED-Wettbewerb MV 2026
 
 Dieses Dokument erläutert die Annahmen hinter der Pitch-Präsentation `Pitch/finanzierungs-pitch-v2.html`. Quelle der Wahrheit für die Zahlen: dieses Dokument + Memory `project_finanzierungs_phasen.md`.
 
-**Was sich gegenüber v1 geändert hat:**
-- Pricing 4,99 € → **6,99 €** Premium, 14,99 € → **19,99 €** Pro
-- Mikromezzanin verworfen → **KfW-Gründerkredit 100 k (2 J tilgungsfrei)**
-- Lernfeld-Expansion: **J3 Sprachen+DaZ**, **J4 Mathe**
+**Was sich gegenüber v2 geändert hat (Schwachstellen-Fixes):**
+- **Liquidität J3:** Hardware-Vollausstattung 24 k von M1 auf M3 verschoben (nach KfW) + Mikrokredit-Aufstockung 25 k → 30 k → Liquidität durchgehend positiv
+- **MwSt 7 % Bildungsmedien:** Listenpreise sind Brutto, Umsatzwerte = Netto (explizit dokumentiert)
+- **DSGVO + Support:** Externer DSB ab J3 (3 k/J Pauschale) + Backoffice ab J4 von Halbtags auf Vollzeit
+- **Sensitivitätsanalyse:** Bull/Base/Bear-Szenarien dokumentiert
+
+**Was sich gegenüber v1 geändert hatte:**
+- Pricing 4,99 € → 6,99 € Premium, 14,99 € → 19,99 € Pro
+- Mikromezzanin verworfen → KfW-Gründerkredit 100 k (2 J tilgungsfrei)
+- Lernfeld-Expansion: J3 Sprachen+DaZ, J4 Mathe
 - Personal-Aufbau: Sprachen-Lead, Mathe-Lead, Marketing 3-stufig
 - Hardware-Vollausstattung 6 MA in J3 (24 k €)
 
@@ -17,14 +23,16 @@ Dieses Dokument erläutert die Annahmen hinter der Pitch-Präsentation `Pitch/fi
 
 **Lesekumpel** — neuroinklusive Lese-, Sprach- und Lernplattform für Kinder 5–10 Jahre mit Fokus auf LRS, ADHS, Autismus und DaZ.
 
-**Einnahmenstreams:**
-- **Familienpaket Premium:** 6,99 €/Monat · Cap 20 Stories · Jahres-Abo 69 € (−18 %)
-- **Multi-Sprach-Tier** (ab J3): 8,99 €/Monat · alle Sprachen inkl. · Jahres-Abo 89 € (−17 %)
-- **Pro-Account** (Lehrer): 19,99 €/Monat · Cap 45 Stories · Jahres-Abo 199 € (−17 %)
+**Einnahmenstreams (alle Listenpreise sind Brutto inkl. 7 % MwSt):**
+- **Familienpaket Premium:** 6,99 €/Monat Brutto · Cap 20 Stories · Jahres-Abo 69 € Brutto (−18 %)
+- **Multi-Sprach-Tier** (ab J3): 8,99 €/Monat Brutto · alle Sprachen inkl. · Jahres-Abo 89 € Brutto (−17 %)
+- **Pro-Account** (Lehrer): 19,99 €/Monat Brutto · Cap 45 Stories · Jahres-Abo 199 € Brutto (−17 %)
 - **Kaffeekasse:** 1 €/2 Credits On-Demand
 
+**MwSt-Behandlung:** Lesekumpel-Inhalte sind Bildungsmedien gemäß **§12 UStG Abs. 2 Nr. 14** und unterliegen dem ermäßigten Steuersatz von **7 %**. Alle Listenpreise sind Brutto, alle Umsatzwerte in Tabellen sind Netto.
+
 **Force Commitments:** 60 % aller Premium- und Pro-Abos wählen Jahres-Abo (Discount-Anreiz).
-**Avg Umsatz/Jahr/Kunde:** Premium J1-2: 74,95 € → J3: 78 € → J4: 85 € → J5: 89 € · Pro: 211,26 €
+**Avg Netto-Umsatz/Jahr/Kunde:** Premium J1-2: 74,95 € → J3: 78 € → J4: 85 € → J5: 89 € · Pro: 211,26 €
 
 ---
 
@@ -136,11 +144,11 @@ Dieses Dokument erläutert die Annahmen hinter der Pitch-Präsentation `Pitch/fi
 |---|---|---|
 | J1 | Eigenmittel (4 Gründer) | 2.500 € |
 | J2 (M13) | Mikrokredit Start | 10.000 € |
-| J2 (M19) | Mikrokredit-Aufstockung (nach 6 Tilgungen) | +15.000 € |
+| J2 (M19) | Mikrokredit-Aufstockung (nach 6 Tilgungen) | +20.000 € |
 | J3 (M27) | KfW-Gründerkredit | 100.000 € |
 | J3 | Förderung (z. B. DATIpilot) | 3.000 € |
-| **Total externes Kapital** | | **130.500 €** |
-| davon Kredit | | 127.500 € |
+| **Total externes Kapital** | | **135.500 €** |
+| davon Kredit | | 132.500 € |
 
 **Aktion Mensch ausgeschlossen** — kein Träger-Anschluss verfügbar.
 
@@ -159,12 +167,13 @@ Dieses Dokument erläutert die Annahmen hinter der Pitch-Präsentation `Pitch/fi
 | Rolle | J1 | J2 | J3 | J4 | J5 |
 |---|---|---|---|---|---|
 | 4 Gründer-Bezahlung/Jahr | 0 | 0 | 72.000 € | 120.000 € | 168.000 € |
-| Backoffice Halbtags | 0 | 0 | 18.000 € | 18.000 € | 18.000 € |
+| Backoffice (HT J3 → VZ ab J4) | 0 | 0 | 18.000 € | **36.000 €** | **36.000 €** |
 | Sprachen-Lead Halbtags | 0 | 0 | 24.000 € | 24.000 € | 24.000 € |
 | Mathe-Lead Halbtags (ab M40) | 0 | 0 | 0 | 14.000 € | 24.000 € |
 | Marketing (HT → VZ → Sr.) | 0 | 0 | 12.000 € | 36.000 € | 42.000 € |
-| **Total Personal/Jahr** | 0 € | 0 € | **126.000 €** | **212.000 €** | **276.000 €** |
-| **Team-Größe** | 4 | 4 | 6 | 7 | 7 |
+| **Externer DSB (Datenschutz)** | 0 | 0 | **3.000 €** | **3.000 €** | **3.000 €** |
+| **Total Personal/Jahr** | 0 € | 0 € | **129.000 €** | **233.000 €** | **297.000 €** |
+| **Team-Größe** | 4 | 4 | 6 + DSB | 7 + DSB | 7 + DSB |
 
 ---
 
@@ -224,27 +233,54 @@ Dieses Dokument erläutert die Annahmen hinter der Pitch-Präsentation `Pitch/fi
 
 | Kennzahl | J1 | J2 | J3 | J4 | J5 |
 |---|---|---|---|---|---|
-| Brutto-Umsatz | 2.400 € | 27.000 € | 168.000 € | 487.000 € | **921.000 €** |
-| Personalausgaben | 0 € | 0 € | 126.000 € | 212.000 € | 276.000 € |
-| Kreditkosten | 0 € | 3.700 € | 11.500 € | 12.250 € | 11.750 € |
+| Brutto-Umsatz (Netto) | 2.400 € | 27.000 € | 168.000 € | 487.000 € | **921.000 €** |
+| Personalausgaben | 0 € | 0 € | **129.000 €** | **233.000 €** | **297.000 €** |
+| Kreditkosten | 0 € | 4.400 € | 13.050 € | 13.700 € | 13.100 € |
 | EBITDA operativ | −1.700 € | −100 € | +81.000 € | +327.000 € | +671.000 € |
-| Operative Marge (nach Personal) | −1.700 € | −100 € | −46.000 € | +115.000 € | +395.000 € |
-| Cashflow Jahr | −2.700 € | +21.900 € | +22.000 € | +77.000 € | +272.000 € |
-| Liquidität Ende | 0 € | +22.000 € | +44.000 € | +121.000 € | **+393.000 €** |
+| Operative Marge (nach Personal) | −1.700 € | −100 € | **−49.000 €** | **+94.000 €** | **+374.000 €** |
+| Cashflow Jahr | −2.700 € | +21.900 € | +22.000 € | **+60.000 €** | **+240.000 €** |
+| Liquidität Ende | 0 € | **+27.000 €** | **+49.000 €** | **+109.000 €** | **+349.000 €** |
+| **Liquidität J3 M1-M3** *(Stress-Test)* | | | **+14k / +6k / +54k** | | |
 
 **Pitch-Story für die Jury:**
 
-> *„Aus 2.500 € Eigenmitteln + 127.500 € Kredit (Mikrokredit + KfW) zu 921 k € Umsatz und 393 k € Liquidität in Jahr 5. Kein VC, keine Verwässerung, kein Burnout-Risiko durch externes Job-Standbein in Phase 1-2."*
+> *„Aus 2.500 € Eigenmitteln + 132.500 € Kredit (Mikrokredit 30k + KfW 100k) zu 921 k € Umsatz und 349 k € Liquidität in Jahr 5. Kein VC, keine Verwässerung, kein Burnout-Risiko durch externes Job-Standbein in Phase 1-2. Liquidität durchgehend positiv — Stress-Test J3 M1-M3 bestanden."*
 
 ---
 
-## 12. Konsistenz-Mapping
+## 12. Sensitivitätsanalyse — Bull / Base / Bear
+
+Drei Szenarien zur Stress-Test-Validierung der Base-Annahmen:
+
+| Szenario | Conversion | Win-Back | KfW-Timing | Premium J5 | Umsatz J5 | Op-Marge J5 | Liquidität J5 |
+|---|---|---|---|---|---|---|---|
+| **🚀 Bull** | 12 % | 30 % | M27 (pünktlich) | ~10.000 | ~1,3 M € | +500 k € | ~600 k € |
+| **🎯 Base** | 8–11 % | 20 % | M27 | 7.500 | 921 k € | +374 k € | 349 k € |
+| **🛡 Bear** | 4–5 % *(halb.)* | 10 % | +6 Mo Verzögerung | ~3.800 | ~480 k € | +90 k € | ~100 k € |
+
+**Was Bear robust hält:**
+- Externes Job-Standbein der Gründer:innen verhindert Nullfall-Existenz
+- EXIST-Stipendium als KfW-Backup bei Antrags-Ablehnung
+- Plan verlängert sich um 12-18 Monate, Geschäft bleibt tragfähig
+- Personal-Aufbau kann verlangsamt werden (Backoffice bleibt Halbtags, kein Marketing-VZ)
+
+**Sensitivitäts-Treiber (geordnet nach Impact):**
+1. **Conversion Free→Premium** (größter Hebel) — wenn halb so hoch → Premium halbiert → ARPU-Mix verschiebt sich
+2. **Pro-Adoption (DaZ-Markt)** — bei Verzögerung: Pro-Ratio bleibt bei 2 % statt 4 %
+3. **KfW-Timing** — bei Ablehnung/Verzögerung: Vollzeit-Übergang verschoben um 12 Monate
+4. **Win-Back-Effektivität** — wirkt linear auf Netto-Churn
+
+---
+
+## 13. Konsistenz-Mapping
 
 | Quelle | Inhalt |
 |---|---|
-| `Pitch/finanzierungs-pitch-v2.html` | 10-Folien-Pitch-Präsentation (Master-Stand) |
+| `Pitch/finanzierungs-pitch-v2.html` | 10-Folien-Pitch + 9 Anhangs-Folien (Master-Stand) |
 | `Memory: project_finanzierungs_phasen.md` | Vollständige Strategie + Lessons aus Iterationen |
 | `Pitch/Finanzen/geschaeftsplan-annahmen.md` | Dieses Dokument — Detail-Annahmen + Mathematik |
-| `Pitch/finanzierungs-praesentation.html` *(alt)* | Archiv-Version, nicht mehr aktuell |
+| `Pitch/Finanzen/calc-monatsdaten.py` | Reproduzierbares Berechnungs-Skript für Anhangs-Daten |
+| `Pitch/Finanzen/monatsdaten.json` | Generierte Monats-Werte aller 8 Kennzahlen |
+| `Pitch/finanzierungs-praesentation.html` *(alt)* | Archiv-Version v1, nicht mehr aktuell |
 
-Bei Wertänderungen: zuerst Memory + Annahmen-MD anpassen, dann Pitch-HTML.
+Bei Wertänderungen: zuerst calc-monatsdaten.py anpassen → re-run → JSON aktualisiert → dann Memory + Annahmen-MD + Pitch-HTML synchronisieren.
