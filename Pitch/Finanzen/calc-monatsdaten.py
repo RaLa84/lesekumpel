@@ -5,20 +5,21 @@ Schreibt das Ergebnis nach monatsdaten.json.
 import json
 import os
 
-# Jahres-Endwerte (v3 — nach Schwachstellen-Fixes)
-# Änderungen ggü. v2:
-#  - Mikrokredit-Aufstockung 25k → 30k (5k mehr Liquiditätsreserve)
-#  - Hardware-Vollausstattung J3 von M1 auf M3 verschoben (nach KfW-Tranche)
-#  - +3k/J Externer Datenschutzbeauftragter ab J3 (Pflicht für Kinder-App)
-#  - Backoffice ab J4 von Halbtags auf Vollzeit (für 5k+ Kunden Support)
+# Jahres-Endwerte (v3.2 — J5 Personal-Realismus)
+# Änderungen ggü. v3:
+#  - J5 Gründer-Gehalt 3.500 → 5.000 €/Mon (4 Vollzeit-GF glaubhaft)
+#  - J5 Backoffice von Halbtags auf Vollzeit (statt Junior Support)
+#  - J5 + Intermediate Engineer 65k + Content Manager 40k + CS-Manager Pro 50k
+#  - J5 Total Personal: 297k → 524k (+227k)
+#  - J5 Op-Marge: +374k → +147k (ehrlicher: Skalierungs-Investitionen)
 premium_end = [50, 450, 2200, 4800, 7500]
 pro_end = [8, 70, 500, 1200, 2200]
 umsatz_y = [2400, 27000, 168000, 487000, 921000]
-personal_y = [0, 0, 129000, 233000, 297000]
+personal_y = [0, 0, 129000, 233000, 524000]
 kredit_y = [0, 4400, 13050, 13700, 13100]
 ebitda_y = [-1700, -100, 81000, 327000, 671000]
-op_marge_y = [-1700, -100, -49000, 94000, 374000]
-cashflow_y = [-2700, 21900, 22000, 60000, 240000]
+op_marge_y = [-1700, -100, -49000, 94000, 147000]
+cashflow_y = [-2700, 21900, 22000, 60000, 93000]
 
 # ARPU pro Monat
 arpu_p = [6.25, 6.25, 6.50, 7.08, 7.42]
@@ -120,7 +121,18 @@ def personal_month(y, m):
         mk = 3000
         return gr + bo + sp + ma + mk + dsb
     if y == 4:
-        return 4 * 3500 + 3000 + 2000 + 2000 + 3500 + dsb  # Backoffice VZ + DSB
+        # v3.2: 4 Gründer Vollzeit @ 5.000 €/Mon, Backoffice VZ, Sprachen-Lead HT,
+        # Mathe-Lead VZ-Halbtags, Marketing Senior, DSB,
+        # NEU: Intermediate Engineer 65k/12 + Content Manager 40k/12 + CS-Manager 50k/12
+        gruender = 4 * 5000
+        backoffice = 3000  # Vollzeit
+        sprachen = 2000
+        mathe = 2000
+        marketing = 3500
+        engineer = 5417  # 65k / 12
+        content = 3333  # 40k / 12
+        cs_manager = 4167  # 50k / 12
+        return gruender + backoffice + sprachen + mathe + marketing + dsb + engineer + content + cs_manager
 
 
 personal_matrix = [[personal_month(y, m + 1) for m in range(12)] for y in range(5)]
@@ -193,8 +205,8 @@ for y in range(5):
         year_row.append(round(running))
     liquiditat_matrix.append(year_row)
 
-# v3-Liquiditäts-Ziele (Cashflow-Targets liefern bereits diese Werte näherungsweise)
-liq_targets = [0, 27000, 49000, 109000, 349000]
+# v3.2-Liquiditäts-Ziele (J5 niedriger durch Personal-Investitionen)
+liq_targets = [0, 27000, 49000, 109000, 202000]
 # Skaliere Differenz pro Jahr proportional auf alle Monate verteilen
 for y in range(5):
     diff = liq_targets[y] - liquiditat_matrix[y][11]

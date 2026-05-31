@@ -166,14 +166,17 @@ Dieses Dokument erläutert die Annahmen hinter der Pitch-Präsentation `Pitch/fi
 
 | Rolle | J1 | J2 | J3 | J4 | J5 |
 |---|---|---|---|---|---|
-| 4 Gründer-Bezahlung/Jahr | 0 | 0 | 72.000 € | 120.000 € | 168.000 € |
-| Backoffice (HT J3 → VZ ab J4) | 0 | 0 | 18.000 € | **36.000 €** | **36.000 €** |
+| 4 Gründer-Bezahlung/Jahr | 0 | 0 | 72.000 € | 120.000 € | **240.000 €** *(@ 5.000 €/Mon)* |
+| Backoffice (HT J3-J4 → VZ ab J5) | 0 | 0 | 18.000 € | 18.000 € | **36.000 €** |
 | Sprachen-Lead Halbtags | 0 | 0 | 24.000 € | 24.000 € | 24.000 € |
 | Mathe-Lead Halbtags (ab M40) | 0 | 0 | 0 | 14.000 € | 24.000 € |
 | Marketing (HT → VZ → Sr.) | 0 | 0 | 12.000 € | 36.000 € | 42.000 € |
-| **Externer DSB (Datenschutz)** | 0 | 0 | **3.000 €** | **3.000 €** | **3.000 €** |
-| **Total Personal/Jahr** | 0 € | 0 € | **129.000 €** | **233.000 €** | **297.000 €** |
-| **Team-Größe** | 4 | 4 | 6 + DSB | 7 + DSB | 7 + DSB |
+| Externer DSB (Datenschutz) | 0 | 0 | 3.000 € | 3.000 € | 3.000 € |
+| **Intermediate Engineer** *(NEU J5)* | 0 | 0 | 0 | 0 | **65.000 €** |
+| **Content Manager** *(NEU J5)* | 0 | 0 | 0 | 0 | **40.000 €** |
+| **Customer-Success Pro** *(NEU J5)* | 0 | 0 | 0 | 0 | **50.000 €** |
+| **Total Personal/Jahr** | 0 € | 0 € | **129.000 €** | **233.000 €** | **524.000 €** |
+| **Team-Größe** | 4 | 4 | 6 + DSB | 7 + DSB | **10 + DSB** |
 
 ---
 
@@ -234,17 +237,17 @@ Dieses Dokument erläutert die Annahmen hinter der Pitch-Präsentation `Pitch/fi
 | Kennzahl | J1 | J2 | J3 | J4 | J5 |
 |---|---|---|---|---|---|
 | Brutto-Umsatz (Netto) | 2.400 € | 27.000 € | 168.000 € | 487.000 € | **921.000 €** |
-| Personalausgaben | 0 € | 0 € | **129.000 €** | **233.000 €** | **297.000 €** |
+| Personalausgaben | 0 € | 0 € | **129.000 €** | **233.000 €** | **524.000 €** |
 | Kreditkosten | 0 € | 4.400 € | 13.050 € | 13.700 € | 13.100 € |
 | EBITDA operativ | −1.700 € | −100 € | +81.000 € | +327.000 € | +671.000 € |
-| Operative Marge (nach Personal) | −1.700 € | −100 € | **−49.000 €** | **+94.000 €** | **+374.000 €** |
-| Cashflow Jahr | −2.700 € | +21.900 € | +22.000 € | **+60.000 €** | **+240.000 €** |
-| Liquidität Ende | 0 € | **+27.000 €** | **+49.000 €** | **+109.000 €** | **+349.000 €** |
+| Operative Marge (nach Personal) | −1.700 € | −100 € | **−49.000 €** | **+94.000 €** | **+147.000 €** |
+| Cashflow Jahr | −2.700 € | +21.900 € | +22.000 € | **+60.000 €** | **+93.000 €** |
+| Liquidität Ende | 0 € | **+27.000 €** | **+49.000 €** | **+109.000 €** | **+202.000 €** |
 | **Liquidität J3 M1-M3** *(Stress-Test)* | | | **+14k / +6k / +54k** | | |
 
 **Pitch-Story für die Jury:**
 
-> *„Aus 2.500 € Eigenmitteln + 132.500 € Kredit (Mikrokredit 30k + KfW 100k) zu 921 k € Umsatz und 349 k € Liquidität in Jahr 5. Kein VC, keine Verwässerung, kein Burnout-Risiko durch externes Job-Standbein in Phase 1-2. Liquidität durchgehend positiv — Stress-Test J3 M1-M3 bestanden."*
+> *„Aus 2.500 € Eigenmitteln + 132.500 € Kredit (Mikrokredit 30k + KfW 100k) zu 921 k € Umsatz und 202 k € Liquidität in Jahr 5. 4 Vollzeit-Gründer:innen @ 5.000 €/Mon + Senior-Team. Kein VC, keine Verwässerung, kein Burnout-Risiko durch externes Job-Standbein in Phase 1-2. Liquidität durchgehend positiv — Stress-Test J3 M1-M3 bestanden."*
 
 ---
 
