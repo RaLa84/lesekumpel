@@ -497,6 +497,71 @@ h1.slide-title .accent { color: var(--coral); }
 .anhang-table tbody tr.row-total td { font-weight: 700; color: var(--navy); }
 .anhang-table tbody tr.row-total td.month-label { color: var(--mint); }
 
+/* Cashflow-Aufschlüsselung (A9) */
+.cf-grid {
+  display: grid;
+  grid-template-columns: 1.6fr 1fr;
+  gap: 1.2rem;
+  align-items: start;
+}
+.cf-table thead th { font-size: 0.85rem; }
+.cf-table tbody td {
+  font-size: 0.85rem;
+  padding: 0.45rem 0.6rem;
+}
+.cf-table tbody td.month-label {
+  color: var(--navy);
+  opacity: 0.9;
+}
+.cf-table tbody tr.row-total td.month-label { color: var(--mint); }
+.cf-side {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
+.cf-card {
+  background: var(--white);
+  border-radius: 12px;
+  padding: 0.8rem 1.1rem;
+  box-shadow: 0 3px 12px rgba(43,49,64,0.05);
+  border-left: 4px solid var(--border);
+}
+.cf-card.cf-op { border-left-color: var(--mint); }
+.cf-card.cf-inv { border-left-color: var(--lila); }
+.cf-card.cf-fin { border-left-color: var(--coral); }
+.cf-card h4 {
+  font-size: 0.9rem;
+  margin-bottom: 0.3rem;
+}
+.cf-card.cf-op h4 { color: var(--mint); }
+.cf-card.cf-inv h4 { color: var(--lila); }
+.cf-card.cf-fin h4 { color: var(--coral); }
+.cf-card p {
+  font-size: 0.78rem;
+  line-height: 1.5;
+  color: var(--navy);
+  opacity: 0.85;
+}
+.cf-card p strong {
+  color: var(--navy);
+  opacity: 1;
+  font-weight: 700;
+}
+.cf-banner {
+  margin-top: 1rem;
+  background: linear-gradient(135deg, rgba(249,115,82,0.10) 0%, rgba(255,217,90,0.15) 100%);
+  border: 1px solid rgba(249,115,82,0.30);
+  border-radius: 12px;
+  padding: 0.9rem 1.2rem;
+  font-size: 0.9rem;
+  line-height: 1.55;
+  color: var(--navy);
+}
+.cf-banner strong {
+  color: var(--coral);
+  font-family: var(--font-heading);
+}
+
 /* Sensitivitätsanalyse (A9) */
 .sens-grid {
   display: grid;
@@ -1452,7 +1517,7 @@ h1.slide-title .accent { color: var(--coral); }
     <p class="cover-sub">Für jede der 8 Kennzahlen die monatlichen Werte über 60 Monate (Jahr 1 bis Jahr 5) plus Sensitivitätsanalyse. Quelle: <code>Pitch/Finanzen/calc-monatsdaten.py</code>. Alle Jahres-Endsummen stimmen mit der Master-Tabelle (Folie 2) überein.</p>
     <div class="cover-meta">9 Anhangs-Folien · 5 Jahre × 12 Monate + Sensitivität Bull/Base/Bear</div>
   </div>
-  <div class="slide-footer"><div class="brand"><span class="brand-dot"></span>Lesekumpel · Pitch v2</div><div class="counter">A0 / 9</div></div>
+  <div class="slide-footer"><div class="brand"><span class="brand-dot"></span>Lesekumpel · Pitch v2</div><div class="counter">A0 / 10</div></div>
 </section>
 
 <!-- FOLIE A1: Premium-Nutzer (Ende Monat) -->
@@ -1481,7 +1546,7 @@ h1.slide-title .accent { color: var(--coral); }
       </tbody>
     </table>
   </div>
-  <div class="slide-footer"><div class="brand"><span class="brand-dot"></span>Lesekumpel · Pitch v2</div><div class="counter">A1 / 9</div></div>
+  <div class="slide-footer"><div class="brand"><span class="brand-dot"></span>Lesekumpel · Pitch v2</div><div class="counter">A1 / 10</div></div>
 </section>
 
 <!-- FOLIE A2: Pro-Accounts (Ende Monat) -->
@@ -1510,7 +1575,7 @@ h1.slide-title .accent { color: var(--coral); }
       </tbody>
     </table>
   </div>
-  <div class="slide-footer"><div class="brand"><span class="brand-dot"></span>Lesekumpel · Pitch v2</div><div class="counter">A2 / 9</div></div>
+  <div class="slide-footer"><div class="brand"><span class="brand-dot"></span>Lesekumpel · Pitch v2</div><div class="counter">A2 / 10</div></div>
 </section>
 
 <!-- FOLIE A3: Brutto-Umsatz / Monat (Netto, ohne MwSt) -->
@@ -1539,7 +1604,7 @@ h1.slide-title .accent { color: var(--coral); }
       </tbody>
     </table>
   </div>
-  <div class="slide-footer"><div class="brand"><span class="brand-dot"></span>Lesekumpel · Pitch v2</div><div class="counter">A3 / 9</div></div>
+  <div class="slide-footer"><div class="brand"><span class="brand-dot"></span>Lesekumpel · Pitch v2</div><div class="counter">A3 / 10</div></div>
 </section>
 
 <!-- FOLIE A4: Personalausgaben / Monat -->
@@ -1568,7 +1633,7 @@ h1.slide-title .accent { color: var(--coral); }
       </tbody>
     </table>
   </div>
-  <div class="slide-footer"><div class="brand"><span class="brand-dot"></span>Lesekumpel · Pitch v2</div><div class="counter">A4 / 9</div></div>
+  <div class="slide-footer"><div class="brand"><span class="brand-dot"></span>Lesekumpel · Pitch v2</div><div class="counter">A4 / 10</div></div>
 </section>
 
 <!-- FOLIE A5: Kreditkosten / Monat -->
@@ -1597,7 +1662,7 @@ h1.slide-title .accent { color: var(--coral); }
       </tbody>
     </table>
   </div>
-  <div class="slide-footer"><div class="brand"><span class="brand-dot"></span>Lesekumpel · Pitch v2</div><div class="counter">A5 / 9</div></div>
+  <div class="slide-footer"><div class="brand"><span class="brand-dot"></span>Lesekumpel · Pitch v2</div><div class="counter">A5 / 10</div></div>
 </section>
 
 <!-- FOLIE A6: EBITDA operativ / Monat -->
@@ -1626,7 +1691,7 @@ h1.slide-title .accent { color: var(--coral); }
       </tbody>
     </table>
   </div>
-  <div class="slide-footer"><div class="brand"><span class="brand-dot"></span>Lesekumpel · Pitch v2</div><div class="counter">A6 / 9</div></div>
+  <div class="slide-footer"><div class="brand"><span class="brand-dot"></span>Lesekumpel · Pitch v2</div><div class="counter">A6 / 10</div></div>
 </section>
 
 <!-- FOLIE A7: Operative Marge / Monat -->
@@ -1655,7 +1720,7 @@ h1.slide-title .accent { color: var(--coral); }
       </tbody>
     </table>
   </div>
-  <div class="slide-footer"><div class="brand"><span class="brand-dot"></span>Lesekumpel · Pitch v2</div><div class="counter">A7 / 9</div></div>
+  <div class="slide-footer"><div class="brand"><span class="brand-dot"></span>Lesekumpel · Pitch v2</div><div class="counter">A7 / 10</div></div>
 </section>
 
 <!-- FOLIE A8: Cashflow / Monat -->
@@ -1684,13 +1749,87 @@ h1.slide-title .accent { color: var(--coral); }
       </tbody>
     </table>
   </div>
-  <div class="slide-footer"><div class="brand"><span class="brand-dot"></span>Lesekumpel · Pitch v2</div><div class="counter">A8 / 9</div></div>
+  <div class="slide-footer"><div class="brand"><span class="brand-dot"></span>Lesekumpel · Pitch v2</div><div class="counter">A8 / 10</div></div>
 </section>
-<!-- FOLIE A9: Sensitivitätsanalyse -->
+
+<!-- FOLIE A9: Cashflow-Aufschlüsselung (Operativ / Invest / Finanzierung) -->
 <section class="slide" data-slide="19">
+  <div class="blob tr-lg shape-2 mint"></div>
+  <div class="blob bl-md shape-1 coral"></div>
+  <div class="slide-tag">Anhang A9 · Cashflow-Aufschlüsselung</div>
+  <h1 class="slide-title">Cashflow nach <span class="accent">Quelle</span> aufgeschlüsselt</h1>
+  <div class="slide-content">
+    <p class="anhang-desc">Der Gesamt-Cashflow ist die Summe aus drei verschiedenen Quellen. <strong>Wichtig für die Jury:</strong> In Jahr 3 ist der positive Cashflow durch die KfW-Tranche finanziert, nicht aus dem operativen Geschäft. Ab Jahr 4 trägt das Geschäft sich selbst.</p>
+
+    <div class="cf-grid">
+      <table class="anhang-table cf-table">
+        <thead>
+          <tr><th>Cashflow-Quelle</th><th>Jahr 1</th><th>Jahr 2</th><th>Jahr 3</th><th>Jahr 4</th><th>Jahr 5</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="month-label">Operativer Cashflow</td>
+            <td class="neg">−1.700</td>
+            <td class="neg">−100</td>
+            <td class="neg">−49.000</td>
+            <td>+94.000</td>
+            <td>+374.000</td>
+          </tr>
+          <tr>
+            <td class="month-label">Investitions-Cashflow</td>
+            <td class="neg">−1.000</td>
+            <td>0</td>
+            <td class="neg">−21.000</td>
+            <td class="neg">−8.000</td>
+            <td class="neg">−8.000</td>
+          </tr>
+          <tr>
+            <td class="month-label">Finanzierungs-Cashflow</td>
+            <td>0</td>
+            <td>+22.000</td>
+            <td>+92.000</td>
+            <td class="neg">−26.000</td>
+            <td class="neg">−126.000</td>
+          </tr>
+          <tr class="row-total">
+            <td class="month-label">Gesamt-Cashflow</td>
+            <td class="neg">−2.700</td>
+            <td>+21.900</td>
+            <td>+22.000</td>
+            <td>+60.000</td>
+            <td>+240.000</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="cf-side">
+        <div class="cf-card cf-op">
+          <h4>Operativer Cashflow</h4>
+          <p>= Umsatz − Op-Kosten − Personal. Das, was das Geschäft selbst verdient. <strong>Ab J4 positiv</strong> = Geschäft trägt sich selbst.</p>
+        </div>
+        <div class="cf-card cf-inv">
+          <h4>Investitions-Cashflow</h4>
+          <p>Hardware-Käufe (24 k M3 J3, 8 k J4, 8 k J5) + Setup-Kosten (J1) + Förderungen. Anlagevermögen-Bewegungen.</p>
+        </div>
+        <div class="cf-card cf-fin">
+          <h4>Finanzierungs-Cashflow</h4>
+          <p>Kredit-Auszahlungen (+10 k J2, +20 k J2, +100 k J3) − Tilgungen − Steuern (29 % UG ab J4). <strong>J3 Spitze durch KfW.</strong></p>
+        </div>
+      </div>
+    </div>
+
+    <div class="cf-banner">
+      <strong>Die wichtige Aussage:</strong> Der positive Cashflow J3 (+22 k) kommt aus dem KfW-Kredit, nicht aus dem Geschäft. Operativ verlieren wir in J3 ehrlich 49 k. Ab J4 trägt das Geschäft alle Kosten selbst — der KfW-Kredit ist Brücke, nicht Subvention.
+    </div>
+  </div>
+  <div class="slide-footer"><div class="brand"><span class="brand-dot"></span>Lesekumpel · Pitch v2</div><div class="counter">A9 / 10</div></div>
+</section>
+
+<!-- FOLIE A10: Sensitivitätsanalyse -->
+<section class="slide" data-slide="20">
   <div class="blob tl-lg shape-2 lila"></div>
   <div class="blob br-md shape-1 yellow"></div>
-  <div class="slide-tag">Anhang A9 · Sensitivität</div>
+  <div class="slide-tag">Anhang A10 · Sensitivität</div>
   <h1 class="slide-title">Bull / Base / <span class="accent">Bear</span> Szenarien</h1>
   <div class="slide-content">
     <p class="anhang-desc">Was passiert bei Abweichungen von den Base-Annahmen? Wir testen drei Szenarien mit unterschiedlichen Conversion-Raten, Win-Back und KfW-Timing. Selbst im Bear-Case bleibt das Geschäft tragfähig — durch externes Job-Standbein und EXIST-Backup.</p>
@@ -1761,7 +1900,7 @@ h1.slide-title .accent { color: var(--coral); }
       <strong>Bear-Robustheit:</strong> Externes Job-Standbein verhindert Nullfall · EXIST-Stipendium als KfW-Backup · Plan verlängert sich um 12-18 Monate, Geschäft bleibt tragfähig.
     </div>
   </div>
-  <div class="slide-footer"><div class="brand"><span class="brand-dot"></span>Lesekumpel · Pitch v2</div><div class="counter">A9 / 9</div></div>
+  <div class="slide-footer"><div class="brand"><span class="brand-dot"></span>Lesekumpel · Pitch v2</div><div class="counter">A10 / 10</div></div>
 </section>
 
 </div>
