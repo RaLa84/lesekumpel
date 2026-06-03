@@ -236,18 +236,18 @@ Dieses Dokument erläutert die Annahmen hinter der Pitch-Präsentation `Pitch/fi
 
 | Kennzahl | J1 | J2 | J3 | J4 | J5 |
 |---|---|---|---|---|---|
-| Brutto-Umsatz (Netto) | 2.400 € | 27.000 € | 168.000 € | 487.000 € | **921.000 €** |
+| Brutto-Umsatz (Netto) | 2.200 € | 25.700 € | 153.300 € | 483.900 € | **943.400 €** |
 | Personalausgaben | 0 € | 0 € | **129.000 €** | **233.000 €** | **524.000 €** |
-| Kreditkosten | 0 € | 4.400 € | 13.050 € | 13.700 € | 13.100 € |
-| EBITDA operativ | −1.700 € | −100 € | +81.000 € | +327.000 € | +671.000 € |
-| Operative Marge (nach Personal) | −1.700 € | −100 € | **−49.000 €** | **+94.000 €** | **+147.000 €** |
-| Cashflow Jahr | −2.700 € | +21.900 € | +22.000 € | **+60.000 €** | **+93.000 €** |
-| Liquidität Ende | 0 € | **+27.000 €** | **+49.000 €** | **+109.000 €** | **+202.000 €** |
-| **Liquidität J3 M1-M3** *(Stress-Test)* | | | **+14k / +6k / +54k** | | |
+| Kreditkosten | 0 € | 4.400 € | 13.100 € | 13.700 € | 13.100 € |
+| EBITDA operativ | −1.900 € | −4.200 € | +66.300 € | +328.200 € | +701.700 € |
+| Operative Marge (nach Personal) | −1.900 € | −4.200 € | **−62.700 €** | **+95.200 €** | **+177.700 €** |
+| Cashflow Jahr | −1.900 € | +21.800 € | +35.300 € | **+74.700 €** | **+134.200 €** |
+| Liquidität Ende | +600 € | **+22.400 €** | **+57.700 €** | **+132.400 €** | **+266.600 €** |
+| **Liquidität J3 M1-M3** *(Stress-Test)* | | | **+12k / +0,6k / +80k** | | |
 
 **Pitch-Story für die Jury:**
 
-> *„Aus 2.500 € Eigenmitteln + 132.500 € Kredit (Mikrokredit 30k + KfW 100k) zu 921 k € Umsatz und 202 k € Liquidität in Jahr 5. 4 Vollzeit-Gründer:innen @ 5.000 €/Mon + Senior-Team. Kein VC, keine Verwässerung, kein Burnout-Risiko durch externes Job-Standbein in Phase 1-2. Liquidität durchgehend positiv — Stress-Test J3 M1-M3 bestanden."*
+> *„Aus 2.500 € Eigenmitteln + 132.500 € Kredit (Mikrokredit 30k + KfW 100k) zu 943 k € Umsatz und 267 k € Liquidität in Jahr 5. 4 Vollzeit-Gründer:innen + Senior-Team. Kein VC, keine Verwässerung, kein Burnout-Risiko durch externes Job-Standbein in Phase 1-2. Liquidität durchgehend positiv — Stress-Test J3 M1-M3 bestanden."*
 
 ---
 

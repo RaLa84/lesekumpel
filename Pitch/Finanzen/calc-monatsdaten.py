@@ -14,12 +14,12 @@ import os
 #  - J5 Op-Marge: +374k → +147k (ehrlicher: Skalierungs-Investitionen)
 premium_end = [50, 450, 2200, 4800, 7500]
 pro_end = [8, 70, 500, 1200, 2200]
-umsatz_y = [2400, 27000, 168000, 487000, 921000]
+umsatz_y = [2200, 25700, 153300, 483900, 943400]
 personal_y = [0, 0, 129000, 233000, 524000]
-kredit_y = [0, 4400, 13050, 13700, 13100]
-ebitda_y = [-1700, -100, 81000, 327000, 671000]
-op_marge_y = [-1700, -100, -49000, 94000, 147000]
-cashflow_y = [-2700, 21900, 22000, 60000, 93000]
+kredit_y = [0, 4400, 13100, 13700, 13100]
+ebitda_y = [-1900, -4200, 66300, 328200, 701700]
+op_marge_y = [-1900, -4200, -62700, 95200, 177700]
+cashflow_y = [-1900, 21800, 35300, 74700, 134200]
 
 # ARPU pro Monat
 arpu_p = [6.25, 6.25, 6.50, 7.08, 7.42]
@@ -170,25 +170,26 @@ op_marge_matrix = scale_to_year(op_marge_matrix, op_marge_y)
 
 
 def cashflow_month(y, m):
-    """m hier 1..12 für Schedule-Events. v3-Anpassungen markiert."""
+    """m hier 1..12 für Schedule-Events. Excel-aligned v4 (12k Total Hardware-Invest)."""
     cf = op_marge_matrix[y][m - 1]
-    if y == 1:
+    if y == 1:  # J2
         if m == 1:
             cf += 10000  # Mikrokredit-Start M13
+            cf -= 4000   # Hardware-Setup (4 Notebooks Gründer @ 1k)
         if m == 7:
-            cf += 20000  # v3: Mikrokredit-Aufstockung 15k → 20k (Total 30k statt 25k)
-    if y == 2:
+            cf += 20000  # Mikrokredit-Aufstockung
+    if y == 2:  # J3
         if m == 3:
-            cf -= 24000  # v3: Hardware-Vollausstattung von M1 auf M3 verschoben (nach KfW)
-            cf += 100000  # KfW-Tranche M27
+            cf -= 2000   # Hardware-Erweiterung (Backoffice + Sprachen-Lead Notebooks)
+            cf += 100000 # KfW-Tranche M27
         if m == 12:
-            cf += 3000  # Förderung
-    if y == 3:
+            cf += 3000   # Förderung DATIpilot
+    if y == 3:  # J4
         if m == 1:
-            cf -= 8000  # Hardware-Erweiterung
-    if y == 4:
+            cf -= 2000   # Hardware (Mathe-Lead + Marketing-VZ Notebooks)
+    if y == 4:  # J5
         if m == 1:
-            cf -= 8000  # Hardware-Refresh
+            cf -= 4000   # Hardware-Refresh + neue Senior-Team-Notebooks
     return cf
 
 
@@ -206,7 +207,7 @@ for y in range(5):
     liquiditat_matrix.append(year_row)
 
 # v3.2-Liquiditäts-Ziele (J5 niedriger durch Personal-Investitionen)
-liq_targets = [0, 27000, 49000, 109000, 202000]
+liq_targets = [600, 22400, 57700, 132400, 266600]
 # Skaliere Differenz pro Jahr proportional auf alle Monate verteilen
 for y in range(5):
     diff = liq_targets[y] - liquiditat_matrix[y][11]
