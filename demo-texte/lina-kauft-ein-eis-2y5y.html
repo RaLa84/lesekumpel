@@ -863,6 +863,12 @@
         const schatzsucheData = {"thema":"Sommer-Wörter","emoji":"☀️","ziel":3,"einleitung":"Die Sonne scheint! Finde drei Wörter, die zum Sommer passen – einfach antippen!","schatzwoerter":["warmer","tag","gehen","los","eisdiele","eis","erdbeere","schmeckt","gut","froh"]};
         /* ============================================================ */
 
+        // Emoji-Text nutzt dieselbe Silbentrenner-Konvention wie rawStory:
+        // harte Bindestriche -> Soft Hyphen (U+00AD), damit processWord() sie
+        // korrekt entfernt (kein sichtbarer Bindestrich im Emoji-Modus).
+        emojiStory = emojiStory.replace(/-/g, "\u00AD");
+        emojiSummary = emojiSummary.replace(/-/g, "\u00AD");
+
         const storyRaw = rawStory.replace(/\n/g, "<br>");
         const summaryRaw = rawSummary.replace(/\n/g, "<br>");
 

@@ -857,6 +857,12 @@
         const rawDictionaryEntry = [{"wort":"Reitwettbewerb","silben":"Reit-wett-be-werb","bedeutung":"Ein sportliches Ereignis, bei dem Reiter und Pferde gegeneinander antreten."},{"wort":"ungeduldig","silben":"un-ge-dul-dig","bedeutung":"Wenn man nicht warten kann und möchte, dass etwas sofort passiert."},{"wort":"Hürde","silben":"Hür-de","bedeutung":"Ein Hindernis, über das man springen muss, zum Beispiel beim Reiten."},{"wort":"elegant","silben":"e-le-gant","bedeutung":"Anmutig und stilvoll, mit schönen und leichten Bewegungen."},{"wort":"galoppierten","silben":"ga-lop-pier-ten","bedeutung":"Die schnellste Gangart eines Pferdes, bei der es rennt."},{"wort":"Belohnung","silben":"Be-loh-nung","bedeutung":"Etwas Gutes, das man für eine gute Leistung oder ein Ziel bekommt."}];
         /* ============================================================ */
 
+        // Emoji-Text nutzt dieselbe Silbentrenner-Konvention wie rawStory:
+        // harte Bindestriche -> Soft Hyphen (U+00AD), damit processWord() sie
+        // korrekt entfernt (kein sichtbarer Bindestrich im Emoji-Modus).
+        emojiStory = emojiStory.replace(/-/g, "\u00AD");
+        emojiSummary = emojiSummary.replace(/-/g, "\u00AD");
+
         const storyRaw = rawStory.replace(/\n/g, "<br>");
         const summaryRaw = rawSummary.replace(/\n/g, "<br>");
 

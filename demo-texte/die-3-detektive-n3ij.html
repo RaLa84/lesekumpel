@@ -873,6 +873,12 @@
         const schatzsucheData = {"thema":"Essen","emoji":"🍪","ziel":3,"einleitung":"Überall in der Geschichte versteckt sich ein leckerer Schatz. Finde drei Wörter, die mit Essen zu tun haben — einfach antippen!","schatzwoerter":["keksgas","krümel","schokokeks","gegessen","keksdieb","schokokrümeln","schokoladiger","appetit","kekse","backen","essen"]};
         /* ============================================================ */
 
+        // Emoji-Text nutzt dieselbe Silbentrenner-Konvention wie rawStory:
+        // harte Bindestriche -> Soft Hyphen (U+00AD), damit processWord() sie
+        // korrekt entfernt (kein sichtbarer Bindestrich im Emoji-Modus).
+        emojiStory = emojiStory.replace(/-/g, "\u00AD");
+        emojiSummary = emojiSummary.replace(/-/g, "\u00AD");
+
         const storyRaw = rawStory.replace(/\n/g, "<br>");
         const summaryRaw = rawSummary.replace(/\n/g, "<br>");
 

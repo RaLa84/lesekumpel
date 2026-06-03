@@ -865,6 +865,12 @@
         const schatzsucheData = {"thema":"Süßigkeiten","emoji":"🍬","ziel":3,"einleitung":"In Leos Geschichte verstecken sich viele leckere Süßigkeiten-Wörter. Finde drei davon – einfach antippen!","schatzwoerter":["süßigkeiten","gummibärchen","sauren","stangen","schokolinsen","slik","tüte","schaufel","bonbons","roten","runden","erdbeerbonbons","süß","schlümpfe","bananen","schaumzucker","schatz","mischung","süße"]};
         /* ============================================================ */
 
+        // Emoji-Text nutzt dieselbe Silbentrenner-Konvention wie rawStory:
+        // harte Bindestriche -> Soft Hyphen (U+00AD), damit processWord() sie
+        // korrekt entfernt (kein sichtbarer Bindestrich im Emoji-Modus).
+        emojiStory = emojiStory.replace(/-/g, "\u00AD");
+        emojiSummary = emojiSummary.replace(/-/g, "\u00AD");
+
         const storyRaw = rawStory.replace(/\n/g, "<br>");
         const summaryRaw = rawSummary.replace(/\n/g, "<br>");
 

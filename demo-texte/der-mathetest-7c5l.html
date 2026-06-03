@@ -589,6 +589,12 @@
         const rawDictionaryEntry = [{"wort":"Magen Achterbahn fahren","silben":"Ma-gen Ach-ter-bahn fah-ren","bedeutung":"Ein mulmiges, aufgeregtes oder ängstliches Gefühl im Bauch haben."},{"wort":"angrinsten","silben":"ang-rin-sten","bedeutung":"Mit einem Lächeln oder Grinsen anschauen, oft spöttisch oder herausfordernd."},{"wort":"rübergeschielt","silben":"rü-ber-ge-schielt","bedeutung":"Heimlich oder unauffällig zu jemandem herübergeschaut."},{"wort":"Wackelpudding","silben":"Wa-ckel-pud-ding","bedeutung":"Eine weiche, wackelige Süßspeise; im Text als Vergleich für ein Gehirn, das nicht klar denken kann."},{"wort":"Schnörkel","silben":"Schnör-kel","bedeutung":"Eine verschnörkelte oder geschwungene Linie, oft als Verzierung bei Buchstaben."},{"wort":"Mitleidspunkt","silben":"Mit-leids-punkt","bedeutung":"Ein Punkt, den man aus Mitleid bekommt, obwohl die Leistung nicht ganz ausreicht."}];
         /* ============================================================ */
 
+        // Emoji-Text nutzt dieselbe Silbentrenner-Konvention wie rawStory:
+        // harte Bindestriche -> Soft Hyphen (U+00AD), damit processWord() sie
+        // korrekt entfernt (kein sichtbarer Bindestrich im Emoji-Modus).
+        emojiStory = emojiStory.replace(/-/g, "\u00AD");
+        emojiSummary = emojiSummary.replace(/-/g, "\u00AD");
+
         const storyRaw = rawStory.replace(/\n/g, "<br>");
         const summaryRaw = rawSummary.replace(/\n/g, "<br>");
 

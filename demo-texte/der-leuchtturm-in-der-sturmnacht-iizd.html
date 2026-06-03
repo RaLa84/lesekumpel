@@ -853,6 +853,12 @@
         const schatzsucheData = {"thema":"Geräusche","emoji":"👂","ziel":3,"einleitung":"Überall in der Geschichte verstecken sich Geräusche! Finde drei Wörter, die ein Geräusch beschreiben – einfach antippen!","schatzwoerter":["tobte","peitschte","krachend","laut","sturm","regen","wellen","meer","felsen","wasser"]};
         /* ============================================================ */
 
+        // Emoji-Text nutzt dieselbe Silbentrenner-Konvention wie rawStory:
+        // harte Bindestriche -> Soft Hyphen (U+00AD), damit processWord() sie
+        // korrekt entfernt (kein sichtbarer Bindestrich im Emoji-Modus).
+        emojiStory = emojiStory.replace(/-/g, "\u00AD");
+        emojiSummary = emojiSummary.replace(/-/g, "\u00AD");
+
         const storyRaw = rawStory.replace(/\n/g, "<br>");
         const summaryRaw = rawSummary.replace(/\n/g, "<br>");
 

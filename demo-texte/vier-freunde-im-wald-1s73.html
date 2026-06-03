@@ -820,6 +820,12 @@
         const schatzsucheData = {"thema":"Natur-Wörter","emoji":"🌳","ziel":3,"einleitung":"Überall in der Geschichte verstecken sich Wörter aus der Natur. Finde drei Wörter, die mit der Natur zu tun haben — einfach antippen!","schatzwoerter":["wurzel","moos","wolf","wind","blume","wegesrand","schmetterling","flügeln","himmel","sternen","abenteuer"]};
         /* ============================================================ */
 
+        // Emoji-Text nutzt dieselbe Silbentrenner-Konvention wie rawStory:
+        // harte Bindestriche -> Soft Hyphen (U+00AD), damit processWord() sie
+        // korrekt entfernt (kein sichtbarer Bindestrich im Emoji-Modus).
+        emojiStory = emojiStory.replace(/-/g, "\u00AD");
+        emojiSummary = emojiSummary.replace(/-/g, "\u00AD");
+
         const storyRaw = rawStory.replace(/\n/g, "<br>");
         const summaryRaw = rawSummary.replace(/\n/g, "<br>");
 

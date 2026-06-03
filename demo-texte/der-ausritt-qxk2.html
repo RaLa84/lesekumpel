@@ -858,6 +858,12 @@
         const rawDictionaryEntry = [{"wort":"Zügel","silben":"Zü-gel","bedeutung":"Lange Leinen, mit denen man ein Pferd lenkt."},{"wort":"aufgeregt","silben":"auf-ge-regt","bedeutung":"Sehr gespannt oder nervös wegen etwas Besonderem."},{"wort":"unsicher","silben":"un-si-cher","bedeutung":"Nicht genau wissen, was passieren wird oder was man tun soll."},{"wort":"erleichtert","silben":"er-leich-tert","bedeutung":"Froh sein, dass eine schwierige Situation oder ein Problem vorbei ist."},{"wort":"angenehm","silben":"an-ge-nehm","bedeutung":"Schön und gemütlich, sodass man sich wohlfühlt."},{"wort":"Reitlehrerin","silben":"Reit-leh-re-rin","bedeutung":"Eine Person, die anderen beibringt, wie man auf einem Pferd reitet."}];
         /* ============================================================ */
 
+        // Emoji-Text nutzt dieselbe Silbentrenner-Konvention wie rawStory:
+        // harte Bindestriche -> Soft Hyphen (U+00AD), damit processWord() sie
+        // korrekt entfernt (kein sichtbarer Bindestrich im Emoji-Modus).
+        emojiStory = emojiStory.replace(/-/g, "\u00AD");
+        emojiSummary = emojiSummary.replace(/-/g, "\u00AD");
+
         const storyRaw = rawStory.replace(/\n/g, "<br>");
         const summaryRaw = rawSummary.replace(/\n/g, "<br>");
 

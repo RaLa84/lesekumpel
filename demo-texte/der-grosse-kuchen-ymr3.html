@@ -858,6 +858,12 @@
         const rawDictionaryEntry = [{"wort":"rührt","silben":"rührt","bedeutung":"Mit einem Löffel oder Schneebesen etwas mischen."},{"wort":"riesigen","silben":"rie-si-gen","bedeutung":"Sehr, sehr groß."},{"wort":"Ofen","silben":"O-fen","bedeutung":"Ein heißer Kasten, in dem man Kuchen backt."},{"wort":"besorgt","silben":"be-sorgt","bedeutung":"Man macht sich Sorgen oder hat ein bisschen Angst."},{"wort":"vorsichtig","silben":"vor-sich-tig","bedeutung":"Langsam und achtsam, damit nichts passiert."}];
         /* ============================================================ */
 
+        // Emoji-Text nutzt dieselbe Silbentrenner-Konvention wie rawStory:
+        // harte Bindestriche -> Soft Hyphen (U+00AD), damit processWord() sie
+        // korrekt entfernt (kein sichtbarer Bindestrich im Emoji-Modus).
+        emojiStory = emojiStory.replace(/-/g, "\u00AD");
+        emojiSummary = emojiSummary.replace(/-/g, "\u00AD");
+
         const storyRaw = rawStory.replace(/\n/g, "<br>");
         const summaryRaw = rawSummary.replace(/\n/g, "<br>");
 

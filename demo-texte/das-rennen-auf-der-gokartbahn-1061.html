@@ -872,6 +872,12 @@
         const schatzsucheData = {"thema":"Wörter, die sich bewegen","emoji":"🏃‍♀️","ziel":3,"einleitung":"In dieser Geschichte ist ganz viel los! Finde 3 Wörter, die dir sagen, wie sich etwas bewegt oder bewegt wird. Tippe sie einfach an!","schatzwoerter":["geht","geben","schnell","überholt","kommt","gibt","schneller","saust","vorbei","gewinnt","klatschen","freuen"]};
         /* ============================================================ */
 
+        // Emoji-Text nutzt dieselbe Silbentrenner-Konvention wie rawStory:
+        // harte Bindestriche -> Soft Hyphen (U+00AD), damit processWord() sie
+        // korrekt entfernt (kein sichtbarer Bindestrich im Emoji-Modus).
+        emojiStory = emojiStory.replace(/-/g, "\u00AD");
+        emojiSummary = emojiSummary.replace(/-/g, "\u00AD");
+
         const storyRaw = rawStory.replace(/\n/g, "<br>");
         const summaryRaw = rawSummary.replace(/\n/g, "<br>");
 

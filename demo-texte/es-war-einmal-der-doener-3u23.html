@@ -872,6 +872,12 @@
         const schatzsucheData = {"thema":"Leckere Sachen zum Essen","emoji":"🍔","ziel":3,"einleitung":"Überall in der Geschichte versteckt sich ein leckerer Schatz. Finde drei Dinge, die man essen kann — einfach antippen!","schatzwoerter":["imbiss","fleisch","spieß","hunger","essen","fladenbrot","brot","salat","soße","heiß","duftete","gefüllte","schmeckte","döner"]};
         /* ============================================================ */
 
+        // Emoji-Text nutzt dieselbe Silbentrenner-Konvention wie rawStory:
+        // harte Bindestriche -> Soft Hyphen (U+00AD), damit processWord() sie
+        // korrekt entfernt (kein sichtbarer Bindestrich im Emoji-Modus).
+        emojiStory = emojiStory.replace(/-/g, "\u00AD");
+        emojiSummary = emojiSummary.replace(/-/g, "\u00AD");
+
         const storyRaw = rawStory.replace(/\n/g, "<br>");
         const summaryRaw = rawSummary.replace(/\n/g, "<br>");
 

@@ -865,6 +865,12 @@
         const schatzsucheData = {"thema":"Dinge, die heiß sind","emoji":"🔥","ziel":3,"einleitung":"Überall in der Geschichte versteckt sich ein Schatz von Dingen, die heiß sind. Finde drei Wörter, die zu diesem Thema passen — einfach antippen!","schatzwoerter":["heiß","schmelzen","sonne","magma","heiße","lava","superheiß","vulkan"]};
         /* ============================================================ */
 
+        // Emoji-Text nutzt dieselbe Silbentrenner-Konvention wie rawStory:
+        // harte Bindestriche -> Soft Hyphen (U+00AD), damit processWord() sie
+        // korrekt entfernt (kein sichtbarer Bindestrich im Emoji-Modus).
+        emojiStory = emojiStory.replace(/-/g, "\u00AD");
+        emojiSummary = emojiSummary.replace(/-/g, "\u00AD");
+
         const storyRaw = rawStory.replace(/\n/g, "<br>");
         const summaryRaw = rawSummary.replace(/\n/g, "<br>");
 

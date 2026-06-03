@@ -589,6 +589,12 @@
         const rawDictionaryEntry = [{"wort":"piepsen","silben":"piep-sen","bedeutung":"Mit einer hohen, leisen Stimme sprechen."},{"wort":"schnappen","silben":"schnap-pen","bedeutung":"Schnell nach etwas greifen oder es nehmen."},{"wort":"grummeln","silben":"grum-meln","bedeutung":"Unzufrieden und leise vor sich hin reden."},{"wort":"winseln","silben":"win-seln","bedeutung":"Leise und traurig klagen oder bitten."},{"wort":"gleichzeitig","silben":"gleich-zei-tig","bedeutung":"Genau zur selben Zeit."}];
         /* ============================================================ */
 
+        // Emoji-Text nutzt dieselbe Silbentrenner-Konvention wie rawStory:
+        // harte Bindestriche -> Soft Hyphen (U+00AD), damit processWord() sie
+        // korrekt entfernt (kein sichtbarer Bindestrich im Emoji-Modus).
+        emojiStory = emojiStory.replace(/-/g, "\u00AD");
+        emojiSummary = emojiSummary.replace(/-/g, "\u00AD");
+
         const storyRaw = rawStory.replace(/\n/g, "<br>");
         const summaryRaw = rawSummary.replace(/\n/g, "<br>");
 

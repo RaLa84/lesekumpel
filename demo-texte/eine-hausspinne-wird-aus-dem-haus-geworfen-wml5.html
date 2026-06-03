@@ -859,6 +859,12 @@
         const rawDictionaryEntry = [{"wort":"unaufhörlich","silben":"u-nauf-hör-lich","bedeutung":"ständig, ohne Unterbrechung"},{"wort":"unwirtlich","silben":"un-wirt-lich","bedeutung":"unfreundlich, ungemütlich, nicht einladend"},{"wort":"ehrfürchtig","silben":"ehr-fürch-tig","bedeutung":"mit großem Respekt und Bewunderung"},{"wort":"verwittert","silben":"ver-wit-tert","bedeutung":"durch Wind und Wetter alt und abgenutzt"},{"wort":"dämmerig","silben":"däm-me-rig","bedeutung":"nicht hell, etwas dunkel, wie in der Dämmerung"},{"wort":"Angekommensein","silben":"An-ge-kom-men-Sein","bedeutung":"das Gefühl, einen Platz gefunden zu haben und dort wohl und sicher zu sein"}];
         /* ============================================================ */
 
+        // Emoji-Text nutzt dieselbe Silbentrenner-Konvention wie rawStory:
+        // harte Bindestriche -> Soft Hyphen (U+00AD), damit processWord() sie
+        // korrekt entfernt (kein sichtbarer Bindestrich im Emoji-Modus).
+        emojiStory = emojiStory.replace(/-/g, "\u00AD");
+        emojiSummary = emojiSummary.replace(/-/g, "\u00AD");
+
         const storyRaw = rawStory.replace(/\n/g, "<br>");
         const summaryRaw = rawSummary.replace(/\n/g, "<br>");
 

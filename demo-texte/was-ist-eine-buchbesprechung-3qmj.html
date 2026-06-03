@@ -588,6 +588,12 @@
         const rawDictionaryEntry = [{"wort":"aufgeregt","silben":"auf-ge-regt","bedeutung":"wenn man sich sehr freut oder gespannt ist."},{"wort":"Geschichte","silben":"Ge-schich-te","bedeutung":"eine Erzählung oder ein Märchen, das man liest oder hört."},{"wort":"langweilig","silben":"lang-wei-lig","bedeutung":"wenn etwas nicht spannend oder interessant ist."},{"wort":"Idee","silben":"I-dee","bedeutung":"ein neuer Gedanke oder Einfall."},{"wort":"riesige","silben":"rie-si-ge","bedeutung":"sehr, sehr groß."},{"wort":"Buchbesprechung","silben":"Buch-be-sprech-ung","bedeutung":"wenn man erzählt, was man von einem Buch hält."}];
         /* ============================================================ */
 
+        // Emoji-Text nutzt dieselbe Silbentrenner-Konvention wie rawStory:
+        // harte Bindestriche -> Soft Hyphen (U+00AD), damit processWord() sie
+        // korrekt entfernt (kein sichtbarer Bindestrich im Emoji-Modus).
+        emojiStory = emojiStory.replace(/-/g, "\u00AD");
+        emojiSummary = emojiSummary.replace(/-/g, "\u00AD");
+
         const storyRaw = rawStory.replace(/\n/g, "<br>");
         const summaryRaw = rawSummary.replace(/\n/g, "<br>");
 

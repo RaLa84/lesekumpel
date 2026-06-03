@@ -858,6 +858,12 @@
         const rawDictionaryEntry = [{"wort":"Turnier-tag","silben":"Tur-nier-tag","bedeutung":"Ein besonderer Tag, an dem Wettkämpfe oder Ritterspiele stattfinden."},{"wort":"Lanze","silben":"Lan-ze","bedeutung":"Eine lange Stange mit einer Spitze, die Ritter im Kampf benutzen."},{"wort":"Sporen","silben":"Spo-ren","bedeutung":"Kleine Metallteile am Stiefel des Reiters, um das Pferd schneller zu machen."},{"wort":"preschte","silben":"presch-te","bedeutung":"rannte oder stürmte sehr schnell vorwärts."},{"wort":"schmetterten","silben":"schmet-ter-ten","bedeutung":"Töne, die sehr laut und kräftig klingen (oft bei Trompeten)."},{"wort":"Rumpeln","silben":"Rum-peln","bedeutung":"Ein lautes, polterndes Geräusch, das entsteht, wenn etwas schwer zu Boden fällt."}];
         /* ============================================================ */
 
+        // Emoji-Text nutzt dieselbe Silbentrenner-Konvention wie rawStory:
+        // harte Bindestriche -> Soft Hyphen (U+00AD), damit processWord() sie
+        // korrekt entfernt (kein sichtbarer Bindestrich im Emoji-Modus).
+        emojiStory = emojiStory.replace(/-/g, "\u00AD");
+        emojiSummary = emojiSummary.replace(/-/g, "\u00AD");
+
         const storyRaw = rawStory.replace(/\n/g, "<br>");
         const summaryRaw = rawSummary.replace(/\n/g, "<br>");
 

@@ -865,6 +865,12 @@
         const schatzsucheData = {"thema":"Natur-Wörter","emoji":"🌳","ziel":3,"einleitung":"Entdecke die verborgenen Natur-Wörter! Tippe auf drei Wörter, die zur Natur gehören – genau wie Bäume, Berge oder das Wetter.","schatzwoerter":["netz","wind","himmel","grau","ast","faden","sturm","sonne"]};
         /* ============================================================ */
 
+        // Emoji-Text nutzt dieselbe Silbentrenner-Konvention wie rawStory:
+        // harte Bindestriche -> Soft Hyphen (U+00AD), damit processWord() sie
+        // korrekt entfernt (kein sichtbarer Bindestrich im Emoji-Modus).
+        emojiStory = emojiStory.replace(/-/g, "\u00AD");
+        emojiSummary = emojiSummary.replace(/-/g, "\u00AD");
+
         const storyRaw = rawStory.replace(/\n/g, "<br>");
         const summaryRaw = rawSummary.replace(/\n/g, "<br>");
 

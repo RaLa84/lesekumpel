@@ -588,6 +588,12 @@
         const rawDictionaryEntry = [{"wort":"Hochbeet","silben":"Hoch-beet","bedeutung":"Ein Beet, das höher als der Boden ist, oft in einer Kiste."},{"wort":"Samen","silben":"Sa-men","bedeutung":"Ganz kleine Körnchen, aus denen neue Pflanzen wachsen."},{"wort":"schwierig","silben":"schwie-rig","bedeutung":"Nicht einfach oder leicht zu tun."},{"wort":"neugierig","silben":"neu-gie-rig","bedeutung":"Wenn man etwas Neues wissen oder sehen möchte."},{"wort":"stolz","silben":"stolz","bedeutung":"Ein gutes Gefühl, wenn man etwas gut gemacht hat."}];
         /* ============================================================ */
 
+        // Emoji-Text nutzt dieselbe Silbentrenner-Konvention wie rawStory:
+        // harte Bindestriche -> Soft Hyphen (U+00AD), damit processWord() sie
+        // korrekt entfernt (kein sichtbarer Bindestrich im Emoji-Modus).
+        emojiStory = emojiStory.replace(/-/g, "\u00AD");
+        emojiSummary = emojiSummary.replace(/-/g, "\u00AD");
+
         const storyRaw = rawStory.replace(/\n/g, "<br>");
         const summaryRaw = rawSummary.replace(/\n/g, "<br>");
 

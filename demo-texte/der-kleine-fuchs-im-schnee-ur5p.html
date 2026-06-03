@@ -559,6 +559,12 @@
         const rawDictionaryEntry = [{"wort":"Fuchs","silben":"Fuchs","bedeutung":"Ein Tier mit rotem Fell."},{"wort":"Mütze","silben":"Müt-ze","bedeutung":"Eine warme Kopfbedeckung."},{"wort":"springt","silben":"springt","bedeutung":"Macht einen Sprung."},{"wort":"sucht","silben":"sucht","bedeutung":"Versucht, etwas zu finden."},{"wort":"wieder","silben":"wie-der","bedeutung":"Noch einmal, erneut."},{"wort":"froh","silben":"froh","bedeutung":"Glücklich, nicht traurig."}];
         /* ============================================================ */
 
+        // Emoji-Text nutzt dieselbe Silbentrenner-Konvention wie rawStory:
+        // harte Bindestriche -> Soft Hyphen (U+00AD), damit processWord() sie
+        // korrekt entfernt (kein sichtbarer Bindestrich im Emoji-Modus).
+        emojiStory = emojiStory.replace(/-/g, "\u00AD");
+        emojiSummary = emojiSummary.replace(/-/g, "\u00AD");
+
         const storyRaw = rawStory.replace(/\n/g, "<br>");
         const summaryRaw = rawSummary.replace(/\n/g, "<br>");
 

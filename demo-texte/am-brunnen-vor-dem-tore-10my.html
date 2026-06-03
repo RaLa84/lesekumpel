@@ -865,6 +865,12 @@
         const schatzsucheData = {"thema":"Empfindungen","emoji":"😌","ziel":3,"einleitung":"Fühlst, hörst und riechst du das auch? Überall in der Geschichte verstecken sich Wörter, die beschreiben, wie sich etwas anfühlt, anhört oder riecht. Finde drei Empfindungs-Wörter — einfach antippen!","schatzwoerter":["weichen","kühlen","sanfter","raschelt","flüstert","schattig","kitzeln","riechst","süß","spürst","warm","dicken","rauen","summen","leise","schweben","leichten","traum"]};
         /* ============================================================ */
 
+        // Emoji-Text nutzt dieselbe Silbentrenner-Konvention wie rawStory:
+        // harte Bindestriche -> Soft Hyphen (U+00AD), damit processWord() sie
+        // korrekt entfernt (kein sichtbarer Bindestrich im Emoji-Modus).
+        emojiStory = emojiStory.replace(/-/g, "\u00AD");
+        emojiSummary = emojiSummary.replace(/-/g, "\u00AD");
+
         const storyRaw = rawStory.replace(/\n/g, "<br>");
         const summaryRaw = rawSummary.replace(/\n/g, "<br>");
 

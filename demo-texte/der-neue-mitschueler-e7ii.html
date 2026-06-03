@@ -858,6 +858,12 @@
         const rawDictionaryEntry = [{"wort":"schüchtern","silben":"schüch-tern","bedeutung":"Wenn man ein bisschen ängstlich oder unsicher ist."},{"wort":"neugierig","silben":"neu-gie-rig","bedeutung":"Wenn man etwas Neues wissen oder sehen möchte."},{"wort":"Klettergerüst","silben":"Klet-ter-ge-rüst","bedeutung":"Ein großes Spielgerät, an dem Kinder hochklettern können."},{"wort":"Fangen","silben":"Fan-gen","bedeutung":"Ein Spiel, bei dem ein Kind versucht, die anderen zu fangen."},{"wort":"nickt","silben":"nickt","bedeutung":"Den Kopf leicht auf und ab bewegen, um 'Ja' zu sagen."},{"wort":"sofort","silben":"so-fort","bedeutung":"Gleich, ohne zu warten."}];
         /* ============================================================ */
 
+        // Emoji-Text nutzt dieselbe Silbentrenner-Konvention wie rawStory:
+        // harte Bindestriche -> Soft Hyphen (U+00AD), damit processWord() sie
+        // korrekt entfernt (kein sichtbarer Bindestrich im Emoji-Modus).
+        emojiStory = emojiStory.replace(/-/g, "\u00AD");
+        emojiSummary = emojiSummary.replace(/-/g, "\u00AD");
+
         const storyRaw = rawStory.replace(/\n/g, "<br>");
         const summaryRaw = rawSummary.replace(/\n/g, "<br>");
 

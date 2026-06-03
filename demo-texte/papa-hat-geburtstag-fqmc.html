@@ -859,6 +859,12 @@
         const rawDictionaryEntry = [{"wort":"enttäuscht","silben":"ent-täuscht","bedeutung":"Traurig oder unzufrieden, weil etwas nicht so ist, wie man es sich gewünscht hat."},{"wort":"verbringen","silben":"verb-rin-gen","bedeutung":"Zeit mit jemandem oder einer Tätigkeit verbringen."},{"wort":"betrat","silben":"bet-rat","bedeutung":"Hineingehen oder eintreten (Vergangenheitsform von betreten)."},{"wort":"wohlig","silben":"woh-lig","bedeutung":"Ein sehr angenehmes und gemütliches Gefühl."},{"wort":"Girlanden","silben":"Gir-lan-den","bedeutung":"Bunte Bänder und Dekorationen, die man für Feste aufhängt."}];
         /* ============================================================ */
 
+        // Emoji-Text nutzt dieselbe Silbentrenner-Konvention wie rawStory:
+        // harte Bindestriche -> Soft Hyphen (U+00AD), damit processWord() sie
+        // korrekt entfernt (kein sichtbarer Bindestrich im Emoji-Modus).
+        emojiStory = emojiStory.replace(/-/g, "\u00AD");
+        emojiSummary = emojiSummary.replace(/-/g, "\u00AD");
+
         const storyRaw = rawStory.replace(/\n/g, "<br>");
         const summaryRaw = rawSummary.replace(/\n/g, "<br>");
 

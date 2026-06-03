@@ -858,6 +858,12 @@
         const rawDictionaryEntry = [{"wort":"Birkenwald","silben":"Bir-ken-wald","bedeutung":"Ein Wald, in dem viele Birkenbäume wachsen."},{"wort":"Wächter","silben":"Wäch-ter","bedeutung":"Jemand oder etwas, das aufpasst und schützt."},{"wort":"Kribbeln","silben":"Krib-beln","bedeutung":"Ein leichtes, ungewöhnliches Gefühl auf der Haut, wie viele kleine Bewegungen."},{"wort":"knorrige","silben":"knor-ri-ge","bedeutung":"Rau, uneben und oft verdreht, besonders bei alten Bäumen oder Stimmen."},{"wort":"zuckte zusammen","silben":"zuck-te zu-sam-men","bedeutung":"Eine schnelle, unwillkürliche Bewegung aus Schreck oder Überraschung."},{"wort":"lauschte","silben":"lausch-te","bedeutung":"Ganz genau und aufmerksam zuhören."}];
         /* ============================================================ */
 
+        // Emoji-Text nutzt dieselbe Silbentrenner-Konvention wie rawStory:
+        // harte Bindestriche -> Soft Hyphen (U+00AD), damit processWord() sie
+        // korrekt entfernt (kein sichtbarer Bindestrich im Emoji-Modus).
+        emojiStory = emojiStory.replace(/-/g, "\u00AD");
+        emojiSummary = emojiSummary.replace(/-/g, "\u00AD");
+
         const storyRaw = rawStory.replace(/\n/g, "<br>");
         const summaryRaw = rawSummary.replace(/\n/g, "<br>");
 

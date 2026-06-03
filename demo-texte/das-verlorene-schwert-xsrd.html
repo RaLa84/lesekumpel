@@ -859,6 +859,12 @@
         const rawDictionaryEntry = [{"wort":"murmelte","silben":"mur-mel-te","bedeutung":"sprach sehr leise und undeutlich vor sich hin"},{"wort":"dornigen","silben":"dor-ni-gen","bedeutung":"mit Stacheln versehen, pieksig"},{"wort":"versperrte","silben":"vers-perr-te","bedeutung":"blockierte den Weg, machte ihn undurchdringlich"},{"wort":"verschlucken","silben":"ver-schlu-cken","bedeutung":"hier: die Worte so leise klingen lassen, dass sie von der Umgebung aufgenommen werden und fast nicht mehr zu hören sind"},{"wort":"Unterholz","silben":"Un-ter-holz","bedeutung":"die niedrigen Büsche und Pflanzen, die unter den größeren Bäumen wachsen"},{"wort":"Lichtung","silben":"Lich-tung","bedeutung":"ein offener, heller Platz mitten im Wald, wo keine Bäume stehen"}];
         /* ============================================================ */
 
+        // Emoji-Text nutzt dieselbe Silbentrenner-Konvention wie rawStory:
+        // harte Bindestriche -> Soft Hyphen (U+00AD), damit processWord() sie
+        // korrekt entfernt (kein sichtbarer Bindestrich im Emoji-Modus).
+        emojiStory = emojiStory.replace(/-/g, "\u00AD");
+        emojiSummary = emojiSummary.replace(/-/g, "\u00AD");
+
         const storyRaw = rawStory.replace(/\n/g, "<br>");
         const summaryRaw = rawSummary.replace(/\n/g, "<br>");
 

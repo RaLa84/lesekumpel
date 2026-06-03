@@ -589,6 +589,12 @@
         const rawDictionaryEntry = [{"wort":"verwirrt","silben":"ver-wirrt","bedeutung":"Wenn man nicht weiß, was los ist."},{"wort":"unsicher","silben":"un-si-cher","bedeutung":"Wenn man sich nicht traut oder nicht sicher ist."},{"wort":"aufgeregt","silben":"auf-ge-regt","bedeutung":"Wenn man ganz gespannt und voller Energie ist."},{"wort":"besorgt","silben":"be-sorgt","bedeutung":"Wenn man sich Sorgen macht."},{"wort":"mutig","silben":"mu-tig","bedeutung":"Wenn man keine Angst hat und etwas wagt."},{"wort":"köstlich","silben":"köst-lich","bedeutung":"Wenn etwas sehr, sehr lecker schmeckt."}];
         /* ============================================================ */
 
+        // Emoji-Text nutzt dieselbe Silbentrenner-Konvention wie rawStory:
+        // harte Bindestriche -> Soft Hyphen (U+00AD), damit processWord() sie
+        // korrekt entfernt (kein sichtbarer Bindestrich im Emoji-Modus).
+        emojiStory = emojiStory.replace(/-/g, "\u00AD");
+        emojiSummary = emojiSummary.replace(/-/g, "\u00AD");
+
         const storyRaw = rawStory.replace(/\n/g, "<br>");
         const summaryRaw = rawSummary.replace(/\n/g, "<br>");
 

@@ -859,6 +859,12 @@
         const rawDictionaryEntry = [{"wort":"geschrumpft","silben":"gesch-rumpft","bedeutung":"kleiner werden, als ob man ein winziges Insekt wäre"},{"wort":"erwartungsvolle","silben":"er-war-tungs-vol-le","bedeutung":"gespannt und neugierig darauf sein, was als Nächstes passiert"},{"wort":"umklammerte","silben":"umk-lam-mer-te","bedeutung":"etwas ganz fest mit den Händen festhalten, oft aus Nervosität oder Angst"},{"wort":"verzweifelt","silben":"ver-zwei-felt","bedeutung":"sich sehr traurig und hilflos fühlen, weil man nicht weiß, wie es weitergeht"},{"wort":"Krächzen","silben":"Kräch-zen","bedeutung":"ein raues, nicht schönes Geräusch machen, wenn man sprechen möchte, wie ein Rabe"},{"wort":"fasziniert","silben":"fas-zi-niert","bedeutung":"wenn etwas so spannend und interessant ist, dass man nicht wegschauen kann"}];
         /* ============================================================ */
 
+        // Emoji-Text nutzt dieselbe Silbentrenner-Konvention wie rawStory:
+        // harte Bindestriche -> Soft Hyphen (U+00AD), damit processWord() sie
+        // korrekt entfernt (kein sichtbarer Bindestrich im Emoji-Modus).
+        emojiStory = emojiStory.replace(/-/g, "\u00AD");
+        emojiSummary = emojiSummary.replace(/-/g, "\u00AD");
+
         const storyRaw = rawStory.replace(/\n/g, "<br>");
         const summaryRaw = rawSummary.replace(/\n/g, "<br>");
 

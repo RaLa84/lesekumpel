@@ -873,6 +873,12 @@
         const schatzsucheData = {"thema":"Gefühle","emoji":"💖","ziel":3,"einleitung":"Hier sind ganz viele Gefühle versteckt! Finde drei Wörter, die zeigen, was die Kinder in der Geschichte fühlen – oder wie sich etwas für sie anfühlt. Tippe einfach darauf!","schatzwoerter":["nervös","schwerfiel","schlagen","aufgeregt","kalt","feucht","kribbelte","angst","ehrlichkeit","mutig","erleichtert","stolz","froh"]};
         /* ============================================================ */
 
+        // Emoji-Text nutzt dieselbe Silbentrenner-Konvention wie rawStory:
+        // harte Bindestriche -> Soft Hyphen (U+00AD), damit processWord() sie
+        // korrekt entfernt (kein sichtbarer Bindestrich im Emoji-Modus).
+        emojiStory = emojiStory.replace(/-/g, "\u00AD");
+        emojiSummary = emojiSummary.replace(/-/g, "\u00AD");
+
         const storyRaw = rawStory.replace(/\n/g, "<br>");
         const summaryRaw = rawSummary.replace(/\n/g, "<br>");
 
