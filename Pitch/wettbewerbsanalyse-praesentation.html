@@ -684,6 +684,140 @@ h1.slide-title:has(+ .slide-subtitle) { margin-bottom: 0.5rem; }
   font-weight: 700;
 }
 
+/* ===== Marktpreis-Tabelle (Folie 13) ===== */
+.marktpreis-wrap {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 1.2rem;
+  align-items: start;
+}
+.marktpreis-table {
+  width: 100%;
+  border-collapse: collapse;
+  background: var(--white);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 16px rgba(43,49,64,0.06);
+  font-size: 0.82rem;
+}
+.marktpreis-table thead th {
+  background: var(--navy);
+  color: var(--white);
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 0.78rem;
+  letter-spacing: 0.04em;
+  padding: 0.55rem 0.6rem;
+  text-align: left;
+}
+.marktpreis-table thead th.right { text-align: right; }
+.marktpreis-table tbody td {
+  padding: 0.42rem 0.6rem;
+  border-bottom: 1px solid rgba(217,212,204,0.5);
+  vertical-align: middle;
+}
+.marktpreis-table tbody td.app {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  color: var(--navy);
+}
+.marktpreis-table tbody td.app small {
+  display: block;
+  font-family: var(--font-body);
+  font-weight: 400;
+  font-size: 0.72rem;
+  opacity: 0.7;
+}
+.marktpreis-table tbody td.cat {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+.marktpreis-table tbody td.cat.b2c { color: var(--mint); }
+.marktpreis-table tbody td.cat.b2b { color: var(--lila); }
+.marktpreis-table tbody td.cat.free { color: var(--coral); }
+.marktpreis-table tbody td.price {
+  text-align: right;
+  font-family: var(--font-heading);
+  font-weight: 700;
+  color: var(--navy);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+.marktpreis-table tbody td.note {
+  font-size: 0.74rem;
+  opacity: 0.78;
+  line-height: 1.35;
+}
+.marktpreis-table tbody tr.lk {
+  background: rgba(249,115,82,0.12);
+  border-top: 2px solid var(--coral);
+  border-bottom: 2px solid var(--coral);
+}
+.marktpreis-table tbody tr.lk td {
+  color: var(--coral);
+  font-weight: 700;
+}
+.marktpreis-table tbody tr.lk td.note {
+  color: var(--navy);
+  font-weight: 500;
+  opacity: 1;
+}
+
+.marktpreis-side {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
+.marktpreis-card {
+  background: var(--white);
+  border-radius: 12px;
+  padding: 0.85rem 1.1rem;
+  box-shadow: 0 3px 10px rgba(43,49,64,0.05);
+  border-left: 4px solid var(--mint);
+}
+.marktpreis-card.coral { border-left-color: var(--coral); }
+.marktpreis-card.lila { border-left-color: var(--lila); }
+.marktpreis-card h4 {
+  font-size: 0.82rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--lila);
+  font-weight: 700;
+  margin-bottom: 0.3rem;
+}
+.marktpreis-card.coral h4 { color: var(--coral); }
+.marktpreis-card.lila h4 { color: var(--lila); }
+.marktpreis-card .big {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 1.05rem;
+  color: var(--navy);
+  margin-bottom: 0.2rem;
+}
+.marktpreis-card p {
+  font-size: 0.78rem;
+  line-height: 1.45;
+  color: var(--navy);
+  opacity: 0.85;
+}
+.marktpreis-fazit {
+  margin-top: 0.9rem;
+  padding: 0.9rem 1.3rem;
+  background: var(--yellow);
+  border-radius: 12px;
+  font-size: 0.95rem;
+  font-weight: 500;
+  line-height: 1.5;
+  text-align: center;
+}
+.marktpreis-fazit strong {
+  font-family: var(--font-heading);
+  font-size: 1.05rem;
+  font-weight: 700;
+}
+
 /* ===== Navigation ===== */
 .nav-hint {
   position: fixed;
@@ -818,7 +952,7 @@ h1.slide-title:has(+ .slide-subtitle) { margin-bottom: 0.5rem; }
 
   <div class="slide-footer">
     <span class="brand"><span class="brand-dot"></span><span class="brand-name brand-name-lila">Lese</span>kumpel · Wettbewerb</span>
-    <span class="counter">01 / 12</span>
+    <span class="counter">01 / 13</span>
   </div>
 </section>
 
@@ -880,7 +1014,7 @@ h1.slide-title:has(+ .slide-subtitle) { margin-bottom: 0.5rem; }
 
   <div class="slide-footer">
     <span class="brand"><span class="brand-dot"></span><span class="brand-name brand-name-lila">Lese</span>kumpel · Wettbewerb</span>
-    <span class="counter">02 / 12</span>
+    <span class="counter">02 / 13</span>
   </div>
 </section>
 
@@ -920,7 +1054,7 @@ h1.slide-title:has(+ .slide-subtitle) { margin-bottom: 0.5rem; }
           <table>
             <tr><th>Onilo Einzellizenz<small>1 Lehrkraft</small></th><td>249 €/Jahr</td></tr>
             <tr><th>Onilo Schullizenz<small>ganze Schule</small></th><td>599 €/Jahr</td></tr>
-            <tr class="lk"><th>Lesekumpel Familienpaket<small>4 Kinderkonten, 15 Credits/Mon.</small></th><td>4,99 €/Mon.</td></tr>
+            <tr class="lk"><th>Lesekumpel Familienpaket<small>4 Kinderkonten, 15 Credits/Mon.</small></th><td>6,99 €/Mon.</td></tr>
           </table>
         </div>
       </div>
@@ -929,7 +1063,7 @@ h1.slide-title:has(+ .slide-subtitle) { margin-bottom: 0.5rem; }
 
   <div class="slide-footer">
     <span class="brand"><span class="brand-dot"></span><span class="brand-name brand-name-lila">Lese</span>kumpel · Wettbewerb</span>
-    <span class="counter">03 / 12</span>
+    <span class="counter">03 / 13</span>
   </div>
 </section>
 
@@ -969,7 +1103,7 @@ h1.slide-title:has(+ .slide-subtitle) { margin-bottom: 0.5rem; }
           <table>
             <tr><th>eKidz Klassenlizenz<small>30 SuS, pro Sprache</small></th><td>ab 299 €/Jahr</td></tr>
             <tr><th>eKidz Schullizenz<small>skaliert nach Schülerzahl</small></th><td>ab 499 €/Jahr</td></tr>
-            <tr class="lk"><th>Lesekumpel Familienpaket<small>4 Kinderkonten · 15 Credits</small></th><td>4,99 €/Mon.</td></tr>
+            <tr class="lk"><th>Lesekumpel Familienpaket<small>4 Kinderkonten · 15 Credits</small></th><td>6,99 €/Mon.</td></tr>
           </table>
         </div>
       </div>
@@ -978,7 +1112,7 @@ h1.slide-title:has(+ .slide-subtitle) { margin-bottom: 0.5rem; }
 
   <div class="slide-footer">
     <span class="brand"><span class="brand-dot"></span><span class="brand-name brand-name-lila">Lese</span>kumpel · Wettbewerb</span>
-    <span class="counter">04 / 12</span>
+    <span class="counter">04 / 13</span>
   </div>
 </section>
 
@@ -1018,7 +1152,7 @@ h1.slide-title:has(+ .slide-subtitle) { margin-bottom: 0.5rem; }
           <table>
             <tr><th>Antolin Klassenlizenz<small>35 SuS, B2B-only</small></th><td>54 €/Jahr</td></tr>
             <tr><th>Antolin Schullizenz<small>ganze Schule</small></th><td>237 €/Jahr</td></tr>
-            <tr class="lk"><th>Lesekumpel Familienpaket<small>4 Kinderkonten · 15 Credits</small></th><td>4,99 €/Mon.</td></tr>
+            <tr class="lk"><th>Lesekumpel Familienpaket<small>4 Kinderkonten · 15 Credits</small></th><td>6,99 €/Mon.</td></tr>
           </table>
         </div>
       </div>
@@ -1027,7 +1161,7 @@ h1.slide-title:has(+ .slide-subtitle) { margin-bottom: 0.5rem; }
 
   <div class="slide-footer">
     <span class="brand"><span class="brand-dot"></span><span class="brand-name brand-name-lila">Lese</span>kumpel · Wettbewerb</span>
-    <span class="counter">05 / 12</span>
+    <span class="counter">05 / 13</span>
   </div>
 </section>
 
@@ -1067,7 +1201,7 @@ h1.slide-title:has(+ .slide-subtitle) { margin-bottom: 0.5rem; }
           <table>
             <tr><th>Google Read Along<small>international, kein Deutsch</small></th><td>0 € (kostenlos)</td></tr>
             <tr class="lk"><th>Lesekumpel Kaffeekasse<small>2 Credits, ohne Abo</small></th><td>1 €</td></tr>
-            <tr class="lk"><th>Lesekumpel Familienpaket<small>4 Kinderkonten · 15 Credits</small></th><td>4,99 €/Mon.</td></tr>
+            <tr class="lk"><th>Lesekumpel Familienpaket<small>4 Kinderkonten · 15 Credits</small></th><td>6,99 €/Mon.</td></tr>
           </table>
         </div>
       </div>
@@ -1076,7 +1210,7 @@ h1.slide-title:has(+ .slide-subtitle) { margin-bottom: 0.5rem; }
 
   <div class="slide-footer">
     <span class="brand"><span class="brand-dot"></span><span class="brand-name brand-name-lila">Lese</span>kumpel · Wettbewerb</span>
-    <span class="counter">06 / 12</span>
+    <span class="counter">06 / 13</span>
   </div>
 </section>
 
@@ -1115,7 +1249,7 @@ h1.slide-title:has(+ .slide-subtitle) { margin-bottom: 0.5rem; }
           <h4>Preise</h4>
           <table>
             <tr><th>Polylino Schullizenz<small>ganze Schule, Premium-Service</small></th><td>699 €/Jahr<small>zzgl. 7 % MwSt</small></td></tr>
-            <tr class="lk"><th>Lesekumpel Familienpaket<small>4 Kinderkonten · 15 Credits</small></th><td>4,99 €/Mon.</td></tr>
+            <tr class="lk"><th>Lesekumpel Familienpaket<small>4 Kinderkonten · 15 Credits</small></th><td>6,99 €/Mon.</td></tr>
           </table>
         </div>
       </div>
@@ -1124,7 +1258,7 @@ h1.slide-title:has(+ .slide-subtitle) { margin-bottom: 0.5rem; }
 
   <div class="slide-footer">
     <span class="brand"><span class="brand-dot"></span><span class="brand-name brand-name-lila">Lese</span>kumpel · Wettbewerb</span>
-    <span class="counter">07 / 12</span>
+    <span class="counter">07 / 13</span>
   </div>
 </section>
 
@@ -1164,7 +1298,7 @@ h1.slide-title:has(+ .slide-subtitle) { margin-bottom: 0.5rem; }
           <table>
             <tr><th>Leseludi Klassenlizenz<small>30 SuS</small></th><td>44,90 €/Jahr</td></tr>
             <tr><th>Leseludi Elternlizenz<small>für 5 Kinder</small></th><td>39,90 €/Jahr</td></tr>
-            <tr class="lk"><th>Lesekumpel Familienpaket<small>4 Kinderkonten · 15 Credits</small></th><td>4,99 €/Mon.</td></tr>
+            <tr class="lk"><th>Lesekumpel Familienpaket<small>4 Kinderkonten · 15 Credits</small></th><td>6,99 €/Mon.</td></tr>
           </table>
         </div>
       </div>
@@ -1173,7 +1307,7 @@ h1.slide-title:has(+ .slide-subtitle) { margin-bottom: 0.5rem; }
 
   <div class="slide-footer">
     <span class="brand"><span class="brand-dot"></span><span class="brand-name brand-name-lila">Lese</span>kumpel · Wettbewerb</span>
-    <span class="counter">08 / 12</span>
+    <span class="counter">08 / 13</span>
   </div>
 </section>
 
@@ -1213,7 +1347,7 @@ h1.slide-title:has(+ .slide-subtitle) { margin-bottom: 0.5rem; }
           <table>
             <tr><th>CLELO Hardware<small>einmalig</small></th><td>279 €</td></tr>
             <tr><th>CLELO pro Geschichte<small>einzeln zu kaufen</small></th><td>3–8 €</td></tr>
-            <tr class="lk"><th>Lesekumpel Familienpaket<small>4 Kinderkonten, 15 Credits/Mon.</small></th><td>4,99 €/Mon.</td></tr>
+            <tr class="lk"><th>Lesekumpel Familienpaket<small>4 Kinderkonten, 15 Credits/Mon.</small></th><td>6,99 €/Mon.</td></tr>
             <tr class="lk"><th>Für 1 CLELO-Text<small>bekommt man bei uns</small></th><td>9–24 Texte</td></tr>
           </table>
         </div>
@@ -1223,7 +1357,7 @@ h1.slide-title:has(+ .slide-subtitle) { margin-bottom: 0.5rem; }
 
   <div class="slide-footer">
     <span class="brand"><span class="brand-dot"></span><span class="brand-name brand-name-lila">Lese</span>kumpel · Wettbewerb</span>
-    <span class="counter">09 / 12</span>
+    <span class="counter">09 / 13</span>
   </div>
 </section>
 
@@ -1263,7 +1397,7 @@ h1.slide-title:has(+ .slide-subtitle) { margin-bottom: 0.5rem; }
           <table>
             <tr><th>ANTON Basis<small>alle Fächer, Werbung</small></th><td>0 € (kostenlos)</td></tr>
             <tr><th>ANTON Plus Familie<small>ohne Werbung, mehrere Profile</small></th><td>19,99 €/Jahr</td></tr>
-            <tr class="lk"><th>Lesekumpel Familienpaket<small>4 Kinderkonten · 15 Credits</small></th><td>4,99 €/Mon.</td></tr>
+            <tr class="lk"><th>Lesekumpel Familienpaket<small>4 Kinderkonten · 15 Credits</small></th><td>6,99 €/Mon.</td></tr>
           </table>
         </div>
       </div>
@@ -1272,7 +1406,7 @@ h1.slide-title:has(+ .slide-subtitle) { margin-bottom: 0.5rem; }
 
   <div class="slide-footer">
     <span class="brand"><span class="brand-dot"></span><span class="brand-name brand-name-lila">Lese</span>kumpel · Wettbewerb</span>
-    <span class="counter">10 / 12</span>
+    <span class="counter">10 / 13</span>
   </div>
 </section>
 
@@ -1327,7 +1461,7 @@ h1.slide-title:has(+ .slide-subtitle) { margin-bottom: 0.5rem; }
 
   <div class="slide-footer">
     <span class="brand"><span class="brand-dot"></span><span class="brand-name brand-name-lila">Lese</span>kumpel · Wettbewerb</span>
-    <span class="counter">11 / 12</span>
+    <span class="counter">11 / 13</span>
   </div>
 </section>
 
@@ -1397,7 +1531,129 @@ h1.slide-title:has(+ .slide-subtitle) { margin-bottom: 0.5rem; }
 
   <div class="slide-footer">
     <span class="brand"><span class="brand-dot"></span><span class="brand-name brand-name-lila">Lese</span>kumpel · Wettbewerb</span>
-    <span class="counter">12 / 12</span>
+    <span class="counter">12 / 13</span>
+  </div>
+</section>
+
+<!-- ============================================ -->
+<!-- 13 — Marktpreis-Übersicht                     -->
+<!-- ============================================ -->
+<section class="slide" data-slide="13">
+  <div class="blob coral tr-md shape-2" aria-hidden="true"></div>
+  <div class="blob mint bl-md shape-3" aria-hidden="true"></div>
+
+  <div class="slide-tag">Marktpreise · DACH 2026</div>
+  <h1 class="slide-title">Was kosten populäre <span class="accent">Kinder-Lern-Apps?</span></h1>
+  <p class="slide-subtitle">Lesekumpel-Pricing im direkten Vergleich · Stand Juni 2026</p>
+
+  <div class="slide-content">
+    <div class="marktpreis-wrap">
+      <table class="marktpreis-table">
+        <thead>
+          <tr>
+            <th>App</th>
+            <th>Typ</th>
+            <th class="right">Preis</th>
+            <th>Bemerkung</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="app">Sofatutor Premium<small>Alles, Klasse 1–13</small></td>
+            <td class="cat b2c">B2C</td>
+            <td class="price">19,95 €/Mon</td>
+            <td class="note">Marketing-Riese, TV-Werbung. Inkl. Hausaufgaben-Chat</td>
+          </tr>
+          <tr>
+            <td class="app">Scoyo<small>Alles, Klasse 1–7</small></td>
+            <td class="cat b2c">B2C</td>
+            <td class="price">14,99 €/Mon</td>
+            <td class="note">Familien-Lizenz, gut etabliert im DACH-Raum</td>
+          </tr>
+          <tr>
+            <td class="app">Knowunity Pro<small>KI-Lernhilfe, Sek I+II</small></td>
+            <td class="cat b2c">B2C</td>
+            <td class="price">12,99 €/Mon</td>
+            <td class="note">KI-fokussiert, aber für ältere Schüler</td>
+          </tr>
+          <tr>
+            <td class="app">Simpleclub Plus<small>Sek I + II</small></td>
+            <td class="cat b2c">B2C</td>
+            <td class="price">12,99 €/Mon</td>
+            <td class="note">Video-basiert, große Reichweite</td>
+          </tr>
+          <tr class="lk">
+            <td class="app">Lesekumpel Premium<small>Familienpaket, Cap 20 Stories</small></td>
+            <td class="cat b2c">B2C</td>
+            <td class="price">6,99 €/Mon</td>
+            <td class="note">★ Unter Median, neuroinklusiv differenziert</td>
+          </tr>
+          <tr>
+            <td class="app">ANTON Plus<small>Alles, Klasse 1–10</small></td>
+            <td class="cat b2c">B2C</td>
+            <td class="price">~0,83 €/Mon<small style="opacity:0.6">(9,99 €/Jahr)</small></td>
+            <td class="note">Preisbrecher · 10 Mio+ Downloads · generisch</td>
+          </tr>
+          <tr>
+            <td class="app">ANTON Basis / Khan Academy / Studyflix</td>
+            <td class="cat free">Free</td>
+            <td class="price">0 €</td>
+            <td class="note">Werbefinanziert oder Non-Profit · qualitativ heterogen</td>
+          </tr>
+          <tr>
+            <td class="app">Antolin<small>Westermann · Lesen, Klasse 1–10</small></td>
+            <td class="cat b2b">B2B</td>
+            <td class="price">~2 €/Schüler/J<small style="opacity:0.6">(54 € Klasse)</small></td>
+            <td class="note">Schul-Standard, statisch · keine Eltern-Lizenz</td>
+          </tr>
+          <tr>
+            <td class="app">Bettermarks<small>Mathe</small></td>
+            <td class="cat b2b">B2B</td>
+            <td class="price">~10 €/Schüler/J</td>
+            <td class="note">Schullizenz · kostenlos in Hessen via Schulportal</td>
+          </tr>
+          <tr>
+            <td class="app">Polylino / Onilo / Lalilo<small>Lesen, mehrsprachig</small></td>
+            <td class="cat b2b">B2B</td>
+            <td class="price">B2B-only</td>
+            <td class="note">Schulträger-Lizenz · keine Eltern-Direktverkauf</td>
+          </tr>
+          <tr class="lk">
+            <td class="app">Lesekumpel Pro<small>Lehrer-Account, 30 Schüler</small></td>
+            <td class="cat b2b">B2B</td>
+            <td class="price">19,99 €/Mon<small style="opacity:0.6">(199 €/Jahr)</small></td>
+            <td class="note">★ Unter Antolin-Niveau (240 €/J) · KI-personalisiert</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <div class="marktpreis-side">
+        <div class="marktpreis-card coral">
+          <h4>Lesekumpel-Positionierung</h4>
+          <div class="big">6,99 € / Mon</div>
+          <p>Unter dem Median (12,99 €). Bewusst <strong>über ANTON</strong> (Differenzierung) und <strong>unter Sofatutor / Scoyo</strong> (Familien-Akzeptanz).</p>
+        </div>
+        <div class="marktpreis-card">
+          <h4>Eltern-Schmerzgrenze</h4>
+          <div class="big">10–15 €/Mon</div>
+          <p>Wir liegen <strong>klar darunter</strong>. Damit ist Lesekumpel auch für Familien mit knapperem Budget zugänglich — Social-Impact-Argument.</p>
+        </div>
+        <div class="marktpreis-card lila">
+          <h4>Pro-Tarif vs. Antolin</h4>
+          <div class="big">199 € statt 240 €</div>
+          <p>Unsere Lehrer-Lizenz unterbietet Antolin (= 20 €/Mon) — bei deutlich besserer Tech und Personalisierung.</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="marktpreis-fazit">
+      <strong>Eltern zahlen 9–20 €/Mon für Lern-Apps.</strong> Mit 6,99 € bewegen wir uns im erschwinglichen Premium-Segment — günstig genug für die emotionale Schmerzgrenze, teuer genug, um nicht als „Massen-App" wahrgenommen zu werden.
+    </div>
+  </div>
+
+  <div class="slide-footer">
+    <span class="brand"><span class="brand-dot"></span><span class="brand-name brand-name-lila">Lese</span>kumpel · Wettbewerb</span>
+    <span class="counter">13 / 13</span>
   </div>
 </section>
 
