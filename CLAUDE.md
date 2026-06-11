@@ -17,7 +17,9 @@ This is a **static site with no build step** — pure vanilla HTML, CSS, and Jav
 - Stories are generated via **N8N workflows** (`rala84.app.n8n.cloud`) which create HTML files and commit them directly to this repo
 - Webhook-Endpoint: `/webhook/lesekumpel-story` — akzeptiert `Persona`, `Neurotyp`, `Titel`, `Genre`, `Kurzbeschreibung`, `Bildstil`
 - Silbentrennung wird **per Code** nachträglich hinzugefügt (nicht vom LLM) — im Knoten "Geschichte parsen"
-- **Bilderpipeline temporär ausgebaut** (Knoten verwaist, nicht gelöscht) — Stories werden ohne Bilder committed
+- **Bilderpipeline aktiv** (Stand 2026-06): gpt-image-2-Probe mit Gemini-Fallback (`gemini-2.5-flash-image`), per Webhook-Feld `skipImages` abschaltbar. Scheitert ein Bild, wird die Story trotzdem ohne Bild committed (IF "Bilddaten vorhanden?")
+- Ungültige Requests (Persona unbekannt, Titel fehlt, Blockwort) bekommen HTTP 400; gültige sofort HTTP 202, danach läuft die Generierung asynchron
+- Fehler-Benachrichtigung: Error-Workflow "Lesekumpel – Error Handler" (ID `oUqCBmI1v3qMoIhs`) legt bei Workflow-Fehlschlägen ein GitHub-Issue an
 - The GitHub API is used at runtime to dynamically discover story files
 
 ### Key Files & Directories
