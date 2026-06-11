@@ -3,6 +3,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <!-- ============================================================
+       Lesekumpel v2 — Story-Template (Text-Geschichten)
+       Output-Ziel: v2/demo-texte/<slug>.html
+       Alle Pfade sind relativ zum Output-Ziel (eine Ebene unter v2/),
+       NICHT zum Template-Speicherort. {{PLACEHOLDER}} werden von der
+       n8n-Pipeline befüllt.
+       ============================================================ -->
   <title>{{STORY_TITLE}} — Lesekumpel</title>
   <meta name="description" content="{{META_DESCRIPTION}}">
   <meta name="author" content="{{PERSONA_NAME}}">
@@ -11,363 +18,57 @@
   <meta name="neurotype" content="{{NEUROTYP}}">
   <meta name="demo" content="true">
 
-  <link rel="icon" type="image/webp" href="../Konzept_Rebranding/logo-lesekumpel-512.webp">
-  <link rel="stylesheet" href="../fonts/fonts.css">
-  <link rel="stylesheet" href="styles.css">
-  <link rel="stylesheet" href="tafel.css">
-  <style>
-    /* Story-Layout */
-    .story-wrap {
-      max-width: 760px;
-      margin: 0 auto;
-      padding: 32px 24px 80px;
-    }
-
-    .story-hero {
-      position: relative;
-      border-radius: var(--radius-card);
-      overflow: hidden;
-      margin-bottom: 32px;
-      background: var(--lila);
-      min-height: 280px;
-      display: flex;
-      align-items: flex-end;
-      box-shadow: var(--shadow-card);
-    }
-    .story-hero-img {
-      position: absolute; inset: 0;
-      width: 100%; height: 100%;
-      object-fit: cover;
-      z-index: 0;
-    }
-    .story-hero-overlay {
-      position: absolute; inset: 0;
-      background: linear-gradient(180deg, rgba(43,49,64,0) 30%, rgba(43,49,64,0.85) 100%);
-      z-index: 1;
-    }
-    .story-hero-text {
-      position: relative;
-      z-index: 2;
-      padding: 32px 28px 28px;
-      color: var(--cream);
-      width: 100%;
-    }
-    .story-hero-text .story-title-h1 {
-      font-family: var(--font-heading);
-      font-weight: 700;
-      font-size: clamp(1.7rem, 4.5vw, 2.6rem);
-      line-height: 1.15;
-      color: var(--cream);
-      margin: 0;
-    }
-    .story-hero-meta {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 10px;
-      margin-top: 14px;
-      font-size: 0.85rem;
-    }
-    .story-hero-meta .badge {
-      background: rgba(255,246,239,0.92);
-      color: var(--navy);
-      font-size: 0.8rem;
-      padding: 5px 12px;
-    }
-
-    .author-line {
-      display: flex;
-      align-items: center;
-      gap: 14px;
-      background: var(--white);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-card);
-      padding: 16px 18px;
-      margin-bottom: 24px;
-      box-shadow: var(--shadow-card);
-    }
-    .author-line-avatar {
-      width: 56px; height: 56px;
-      border-radius: 50%;
-      object-fit: cover;
-      flex-shrink: 0;
-      border: 2px solid var(--cream);
-      background: var(--cream-light);
-    }
-    .author-line-info { flex: 1; min-width: 0; }
-    .author-line-credit { font-size: 0.85rem; opacity: 0.7; }
-    .author-line-name {
-      font-family: var(--font-heading);
-      font-weight: 600;
-      font-size: 1.05rem;
-    }
-    .author-line-tag {
-      background: rgba(47,184,166,0.18);
-      color: var(--navy);
-      font-size: 0.78rem;
-      font-weight: 700;
-      padding: 4px 12px;
-      border-radius: var(--radius-pill);
-      align-self: flex-start;
-    }
-
-    /* Lese-Toolbar */
-    .reading-toolbar {
-      background: var(--white);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-card);
-      padding: 14px 16px;
-      margin-bottom: 28px;
-      box-shadow: var(--shadow-card);
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      align-items: center;
-    }
-    .reading-toolbar .toolbar-label {
-      font-size: 0.78rem;
-      font-weight: 700;
-      opacity: 0.6;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-      margin-right: 4px;
-    }
-    .tool-btn {
-      background: var(--cream-light);
-      border: 1.5px solid var(--border);
-      border-radius: var(--radius-pill);
-      padding: 8px 16px;
-      font-family: var(--font-body);
-      font-weight: 600;
-      font-size: 0.85rem;
-      color: var(--navy);
-      cursor: pointer;
-      transition: all 0.2s ease;
-      display: inline-flex;
-      align-items: center;
-      gap: 6px;
-    }
-    .tool-btn:hover {
-      border-color: var(--mint);
-      background: var(--white);
-    }
-    .tool-btn.active {
-      background: var(--mint);
-      border-color: var(--mint);
-    }
-    .tool-btn-divider {
-      width: 1px;
-      height: 24px;
-      background: var(--border);
-      margin: 0 4px;
-    }
-
-    /* Story-Text */
-    .story-card {
-      background: var(--white);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-card);
-      padding: 36px 32px;
-      box-shadow: var(--shadow-card);
-      margin-bottom: 32px;
-    }
-    .story-text {
-      font-size: 1.18rem;
-      line-height: 1.85;
-      color: var(--navy);
-    }
-    .story-text p { margin-bottom: 1.2em; }
-    .story-text p:last-child { margin-bottom: 0; }
-    .story-text strong { font-weight: 700; color: var(--lila); }
-
-    /* Lese-Modi */
-    body.text-large .story-text { font-size: 1.4rem; line-height: 1.95; }
-    body.text-x-large .story-text { font-size: 1.6rem; line-height: 2; }
-    body.high-contrast .story-card { background: var(--white); border-color: var(--navy); }
-    body.high-contrast .story-text { color: #000; }
-    body.dyslexia .story-text {
-      font-family: 'Atkinson Hyperlegible', 'Lexend', system-ui, sans-serif;
-      letter-spacing: 0.03em;
-      word-spacing: 0.08em;
-    }
-
-    /* Silbentrennung — visuell */
-    .syllable { color: var(--lila); }
-    .syllable + .syllable { color: var(--coral); }
-
-    /* Activity Hub */
-    .activity-hub {
-      background: var(--cream-light);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-card);
-      padding: 28px 26px;
-      margin-bottom: 28px;
-    }
-    .activity-hub-title {
-      font-family: var(--font-heading);
-      font-size: 1.3rem;
-      margin-bottom: 18px;
-      display: flex;
-      align-items: center;
-      gap: 10px;
-    }
-    .activity-tabs {
-      display: flex;
-      gap: 8px;
-      flex-wrap: wrap;
-      margin-bottom: 20px;
-      border-bottom: 1px solid var(--border);
-      padding-bottom: 14px;
-    }
-    .activity-tab {
-      background: none;
-      border: none;
-      padding: 8px 16px;
-      border-radius: var(--radius-pill);
-      font-family: var(--font-body);
-      font-weight: 600;
-      font-size: 0.9rem;
-      color: var(--navy);
-      cursor: pointer;
-      transition: all 0.2s;
-      display: flex; align-items: center; gap: 6px;
-    }
-    .activity-tab:hover { background: var(--white); }
-    .activity-tab.active { background: var(--mint); }
-    .activity-intro { font-size: 0.95rem; line-height: 1.7; margin-bottom: 14px; }
-
-    .quiz-question {
-      margin-bottom: 24px;
-      padding-bottom: 20px;
-      border-bottom: 1px dashed var(--border);
-    }
-    .quiz-question:last-child { border-bottom: none; }
-    .quiz-question .q-text {
-      font-weight: 600;
-      margin-bottom: 12px;
-      font-size: 1rem;
-    }
-    .quiz-options {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-    }
-    .quiz-option {
-      background: var(--white);
-      border: 1.5px solid var(--border);
-      border-radius: 12px;
-      padding: 12px 16px;
-      cursor: pointer;
-      transition: all 0.2s;
-      font-size: 0.95rem;
-    }
-    .quiz-option:hover {
-      border-color: var(--mint);
-      background: var(--cream-light);
-    }
-    .quiz-option.correct {
-      background: rgba(47,184,166,0.18);
-      border-color: var(--mint);
-    }
-    .quiz-option.wrong {
-      opacity: 0.6;
-      background: var(--cream-light);
-    }
-
-    /* Survey */
-    .survey {
-      background: var(--white);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-card);
-      padding: 28px 26px;
-      margin-bottom: 28px;
-      text-align: center;
-      box-shadow: var(--shadow-card);
-    }
-    .survey-title {
-      font-family: var(--font-heading);
-      font-size: 1.2rem;
-      margin-bottom: 18px;
-    }
-    .vote-wrap {
-      display: flex;
-      gap: 16px;
-      justify-content: center;
-    }
-    .vote-btn {
-      background: var(--cream-light);
-      border: 2px solid var(--border);
-      border-radius: 20px;
-      width: 78px; height: 78px;
-      font-size: 2.2rem;
-      cursor: pointer;
-      transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-    }
-    .vote-btn:hover {
-      transform: translateY(-4px) scale(1.06);
-      border-color: var(--mint);
-      background: var(--white);
-    }
-
-    /* Related */
-    .related {
-      margin-bottom: 28px;
-    }
-    .related-title {
-      font-family: var(--font-heading);
-      font-size: 1.2rem;
-      margin-bottom: 16px;
-    }
-    .related-grid {
-      display: grid;
-      grid-template-columns: 1fr;
-      gap: 14px;
-    }
-    @media (min-width: 600px) {
-      .related-grid { grid-template-columns: repeat(2, 1fr); }
-    }
-
-    @media (min-width: 768px) {
-      .story-hero { min-height: 360px; }
-      .story-hero-text { padding: 40px 36px 36px; }
-    }
-  </style>
+  <link rel="icon" type="image/webp" href="../../Konzept_Rebranding/logo-lesekumpel-512.webp">
+  <link rel="stylesheet" href="../../fonts/fonts.css">
+  <link rel="stylesheet" href="../styles.css">
+  <link rel="stylesheet" href="story-styles.css">
+  <link rel="stylesheet" href="../tafel.css">
 </head>
 <body data-page="story">
 
   <a href="#main" class="skip-link">Zum Inhalt springen</a>
 
   <div class="sandbox-banner">
-  Du bist im Redesign-Sandbox <strong>v2</strong>. <a href="../index.html">Zur Live-Version wechseln &rarr;</a>
+  Du bist im Redesign-Sandbox <strong>v2</strong>. <a href="../../index.html">Zur Live-Version wechseln &rarr;</a>
 </div>
 <nav class="navbar" aria-label="Hauptnavigation">
   <div class="navbar-inner">
-    <a href="index.html" class="navbar-brand">
-      <img src="../Konzept_Rebranding/logo-lesekumpel-512.webp" alt="Lesekumpel Logo" class="navbar-logo">
+    <a href="../index.html" class="navbar-brand">
+      <img src="../../Konzept_Rebranding/logo-lesekumpel-512.webp" alt="Lesekumpel Logo" class="navbar-logo">
       <span>Lese<span class="brand-name">kumpel</span></span>
     </a>
     <div class="navbar-links">
-      <a href="index.html#mission" data-nav="mission">F&uuml;r euch</a>
-      <a href="index.html#how-it-works" data-nav="how">So funktioniert&rsquo;s</a>
-      <a href="ueber-uns.html" data-nav="ueber-uns">&Uuml;ber uns</a>
-      <a href="demo.html" data-nav="demo">Demo-Texte</a>
-      <a href="preise.html" data-nav="preise">Preise</a>
+      <a href="../index.html#mission" data-nav="mission">F&uuml;r euch</a>
+      <a href="../index.html#how-it-works" data-nav="how">So funktioniert&rsquo;s</a>
+      <a href="../ueber-uns.html" data-nav="ueber-uns">&Uuml;ber uns</a>
+      <a href="../demo.html" data-nav="demo">Demo-Texte</a>
+      <a href="../preise.html" data-nav="preise">Preise</a>
       <a href="#" data-nav="erstellen" onclick="comingSoon(event)">Geschichte erstellen</a>
-      <a href="mein-konto.html" data-nav="mein-konto">Mein Konto</a>
+      <a href="../mein-konto.html" data-nav="mein-konto">Mein Konto</a>
     </div>
-    <a href="index.html#registrieren" class="btn btn-primary navbar-cta">Jetzt registrieren</a>
+    <a href="../index.html#registrieren" class="btn btn-primary navbar-cta">Jetzt registrieren</a>
     <button type="button" class="burger" aria-label="Men&uuml; &ouml;ffnen" aria-expanded="false" aria-controls="mobile-menu" onclick="toggleMenu()">&#9776;</button>
   </div>
   <div id="mobile-menu" class="mobile-menu">
-    <a href="index.html#mission" onclick="toggleMenu()">F&uuml;r euch</a>
-    <a href="index.html#how-it-works" onclick="toggleMenu()">So funktioniert&rsquo;s</a>
-    <a href="ueber-uns.html" onclick="toggleMenu()">&Uuml;ber uns</a>
-    <a href="demo.html" onclick="toggleMenu()">Demo-Texte</a>
-    <a href="preise.html" onclick="toggleMenu()">Preise</a>
+    <a href="../index.html#mission" onclick="toggleMenu()">F&uuml;r euch</a>
+    <a href="../index.html#how-it-works" onclick="toggleMenu()">So funktioniert&rsquo;s</a>
+    <a href="../ueber-uns.html" onclick="toggleMenu()">&Uuml;ber uns</a>
+    <a href="../demo.html" onclick="toggleMenu()">Demo-Texte</a>
+    <a href="../preise.html" onclick="toggleMenu()">Preise</a>
     <a href="#" onclick="comingSoon(event); toggleMenu()">Geschichte erstellen</a>
-    <a href="mein-konto.html" onclick="toggleMenu()">Mein Konto</a>
-    <a href="index.html#registrieren" class="mobile-menu-cta" onclick="toggleMenu()">Jetzt registrieren &rarr;</a>
+    <a href="../mein-konto.html" onclick="toggleMenu()">Mein Konto</a>
+    <a href="../index.html#registrieren" class="mobile-menu-cta" onclick="toggleMenu()">Jetzt registrieren &rarr;</a>
   </div>
 </nav>
+
+  <div id="schatz-banner" class="schatz-banner" hidden>
+    <span class="schatz-banner-icon">&#128269;</span>
+    <span class="schatz-banner-text">
+      <span id="schatz-banner-thema">Finde den Schatz</span>
+      <span class="schatz-banner-count" id="schatz-banner-count">0/0</span>
+    </span>
+    <button type="button" class="schatz-banner-close" onclick="endSchatzsuche()" aria-label="Schatzsuche beenden">&#10005;</button>
+  </div>
 
   <main id="main">
     <article class="story-wrap">
@@ -396,22 +97,51 @@
         <span class="author-line-tag">&#10003; F&uuml;r {{NEUROTYP}} optimiert</span>
       </div>
 
-      <!-- Lese-Toolbar -->
-      <div class="reading-toolbar" id="toolbar">
-        <span class="toolbar-label">Text</span>
-        <button type="button" class="tool-btn" onclick="toggleClass('syllables-on')" id="btn-syl">&#9986; Silben</button>
-        <button type="button" class="tool-btn" onclick="cycleFontSize()" id="btn-size">A&plus;</button>
-        <button type="button" class="tool-btn" onclick="toggleClass('dyslexia')" id="btn-dys">&#127859; Dyslexie</button>
-        <span class="tool-btn-divider" aria-hidden="true"></span>
-        <span class="toolbar-label">Mehr</span>
-        <button type="button" class="tool-btn" onclick="toggleClass('high-contrast')" id="btn-contrast">&#127769; Kontrast</button>
-        <button type="button" class="tool-btn" onclick="speakStory()" id="btn-tts">&#128266; Vorlesen</button>
+      <!-- Lese-Toolbar (3 Gruppen: Text / Ansicht / Extras) -->
+      <div class="reading-toolbar grouped" id="toolbar" role="toolbar" aria-label="Lese-Werkzeuge">
+        <div class="toolbar-group group-text">
+          <div class="toolbar-group-label">Text</div>
+          <div class="toolbar-group-buttons">
+            <button type="button" class="tool-btn" onclick="toggleSummaryMode()" id="btn-summary" aria-label="Einfache Sprache">&#128214; Einfach</button>
+            <button type="button" class="tool-btn" onclick="toggleSyllables()" id="btn-syllables" aria-label="Silbentrennung">&#9986;&#65039; Silben</button>
+            <button type="button" class="tool-btn" onclick="toggleEmojis()" id="btn-emojis" aria-label="Gef&uuml;hle mit Emojis">&#128522; Emojis</button>
+          </div>
+        </div>
+        <div class="toolbar-group group-view">
+          <div class="toolbar-group-label">Ansicht</div>
+          <div class="toolbar-group-buttons">
+            <button type="button" class="tool-btn" onclick="toggleViewMode()" id="view-toggle-btn" aria-label="Text in H&auml;ppchen">&#129513; H&auml;ppchen</button>
+            <button type="button" class="tool-btn" onclick="toggleLeselinien()" id="btn-leselinien" aria-label="Leselinien">&#128207; Linien</button>
+            <button type="button" class="tool-btn" onclick="toggleFahrplan()" id="btn-fahrplan" aria-label="Fahrplan">&#128506;&#65039; Fahrplan</button>
+            <div class="font-size-control">
+              <button type="button" class="tool-btn" onclick="changeFontSize(-2)" aria-label="Schrift kleiner">A&minus;</button>
+              <button type="button" class="tool-btn" onclick="changeFontSize(2)" aria-label="Schrift gr&ouml;&szlig;er">A&plus;</button>
+            </div>
+          </div>
+        </div>
+        <div class="toolbar-group group-extra">
+          <div class="toolbar-group-label">Extras</div>
+          <div class="toolbar-group-buttons">
+            <button type="button" class="tool-btn" onclick="toggleTTS()" id="btn-tts" aria-label="Vorlesen">&#128266; Vorlesen</button>
+            <button type="button" class="tool-btn" onclick="toggleWordReader()" id="btn-word-reader" aria-label="W&ouml;rter h&ouml;ren">&#128066; W&ouml;rter h&ouml;ren</button>
+            <button type="button" class="tool-btn" onclick="toggleDyslexia(this)" aria-label="Lesefreundliche Schrift">&#128150; Lesefreundlich</button>
+            <button type="button" class="tool-btn" onclick="toggleContrast(this)" aria-label="Hoher Kontrast">&#127769; Kontrast</button>
+          </div>
+        </div>
       </div>
 
-      <!-- Story Text -->
+      <!-- Story Text (wird von story-scripts.js aus rawStory gerendert) -->
       <div class="story-card">
-        <div class="story-text" id="story-text">
-          {{STORY_HTML}}
+        <div id="full-text-view" class="story-text"></div>
+        <div id="chunk-view" class="story-text hidden">
+          <div class="adhs-progress-bar"><div class="adhs-progress-bar-fill" id="adhs-progress-fill" style="width:0%"></div></div>
+          <div id="chunk-display"></div>
+          <div id="swipe-hint" class="swipe-hint" style="display:none;">&larr; wischen zum Bl&auml;ttern &rarr;</div>
+          <div class="chunk-controls">
+            <button type="button" class="tool-btn" onclick="prevChunk()">&larr; Zur&uuml;ck</button>
+            <div id="chunk-progress" class="progress-ring" style="--p: 0%;">1/1</div>
+            <button type="button" class="tool-btn" onclick="nextChunk()" id="btn-next-chunk">Weiter &rarr;</button>
+          </div>
         </div>
       </div>
 
@@ -419,19 +149,27 @@
       <div class="activity-hub" id="activity-hub">
         <h2 class="activity-hub-title">&#127918; Spielzeit!</h2>
         <div class="activity-tabs" role="tablist" aria-label="Spielformate">
-          <button type="button" class="activity-tab active" role="tab" aria-selected="true" aria-controls="panel-quiz" data-panel="quiz" onclick="switchPanel('quiz')">&#129504; Quiz</button>
-          <button type="button" class="activity-tab" role="tab" aria-selected="false" aria-controls="panel-weiterdenken" data-panel="weiterdenken" onclick="switchPanel('weiterdenken')">&#127775; Weiterdenken</button>
-          <button type="button" class="activity-tab" role="tab" aria-selected="false" aria-controls="panel-wortschatz" data-panel="wortschatz" onclick="switchPanel('wortschatz')">&#128218; Wortschatz</button>
+          <button type="button" class="activity-tab active" role="tab" aria-selected="true" aria-controls="panel-quiz" data-tab="quiz" onclick="switchActivityTab('quiz')">&#129504; Quiz</button>
+          <button type="button" class="activity-tab" role="tab" aria-selected="false" aria-controls="panel-weiterdenken" data-tab="weiterdenken" onclick="switchActivityTab('weiterdenken')">&#127775; Weiterdenken</button>
+          <button type="button" class="activity-tab" role="tab" aria-selected="false" aria-controls="panel-schatz" data-tab="schatz" onclick="switchActivityTab('schatz')">&#128269; Schatz</button>
+          <button type="button" class="activity-tab" role="tab" aria-selected="false" aria-controls="panel-wortschatz" data-tab="wortschatz" onclick="switchActivityTab('wortschatz')">&#128218; Wortschatz</button>
         </div>
-        <div id="panel-quiz" class="activity-panel" role="tabpanel">
-          <div id="quiz-body">{{QUIZ_HTML}}</div>
+        <div id="panel-quiz" class="activity-panel active" role="tabpanel">
+          <div id="quiz-wrapper"></div>
         </div>
-        <div id="panel-weiterdenken" class="activity-panel" role="tabpanel" hidden>
-          <p class="activity-intro">Hier gibt es kein richtig oder falsch &mdash; w&auml;hle, was dir am besten gef&auml;llt!</p>
-          {{WEITERDENKEN_HTML}}
+        <div id="panel-weiterdenken" class="activity-panel" role="tabpanel">
+          <p class="weitererzaehlen-intro">Hier gibt es kein richtig oder falsch &mdash; w&auml;hle, was dir am besten gef&auml;llt!</p>
+          <div id="weitererzaehlen-wrapper" class="weitererzaehlen-cards"></div>
+          <div class="klassen-hinweis">
+            <span class="klassen-hinweis-icon">&#128105;&#8205;&#127979;</span>
+            <div>
+              <strong>Tipp f&uuml;r die Klasse:</strong> Stimmt per Handzeichen ab &mdash; welche Fortsetzung findet ihr am sch&ouml;nsten? Danach k&ouml;nnt ihr die gew&auml;hlte Fortsetzung gemeinsam selbst weiterschreiben.
+            </div>
+          </div>
         </div>
-        <div id="panel-wortschatz" class="activity-panel" role="tabpanel" hidden>
-          {{WORTSCHATZ_HTML}}
+        <div id="panel-schatz" class="activity-panel" role="tabpanel"></div>
+        <div id="panel-wortschatz" class="activity-panel" role="tabpanel">
+          <div id="wortschatz-wrapper" class="wortschatz-cards"></div>
         </div>
       </div>
 
@@ -452,7 +190,7 @@
 
       <!-- Back -->
       <p class="text-center">
-        <a href="bibliothek.html" class="btn btn-secondary">&larr; Zur Bibliothek</a>
+        <a href="../demo.html" class="btn btn-secondary">&larr; Zur Bibliothek</a>
       </p>
 
     </article>
@@ -466,7 +204,7 @@
   <div class="footer-grid">
     <div class="footer-brand-block">
       <div class="footer-brand-row">
-        <img src="../Konzept_Rebranding/logo-lesekumpel-512.webp" alt="Lesekumpel Logo">
+        <img src="../../Konzept_Rebranding/logo-lesekumpel-512.webp" alt="Lesekumpel Logo">
         <span>Lese<span class="brand-yellow">kumpel</span></span>
       </div>
       <p class="footer-tagline">Die inklusive Lese-App, die jedes Kind lieben lernt. Neurodivers gestaltet, immer kostenlos.</p>
@@ -487,105 +225,55 @@
     <div>
       <h4>Entdecken</h4>
       <ul>
-        <li><a href="demo.html">Demo-Texte</a></li>
-        <li><a href="index.html#mission">F&uuml;r euch</a></li>
-        <li><a href="index.html#how-it-works">So funktioniert&apos;s</a></li>
-        <li><a href="index.html#faq">FAQ</a></li>
+        <li><a href="../demo.html">Demo-Texte</a></li>
+        <li><a href="../index.html#mission">F&uuml;r euch</a></li>
+        <li><a href="../index.html#how-it-works">So funktioniert&apos;s</a></li>
+        <li><a href="../index.html#faq">FAQ</a></li>
       </ul>
     </div>
 
     <div>
       <h4>Mehr</h4>
       <ul>
-        <li><a href="ueber-uns.html">&Uuml;ber uns</a></li>
-        <li><a href="preise.html">Preise</a></li>
-        <li><a href="mein-konto.html">Mein Konto</a></li>
-        <li><a href="../blog-warum-lesekumpel.html">Blog</a></li>
+        <li><a href="../ueber-uns.html">&Uuml;ber uns</a></li>
+        <li><a href="../preise.html">Preise</a></li>
+        <li><a href="../mein-konto.html">Mein Konto</a></li>
+        <li><a href="../../blog-warum-lesekumpel.html">Blog</a></li>
       </ul>
     </div>
 
     <div>
       <h4>Rechtliches</h4>
       <ul>
-        <li><a href="impressum.html">Impressum</a></li>
-        <li><a href="datenschutz.html">Datenschutz</a></li>
-        <li><a href="../knowledge-base/snacks/index.html">Wissen</a></li>
+        <li><a href="../impressum.html">Impressum</a></li>
+        <li><a href="../datenschutz.html">Datenschutz</a></li>
+        <li><a href="../../knowledge-base/snacks/index.html">Wissen</a></li>
       </ul>
     </div>
   </div>
 
   <div class="footer-bottom">
     <span>&copy; 2026 Lesekumpel &middot; Inklusive Lese-App f&uuml;r jedes Gehirn</span>
-    <span><a href="../index.html">&larr; Zur Live-Version</a> &middot; <span class="footer-sandbox-label">v2 Sandbox</span></span>
+    <span><a href="../../index.html">&larr; Zur Live-Version</a> &middot; <span class="footer-sandbox-label">v2 Sandbox</span></span>
   </div>
 </footer>
 
-  <script src="scripts.js?v=4"></script>
+  <!-- ============================================================
+       DYNAMISCHE INJEKTION — Werte werden von der n8n-Pipeline befüllt
+       (assemble-html: RAW_*-Platzhalter sind JSON.stringify'd Strings,
+       *_JSON-Platzhalter sind serialisierte Objekte/Arrays)
+       ============================================================ -->
   <script>
-    /* ============================================================
-       Story-Template — vereinfachte Lese-Logik
-       ============================================================ */
-
-    /* Toggle body classes */
-    function toggleClass(cls) {
-      document.body.classList.toggle(cls);
-      const btnMap = { 'syllables-on': 'btn-syl', 'dyslexia': 'btn-dys', 'high-contrast': 'btn-contrast' };
-      const btn = document.getElementById(btnMap[cls]);
-      if (btn) btn.classList.toggle('active');
-    }
-
-    /* Font size cycle: normal → large → x-large → normal */
-    let fontStep = 0;
-    function cycleFontSize() {
-      const body = document.body;
-      body.classList.remove('text-large', 'text-x-large');
-      fontStep = (fontStep + 1) % 3;
-      if (fontStep === 1) body.classList.add('text-large');
-      if (fontStep === 2) body.classList.add('text-x-large');
-      const btn = document.getElementById('btn-size');
-      if (btn) btn.textContent = ['A+', 'A++', 'A'][fontStep];
-    }
-
-    /* Activity tabs */
-    function switchPanel(name) {
-      document.querySelectorAll('.activity-tab').forEach(t => t.classList.remove('active'));
-      document.querySelector('.activity-tab[data-panel="' + name + '"]').classList.add('active');
-      ['quiz', 'weiterdenken', 'wortschatz'].forEach(p => {
-        const el = document.getElementById('panel-' + p);
-        if (el) el.hidden = (p !== name);
-      });
-    }
-
-    /* TTS — Web Speech API */
-    let ttsActive = false;
-    let ttsUtterance = null;
-    function speakStory() {
-      const btn = document.getElementById('btn-tts');
-      if (ttsActive) {
-        window.speechSynthesis.cancel();
-        ttsActive = false;
-        btn.classList.remove('active');
-        return;
-      }
-      const text = document.getElementById('story-text').innerText;
-      if (!text) return;
-      ttsUtterance = new SpeechSynthesisUtterance(text);
-      ttsUtterance.lang = 'de-DE';
-      ttsUtterance.rate = 0.95;
-      ttsUtterance.onend = () => {
-        ttsActive = false;
-        btn.classList.remove('active');
-      };
-      window.speechSynthesis.speak(ttsUtterance);
-      ttsActive = true;
-      btn.classList.add('active');
-    }
-
-    /* Vote */
-    function vote(dir) {
-      alert(dir === 'up' ? '🎉 Toll! Danke für dein Feedback.' : '😢 Schade — sag uns gern, was nicht gepasst hat.');
-    }
+    let rawStory = {{RAW_STORY_TEXT}};
+    let emojiStory = {{EMOJI_STORY_TEXT}};
+    let rawSummary = {{RAW_SUMMARY_TEXT}};
+    let emojiSummary = {{EMOJI_SUMMARY_TEXT}};
+    const quizData = {{QUIZ_DATA_JSON}};
+    const rawDictionaryEntry = {{DICTIONARY_JSON}};
+    const weitererzaehlenData = {{WEITERERZAEHLEN_JSON}};
+    const schatzsucheData = {{SCHATZSUCHE_JSON}};
   </script>
+  <script src="story-scripts.js?v=2"></script>
 
   <!-- Tafel-Modus: Story-Bilder als versteckter Pool (werden im Tafel-Modus in die Stage links gepoolt) -->
   <div hidden aria-hidden="true" class="tafel-image-pool">
@@ -594,6 +282,6 @@
 
   <!-- Tafel-Modus: imagePositions auf window expose, dann tafel.js initialisieren -->
   <script>window.imagePositions = {{IMAGE_POSITIONS_JSON}};</script>
-  <script src="tafel.js?v=1" defer></script>
+  <script src="../tafel.js?v=1" defer></script>
 </body>
 </html>
