@@ -3,10 +3,17 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>D&ouml;nerella — Finja Feder | Lesekumpel v2</title>
-  <meta name="description" content="Lesetext: Dönerella, die Katze mit großem Herzen. Niveau 250–400 Wörter, Finja Feder. ADHS-Variante mit Silbentrennung.">
+  <!-- ============================================================
+       Lesekumpel v2 — Story-Template (Text-Geschichten)
+       Output-Ziel: v2/demo-texte/<slug>.html
+       Alle Pfade sind relativ zum Output-Ziel (eine Ebene unter v2/),
+       NICHT zum Template-Speicherort.  werden von der
+       n8n-Pipeline befüllt.
+       ============================================================ -->
+  <title>Dönerella — Lesekumpel</title>
+  <meta name="description" content="Lesetext für 9–10-Jährige (ADHS-optimiert): Dönerella. Eine Katze, die Döner liebt, etwas tollpatschig ist und ein großes Herz hat.">
   <meta name="author" content="Finja Feder">
-  <meta name="date" content="2026-05-17">
+  <meta name="date" content="2026-05-17T10:45:06.392Z">
   <meta name="reading-level" content="250–400 Wörter, Finja Feder">
   <meta name="neurotype" content="ADHS">
   <meta name="demo" content="true">
@@ -54,20 +61,33 @@
   </div>
 </nav>
 
+  <div id="schatz-banner" class="schatz-banner" hidden>
+    <span class="schatz-banner-icon">&#128269;</span>
+    <span class="schatz-banner-text">
+      <span id="schatz-banner-thema">Finde den Schatz</span>
+      <span class="schatz-banner-count" id="schatz-banner-count">0/0</span>
+    </span>
+    <button type="button" class="schatz-banner-close" onclick="endSchatzsuche()" aria-label="Schatzsuche beenden">&#10005;</button>
+  </div>
+
   <main id="main">
     <article class="story-wrap">
 
-      <div class="story-hero hero-yellow">
+      <!-- Hero -->
+      <div class="story-hero">
+        <img class="story-hero-img" src="https://rala84.github.io/lesekumpel/bilder/doenerella-ipdb-1.png" alt="" aria-hidden="true" onerror="this.style.display='none'">
+        <div class="story-hero-overlay" aria-hidden="true"></div>
         <div class="story-hero-text">
-          <h1>D&ouml;nerella</h1>
+          <h1 class="story-title-h1">Dönerella</h1>
           <div class="story-hero-meta">
-            <span class="badge">250&ndash;400 W&ouml;rter</span>
-            <span class="badge">Niveau: Finja Feder</span>
-            <span class="badge">Neurotyp: ADHS</span>
+            <span class="badge">250–400 Wörter, Finja Feder</span>
+            <span class="badge">ADHS</span>
+            <span class="badge">Eine Katze, die Döner liebt, etwas tollpatschig ist und ein</span>
           </div>
         </div>
       </div>
 
+      <!-- Author -->
       <div class="author-line">
         <img class="author-line-avatar" src="../../avatars/finja-feder.webp" alt="Finja Feder">
         <div class="author-line-info">
@@ -77,32 +97,100 @@
         <span class="author-line-tag">&#10003; F&uuml;r ADHS optimiert</span>
       </div>
 
-      <div class="reading-toolbar" role="toolbar" aria-label="Lese-Werkzeuge">
-        <button type="button" class="tool-btn" onclick="cycleFontSize(this)">A&plus; Schrift</button>
-        <button type="button" class="tool-btn" onclick="toggleBody('dyslexia', this)">&#127859; Lesefreundlich</button>
-        <button type="button" class="tool-btn" onclick="speakStory(this)">&#128266; Vorlesen</button>
-      </div>
-
-      <div class="story-card">
-        <div class="story-text" id="story-text"><p>Dieser Duft! Gegrilltes Fleisch, warmes Brot und eine geheime Sauce. D&ouml;nerella zuckte mit den Schnurrhaaren. Ihr Magen knurrte lauter als ein Moped.</p>
-<p>Sie kauerte auf der roten Ziegelmauer, direkt &uuml;ber dem D&ouml;nerladen &bdquo;Ali&apos;s Oase&ldquo;. Ein Sprung. Ein Klappern. Mist, eine leere Blechdose! Die Dose kullerte scheppernd die Gasse hinunter.</p>
-<p>Aber das Ger&auml;usch weckte nicht Ali. Es weckte etwas anderes. Ein winziges Piepsen kam aus einem Busch, leise und voller Angst.</p>
-<p>D&ouml;nerella erstarrte. <strong>D&ouml;ner. Der Vogel. D&ouml;ner. Vogel.</strong> Ihr Magen schrie nach Fleisch, aber ihr Herz zwickte. Dieses Piepsen klang so furchtbar allein.</p>
-<p>Vorsichtig, so vorsichtig sie mit ihren gro&szlig;en Pfoten sein konnte, schlich sie zum Busch. Ein kleiner Spatz, aus dem Nest gefallen. Er zitterte am ganzen K&ouml;rper.</p>
-<p>Mit ihrer Nase stupste sie ihn sanft unter die sch&uuml;tzenden Bl&auml;tter des Busches. <em>Da bleibst du sicher, bis deine Mama dich findet</em>, dachte sie.</p>
-<p>Eine T&uuml;r quietschte. Ali stand da, mit seiner wei&szlig;en Sch&uuml;rze und einem L&auml;cheln. Er hatte alles gesehen und legte ein saftiges St&uuml;ck H&auml;hnchenfleisch vor ihre Pfoten. D&ouml;nerella blinzelte. Manchmal, so schien es, war ein gutes Herz das beste Rezept von allen.</p></div>
-      </div>
-
-      <div class="survey">
-        <strong>Hat dir die Geschichte gefallen?</strong>
-        <div class="vote-wrap">
-          <button type="button" class="vote-btn" onclick="alert('🎉 Danke!')" aria-label="Daumen hoch">&#128077;</button>
-          <button type="button" class="vote-btn" onclick="alert('😢 Schade')" aria-label="Daumen runter">&#128078;</button>
+      <!-- Lese-Toolbar (3 Gruppen: Text / Ansicht / Extras) -->
+      <div class="reading-toolbar grouped" id="toolbar" role="toolbar" aria-label="Lese-Werkzeuge">
+        <div class="toolbar-group group-text">
+          <div class="toolbar-group-label">Text</div>
+          <div class="toolbar-group-buttons">
+            <button type="button" class="tool-btn" onclick="toggleSummaryMode()" id="btn-summary" aria-label="Einfache Sprache">&#128214; Einfach</button>
+            <button type="button" class="tool-btn" onclick="toggleSyllables()" id="btn-syllables" aria-label="Silbentrennung">&#9986;&#65039; Silben</button>
+            <button type="button" class="tool-btn" onclick="toggleEmojis()" id="btn-emojis" aria-label="Gef&uuml;hle mit Emojis">&#128522; Emojis</button>
+          </div>
+        </div>
+        <div class="toolbar-group group-view">
+          <div class="toolbar-group-label">Ansicht</div>
+          <div class="toolbar-group-buttons">
+            <button type="button" class="tool-btn" onclick="toggleViewMode()" id="view-toggle-btn" aria-label="Text in H&auml;ppchen">&#129513; H&auml;ppchen</button>
+            <button type="button" class="tool-btn" onclick="toggleLeselinien()" id="btn-leselinien" aria-label="Leselinien">&#128207; Linien</button>
+            <button type="button" class="tool-btn" onclick="toggleFahrplan()" id="btn-fahrplan" aria-label="Fahrplan">&#128506;&#65039; Fahrplan</button>
+            <div class="font-size-control">
+              <button type="button" class="tool-btn" onclick="changeFontSize(-2)" aria-label="Schrift kleiner">A&minus;</button>
+              <button type="button" class="tool-btn" onclick="changeFontSize(2)" aria-label="Schrift gr&ouml;&szlig;er">A&plus;</button>
+            </div>
+          </div>
+        </div>
+        <div class="toolbar-group group-extra">
+          <div class="toolbar-group-label">Extras</div>
+          <div class="toolbar-group-buttons">
+            <button type="button" class="tool-btn" onclick="toggleTTS()" id="btn-tts" aria-label="Vorlesen">&#128266; Vorlesen</button>
+            <button type="button" class="tool-btn" onclick="toggleWordReader()" id="btn-word-reader" aria-label="W&ouml;rter h&ouml;ren">&#128066; W&ouml;rter h&ouml;ren</button>
+            <button type="button" class="tool-btn" onclick="toggleDyslexia(this)" aria-label="Lesefreundliche Schrift">&#128150; Lesefreundlich</button>
+            <button type="button" class="tool-btn" onclick="toggleContrast(this)" aria-label="Hoher Kontrast">&#127769; Kontrast</button>
+          </div>
         </div>
       </div>
 
+      <!-- Story Text (wird von story-scripts.js aus rawStory gerendert) -->
+      <div class="story-card">
+        <div id="full-text-view" class="story-text"></div>
+        <div id="chunk-view" class="story-text hidden">
+          <div class="adhs-progress-bar"><div class="adhs-progress-bar-fill" id="adhs-progress-fill" style="width:0%"></div></div>
+          <div id="chunk-display"></div>
+          <div id="swipe-hint" class="swipe-hint" style="display:none;">&larr; wischen zum Bl&auml;ttern &rarr;</div>
+          <div class="chunk-controls">
+            <button type="button" class="tool-btn" onclick="prevChunk()">&larr; Zur&uuml;ck</button>
+            <div id="chunk-progress" class="progress-ring" style="--p: 0%;">1/1</div>
+            <button type="button" class="tool-btn" onclick="nextChunk()" id="btn-next-chunk">Weiter &rarr;</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Activity Hub -->
+      <div class="activity-hub" id="activity-hub">
+        <h2 class="activity-hub-title">&#127918; Spielzeit!</h2>
+        <div class="activity-tabs" role="tablist" aria-label="Spielformate">
+          <button type="button" class="activity-tab active" role="tab" aria-selected="true" aria-controls="panel-quiz" data-tab="quiz" onclick="switchActivityTab('quiz')">&#129504; Quiz</button>
+          <button type="button" class="activity-tab" role="tab" aria-selected="false" aria-controls="panel-weiterdenken" data-tab="weiterdenken" onclick="switchActivityTab('weiterdenken')">&#127775; Weiterdenken</button>
+          <button type="button" class="activity-tab" role="tab" aria-selected="false" aria-controls="panel-schatz" data-tab="schatz" onclick="switchActivityTab('schatz')">&#128269; Schatz</button>
+          <button type="button" class="activity-tab" role="tab" aria-selected="false" aria-controls="panel-wortschatz" data-tab="wortschatz" onclick="switchActivityTab('wortschatz')">&#128218; Wortschatz</button>
+        </div>
+        <div id="panel-quiz" class="activity-panel active" role="tabpanel">
+          <div id="quiz-wrapper"></div>
+        </div>
+        <div id="panel-weiterdenken" class="activity-panel" role="tabpanel">
+          <p class="weitererzaehlen-intro">Hier gibt es kein richtig oder falsch &mdash; w&auml;hle, was dir am besten gef&auml;llt!</p>
+          <div id="weitererzaehlen-wrapper" class="weitererzaehlen-cards"></div>
+          <div class="klassen-hinweis">
+            <span class="klassen-hinweis-icon">&#128105;&#8205;&#127979;</span>
+            <div>
+              <strong>Tipp f&uuml;r die Klasse:</strong> Stimmt per Handzeichen ab &mdash; welche Fortsetzung findet ihr am sch&ouml;nsten? Danach k&ouml;nnt ihr die gew&auml;hlte Fortsetzung gemeinsam selbst weiterschreiben.
+            </div>
+          </div>
+        </div>
+        <div id="panel-schatz" class="activity-panel" role="tabpanel"></div>
+        <div id="panel-wortschatz" class="activity-panel" role="tabpanel">
+          <div id="wortschatz-wrapper" class="wortschatz-cards"></div>
+        </div>
+      </div>
+
+      <!-- Survey -->
+      <div class="survey">
+        <div class="survey-title">Hat dir die Geschichte gefallen?</div>
+        <div class="vote-wrap">
+          <button type="button" class="vote-btn" onclick="vote('up')" aria-label="Daumen hoch">&#128077;</button>
+          <button type="button" class="vote-btn" onclick="vote('down')" aria-label="Daumen runter">&#128078;</button>
+        </div>
+      </div>
+
+      <!-- Related -->
+      <div class="related">
+        <h2 class="related-title">Das k&ouml;nnte dir auch gefallen</h2>
+        <div class="related-grid"></div>
+      </div>
+
+      <!-- Back -->
       <p class="text-center">
-        <a href="../demo.html" class="btn btn-secondary">&larr; Zu allen Demo-Texten</a>
+        <a href="../demo.html" class="btn btn-secondary">&larr; Zur Bibliothek</a>
       </p>
 
     </article>
@@ -170,17 +258,34 @@
   </div>
 </footer>
 
-  <script src="story-scripts.js?v=4"></script>
+  <!-- ============================================================
+       DYNAMISCHE INJEKTION — Werte werden von der n8n-Pipeline befüllt
+       (assemble-html: RAW_*-Platzhalter sind JSON.stringify'd Strings,
+       *_JSON-Platzhalter sind serialisierte Objekte/Arrays)
+       ============================================================ -->
+  <script>
+    let rawStory = "Die-ser Duft! Geg-rill-tes Fleisch, war-mes Brot und ei-ne ge-hei-me Sau-ce. Dö-ne-rel-la zuck-te mit den Schnurr-haa-ren. Ihr Ma-gen knurr-te lau-ter als ein Mo-ped.\n\nSie kauer-te auf der ro-ten Zie-gel-mauer, di-rekt ü-ber dem Dö-ner-la-den \"Ali's Oa-se\". Ein Sprung. Ein Klap-pern. Mist, ei-ne lee-re Blech-do-se! Die Do-se kul-ler-te schep-pernd die Gas-se hi-nun-ter.\n\nA-ber das Ge-räusch weck-te nicht Ali. Es weck-te et-was an-de-res. Ein win-zi-ges Piep-sen kam aus ei-nem Busch, lei-se und vol-ler Angst.\n\nDö-ne-rel-la er-starr-te. Dö-ner. Der Vo-gel. Dö-ner. Vo-gel. Ihr Ma-gen schrie nach Fleisch, a-ber ihr Herz zwick-te. Die-ses Piep-sen klang so furcht-bar al-lein.\n\nVor-sich-tig, so vor-sich-tig sie mit ih-ren gro-ßen Pfo-ten sein konn-te, schlich sie zum Busch. Ein klei-ner Spatz, aus dem Nest ge-fal-len. Er zit-ter-te am gan-zen Kör-per.\n\nMit ih-rer Na-se stup-ste sie ihn sanft un-ter die schüt-zen-den Blät-ter des Bu-sches. Da bleibst du si-cher, bis dei-ne Ma-ma dich fin-det, dach-te sie.\n\nEi-ne Tür quietsch-te. Ali stand da, mit sei-ner wei-ßen Schür-ze und ei-nem Lä-cheln. Er hat-te al-les ge-se-hen und leg-te ein saf-ti-ges Stück Hähn-chenf-leisch vor ih-re Pfo-ten. Dö-ne-rel-la blin-zel-te. Manch-mal, so schien es, war ein gu-tes Herz das be-ste Re-zept von al-len.";
+    let emojiStory = "Die-ser Duft! Geg-rill-tes Fleisch, war-mes Brot und ei-ne ge-hei-me Sau-ce. Dö-ne-rel-la zuck-te mit den Schnurr-haa-ren. Ihr Ma-gen knurr-te lau-ter als ein Mo-ped.\n\nSie kauer-te auf der ro-ten Zie-gel-mauer, di-rekt ü-ber dem Dö-ner-la-den \"Ali's Oa-se\". Ein Sprung. Ein Klap-pern. Mist, ei-ne lee-re Blech-do-se! Die Do-se kul-ler-te schep-pernd die Gas-se hi-nun-ter.\n\nA-ber das Ge-räusch weck-te nicht Ali. Es weck-te et-was an-de-res. Ein win-zi-ges Piep-sen kam aus ei-nem Busch, lei-se und vol-ler Angst 😨.\n\nDö-ne-rel-la er-starr-te. Dö-ner. Der Vo-gel. Dö-ner. Vo-gel. Ihr Ma-gen schrie nach Fleisch, a-ber ihr Herz zwick-te. Die-ses Piep-sen klang so furcht-bar al-lein.\n\nVor-sich-tig, so vor-sich-tig sie mit ih-ren gro-ßen Pfo-ten sein konn-te, schlich sie zum Busch. Ein klei-ner Spatz, aus dem Nest ge-fal-len. Er zit-ter-te am gan-zen Kör-per.\n\nMit ih-rer Na-se stup-ste sie ihn sanft un-ter die schüt-zen-den Blät-ter des Bu-sches. Da bleibst du si-cher, bis dei-ne Ma-ma dich fin-det, dach-te sie.\n\nEi-ne Tür quietsch-te. Ali stand da, mit sei-ner wei-ßen Schür-ze und ei-nem Lä-cheln 😊. Er hat-te al-les ge-se-hen und leg-te ein saf-ti-ges Stück Hähn-chenf-leisch vor ih-re Pfo-ten. Dö-ne-rel-la blin-zel-te. Manch-mal, so schien es, war ein gu-tes Herz das be-ste Re-zept von al-len.";
+    let rawSummary = "Die tollpatschige Katze Dönerella liebt Döner über alles. Als sie ein verängstigtes Vogelbaby findet, muss sie sich zwischen ihrem knurrenden Magen und ihrem großen Herzen entscheiden. Ihre gute Tat wird auf überraschende Weise belohnt.";
+    let emojiSummary = "Die toll-pat-schi-ge Kat-ze Dö-ne-rel-la liebt 🥰 Dö-ner ü-ber al-les. Als sie ein ve-räng-stig-tes 😨 Vo-gel-ba-by fin-det, muss sie sich zwi-schen ih-rem knur-ren-den Ma-gen und ih-rem gro-ßen Her-zen ent-schei-den. Ih-re gu-te Tat wird auf ü-ber-ra-schen-de Wei-se be-lohnt.";
+    const quizData = [{"q":"Was wollte Dönerella am Anfang des Textes am liebsten haben?","a":["Gegrilltes Fleisch und warmes Brot.","Einen kleinen Spatz.","Eine Blechdose."],"correct":0},{"q":"Welches Geräusch hat Dönerella von ihrem großen Hunger abgelenkt?","a":["Alis Tür, die quietschte.","Das Piepsen eines kleinen Vogels.","Eine Blechdose, die kullerte."],"correct":1},{"q":"Was hat Dönerella mit dem kleinen Spatzen gemacht?","a":["Sie hat ihn unter schützende Blätter gestupst.","Sie hat versucht, ihn zu fangen.","Sie hat ihn zu Ali gebracht."],"correct":0}];
+    const rawDictionaryEntry = [{"wort":"kauerte","silben":"kau-er-te","bedeutung":"sich klein und geduckt hinsetzen"},{"wort":"kullerte","silben":"kul-ler-te","bedeutung":"rollte auf dem Boden herum"},{"wort":"scheppernd","silben":"schep-pernd","bedeutung":"mit einem lauten, klirrenden Geräusch"},{"wort":"erstarrte","silben":"er-starr-te","bedeutung":"sich plötzlich nicht mehr bewegen"},{"wort":"zwickte","silben":"zwick-te","bedeutung":"ein kleiner, kurzer Schmerz (hier im Herzen)"},{"wort":"Rezept","silben":"Re-zept","bedeutung":"hier: eine gute Idee oder Lösung für etwas"}];
+    const weitererzaehlenData = {"frage":"Wie geht es weiter?","optionen":[{"emoji":"🐥","titel":"Mehr kleine Piepser","text":"Dö-ne-rel-la schmatz-te. So ein gu-tes Herz war tat-säch-lich das bes-te Re-zept. Doch als sie das letz-te Stück ver-schlang, hör-te sie nicht ein Piep-sen, son-dern ein ganz-es Kon-zert! Aus dem Busch kro-chen drei wei-te-re, noch viel klei-ne-re Spat-zen-kin-der, al-le noch hilf-lo-ser als der ers-te. Und dann, ganz lei-se, raschel-te es auch noch im Nach-bar-ge-büsch. Was war das wohl?"},{"emoji":"🤝","titel":"Ali's neue Freundin","text":"Von nun an war „Ali's Oa-se“ Dö-ne-rel-las Lieb-lings-ort. Je-den Tag schlich sie vor-bei, nicht mehr heim-lich und hung-rig, son-dern voll Er-war-tung. Man-ches Mal fand sie ei-nen klei-nen Snack vor dem La-den, manch-mal be-grü-ßte Ali sie mit ei-nem Lä-cheln und ei-nem freund-li-chen Strei-cheln. Sie ver-stan-den sich auch oh-ne Wor-te. Eine wah-re Freund-schaft war ge-bo-ren. A-ber wie lan-ge würde die-se Ru-he hal-ten?"},{"emoji":"✨","titel":"Geheimes Licht im Dunkeln","text":"Das Hähn-chen-fleisch war köst-lich. Dö-ne-rel-la fühl-te sich wohl, und mit Ali hat-te sie wohl ei-nen neu-en Freund ge-fun-den. Doch als sie sich satt und zu-frie-den weg-schlich, be-merk-te sie et-was Glän-zen-des, das un-ter dem Fleisch ge-le-gen hat-te: ein klei-ner, ru-ner Stein, der lei-se leucht-te. Er fühl-te sich warm an und ver-sprach ein Ge-heim-nis. Wo kam er her? Und was woll-te er ihr sa-gen?"}]};
+    const schatzsucheData = {"thema":"Essen","emoji":"🍔","ziel":3,"einleitung":"In dieser Geschichte gibt es viele leckere Wörter, die man essen kann! Finde drei davon — einfach antippen!","schatzwoerter":["duft","gegrilltes","fleisch","warmes","brot","sauce","döner","magen","hähnchenfleisch","saftiges","rezept"]};
+  </script>
+  <script src="story-scripts.js?v=3"></script>
 
-  <!-- Tafel-Modus: Test-Bilder + imagePositions (Smoke-Test) -->
+  <!-- Tafel-Modus: Story-Bilder als versteckter Pool (werden im Tafel-Modus in die Stage links gepoolt) -->
   <div hidden aria-hidden="true" class="tafel-image-pool">
-    <img src="https://rala84.github.io/lesekumpel/bilder/doenerella-im-weltall-11ym-1.png" class="hero-image" alt="">
-    <img src="https://rala84.github.io/lesekumpel/bilder/doenerella-im-weltall-11ym-2.png" class="hero-image" alt="">
-    <img src="https://rala84.github.io/lesekumpel/bilder/doenerella-im-weltall-11ym-3.png" class="hero-image" alt="">
-    <img src="https://rala84.github.io/lesekumpel/bilder/doenerella-im-weltall-11ym-4.png" class="hero-image" alt="">
-    <img src="https://rala84.github.io/lesekumpel/bilder/doenerella-im-weltall-11ym-5.png" class="hero-image" alt="">
+    <img src="https://rala84.github.io/lesekumpel/bilder/doenerella-ipdb-1.png" alt="Dönerella" class="hero-image" onerror="this.style.display='none'">
+    <img src="https://rala84.github.io/lesekumpel/bilder/doenerella-ipdb-2.png" alt="Dönerella" class="hero-image" onerror="this.style.display='none'">
+    <img src="https://rala84.github.io/lesekumpel/bilder/doenerella-ipdb-3.png" alt="Dönerella" class="hero-image" onerror="this.style.display='none'">
+    <img src="https://rala84.github.io/lesekumpel/bilder/doenerella-ipdb-4.png" alt="Dönerella" class="hero-image" onerror="this.style.display='none'">
+    <img src="https://rala84.github.io/lesekumpel/bilder/doenerella-ipdb-5.png" alt="Dönerella" class="hero-image" onerror="this.style.display='none'">
   </div>
-  <script>window.imagePositions = [{"scene":1,"paragraphIndex":1},{"scene":2,"paragraphIndex":2},{"scene":3,"paragraphIndex":3},{"scene":4,"paragraphIndex":4},{"scene":5,"paragraphIndex":5}];</script>
+
+  <!-- Tafel-Modus: imagePositions auf window expose, dann tafel.js initialisieren -->
+  <script>window.imagePositions = [];</script>
   <script src="../tafel.js?v=1" defer></script>
 </body>
 </html>

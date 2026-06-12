@@ -7,15 +7,15 @@
        Lesekumpel v2 — Story-Template (Text-Geschichten)
        Output-Ziel: v2/demo-texte/<slug>.html
        Alle Pfade sind relativ zum Output-Ziel (eine Ebene unter v2/),
-       NICHT zum Template-Speicherort. {{PLACEHOLDER}} werden von der
+       NICHT zum Template-Speicherort.  werden von der
        n8n-Pipeline befüllt.
        ============================================================ -->
-  <title>{{STORY_TITLE}} — Lesekumpel</title>
-  <meta name="description" content="{{META_DESCRIPTION}}">
-  <meta name="author" content="{{PERSONA_NAME}}">
-  <meta name="date" content="{{STORY_DATE}}">
-  <meta name="reading-level" content="{{READING_LEVEL_LABEL}}">
-  <meta name="neurotype" content="{{NEUROTYP}}">
+  <title>Holzi und der verlorene Highscore — Lesekumpel</title>
+  <meta name="description" content="Lesetext für 8–10-Jährige: Holzi und der verlorene Highscore. Leute, ich war so kurz davor, zur Legende zu werden. Ich stand vor diesem alten ArcadeAutomaten…">
+  <meta name="author" content="Holzi Pixelkopf">
+  <meta name="date" content="2026-04-25T19:35:34.118Z">
+  <meta name="reading-level" content="Holzi Pixelkopf">
+  <meta name="neurotype" content="Standard">
   <meta name="demo" content="true">
 
   <link rel="icon" type="image/webp" href="../../Konzept_Rebranding/logo-lesekumpel-512.webp">
@@ -75,26 +75,26 @@
 
       <!-- Hero -->
       <div class="story-hero">
-        <img class="story-hero-img" src="{{HERO_IMAGE_URL}}" alt="" aria-hidden="true" onerror="this.style.display='none'">
+        <img class="story-hero-img" src="https://rala84.github.io/lesekumpel/bilder/holzi-und-der-verlorene-highscore-f4gl-1.png" alt="" aria-hidden="true" onerror="this.style.display='none'">
         <div class="story-hero-overlay" aria-hidden="true"></div>
         <div class="story-hero-text">
-          <h1 class="story-title-h1">{{STORY_TITLE}}</h1>
+          <h1 class="story-title-h1">Holzi und der verlorene Highscore</h1>
           <div class="story-hero-meta">
-            <span class="badge">{{READING_LEVEL_LABEL}}</span>
-            <span class="badge">{{NEUROTYP}}</span>
-            <span class="badge">{{GENRE}}</span>
+            <span class="badge">Holzi Pixelkopf</span>
+            <span class="badge">Standard</span>
+            
           </div>
         </div>
       </div>
 
       <!-- Author -->
       <div class="author-line">
-        <img class="author-line-avatar" src="{{PERSONA_IMG_URL}}" alt="{{PERSONA_NAME}}">
+        <img class="author-line-avatar" src="../../avatars/holzi-pixelkopf.webp" alt="Holzi Pixelkopf">
         <div class="author-line-info">
           <div class="author-line-credit">geschrieben von</div>
-          <div class="author-line-name">{{PERSONA_NAME}}</div>
+          <div class="author-line-name">Holzi Pixelkopf</div>
         </div>
-        <span class="author-line-tag">&#10003; F&uuml;r {{NEUROTYP}} optimiert</span>
+        <span class="author-line-tag">&#10003; F&uuml;r Standard optimiert</span>
       </div>
 
       <!-- Lese-Toolbar (3 Gruppen: Text / Ansicht / Extras) -->
@@ -185,7 +185,7 @@
       <!-- Related -->
       <div class="related">
         <h2 class="related-title">Das k&ouml;nnte dir auch gefallen</h2>
-        <div class="related-grid">{{RELATED_STORIES_HTML}}</div>
+        <div class="related-grid"></div>
       </div>
 
       <!-- Back -->
@@ -264,24 +264,26 @@
        *_JSON-Platzhalter sind serialisierte Objekte/Arrays)
        ============================================================ -->
   <script>
-    let rawStory = {{RAW_STORY_TEXT}};
-    let emojiStory = {{EMOJI_STORY_TEXT}};
-    let rawSummary = {{RAW_SUMMARY_TEXT}};
-    let emojiSummary = {{EMOJI_SUMMARY_TEXT}};
-    const quizData = {{QUIZ_DATA_JSON}};
-    const rawDictionaryEntry = {{DICTIONARY_JSON}};
-    const weitererzaehlenData = {{WEITERERZAEHLEN_JSON}};
-    const schatzsucheData = {{SCHATZSUCHE_JSON}};
+    let rawStory = "Leu-te, ich war so kurz da-vor, zur Le-gen-de zu wer-den. Ich stand vor die-sem al-ten Ar-ca-de-Au-to-ma-ten, Ga-lac-tic-Glitch-Figh-ter 3, und war komp-lett im Tun-nel. Ich hab da li-te-ral-ly 10 Eu-ro in To-kens rein-ge-steckt, das ist fast ein gan-zer Dö-ner! Der fi-na-le Boss geht down, first try, und die Punkt-zahl klet-tert hoch. Neuer Highs-co-re. Ich dach-te mir so: Ni-ce!\n\nUnd dann. Free-ze. Der Bild-schirm wird schwarz. Mein Herz so: Er-ror 404. Das gan-ze Ga-me, ein-fach weg. Der Grind, die To-kens, mein Ruhm, al-les lost. Ich al-so zum Be-sit-zer, der hin-ter sei-nem Tre-sen saß wie ein ge-lang-weil-ter NPC.\n\nIch so: \"Yo, der Au-to-mat ist gec-rasht. Ich hat-te den Highs-co-re!\"\nEr so, oh-ne auf-zu-schauen: \"Pas-siert.\"\nIch so: \"A-ber... mein Na-me soll-te da ste-hen. Für im-mer!\"\n\nEr guckt mich an, seufzt, steht auf und geht zum Au-to-ma-ten. Er haut zwei-mal mit der fla-chen Hand drauf, star-tet ihn neu und sagt: \"Na gut, ich hab's ge-se-hen. Ich trag dich ein.\" Und da stand es: Platz 1, HOL-ZI. Mit ei-nem klei-nen Stern-chen: ma-nuell hin-zu-ge-fügt. Bis-schen crin-ge, a-ber ein Win ist ein Win.";
+    let emojiStory = "Leu-te, ich war so kurz da-vor, zur Le-gen-de zu wer-den. Ich stand vor die-sem al-ten Ar-ca-de-Au-to-ma-ten, Ga-lac-tic-Glitch-Figh-ter 3, und war komp-lett im Tun-nel. Ich hab da li-te-ral-ly 10 Eu-ro in To-kens rein-ge-steckt, das ist fast ein gan-zer Dö-ner! Der fi-na-le Boss geht down, first try, und die Punkt-zahl klet-tert hoch. Neuer Highs-co-re. Ich dach-te mir so: Ni-ce 😏!\n\nUnd dann. Free-ze. Der Bild-schirm wird schwarz. Mein Herz so: Er-ror 404. Das gan-ze Ga-me, ein-fach weg. Der Grind, die To-kens, mein Ruhm, al-les lost. Ich al-so zum Be-sit-zer, der hin-ter sei-nem Tre-sen saß wie ein ge-lang-weil-ter 😤 NPC.\n\nIch so: \"Yo, der Au-to-mat ist gec-rasht. Ich hat-te den Highs-co-re!\"\nEr so, oh-ne auf-zu-schauen: \"Pas-siert.\"\nIch so: \"A-ber... mein Na-me soll-te da ste-hen. Für im-mer!\"\n\nEr guckt mich an, seufzt, steht auf und geht zum Au-to-ma-ten. Er haut zwei-mal mit der fla-chen Hand drauf, star-tet ihn neu und sagt: \"Na gut, ich hab's ge-se-hen. Ich trag dich ein.\" Und da stand es: Platz 1, HOL-ZI. Mit ei-nem klei-nen Stern-chen: ma-nuell hin-zu-ge-fügt. Bis-schen crin-ge 😰, a-ber ein Win ist ein Win.";
+    let rawSummary = "Ich knacke den absoluten Highscore in einem Arcade-Spiel, doch der Automat stürzt im entscheidenden Moment ab und löscht meinen Rekord. Statt aufzugeben, starte ich die Side Quest \"Rede mit dem NPC-Besitzer\", der meinen Highscore am Ende manuell einträgt. So wurde ich zur Legende mit Sternchen.";
+    let emojiSummary = "";
+    const quizData = [{"q":"Welches Spiel hat die Hauptfigur gespielt?","a":["Döner-King","Galactic-Glitch-Fighter 3","Highscore-Hunter"],"correct":1},{"q":"Was ist passiert, nachdem die Hauptfigur den Highscore erreicht hatte?","a":["Der Besitzer hat ihm einen Preis gegeben.","Der Bildschirm wurde schwarz und das Spiel stürzte ab.","Sein Name stand sofort auf Platz 1."],"correct":1},{"q":"Wie hat der Besitzer den kaputten Automaten repariert?","a":["Er hat zweimal mit der Hand draufgeschlagen.","Er hat neue Kabel angeschlossen.","Er hat den Automaten einfach ausgetauscht."],"correct":0}];
+    const rawDictionaryEntry = [{"wort":"Legende","silben":"Le-gen-de","bedeutung":"Jemand oder etwas Berühmtes, von dem man sich lange erzählt."},{"wort":"Arcade-Automat","silben":"Ar-ca-de-Au-to-mat","bedeutung":"Ein Spielgerät, das man mit Münzen füttert, oft in einer Spielhalle."},{"wort":"Tokens","silben":"To-kens","bedeutung":"Spezielle Münzen, die man für Spielautomaten benutzt."},{"wort":"NPC","silben":"NPC","bedeutung":"Eine Figur in einem Spiel, die nicht von einem echten Spieler gesteuert wird und meistens feste Aufgaben hat."},{"wort":"manuell","silben":"ma-nu-ell","bedeutung":"Mit der Hand gemacht oder eingetragen, nicht automatisch von einer Maschine."},{"wort":"cringe","silben":"crin-ge","bedeutung":"Etwas, das peinlich oder unangenehm ist."}];
+    const weitererzaehlenData = {"frage":"Wie geht es weiter?","optionen":[{"emoji":"🌟","titel":"Das Geheimnis des Sternchens","text":"Aber der Stern neben meinem Namen... der leuchtete plötzlich auf! Richtig hell! Der Automat brummte. Ein kleines Loch öffnete sich unter dem Bildschirm und ein Zettel kam heraus. Da stand: \"Herzlichen Glückwunsch, Spieler HOLZI! Du hast mehr als nur einen Highscore geknackt. Tritt ein in die Galaxie der wahren Champions!\" Meine Augen wurden riesig. Was war das denn jetzt?"},{"emoji":"😠","titel":"Der nächste Herausforderer","text":"Ich grinste. HOLZI, Platz 1. Egal wie, ich war der Beste! Stolz drehte ich mich um, um den anderen Arcade-Besuchern mein Meisterwerk zu zeigen. Doch da stand niemand. Nur ein kleines Mädchen mit großen Augen, die den Automaten anstarrte. Sie murmelte leise: \"Holzi, huh? Ich knacke deinen Score. Warte nur ab!\" Dann zückte sie eine Handvoll Token."},{"emoji":"👮‍♂️","titel":"Der Highscore-Betrug","text":"Kaum hatte ich mein Grinsen aufgesetzt, kam eine riesige Frau mit einem Notizbuch auf uns zu. Sie hatte ein Abzeichen, das aussah wie ein Highscore-Schild mit Stopp-Schild. \"Highscore-Polizei!\" rief sie. \"Manuelle Eintragung? Das ist Betrug im Gaming-Universum! HOLZI, du musst mitkommen zur Vernehmung!\" Mein Herz sank in die Sneakers."}]};
+    const schatzsucheData = {"thema":"Dinge rund ums Spielen","emoji":"🎮","ziel":3,"einleitung":"In dieser Geschichte sind viele Wörter versteckt, die etwas mit Spielen zu tun haben. Finde drei davon – einfach antippen!","schatzwoerter":["automaten","galacticglitchfighter","tokens","boss","punktzahl","highscore","freeze","bildschirm","error","game","grind","npc","platz","win"]};
   </script>
   <script src="story-scripts.js?v=3"></script>
 
   <!-- Tafel-Modus: Story-Bilder als versteckter Pool (werden im Tafel-Modus in die Stage links gepoolt) -->
   <div hidden aria-hidden="true" class="tafel-image-pool">
-    {{STORY_IMAGES_HTML}}
+    <img src="https://rala84.github.io/lesekumpel/bilder/holzi-und-der-verlorene-highscore-f4gl-1.png" alt="Holzi und der verlorene Highscore" class="hero-image" onerror="this.style.display='none'">
+    <img src="https://rala84.github.io/lesekumpel/bilder/holzi-und-der-verlorene-highscore-f4gl-2.png" alt="Holzi und der verlorene Highscore" class="hero-image" onerror="this.style.display='none'">
+    <img src="https://rala84.github.io/lesekumpel/bilder/holzi-und-der-verlorene-highscore-f4gl-3.png" alt="Holzi und der verlorene Highscore" class="hero-image" onerror="this.style.display='none'">
   </div>
 
   <!-- Tafel-Modus: imagePositions auf window expose, dann tafel.js initialisieren -->
-  <script>window.imagePositions = {{IMAGE_POSITIONS_JSON}};</script>
+  <script>window.imagePositions = [];</script>
   <script src="../tafel.js?v=1" defer></script>
 </body>
 </html>

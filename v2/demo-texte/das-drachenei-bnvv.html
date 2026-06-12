@@ -7,15 +7,15 @@
        Lesekumpel v2 — Story-Template (Text-Geschichten)
        Output-Ziel: v2/demo-texte/<slug>.html
        Alle Pfade sind relativ zum Output-Ziel (eine Ebene unter v2/),
-       NICHT zum Template-Speicherort. {{PLACEHOLDER}} werden von der
+       NICHT zum Template-Speicherort.  werden von der
        n8n-Pipeline befüllt.
        ============================================================ -->
-  <title>{{STORY_TITLE}} — Lesekumpel</title>
-  <meta name="description" content="{{META_DESCRIPTION}}">
-  <meta name="author" content="{{PERSONA_NAME}}">
-  <meta name="date" content="{{STORY_DATE}}">
-  <meta name="reading-level" content="{{READING_LEVEL_LABEL}}">
-  <meta name="neurotype" content="{{NEUROTYP}}">
+  <title>Das Drachenei — Lesekumpel</title>
+  <meta name="description" content="Lesetext für 5–6-Jährige (ADHS-optimiert): Das Drachenei. Tarzan findet ein Ei. Es ist riesig! Das Ei wackelt. Es macht knack! Ein Kopf guckt raus. Ein klein…">
+  <meta name="author" content="Pip Punkt">
+  <meta name="date" content="2026-05-06T07:08:58.196Z">
+  <meta name="reading-level" content="Pip Punkt">
+  <meta name="neurotype" content="ADHS">
   <meta name="demo" content="true">
 
   <link rel="icon" type="image/webp" href="../../Konzept_Rebranding/logo-lesekumpel-512.webp">
@@ -75,26 +75,26 @@
 
       <!-- Hero -->
       <div class="story-hero">
-        <img class="story-hero-img" src="{{HERO_IMAGE_URL}}" alt="" aria-hidden="true" onerror="this.style.display='none'">
+        <img class="story-hero-img" src="https://rala84.github.io/lesekumpel/bilder/das-drachenei-bnvv-1.png" alt="" aria-hidden="true" onerror="this.style.display='none'">
         <div class="story-hero-overlay" aria-hidden="true"></div>
         <div class="story-hero-text">
-          <h1 class="story-title-h1">{{STORY_TITLE}}</h1>
+          <h1 class="story-title-h1">Das Drachenei</h1>
           <div class="story-hero-meta">
-            <span class="badge">{{READING_LEVEL_LABEL}}</span>
-            <span class="badge">{{NEUROTYP}}</span>
-            <span class="badge">{{GENRE}}</span>
+            <span class="badge">Pip Punkt</span>
+            <span class="badge">ADHS</span>
+            
           </div>
         </div>
       </div>
 
       <!-- Author -->
       <div class="author-line">
-        <img class="author-line-avatar" src="{{PERSONA_IMG_URL}}" alt="{{PERSONA_NAME}}">
+        <img class="author-line-avatar" src="../../avatars/pip-punkt.webp" alt="Pip Punkt">
         <div class="author-line-info">
           <div class="author-line-credit">geschrieben von</div>
-          <div class="author-line-name">{{PERSONA_NAME}}</div>
+          <div class="author-line-name">Pip Punkt</div>
         </div>
-        <span class="author-line-tag">&#10003; F&uuml;r {{NEUROTYP}} optimiert</span>
+        <span class="author-line-tag">&#10003; F&uuml;r ADHS optimiert</span>
       </div>
 
       <!-- Lese-Toolbar (3 Gruppen: Text / Ansicht / Extras) -->
@@ -185,7 +185,7 @@
       <!-- Related -->
       <div class="related">
         <h2 class="related-title">Das k&ouml;nnte dir auch gefallen</h2>
-        <div class="related-grid">{{RELATED_STORIES_HTML}}</div>
+        <div class="related-grid"></div>
       </div>
 
       <!-- Back -->
@@ -264,24 +264,24 @@
        *_JSON-Platzhalter sind serialisierte Objekte/Arrays)
        ============================================================ -->
   <script>
-    let rawStory = {{RAW_STORY_TEXT}};
-    let emojiStory = {{EMOJI_STORY_TEXT}};
-    let rawSummary = {{RAW_SUMMARY_TEXT}};
-    let emojiSummary = {{EMOJI_SUMMARY_TEXT}};
-    const quizData = {{QUIZ_DATA_JSON}};
-    const rawDictionaryEntry = {{DICTIONARY_JSON}};
-    const weitererzaehlenData = {{WEITERERZAEHLEN_JSON}};
-    const schatzsucheData = {{SCHATZSUCHE_JSON}};
+    let rawStory = "Tar-zan fin-det ein Ei.\n\nEs ist rie-sig!\n\nDas Ei wa-ckelt.\n\nEs macht knack!\n\nEin Kopf guckt raus.\n\nEin klei-ner Dra-che!\n\nEr niest.\n\nFeuer!";
+    let emojiStory = "Tar-zan fin-det ein Ei.\n\nEs ist rie-sig!\n\nDas Ei wa-ckelt.\n\nEs macht knack!\n\nEin Kopf guckt raus.\n\nEin klei-ner Dra-che!\n\nEr niest.\n\nFeuer!";
+    let rawSummary = "Tarzan findet im Dschungel ein großes Ei. Aus dem Ei schlüpft ein kleiner Drache. Der Drache muss niesen und spuckt dabei Feuer.";
+    let emojiSummary = "";
+    const quizData = [{"q":"Wer findet ein riesiges Ei?","a":["Ein Kind","Tarzan","Ein Affe"],"correct":1},{"q":"Was schlüpft aus dem Ei?","a":["Ein kleiner Drache","Ein Vogelbaby","Ein Krokodil"],"correct":0},{"q":"Was passiert, wenn der Drache niest?","a":["Es regnet Konfetti","Es kommt Wasser","Es spuckt Feuer"],"correct":2}];
+    const rawDictionaryEntry = [{"wort":"rie-sig","silben":"rie-sig","bedeutung":"Sehr, sehr groß."},{"wort":"wa-ckelt","silben":"wa-ckelt","bedeutung":"Bewegt sich hin und her."},{"wort":"knack","silben":"knack","bedeutung":"Ein kurzes, lautes Geräusch."},{"wort":"Dra-che","silben":"Dra-che","bedeutung":"Ein Fabeltier, oft mit Flügeln und Feuer."},{"wort":"niest","silben":"niest","bedeutung":"Stößt plötzlich Luft aus der Nase."},{"wort":"Feuer","silben":"Feu-er","bedeutung":"Heiße Flammen, die brennen."}];
+    const weitererzaehlenData = {"frage":"Wie geht es weiter?","optionen":[{"emoji":"🏃‍♂️","titel":"Gefahr im Dschungel!","text":"Oh weh! Das Feuer zündet die Blätter an. Rauch steigt auf. Tar-zan schnappt den kleinen Dra-chen und muss rennen. Wer hat sie gehört?"},{"emoji":"🍼","titel":"Was nun, Kleiner?","text":"Das Feuer ist weg. Der Drache blinzelt. Hat er Hunger? Was essen Drachen-babys? Tar-zan über-legt. Was nun mit dem kleinen Feuer-spucker?"},{"emoji":"✨","titel":"Eine magische Feder!","text":"Doch das Feuer ist grün! Aus der Glut schwebt eine glitzernde Feder. Sie landet genau vor Tar-zans Füßen. Was bedeutet das?"}]};
+    const schatzsucheData = {"thema":"Natur-Wörter","emoji":"🌿","ziel":3,"einleitung":"Überall in der Geschichte versteckt sich ein Schatz aus der Natur. Finde drei Wörter, die zur Natur passen — einfach antippen!","schatzwoerter":["tarzan","ei","riesig","knack","kopf","kleiner","drache","feuer"]};
   </script>
   <script src="story-scripts.js?v=3"></script>
 
   <!-- Tafel-Modus: Story-Bilder als versteckter Pool (werden im Tafel-Modus in die Stage links gepoolt) -->
   <div hidden aria-hidden="true" class="tafel-image-pool">
-    {{STORY_IMAGES_HTML}}
+    <img src="https://rala84.github.io/lesekumpel/bilder/das-drachenei-bnvv-1.png" alt="Das Drachenei" class="hero-image" onerror="this.style.display='none'">
   </div>
 
   <!-- Tafel-Modus: imagePositions auf window expose, dann tafel.js initialisieren -->
-  <script>window.imagePositions = {{IMAGE_POSITIONS_JSON}};</script>
+  <script>window.imagePositions = [];</script>
   <script src="../tafel.js?v=1" defer></script>
 </body>
 </html>

@@ -7,15 +7,15 @@
        Lesekumpel v2 — Story-Template (Text-Geschichten)
        Output-Ziel: v2/demo-texte/<slug>.html
        Alle Pfade sind relativ zum Output-Ziel (eine Ebene unter v2/),
-       NICHT zum Template-Speicherort. {{PLACEHOLDER}} werden von der
+       NICHT zum Template-Speicherort.  werden von der
        n8n-Pipeline befüllt.
        ============================================================ -->
-  <title>{{STORY_TITLE}} — Lesekumpel</title>
-  <meta name="description" content="{{META_DESCRIPTION}}">
-  <meta name="author" content="{{PERSONA_NAME}}">
-  <meta name="date" content="{{STORY_DATE}}">
-  <meta name="reading-level" content="{{READING_LEVEL_LABEL}}">
-  <meta name="neurotype" content="{{NEUROTYP}}">
+  <title>Abfall sortieren — Lesekumpel</title>
+  <meta name="description" content="Lesetext für 5–6-Jährige: Abfall sortieren. Leo und Mia sortieren den Abfall. Jedes Teil kommt in eine Kiste. Das Papier kommt in die blaue Kiste. Die Flasch…">
+  <meta name="author" content="Pip Punkt">
+  <meta name="date" content="2026-04-28T05:50:15.438Z">
+  <meta name="reading-level" content="Pip Punkt">
+  <meta name="neurotype" content="Standard">
   <meta name="demo" content="true">
 
   <link rel="icon" type="image/webp" href="../../Konzept_Rebranding/logo-lesekumpel-512.webp">
@@ -75,26 +75,26 @@
 
       <!-- Hero -->
       <div class="story-hero">
-        <img class="story-hero-img" src="{{HERO_IMAGE_URL}}" alt="" aria-hidden="true" onerror="this.style.display='none'">
+        <img class="story-hero-img" src="https://rala84.github.io/lesekumpel/bilder/abfall-sortieren-1c36-1.png" alt="" aria-hidden="true" onerror="this.style.display='none'">
         <div class="story-hero-overlay" aria-hidden="true"></div>
         <div class="story-hero-text">
-          <h1 class="story-title-h1">{{STORY_TITLE}}</h1>
+          <h1 class="story-title-h1">Abfall sortieren</h1>
           <div class="story-hero-meta">
-            <span class="badge">{{READING_LEVEL_LABEL}}</span>
-            <span class="badge">{{NEUROTYP}}</span>
-            <span class="badge">{{GENRE}}</span>
+            <span class="badge">Pip Punkt</span>
+            <span class="badge">Standard</span>
+            
           </div>
         </div>
       </div>
 
       <!-- Author -->
       <div class="author-line">
-        <img class="author-line-avatar" src="{{PERSONA_IMG_URL}}" alt="{{PERSONA_NAME}}">
+        <img class="author-line-avatar" src="../../avatars/pip-punkt.webp" alt="Pip Punkt">
         <div class="author-line-info">
           <div class="author-line-credit">geschrieben von</div>
-          <div class="author-line-name">{{PERSONA_NAME}}</div>
+          <div class="author-line-name">Pip Punkt</div>
         </div>
-        <span class="author-line-tag">&#10003; F&uuml;r {{NEUROTYP}} optimiert</span>
+        <span class="author-line-tag">&#10003; F&uuml;r Standard optimiert</span>
       </div>
 
       <!-- Lese-Toolbar (3 Gruppen: Text / Ansicht / Extras) -->
@@ -185,7 +185,7 @@
       <!-- Related -->
       <div class="related">
         <h2 class="related-title">Das k&ouml;nnte dir auch gefallen</h2>
-        <div class="related-grid">{{RELATED_STORIES_HTML}}</div>
+        <div class="related-grid"></div>
       </div>
 
       <!-- Back -->
@@ -264,24 +264,24 @@
        *_JSON-Platzhalter sind serialisierte Objekte/Arrays)
        ============================================================ -->
   <script>
-    let rawStory = {{RAW_STORY_TEXT}};
-    let emojiStory = {{EMOJI_STORY_TEXT}};
-    let rawSummary = {{RAW_SUMMARY_TEXT}};
-    let emojiSummary = {{EMOJI_SUMMARY_TEXT}};
-    const quizData = {{QUIZ_DATA_JSON}};
-    const rawDictionaryEntry = {{DICTIONARY_JSON}};
-    const weitererzaehlenData = {{WEITERERZAEHLEN_JSON}};
-    const schatzsucheData = {{SCHATZSUCHE_JSON}};
+    let rawStory = "Leo und Mia sor-tie-ren den Ab-fall.\nJe-des Teil kommt in ei-ne Ki-ste.\n\nDas Pa-pier kommt in die blaue Ki-ste.\nDie Fla-sche kommt in die grü-ne Ki-ste.\n\nAl-les ist an sei-nem Platz.\nDas hilft der Um-welt sehr.";
+    let emojiStory = "Leo und Mia sor-tie-ren den Ab-fall.\nJe-des Teil kommt in ei-ne Ki-ste.\n\nDas Pa-pier kommt in die blaue Ki-ste.\nDie Fla-sche kommt in die grü-ne Ki-ste.\n\nAl-les ist an sei-nem Platz.\nDas hilft der Um-welt sehr.";
+    let rawSummary = "Die Geschichte zeigt, wie einfach es ist, Abfall zu sortieren. Leo und Mia machen alles richtig. So helfen sie der Umwelt.";
+    let emojiSummary = "";
+    const quizData = [{"q":"Wer sortiert den Abfall?","a":["Leo und Mia","Lina und Max","Tom und Jule"],"correct":0},{"q":"In welche Kiste kommt das Papier?","a":["In die grüne Kiste","In die rote Kiste","In die blaue Kiste"],"correct":2},{"q":"Warum sortieren Leo und Mia den Abfall?","a":["Damit es sauberer ist","Um der Umwelt zu helfen","Weil es Spaß macht"],"correct":1}];
+    const rawDictionaryEntry = [{"wort":"sortieren","silben":"sor-tie-ren","bedeutung":"Dinge nach Regeln ordnen, zum Beispiel nach Farbe oder Art."},{"wort":"Abfall","silben":"Ab-fall","bedeutung":"Dinge, die wir nicht mehr brauchen und wegschmeißen."},{"wort":"Umwelt","silben":"Um-welt","bedeutung":"Alles um uns herum: die Natur, die Tiere, die Luft und das Wasser."}];
+    const weitererzaehlenData = {"frage":"Wie geht es weiter?","optionen":[{"emoji":"🎁","titel":"Ein Schatz im Müll?","text":"Doch was ist das? Zwischen den Dosen blitzt etwas! Leo zieht ein glitzerndes Kästchen hervor. Was mag wohl darin sein?"},{"emoji":"😊","titel":"Gute Tat Gefühl","text":"Leo und Mia lächeln. Die Kisten sind voll. Sie haben etwas Gutes getan. Die Erde freut sich bestimmt!"},{"emoji":"🗣️","titel":"Die Flasche spricht!","text":"Plötzlich hören sie ein Hüsteln aus der grünen Kiste. \"Psst,\" wispert eine kleine Stimme. \"Könntet ihr mich vorsichtiger tragen?\""}]};
+    const schatzsucheData = {"thema":"Wörter vom Sortieren","emoji":"♻️","ziel":3,"einleitung":"Überall in der Geschichte versteckt sich ein Schatz von Wörtern, die uns beim Sortieren helfen. Finde drei Wörter, die zum Sortieren passen – einfach antippen!","schatzwoerter":["sortieren","abfall","teil","kiste","papier","flasche","blaue","grüne","umwelt"]};
   </script>
   <script src="story-scripts.js?v=3"></script>
 
   <!-- Tafel-Modus: Story-Bilder als versteckter Pool (werden im Tafel-Modus in die Stage links gepoolt) -->
   <div hidden aria-hidden="true" class="tafel-image-pool">
-    {{STORY_IMAGES_HTML}}
+    <img src="https://rala84.github.io/lesekumpel/bilder/abfall-sortieren-1c36-1.png" alt="Abfall sortieren" class="hero-image" onerror="this.style.display='none'">
   </div>
 
   <!-- Tafel-Modus: imagePositions auf window expose, dann tafel.js initialisieren -->
-  <script>window.imagePositions = {{IMAGE_POSITIONS_JSON}};</script>
+  <script>window.imagePositions = [];</script>
   <script src="../tafel.js?v=1" defer></script>
 </body>
 </html>

@@ -28,13 +28,15 @@ let currentPageIndex = 0;
 let comicState = { wordReader: false, syllables: false };
 
 function collectPages() {
+  // typeof-Checks statt window.*: die Injektion nutzt let/const, die nicht
+  // auf window landen, aber lexikalisch über Script-Grenzen sichtbar sind.
   // Neues Format: comicPages = [{image, text}]
-  if (typeof window.comicPages !== 'undefined' && Array.isArray(window.comicPages)) {
-    return window.comicPages.filter(p => p && (p.text || p.image));
+  if (typeof comicPages !== 'undefined' && Array.isArray(comicPages)) {
+    return comicPages.filter(p => p && (p.text || p.image));
   }
   // Altes Format: inputData.content.tileN / download_url_N
-  if (typeof window.inputData !== 'undefined' && window.inputData && window.inputData.content) {
-    const c = window.inputData.content;
+  if (typeof inputData !== 'undefined' && inputData && inputData.content) {
+    const c = inputData.content;
     const out = [];
     let i = 1;
     while (c['tile' + i] !== undefined || c['download_url_' + i] !== undefined) {

@@ -7,15 +7,15 @@
        Lesekumpel v2 — Story-Template (Text-Geschichten)
        Output-Ziel: v2/demo-texte/<slug>.html
        Alle Pfade sind relativ zum Output-Ziel (eine Ebene unter v2/),
-       NICHT zum Template-Speicherort. {{PLACEHOLDER}} werden von der
+       NICHT zum Template-Speicherort.  werden von der
        n8n-Pipeline befüllt.
        ============================================================ -->
-  <title>{{STORY_TITLE}} — Lesekumpel</title>
-  <meta name="description" content="{{META_DESCRIPTION}}">
-  <meta name="author" content="{{PERSONA_NAME}}">
-  <meta name="date" content="{{STORY_DATE}}">
-  <meta name="reading-level" content="{{READING_LEVEL_LABEL}}">
-  <meta name="neurotype" content="{{NEUROTYP}}">
+  <title>Warum Pinguine nicht frieren — Lesekumpel</title>
+  <meta name="description" content="Lesetext für 7–10-Jährige: Warum Pinguine nicht frieren. Sachtext: Wie schaffen es Pinguine, in der eisigen Antarktis warm zu bleiben? Erklaere die drei Tric…">
+  <meta name="author" content="Samira Wissensfreund">
+  <meta name="date" content="2026-05-15T13:56:35.942Z">
+  <meta name="reading-level" content="120–250 Wörter, Samira Wissensfreund">
+  <meta name="neurotype" content="Standard">
   <meta name="demo" content="true">
 
   <link rel="icon" type="image/webp" href="../../Konzept_Rebranding/logo-lesekumpel-512.webp">
@@ -75,26 +75,26 @@
 
       <!-- Hero -->
       <div class="story-hero">
-        <img class="story-hero-img" src="{{HERO_IMAGE_URL}}" alt="" aria-hidden="true" onerror="this.style.display='none'">
+        <img class="story-hero-img" src="https://rala84.github.io/lesekumpel/bilder/warum-pinguine-nicht-frieren-l29e-1.png" alt="" aria-hidden="true" onerror="this.style.display='none'">
         <div class="story-hero-overlay" aria-hidden="true"></div>
         <div class="story-hero-text">
-          <h1 class="story-title-h1">{{STORY_TITLE}}</h1>
+          <h1 class="story-title-h1">Warum Pinguine nicht frieren</h1>
           <div class="story-hero-meta">
-            <span class="badge">{{READING_LEVEL_LABEL}}</span>
-            <span class="badge">{{NEUROTYP}}</span>
-            <span class="badge">{{GENRE}}</span>
+            <span class="badge">120–250 Wörter, Samira Wissensfreund</span>
+            <span class="badge">Standard</span>
+            <span class="badge">Sachtext: Wie schaffen es Pinguine, in der eisigen Antarktis</span>
           </div>
         </div>
       </div>
 
       <!-- Author -->
       <div class="author-line">
-        <img class="author-line-avatar" src="{{PERSONA_IMG_URL}}" alt="{{PERSONA_NAME}}">
+        <img class="author-line-avatar" src="../../avatars/samira-wissensfreund.webp" alt="Samira Wissensfreund">
         <div class="author-line-info">
           <div class="author-line-credit">geschrieben von</div>
-          <div class="author-line-name">{{PERSONA_NAME}}</div>
+          <div class="author-line-name">Samira Wissensfreund</div>
         </div>
-        <span class="author-line-tag">&#10003; F&uuml;r {{NEUROTYP}} optimiert</span>
+        <span class="author-line-tag">&#10003; F&uuml;r Standard optimiert</span>
       </div>
 
       <!-- Lese-Toolbar (3 Gruppen: Text / Ansicht / Extras) -->
@@ -185,7 +185,7 @@
       <!-- Related -->
       <div class="related">
         <h2 class="related-title">Das k&ouml;nnte dir auch gefallen</h2>
-        <div class="related-grid">{{RELATED_STORIES_HTML}}</div>
+        <div class="related-grid"></div>
       </div>
 
       <!-- Back -->
@@ -264,24 +264,26 @@
        *_JSON-Platzhalter sind serialisierte Objekte/Arrays)
        ============================================================ -->
   <script>
-    let rawStory = {{RAW_STORY_TEXT}};
-    let emojiStory = {{EMOJI_STORY_TEXT}};
-    let rawSummary = {{RAW_SUMMARY_TEXT}};
-    let emojiSummary = {{EMOJI_SUMMARY_TEXT}};
-    const quizData = {{QUIZ_DATA_JSON}};
-    const rawDictionaryEntry = {{DICTIONARY_JSON}};
-    const weitererzaehlenData = {{WEITERERZAEHLEN_JSON}};
-    const schatzsucheData = {{SCHATZSUCHE_JSON}};
+    let rawStory = "Brrr, stell dir vor, du stehst im tief-sten Win-ter nur im T-Shirt drau-ßen. Ganz schön kalt, o-der? Für Pin-gui-ne ist das a-ber kein Prob-lem! Sie ha-ben su-per Tricks, um in der Ei-ses-käl-te warm zu blei-ben.\n\nTrick Num-mer eins ist ihr Fe-derk-leid. Das ist nicht nur ei-ne Schicht, son-dern gleich zwei! In-nen, di-rekt am Kör-per, ha-ben sie ganz wei-che und flau-schi-ge Dau-nen-fe-dern. Die hal-ten die war-me Luft fest, wie ei-ne su-per di-cke Ku-schel-de-cke. Da-rü-ber liegt ei-ne Schicht aus fe-sten, ö-li-gen Fe-dern. Die sind so dicht, dass kein eis-kal-ter Wind und kein Was-ser an die Haut kommt. Das ist wie ein per-fek-ter Re-gen-man-tel!\n\nTrick Num-mer zwei liegt un-ter der Haut: ei-ne di-cke Fett-schicht. Die-ses Fett nennt man auch Blub-ber. Es funk-tio-niert wie ein ein-ge-bau-ter Woll-pul-lo-ver, der die Pin-gui-ne von in-nen wärmt. Echt prak-tisch!\n\nUnd wenn es mal rich-tig, rich-tig stür-misch und kalt wird? Dann kommt Trick Num-mer drei: die größ-te Ku-schel-par-ty der Welt! Tau-sen-de Pin-gui-ne rü-cken ganz eng zu-sam-men. In der Mit-te der Grup-pe wird es so rich-tig schön warm. Die Pin-gui-ne am kal-ten Rand dür-fen dann auch mal in die Mit-te und sich auf-wär-men. Ziem-lich schlau, was meinst du?";
+    let emojiStory = "Brrr, stell dir vor, du stehst im tief-sten Win-ter nur im T-Shirt drau-ßen. Ganz schön kalt, o-der? Für Pin-gui-ne ist das a-ber kein Prob-lem! Sie ha-ben su-per Tricks, um in der Ei-ses-käl-te warm zu blei-ben.\n\nTrick Num-mer eins ist ihr Fe-derk-leid. Das ist nicht nur ei-ne Schicht, son-dern gleich zwei! In-nen, di-rekt am Kör-per, ha-ben sie ganz wei-che und flau-schi-ge Dau-nen-fe-dern. Die hal-ten die war-me Luft fest, wie ei-ne su-per di-cke Ku-schel-de-cke. Da-rü-ber liegt ei-ne Schicht aus fe-sten, ö-li-gen Fe-dern. Die sind so dicht, dass kein eis-kal-ter Wind und kein Was-ser an die Haut kommt. Das ist wie ein per-fek-ter Re-gen-man-tel!\n\nTrick Num-mer zwei liegt un-ter der Haut: ei-ne di-cke Fett-schicht. Die-ses Fett nennt man auch Blub-ber. Es funk-tio-niert wie ein ein-ge-bau-ter Woll-pul-lo-ver, der die Pin-gui-ne von in-nen wärmt. Echt prak-tisch!\n\nUnd wenn es mal rich-tig, rich-tig stür-misch und kalt wird? Dann kommt Trick Num-mer drei: die größ-te Ku-schel-par-ty der Welt! Tau-sen-de Pin-gui-ne rü-cken ganz eng zu-sam-men. In der Mit-te der Grup-pe wird es so rich-tig schön warm. Die Pin-gui-ne am kal-ten Rand dür-fen dann auch mal in die Mit-te und sich auf-wär-men. Ziem-lich schlau, was meinst du?";
+    let rawSummary = "Pinguine frieren nicht, weil sie drei geniale Tricks haben. Ihr Federkleid besteht aus zwei Schichten, einer wärmenden inneren und einer wasserdichten äußeren. Eine dicke Fettschicht unter der Haut isoliert sie zusätzlich, und bei extremer Kälte wärmen sie sich gegenseitig in großen, kuscheligen Gruppen.";
+    let emojiSummary = "Pin-gui-ne frie-ren nicht, weil sie drei ge-nia-le Tricks ha-ben. Ihr Fe-derk-leid be-steht aus zwei Schich-ten, ei-ner wär-men-den in-ne-ren und ei-ner was-ser-dich-ten äu-ße-ren. Ei-ne di-cke Fett-schicht un-ter der Haut i-so-liert sie zu-sätz-lich, und bei ext-re-mer Käl-te wär-men sie sich ge-gen-sei-tig in gro-ßen, ku-sche-li-gen Grup-pen.";
+    const quizData = [{"q":"Was ist der erste Trick der Pinguine, um warm zu bleiben?","a":["Ihr Federkleid hat zwei Schichten, die wärmen und schützen.","Sie tragen winzige Pullover unter ihren Federn.","Ihre Federn sind bunt und reflektieren die Sonne."],"correct":0},{"q":"Wie nennt man die dicke Fettschicht unter der Haut der Pinguine, die sie von innen wärmt?","a":["Pinguin-Wolle","Blubber","Kälte-Schild"],"correct":1},{"q":"Was machen Tausende von Pinguinen, wenn es richtig stürmisch und kalt wird?","a":["Sie suchen sich eine warme Höhle.","Sie rücken ganz eng zusammen und bilden eine Kuschelparty.","Sie springen ins eiskalte Wasser."],"correct":1}];
+    const rawDictionaryEntry = [{"wort":"Dau-nen-fe-dern","silben":"Dau-nen-fe-dern","bedeutung":"Ganz weiche und flauschige Federn unter den äußeren Federn, die wärmen."},{"wort":"ö-li-gen","silben":"ö-li-gen","bedeutung":"Federn, die mit einem öligen Stoff bedeckt sind, damit Wasser abperlt."},{"wort":"Blub-ber","silben":"Blub-ber","bedeutung":"Eine dicke Fettschicht unter der Haut von Tieren, die sie warm hält."},{"wort":"stür-misch","silben":"stür-misch","bedeutung":"Wenn es sehr windig ist und ein starker Sturm weht."},{"wort":"auf-wär-men","silben":"auf-wär-men","bedeutung":"Wieder warm werden, wenn man gefroren hat."}];
+    const weitererzaehlenData = {"frage":"Wie geht es weiter?","optionen":[{"emoji":"🐠","titel":"Unterwasser-Expedition!","text":"Doch das Aufwärmen ist nur die halbe Miete. Denn der Magen knurrt! Ein ganz beson-de-rer Pin-guin, Karl-Heinz mit den schief-sten Fü-ßen, wagt sich nach der Kuschel-party als Ers-ter ins eis-kal-te Was-ser. Mit sei-nen star-ken Flos-sen taucht er blitz-schnell hin-un-ter, auf der Su-che nach le-cke-rem Fisch. Doch was ist das? Glitzert da nicht et-was Un-ge-wöhn-li-ches im Tief-sten des Mee-res?"},{"emoji":"🐧","titel":"Was kommt danach?","text":"Nachdem sich alle Pinguine schön warm ge-kuschelt haben, wird es Zeit für den Pinguin-Alltag. Die Sonne kriecht langsam über den Eis-Horizont. Ein klei-ner Pinguin-Papa steht geduldig da und be-wacht sein Ei, das er sorgfältig auf seinen Füßen trägt. Wie er das schafft, ohne dass es friert oder herunterfällt? Und was machen die anderen Pinguine wohl, wenn sie nicht kuscheln?"},{"emoji":"🤔","titel":"Wo ist Paul?","text":"Aber warte mal! Bei so ei-ner rie-si-gen Ku-schel-par-ty kann man sich auch ver-lie-ren, o-der? Der klei-ne-ste Pin-guin von al-len, Paul-chen mit dem win-zi-gen Schna-bel, hat sich lei-der ein biss-chen zu weit an den Rand ge-drängt. Brrr, da ist es plötz-lich doch ganz schön kalt! Er versucht sich wieder in die Mitte zu schummeln, doch die anderen sind so dicht! Wie kommt Paul-chen jetzt wieder an einen warmen Platz?"}]};
+    const schatzsucheData = {"thema":"Dinge, die warm machen","emoji":"🔥","ziel":3,"einleitung":"Diese Geschichte ist voller warmer Geheimnisse! Finde drei Dinge, die warm machen oder dabei helfen, warm zu bleiben – einfach antippen!","schatzwoerter":["federkleid","daunenfedern","kuscheldecke","federn","fettschicht","blubber","wollpullover","kuschelparty","warm","warme","wärmt","aufwärmen"]};
   </script>
   <script src="story-scripts.js?v=3"></script>
 
   <!-- Tafel-Modus: Story-Bilder als versteckter Pool (werden im Tafel-Modus in die Stage links gepoolt) -->
   <div hidden aria-hidden="true" class="tafel-image-pool">
-    {{STORY_IMAGES_HTML}}
+    <img src="https://rala84.github.io/lesekumpel/bilder/warum-pinguine-nicht-frieren-l29e-1.png" alt="Warum Pinguine nicht frieren" class="hero-image" onerror="this.style.display='none'">
+    <img src="https://rala84.github.io/lesekumpel/bilder/warum-pinguine-nicht-frieren-l29e-2.png" alt="Warum Pinguine nicht frieren" class="hero-image" onerror="this.style.display='none'">
+    <img src="https://rala84.github.io/lesekumpel/bilder/warum-pinguine-nicht-frieren-l29e-3.png" alt="Warum Pinguine nicht frieren" class="hero-image" onerror="this.style.display='none'">
   </div>
 
   <!-- Tafel-Modus: imagePositions auf window expose, dann tafel.js initialisieren -->
-  <script>window.imagePositions = {{IMAGE_POSITIONS_JSON}};</script>
+  <script>window.imagePositions = [];</script>
   <script src="../tafel.js?v=1" defer></script>
 </body>
 </html>

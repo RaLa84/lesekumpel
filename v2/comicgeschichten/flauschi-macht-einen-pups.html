@@ -7,15 +7,15 @@
        Lesekumpel v2 — Comic-Template (Bildgeschichten)
        Output-Ziel: v2/comicgeschichten/<slug>.html
        Alle Pfade sind relativ zum Output-Ziel (eine Ebene unter v2/).
-       {{PLACEHOLDER}} werden von der Pipeline bzw. Migration befüllt:
-         {{COMIC_PAGES_JSON}} — [{image, text}] (Seiten des Comics)
+        werden von der Pipeline bzw. Migration befüllt:
+         [{"image": "https://raw.githubusercontent.com/RaLa84/lesekumpel/main/comics/flauschi-macht-einen-pups-1.png", "text": "Flauschi ist ein Einhorn mit Glitzerhorn."}, {"image": "https://raw.githubusercontent.com/RaLa84/lesekumpel/main/comics/flauschi-macht-einen-pups-2.png", "text": "Flauschi rennt über die Wiese und frisst bunte Blumen."}, {"image": "https://raw.githubusercontent.com/RaLa84/lesekumpel/main/comics/flauschi-macht-einen-pups-3.png", "text": "Flauschi spielt mit bunten Schmetterlingen."}, {"image": "https://raw.githubusercontent.com/RaLa84/lesekumpel/main/comics/flauschi-macht-einen-pups-4.png", "text": "Plötzlich spürt Flauschi ein komisches Kribbeln."}, {"image": "https://raw.githubusercontent.com/RaLa84/lesekumpel/main/comics/flauschi-macht-einen-pups-5.png", "text": "Pups! Flauschi macht einen ganz lauten Pups."}, {"image": "https://raw.githubusercontent.com/RaLa84/lesekumpel/main/comics/flauschi-macht-einen-pups-6.png", "text": "Die Blumen wackeln, und Flauschi kichert glücklich."}] — [{image, text}] (Seiten des Comics)
        ============================================================ -->
-  <title>{{STORY_TITLE}} — Lesekumpel</title>
-  <meta name="description" content="{{META_DESCRIPTION}}">
-  <meta name="author" content="{{PERSONA_NAME}}">
-  <meta name="date" content="{{STORY_DATE}}">
-  <meta name="reading-level" content="{{READING_LEVEL_LABEL}}">
-  <meta name="neurotype" content="{{NEUROTYP}}">
+  <title>Flauschi macht einen Pups — Lesekumpel</title>
+  <meta name="description" content="Lesetext für 6–10-Jährige: Flauschi macht einen Pups. Flauschi ist ein Einhorn mit Glitzerhorn. Flauschi rennt über die Wiese und frisst bunte Blumen. Flausc…">
+  <meta name="author" content="Lesekumpel">
+  <meta name="date" content="">
+  <meta name="reading-level" content="Bildgeschichte">
+  <meta name="neurotype" content="Standard">
   <meta name="demo" content="true">
 
   <link rel="icon" type="image/webp" href="../../Konzept_Rebranding/logo-lesekumpel-512.webp">
@@ -65,10 +65,10 @@
 
       <!-- Titel -->
       <div class="comic-head">
-        <h1>{{STORY_TITLE}}</h1>
+        <h1>Flauschi macht einen Pups</h1>
         <div class="comic-head-meta">
           <span class="badge badge-coral">Comic</span>
-          <span class="badge badge-outline">{{READING_LEVEL_LABEL}}</span>
+          <span class="badge badge-outline">Bildgeschichte</span>
         </div>
       </div>
 
@@ -184,7 +184,7 @@
        DYNAMISCHE INJEKTION — Seiten des Comics
        ============================================================ -->
   <script>
-    const comicPages = {{COMIC_PAGES_JSON}};
+    const comicPages = [{"image": "https://raw.githubusercontent.com/RaLa84/lesekumpel/main/comics/flauschi-macht-einen-pups-1.png", "text": "Flauschi ist ein Einhorn mit Glitzerhorn."}, {"image": "https://raw.githubusercontent.com/RaLa84/lesekumpel/main/comics/flauschi-macht-einen-pups-2.png", "text": "Flauschi rennt über die Wiese und frisst bunte Blumen."}, {"image": "https://raw.githubusercontent.com/RaLa84/lesekumpel/main/comics/flauschi-macht-einen-pups-3.png", "text": "Flauschi spielt mit bunten Schmetterlingen."}, {"image": "https://raw.githubusercontent.com/RaLa84/lesekumpel/main/comics/flauschi-macht-einen-pups-4.png", "text": "Plötzlich spürt Flauschi ein komisches Kribbeln."}, {"image": "https://raw.githubusercontent.com/RaLa84/lesekumpel/main/comics/flauschi-macht-einen-pups-5.png", "text": "Pups! Flauschi macht einen ganz lauten Pups."}, {"image": "https://raw.githubusercontent.com/RaLa84/lesekumpel/main/comics/flauschi-macht-einen-pups-6.png", "text": "Die Blumen wackeln, und Flauschi kichert glücklich."}];
   </script>
   <script src="comic-scripts.js?v=2"></script>
 </body>

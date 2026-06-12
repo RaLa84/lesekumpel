@@ -7,15 +7,15 @@
        Lesekumpel v2 — Story-Template (Text-Geschichten)
        Output-Ziel: v2/demo-texte/<slug>.html
        Alle Pfade sind relativ zum Output-Ziel (eine Ebene unter v2/),
-       NICHT zum Template-Speicherort. {{PLACEHOLDER}} werden von der
+       NICHT zum Template-Speicherort.  werden von der
        n8n-Pipeline befüllt.
        ============================================================ -->
-  <title>{{STORY_TITLE}} — Lesekumpel</title>
-  <meta name="description" content="{{META_DESCRIPTION}}">
-  <meta name="author" content="{{PERSONA_NAME}}">
-  <meta name="date" content="{{STORY_DATE}}">
-  <meta name="reading-level" content="{{READING_LEVEL_LABEL}}">
-  <meta name="neurotype" content="{{NEUROTYP}}">
+  <title>Streit am Eisstand — Lesekumpel</title>
+  <meta name="description" content="Lesetext für 8–9-Jährige (LRS-optimiert): Streit am Eisstand. Ein Junge in t�rkisem T-Shirt und beigen Cargo-Shorts und ein M�dchen in pinkem Tank-Top und Je…">
+  <meta name="author" content="Stella Stimmenreich">
+  <meta name="date" content="2026-05-11T19:19:35.476Z">
+  <meta name="reading-level" content="150–250 Wörter, Stella Stimmenreich">
+  <meta name="neurotype" content="LRS">
   <meta name="demo" content="true">
 
   <link rel="icon" type="image/webp" href="../../Konzept_Rebranding/logo-lesekumpel-512.webp">
@@ -75,26 +75,26 @@
 
       <!-- Hero -->
       <div class="story-hero">
-        <img class="story-hero-img" src="{{HERO_IMAGE_URL}}" alt="" aria-hidden="true" onerror="this.style.display='none'">
+        <img class="story-hero-img" src="https://rala84.github.io/lesekumpel/bilder/streit-am-eisstand-1kcp-1.png" alt="" aria-hidden="true" onerror="this.style.display='none'">
         <div class="story-hero-overlay" aria-hidden="true"></div>
         <div class="story-hero-text">
-          <h1 class="story-title-h1">{{STORY_TITLE}}</h1>
+          <h1 class="story-title-h1">Streit am Eisstand</h1>
           <div class="story-hero-meta">
-            <span class="badge">{{READING_LEVEL_LABEL}}</span>
-            <span class="badge">{{NEUROTYP}}</span>
-            <span class="badge">{{GENRE}}</span>
+            <span class="badge">150–250 Wörter, Stella Stimmenreich</span>
+            <span class="badge">LRS</span>
+            <span class="badge">Ein Junge in t�rkisem T-Shirt und beigen Cargo-Shorts und ei</span>
           </div>
         </div>
       </div>
 
       <!-- Author -->
       <div class="author-line">
-        <img class="author-line-avatar" src="{{PERSONA_IMG_URL}}" alt="{{PERSONA_NAME}}">
+        <img class="author-line-avatar" src="../../avatars/stella-stimmenreich.webp" alt="Stella Stimmenreich">
         <div class="author-line-info">
           <div class="author-line-credit">geschrieben von</div>
-          <div class="author-line-name">{{PERSONA_NAME}}</div>
+          <div class="author-line-name">Stella Stimmenreich</div>
         </div>
-        <span class="author-line-tag">&#10003; F&uuml;r {{NEUROTYP}} optimiert</span>
+        <span class="author-line-tag">&#10003; F&uuml;r LRS optimiert</span>
       </div>
 
       <!-- Lese-Toolbar (3 Gruppen: Text / Ansicht / Extras) -->
@@ -185,7 +185,7 @@
       <!-- Related -->
       <div class="related">
         <h2 class="related-title">Das k&ouml;nnte dir auch gefallen</h2>
-        <div class="related-grid">{{RELATED_STORIES_HTML}}</div>
+        <div class="related-grid"></div>
       </div>
 
       <!-- Back -->
@@ -264,24 +264,26 @@
        *_JSON-Platzhalter sind serialisierte Objekte/Arrays)
        ============================================================ -->
   <script>
-    let rawStory = {{RAW_STORY_TEXT}};
-    let emojiStory = {{EMOJI_STORY_TEXT}};
-    let rawSummary = {{RAW_SUMMARY_TEXT}};
-    let emojiSummary = {{EMOJI_SUMMARY_TEXT}};
-    const quizData = {{QUIZ_DATA_JSON}};
-    const rawDictionaryEntry = {{DICTIONARY_JSON}};
-    const weitererzaehlenData = {{WEITERERZAEHLEN_JSON}};
-    const schatzsucheData = {{SCHATZSUCHE_JSON}};
+    let rawStory = "Leo rann-te zum Eis-stand.\nEr woll-te Scho-ko-Eis ha-ben.\n\nDa war nur noch ei-ne Ku-gel.\n\"Die ist für mich!\", rief Leo.\n\nEin Mäd-chen stand schon da.\nSie hieß Li-na.\n\n\"Nein, für mich!\", rief Li-na.\n\"Ich war zuerst hier!\"\n\nLeo schau-te Li-na bö-se an.\n\"A-ber ich will sie mehr\", sag-te er.\n\nLi-na stampf-te mit dem Fuß.\n\"Das ist nicht fair\", sag-te sie.\n\nDer Mann am Eis-stand schau-te.\nEr wus-ste nicht, was er tun soll.\n\nPlötz-lich hat-te Li-na ei-ne I-dee.\nSie schau-te zu Leo.\n\n\"Wol-len wir tei-len?\", frag-te sie.\n\"Je-der be-kommt ei-ne Hälf-te.\"\n\nLeo dach-te kurz nach.\nTei-len war bes-ser als kein Eis.\n\n\"O-kay\", sag-te Leo und lä-chel-te.\n\"Das ist ei-ne gu-te I-dee.\"\n\nDer Mann gab ih-nen die Ku-gel.\nSie be-ka-men zwei Löf-fel da-zu.\n\nSie a-ßen das Eis zu-sam-men.\nEs schmeck-te sehr le-cker.";
+    let emojiStory = "Leo rann-te zum Eis-stand.\nEr woll-te Scho-ko-Eis ha-ben.\n\nDa war nur noch ei-ne Ku-gel.\n\"Die ist für mich!\", rief Leo.\n\nEin Mäd-chen stand schon da.\nSie hieß Li-na.\n\n\"Nein, für mich!\", rief Li-na.\n\"Ich war zuerst hier!\"\n\nLeo schau-te Li-na bö-se 😠 an.\n\"A-ber ich will sie mehr\", sag-te er.\n\nLi-na stampf-te 😤 mit dem Fuß.\n\"Das ist nicht fair\", sag-te sie.\n\nDer Mann am Eis-stand schau-te.\nEr wus-ste nicht, was er tun soll.\n\nPlötz-lich hat-te Li-na ei-ne I-dee.\nSie schau-te zu Leo.\n\n\"Wol-len wir tei-len?\", frag-te sie.\n\"Je-der be-kommt ei-ne Hälf-te.\"\n\nLeo dach-te kurz nach.\nTei-len war bes-ser als kein Eis.\n\n\"O-kay\", sag-te Leo und lä-chel-te 😊.\n\"Das ist ei-ne gu-te I-dee.\"\n\nDer Mann gab ih-nen die Ku-gel.\nSie be-ka-men zwei Löf-fel da-zu.\n\nSie a-ßen das Eis zu-sam-men.\nEs schmeck-te sehr le-cker.";
+    let rawSummary = "Ein Junge und ein Mädchen streiten sich um die letzte Kugel Schoko-Eis. Weil keiner nachgeben will, finden sie eine gute Lösung. Sie teilen sich das Eis und essen es am Ende glücklich zusammen.";
+    let emojiSummary = "Ein Jun-ge und ein Mäd-chen strei-ten sich um die letz-te Ku-gel Scho-ko-Eis. Weil kei-ner nach-ge-ben will, fin-den sie ei-ne gu-te Lö-sung. Sie tei-len sich das Eis und es-sen es am En-de glück-lich 😊 zu-sam-men.";
+    const quizData = [{"q":"Welches Eis wollte Leo haben?","a":["Vanille-Eis","Schoko-Eis","Erdbeer-Eis"],"correct":1},{"q":"Was war das Problem am Eisstand?","a":["Es gab kein Eis mehr.","Leo hatte kein Geld dabei.","Es war nur noch eine Kugel Schoko-Eis da."],"correct":2},{"q":"Wie haben Leo und Lina das Problem gelöst?","a":["Sie haben sich gestritten.","Sie haben die Kugel Eis geteilt.","Lina hat Leo das Eis geschenkt."],"correct":1}];
+    const rawDictionaryEntry = [{"wort":"rannt-te","silben":"rann-te","bedeutung":"Er ist schnell gelaufen."},{"wort":"zu-erst","silben":"zu-erst","bedeutung":"Als Erster oder Erste."},{"wort":"stampf-te","silben":"stampf-te","bedeutung":"Mit dem Fuß fest auf den Boden geschlagen."},{"wort":"fair","silben":"fair","bedeutung":"Gerecht und richtig."},{"wort":"plötz-lich","silben":"plötz-lich","bedeutung":"Ganz schnell und unerwartet."},{"wort":"tei-len","silben":"tei-len","bedeutung":"Etwas zusammen nutzen, damit jeder etwas bekommt."}];
+    const weitererzaehlenData = {"frage":"Wie geht es weiter?","optionen":[{"emoji":"💎","titel":"Schatz im Eis","text":"Als sie das letz-te Eis löffel-ten, spür-te Leo et-was Hart-es. \"Was ist das?\", frag-te er neu-gie-rig. Li-na schau-te auch. Vorsich-tig kratz-ten sie das rest-li-che Eis weg. Da lag ein klei-ner, glän-zen-der Stein. Oder war es doch ein ver-lo-re-nes Schmuck-stück? Ihr Herz klopf-te schnell. Sie sa-hen sich an. Was wohl da-mit ge-schah?"},{"emoji":"🤝","titel":"Freunde für immer","text":"Leo und Li-na la-chen be-flü-gelt. Sie merk-ten, dass sie viel-leicht doch gar nicht so un-ter-schied-lich wa-ren. \"Möch-test du noch et-was spie-len?\", frag-te Leo. Li-na strahl-te. \"Ja, gern! Ich kenne ei-nen toll-en Spiel-platz hier um die E-cke, mit ei-ner Riesen-Rut-sche.\" Sie ver-ga-ßen das Eis und ran-nten los, neu-gie-rig, was sie wohl zu-sam-men er-le-ben wür-den."},{"emoji":"😂","titel":"Kitzel-Nase!","text":"Plötz-lich mus-ste Li-na ganz laut nie-sen. \"Hatschi!\", rief sie und ihre Na-se wur-de rot. Dann mus-ste Leo auch nie-sen. \"Hatschi, hatschi!\" Sie kicher-ten. Der Mann am Eis-stand schmun-zel-te. War das Scho-ko-Eis viel-leicht mit ei-nem Kitzel-Puder ge-macht? Nun hat-ten bei-de ei-ne ro-te Na-se und konn-ten gar nicht mehr auf-hö-ren zu la-chen. Sie sa-hen sich an und lach-ten noch mehr."}]};
+    const schatzsucheData = {"thema":"Essen","emoji":"🍦","ziel":3,"einleitung":"Überall in der Geschichte versteckt sich leckeres Essen. Finde drei Wörter, die mit Essen zu tun haben — einfach antippen!","schatzwoerter":["eis","schokoeis","kugel","teilen","hälfte","löffel","aßen","schmeckte","lecker"]};
   </script>
   <script src="story-scripts.js?v=3"></script>
 
   <!-- Tafel-Modus: Story-Bilder als versteckter Pool (werden im Tafel-Modus in die Stage links gepoolt) -->
   <div hidden aria-hidden="true" class="tafel-image-pool">
-    {{STORY_IMAGES_HTML}}
+    <img src="https://rala84.github.io/lesekumpel/bilder/streit-am-eisstand-1kcp-1.png" alt="Streit am Eisstand" class="hero-image" onerror="this.style.display='none'">
+    <img src="https://rala84.github.io/lesekumpel/bilder/streit-am-eisstand-1kcp-2.png" alt="Streit am Eisstand" class="hero-image" onerror="this.style.display='none'">
+    <img src="https://rala84.github.io/lesekumpel/bilder/streit-am-eisstand-1kcp-3.png" alt="Streit am Eisstand" class="hero-image" onerror="this.style.display='none'">
   </div>
 
   <!-- Tafel-Modus: imagePositions auf window expose, dann tafel.js initialisieren -->
-  <script>window.imagePositions = {{IMAGE_POSITIONS_JSON}};</script>
+  <script>window.imagePositions = [];</script>
   <script src="../tafel.js?v=1" defer></script>
 </body>
 </html>

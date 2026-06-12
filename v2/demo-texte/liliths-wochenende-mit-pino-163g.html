@@ -3,10 +3,17 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Liliths Wochenende mit Pino (LRS-Variante) — Peter Past | Lesekumpel v2</title>
-  <meta name="description" content="Lesetext mit Silbentrennung für LRS: Liliths Wochenende mit Pino. Niveau 100–150 Wörter, Peter Past.">
+  <!-- ============================================================
+       Lesekumpel v2 — Story-Template (Text-Geschichten)
+       Output-Ziel: v2/demo-texte/<slug>.html
+       Alle Pfade sind relativ zum Output-Ziel (eine Ebene unter v2/),
+       NICHT zum Template-Speicherort.  werden von der
+       n8n-Pipeline befüllt.
+       ============================================================ -->
+  <title>Liliths Wochenende mit Pino — Lesekumpel</title>
+  <meta name="description" content="Lesetext für 7–8-Jährige (LRS-optimiert): Liliths Wochenende mit Pino. Erzähle eine Geschichte von Liliths Wochenende mit Pino dem Pinguin-Kuscheltier. Ihre…">
   <meta name="author" content="Peter Past">
-  <meta name="date" content="2026-05-17">
+  <meta name="date" content="2026-05-17T17:52:54.875Z">
   <meta name="reading-level" content="100–150 Wörter, Peter Past">
   <meta name="neurotype" content="LRS">
   <meta name="demo" content="true">
@@ -15,8 +22,9 @@
   <link rel="stylesheet" href="../../fonts/fonts.css">
   <link rel="stylesheet" href="../styles.css">
   <link rel="stylesheet" href="story-styles.css">
+  <link rel="stylesheet" href="../tafel.css">
 </head>
-<body data-page="story" class="dyslexia">
+<body data-page="story">
 
   <a href="#main" class="skip-link">Zum Inhalt springen</a>
 
@@ -53,20 +61,33 @@
   </div>
 </nav>
 
+  <div id="schatz-banner" class="schatz-banner" hidden>
+    <span class="schatz-banner-icon">&#128269;</span>
+    <span class="schatz-banner-text">
+      <span id="schatz-banner-thema">Finde den Schatz</span>
+      <span class="schatz-banner-count" id="schatz-banner-count">0/0</span>
+    </span>
+    <button type="button" class="schatz-banner-close" onclick="endSchatzsuche()" aria-label="Schatzsuche beenden">&#10005;</button>
+  </div>
+
   <main id="main">
     <article class="story-wrap">
 
-      <div class="story-hero hero-mint">
+      <!-- Hero -->
+      <div class="story-hero">
+        <img class="story-hero-img" src="https://rala84.github.io/lesekumpel/bilder/liliths-wochenende-mit-pino-163g-1.png" alt="" aria-hidden="true" onerror="this.style.display='none'">
+        <div class="story-hero-overlay" aria-hidden="true"></div>
         <div class="story-hero-text">
-          <h1>Liliths Wochenende mit Pino</h1>
+          <h1 class="story-title-h1">Liliths Wochenende mit Pino</h1>
           <div class="story-hero-meta">
-            <span class="badge">100&ndash;150 W&ouml;rter</span>
-            <span class="badge">Niveau: Peter Past</span>
-            <span class="badge">Neurotyp: LRS</span>
+            <span class="badge">100–150 Wörter, Peter Past</span>
+            <span class="badge">LRS</span>
+            <span class="badge">Erzähle eine Geschichte von Liliths Wochenende mit Pino dem</span>
           </div>
         </div>
       </div>
 
+      <!-- Author -->
       <div class="author-line">
         <img class="author-line-avatar" src="../../avatars/peter-past.webp" alt="Peter Past">
         <div class="author-line-info">
@@ -76,35 +97,100 @@
         <span class="author-line-tag">&#10003; F&uuml;r LRS optimiert</span>
       </div>
 
-      <div class="reading-toolbar" role="toolbar" aria-label="Lese-Werkzeuge">
-        <button type="button" class="tool-btn" onclick="cycleFontSize(this)">A&plus; Schrift</button>
-        <button type="button" class="tool-btn active" onclick="toggleBody('dyslexia', this)">&#127859; Lesefreundlich</button>
-        <button type="button" class="tool-btn" onclick="speakStory(this)">&#128266; Vorlesen</button>
-      </div>
-
-      <div class="story-card">
-        <div class="story-text" id="story-text"><p>Li&shy;lith hat&shy;te zwei gan&shy;ze Ta&shy;ge frei.<br>Ihr be&shy;ster Freund Pi&shy;no war zu Be&shy;such.</p>
-<p>Pi&shy;no war ein klei&shy;ner Pin&shy;guin aus Stoff.<br>Li&shy;lith lieb&shy;te ihn &uuml;ber al&shy;les.</p>
-<p>Am A&shy;bend sa&szlig;&shy;en sie auf dem So&shy;fa.<br>Sie schau&shy;ten ei&shy;ne gro&szlig;&shy;e Show im Fern&shy;se&shy;hen.</p>
-<p>Dort san&shy;gen vie&shy;le Leu&shy;te aus fer&shy;nen L&auml;n&shy;dern.<br>Die Mu&shy;sik war laut und die Lich&shy;ter wa&shy;ren bunt.</p>
-<p>Am n&auml;ch&shy;sten Mor&shy;gen weck&shy;te sie die Son&shy;ne.<br>Sie gin&shy;gen zu&shy;sam&shy;men nach drau&szlig;&shy;en in den Gar&shy;ten.</p>
-<p>Li&shy;lith nahm ih&shy;ren neu&shy;en Pfeil und den Bo&shy;gen.<br>Sie ziel&shy;te ganz ge&shy;nau auf die run&shy;de Schei&shy;be.</p>
-<p>Der Pfeil flog wie ein Vo&shy;gel durch die Luft.<br>Er traf die ro&shy;te Mit&shy;te mit ei&shy;nem lei&shy;sen Ton.</p>
-<p>Da&shy;nach ruh&shy;ten sie sich im Haus ein we&shy;nig aus.<br>Li&shy;lith hol&shy;te ih&shy;re Switch und star&shy;te&shy;te ein Spiel.</p>
-<p>Sie spiel&shy;ten lan&shy;ge mit dem ro&shy;sa Ball Kir&shy;by.<br>Er sprang hoch und sam&shy;mel&shy;te vie&shy;le Ster&shy;ne ein.</p>
-<p>Die frei&shy;en Ta&shy;ge mit Pi&shy;no wa&shy;ren sehr sch&ouml;n.<br>Am En&shy;de war Li&shy;lith gl&uuml;ck&shy;lich und sehr m&uuml;&shy;de.</p></div>
-      </div>
-
-      <div class="survey">
-        <strong>Hat dir die Geschichte gefallen?</strong>
-        <div class="vote-wrap">
-          <button type="button" class="vote-btn" onclick="alert('🎉 Danke!')" aria-label="Daumen hoch">&#128077;</button>
-          <button type="button" class="vote-btn" onclick="alert('😢 Schade')" aria-label="Daumen runter">&#128078;</button>
+      <!-- Lese-Toolbar (3 Gruppen: Text / Ansicht / Extras) -->
+      <div class="reading-toolbar grouped" id="toolbar" role="toolbar" aria-label="Lese-Werkzeuge">
+        <div class="toolbar-group group-text">
+          <div class="toolbar-group-label">Text</div>
+          <div class="toolbar-group-buttons">
+            <button type="button" class="tool-btn" onclick="toggleSummaryMode()" id="btn-summary" aria-label="Einfache Sprache">&#128214; Einfach</button>
+            <button type="button" class="tool-btn" onclick="toggleSyllables()" id="btn-syllables" aria-label="Silbentrennung">&#9986;&#65039; Silben</button>
+            <button type="button" class="tool-btn" onclick="toggleEmojis()" id="btn-emojis" aria-label="Gef&uuml;hle mit Emojis">&#128522; Emojis</button>
+          </div>
+        </div>
+        <div class="toolbar-group group-view">
+          <div class="toolbar-group-label">Ansicht</div>
+          <div class="toolbar-group-buttons">
+            <button type="button" class="tool-btn" onclick="toggleViewMode()" id="view-toggle-btn" aria-label="Text in H&auml;ppchen">&#129513; H&auml;ppchen</button>
+            <button type="button" class="tool-btn" onclick="toggleLeselinien()" id="btn-leselinien" aria-label="Leselinien">&#128207; Linien</button>
+            <button type="button" class="tool-btn" onclick="toggleFahrplan()" id="btn-fahrplan" aria-label="Fahrplan">&#128506;&#65039; Fahrplan</button>
+            <div class="font-size-control">
+              <button type="button" class="tool-btn" onclick="changeFontSize(-2)" aria-label="Schrift kleiner">A&minus;</button>
+              <button type="button" class="tool-btn" onclick="changeFontSize(2)" aria-label="Schrift gr&ouml;&szlig;er">A&plus;</button>
+            </div>
+          </div>
+        </div>
+        <div class="toolbar-group group-extra">
+          <div class="toolbar-group-label">Extras</div>
+          <div class="toolbar-group-buttons">
+            <button type="button" class="tool-btn" onclick="toggleTTS()" id="btn-tts" aria-label="Vorlesen">&#128266; Vorlesen</button>
+            <button type="button" class="tool-btn" onclick="toggleWordReader()" id="btn-word-reader" aria-label="W&ouml;rter h&ouml;ren">&#128066; W&ouml;rter h&ouml;ren</button>
+            <button type="button" class="tool-btn" onclick="toggleDyslexia(this)" aria-label="Lesefreundliche Schrift">&#128150; Lesefreundlich</button>
+            <button type="button" class="tool-btn" onclick="toggleContrast(this)" aria-label="Hoher Kontrast">&#127769; Kontrast</button>
+          </div>
         </div>
       </div>
 
+      <!-- Story Text (wird von story-scripts.js aus rawStory gerendert) -->
+      <div class="story-card">
+        <div id="full-text-view" class="story-text"></div>
+        <div id="chunk-view" class="story-text hidden">
+          <div class="adhs-progress-bar"><div class="adhs-progress-bar-fill" id="adhs-progress-fill" style="width:0%"></div></div>
+          <div id="chunk-display"></div>
+          <div id="swipe-hint" class="swipe-hint" style="display:none;">&larr; wischen zum Bl&auml;ttern &rarr;</div>
+          <div class="chunk-controls">
+            <button type="button" class="tool-btn" onclick="prevChunk()">&larr; Zur&uuml;ck</button>
+            <div id="chunk-progress" class="progress-ring" style="--p: 0%;">1/1</div>
+            <button type="button" class="tool-btn" onclick="nextChunk()" id="btn-next-chunk">Weiter &rarr;</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Activity Hub -->
+      <div class="activity-hub" id="activity-hub">
+        <h2 class="activity-hub-title">&#127918; Spielzeit!</h2>
+        <div class="activity-tabs" role="tablist" aria-label="Spielformate">
+          <button type="button" class="activity-tab active" role="tab" aria-selected="true" aria-controls="panel-quiz" data-tab="quiz" onclick="switchActivityTab('quiz')">&#129504; Quiz</button>
+          <button type="button" class="activity-tab" role="tab" aria-selected="false" aria-controls="panel-weiterdenken" data-tab="weiterdenken" onclick="switchActivityTab('weiterdenken')">&#127775; Weiterdenken</button>
+          <button type="button" class="activity-tab" role="tab" aria-selected="false" aria-controls="panel-schatz" data-tab="schatz" onclick="switchActivityTab('schatz')">&#128269; Schatz</button>
+          <button type="button" class="activity-tab" role="tab" aria-selected="false" aria-controls="panel-wortschatz" data-tab="wortschatz" onclick="switchActivityTab('wortschatz')">&#128218; Wortschatz</button>
+        </div>
+        <div id="panel-quiz" class="activity-panel active" role="tabpanel">
+          <div id="quiz-wrapper"></div>
+        </div>
+        <div id="panel-weiterdenken" class="activity-panel" role="tabpanel">
+          <p class="weitererzaehlen-intro">Hier gibt es kein richtig oder falsch &mdash; w&auml;hle, was dir am besten gef&auml;llt!</p>
+          <div id="weitererzaehlen-wrapper" class="weitererzaehlen-cards"></div>
+          <div class="klassen-hinweis">
+            <span class="klassen-hinweis-icon">&#128105;&#8205;&#127979;</span>
+            <div>
+              <strong>Tipp f&uuml;r die Klasse:</strong> Stimmt per Handzeichen ab &mdash; welche Fortsetzung findet ihr am sch&ouml;nsten? Danach k&ouml;nnt ihr die gew&auml;hlte Fortsetzung gemeinsam selbst weiterschreiben.
+            </div>
+          </div>
+        </div>
+        <div id="panel-schatz" class="activity-panel" role="tabpanel"></div>
+        <div id="panel-wortschatz" class="activity-panel" role="tabpanel">
+          <div id="wortschatz-wrapper" class="wortschatz-cards"></div>
+        </div>
+      </div>
+
+      <!-- Survey -->
+      <div class="survey">
+        <div class="survey-title">Hat dir die Geschichte gefallen?</div>
+        <div class="vote-wrap">
+          <button type="button" class="vote-btn" onclick="vote('up')" aria-label="Daumen hoch">&#128077;</button>
+          <button type="button" class="vote-btn" onclick="vote('down')" aria-label="Daumen runter">&#128078;</button>
+        </div>
+      </div>
+
+      <!-- Related -->
+      <div class="related">
+        <h2 class="related-title">Das k&ouml;nnte dir auch gefallen</h2>
+        <div class="related-grid"></div>
+      </div>
+
+      <!-- Back -->
       <p class="text-center">
-        <a href="../demo.html" class="btn btn-secondary">&larr; Zu allen Demo-Texten</a>
+        <a href="../demo.html" class="btn btn-secondary">&larr; Zur Bibliothek</a>
       </p>
 
     </article>
@@ -172,6 +258,32 @@
   </div>
 </footer>
 
-  <script src="story-scripts.js?v=4"></script>
+  <!-- ============================================================
+       DYNAMISCHE INJEKTION — Werte werden von der n8n-Pipeline befüllt
+       (assemble-html: RAW_*-Platzhalter sind JSON.stringify'd Strings,
+       *_JSON-Platzhalter sind serialisierte Objekte/Arrays)
+       ============================================================ -->
+  <script>
+    let rawStory = "Li-lith hat-te zwei gan-ze Ta-ge frei.\nIhr be-ster Freund Pi-no war zu Be-such.\n\nPi-no war ein klei-ner Pin-guin aus Stoff.\nLi-lith lieb-te ihn ue-ber al-les.\n\nAm A-bend sas-sen sie auf dem So-fa.\nSie schau-ten ei-ne gros-se Show im Fern-se-hen.\n\nDort san-gen vie-le Leu-te aus fer-nen Laen-dern.\nDie Mu-sik war laut und die Lich-ter wa-ren bunt.\n\nAm naech-sten Mor-gen weck-te sie die Son-ne.\nSie gin-gen zu-sam-men nach draus-sen in den Gar-ten.\n\nLi-lith nahm ih-ren neuen Pfeil und den Bo-gen.\nSie ziel-te ganz ge-nau auf die run-de Schei-be.\n\nDer Pfeil flog wie ein Vo-gel durch die Luft.\nEr traf die ro-te Mit-te mit ei-nem lei-sen Ton.\n\nDa-nach ruh-ten sie sich im Haus ein we-nig aus.\nLi-lith hol-te ih-re Switch und star-te-te ein Spiel.\n\nSie spiel-ten lan-ge mit dem ro-sa Ball Kir-by.\nEr sprang hoch und sam-mel-te vie-le Ster-ne ein.\n\nDie freien Ta-ge mit Pi-no wa-ren sehr schoen.\nAm En-de war Li-lith glueck-lich und sehr mue-de.";
+    let emojiStory = "Li-lith hat-te zwei gan-ze Ta-ge frei.\nIhr be-ster Freund Pi-no war zu Be-such.\n\nPi-no war ein klei-ner Pin-guin aus Stoff.\nLi-lith lieb-te 🥰 ihn ue-ber al-les.\n\nAm A-bend sas-sen sie auf dem So-fa.\nSie schau-ten ei-ne gros-se Show im Fern-se-hen.\n\nDort san-gen vie-le Leu-te aus fer-nen Laen-dern.\nDie Mu-sik war laut und die Lich-ter wa-ren bunt.\n\nAm naech-sten Mor-gen weck-te sie die Son-ne.\nSie gin-gen zu-sam-men nach draus-sen in den Gar-ten.\n\nLi-lith nahm ih-ren neuen Pfeil und den Bo-gen.\nSie ziel-te ganz ge-nau auf die run-de Schei-be.\n\nDer Pfeil flog wie ein Vo-gel durch die Luft.\nEr traf die ro-te Mit-te mit ei-nem lei-sen Ton.\n\nDa-nach ruh-ten sie sich im Haus ein we-nig aus.\nLi-lith hol-te ih-re Switch und star-te-te ein Spiel.\n\nSie spiel-ten lan-ge mit dem ro-sa Ball Kir-by.\nEr sprang hoch und sam-mel-te vie-le Ster-ne ein.\n\nDie freien Ta-ge mit Pi-no wa-ren sehr schoen.\nAm En-de war Li-lith glueck-lich 😊 und sehr mue-de.";
+    let rawSummary = "Lilith und ihr Pinguin Pino hatten zwei tolle Tage zusammen. Sie sahen eine bunte Musik-Show, schossen im Garten mit Pfeil und Bogen und spielten ein lustiges Spiel auf der Switch. Es war eine sehr schöne Zeit für die beiden Freunde.";
+    let emojiSummary = "Li-lith und ihr Pin-guin Pi-no hat-ten zwei tol-le Ta-ge zu-sam-men. Sie sa-hen ei-ne bun-te Mu-sik-Show, schos-sen im Gar-ten mit Pfeil und Bo-gen und spiel-ten ein lu-sti-ges Spiel auf der Switch. Es war ei-ne sehr schö-ne Zeit für die bei-den Freun-de.";
+    const quizData = [{"q":"Was für ein Tier war Liliths Freund Pino?","a":["Ein kleiner Pinguin.","Ein lustiger Affe.","Ein treuer Hund."],"correct":0},{"q":"Was haben Lilith und Pino am nächsten Morgen im Garten gemacht?","a":["Sie haben Blumen gegossen.","Sie haben mit Pfeil und Bogen geschossen.","Sie haben eine Sandburg gebaut."],"correct":1},{"q":"Welches Spiel haben Lilith und Pino auf der Switch gespielt?","a":["Ein Spiel mit dem rosa Ball Kirby.","Ein Spiel, bei dem man Schätze sucht.","Ein Spiel mit einem schnellen Rennauto."],"correct":0}];
+    const rawDictionaryEntry = [];
+    const weitererzaehlenData = {"frage":"Wie geht es weiter?","optionen":[{"emoji":"😴","titel":"Süße Träume","text":"Li-lith kuschelte sich mit Pino in ihr Bett. Die Lichter der Stadt schimmerten leise herein. Bald schlief sie tief und träumte von fliegenden Pfeilen und bunten Sternen, die Kirby sammelte. Pino lag fest an ihrer Seite und passte auf alle Geheimnisse der Nacht auf."},{"emoji":"📦","titel":"Geheimes Paket","text":"Als Li-lith am nächsten Morgen aufwachte, lag ein kleines Paket vor ihrer Tür. Es war mit einem bunten Band verschnürt und roch nach Abenteuer. „Pino, schau mal!“, flüsterte sie aufgeregt. Was mochte wohl darin sein? Wer hatte es geschickt? Ihre Neugier war riesengroß."},{"emoji":"🐧💬","titel":"Pino Spricht!","text":"Gerade als Li-lith die Augen schließen wollte, hörte sie ein leises „Li-lith?“. Sie schrak hoch. Hatte sie sich das nur eingebildet? Dann hörte sie es wieder, diesmal deutlicher: „Ich bin auch müde, aber ich muss dir noch etwas erzählen...“ Li-lith rieb sich die Augen und sah Pino an, der sie mit seinen Knopfaugen anblickte."}]};
+    const schatzsucheData = {"thema":"Dinge, die leuchten","emoji":"✨","ziel":3,"einleitung":"Überall in der Geschichte versteckt sich ein leuchtender Schatz. Finde drei Dinge, die leuchten — einfach antippen!","schatzwoerter":["show","fernsehen","lichter","bunt","sonne","switch","spiel","sterne","glücklich"]};
+  </script>
+  <script src="story-scripts.js?v=3"></script>
+
+  <!-- Tafel-Modus: Story-Bilder als versteckter Pool (werden im Tafel-Modus in die Stage links gepoolt) -->
+  <div hidden aria-hidden="true" class="tafel-image-pool">
+    <img src="https://rala84.github.io/lesekumpel/bilder/liliths-wochenende-mit-pino-163g-1.png" alt="Liliths Wochenende mit Pino" class="hero-image" onerror="this.style.display='none'">
+    <img src="https://rala84.github.io/lesekumpel/bilder/liliths-wochenende-mit-pino-163g-2.png" alt="Liliths Wochenende mit Pino" class="hero-image" onerror="this.style.display='none'">
+    <img src="https://rala84.github.io/lesekumpel/bilder/liliths-wochenende-mit-pino-163g-3.png" alt="Liliths Wochenende mit Pino" class="hero-image" onerror="this.style.display='none'">
+  </div>
+
+  <!-- Tafel-Modus: imagePositions auf window expose, dann tafel.js initialisieren -->
+  <script>window.imagePositions = [];</script>
+  <script src="../tafel.js?v=1" defer></script>
 </body>
 </html>

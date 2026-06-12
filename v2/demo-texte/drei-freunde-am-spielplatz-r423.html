@@ -7,15 +7,15 @@
        Lesekumpel v2 — Story-Template (Text-Geschichten)
        Output-Ziel: v2/demo-texte/<slug>.html
        Alle Pfade sind relativ zum Output-Ziel (eine Ebene unter v2/),
-       NICHT zum Template-Speicherort. {{PLACEHOLDER}} werden von der
+       NICHT zum Template-Speicherort.  werden von der
        n8n-Pipeline befüllt.
        ============================================================ -->
-  <title>{{STORY_TITLE}} — Lesekumpel</title>
-  <meta name="description" content="{{META_DESCRIPTION}}">
-  <meta name="author" content="{{PERSONA_NAME}}">
-  <meta name="date" content="{{STORY_DATE}}">
-  <meta name="reading-level" content="{{READING_LEVEL_LABEL}}">
-  <meta name="neurotype" content="{{NEUROTYP}}">
+  <title>Drei Freunde am Spielplatz — Lesekumpel</title>
+  <meta name="description" content="Lesetext für 8–9-Jährige (Autismus-optimiert): Drei Freunde am Spielplatz. Lena saß auf der Schaukel und war nervös. Tom und Yara kamen zu ihr. Tom war neugi…">
+  <meta name="author" content="Stella Stimmenreich">
+  <meta name="date" content="2026-05-06T13:11:40.589Z">
+  <meta name="reading-level" content="Stella Stimmenreich">
+  <meta name="neurotype" content="Autismus">
   <meta name="demo" content="true">
 
   <link rel="icon" type="image/webp" href="../../Konzept_Rebranding/logo-lesekumpel-512.webp">
@@ -75,26 +75,26 @@
 
       <!-- Hero -->
       <div class="story-hero">
-        <img class="story-hero-img" src="{{HERO_IMAGE_URL}}" alt="" aria-hidden="true" onerror="this.style.display='none'">
+        <img class="story-hero-img" src="https://rala84.github.io/lesekumpel/bilder/drei-freunde-am-spielplatz-r423-1.png" alt="" aria-hidden="true" onerror="this.style.display='none'">
         <div class="story-hero-overlay" aria-hidden="true"></div>
         <div class="story-hero-text">
-          <h1 class="story-title-h1">{{STORY_TITLE}}</h1>
+          <h1 class="story-title-h1">Drei Freunde am Spielplatz</h1>
           <div class="story-hero-meta">
-            <span class="badge">{{READING_LEVEL_LABEL}}</span>
-            <span class="badge">{{NEUROTYP}}</span>
-            <span class="badge">{{GENRE}}</span>
+            <span class="badge">Stella Stimmenreich</span>
+            <span class="badge">Autismus</span>
+            
           </div>
         </div>
       </div>
 
       <!-- Author -->
       <div class="author-line">
-        <img class="author-line-avatar" src="{{PERSONA_IMG_URL}}" alt="{{PERSONA_NAME}}">
+        <img class="author-line-avatar" src="../../avatars/stella-stimmenreich.webp" alt="Stella Stimmenreich">
         <div class="author-line-info">
           <div class="author-line-credit">geschrieben von</div>
-          <div class="author-line-name">{{PERSONA_NAME}}</div>
+          <div class="author-line-name">Stella Stimmenreich</div>
         </div>
-        <span class="author-line-tag">&#10003; F&uuml;r {{NEUROTYP}} optimiert</span>
+        <span class="author-line-tag">&#10003; F&uuml;r Autismus optimiert</span>
       </div>
 
       <!-- Lese-Toolbar (3 Gruppen: Text / Ansicht / Extras) -->
@@ -185,7 +185,7 @@
       <!-- Related -->
       <div class="related">
         <h2 class="related-title">Das k&ouml;nnte dir auch gefallen</h2>
-        <div class="related-grid">{{RELATED_STORIES_HTML}}</div>
+        <div class="related-grid"></div>
       </div>
 
       <!-- Back -->
@@ -264,24 +264,26 @@
        *_JSON-Platzhalter sind serialisierte Objekte/Arrays)
        ============================================================ -->
   <script>
-    let rawStory = {{RAW_STORY_TEXT}};
-    let emojiStory = {{EMOJI_STORY_TEXT}};
-    let rawSummary = {{RAW_SUMMARY_TEXT}};
-    let emojiSummary = {{EMOJI_SUMMARY_TEXT}};
-    const quizData = {{QUIZ_DATA_JSON}};
-    const rawDictionaryEntry = {{DICTIONARY_JSON}};
-    const weitererzaehlenData = {{WEITERERZAEHLEN_JSON}};
-    const schatzsucheData = {{SCHATZSUCHE_JSON}};
+    let rawStory = "Le-na saß auf der Schau-kel und war ner-vös. Tom und Ya-ra ka-men zu ihr.\nTom war neu-gie-rig. Er frag-te Le-na: Wel-ches Buch liest du?\nLe-na hielt ihr Buch fest. Sie ant-wor-te-te lei-se: Es ist ein Buch ü-ber ei-nen schüch-ter-nen Ha-sen.\nYa-ra war mu-tig. Sie sag-te mit lau-ter Stim-me: Ich le-se ein Buch ü-ber ei-nen Dra-chen, der Feuer spuckt! Der Dra-che hat vor nichts Angst.\nTom fand das span-nend. Er frag-te Ya-ra neu-gie-rig: Kann der Dra-che auch flie-gen?\nYa-ra nick-te. Sie erk-lär-te stolz: Ja, er fliegt ü-ber ho-he Ber-ge.\nTom schau-te wie-der zu Le-na. Er woll-te Le-na hel-fen, sich woh-ler zu füh-len. Er sag-te freund-lich: Er-zähl uns von dei-nem Ha-sen, Le-na.\nLe-na war im-mer noch ner-vös. Sie flü-ster-te: Der Ha-se traut sich nicht aus sei-nem Bau.\nYa-ra lä-chel-te Le-na an. Ya-ra sag-te er-mu-ti-gend: Viel-leicht wird der Ha-se am En-de auch mu-tig, so wie du jetzt.\nLe-na dach-te da-rü-ber nach. Dann sag-te Le-na et-was lau-ter: Ja, am En-de fin-det der Ha-se ei-nen Freund und ist glück-lich.\nTom klatsch-te in die Hän-de. Er sag-te fröh-lich: Das ist ei-ne schö-ne Ge-schich-te. Mein Buch han-delt von ei-nem De-tek-tiv, der Rät-sel löst.\nAl-le drei wa-ren zuf-rie-den. Sie wa-ren stolz, weil sie ih-re Lieb-lings-bü-cher ge-teilt hat-ten.\nDann rief Ya-ras Mut-ter. Es war Zeit, nach Hau-se zu ge-hen.\nDie Freun-de wa-ren trau-rig. Tom sag-te mit trau-ri-ger Stim-me: Scha-de, dass wir schon ge-hen müs-sen.\nLe-na sag-te lei-se: Ja, das ist scha-de.\nYa-ra versp-rach: Wir tref-fen uns mor-gen wie-der.";
+    let emojiStory = "Le-na saß auf der Schau-kel und war ner-vös 😰. Tom und Ya-ra ka-men zu ihr.\nTom war neu-gie-rig 🤔. Er frag-te Le-na: Wel-ches Buch liest du?\nLe-na hielt ihr Buch fest. Sie ant-wor-te-te lei-se: Es ist ein Buch ü-ber ei-nen schüch-ter-nen 😰 Ha-sen.\nYa-ra war mu-tig 💪. Sie sag-te mit lau-ter Stim-me: Ich le-se ein Buch ü-ber ei-nen Dra-chen, der Feuer spuckt! Der Dra-che hat vor nichts Angst.\nTom fand das span-nend 😮. Er frag-te Ya-ra neu-gie-rig: Kann der Dra-che auch flie-gen?\nYa-ra nick-te. Sie erk-lär-te stolz 😏: Ja, er fliegt ü-ber ho-he Ber-ge.\nTom schau-te wie-der zu Le-na. Er woll-te Le-na hel-fen, sich woh-ler zu füh-len. Er sag-te freund-lich 😊: Er-zähl uns von dei-nem Ha-sen, Le-na.\nLe-na war im-mer noch ner-vös. Sie flü-ster-te: Der Ha-se traut sich nicht aus sei-nem Bau.\nYa-ra lä-chel-te 😊 Le-na an. Ya-ra sag-te er-mu-ti-gend 💪: Viel-leicht wird der Ha-se am En-de auch mu-tig, so wie du jetzt.\nLe-na dach-te da-rü-ber nach 🤔. Dann sag-te Le-na et-was lau-ter: Ja, am En-de fin-det der Ha-se ei-nen Freund und ist glück-lich 😊.\nTom klatsch-te in die Hän-de. Er sag-te fröh-lich 😊: Das ist ei-ne schö-ne Ge-schich-te. Mein Buch han-delt von ei-nem De-tek-tiv, der Rät-sel löst.\nAl-le drei wa-ren zuf-rie-den 😏. Sie wa-ren stolz, weil sie ih-re Lieb-lings-bü-cher ge-teilt hat-ten.\nDann rief Ya-ras Mut-ter. Es war Zeit, nach Hau-se zu ge-hen.\nDie Freun-de wa-ren trau-rig 😢. Tom sag-te mit trau-ri-ger 😢 Stim-me: Scha-de 😢, dass wir schon ge-hen müs-sen.\nLe-na sag-te lei-se: Ja, das ist scha-de 😢.\nYa-ra versp-rach: Wir tref-fen uns mor-gen wie-der.";
+    let rawSummary = "Lena, Tom und Yara treffen sich und sprechen über ihre Lieblingsbücher, wobei jede Figur ihren Charakter zeigt. Lena überwindet ihre Nervosität mit der Hilfe ihrer Freunde, und am Ende sind alle stolz, ihre Geschichten geteilt zu haben. Sie sind traurig, als sie sich verabschieden müssen.";
+    let emojiSummary = "Le-na, Tom und Ya-ra tref-fen sich und spre-chen ü-ber ih-re Lieb-lings-bü-cher, wo-bei je-de Fi-gur ih-ren Cha-rak-ter zeigt. Le-na ü-ber-win-det ih-re Ner-vo-si-tät 😰 mit der Hil-fe ih-rer Freun-de, und am En-de sind al-le stolz 😏, ih-re Ge-schich-ten ge-teilt zu ha-ben. Sie sind trau-rig 😢, als sie sich ve-rab-schie-den müs-sen.";
+    const quizData = [{"q":"Wovon handelt Lenas Buch?","a":["Von einem schüchternen Hasen.","Von einem mutigen Drachen.","Von einem schlauen Detektiv."],"correct":0},{"q":"Was kann der Drache in Yaras Buch?","a":["Er kann ganz schnell rennen.","Er kann Feuer spucken und fliegen.","Er kann unsichtbar werden."],"correct":1},{"q":"Warum wollte Tom, dass Lena von ihrem Buch erzählt?","a":["Weil er Lena helfen wollte, sich wohler zu fühlen.","Weil er das Buch ausleihen wollte.","Weil er keine eigene Geschichte hatte."],"correct":0}];
+    const rawDictionaryEntry = [{"wort":"ner-vös","silben":"ner-vös","bedeutung":"Eine Person ist aufgeregt oder ängstlich."},{"wort":"neu-gie-rig","silben":"neu-gie-rig","bedeutung":"Jemand möchte etwas wissen oder entdecken."},{"wort":"schüch-tern","silben":"schüch-tern","bedeutung":"Jemand ist sehr vorsichtig und spricht nicht gerne mit anderen."},{"wort":"er-mu-ti-gend","silben":"er-mu-ti-gend","bedeutung":"Worte, die jemandem Mut machen."},{"wort":"De-tek-tiv","silben":"De-tek-tiv","bedeutung":"Eine Person, die Rätsel löst und Geheimnisse aufdeckt."}];
+    const weitererzaehlenData = {"frage":"Wie geht es weiter?","optionen":[{"emoji":"🍂","titel":"Das geheimnisvolle Blatt","text":"Als sie sich verabschiedeten, sah Tom etwas Glänzendes unter der Schaukel. Es war kein gewöhnliches Blatt, sondern ein Pergamentstück mit einer seltsamen Zeichnung darauf. Es sah aus wie eine kleine Karte! \"Schaut mal!\", rief Tom aufgeregt. \"Das ist ja wie in meinem Detektivbuch! Ein echtes Rätsel!\" Lena und Yara beugten sich neugierig darüber."},{"emoji":"💭","titel":"Gedanken vor dem Schlafengehen","text":"Auf dem Heimweg dachte Lena immer noch an ihren Hasen. Würde er wirklich mutiger werden? Sie stellte sich vor, wie er aus seinem Bau huschte und neue Freunde fand. Vielleicht könnte sie ja selbst ein bisschen wie der Hase sein, der am Ende mutig wird. Mit einem Lächeln auf den Lippen ging sie ins Bett und träumte von Büchern und Abenteuern."},{"emoji":"✨","titel":"Die magische Spur","text":"Gerade als Yara und Tom um die Ecke bogen, sahen sie etwas Unglaubliches. Hoch am Himmel segelte nicht etwa ein Vogel, sondern eine riesige, glänzende Feder, die im Abendlicht funkelte. Sie war so groß wie Yaras Hand! \"Das muss die Feder von einem Drachen sein!\", flüsterte Yara aufgeregt. Tom riss die Augen auf. Hatte der Drache aus Yaras Buch etwa ein Zeichen hinterlassen?"}]};
+    const schatzsucheData = {"thema":"Gefühle","emoji":"😊","ziel":3,"einleitung":"Überall in der Geschichte verstecken sich Wörter, die zeigen, wie sich jemand fühlt. Finde drei Gefühls-Wörter!","schatzwoerter":["nervös","neugierig","schüchtern","mutig","spannend","freundlich","stolz","fröhlich","glücklich","zufrieden","traurig","angst","wohl"]};
   </script>
   <script src="story-scripts.js?v=3"></script>
 
   <!-- Tafel-Modus: Story-Bilder als versteckter Pool (werden im Tafel-Modus in die Stage links gepoolt) -->
   <div hidden aria-hidden="true" class="tafel-image-pool">
-    {{STORY_IMAGES_HTML}}
+    <img src="https://rala84.github.io/lesekumpel/bilder/drei-freunde-am-spielplatz-r423-1.png" alt="Drei Freunde am Spielplatz" class="hero-image" onerror="this.style.display='none'">
+    <img src="https://rala84.github.io/lesekumpel/bilder/drei-freunde-am-spielplatz-r423-2.png" alt="Drei Freunde am Spielplatz" class="hero-image" onerror="this.style.display='none'">
+    <img src="https://rala84.github.io/lesekumpel/bilder/drei-freunde-am-spielplatz-r423-3.png" alt="Drei Freunde am Spielplatz" class="hero-image" onerror="this.style.display='none'">
   </div>
 
   <!-- Tafel-Modus: imagePositions auf window expose, dann tafel.js initialisieren -->
-  <script>window.imagePositions = {{IMAGE_POSITIONS_JSON}};</script>
+  <script>window.imagePositions = [];</script>
   <script src="../tafel.js?v=1" defer></script>
 </body>
 </html>

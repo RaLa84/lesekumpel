@@ -7,15 +7,15 @@
        Lesekumpel v2 — Story-Template (Text-Geschichten)
        Output-Ziel: v2/demo-texte/<slug>.html
        Alle Pfade sind relativ zum Output-Ziel (eine Ebene unter v2/),
-       NICHT zum Template-Speicherort. {{PLACEHOLDER}} werden von der
+       NICHT zum Template-Speicherort.  werden von der
        n8n-Pipeline befüllt.
        ============================================================ -->
-  <title>{{STORY_TITLE}} — Lesekumpel</title>
-  <meta name="description" content="{{META_DESCRIPTION}}">
-  <meta name="author" content="{{PERSONA_NAME}}">
-  <meta name="date" content="{{STORY_DATE}}">
-  <meta name="reading-level" content="{{READING_LEVEL_LABEL}}">
-  <meta name="neurotype" content="{{NEUROTYP}}">
+  <title>Till macht Ferien — Lesekumpel</title>
+  <meta name="description" content="Lesetext für 5–6-Jährige (Autismus-optimiert): Till macht Ferien. Till macht Ferien. Er ist auf einem Bauernhof. Till sieht ein Tier. Es ist ein Affe. Der Af…">
+  <meta name="author" content="Pip Punkt">
+  <meta name="date" content="2026-05-06T07:04:17.958Z">
+  <meta name="reading-level" content="Pip Punkt">
+  <meta name="neurotype" content="Autismus">
   <meta name="demo" content="true">
 
   <link rel="icon" type="image/webp" href="../../Konzept_Rebranding/logo-lesekumpel-512.webp">
@@ -75,26 +75,26 @@
 
       <!-- Hero -->
       <div class="story-hero">
-        <img class="story-hero-img" src="{{HERO_IMAGE_URL}}" alt="" aria-hidden="true" onerror="this.style.display='none'">
+        <img class="story-hero-img" src="https://rala84.github.io/lesekumpel/bilder/till-macht-ferien-rm20-1.png" alt="" aria-hidden="true" onerror="this.style.display='none'">
         <div class="story-hero-overlay" aria-hidden="true"></div>
         <div class="story-hero-text">
-          <h1 class="story-title-h1">{{STORY_TITLE}}</h1>
+          <h1 class="story-title-h1">Till macht Ferien</h1>
           <div class="story-hero-meta">
-            <span class="badge">{{READING_LEVEL_LABEL}}</span>
-            <span class="badge">{{NEUROTYP}}</span>
-            <span class="badge">{{GENRE}}</span>
+            <span class="badge">Pip Punkt</span>
+            <span class="badge">Autismus</span>
+            
           </div>
         </div>
       </div>
 
       <!-- Author -->
       <div class="author-line">
-        <img class="author-line-avatar" src="{{PERSONA_IMG_URL}}" alt="{{PERSONA_NAME}}">
+        <img class="author-line-avatar" src="../../avatars/pip-punkt.webp" alt="Pip Punkt">
         <div class="author-line-info">
           <div class="author-line-credit">geschrieben von</div>
-          <div class="author-line-name">{{PERSONA_NAME}}</div>
+          <div class="author-line-name">Pip Punkt</div>
         </div>
-        <span class="author-line-tag">&#10003; F&uuml;r {{NEUROTYP}} optimiert</span>
+        <span class="author-line-tag">&#10003; F&uuml;r Autismus optimiert</span>
       </div>
 
       <!-- Lese-Toolbar (3 Gruppen: Text / Ansicht / Extras) -->
@@ -185,7 +185,7 @@
       <!-- Related -->
       <div class="related">
         <h2 class="related-title">Das k&ouml;nnte dir auch gefallen</h2>
-        <div class="related-grid">{{RELATED_STORIES_HTML}}</div>
+        <div class="related-grid"></div>
       </div>
 
       <!-- Back -->
@@ -264,24 +264,24 @@
        *_JSON-Platzhalter sind serialisierte Objekte/Arrays)
        ============================================================ -->
   <script>
-    let rawStory = {{RAW_STORY_TEXT}};
-    let emojiStory = {{EMOJI_STORY_TEXT}};
-    let rawSummary = {{RAW_SUMMARY_TEXT}};
-    let emojiSummary = {{EMOJI_SUMMARY_TEXT}};
-    const quizData = {{QUIZ_DATA_JSON}};
-    const rawDictionaryEntry = {{DICTIONARY_JSON}};
-    const weitererzaehlenData = {{WEITERERZAEHLEN_JSON}};
-    const schatzsucheData = {{SCHATZSUCHE_JSON}};
+    let rawStory = "Till macht Fe-rien.\nEr ist auf ei-nem Bauern-hof.\nTill sieht ein Tier.\nEs ist ein Af-fe.\n\nDer Af-fe isst ei-ne Ba-na-ne.\nTill ist ü-ber-rascht.\nEin Af-fe auf dem Hof ist neu.\n\nTill fin-det das lu-stig.\nEr mag den Af-fen.";
+    let emojiStory = "Till macht Fe-rien.\nEr ist auf ei-nem Bauern-hof.\nTill sieht ein Tier.\nEs ist ein Af-fe.\n\nDer Af-fe isst ei-ne Ba-na-ne.\nTill ist ü-ber-rascht 😮.\nEin Af-fe auf dem Hof ist neu.\n\nTill fin-det das lu-stig 😊.\nEr mag 🥰 den Af-fen.";
+    let rawSummary = "Till ist im Urlaub auf einem Bauernhof. Er sieht dort einen Affen statt einer Kuh. Das ist neu für Till und er findet es lustig.";
+    let emojiSummary = "";
+    const quizData = [{"q":"Wo macht Till Ferien?","a":["Im Zoo","Auf einem Bauernhof","In einem Hotel"],"correct":1},{"q":"Welches Tier sieht Till?","a":["Ein Pferd","Ein Hund","Einen Affen"],"correct":2},{"q":"Was frisst der Affe?","a":["Eine Banane","Einen Apfel","Gras"],"correct":0}];
+    const rawDictionaryEntry = [{"wort":"Fe-rien","silben":"Fe-rien","bedeutung":"Zeit zum Ausruhen und Spaß haben, nicht in der Schule oder bei der Arbeit."},{"wort":"Bauern-hof","silben":"Bau-ern-hof","bedeutung":"Ein Ort, wo ein Bauer lebt und Tiere wie Kühe, Schweine oder Hühner hält."},{"wort":"Af-fe","silben":"Af-fe","bedeutung":"Ein Tier, das oft auf Bäumen lebt, Bananen isst und lustige Geräusche macht."},{"wort":"ü-ber-rascht","silben":"ü-ber-rascht","bedeutung":"Ein Gefühl, wenn etwas Unerwartetes passiert ist und man staunt."},{"wort":"lu-stig","silben":"lus-tig","bedeutung":"Etwas, das einen zum Lachen bringt oder Freude macht."}];
+    const weitererzaehlenData = {"frage":"Wie geht es weiter?","optionen":[{"emoji":"🐒","titel":"Affe spielt Verstecken","text":"Till lacht und winkt. Der Affe springt flink ins Heu. Till rennt hinterher, will mit ihm spielen."},{"emoji":"🤔","titel":"Woher kommt er?","text":"Till ist sehr überrascht. Wo kommt der Affe her? Er schaut sich um. Gehört er wohl jemandem?"},{"emoji":"🍌","titel":"Affe will mehr!","text":"Der Affe schaut Till frech an. Er zeigt auf Tills Tasche. Will er noch eine Banane?"}]};
+    const schatzsucheData = {"thema":"Tills Erlebnisse","emoji":"😃","ziel":3,"einleitung":"Till erlebt auf dem Bauernhof ganz viel! Finde mindestens drei Wörter, die erzählen, was Till sieht oder fühlt, oder was er erlebt hat.","schatzwoerter":["sieht","tier","affe","banane","bauernhof","hof","überrascht","lustig","mag","neu"]};
   </script>
   <script src="story-scripts.js?v=3"></script>
 
   <!-- Tafel-Modus: Story-Bilder als versteckter Pool (werden im Tafel-Modus in die Stage links gepoolt) -->
   <div hidden aria-hidden="true" class="tafel-image-pool">
-    {{STORY_IMAGES_HTML}}
+    <img src="https://rala84.github.io/lesekumpel/bilder/till-macht-ferien-rm20-1.png" alt="Till macht Ferien" class="hero-image" onerror="this.style.display='none'">
   </div>
 
   <!-- Tafel-Modus: imagePositions auf window expose, dann tafel.js initialisieren -->
-  <script>window.imagePositions = {{IMAGE_POSITIONS_JSON}};</script>
+  <script>window.imagePositions = [];</script>
   <script src="../tafel.js?v=1" defer></script>
 </body>
 </html>

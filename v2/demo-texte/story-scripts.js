@@ -30,13 +30,10 @@ function comingSoon(ev) {
   alert('Diese Funktion kommt bald — komm später wieder vorbei. 🚀');
 }
 
-/* ---------- Daten-Zugriff mit Guards ---------- */
-function g(name, fallback) {
-  try {
-    const v = window[name];
-    return (typeof v === 'undefined' || v === null) ? fallback : v;
-  } catch (e) { return fallback; }
-}
+/* ---------- Daten-Zugriff mit Guards ----------
+   Die Injektion nutzt let/const — die landen NICHT auf window,
+   sind aber im globalen Lexical Scope über Script-Grenzen sichtbar.
+   Deshalb typeof-Checks statt window[name]. */
 
 const LK = {
   story: '',
@@ -754,14 +751,14 @@ function vote(dir) {
 
 function initStoryPage() {
   // 1. Daten einsammeln (Soft-Hyphen-Konvention wie altes Template)
-  LK.story = g('rawStory', '');
-  LK.emojiStory = g('emojiStory', '').replace(/-/g, '­');
-  LK.summary = g('rawSummary', '');
-  LK.emojiSummary = g('emojiSummary', '').replace(/-/g, '­');
-  LK.quiz = g('quizData', []);
-  LK.dictRaw = g('rawDictionaryEntry', []);
-  LK.weiter = g('weitererzaehlenData', null);
-  LK.schatz = g('schatzsucheData', null);
+  LK.story = (typeof rawStory !== 'undefined' && rawStory) ? rawStory : '';
+  LK.emojiStory = ((typeof emojiStory !== 'undefined' && emojiStory) ? emojiStory : '').replace(/-/g, '­');
+  LK.summary = (typeof rawSummary !== 'undefined' && rawSummary) ? rawSummary : '';
+  LK.emojiSummary = ((typeof emojiSummary !== 'undefined' && emojiSummary) ? emojiSummary : '').replace(/-/g, '­');
+  LK.quiz = (typeof quizData !== 'undefined' && quizData) ? quizData : [];
+  LK.dictRaw = (typeof rawDictionaryEntry !== 'undefined' && rawDictionaryEntry) ? rawDictionaryEntry : [];
+  LK.weiter = (typeof weitererzaehlenData !== 'undefined') ? weitererzaehlenData : null;
+  LK.schatz = (typeof schatzsucheData !== 'undefined') ? schatzsucheData : null;
 
   // Dictionary-Parser (Objekt-, "Wort (Def)"- und "Wort: Def"-Formate)
   if (Array.isArray(LK.dictRaw)) {

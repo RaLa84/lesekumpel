@@ -7,15 +7,15 @@
        Lesekumpel v2 — Comic-Template (Bildgeschichten)
        Output-Ziel: v2/comicgeschichten/<slug>.html
        Alle Pfade sind relativ zum Output-Ziel (eine Ebene unter v2/).
-       {{PLACEHOLDER}} werden von der Pipeline bzw. Migration befüllt:
-         {{COMIC_PAGES_JSON}} — [{image, text}] (Seiten des Comics)
+        werden von der Pipeline bzw. Migration befüllt:
+         [{"image": "https://raw.githubusercontent.com/RaLa84/lesekumpel/main/comics/leos-roter-ball-1.png", "text": "Leo ist ein kleiner Junge. Leo geht in den Park."}, {"image": "https://raw.githubusercontent.com/RaLa84/lesekumpel/main/comics/leos-roter-ball-2.png", "text": "Leo sieht einen roten Ball. Der Ball liegt unter einem Baum."}, {"image": "https://raw.githubusercontent.com/RaLa84/lesekumpel/main/comics/leos-roter-ball-3.png", "text": "Leo nimmt den Ball."}, {"image": "https://raw.githubusercontent.com/RaLa84/lesekumpel/main/comics/leos-roter-ball-4.png", "text": "Leo wirft den Ball hoch. Der Ball fliegt weit."}, {"image": "https://raw.githubusercontent.com/RaLa84/lesekumpel/main/comics/leos-roter-ball-5.png", "text": "Leo lacht laut."}, {"image": "https://raw.githubusercontent.com/RaLa84/lesekumpel/main/comics/leos-roter-ball-6.png", "text": "Leo spielt gern Ball. Das macht ihm Spaß."}] — [{image, text}] (Seiten des Comics)
        ============================================================ -->
-  <title>{{STORY_TITLE}} — Lesekumpel</title>
-  <meta name="description" content="{{META_DESCRIPTION}}">
-  <meta name="author" content="{{PERSONA_NAME}}">
-  <meta name="date" content="{{STORY_DATE}}">
-  <meta name="reading-level" content="{{READING_LEVEL_LABEL}}">
-  <meta name="neurotype" content="{{NEUROTYP}}">
+  <title>Leos Roter Ball — Lesekumpel</title>
+  <meta name="description" content="Lesetext für 6–10-Jährige: Leos Roter Ball. Leo ist ein kleiner Junge. Leo geht in den Park. Leo sieht einen roten Ball. Der Ball liegt unter einem Baum. Leo…">
+  <meta name="author" content="Lesekumpel">
+  <meta name="date" content="2026-02-26T12:00:00+02:00">
+  <meta name="reading-level" content="Bildgeschichte">
+  <meta name="neurotype" content="Standard">
   <meta name="demo" content="true">
 
   <link rel="icon" type="image/webp" href="../../Konzept_Rebranding/logo-lesekumpel-512.webp">
@@ -65,10 +65,10 @@
 
       <!-- Titel -->
       <div class="comic-head">
-        <h1>{{STORY_TITLE}}</h1>
+        <h1>Leos Roter Ball</h1>
         <div class="comic-head-meta">
           <span class="badge badge-coral">Comic</span>
-          <span class="badge badge-outline">{{READING_LEVEL_LABEL}}</span>
+          <span class="badge badge-outline">Bildgeschichte</span>
         </div>
       </div>
 
@@ -184,7 +184,7 @@
        DYNAMISCHE INJEKTION — Seiten des Comics
        ============================================================ -->
   <script>
-    const comicPages = {{COMIC_PAGES_JSON}};
+    const comicPages = [{"image": "https://raw.githubusercontent.com/RaLa84/lesekumpel/main/comics/leos-roter-ball-1.png", "text": "Leo ist ein kleiner Junge. Leo geht in den Park."}, {"image": "https://raw.githubusercontent.com/RaLa84/lesekumpel/main/comics/leos-roter-ball-2.png", "text": "Leo sieht einen roten Ball. Der Ball liegt unter einem Baum."}, {"image": "https://raw.githubusercontent.com/RaLa84/lesekumpel/main/comics/leos-roter-ball-3.png", "text": "Leo nimmt den Ball."}, {"image": "https://raw.githubusercontent.com/RaLa84/lesekumpel/main/comics/leos-roter-ball-4.png", "text": "Leo wirft den Ball hoch. Der Ball fliegt weit."}, {"image": "https://raw.githubusercontent.com/RaLa84/lesekumpel/main/comics/leos-roter-ball-5.png", "text": "Leo lacht laut."}, {"image": "https://raw.githubusercontent.com/RaLa84/lesekumpel/main/comics/leos-roter-ball-6.png", "text": "Leo spielt gern Ball. Das macht ihm Spaß."}];
   </script>
   <script src="comic-scripts.js?v=2"></script>
 </body>

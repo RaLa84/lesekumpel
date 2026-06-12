@@ -7,15 +7,15 @@
        Lesekumpel v2 — Story-Template (Text-Geschichten)
        Output-Ziel: v2/demo-texte/<slug>.html
        Alle Pfade sind relativ zum Output-Ziel (eine Ebene unter v2/),
-       NICHT zum Template-Speicherort. {{PLACEHOLDER}} werden von der
+       NICHT zum Template-Speicherort.  werden von der
        n8n-Pipeline befüllt.
        ============================================================ -->
-  <title>{{STORY_TITLE}} — Lesekumpel</title>
-  <meta name="description" content="{{META_DESCRIPTION}}">
-  <meta name="author" content="{{PERSONA_NAME}}">
-  <meta name="date" content="{{STORY_DATE}}">
-  <meta name="reading-level" content="{{READING_LEVEL_LABEL}}">
-  <meta name="neurotype" content="{{NEUROTYP}}">
+  <title>Die singenden Weltraumwale — Lesekumpel</title>
+  <meta name="description" content="Lesetext für 9–10-Jährige: Die singenden Weltraumwale. Es gibt da eine Geschichte von Walen im Weltraum, die von Galaxy zu Galaxy reisen und ganz beeindrucke…">
+  <meta name="author" content="Finja Feder">
+  <meta name="date" content="2026-05-25T05:25:39.379Z">
+  <meta name="reading-level" content="250–400 Wörter, Finja Feder">
+  <meta name="neurotype" content="Standard">
   <meta name="demo" content="true">
 
   <link rel="icon" type="image/webp" href="../../Konzept_Rebranding/logo-lesekumpel-512.webp">
@@ -75,26 +75,26 @@
 
       <!-- Hero -->
       <div class="story-hero">
-        <img class="story-hero-img" src="{{HERO_IMAGE_URL}}" alt="" aria-hidden="true" onerror="this.style.display='none'">
+        <img class="story-hero-img" src="https://rala84.github.io/lesekumpel/bilder/die-singenden-weltraumwale-1bvz-1.png" alt="" aria-hidden="true" onerror="this.style.display='none'">
         <div class="story-hero-overlay" aria-hidden="true"></div>
         <div class="story-hero-text">
-          <h1 class="story-title-h1">{{STORY_TITLE}}</h1>
+          <h1 class="story-title-h1">Die singenden Weltraumwale</h1>
           <div class="story-hero-meta">
-            <span class="badge">{{READING_LEVEL_LABEL}}</span>
-            <span class="badge">{{NEUROTYP}}</span>
-            <span class="badge">{{GENRE}}</span>
+            <span class="badge">250–400 Wörter, Finja Feder</span>
+            <span class="badge">Standard</span>
+            <span class="badge">Es gibt da eine Geschichte von Walen im Weltraum, die von Ga</span>
           </div>
         </div>
       </div>
 
       <!-- Author -->
       <div class="author-line">
-        <img class="author-line-avatar" src="{{PERSONA_IMG_URL}}" alt="{{PERSONA_NAME}}">
+        <img class="author-line-avatar" src="../../avatars/finja-feder.webp" alt="Finja Feder">
         <div class="author-line-info">
           <div class="author-line-credit">geschrieben von</div>
-          <div class="author-line-name">{{PERSONA_NAME}}</div>
+          <div class="author-line-name">Finja Feder</div>
         </div>
-        <span class="author-line-tag">&#10003; F&uuml;r {{NEUROTYP}} optimiert</span>
+        <span class="author-line-tag">&#10003; F&uuml;r Standard optimiert</span>
       </div>
 
       <!-- Lese-Toolbar (3 Gruppen: Text / Ansicht / Extras) -->
@@ -185,7 +185,7 @@
       <!-- Related -->
       <div class="related">
         <h2 class="related-title">Das k&ouml;nnte dir auch gefallen</h2>
-        <div class="related-grid">{{RELATED_STORIES_HTML}}</div>
+        <div class="related-grid"></div>
       </div>
 
       <!-- Back -->
@@ -264,24 +264,28 @@
        *_JSON-Platzhalter sind serialisierte Objekte/Arrays)
        ============================================================ -->
   <script>
-    let rawStory = {{RAW_STORY_TEXT}};
-    let emojiStory = {{EMOJI_STORY_TEXT}};
-    let rawSummary = {{RAW_SUMMARY_TEXT}};
-    let emojiSummary = {{EMOJI_SUMMARY_TEXT}};
-    const quizData = {{QUIZ_DATA_JSON}};
-    const rawDictionaryEntry = {{DICTIONARY_JSON}};
-    const weitererzaehlenData = {{WEITERERZAEHLEN_JSON}};
-    const schatzsucheData = {{SCHATZSUCHE_JSON}};
+    let rawStory = "Manch-mal, wenn die Nacht so dun-kel war, dass die Ster-ne wie aus-gest-reu-te Dia-man-ten aus-sa-hen, saß Leo am Fen-ster sei-nes Zim-mers und fühl-te sich win-zig klein. Die Welt da drau-ßen war rie-sig und still, und er war nur ein klei-ner Punkt da-rin. Er frag-te sich, ob zwi-schen all den fun-keln-den Lich-tern noch et-was an-de-res e-xi-stier-te, et-was Ge-heim-nis-vol-les, von dem nie-mand wus-ste.\n\nAn die-sem A-bend war es an-ders. Es war kein Ge-räusch für die Oh-ren, e-her ein tie-fes, sanf-tes Brum-men, das er in sei-ner Brust spür-te, wie das Schnur-ren ei-ner rie-si-gen Kat-ze. Leo drück-te sei-ne Na-se an die kal-te Fen-ster-schei-be und kniff die Au-gen zu-sam-men. Dort, wo e-ben noch Lee-re ge-we-sen war, be-weg-te sich et-was. Es war kein Sa-tel-lit und kein Flug-zeug. Es war le-ben-dig.\n\nEin rie-si-ges We-sen glitt laut-los durch die Schwär-ze, sei-ne Haut ein schim-mern-der Tep-pich aus vio-let-ten Ne-beln und gol-de-nem Ster-nen-staub. Sei-ne Au-gen leuch-te-ten wie jun-ge, sanf-te Son-nen, und sein lan-ger Kör-per zog ei-nen Schweif aus win-zi-gen Eisk-ri-stal-len hin-ter sich her. Es war ein Wal, so groß wie ein Berg, a-ber so leicht wie ein Ge-dan-ke.\n\nBald folg-te ein zwei-ter, dann ein drit-ter, klei-ne-rer, der wie ein vers-piel-tes Ko-me-ten-kind ne-ben sei-ner Mut-ter tanz-te. Sie zo-gen als Fa-mi-lie durch das All, und das Brum-men in Leos Brust wur-de zu ei-ner rich-ti-gen Me-lo-die. Ei-ne Welt-raum-me-lo-die, die von der Stil-le zwi-schen den Ster-nen und der Wär-me fer-ner Son-nen er-zähl-te.\n\nDie Me-lo-die er-zähl-te ihm Ge-schich-ten oh-ne Wor-te. Leo sah vor sei-nem in-ne-ren Au-ge, wie neue Ga-la-xien ge-bo-ren wur-den, hör-te das lei-se At-men schla-fen-der Pla-ne-ten und spür-te die u-ral-te Weis-heit, die die-se Ge-schö-pfe in sich tru-gen. Er war nicht mehr klein und al-lein. Er war Zeu-ge ei-nes Wun-ders, ein Zu-hö-rer des äl-te-sten Lie-des im U-ni-ver-sum.\n\nSo lei-se, wie sie ge-kom-men wa-ren, zo-gen die sin-gen-den Welt-raum-wa-le wei-ter, auf ih-rer u-nend-li-chen Rei-se zur näch-sten Ga-la-xie. Ihr Lied verb-las-ste, a-ber das E-cho blieb in Leos Herz zu-rück. Der Nach-thim-mel war nicht mehr still und leer für ihn. Er war ei-ne rie-si-ge Büh-ne, ge-füllt mit Mu-sik und Ge-heim-nis-sen, die nur da-rauf war-te-ten, ge-hört zu wer-den.";
+    let emojiStory = "Manch-mal, wenn die Nacht so dun-kel war, dass die Ster-ne wie aus-gest-reu-te Dia-man-ten aus-sa-hen, saß Leo am Fen-ster sei-nes Zim-mers und fühl-te sich win-zig klein. Die Welt da drau-ßen war rie-sig und still, und er war nur ein klei-ner Punkt da-rin. Er frag-te sich 🤔, ob zwi-schen all den fun-keln-den Lich-tern noch et-was an-de-res e-xi-stier-te, et-was Ge-heim-nis-vol-les, von dem nie-mand wus-ste.\n\nAn die-sem A-bend war es an-ders. Es war kein Ge-räusch für die Oh-ren, e-her ein tie-fes, sanf-tes Brum-men, das er in sei-ner Brust spür-te, wie das Schnur-ren ei-ner rie-si-gen Kat-ze. Leo drück-te sei-ne Na-se an die kal-te Fen-ster-schei-be und kniff die Au-gen zu-sam-men. Dort, wo e-ben noch Lee-re ge-we-sen war, be-weg-te sich et-was. Es war kein Sa-tel-lit und kein Flug-zeug. Es war le-ben-dig.\n\nEin rie-si-ges We-sen glitt laut-los durch die Schwär-ze, sei-ne Haut ein schim-mern-der Tep-pich aus vio-let-ten Ne-beln und gol-de-nem Ster-nen-staub. Sei-ne Au-gen leuch-te-ten wie jun-ge, sanf-te Son-nen, und sein lan-ger Kör-per zog ei-nen Schweif aus win-zi-gen Eisk-ri-stal-len hin-ter sich her. Es war ein Wal, so groß wie ein Berg, a-ber so leicht wie ein Ge-dan-ke.\n\nBald folg-te ein zwei-ter, dann ein drit-ter, klei-ne-rer, der wie ein vers-piel-tes Ko-me-ten-kind ne-ben sei-ner Mut-ter tanz-te. Sie zo-gen als Fa-mi-lie durch das All, und das Brum-men in Leos Brust wur-de zu ei-ner rich-ti-gen Me-lo-die. Ei-ne Welt-raum-me-lo-die, die von der Stil-le zwi-schen den Ster-nen und der Wär-me fer-ner Son-nen er-zähl-te.\n\nDie Me-lo-die er-zähl-te ihm Ge-schich-ten oh-ne Wor-te. Leo sah vor sei-nem in-ne-ren Au-ge, wie neue Ga-la-xien ge-bo-ren wur-den, hör-te das lei-se At-men schla-fen-der Pla-ne-ten und spür-te die u-ral-te Weis-heit, die die-se Ge-schö-pfe in sich tru-gen. Er war nicht mehr klein und al-lein. Er war Zeu-ge ei-nes Wun-ders, ein Zu-hö-rer des äl-te-sten Lie-des im U-ni-ver-sum.\n\nSo lei-se, wie sie ge-kom-men wa-ren, zo-gen die sin-gen-den Welt-raum-wa-le wei-ter, auf ih-rer u-nend-li-chen Rei-se zur näch-sten Ga-la-xie. Ihr Lied verb-las-ste, a-ber das E-cho blieb in Leos Herz zu-rück. Der Nach-thim-mel war nicht mehr still und leer für ihn. Er war ei-ne rie-si-ge Büh-ne, ge-füllt mit Mu-sik und Ge-heim-nis-sen, die nur da-rauf war-te-ten, ge-hört zu wer-den.";
+    let rawSummary = "Ein Junge namens Leo entdeckt beim Blick in den Nachthimmel eine Familie riesiger Weltraumwale, deren Haut aus Sternenstaub zu bestehen scheint. Ihre stumme, singende Melodie erzählt ihm von den Wundern des Universums und vertreibt sein Gefühl der Einsamkeit.";
+    let emojiSummary = "Ein Jun-ge na-mens Leo ent-deckt beim Blick in den Nach-thim-mel ei-ne Fa-mi-lie rie-si-ger Welt-raum-wa-le, de-ren Haut aus Ster-nen-staub zu be-ste-hen scheint. Ih-re stum-me, sin-gen-de Me-lo-die er-zählt ihm von den Wun-dern des U-ni-ver-sums und vert-reibt sein Ge-fühl der Ein-sam-keit.";
+    const quizData = [{"q":"Was hat Leo in der dunklen Nacht am Himmel gesehen?","a":["Ein riesiges, lebendiges Wesen","Ein schnelles Flugzeug","Viele fallende Sterne"],"correct":0},{"q":"Was spürte Leo zuerst in seiner Brust, bevor er etwas sah?","a":["Ein sanftes Brummen wie von einer riesigen Katze","Ein lautes Geräusch von draußen","Ein kaltes Zittern vor Angst"],"correct":0},{"q":"Wie fühlte sich Leo, nachdem die Weltraumwale vorbeigezogen waren?","a":["Nicht mehr so klein und allein","Traurig, weil sie wieder gegangen waren","Sehr müde und wollte sofort schlafen"],"correct":0}];
+    const rawDictionaryEntry = [{"wort":"existierte","silben":"e-xi-stier-te","bedeutung":"War da, gab es."},{"wort":"Geheimnisvolles","silben":"Ge-heim-nis-vol-les","bedeutung":"Etwas, das man nicht kennt oder nicht versteht."},{"wort":"Wesen","silben":"We-sen","bedeutung":"Ein lebendiges Geschöpf oder Ding."},{"wort":"Galaxien","silben":"Ga-la-xi-en","bedeutung":"Riesige Ansammlungen von Sternen, Planeten und Gas im Weltall."},{"wort":"Universum","silben":"U-ni-ver-sum","bedeutung":"Das gesamte Weltall mit allem, was darin ist."},{"wort":"Echo","silben":"E-cho","bedeutung":"Ein Nachklang oder eine Wiederholung eines Geräusches."}];
+    const weitererzaehlenData = {"frage":"Wie geht es weiter?","optionen":[{"emoji":"✨","titel":"Sternschnuppen-Botschaft","text":"Leo schloss die Augen und das tiefe Brummen kehrte zurück, diesmal ganz nah. Ein winziges Licht funkelte auf seinem Fensterbrett, pulsierend im Takt der Weltraum-Melodie. Es war ein kleiner, glitzernder Kristall, den die Wale zurückgelassen hatten. Als Leo ihn vorsichtig berührte, spürte er nicht nur Kälte, sondern auch eine leise Vibration. Was, wenn dieser Kristall ein kleines Stück des Universums enthielt, eine Botschaft nur für ihn?"},{"emoji":"🗣️","titel":"Himmelsgeheimnisse teilen","text":"Am nächsten Morgen wachte Leo auf, ein sanftes Summen in den Ohren. Er konnte das Geheimnis der Wale nicht für sich behalten. Beim Frühstück versuchte er, seinen Eltern davon zu erzählen, von den schimmernden Riesen und ihrer Sternenmusik. Doch wie erklärt man ein Wunder, das nur das Herz gehört hat? Seine Mutter lächelte nur warm und sagte: „Du hast wohl wunderbar geträumt, mein Schatz.“ Aber Leo wusste es besser."},{"emoji":"🌠","titel":"Sternenstaub im Zimmer","text":"Leo gähnte, aber er war hellwach. Sein Zimmer leuchtete! Überall auf seinem Teppich lagen winzige, eisblaue Kristalle, genau wie die, die der Weltraum-Wal hinter sich herzog! Und an seiner Zimmerdecke tanzten kleine, violette Nebel-Schleier, wie Miniatur-Galaxien. Hatte die Wal-Reise Sternenstaub bis zu ihm nach Hause geweht? Oder war es die Magie in seinem Herzen, die nun sichtbar wurde und sein Zimmer verwandelte?"}]};
+    const schatzsucheData = {"thema":"Dinge, die leuchten","emoji":"✨","ziel":3,"einleitung":"Überall in der Geschichte versteckt sich ein leuchtender Schatz. Finde drei Dinge, die leuchten — einfach antippen!","schatzwoerter":["sterne","diamanten","lichtern","sonnen","leuchteten","schimmernder","goldenem","sternenstaub","augen","kometenkind","galaxien","nachthimmel"]};
   </script>
   <script src="story-scripts.js?v=3"></script>
 
   <!-- Tafel-Modus: Story-Bilder als versteckter Pool (werden im Tafel-Modus in die Stage links gepoolt) -->
   <div hidden aria-hidden="true" class="tafel-image-pool">
-    {{STORY_IMAGES_HTML}}
+    <img src="https://rala84.github.io/lesekumpel/bilder/die-singenden-weltraumwale-1bvz-1.png" alt="Die singenden Weltraumwale" class="hero-image" onerror="this.style.display='none'">
+    <img src="https://rala84.github.io/lesekumpel/bilder/die-singenden-weltraumwale-1bvz-2.png" alt="Die singenden Weltraumwale" class="hero-image" onerror="this.style.display='none'">
+    <img src="https://rala84.github.io/lesekumpel/bilder/die-singenden-weltraumwale-1bvz-3.png" alt="Die singenden Weltraumwale" class="hero-image" onerror="this.style.display='none'">
+    <img src="https://rala84.github.io/lesekumpel/bilder/die-singenden-weltraumwale-1bvz-4.png" alt="Die singenden Weltraumwale" class="hero-image" onerror="this.style.display='none'">
+    <img src="https://rala84.github.io/lesekumpel/bilder/die-singenden-weltraumwale-1bvz-5.png" alt="Die singenden Weltraumwale" class="hero-image" onerror="this.style.display='none'">
   </div>
 
   <!-- Tafel-Modus: imagePositions auf window expose, dann tafel.js initialisieren -->
-  <script>window.imagePositions = {{IMAGE_POSITIONS_JSON}};</script>
+  <script>window.imagePositions = [];</script>
   <script src="../tafel.js?v=1" defer></script>
 </body>
 </html>

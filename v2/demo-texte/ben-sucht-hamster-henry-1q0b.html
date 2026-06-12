@@ -7,15 +7,15 @@
        Lesekumpel v2 — Story-Template (Text-Geschichten)
        Output-Ziel: v2/demo-texte/<slug>.html
        Alle Pfade sind relativ zum Output-Ziel (eine Ebene unter v2/),
-       NICHT zum Template-Speicherort. {{PLACEHOLDER}} werden von der
+       NICHT zum Template-Speicherort.  werden von der
        n8n-Pipeline befüllt.
        ============================================================ -->
-  <title>{{STORY_TITLE}} — Lesekumpel</title>
-  <meta name="description" content="{{META_DESCRIPTION}}">
-  <meta name="author" content="{{PERSONA_NAME}}">
-  <meta name="date" content="{{STORY_DATE}}">
-  <meta name="reading-level" content="{{READING_LEVEL_LABEL}}">
-  <meta name="neurotype" content="{{NEUROTYP}}">
+  <title>Ben sucht Hamster Henry — Lesekumpel</title>
+  <meta name="description" content="Lesetext für 6–7-Jährige (ADHS-optimiert): Ben sucht Hamster Henry. Henry ist weg! Der Käfig ist leer. Ben bekommt ein Kribbeln im Bauch. Oh nein! Er rennt d…">
+  <meta name="author" content="Mia Mitte">
+  <meta name="date" content="2026-05-06T13:11:41.021Z">
+  <meta name="reading-level" content="Mia Mitte">
+  <meta name="neurotype" content="ADHS">
   <meta name="demo" content="true">
 
   <link rel="icon" type="image/webp" href="../../Konzept_Rebranding/logo-lesekumpel-512.webp">
@@ -75,26 +75,26 @@
 
       <!-- Hero -->
       <div class="story-hero">
-        <img class="story-hero-img" src="{{HERO_IMAGE_URL}}" alt="" aria-hidden="true" onerror="this.style.display='none'">
+        <img class="story-hero-img" src="https://rala84.github.io/lesekumpel/bilder/ben-sucht-hamster-henry-1q0b-1.png" alt="" aria-hidden="true" onerror="this.style.display='none'">
         <div class="story-hero-overlay" aria-hidden="true"></div>
         <div class="story-hero-text">
-          <h1 class="story-title-h1">{{STORY_TITLE}}</h1>
+          <h1 class="story-title-h1">Ben sucht Hamster Henry</h1>
           <div class="story-hero-meta">
-            <span class="badge">{{READING_LEVEL_LABEL}}</span>
-            <span class="badge">{{NEUROTYP}}</span>
-            <span class="badge">{{GENRE}}</span>
+            <span class="badge">Mia Mitte</span>
+            <span class="badge">ADHS</span>
+            
           </div>
         </div>
       </div>
 
       <!-- Author -->
       <div class="author-line">
-        <img class="author-line-avatar" src="{{PERSONA_IMG_URL}}" alt="{{PERSONA_NAME}}">
+        <img class="author-line-avatar" src="../../avatars/mia-mitte.webp" alt="Mia Mitte">
         <div class="author-line-info">
           <div class="author-line-credit">geschrieben von</div>
-          <div class="author-line-name">{{PERSONA_NAME}}</div>
+          <div class="author-line-name">Mia Mitte</div>
         </div>
-        <span class="author-line-tag">&#10003; F&uuml;r {{NEUROTYP}} optimiert</span>
+        <span class="author-line-tag">&#10003; F&uuml;r ADHS optimiert</span>
       </div>
 
       <!-- Lese-Toolbar (3 Gruppen: Text / Ansicht / Extras) -->
@@ -185,7 +185,7 @@
       <!-- Related -->
       <div class="related">
         <h2 class="related-title">Das k&ouml;nnte dir auch gefallen</h2>
-        <div class="related-grid">{{RELATED_STORIES_HTML}}</div>
+        <div class="related-grid"></div>
       </div>
 
       <!-- Back -->
@@ -264,24 +264,25 @@
        *_JSON-Platzhalter sind serialisierte Objekte/Arrays)
        ============================================================ -->
   <script>
-    let rawStory = {{RAW_STORY_TEXT}};
-    let emojiStory = {{EMOJI_STORY_TEXT}};
-    let rawSummary = {{RAW_SUMMARY_TEXT}};
-    let emojiSummary = {{EMOJI_SUMMARY_TEXT}};
-    const quizData = {{QUIZ_DATA_JSON}};
-    const rawDictionaryEntry = {{DICTIONARY_JSON}};
-    const weitererzaehlenData = {{WEITERERZAEHLEN_JSON}};
-    const schatzsucheData = {{SCHATZSUCHE_JSON}};
+    let rawStory = "Hen-ry ist weg! Der Kä-fig ist leer.\n\nBen be-kommt ein Krib-beln im Bauch. Oh nein!\n\nEr rennt durch die Woh-nung. Kü-che? Nichts! Wohn-zim-mer? Nichts!\n\nPlötz-lich hört er ein lei-ses Ge-räusch. Ein Knab-bern.\n\nBen schaut un-ter sein Bett.\n\nDa ist Hen-ry! Er knab-bert an Bens So-cke.\n\nBen lacht laut auf. Puh!\n\nEr hebt Hen-ry hoch. Jetzt sind bei-de mü-de. A-ber sehr, sehr glück-lich!";
+    let emojiStory = "Hen-ry ist weg! Der Kä-fig ist leer.\n\nBen be-kommt ein Krib-beln 😰 im Bauch. Oh nein!\n\nEr rennt durch die Woh-nung. Kü-che? Nichts! Wohn-zim-mer? Nichts!\n\nPlötz-lich hört er ein lei-ses Ge-räusch. Ein Knab-bern.\n\nBen schaut un-ter sein Bett.\n\nDa ist Hen-ry! Er knab-bert an Bens So-cke.\n\nBen lacht 😊 laut auf. Puh!\n\nEr hebt Hen-ry hoch. Jetzt sind bei-de mü-de. A-ber sehr, sehr glück-lich 😊!";
+    let rawSummary = "Bens Hamster Henry ist plötzlich weg. Ben sucht ihn ganz aufgeregt im ganzen Haus. Am Ende findet er Henry unter dem Bett und ist erleichtert und glücklich.";
+    let emojiSummary = "Bens Ham-ster Hen-ry ist plötz-lich weg. Ben sucht ihn ganz auf-ge-regt 😰 im gan-zen Haus. Am En-de fin-det er Hen-ry un-ter dem Bett und ist er-leich-tert 😌 und glück-lich 😊.";
+    const quizData = [{"q":"Was für ein Tier ist Henry wahrscheinlich?","a":["Ein Hund","Ein Hamster","Eine Katze"],"correct":1},{"q":"Wo sucht Ben zuerst nach Henry?","a":["In der Küche","Im Wohnzimmer","Unter seinem Bett"],"correct":0},{"q":"Wie fühlt sich Ben, als er merkt, dass Henry weg ist?","a":["Er ist wütend","Er bekommt ein Kribbeln im Bauch","Er lacht laut auf"],"correct":1}];
+    const rawDictionaryEntry = [{"wort":"Käfig","silben":"Kä-fig","bedeutung":"Ein Behälter für Tiere, oft mit Gitterstäben."},{"wort":"Kribbeln","silben":"Krib-beln","bedeutung":"Ein aufregendes oder nervöses Gefühl im Körper."},{"wort":"Geräusch","silben":"Ge-räusch","bedeutung":"Ein Laut, den man hören kann."},{"wort":"Knabbern","silben":"Knab-bern","bedeutung":"Mit kleinen Bissen etwas essen, oft hartes Essen."},{"wort":"Plötzlich","silben":"Plötz-lich","bedeutung":"Ganz unerwartet und schnell."}];
+    const weitererzaehlenData = {"frage":"Wie geht es weiter?","optionen":[{"emoji":"🛠️","titel":"Neues Haus für Hen-ry","text":"Ben über-legt: „Hen-ry soll sich nie wie-der ver-ir-ren!” Er holt Bau-klöt-ze und Pap-pe. Viel-leicht braucht Hen-ry ein ganz neu-es Zu-hau-se? Ein La-by-rinth mit vie-len Gän-gen, wo er sich ver-ste-cken kann. Ben fängt so-fort an zu bas-teln. Das wird lus-tig!"},{"emoji":"🤫","titel":"Ein Tier-Ge-heim-nis","text":"Ben ku-schelt sich mit Hen-ry ins Bett. Wa-rum war Hen-ry ent-wischt? Wollte er nur spie-len? O-der war ihm lang-wei-lig? Ben muss nach-den-ken. Er will Hen-ry ver-ste-hen. Was braucht ein klei-ner Ham-ster, um rich-tig glück-lich zu sein? Ben spürt, dass er et-was Wich-ti-ges ler-nen wird."},{"emoji":"🐾","titel":"Noch mehr Spu-ren!","text":"Als Ben Hen-ry zu-rück in sei-nen Kä-fig setzt, sieht er et-was Glän-zen-des auf dem Bo-den. Ein klei-ner, bun-ter Knopf! A-ber der ge-hört nicht zu Bens Klei-dung und auch nicht zu Hen-rys Sa-chen. Hat noch je-mand in sei-nem Zim-mer ge-we-sen? Ben geht auf Spu-ren-su-che..."}]};
+    const schatzsucheData = {"thema":"Wörter, die erzählen, was passiert","emoji":"🎬","ziel":3,"einleitung":"Diese Geschichte steckt voller spannender Dinge, die passieren! Finde drei Wörter, die erzählen, was jemand macht oder wie etwas ist.","schatzwoerter":["ist","bekommt","rennt","hört","schaut","knabbert","lacht","hebt","sind"]};
   </script>
   <script src="story-scripts.js?v=3"></script>
 
   <!-- Tafel-Modus: Story-Bilder als versteckter Pool (werden im Tafel-Modus in die Stage links gepoolt) -->
   <div hidden aria-hidden="true" class="tafel-image-pool">
-    {{STORY_IMAGES_HTML}}
+    <img src="https://rala84.github.io/lesekumpel/bilder/ben-sucht-hamster-henry-1q0b-1.png" alt="Ben sucht Hamster Henry" class="hero-image" onerror="this.style.display='none'">
+    <img src="https://rala84.github.io/lesekumpel/bilder/ben-sucht-hamster-henry-1q0b-2.png" alt="Ben sucht Hamster Henry" class="hero-image" onerror="this.style.display='none'">
   </div>
 
   <!-- Tafel-Modus: imagePositions auf window expose, dann tafel.js initialisieren -->
-  <script>window.imagePositions = {{IMAGE_POSITIONS_JSON}};</script>
+  <script>window.imagePositions = [];</script>
   <script src="../tafel.js?v=1" defer></script>
 </body>
 </html>

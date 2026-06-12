@@ -3,10 +3,17 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>D&ouml;nerella (Autismus-Variante) — Finja Feder | Lesekumpel v2</title>
-  <meta name="description" content="Lesetext: Dönerella, die Katze mit großem Herzen. Niveau 250–400 Wörter, Finja Feder. Autismus-Variante mit klarer Struktur.">
+  <!-- ============================================================
+       Lesekumpel v2 — Story-Template (Text-Geschichten)
+       Output-Ziel: v2/demo-texte/<slug>.html
+       Alle Pfade sind relativ zum Output-Ziel (eine Ebene unter v2/),
+       NICHT zum Template-Speicherort.  werden von der
+       n8n-Pipeline befüllt.
+       ============================================================ -->
+  <title>Dönerella — Lesekumpel</title>
+  <meta name="description" content="Lesetext für 9–10-Jährige (Autismus-optimiert): Dönerella. Eine Katze, die Döner liebt, etwas tollpatschig ist und ein großes Herz hat.">
   <meta name="author" content="Finja Feder">
-  <meta name="date" content="2026-05-17">
+  <meta name="date" content="2026-05-17T10:50:07.223Z">
   <meta name="reading-level" content="250–400 Wörter, Finja Feder">
   <meta name="neurotype" content="Autismus">
   <meta name="demo" content="true">
@@ -15,6 +22,7 @@
   <link rel="stylesheet" href="../../fonts/fonts.css">
   <link rel="stylesheet" href="../styles.css">
   <link rel="stylesheet" href="story-styles.css">
+  <link rel="stylesheet" href="../tafel.css">
 </head>
 <body data-page="story">
 
@@ -53,56 +61,136 @@
   </div>
 </nav>
 
+  <div id="schatz-banner" class="schatz-banner" hidden>
+    <span class="schatz-banner-icon">&#128269;</span>
+    <span class="schatz-banner-text">
+      <span id="schatz-banner-thema">Finde den Schatz</span>
+      <span class="schatz-banner-count" id="schatz-banner-count">0/0</span>
+    </span>
+    <button type="button" class="schatz-banner-close" onclick="endSchatzsuche()" aria-label="Schatzsuche beenden">&#10005;</button>
+  </div>
+
   <main id="main">
     <article class="story-wrap">
 
-      <div class="story-hero hero-navy">
+      <!-- Hero -->
+      <div class="story-hero">
+        <img class="story-hero-img" src="https://rala84.github.io/lesekumpel/bilder/doenerella-f11p-1.png" alt="" aria-hidden="true" onerror="this.style.display='none'">
+        <div class="story-hero-overlay" aria-hidden="true"></div>
         <div class="story-hero-text">
-          <h1>D&ouml;nerella</h1>
+          <h1 class="story-title-h1">Dönerella</h1>
           <div class="story-hero-meta">
-            <span class="badge">250&ndash;400 W&ouml;rter</span>
-            <span class="badge">Niveau: Finja Feder</span>
-            <span class="badge">Neurotyp: Autismus</span>
+            <span class="badge">250–400 Wörter, Finja Feder</span>
+            <span class="badge">Autismus</span>
+            <span class="badge">Eine Katze, die Döner liebt, etwas tollpatschig ist und ein</span>
           </div>
         </div>
       </div>
 
+      <!-- Author -->
       <div class="author-line">
         <img class="author-line-avatar" src="../../avatars/finja-feder.webp" alt="Finja Feder">
         <div class="author-line-info">
           <div class="author-line-credit">geschrieben von</div>
           <div class="author-line-name">Finja Feder</div>
         </div>
-        <span class="author-line-tag">&#10003; F&uuml;r Autismus-Spektrum optimiert</span>
+        <span class="author-line-tag">&#10003; F&uuml;r Autismus optimiert</span>
       </div>
 
-      <div class="reading-toolbar" role="toolbar" aria-label="Lese-Werkzeuge">
-        <button type="button" class="tool-btn" onclick="cycleFontSize(this)">A&plus; Schrift</button>
-        <button type="button" class="tool-btn" onclick="toggleBody('dyslexia', this)">&#127859; Lesefreundlich</button>
-        <button type="button" class="tool-btn" onclick="speakStory(this)">&#128266; Vorlesen</button>
-      </div>
-
-      <div class="story-card">
-        <div class="story-text" id="story-text"><p>D&ouml;nerella war eine Katze, die D&ouml;nerfleisch mehr liebte als alles andere auf der Welt. Der w&uuml;rzige Duft, der aus Alis kleinem Imbiss auf der anderen Stra&szlig;enseite kam, war f&uuml;r sie das beste Parf&uuml;m. Er roch nach Abenteuer und einem vollen, gl&uuml;cklichen Bauch.</p>
-<p>Sie sa&szlig; auf einer niedrigen Gartenmauer und beobachtete den Laden. Ihr Magen knurrte leise, ein Ger&auml;usch wie ein sanfter Motor. D&ouml;nerella wollte unbedingt ein St&uuml;ck von dem Fleisch haben, das sich am Spie&szlig; drehte. Sie wusste, sie musste Alis Aufmerksamkeit bekommen, damit er ihr etwas abgibt.</p>
-<p>Also nahm sie all ihren Mut zusammen und sprang von der Mauer. Sie landete etwas ungeschickt auf einem Stapel leerer Getr&auml;nkekisten. Die Kisten wackelten, weil D&ouml;nerella nicht so elegant war wie andere Katzen. Mit einem lauten Scheppern fielen die obersten Kisten zu Boden.</p>
-<p>Ali kam sofort aus dem Laden gelaufen. Er sah das Durcheinander und seufzte. &bdquo;Immer du, kleiner Wirbelwind&ldquo;, sagte er und klang dabei ein wenig m&uuml;de. D&ouml;nerella f&uuml;hlte sich schlecht. Ihre Ohren klappten nach unten, weil sie verstand, dass sie Ali Arbeit gemacht hatte. Das war ein schweres Gef&uuml;hl in ihrem Bauch, so unangenehm wie ein Stein.</p>
-<p>Traurig trottete D&ouml;nerella in eine kleine Gasse neben dem Imbiss. Dort h&ouml;rte sie ein leises Wimmern. Unter einem alten Farbeimer kauerte ein winziges, grau getigertes K&auml;tzchen. Es zitterte, weil es fror und Hunger hatte. D&ouml;nerella erkannte dieses Gef&uuml;hl sofort, denn sie hatte es schon oft selbst gef&uuml;hlt.</p>
-<p>Pl&ouml;tzlich stand Ali vor ihr. Er hielt ein kleines St&uuml;ck D&ouml;nerfleisch in seiner Hand. Er hatte gesehen, wie traurig D&ouml;nerella war, und wollte sie tr&ouml;sten. Er legte das Fleisch vorsichtig auf den Boden, genau zwischen D&ouml;nerella und das kleine K&auml;tzchen.</p>
-<p>D&ouml;nerellas Magen knurrte lauter als je zuvor. Der Duft war herrlich. <strong>Aber als sie in die gro&szlig;en, &auml;ngstlichen Augen des K&auml;tzchens blickte, wusste sie, was zu tun war.</strong> Sie stupste das Fleischst&uuml;ck mit ihrer Nase sanft in Richtung des K&auml;tzchens. Sie tat das, weil das kleine K&auml;tzchen das Essen dringender brauchte als sie.</p>
-<p>Das K&auml;tzchen kroch hervor und begann, gierig zu fressen. Ali beobachtete alles mit einem L&auml;cheln. Er verstand, dass D&ouml;nerella ein riesiges Herz hatte. Von diesem Tag an legte er jeden Abend zwei St&uuml;cke Fleisch nach drau&szlig;en. Eines f&uuml;r die Katze mit dem gro&szlig;en Herzen und eines f&uuml;r ihren neuen, kleinen Freund.</p></div>
-      </div>
-
-      <div class="survey">
-        <strong>Hat dir die Geschichte gefallen?</strong>
-        <div class="vote-wrap">
-          <button type="button" class="vote-btn" onclick="alert('🎉 Danke!')" aria-label="Daumen hoch">&#128077;</button>
-          <button type="button" class="vote-btn" onclick="alert('😢 Schade')" aria-label="Daumen runter">&#128078;</button>
+      <!-- Lese-Toolbar (3 Gruppen: Text / Ansicht / Extras) -->
+      <div class="reading-toolbar grouped" id="toolbar" role="toolbar" aria-label="Lese-Werkzeuge">
+        <div class="toolbar-group group-text">
+          <div class="toolbar-group-label">Text</div>
+          <div class="toolbar-group-buttons">
+            <button type="button" class="tool-btn" onclick="toggleSummaryMode()" id="btn-summary" aria-label="Einfache Sprache">&#128214; Einfach</button>
+            <button type="button" class="tool-btn" onclick="toggleSyllables()" id="btn-syllables" aria-label="Silbentrennung">&#9986;&#65039; Silben</button>
+            <button type="button" class="tool-btn" onclick="toggleEmojis()" id="btn-emojis" aria-label="Gef&uuml;hle mit Emojis">&#128522; Emojis</button>
+          </div>
+        </div>
+        <div class="toolbar-group group-view">
+          <div class="toolbar-group-label">Ansicht</div>
+          <div class="toolbar-group-buttons">
+            <button type="button" class="tool-btn" onclick="toggleViewMode()" id="view-toggle-btn" aria-label="Text in H&auml;ppchen">&#129513; H&auml;ppchen</button>
+            <button type="button" class="tool-btn" onclick="toggleLeselinien()" id="btn-leselinien" aria-label="Leselinien">&#128207; Linien</button>
+            <button type="button" class="tool-btn" onclick="toggleFahrplan()" id="btn-fahrplan" aria-label="Fahrplan">&#128506;&#65039; Fahrplan</button>
+            <div class="font-size-control">
+              <button type="button" class="tool-btn" onclick="changeFontSize(-2)" aria-label="Schrift kleiner">A&minus;</button>
+              <button type="button" class="tool-btn" onclick="changeFontSize(2)" aria-label="Schrift gr&ouml;&szlig;er">A&plus;</button>
+            </div>
+          </div>
+        </div>
+        <div class="toolbar-group group-extra">
+          <div class="toolbar-group-label">Extras</div>
+          <div class="toolbar-group-buttons">
+            <button type="button" class="tool-btn" onclick="toggleTTS()" id="btn-tts" aria-label="Vorlesen">&#128266; Vorlesen</button>
+            <button type="button" class="tool-btn" onclick="toggleWordReader()" id="btn-word-reader" aria-label="W&ouml;rter h&ouml;ren">&#128066; W&ouml;rter h&ouml;ren</button>
+            <button type="button" class="tool-btn" onclick="toggleDyslexia(this)" aria-label="Lesefreundliche Schrift">&#128150; Lesefreundlich</button>
+            <button type="button" class="tool-btn" onclick="toggleContrast(this)" aria-label="Hoher Kontrast">&#127769; Kontrast</button>
+          </div>
         </div>
       </div>
 
+      <!-- Story Text (wird von story-scripts.js aus rawStory gerendert) -->
+      <div class="story-card">
+        <div id="full-text-view" class="story-text"></div>
+        <div id="chunk-view" class="story-text hidden">
+          <div class="adhs-progress-bar"><div class="adhs-progress-bar-fill" id="adhs-progress-fill" style="width:0%"></div></div>
+          <div id="chunk-display"></div>
+          <div id="swipe-hint" class="swipe-hint" style="display:none;">&larr; wischen zum Bl&auml;ttern &rarr;</div>
+          <div class="chunk-controls">
+            <button type="button" class="tool-btn" onclick="prevChunk()">&larr; Zur&uuml;ck</button>
+            <div id="chunk-progress" class="progress-ring" style="--p: 0%;">1/1</div>
+            <button type="button" class="tool-btn" onclick="nextChunk()" id="btn-next-chunk">Weiter &rarr;</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Activity Hub -->
+      <div class="activity-hub" id="activity-hub">
+        <h2 class="activity-hub-title">&#127918; Spielzeit!</h2>
+        <div class="activity-tabs" role="tablist" aria-label="Spielformate">
+          <button type="button" class="activity-tab active" role="tab" aria-selected="true" aria-controls="panel-quiz" data-tab="quiz" onclick="switchActivityTab('quiz')">&#129504; Quiz</button>
+          <button type="button" class="activity-tab" role="tab" aria-selected="false" aria-controls="panel-weiterdenken" data-tab="weiterdenken" onclick="switchActivityTab('weiterdenken')">&#127775; Weiterdenken</button>
+          <button type="button" class="activity-tab" role="tab" aria-selected="false" aria-controls="panel-schatz" data-tab="schatz" onclick="switchActivityTab('schatz')">&#128269; Schatz</button>
+          <button type="button" class="activity-tab" role="tab" aria-selected="false" aria-controls="panel-wortschatz" data-tab="wortschatz" onclick="switchActivityTab('wortschatz')">&#128218; Wortschatz</button>
+        </div>
+        <div id="panel-quiz" class="activity-panel active" role="tabpanel">
+          <div id="quiz-wrapper"></div>
+        </div>
+        <div id="panel-weiterdenken" class="activity-panel" role="tabpanel">
+          <p class="weitererzaehlen-intro">Hier gibt es kein richtig oder falsch &mdash; w&auml;hle, was dir am besten gef&auml;llt!</p>
+          <div id="weitererzaehlen-wrapper" class="weitererzaehlen-cards"></div>
+          <div class="klassen-hinweis">
+            <span class="klassen-hinweis-icon">&#128105;&#8205;&#127979;</span>
+            <div>
+              <strong>Tipp f&uuml;r die Klasse:</strong> Stimmt per Handzeichen ab &mdash; welche Fortsetzung findet ihr am sch&ouml;nsten? Danach k&ouml;nnt ihr die gew&auml;hlte Fortsetzung gemeinsam selbst weiterschreiben.
+            </div>
+          </div>
+        </div>
+        <div id="panel-schatz" class="activity-panel" role="tabpanel"></div>
+        <div id="panel-wortschatz" class="activity-panel" role="tabpanel">
+          <div id="wortschatz-wrapper" class="wortschatz-cards"></div>
+        </div>
+      </div>
+
+      <!-- Survey -->
+      <div class="survey">
+        <div class="survey-title">Hat dir die Geschichte gefallen?</div>
+        <div class="vote-wrap">
+          <button type="button" class="vote-btn" onclick="vote('up')" aria-label="Daumen hoch">&#128077;</button>
+          <button type="button" class="vote-btn" onclick="vote('down')" aria-label="Daumen runter">&#128078;</button>
+        </div>
+      </div>
+
+      <!-- Related -->
+      <div class="related">
+        <h2 class="related-title">Das k&ouml;nnte dir auch gefallen</h2>
+        <div class="related-grid"></div>
+      </div>
+
+      <!-- Back -->
       <p class="text-center">
-        <a href="../demo.html" class="btn btn-secondary">&larr; Zu allen Demo-Texten</a>
+        <a href="../demo.html" class="btn btn-secondary">&larr; Zur Bibliothek</a>
       </p>
 
     </article>
@@ -170,6 +258,34 @@
   </div>
 </footer>
 
-  <script src="story-scripts.js?v=4"></script>
+  <!-- ============================================================
+       DYNAMISCHE INJEKTION — Werte werden von der n8n-Pipeline befüllt
+       (assemble-html: RAW_*-Platzhalter sind JSON.stringify'd Strings,
+       *_JSON-Platzhalter sind serialisierte Objekte/Arrays)
+       ============================================================ -->
+  <script>
+    let rawStory = "Dö-ne-rel-la war ei-ne Kat-ze, die Dö-nerf-leisch mehr lieb-te als al-les an-de-re auf der Welt. Der wür-zi-ge Duft, der aus A-lis klei-nem Im-biss auf der an-de-ren Stra-ßen-sei-te kam, war für sie das be-ste Par-füm. Er roch nach A-ben-teuer und ei-nem vol-len, glück-li-chen Bauch.\n\nSie saß auf ei-ner nied-ri-gen Gar-ten-mauer und beo-bach-te-te den La-den. Ihr Ma-gen knurr-te lei-se, ein Ge-räusch wie ein sanf-ter Mo-tor. Dö-ne-rel-la woll-te un-be-dingt ein Stück von dem Fleisch ha-ben, das sich am Spieß dreh-te. Sie wus-ste, sie mus-ste A-lis Auf-merk-sam-keit be-kom-men, da-mit er ihr et-was ab-gibt.\n\nAl-so nahm sie all ih-ren Mut zu-sam-men und sprang von der Mauer. Sie lan-de-te et-was un-ge-schickt auf ei-nem Sta-pel lee-rer Get-rän-ke-ki-sten. Die Ki-sten wa-ckel-ten, weil Dö-ne-rel-la nicht so e-le-gant war wie an-de-re Kat-zen. Mit ei-nem lau-ten Schep-pern fie-len die o-ber-sten Ki-sten zu Bo-den.\n\nAli kam so-fort aus dem La-den ge-lau-fen. Er sah das Dur-chei-nan-der und seufz-te. „Im-mer du, klei-ner Wir-bel-wind“, sag-te er und klang da-bei ein we-nig mü-de. Dö-ne-rel-la fühl-te sich schlecht. Ih-re Oh-ren klapp-ten nach un-ten, weil sie ver-stand, dass sie Ali Ar-beit ge-macht hat-te. Das war ein schwe-res Ge-fühl in ih-rem Bauch, so u-nan-ge-nehm wie ein Stein.\n\nTrau-rig trot-te-te Dö-ne-rel-la in ei-ne klei-ne Gas-se ne-ben dem Im-biss. Dort hör-te sie ein lei-ses Wim-mern. Un-ter ei-nem al-ten Far-bei-mer kauer-te ein win-zi-ges, grau ge-ti-ger-tes Kätz-chen. Es zit-ter-te, weil es fror und Hun-ger hat-te. Dö-ne-rel-la er-kann-te die-ses Ge-fühl so-fort, denn sie hat-te es schon oft selbst ge-fühlt.\n\nPlötz-lich stand Ali vor ihr. Er hielt ein klei-nes Stück Dö-nerf-leisch in sei-ner Hand. Er hat-te ge-se-hen, wie trau-rig Dö-ne-rel-la war, und woll-te sie trö-sten. Er leg-te das Fleisch vor-sich-tig auf den Bo-den, ge-nau zwi-schen Dö-ne-rel-la und das klei-ne Kätz-chen.\n\nDö-ne-rel-las Ma-gen knurr-te lau-ter als je zu-vor. Der Duft war herr-lich. A-ber als sie in die gro-ßen, ängst-li-chen Au-gen des Kätz-chens blick-te, wus-ste sie, was zu tun war. Sie stup-ste das Fleisch-stück mit ih-rer Na-se sanft in Rich-tung des Kätz-chens. Sie tat das, weil das klei-ne Kätz-chen das Es-sen drin-gen-der brauch-te als sie.\n\nDas Kätz-chen kroch her-vor und be-gann, gie-rig zu fres-sen. Ali beo-bach-te-te al-les mit ei-nem Lä-cheln. Er ver-stand, dass Dö-ne-rel-la ein rie-si-ges Herz hat-te. Von die-sem Tag an leg-te er je-den A-bend zwei Stü-cke Fleisch nach drau-ßen. Ei-nes für die Kat-ze mit dem gro-ßen Her-zen und ei-nes für ih-ren neuen, klei-nen Freund.";
+    let emojiStory = "Dö-ne-rel-la war ei-ne Kat-ze, die Dö-nerf-leisch mehr lieb-te 🥰 als al-les an-de-re auf der Welt. Der wür-zi-ge Duft, der aus A-lis klei-nem Im-biss auf der an-de-ren Stra-ßen-sei-te kam, war für sie das be-ste Par-füm. Er roch nach A-ben-teuer und ei-nem vol-len, glück-li-chen 😊 Bauch.\n\nSie saß auf ei-ner nied-ri-gen Gar-ten-mauer und beo-bach-te-te den La-den. Ihr Ma-gen knurr-te lei-se, ein Ge-räusch wie ein sanf-ter Mo-tor. Dö-ne-rel-la woll-te un-be-dingt ein Stück von dem Fleisch ha-ben, das sich am Spieß dreh-te. Sie wus-ste, sie mus-ste A-lis Auf-merk-sam-keit be-kom-men, da-mit er ihr et-was ab-gibt.\n\nAl-so nahm sie all ih-ren Mut 💪 zu-sam-men und sprang von der Mauer. Sie lan-de-te et-was un-ge-schickt auf ei-nem Sta-pel lee-rer Get-rän-ke-ki-sten. Die Ki-sten wa-ckel-ten, weil Dö-ne-rel-la nicht so e-le-gant war wie an-de-re Kat-zen. Mit ei-nem lau-ten Schep-pern fie-len die o-ber-sten Ki-sten zu Bo-den.\n\nAli kam so-fort aus dem La-den ge-lau-fen. Er sah das Dur-chei-nan-der und seufz-te. „Im-mer du, klei-ner Wir-bel-wind“, sag-te er und klang da-bei ein we-nig mü-de. Dö-ne-rel-la fühl-te sich schlecht 😢. Ih-re Oh-ren klapp-ten nach un-ten, weil sie ver-stand, dass sie Ali Ar-beit ge-macht hat-te. Das war ein schwe-res Ge-fühl 😢 in ih-rem Bauch, so u-nan-ge-nehm wie ein Stein.\n\nTrau-rig 😢 trot-te-te Dö-ne-rel-la in ei-ne klei-ne Gas-se ne-ben dem Im-biss. Dort hör-te sie ein lei-ses Wim-mern 😢. Un-ter ei-nem al-ten Far-bei-mer kauer-te ein win-zi-ges, grau ge-ti-ger-tes Kätz-chen. Es zit-ter-te, weil es fror und Hun-ger hat-te. Dö-ne-rel-la er-kann-te die-ses Ge-fühl so-fort, denn sie hat-te es schon oft selbst ge-fühlt.\n\nPlötz-lich stand Ali vor ihr. Er hielt ein klei-nes Stück Dö-nerf-leisch in sei-ner Hand. Er hat-te ge-se-hen, wie trau-rig 😢 Dö-ne-rel-la war, und woll-te sie trö-sten. Er leg-te das Fleisch vor-sich-tig auf den Bo-den, ge-nau zwi-schen Dö-ne-rel-la und das klei-ne Kätz-chen.\n\nDö-ne-rel-las Ma-gen knurr-te lau-ter als je zu-vor. Der Duft war herr-lich. A-ber als sie in die gro-ßen, ängst-li-chen 😨 Au-gen des Kätz-chens blick-te, wus-ste sie, was zu tun war. Sie stup-ste das Fleisch-stück mit ih-rer Na-se sanft in Rich-tung des Kätz-chens. Sie tat das, weil das klei-ne Kätz-chen das Es-sen drin-gen-der brauch-te als sie.\n\nDas Kätz-chen kroch her-vor und be-gann, gie-rig zu fres-sen. Ali beo-bach-te-te al-les mit ei-nem Lä-cheln 😊. Er ver-stand, dass Dö-ne-rel-la ein rie-si-ges Herz hat-te. Von die-sem Tag an leg-te er je-den A-bend zwei Stü-cke Fleisch nach drau-ßen. Ei-nes für die Kat-ze mit dem gro-ßen Her-zen und ei-nes für ih-ren neuen, klei-nen Freund.";
+    let rawSummary = "Dönerella ist eine tollpatschige Katze, die über alles Döner liebt und aus Versehen im Laden ein Chaos anrichtet. Anstatt ein Stück Fleisch selbst zu essen, gibt sie es einem hungrigen Kätzchen und beweist damit ihr gutes Herz. Der Besitzer des Dönerladens erkennt ihre Freundlichkeit und sorgt von da an für beide Katzen.";
+    let emojiSummary = "Dö-ne-rel-la ist ei-ne toll-pat-schi-ge Kat-ze, die ü-ber al-les Dö-ner liebt 🥰 und aus Ver-se-hen im La-den ein Chaos an-rich-tet. An-statt ein Stück Fleisch selbst zu es-sen, gibt sie es ei-nem hung-ri-gen Kätz-chen und be-weist da-mit ihr gu-tes Herz. Der Be-sit-zer des Dö-ner-la-dens er-kennt ih-re Freund-lich-keit und sorgt von da an für bei-de Kat-zen.";
+    const quizData = [{"q":"Was mochte Dönerella am allerliebsten auf der Welt?","a":["Dönerfleisch","Leere Getränkekisten","Auf der Gartenmauer sitzen"],"correct":0},{"q":"Warum fühlte sich Dönerella schlecht, nachdem die Kisten umgefallen waren?","a":["Weil sie Ali Arbeit gemacht hatte.","Weil sie sich beim Springen wehgetan hat.","Weil Ali sie angeschrien hat."],"correct":0},{"q":"Was hat Dönerella mit dem Stück Dönerfleisch gemacht, das Ali ihr geben wollte?","a":["Sie gab es dem kleinen, zitternden Kätzchen.","Sie hat es ganz schnell selbst gefressen.","Sie hat es für später in der Gasse versteckt."],"correct":0}];
+    const rawDictionaryEntry = [{"wort":"Imbiss","silben":"Im-biss","bedeutung":"Ein kleiner Laden, in dem man schnell etwas zu essen kaufen kann."},{"wort":"Parfüm","silben":"Par-füm","bedeutung":"Ein wohlriechender Duft, der sehr angenehm riecht."},{"wort":"ungeschickt","silben":"un-ge-schickt","bedeutung":"Wenn man sich tollpatschig bewegt oder etwas nicht gut macht."},{"wort":"elegant","silben":"e-le-gant","bedeutung":"Schön und anmutig in der Bewegung oder im Aussehen."},{"wort":"Wirbelwind","silben":"Wir-bel-wind","bedeutung":"Hier: Jemand, der sehr lebhaft ist und dabei manchmal Unordnung macht."},{"wort":"gierig","silben":"gie-rig","bedeutung":"Wenn man etwas unbedingt haben möchte und es schnell isst oder nimmt."}];
+    const weitererzaehlenData = {"frage":"Wie geht es weiter?","optionen":[{"emoji":"🐾","titel":"Neues Abenteuer im Kiez","text":"Eines Mor-gens, als die Son-ne hell schien, hör-ten Dö-ne-rel-la und ihr Fre-und ein sel-ten-des Geräusch. Es war ein lei-ses Mia-uen, das aus der Fer-ne kam, nicht wie das Ge-mia-uen von hun-ger-igen Kat-zen. Es klang eher nach ei-ner Hil-fe. Sie schau-ten sich an, ihre Au-gen voller Span-nung. Mus-sten sie los-ge-hen und he-lfen?"},{"emoji":"💖","titel":"Ein Name für das Kätzchen","text":"Die Ta-ge ver-gin-gen und aus dem klei-nen Kätz-chen wur-de ein rich-ti-ger Spiel-ge-fähr-te. Dö-ne-rel-la lieb-te es, wenn sie zu-sam-men am A-bend auf der Mau-er sa-ßen und auf Ali war-te-ten. Doch sie hat-ten noch kei-nen Na-men für den Neu-en. „Wie sol-len wir dich denn ru-fen, mein Klei-ner?“, frag-te Dö-ne-rel-la und stup-ste ihn an."},{"emoji":"🕵️‍♀️","titel":"Der Dieb im Schatten","text":"Ei-nes Nachts, als Ali die zwei Stü-cke Fleisch hin-ge-legt hat-te, ver-schwan-den sie auf ein-mal! Ein flin-ker Schat-ten husch-te da-bei schnell über den Bo-den. Dö-ne-rel-la und ihr Freund ver-stan-den so-fort: Je-mand an-de-res hatte es ge-nom-men. Wer war die-ser un-ge-wöhn-liche Dieb? Und wa-rum hatte er es ge-macht? Sie mus-sten es her-aus-fin-den."}]};
+    const schatzsucheData = {"thema":"Gefühle","emoji":"❤️","ziel":3,"einleitung":"In dieser Geschichte verstecken sich viele Gefühle – von Freude bis Traurigkeit. Kannst du drei davon finden und antippen?","schatzwoerter":["liebte","glücklichen","knurrte","schlecht","müde","schweres","unangenehm","traurig","wimmern","fror","hunger","ängstlichen","lächeln","herz"]};
+  </script>
+  <script src="story-scripts.js?v=3"></script>
+
+  <!-- Tafel-Modus: Story-Bilder als versteckter Pool (werden im Tafel-Modus in die Stage links gepoolt) -->
+  <div hidden aria-hidden="true" class="tafel-image-pool">
+    <img src="https://rala84.github.io/lesekumpel/bilder/doenerella-f11p-1.png" alt="Dönerella" class="hero-image" onerror="this.style.display='none'">
+    <img src="https://rala84.github.io/lesekumpel/bilder/doenerella-f11p-2.png" alt="Dönerella" class="hero-image" onerror="this.style.display='none'">
+    <img src="https://rala84.github.io/lesekumpel/bilder/doenerella-f11p-3.png" alt="Dönerella" class="hero-image" onerror="this.style.display='none'">
+    <img src="https://rala84.github.io/lesekumpel/bilder/doenerella-f11p-4.png" alt="Dönerella" class="hero-image" onerror="this.style.display='none'">
+    <img src="https://rala84.github.io/lesekumpel/bilder/doenerella-f11p-5.png" alt="Dönerella" class="hero-image" onerror="this.style.display='none'">
+  </div>
+
+  <!-- Tafel-Modus: imagePositions auf window expose, dann tafel.js initialisieren -->
+  <script>window.imagePositions = [];</script>
+  <script src="../tafel.js?v=1" defer></script>
 </body>
 </html>

@@ -7,15 +7,15 @@
        Lesekumpel v2 — Story-Template (Text-Geschichten)
        Output-Ziel: v2/demo-texte/<slug>.html
        Alle Pfade sind relativ zum Output-Ziel (eine Ebene unter v2/),
-       NICHT zum Template-Speicherort. {{PLACEHOLDER}} werden von der
+       NICHT zum Template-Speicherort.  werden von der
        n8n-Pipeline befüllt.
        ============================================================ -->
-  <title>{{STORY_TITLE}} — Lesekumpel</title>
-  <meta name="description" content="{{META_DESCRIPTION}}">
-  <meta name="author" content="{{PERSONA_NAME}}">
-  <meta name="date" content="{{STORY_DATE}}">
-  <meta name="reading-level" content="{{READING_LEVEL_LABEL}}">
-  <meta name="neurotype" content="{{NEUROTYP}}">
+  <title>Lina und der Marienkäfer — Lesekumpel</title>
+  <meta name="description" content="Lesetext für 6–7-Jährige: Lina und der Marienkäfer. Lina trägt eine rote Latzhose und gelbe Gummistiefel. Sie findet im Gemüsegarten einen kleinen Marienkäfe…">
+  <meta name="author" content="Mia Mitte">
+  <meta name="date" content="2026-05-25T18:41:18.581Z">
+  <meta name="reading-level" content="50–100 Wörter, Mia Mitte">
+  <meta name="neurotype" content="Standard">
   <meta name="demo" content="true">
 
   <link rel="icon" type="image/webp" href="../../Konzept_Rebranding/logo-lesekumpel-512.webp">
@@ -75,26 +75,26 @@
 
       <!-- Hero -->
       <div class="story-hero">
-        <img class="story-hero-img" src="{{HERO_IMAGE_URL}}" alt="" aria-hidden="true" onerror="this.style.display='none'">
+        <img class="story-hero-img" src="https://rala84.github.io/lesekumpel/bilder/lina-und-der-marienkaefer-1w21-1.png" alt="" aria-hidden="true" onerror="this.style.display='none'">
         <div class="story-hero-overlay" aria-hidden="true"></div>
         <div class="story-hero-text">
-          <h1 class="story-title-h1">{{STORY_TITLE}}</h1>
+          <h1 class="story-title-h1">Lina und der Marienkäfer</h1>
           <div class="story-hero-meta">
-            <span class="badge">{{READING_LEVEL_LABEL}}</span>
-            <span class="badge">{{NEUROTYP}}</span>
-            <span class="badge">{{GENRE}}</span>
+            <span class="badge">50–100 Wörter, Mia Mitte</span>
+            <span class="badge">Standard</span>
+            <span class="badge">Lina trägt eine rote Latzhose und gelbe Gummistiefel. Sie fi</span>
           </div>
         </div>
       </div>
 
       <!-- Author -->
       <div class="author-line">
-        <img class="author-line-avatar" src="{{PERSONA_IMG_URL}}" alt="{{PERSONA_NAME}}">
+        <img class="author-line-avatar" src="../../avatars/mia-mitte.webp" alt="Mia Mitte">
         <div class="author-line-info">
           <div class="author-line-credit">geschrieben von</div>
-          <div class="author-line-name">{{PERSONA_NAME}}</div>
+          <div class="author-line-name">Mia Mitte</div>
         </div>
-        <span class="author-line-tag">&#10003; F&uuml;r {{NEUROTYP}} optimiert</span>
+        <span class="author-line-tag">&#10003; F&uuml;r Standard optimiert</span>
       </div>
 
       <!-- Lese-Toolbar (3 Gruppen: Text / Ansicht / Extras) -->
@@ -185,7 +185,7 @@
       <!-- Related -->
       <div class="related">
         <h2 class="related-title">Das k&ouml;nnte dir auch gefallen</h2>
-        <div class="related-grid">{{RELATED_STORIES_HTML}}</div>
+        <div class="related-grid"></div>
       </div>
 
       <!-- Back -->
@@ -264,24 +264,26 @@
        *_JSON-Platzhalter sind serialisierte Objekte/Arrays)
        ============================================================ -->
   <script>
-    let rawStory = {{RAW_STORY_TEXT}};
-    let emojiStory = {{EMOJI_STORY_TEXT}};
-    let rawSummary = {{RAW_SUMMARY_TEXT}};
-    let emojiSummary = {{EMOJI_SUMMARY_TEXT}};
-    const quizData = {{QUIZ_DATA_JSON}};
-    const rawDictionaryEntry = {{DICTIONARY_JSON}};
-    const weitererzaehlenData = {{WEITERERZAEHLEN_JSON}};
-    const schatzsucheData = {{SCHATZSUCHE_JSON}};
+    let rawStory = "Li­na steht im Ge­mü­se­gar­ten. Sie trägt ih­re ro­te Latz­ho­se und ih­re gel­ben Gum­mi­stie­fel. Zwi­schen den Sa­latb­lät­tern glänzt et­was in der Son­ne.\n\nAuf ei­nem gro­ßen Blatt sitzt ein win­zi­ger Kä­fer. Er ist ganz rot und hat sie­ben schwar­ze Punk­te. Li­na hält den A­tem an. So ein schö­ner Ma­rien­kä­fer!\n\nGanz vor­sich­tig streckt sie ih­ren Fin­ger aus. Der Ma­rien­kä­fer krab­belt lang­sam auf ih­re Hand. Sei­ne klei­nen Bein­chen kit­zeln ih­re Haut ein bis­schen.\n\nPlötz­lich brei­tet der Kä­fer sei­ne Flü­gel aus. Schwirr! Er fliegt hoch in den blauen Him­mel. Li­na schaut ihm nach und lä­chelt glück­lich.";
+    let emojiStory = "Li-na steht im Ge-mü-se-gar-ten. Sie trägt ih-re ro-te Latz-ho-se und ih-re gel-ben Gum-mi-stie-fel. Zwi-schen den Sa-latb-lät-tern glänzt et-was in der Son-ne.\n\nAuf ei-nem gro-ßen Blatt sitzt ein win-zi-ger Kä-fer. Er ist ganz rot und hat sie-ben schwar-ze Punk-te. Li-na hält den A-tem an. So ein schö-ner Ma-rien-kä-fer!\n\nGanz vor-sich-tig streckt sie ih-ren Fin-ger aus. Der Ma-rien-kä-fer krab-belt lang-sam auf ih-re Hand. Sei-ne klei-nen Bein-chen kit-zeln ih-re Haut ein bis-schen.\n\nPlötz-lich brei-tet der Kä-fer sei-ne Flü-gel aus. Schwirr! Er fliegt hoch in den blauen Him-mel. Li-na schaut ihm nach und lä-chelt 😊 glück-lich 😊.";
+    let rawSummary = "Lina entdeckt im Gemüsegarten einen Marienkäfer mit sieben Punkten. Sie lässt ihn vorsichtig auf ihre Hand krabbeln und beobachtet ihn. Als der Käfer davonfliegt, freut sie sich über den schönen Moment.";
+    let emojiSummary = "Li-na ent-deckt im Ge-mü-se-gar-ten ei-nen Ma-rien-kä-fer mit sie-ben Punk-ten. Sie lässt ihn vor-sich-tig auf ih-re Hand krab-beln und beo-bach-tet ihn. Als der Kä-fer da-vonf-liegt, freut sie sich 😊 ü-ber den schö-nen Mo-ment.";
+    const quizData = [{"q":"Was trägt Lina, als sie im Gemüsegarten steht?","a":["Eine rote Latzhose und gelbe Gummistiefel","Ein blaues Kleid und rote Schuhe","Einen grünen Rock und eine Mütze"],"correct":0},{"q":"Welches Tier findet Lina auf einem großen Blatt?","a":["Eine Spinne","Einen Marienkäfer","Eine Biene"],"correct":1},{"q":"Was macht der Marienkäfer, nachdem er auf Linas Hand gekrabbelt ist?","a":["Er fliegt in den blauen Himmel","Er versteckt sich unter einem Blatt","Er krabbelt zurück auf das Gemüse"],"correct":0}];
+    const rawDictionaryEntry = [];
+    const weitererzaehlenData = {"frage":"Wie geht es weiter?","optionen":[{"emoji":"🐞","titel":"Der magische Flug","text":"Lina sieht, wie der Marienkäfer immer kleiner wird. Doch plötzlich blinkt er! Ein winziger, goldener Stern schwebt genau da, wo der Käfer gerade war. Lina reibt sich die Augen. Hat sie sich das nur eingebildet? Oder ist der kleine Käfer ein ganz besonderes Wesen, das sie auf ein Abenteuer locken will? Sie folgt dem Glitzern neugierig."},{"emoji":"🥕","titel":"Neues Garten-Geheimnis","text":"Lina lässt ihren Blick noch einmal über die Salatblätter schweifen. Die Sonne wärmt ihr Gesicht. War das etwa der einzige Marienkäfer hier? Ganz unten, fast versteckt unter einem großen Kohlblatt, entdeckt sie einen winzigen, leuchtend grünen Faden. Er schlängelt sich wie ein kleiner Fluss durch die feuchte Erde. Wohin mag er wohl führen?"},{"emoji":"🐿️","titel":"Das sprechende Eichhörnchen","text":"Lina winkt dem Käfer noch lange nach, bis er nur noch ein Punkt am Himmel ist. Da raschelt es laut im Apfelbaum neben ihr. Ein kleines Eichhörnchen mit einem riesigen buschigen Schwanz springt herunter. Es schaut Lina mit klugen Augen an und räuspert sich dann ganz leise: \"Psst, Lina! Ich glaube, dieser Käfer wollte dir etwas Wichtiges verraten...\""}]};
+    const schatzsucheData = {"thema":"Bewegungs-Wörter","emoji":"🤸","ziel":3,"einleitung":"In dieser Geschichte bewegen sich viele Dinge! Finde drei Wörter, die eine Bewegung beschreiben – einfach antippen!","schatzwoerter":["steht","glänzt","sitzt","hält","streckt","krabbelt","kitzeln","breitet","fliegt","schaut","lächelt"]};
   </script>
   <script src="story-scripts.js?v=3"></script>
 
   <!-- Tafel-Modus: Story-Bilder als versteckter Pool (werden im Tafel-Modus in die Stage links gepoolt) -->
   <div hidden aria-hidden="true" class="tafel-image-pool">
-    {{STORY_IMAGES_HTML}}
+    <img src="https://rala84.github.io/lesekumpel/bilder/lina-und-der-marienkaefer-1w21-1.png" alt="Lina und der Marienkäfer" class="hero-image" onerror="this.style.display='none'">
+    <img src="https://rala84.github.io/lesekumpel/bilder/lina-und-der-marienkaefer-1w21-2.png" alt="Lina und der Marienkäfer" class="hero-image" onerror="this.style.display='none'">
+    <img src="https://rala84.github.io/lesekumpel/bilder/lina-und-der-marienkaefer-1w21-3.png" alt="Lina und der Marienkäfer" class="hero-image" onerror="this.style.display='none'">
   </div>
 
   <!-- Tafel-Modus: imagePositions auf window expose, dann tafel.js initialisieren -->
-  <script>window.imagePositions = {{IMAGE_POSITIONS_JSON}};</script>
+  <script>window.imagePositions = imagePositions;</script>
   <script src="../tafel.js?v=1" defer></script>
 </body>
 </html>
