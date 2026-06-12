@@ -164,12 +164,35 @@
         .nav-links-desktop { display: none !important; }
         .btn-cta-nav { display: none !important; }
         .nav-right { display: flex; align-items: center; gap: 15px; }
-        .burger-icon { font-size: 1.8rem; cursor: pointer; display: block; color: var(--text-dark); }
-        .mobile-menu {
-            display: none; background: white; padding: 10px; position: absolute; top: 100%; left: 0; width: 100%;
-            border-bottom: 3px solid var(--mint); flex-direction: column; gap: 10px; z-index: 999;
+        .burger-icon {
+            font-size: 1.6rem; cursor: pointer; display: block; color: var(--text-dark);
+            background: #fff; border: 1px solid var(--border-soft); border-radius: 12px;
+            padding: 6px 12px; line-height: 1; min-height: 44px;
+            transition: background 0.15s ease;
         }
-        .mobile-menu.open { display: flex; }
+        .burger-icon:hover { background: var(--cream-light); }
+        /* Burger-Menü: Karten-Panel rechts statt nackter Linkliste */
+        .mobile-menu {
+            display: none; background: #fff;
+            padding: 12px; position: absolute; top: calc(100% + 8px); right: 12px; left: auto;
+            width: min(320px, calc(100vw - 24px));
+            border: 1px solid var(--border-soft); border-radius: 20px;
+            box-shadow: 0 16px 40px rgba(43,49,64,0.16);
+            flex-direction: column; gap: 6px; z-index: 999;
+        }
+        .mobile-menu.open { display: flex; animation: bubblePop 0.25s cubic-bezier(0.34, 1.56, 0.64, 1); }
+        .mobile-menu .nav-btn {
+            padding: 12px 16px; min-height: 48px; border-radius: 14px;
+            background: var(--cream-light); font-weight: 600;
+            transition: background 0.15s ease, transform 0.15s ease;
+        }
+        .mobile-menu .nav-btn:hover { background: #E7F6F3; color: var(--navy); transform: translateX(3px); }
+        .mobile-menu .menu-cta {
+            background: var(--mint); color: var(--navy); justify-content: center;
+            font-family: var(--font-heading); font-weight: 700; margin-top: 4px;
+            box-shadow: 0 3px 10px rgba(47,184,166,0.3);
+        }
+        .mobile-menu .menu-cta:hover { background: var(--navy); color: #fff; transform: none; }
 
         /* --- MAIN CARD --- */
         .main-card {
@@ -466,15 +489,20 @@
         /* === KOMMENTAR-VERLAUF === */
         .comments-list { margin-bottom: 20px; display: flex; flex-direction: column; gap: 12px; }
         .comment {
-            display: flex; gap: 12px;
-            background: #f9f9f9; border-radius: 14px; padding: 14px 16px;
+            display: flex; gap: 14px; align-items: flex-start;
+            background: #fff; border: 2px solid var(--border-soft);
+            border-radius: 18px; padding: 14px 16px;
+            box-shadow: 0 2px 8px rgba(43,49,64,0.04);
         }
+        .comment:nth-child(3n+1) { border-color: rgba(47,184,166,0.45); }
+        .comment:nth-child(3n+2) { border-color: rgba(255,217,90,0.7); }
+        .comment:nth-child(3n)   { border-color: rgba(125,106,230,0.4); }
         .comment-avatar {
             flex-shrink: 0;
-            width: 42px; height: 42px;
+            width: 48px; height: 48px;
             display: flex; align-items: center; justify-content: center;
-            background: #fff; border: 2px solid var(--primary-yellow);
-            border-radius: 50%; font-size: 1.5rem; line-height: 1;
+            background: var(--cream-light); border: 2px solid var(--primary-yellow);
+            border-radius: 50%; font-size: 1.6rem; line-height: 1;
         }
         .comment-body { flex: 1; min-width: 0; }
         .comment-header {
@@ -498,11 +526,11 @@
 
         /* === COMPOSER (Bausteine-System V4) === */
         .composer-preview {
-            background: #fffdf2; border: 2px dashed var(--primary-yellow);
-            border-radius: 12px; padding: 14px 16px; margin-bottom: 12px;
-            transition: border-color 0.2s ease, border-style 0.2s ease;
+            background: #fff; border: 2px solid var(--border-soft);
+            border-radius: 16px; padding: 14px 16px; margin-bottom: 12px;
+            transition: border-color 0.2s ease;
         }
-        .composer-preview[data-count="3"] { border-style: solid; border-color: var(--accent-coral); }
+        .composer-preview[data-count="3"] { border-color: var(--mint); }
         .composer-preview-label {
             font-family: var(--font-body); font-size: 0.85rem; color: #5a6368;
             margin-bottom: 10px;
@@ -531,16 +559,16 @@
         }
         .composer-chip-remove:hover { background: var(--accent-coral); color: #fff; }
         .composer-add-btn {
-            display: inline-flex; align-items: center; gap: 6px;
-            background: #fffbe6; border: 2px solid var(--primary-yellow);
-            color: var(--text-dark); border-radius: 10px;
-            padding: 9px 14px; font-family: var(--font-body); font-weight: 600; font-size: 0.95rem;
-            cursor: pointer; transition: all 0.2s ease;
+            display: inline-flex; align-items: center; gap: 8px;
+            background: var(--primary-yellow); border: none;
+            color: var(--navy); border-radius: 999px;
+            padding: 12px 20px; min-height: 52px;
+            font-family: var(--font-heading); font-weight: 700; font-size: 1rem;
+            cursor: pointer; transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 3px 10px rgba(255,217,90,0.5);
             -webkit-tap-highlight-color: transparent;
         }
-        .composer-add-btn:hover:not(:disabled) {
-            transform: translateY(-1px); box-shadow: 0 3px 0 var(--primary-yellow);
-        }
+        .composer-add-btn:hover:not(:disabled) { transform: translateY(-2px); }
         .composer-add-btn:disabled { opacity: 0.5; cursor: not-allowed; }
         .composer-add-btn[aria-expanded="true"] { background: var(--primary-yellow); }
         .composer-actions { display: flex; justify-content: flex-end; margin-top: 8px; position: relative; }
@@ -583,15 +611,18 @@
         .picker-category-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
         .picker-category {
             display: flex; flex-direction: column; align-items: center; justify-content: center;
-            gap: 4px; padding: 14px 8px;
-            background: #fffbe6; border: 2px solid var(--primary-yellow);
-            border-radius: 14px; cursor: pointer;
-            font-family: var(--font-body); font-weight: 600; font-size: 0.9rem;
+            gap: 6px; padding: 16px 8px; min-height: 96px;
+            border-radius: 16px; cursor: pointer;
+            font-family: var(--font-heading); font-weight: 600; font-size: 0.95rem;
             color: var(--text-dark);
             transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
             -webkit-tap-highlight-color: transparent;
         }
-        .picker-category:hover { transform: translateY(-3px); box-shadow: 0 5px 0 var(--primary-yellow); }
+        /* Jede Stimmung hat ihre Farbe */
+        .picker-category[data-category="good"] { background: #E7F6F3; border: 2px solid var(--mint); }
+        .picker-category[data-category="hmm"]  { background: #FFF4D6; border: 2px solid var(--primary-yellow); }
+        .picker-category[data-category="no"]   { background: #FEEDE8; border: 2px solid var(--accent-coral); }
+        .picker-category:hover { transform: translateY(-3px); box-shadow: 0 4px 12px rgba(43,49,64,0.12); }
         .picker-cat-emoji { font-size: 2rem; line-height: 1; }
         .picker-cat-label { font-size: 0.85rem; }
         .picker-stage-header {
@@ -947,9 +978,17 @@
             .wortschatz-play { width: 38px; height: 38px; font-size: 1rem; }
         }
 
-        .comments-box { border: 2px solid var(--border-card); border-radius: 15px; padding: 20px; background: #fffdf6; }
+        .comments-box { border: 1px solid var(--border-soft); border-radius: 20px; padding: 20px; background: var(--cream-light); box-shadow: 0 2px 8px rgba(43,49,64,0.04); }
         .comment-input { width: 100%; border: 2px solid var(--primary-yellow); border-radius: 10px; padding: 15px; font-family: var(--font-body); font-size: 1rem; box-sizing: border-box; outline: none; }
-        .btn-send { background-color: var(--mint); color: var(--navy); border: none; padding: 10px 30px; border-radius: 999px; font-weight: bold; font-size: 1rem; float: right; margin-top: 10px; cursor: pointer; box-shadow: 0 4px 0 #239b8b; }
+        .btn-send {
+            background-color: var(--mint); color: var(--navy); border: none;
+            padding: 12px 32px; min-height: 52px; border-radius: 999px;
+            font-family: var(--font-heading); font-weight: 700; font-size: 1rem;
+            float: right; margin-top: 10px; cursor: pointer;
+            box-shadow: 0 3px 10px rgba(47,184,166,0.35);
+            transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .btn-send:hover:not(:disabled) { background: var(--navy); color: #fff; transform: translateY(-2px); }
         .single-comment { background-color: #f9f9f9; border-radius: 10px; padding: 15px; margin-bottom: 15px; }
 
         .related-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; }
@@ -1885,10 +1924,9 @@
             <a href="../ueber-uns.html" class="nav-btn" onclick="toggleMenu()">&Uuml;ber uns</a>
             <a href="../demo.html" class="nav-btn" onclick="toggleMenu()">Demo-Texte</a>
             <a href="../preise.html" class="nav-btn" onclick="toggleMenu()">Preise</a>
-            <a href="../neue-geschichte.html" class="nav-btn" onclick="toggleMenu()">Geschichte erstellen</a>
+            <a href="../neue-geschichte.html" class="nav-btn" onclick="toggleMenu()">&#10024; Geschichte erstellen</a>
             <a href="../mein-konto.html" class="nav-btn" onclick="toggleMenu()">Mein Konto</a>
-            <a href="../neue-geschichte.html" class="nav-btn" onclick="toggleMenu()">&#10024; Neue Geschichte</a>
-            <a href="../landingpage.html#registrieren" class="nav-btn" onclick="toggleMenu()">Jetzt registrieren</a>
+            <a href="../landingpage.html#registrieren" class="nav-btn menu-cta" onclick="toggleMenu()">Jetzt registrieren &rarr;</a>
         </div>
     </nav>
 
@@ -2237,6 +2275,22 @@
            einer abgebrochenen Äußerung den Zustand der neuen überschreibt. */
         let SPEECH_RATE = 0.9;
         try { SPEECH_RATE = parseFloat(localStorage.getItem('lesekumpel-tts-rate')) || 0.9; } catch(e) {}
+        /* Lokale deutsche Stimme bevorzugen: Cloud-Stimmen (z. B. "Google Deutsch"
+           in Chrome) liefern KEINE boundary-Events — ohne sie steht das
+           Karaoke-Highlight still. Lokale Stimmen können beides und gehen offline. */
+        let _germanVoice = null;
+        function pickGermanVoice() {
+            if (_germanVoice) return _germanVoice;
+            const vs = ('speechSynthesis' in window) ? window.speechSynthesis.getVoices() : [];
+            _germanVoice = vs.find(v => v.lang && v.lang.toLowerCase().startsWith('de') && v.localService)
+                || vs.find(v => v.lang && v.lang.toLowerCase().startsWith('de'))
+                || null;
+            return _germanVoice;
+        }
+        if ('speechSynthesis' in window && 'onvoiceschanged' in window.speechSynthesis) {
+            window.speechSynthesis.onvoiceschanged = () => { _germanVoice = null; pickGermanVoice(); };
+        }
+
         let _speakToken = 0;
         function speak(text, opts = {}) {
             if (!('speechSynthesis' in window) || !text) return;
@@ -2244,6 +2298,8 @@
             window.speechSynthesis.cancel();
             const u = new SpeechSynthesisUtterance(text);
             u.lang = 'de-DE';
+            const voice = pickGermanVoice();
+            if (voice) u.voice = voice;
             u.rate = opts.rate || SPEECH_RATE;
             if (opts.onboundary) u.onboundary = (ev) => { if (token === _speakToken) opts.onboundary(ev); };
             const finish = () => { if (token === _speakToken && opts.onend) opts.onend(); };
@@ -3000,6 +3056,13 @@
             if (!words.length) return;
             startIdx = Math.max(0, Math.min(words.length - 1, startIdx));
             player.idx = startIdx;
+            player.progressed = false;
+            // Generation: invalidiert laufende Schätz-Timer bei Stop/Pause/Neustart
+            player.gen = (player.gen || 0) + 1;
+            const gen = player.gen;
+            clearTimeout(player._estTimer);
+            let boundarySeen = false;
+
             // Teil-Utterance ab startIdx, Offsets auf globale Wort-Indizes gemappt
             let speechText = '';
             const map = [];
@@ -3009,21 +3072,47 @@
             }
             playerHighlight(startIdx);
             playerUpdateBar();
+
+            /* Fallback-Karaoke: Wenn die Stimme keine boundary-Events liefert
+               (manche Cloud-Stimmen), schätzen wir das Tempo pro Wort, damit
+               Markierung und Balken trotzdem mitlaufen. Echte Events haben Vorrang. */
+            const estDur = (w) => Math.max(200, (170 + w.length * 78) / SPEECH_RATE);
+            function estimateTick() {
+                if (gen !== player.gen || !player.active || player.paused || boundarySeen) return;
+                if (!window.speechSynthesis.speaking) return; // Ende regelt onend
+                if (player.idx < words.length - 1) {
+                    player.idx++;
+                    player.progressed = true;
+                    playerHighlight(player.idx);
+                    playerUpdateBar();
+                    player._estTimer = setTimeout(estimateTick, estDur(words[player.idx].text));
+                }
+            }
+            player._estTimer = setTimeout(() => {
+                if (gen !== player.gen || boundarySeen || !player.active || player.paused) return;
+                if (!window.speechSynthesis.speaking) return;
+                estimateTick();
+            }, 1300);
+
             speak(speechText, {
                 onboundary: (event) => {
                     if (event.name !== 'word') return;
+                    boundarySeen = true;
+                    clearTimeout(player._estTimer);
                     const hit = map.find(m => event.charIndex >= m.start && event.charIndex < m.end);
                     if (!hit) return;
                     player.idx = hit.idx;
+                    player.progressed = true;
                     playerHighlight(hit.idx);
                     playerUpdateBar();
                 },
                 onend: () => {
+                    clearTimeout(player._estTimer);
                     if (!player.active || player.paused) return; // Pause/Abbruch ist kein „fertig"
                     const wasChunk = player.chunkMode;
-                    // „Geschafft" nur, wenn der Fortschritt wirklich am Ende war — schützt vor
-                    // Geräten ohne TTS-Stimme, wo onend sofort feuert
-                    const reachedEnd = player.idx >= player.words.length - 2;
+                    // „Geschafft" nur bei echter Wiedergabe — schützt vor Geräten ohne
+                    // TTS-Stimme, wo onend sofort feuert (dann ist progressed false)
+                    const reachedEnd = player.progressed || player.idx >= player.words.length - 2;
                     stopPlayer();
                     if (reachedEnd && (!wasChunk || state.chunkIndex === state.chunks.length - 1)) storyFinished();
                 }
@@ -3046,6 +3135,8 @@
             if (!player.active) return;
             if (!player.paused) {
                 player.paused = true;
+                player.gen = (player.gen || 0) + 1; // Schätz-Timer stoppen
+                clearTimeout(player._estTimer);
                 stopSpeaking();
                 playerSetUI('paused');
             } else {
@@ -3058,6 +3149,8 @@
         function stopPlayer() {
             player.active = false;
             player.paused = false;
+            player.gen = (player.gen || 0) + 1; // Schätz-Timer stoppen
+            clearTimeout(player._estTimer);
             stopSpeaking();
             clearHighlights();
             playerSetUI('stopped');
