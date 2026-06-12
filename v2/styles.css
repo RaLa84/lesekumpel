@@ -257,9 +257,16 @@ a:hover { text-decoration-thickness: 2px; }
   font-weight: 700;
 }
 
+/* Navbar-CTA: mobil ausgeblendet (drückt sonst den Burger aus dem
+   Viewport), ab Desktop sichtbar. Registrieren-Link steckt mobil im Menü.
+   .navbar-Prefix nötig: gleiche Spezifität wie .btn würde verlieren,
+   da .btn später in der Datei definiert ist. */
+.navbar .navbar-cta { display: none; }
+
 @media (min-width: 1024px) {
   .navbar-links { display: flex; }
   .nav-login { display: inline-flex; align-items: center; }
+  .navbar .navbar-cta { display: inline-flex; }
   .burger { display: none; }
 }
 

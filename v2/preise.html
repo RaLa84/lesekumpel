@@ -9,6 +9,18 @@
   <link rel="icon" type="image/webp" href="../Konzept_Rebranding/logo-lesekumpel-512.webp">
   <link rel="stylesheet" href="../fonts/fonts.css">
   <link rel="stylesheet" href="styles.css">
+  <style>
+    /* Buddy als Sticker an der CTA-Box (Konzept: Buddy auf 25-40% der Seiten) */
+    .cta-box { position: relative; }
+    .preise-cta-mascot {
+      top: -52px;
+      right: 6%;
+      width: 96px;
+    }
+    @media (max-width: 767px) {
+      .preise-cta-mascot { width: 72px; top: -40px; right: 4%; }
+    }
+  </style>
 </head>
 <body data-page="preise">
 
@@ -139,6 +151,7 @@
     <!-- CTA -->
     <section class="section text-center">
       <div class="cta-box">
+        <img class="mascot-sticker preise-cta-mascot" src="../Konzept_Rebranding/logo-lesekumpel-512.webp" alt="" aria-hidden="true">
         <h2>Noch unsicher?</h2>
         <p>Lies einfach erst mal ohne Anmeldung. Du kannst jederzeit ein Konto erstellen, sobald du mehr willst.</p>
         <a href="demo.html" class="btn btn-primary btn-large">Zu den Demo-Texten</a>

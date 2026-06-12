@@ -380,6 +380,11 @@ body.syllables-on .syllable + .syllable { color: var(--syl-b); }
 .toolbar-group {
   border-radius: var(--radius-inner);
   padding: 12px 14px 10px;
+  /* nowrap-Buttons (mobil) dürfen die Gruppe nicht über den Container
+     dehnen — Scrollen passiert IN .toolbar-group-buttons */
+  min-width: 0;
+  max-width: 100%;
+  overflow: hidden;
 }
 .toolbar-group.group-text  { background: rgba(47,184,166,0.08); }
 .toolbar-group.group-view  { background: rgba(125,106,230,0.08); }
