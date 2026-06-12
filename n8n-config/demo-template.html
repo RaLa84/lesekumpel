@@ -1635,28 +1635,6 @@
            AUDIO-FIRST & KINDER-DESIGN (Nichtleser-Zugänglichkeit)
            ════════════════════════════════════════════════════════════════ */
 
-        /* — Vorlese-Player: der größte, wichtigste Knopf der Seite — */
-        .read-player { display: flex; align-items: center; gap: 16px; justify-content: center; margin: 4px 0 22px; }
-        .read-player-btn {
-            width: 76px; height: 76px; border-radius: 50%; border: none;
-            background: var(--mint); color: var(--navy); cursor: pointer;
-            display: inline-flex; align-items: center; justify-content: center;
-            box-shadow: 0 6px 18px rgba(47,184,166,0.4);
-            transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
-            animation: playerPulse 2.6s ease-in-out infinite;
-            -webkit-tap-highlight-color: transparent;
-        }
-        .read-player-icon { font-size: 1.9rem; line-height: 1; transform: translateX(2px); }
-        .read-player-btn.playing .read-player-icon { transform: none; }
-        .read-player-btn:hover { transform: scale(1.07); }
-        .read-player-btn:active { transform: scale(0.94); }
-        .read-player-btn.playing { animation: none; background: var(--accent-coral); box-shadow: 0 6px 18px rgba(249,115,82,0.4); }
-        .read-player-label { font-family: var(--font-heading); font-size: 1.2rem; font-weight: 600; color: var(--navy); }
-        @keyframes playerPulse {
-            0%, 100% { box-shadow: 0 6px 18px rgba(47,184,166,0.4); }
-            50% { box-shadow: 0 6px 26px rgba(47,184,166,0.6), 0 0 0 12px rgba(47,184,166,0.1); }
-        }
-
         /* — Vorlese-Knöpfe (🔊) an Quiz, Spielen, Schatz — */
         .speak-btn {
             flex-shrink: 0; width: 46px; min-height: 46px; border-radius: 12px;
@@ -1749,7 +1727,7 @@
         .buddy-menu-btn:hover { background: #fff3b8; transform: translateX(3px); }
         .buddy-menu-btn:active { transform: scale(0.97); }
         .buddy-menu-btn .bm-icon { font-size: 1.5rem; width: 36px; text-align: center; }
-        .buddy-menu-btn:focus-visible, .read-player-btn:focus-visible,
+        .buddy-menu-btn:focus-visible,
         .speak-btn:focus-visible, .chunk-arrow:focus-visible, .done-cta:focus-visible {
             outline: 3px solid var(--lila); outline-offset: 2px;
         }
@@ -1760,7 +1738,6 @@
         @media (max-width: 767px) {
             .buddy-img, .toolbar-header .header-icon { width: 46px; height: 46px; }
             .buddy-menu-btn { min-width: 170px; }
-            .read-player-btn { width: 68px; height: 68px; }
         }
 
         /* — „Was ist das?"-Modus: zeigt an, was antippbar ist — */
@@ -1809,7 +1786,6 @@
         }
 
         /* — Tafel-Modus: Player/Geschafft-Karte/Player-Leiste stören dort nicht — */
-        body.view-tafel .read-player,
         body.view-tafel .done-card,
         body.view-tafel .player-bar { display: none !important; }
         body.view-tafel .buddy-img, body.view-tafel .toolbar-header .header-icon { width: 84px; height: 84px; }
@@ -1969,15 +1945,6 @@
                     </div>
                 </div>
             </div>
-        </div>
-
-        <div class="read-player">
-            <button class="read-player-btn" id="read-player-btn" type="button" onclick="togglePlayer()"
-                    aria-label="Geschichte vorlesen oder stoppen"
-                    data-speak="Der große runde Knopf: Ich lese dir die ganze Geschichte vor!">
-                <span class="read-player-icon" id="read-player-icon" aria-hidden="true">▶</span>
-            </button>
-            <span class="read-player-label" id="read-player-label" aria-hidden="true">Vorlesen</span>
         </div>
 
         <div id="full-text-view" class="story-text"></div>
@@ -2265,7 +2232,7 @@
             document.body.classList.remove('explain-mode');
             const el = e.target.closest('[data-speak]');
             if (el) speak(el.getAttribute('data-speak'));
-            else if (e.target.closest('.story-text')) speak('Das ist die Geschichte. Tipp auf den großen runden Knopf, dann lese ich sie dir vor.');
+            else if (e.target.closest('.story-text')) speak('Das ist die Geschichte. Tipp unten rechts auf mich und dann auf Vorlesen, dann lese ich sie dir vor.');
             else speak('Hm, dazu weiß ich nichts. Tipp auf einen Knopf!');
         }, true);
 
@@ -2282,7 +2249,7 @@
             } else if (what === 'explain') {
                 startExplainMode();
             } else if (what === 'help') {
-                speak('Hallo, ich bin dein Lesekumpel — der Knopf rechts unten! Oben steht die Geschichte. Tipp auf den großen runden Knopf, dann lese ich sie dir vor. Bei mir findest du Werkzeuge für die Schrift. Und weiter unten warten Spiele auf dich!');
+                speak('Hallo, ich bin dein Lesekumpel — der Knopf rechts unten! Oben steht die Geschichte. Tipp bei mir auf Vorlesen, dann lese ich sie dir vor. Bei mir findest du auch Werkzeuge für die Schrift. Und weiter unten warten Spiele auf dich!');
             }
         }
         function buddyCheer(text) {
