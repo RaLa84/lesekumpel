@@ -114,7 +114,7 @@
         .nav-logo-box { width: 44px; height: 44px; overflow: hidden; border-radius: 10px; flex-shrink: 0; }
         .nav-logo { height: 100%; width: 100%; object-fit: contain; transform: scale(1.9); transform-origin: center; }
         .brand-name { font-family: var(--font-heading); font-size: 1.2rem; color: var(--navy); font-weight: 700; text-decoration: none; }
-        .brand-name .brand-accent { color: var(--lila); }
+        .brand-name .brand-accent { color: inherit; }
         .nav-links-desktop { display: none; gap: 15px; align-items: center; }
         .nav-btn { text-decoration: none; color: var(--text-dark); font-weight: 600; font-size: 1rem; display: flex; align-items: center; gap: 5px; }
         .btn-cta-nav {
@@ -219,13 +219,20 @@
             box-shadow: 0 4px 24px rgba(0,0,0,0.04), 0 1px 4px rgba(0,0,0,0.02);
             border: 1px solid rgba(0,0,0,0.03); overflow: hidden; transition: all 0.3s ease;
         }
+        /* Zugeklappt: großer runder Knopf, nur das Maskottchen (kein Text, kein +) */
         .toolbar-container.collapsed {
             position: fixed; bottom: 24px; right: 24px; z-index: 4500;
-            max-width: fit-content; margin: 0; border-radius: 28px;
+            width: 92px; height: 92px; margin: 0; border-radius: 50%;
             background: linear-gradient(135deg, #FEFBF6 0%, #EDF9F6 55%, #F1EEFC 100%);
             box-shadow: 0 4px 20px rgba(47,184,166,0.2), 0 2px 6px rgba(0,0,0,0.06);
             border: 1.5px solid rgba(47,184,166,0.2);
         }
+        .toolbar-container.collapsed .toolbar-header { padding: 0; width: 100%; height: 100%; justify-content: center; gap: 0; }
+        .toolbar-container.collapsed .toolbar-header-label { gap: 0; }
+        .toolbar-container.collapsed .header-text { display: none !important; }
+        .toolbar-container.collapsed .toolbar-toggle-icon { display: none; }
+        .toolbar-container.collapsed .buddy-img,
+        .toolbar-container.collapsed .toolbar-header .header-icon { width: 64px; height: 64px; }
         .toolbar-container.collapsed:hover {
             transform: translateY(-2px) scale(1.03);
             box-shadow: 0 6px 28px rgba(47,184,166,0.3), 0 2px 8px rgba(0,0,0,0.08);
@@ -239,8 +246,7 @@
             display: flex; align-items: center; gap: 10px; font-weight: 600;
         }
         .toolbar-header-label .header-icon { font-size: 1.9em; display: inline-block; line-height: 1; }
-        .toolbar-header-label .header-text { display: none; }
-        .toolbar-container.collapsed .toolbar-header-label .header-text { display: inline; white-space: nowrap; }
+        .toolbar-header-label .header-text { display: inline; white-space: nowrap; }
         @keyframes tool-wiggle {
             0%, 100% { transform: rotate(0deg); }
             25% { transform: rotate(-12deg); }
@@ -315,10 +321,9 @@
         @media (max-width: 767px) {
             .brand-name { display: none; }
             .hidden-mobile { display: none !important; }
-            .toolbar-container.collapsed { bottom: 16px; right: 16px; }
-            .toolbar-container.collapsed .toolbar-header { padding: 14px 18px; gap: 10px; }
-            .toolbar-container.collapsed .header-icon { font-size: 1.7em; }
-            .toolbar-container.collapsed .toolbar-header-label { font-size: 1rem; }
+            .toolbar-container.collapsed { bottom: 16px; right: 16px; width: 76px; height: 76px; }
+            .toolbar-container.collapsed .buddy-img,
+            .toolbar-container.collapsed .toolbar-header .header-icon { width: 54px; height: 54px; }
             .toolbar-container:not(.collapsed) { bottom: 0; right: 0; max-width: 100%; border-radius: 20px 20px 0 0; border-bottom: none; }
             body { padding-bottom: 80px; }
             h1#main-title { font-size: 1.6rem; letter-spacing: 0.5px; }
@@ -1305,17 +1310,14 @@
         body.view-tafel .feedback-section,
         body.view-tafel footer { display: none; }
 
-        /* === TOOLBAR: bleibt rechts unten wie Original, nur größer für Touch === */
+        /* === TOOLBAR: bleibt rechts unten wie Original, nur größer für Touch (Logo-only) === */
         body.view-tafel .toolbar-container.collapsed {
             bottom: 36px; right: 36px;
-            min-width: 130px; min-height: 130px;
-            border-radius: 36px;
+            width: 140px; height: 140px;
+            border-radius: 50%;
         }
-        body.view-tafel .toolbar-container.collapsed .toolbar-header { padding: 26px 32px; gap: 18px; }
-        body.view-tafel .toolbar-container.collapsed .header-icon { font-size: 3em; }
-        body.view-tafel .toolbar-container.collapsed .toolbar-header-label { font-size: 1.7rem; }
-        body.view-tafel .toolbar-container.collapsed .toolbar-header-label .header-text { display: inline; }
-        body.view-tafel .toolbar-container.collapsed .toolbar-toggle-icon { font-size: 2rem; }
+        body.view-tafel .toolbar-container.collapsed .buddy-img,
+        body.view-tafel .toolbar-container.collapsed .toolbar-header .header-icon { width: 104px; height: 104px; }
 
         body.view-tafel .toolbar-container:not(.collapsed) {
             bottom: 36px; right: 36px;
