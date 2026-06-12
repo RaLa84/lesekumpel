@@ -228,11 +228,15 @@
             border: 1.5px solid rgba(47,184,166,0.2);
         }
         .toolbar-container.collapsed .toolbar-header { padding: 0; width: 100%; height: 100%; justify-content: center; gap: 0; }
-        .toolbar-container.collapsed .toolbar-header-label { gap: 0; }
+        .toolbar-container.collapsed .toolbar-header-label { gap: 0; pointer-events: none; }
         .toolbar-container.collapsed .header-text { display: none !important; }
         .toolbar-container.collapsed .toolbar-toggle-icon { display: none; }
+        /* Das WEBP hat viel transparenten Rand — das Bild darf deshalb deutlich
+           größer sein als der Knopf, damit das Maskottchen den Kreis füllt.
+           pointer-events:none, damit der unsichtbare Überstand nichts verdeckt. */
+        .buddy-img, .toolbar-header .header-icon { pointer-events: none; }
         .toolbar-container.collapsed .buddy-img,
-        .toolbar-container.collapsed .toolbar-header .header-icon { width: 64px; height: 64px; }
+        .toolbar-container.collapsed .toolbar-header .header-icon { width: 180px; height: 180px; }
         .toolbar-container.collapsed:hover {
             transform: translateY(-2px) scale(1.03);
             box-shadow: 0 6px 28px rgba(47,184,166,0.3), 0 2px 8px rgba(0,0,0,0.08);
@@ -323,7 +327,7 @@
             .hidden-mobile { display: none !important; }
             .toolbar-container.collapsed { bottom: 16px; right: 16px; width: 76px; height: 76px; }
             .toolbar-container.collapsed .buddy-img,
-            .toolbar-container.collapsed .toolbar-header .header-icon { width: 54px; height: 54px; }
+            .toolbar-container.collapsed .toolbar-header .header-icon { width: 148px; height: 148px; }
             .toolbar-container:not(.collapsed) { bottom: 0; right: 0; max-width: 100%; border-radius: 20px 20px 0 0; border-bottom: none; }
             body { padding-bottom: 80px; }
             h1#main-title { font-size: 1.6rem; letter-spacing: 0.5px; }
@@ -1317,7 +1321,7 @@
             border-radius: 50%;
         }
         body.view-tafel .toolbar-container.collapsed .buddy-img,
-        body.view-tafel .toolbar-container.collapsed .toolbar-header .header-icon { width: 104px; height: 104px; }
+        body.view-tafel .toolbar-container.collapsed .toolbar-header .header-icon { width: 270px; height: 270px; }
 
         body.view-tafel .toolbar-container:not(.collapsed) {
             bottom: 36px; right: 36px;
