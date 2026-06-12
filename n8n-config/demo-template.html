@@ -1662,45 +1662,38 @@
         }
         .done-cta:hover { background: var(--navy); color: #fff; }
 
-        /* — Lese-Buddy (Maskottchen unten links) — */
-        .buddy-wrap {
-            position: fixed; bottom: 16px; left: 16px; z-index: 4400;
-            display: flex; flex-direction: column; align-items: flex-start; gap: 10px;
+        /* — Lese-Buddy: das Maskottchen sitzt im Zauberkasten-Header (FAB rechts unten) — */
+        .toolbar-header .header-icon { width: 54px; height: 54px; display: inline-flex; align-items: center; justify-content: center; overflow: visible; }
+        .buddy-img {
+            width: 54px; height: 54px; object-fit: contain;
+            filter: drop-shadow(0 3px 8px rgba(0,0,0,0.18));
+            animation: buddyFloat 4s ease-in-out infinite;
         }
-        .buddy-btn {
-            width: 92px; height: 92px; border: none; background: transparent; padding: 0;
-            cursor: pointer; -webkit-tap-highlight-color: transparent;
-            filter: drop-shadow(0 6px 14px rgba(0,0,0,0.2));
-            transition: transform 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
-        }
-        .buddy-btn:hover { transform: scale(1.08); }
-        .buddy-btn:active { transform: scale(0.93); }
-        .buddy-img { width: 100%; height: 100%; object-fit: contain; animation: buddyFloat 4s ease-in-out infinite; }
         @keyframes buddyFloat {
             0%, 100% { transform: translateY(0) rotate(-2deg); }
-            50% { transform: translateY(-7px) rotate(2deg); }
+            50% { transform: translateY(-5px) rotate(2deg); }
         }
-        .buddy-btn.cheer .buddy-img { animation: buddyJump 0.9s cubic-bezier(0.34, 1.56, 0.64, 1); }
+        .buddy-img.cheer { animation: buddyJump 0.9s cubic-bezier(0.34, 1.56, 0.64, 1); }
         @keyframes buddyJump {
             0%, 100% { transform: translateY(0); }
-            30% { transform: translateY(-20px) rotate(-7deg); }
+            30% { transform: translateY(-16px) rotate(-7deg); }
             60% { transform: translateY(0); }
-            80% { transform: translateY(-9px) rotate(4deg); }
+            80% { transform: translateY(-7px) rotate(4deg); }
         }
+        /* Sprechblase: hängt über dem (collapsed) FAB rechts unten */
         .buddy-bubble {
+            position: absolute; bottom: calc(100% + 10px); right: 0; white-space: nowrap;
             background: #fff; border: 2px solid var(--primary-yellow); border-radius: 16px;
             padding: 10px 16px; font-family: var(--font-heading); font-weight: 600;
             font-size: 1.05rem; color: var(--text-dark);
             box-shadow: 0 6px 18px rgba(0,0,0,0.12);
             animation: bubblePop 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
-        .buddy-menu {
-            display: flex; flex-direction: column; gap: 8px;
-            background: #fff; border: 2px solid var(--border-card, #F5E6A3); border-radius: 20px;
-            padding: 10px; box-shadow: 0 10px 30px rgba(0,0,0,0.16);
-            animation: bubblePop 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
-        }
-        .buddy-menu[hidden], .buddy-bubble[hidden] { display: none; }
+        .buddy-bubble[hidden] { display: none; }
+        .toolbar-container.collapsed { overflow: visible; }
+        /* Buddy-Aktionsgruppe im Panel */
+        .toolbar-group.group-buddy { background: #F1EEFC; }
+        .buddy-actions { display: flex; flex-direction: column; gap: 8px; }
         .buddy-menu-btn {
             display: flex; align-items: center; gap: 12px;
             min-height: 56px; min-width: 200px;
@@ -1713,7 +1706,7 @@
         .buddy-menu-btn:hover { background: #fff3b8; transform: translateX(3px); }
         .buddy-menu-btn:active { transform: scale(0.97); }
         .buddy-menu-btn .bm-icon { font-size: 1.5rem; width: 36px; text-align: center; }
-        .buddy-menu-btn:focus-visible, .buddy-btn:focus-visible, .read-player-btn:focus-visible,
+        .buddy-menu-btn:focus-visible, .read-player-btn:focus-visible,
         .speak-btn:focus-visible, .chunk-arrow:focus-visible, .done-cta:focus-visible {
             outline: 3px solid var(--lila); outline-offset: 2px;
         }
@@ -1722,8 +1715,7 @@
             to { opacity: 1; transform: none; }
         }
         @media (max-width: 767px) {
-            .buddy-btn { width: 74px; height: 74px; }
-            .buddy-wrap { bottom: 14px; left: 12px; }
+            .buddy-img, .toolbar-header .header-icon { width: 46px; height: 46px; }
             .buddy-menu-btn { min-width: 170px; }
             .read-player-btn { width: 68px; height: 68px; }
         }
@@ -1741,10 +1733,43 @@
         .toolbar-group-buttons > .tool-btn .btn-label { font-size: 0.92em; }
         .font-size-control .tool-btn { min-height: 62px; font-size: 1.1em; }
 
-        /* — Tafel-Modus: Player/Buddy/Geschafft-Karte stören dort nicht — */
+        /* — Audio-Player-Leiste (fixed bottom, läuft beim Vorlesen mit) — */
+        .player-bar {
+            position: fixed; bottom: 0; left: 0; right: 0; z-index: 4450;
+            display: flex; align-items: center; gap: 12px;
+            background: #fff; border-top: 3px solid var(--mint);
+            padding: 10px 16px calc(10px + env(safe-area-inset-bottom));
+            box-shadow: 0 -6px 24px rgba(43,49,64,0.14);
+        }
+        .player-bar[hidden] { display: none; }
+        .pb-btn {
+            width: 52px; height: 52px; border-radius: 50%; border: none;
+            background: var(--mint); color: var(--navy); font-size: 1.3rem; cursor: pointer;
+            flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center;
+            transition: transform 0.15s ease; -webkit-tap-highlight-color: transparent;
+        }
+        .pb-btn:hover { transform: scale(1.06); }
+        .pb-btn:active { transform: scale(0.93); }
+        .pb-stop { background: var(--cream-light); border: 2px solid var(--border-soft); width: 44px; height: 44px; font-size: 1rem; }
+        .pb-range { flex: 1; accent-color: var(--mint); height: 36px; cursor: pointer; min-width: 0; }
+        .pb-count { font-family: var(--font-heading); font-weight: 600; font-size: 0.9rem; color: var(--navy); min-width: 52px; text-align: center; flex-shrink: 0; }
+        .pb-btn:focus-visible, .pb-range:focus-visible { outline: 3px solid var(--lila); outline-offset: 2px; }
+        /* Inhalt + Zauberkasten-FAB rücken hoch, solange die Leiste sichtbar ist */
+        body.player-active { padding-bottom: 130px; }
+        body.player-active .toolbar-container.collapsed,
+        body.player-active .toolbar-container:not(.collapsed) { bottom: 96px; }
+        @media (max-width: 767px) {
+            body.player-active { padding-bottom: 150px; }
+            body.player-active .toolbar-container.collapsed { bottom: 92px; }
+            body.player-active .toolbar-container:not(.collapsed) { bottom: 86px; }
+            .pb-count { min-width: 44px; font-size: 0.8rem; }
+        }
+
+        /* — Tafel-Modus: Player/Geschafft-Karte/Player-Leiste stören dort nicht — */
         body.view-tafel .read-player,
         body.view-tafel .done-card,
-        body.view-tafel .buddy-wrap { display: none !important; }
+        body.view-tafel .player-bar { display: none !important; }
+        body.view-tafel .buddy-img, body.view-tafel .toolbar-header .header-icon { width: 84px; height: 84px; }
 
         /* 1-Spalten-Fallback wenn Viewport zu schmal für 2-Spalten ist (z.B. Toggle-Test am Desktop) */
         @media (max-width: 1500px) {
@@ -1828,14 +1853,33 @@
         {{STORY_IMAGES_HTML}}
 
         <div class="toolbar-container collapsed" id="toolbar">
-            <div class="toolbar-header" onclick="toggleToolbarCollapse()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleToolbarCollapse();}" id="toolbar-close-btn" role="button" tabindex="0" aria-label="Zauberkasten öffnen oder schließen">
+            <div class="buddy-bubble" id="buddy-bubble" hidden>Tipp mich an! 🔊</div>
+            <div class="toolbar-header" onclick="toggleToolbarCollapse()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleToolbarCollapse();}" id="toolbar-close-btn" role="button" tabindex="0" aria-label="Lesekumpel: Hilfe und Werkzeuge öffnen oder schließen"
+                 data-speak="Das bin ich, dein Lesekumpel! Tipp mich an, dann zeige ich dir meine Helfer und Werkzeuge.">
                 <span class="toolbar-header-label">
-                    <span class="header-icon" aria-hidden="true">🪄</span>
-                    <span class="header-text">Zauberkasten</span>
+                    <span class="header-icon" aria-hidden="true"><img class="buddy-img" id="buddy-img" src="https://rala84.github.io/lesekumpel/Konzept_Rebranding/logo-lesekumpel-512.webp" alt=""></span>
+                    <span class="header-text">Lesekumpel</span>
                 </span>
                 <span class="toolbar-toggle-icon" id="toolbar-chevron" aria-hidden="true"></span>
             </div>
             <div class="toolbar-body" id="toolbar-body">
+                <div class="toolbar-group group-buddy">
+                    <div class="toolbar-group-label">Dein Lesekumpel</div>
+                    <div class="buddy-actions">
+                        <button type="button" class="buddy-menu-btn" onclick="buddyAction('read')"
+                                data-speak="Vorlesen: Ich lese dir die ganze Geschichte vor.">
+                            <span class="bm-icon" aria-hidden="true">▶</span><span class="bm-label">Vorlesen</span>
+                        </button>
+                        <button type="button" class="buddy-menu-btn" onclick="buddyAction('explain')"
+                                data-speak="Was ist das: Tipp danach auf einen Knopf, und ich erkläre ihn dir.">
+                            <span class="bm-icon" aria-hidden="true">❓</span><span class="bm-label">Was ist das?</span>
+                        </button>
+                        <button type="button" class="buddy-menu-btn" onclick="buddyAction('help')"
+                                data-speak="Hilfe: Ich erkläre dir die ganze Seite.">
+                            <span class="bm-icon" aria-hidden="true">💡</span><span class="bm-label">Hilfe</span>
+                        </button>
+                    </div>
+                </div>
                 <div class="toolbar-group group-text">
                     <div class="toolbar-group-label">Text</div>
                     <div class="toolbar-group-buttons">
@@ -1873,8 +1917,6 @@
                             <button type="button" class="tool-btn" id="btn-tempo-fast" onclick="setSpeechRate(0.95)" aria-label="Normal schnell vorlesen"
                                     data-speak="Hase: Ich lese normal schnell vor.">🐇</button>
                         </div>
-                        <button type="button" class="tool-btn" onclick="toggleBuddy(this)" id="btn-buddy" aria-label="Lese-Buddy an oder aus"
-                                data-speak="Hier kannst du mich, deinen Lese-Buddy, an- oder ausschalten."><span class="btn-icon">🤗</span> <span class="btn-label">Buddy</span></button>
                     </div>
                 </div>
             </div>
@@ -2068,24 +2110,15 @@
     </article>
     </main>
 
-    <!-- Lese-Buddy: das Buch-Maskottchen als sprechender Begleiter (unten links,
-         Gegenstück zum Zauberkasten rechts). Spricht NIE von selbst — nur auf Tipp. -->
-    <div class="buddy-wrap" id="buddy-wrap" hidden>
-        <div class="buddy-bubble" id="buddy-bubble" hidden>Tipp mich an! 🔊</div>
-        <div class="buddy-menu" id="buddy-menu" hidden>
-            <button type="button" class="buddy-menu-btn" onclick="buddyAction('read')">
-                <span class="bm-icon" aria-hidden="true">▶</span><span class="bm-label">Vorlesen</span>
-            </button>
-            <button type="button" class="buddy-menu-btn" onclick="buddyAction('explain')">
-                <span class="bm-icon" aria-hidden="true">❓</span><span class="bm-label">Was ist das?</span>
-            </button>
-            <button type="button" class="buddy-menu-btn" onclick="buddyAction('help')">
-                <span class="bm-icon" aria-hidden="true">💡</span><span class="bm-label">Hilfe</span>
-            </button>
-        </div>
-        <button type="button" class="buddy-btn" id="buddy-btn" onclick="toggleBuddyMenu()" aria-label="Lese-Buddy: Hilfe öffnen" aria-expanded="false" aria-controls="buddy-menu">
-            <img class="buddy-img" src="https://rala84.github.io/lesekumpel/Konzept_Rebranding/logo-lesekumpel-512.webp" alt="">
-        </button>
+    <!-- Audio-Player-Leiste: erscheint beim Vorlesen, läuft mit, pausierbar, spulbar -->
+    <div class="player-bar" id="player-bar" hidden>
+        <button type="button" class="pb-btn" id="pb-toggle" onclick="playerPauseResume()" aria-label="Pause"
+                data-speak="Pause und weiter: Hier hältst du das Vorlesen an oder machst weiter.">⏸</button>
+        <input type="range" class="pb-range" id="pb-range" min="0" max="100" value="0" step="1" aria-label="Vorlese-Position"
+               data-speak="Der Balken zeigt, wo wir in der Geschichte sind. Schiebe ihn, um zu springen.">
+        <span class="pb-count" id="pb-count" aria-hidden="true">0/0</span>
+        <button type="button" class="pb-btn pb-stop" id="pb-stop" onclick="stopPlayer()" aria-label="Vorlesen beenden"
+                data-speak="Das X beendet das Vorlesen.">✕</button>
     </div>
 
     <footer>
@@ -2176,8 +2209,6 @@
         }
         document.addEventListener('click', function(e) {
             if (!explainMode) return;
-            // Buddy selbst bleibt bedienbar (sonst käme man nicht mehr raus)
-            if (e.target.closest('#buddy-wrap')) return;
             e.preventDefault();
             e.stopPropagation();
             explainMode = false;
@@ -2188,67 +2219,44 @@
             else speak('Hm, dazu weiß ich nichts. Tipp auf einen Knopf!');
         }, true);
 
-        /* ── Lese-Buddy ───────────────────────────────────────────────────
-           Bei Neurotyp Autismus bleibt der Buddy still (keine Sprechblase,
-           kein Jubel) — Reizarmut. Abschaltbar über den Zauberkasten. */
-        function toggleBuddyMenu() {
-            const menu = document.getElementById('buddy-menu');
-            const btn = document.getElementById('buddy-btn');
-            const bubble = document.getElementById('buddy-bubble');
-            if (bubble) bubble.hidden = true;
-            const opening = menu.hidden;
-            menu.hidden = !opening;
-            btn.setAttribute('aria-expanded', opening ? 'true' : 'false');
-        }
+        /* ── Lese-Buddy (im Zauberkasten-FAB verschmolzen) ────────────────
+           Das Maskottchen IST der Werkzeugkasten-Knopf rechts unten.
+           Bei Neurotyp Autismus bleibt es still (keine Sprechblase, kein
+           Jubel-Audio) — Reizarmut. */
         function buddyAction(what) {
-            toggleBuddyMenu();
+            // Panel schließen, dann Aktion
+            const tb = document.getElementById('toolbar');
+            if (tb && !tb.classList.contains('collapsed')) tb.classList.add('collapsed');
             if (what === 'read') {
                 togglePlayer();
             } else if (what === 'explain') {
                 startExplainMode();
             } else if (what === 'help') {
-                speak('Hallo, ich bin dein Lesekumpel! Oben steht die Geschichte. Tipp auf den großen runden Knopf, dann lese ich sie dir vor. Im Zauberkasten rechts unten kannst du die Schrift verändern. Und weiter unten warten Spiele auf dich!');
+                speak('Hallo, ich bin dein Lesekumpel — der Knopf rechts unten! Oben steht die Geschichte. Tipp auf den großen runden Knopf, dann lese ich sie dir vor. Bei mir findest du Werkzeuge für die Schrift. Und weiter unten warten Spiele auf dich!');
             }
         }
         function buddyCheer(text) {
-            const wrap = document.getElementById('buddy-wrap');
-            if (!wrap || wrap.hidden || isAutismus) return;
+            if (isAutismus) return;
             speak(text);
             if (!REDUCED_MOTION) {
-                const btn = document.getElementById('buddy-btn');
-                btn.classList.remove('cheer'); void btn.offsetWidth; btn.classList.add('cheer');
-                setTimeout(() => btn.classList.remove('cheer'), 1000);
+                const img = document.getElementById('buddy-img');
+                if (img) {
+                    img.classList.remove('cheer'); void img.offsetWidth; img.classList.add('cheer');
+                    setTimeout(() => img.classList.remove('cheer'), 1000);
+                }
             }
-        }
-        function toggleBuddy(toolBtn) {
-            const wrap = document.getElementById('buddy-wrap');
-            const turnOff = !wrap.hidden;
-            wrap.hidden = turnOff;
-            document.getElementById('buddy-menu').hidden = true;
-            try { localStorage.setItem('lesekumpel-buddy', turnOff ? 'off' : 'on'); } catch(e) {}
-            if (toolBtn) toolBtn.classList.toggle('active', !turnOff);
-            if (turnOff) stopSpeaking(); else speak('Hallo, da bin ich wieder!');
         }
         function initBuddy() {
-            const wrap = document.getElementById('buddy-wrap');
-            if (!wrap) return;
-            let off = false;
-            try { off = localStorage.getItem('lesekumpel-buddy') === 'off'; } catch(e) {}
-            if (off) return; // bleibt hidden, Zauberkasten-Knopf bleibt inaktiv
-            wrap.hidden = false;
-            const toolBtn = document.getElementById('btn-buddy');
-            if (toolBtn) toolBtn.classList.add('active');
-            // Erstbesuch: stille Sprechblase als Einladung (kein Auto-Audio — iOS & Reizarmut)
-            if (!isAutismus) {
-                try {
-                    if (!localStorage.getItem('lesekumpel-buddy-intro')) {
-                        localStorage.setItem('lesekumpel-buddy-intro', '1');
-                        const bubble = document.getElementById('buddy-bubble');
-                        bubble.hidden = false;
-                        setTimeout(() => { bubble.hidden = true; }, 9000);
-                    }
-                } catch(e) {}
-            }
+            // Erstbesuch: stille Sprechblase überm FAB (kein Auto-Audio — iOS & Reizarmut)
+            if (isAutismus) return;
+            try {
+                if (!localStorage.getItem('lesekumpel-buddy-intro')) {
+                    localStorage.setItem('lesekumpel-buddy-intro', '1');
+                    const bubble = document.getElementById('buddy-bubble');
+                    bubble.hidden = false;
+                    setTimeout(() => { bubble.hidden = true; }, 9000);
+                }
+            } catch(e) {}
         }
 
         // Dictionary Parser
@@ -2772,64 +2780,148 @@
         function toggleEmojis() { state.emojis = !state.emojis; renderText(); document.getElementById('btn-emojis').className = state.emojis ? "tool-btn active" : "tool-btn"; }
         function toggleSummaryMode() { state.summary = !state.summary; state.chunkIndex=0; renderText(); }
 
-        /* ── Vorlese-Player: großer Knopf über der Geschichte ─────────────
-           Liest die ganze Geschichte (bzw. das aktuelle Häppchen) mit
-           Karaoke-Wort-Highlighting und Auto-Scroll vor. */
-        let playerActive = false;
-        function resetPlayerUI() {
-            playerActive = false;
-            clearHighlights();
-            const btn = document.getElementById('read-player-btn');
-            if (!btn) return;
-            btn.classList.remove('playing');
-            document.getElementById('read-player-icon').textContent = '▶';
-            document.getElementById('read-player-label').textContent = 'Vorlesen';
-        }
-        function togglePlayer() {
-            const btn = document.getElementById('read-player-btn');
-            if (!btn) return;
-            if (window.speechSynthesis.speaking || playerActive) {
-                stopSpeaking();
-                resetPlayerUI();
-                return;
-            }
+        /* ── Vorlese-Player mit Audio-Leiste ──────────────────────────────
+           Liest Geschichte/Häppchen mit Karaoke-Highlight + Auto-Scroll.
+           Die feste Leiste unten zeigt den Fortschritt (Wort-Index aus den
+           boundary-Events), ist pausierbar und per Balken spulbar.
+           Pause arbeitet cancel-basiert (zuverlässig auf allen Plattformen,
+           speechSynthesis.pause() ist auf Chrome/Android notorisch kaputt) —
+           Resume startet am gemerkten Wortanfang. */
+        let player = { active: false, paused: false, words: [], idx: 0, chunkMode: false };
+
+        function playerCollectWords() {
             const chunkMode = !document.getElementById('chunk-view').classList.contains('hidden');
             const container = chunkMode ? document.getElementById('chunk-display') : document.getElementById('full-text-view');
-            const spans = container.querySelectorAll('.word-interactive');
-            if (!spans.length) return;
-            let speechText = "", wordMap = [];
-            spans.forEach(span => {
-                const word = span.innerText, start = speechText.length;
-                speechText += word + " ";
-                wordMap.push({ start, end: speechText.length - 1, el: span });
-            });
-            playerActive = true;
-            btn.classList.add('playing');
-            document.getElementById('read-player-icon').textContent = '⏸';
-            document.getElementById('read-player-label').textContent = 'Stopp';
+            const words = [];
+            container.querySelectorAll('.word-interactive').forEach(span => words.push({ text: span.innerText, el: span }));
+            return { words, chunkMode };
+        }
+
+        function playerHighlight(idx) {
+            clearHighlights();
+            const w = player.words[idx];
+            if (!w) return;
+            w.el.classList.add('highlight-active');
+            const r = w.el.getBoundingClientRect();
+            if (r.top < 90 || r.bottom > window.innerHeight - 180) {
+                w.el.scrollIntoView({ behavior: REDUCED_MOTION ? 'auto' : 'smooth', block: 'center' });
+            }
+        }
+
+        function playerUpdateBar() {
+            const total = player.words.length;
+            const range = document.getElementById('pb-range');
+            const count = document.getElementById('pb-count');
+            if (range && total) range.value = Math.round((player.idx / Math.max(1, total - 1)) * 100);
+            if (count) count.textContent = (player.idx + 1) + '/' + total;
+        }
+
+        function playerSetUI(uiState) { // 'playing' | 'paused' | 'stopped'
+            const big = document.getElementById('read-player-btn');
+            const bigIcon = document.getElementById('read-player-icon');
+            const bigLabel = document.getElementById('read-player-label');
+            const bar = document.getElementById('player-bar');
+            const barToggle = document.getElementById('pb-toggle');
+            if (uiState === 'stopped') {
+                document.body.classList.remove('player-active');
+                if (bar) bar.hidden = true;
+                if (big) { big.classList.remove('playing'); bigIcon.textContent = '▶'; bigLabel.textContent = 'Vorlesen'; }
+                return;
+            }
+            document.body.classList.add('player-active');
+            if (bar) bar.hidden = false;
+            const playing = uiState === 'playing';
+            if (big) {
+                big.classList.toggle('playing', playing);
+                bigIcon.textContent = playing ? '⏸' : '▶';
+                bigLabel.textContent = playing ? 'Pause' : 'Weiter';
+            }
+            if (barToggle) {
+                barToggle.textContent = playing ? '⏸' : '▶';
+                barToggle.setAttribute('aria-label', playing ? 'Pause' : 'Weiterlesen');
+            }
+        }
+
+        function playerSpeakFrom(startIdx) {
+            const words = player.words;
+            if (!words.length) return;
+            startIdx = Math.max(0, Math.min(words.length - 1, startIdx));
+            player.idx = startIdx;
+            // Teil-Utterance ab startIdx, Offsets auf globale Wort-Indizes gemappt
+            let speechText = '';
+            const map = [];
+            for (let i = startIdx; i < words.length; i++) {
+                map.push({ start: speechText.length, end: speechText.length + words[i].text.length, idx: i });
+                speechText += words[i].text + ' ';
+            }
+            playerHighlight(startIdx);
+            playerUpdateBar();
             speak(speechText, {
                 onboundary: (event) => {
                     if (event.name !== 'word') return;
-                    const current = wordMap.find(w => event.charIndex >= w.start && event.charIndex < w.end);
-                    clearHighlights();
-                    if (current) {
-                        current.el.classList.add('highlight-active');
-                        // gesprochenes Wort im Sichtfeld halten
-                        const r = current.el.getBoundingClientRect();
-                        if (r.top < 90 || r.bottom > window.innerHeight - 150) {
-                            current.el.scrollIntoView({ behavior: REDUCED_MOTION ? 'auto' : 'smooth', block: 'center' });
-                        }
-                    }
+                    const hit = map.find(m => event.charIndex >= m.start && event.charIndex < m.end);
+                    if (!hit) return;
+                    player.idx = hit.idx;
+                    playerHighlight(hit.idx);
+                    playerUpdateBar();
                 },
                 onend: () => {
-                    const finished = playerActive;
-                    resetPlayerUI();
-                    // Im Häppchen-Modus ist erst das letzte Häppchen das Ende
-                    if (finished && (!chunkMode || state.chunkIndex === state.chunks.length - 1)) {
-                        storyFinished();
-                    }
+                    if (!player.active || player.paused) return; // Pause/Abbruch ist kein „fertig"
+                    const wasChunk = player.chunkMode;
+                    // „Geschafft" nur, wenn der Fortschritt wirklich am Ende war — schützt vor
+                    // Geräten ohne TTS-Stimme, wo onend sofort feuert
+                    const reachedEnd = player.idx >= player.words.length - 2;
+                    stopPlayer();
+                    if (reachedEnd && (!wasChunk || state.chunkIndex === state.chunks.length - 1)) storyFinished();
                 }
             });
+        }
+
+        function togglePlayer() {
+            if (!player.active) {
+                const c = playerCollectWords();
+                if (!c.words.length) return;
+                player = { active: true, paused: false, words: c.words, idx: 0, chunkMode: c.chunkMode };
+                playerSetUI('playing');
+                playerSpeakFrom(0);
+            } else {
+                playerPauseResume();
+            }
+        }
+
+        function playerPauseResume() {
+            if (!player.active) return;
+            if (!player.paused) {
+                player.paused = true;
+                stopSpeaking();
+                playerSetUI('paused');
+            } else {
+                player.paused = false;
+                playerSetUI('playing');
+                playerSpeakFrom(player.idx);
+            }
+        }
+
+        function stopPlayer() {
+            player.active = false;
+            player.paused = false;
+            stopSpeaking();
+            clearHighlights();
+            playerSetUI('stopped');
+        }
+        // Kompatibilität für ältere Aufrufer (nextChunk/prevChunk)
+        function resetPlayerUI() { stopPlayer(); }
+
+        function playerSeek(percent) {
+            if (!player.active || !player.words.length) return;
+            const idx = Math.round((percent / 100) * (player.words.length - 1));
+            if (player.paused) {
+                player.idx = idx;
+                playerHighlight(idx);
+                playerUpdateBar();
+            } else {
+                playerSpeakFrom(idx);
+            }
         }
 
         /* „Geschichte geschafft!" — einmal pro Besuch: Konfetti + Karte + Buddy-Lob */
@@ -2991,6 +3083,8 @@
         function toggleToolbarCollapse() {
             const tb = document.getElementById('toolbar');
             tb.classList.toggle('collapsed');
+            const bubble = document.getElementById('buddy-bubble');
+            if (bubble) bubble.hidden = true;
         }
         function checkQuizAnswer(element, isCorrect) {
             if(element.classList.contains('correct') || element.classList.contains('try-again')) return;
@@ -3029,6 +3123,9 @@
         document.addEventListener('DOMContentLoaded', function() {
             renderText(); renderQuiz(); renderWeitererzaehlen(); renderSchatzsuche(); renderWortschatz(); initActivityTabs();
             initBuddy(); updateTempoButtons();
+            // Spul-Balken der Player-Leiste ('change' = beim Loslassen/Tastendruck)
+            const pbRange = document.getElementById('pb-range');
+            if (pbRange) pbRange.addEventListener('change', () => playerSeek(parseFloat(pbRange.value)));
 
             // Ansicht ist exklusiv — höchstens einen Modus aktivieren
             // Priorität: explizite localStorage-Wahl > Neurotyp-Default
