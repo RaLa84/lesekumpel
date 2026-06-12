@@ -158,10 +158,10 @@
         }
         .btn-cta-nav:hover { background: var(--navy); color: #fff; transform: translateY(-2px) scaleX(1.04) scaleY(0.97); }
         .nav-btn:hover { color: var(--lila); }
-        /* Kinder-Lese-Modus: Auf Story-Seiten sind Marketing-Links (Preise, Registrieren …)
-           ausgeblendet — das Kind sieht nur Logo + Bibliothek. Das volle Menü bleibt
-           für Eltern hinter dem Burger erreichbar (auch am Desktop). */
-        .nav-links-desktop a:not([href$="demo.html"]) { display: none; }
+        /* Kinder-Lese-Modus: Auf Story-Seiten zeigt der Header nur Logo + Brand.
+           Alle Links (inkl. Bibliothek) und der Registrieren-CTA stecken hinterm
+           Burger — für Eltern erreichbar, fürs lesende Kind unsichtbar. */
+        .nav-links-desktop { display: none !important; }
         .btn-cta-nav { display: none !important; }
         .nav-right { display: flex; align-items: center; gap: 15px; }
         .burger-icon { font-size: 1.8rem; cursor: pointer; display: block; color: var(--text-dark); }
