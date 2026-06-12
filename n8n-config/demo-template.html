@@ -1,7 +1,8 @@
+<!DOCTYPE html>
 <html lang="de">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>{{STORY_TITLE}} — Lesetext für {{READING_LEVEL_LABEL}} | Lesekumpel</title>
     <meta name="description" content="{{META_DESCRIPTION}}">
@@ -130,16 +131,18 @@
         }
         .author-line .author-avatar { width: 26px; height: 26px; border-radius: 50%; object-fit: cover; }
         .author-line .author-credit {
-            font-family: var(--font-body); font-size: 0.9rem; color: #999; font-weight: 500; font-style: italic;
+            font-family: var(--font-body); font-size: 0.9rem; color: #5a6368; font-weight: 500; font-style: italic;
         }
         .neurotype-hint {
-            text-align: center; font-size: 0.75rem; color: #a0a0a0; font-family: var(--font-body); margin-bottom: 12px;
+            text-align: center; font-size: 0.75rem; color: #5a6368; font-family: var(--font-body); margin-bottom: 12px;
         }
         .quality-badge, .neurotype-badge { display: none; }
         .story-text { line-height: 1.85 !important; color: #2a2a2a; }
 
         .hero-image { width: 100%; border-radius: 15px; margin-bottom: 30px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
-        .story-inline-img { width: 100%; border-radius: 15px; margin: 20px 0 10px 0; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        /* aspect-ratio reserviert die Bildfläche vor dem Laden — kein Layout-Sprung beim Lesen.
+           Story-Bilder werden quadratisch (1024×1024) generiert. */
+        .story-inline-img { width: 100%; aspect-ratio: 1 / 1; height: auto; object-fit: cover; border-radius: 15px; margin: 20px 0 10px 0; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
 
         /* --- HERO COVER (Blur + Titel-Overlay) --- */
         .story-hero-cover {
@@ -166,6 +169,10 @@
             margin: 0; color: #fff; font-size: 2.6rem;
             text-shadow: 0 2px 8px rgba(0,0,0,0.55), 0 0 2px rgba(0,0,0,0.4);
         }
+        /* Fallback ohne Hero-Bild (skipImages / Bildfehler): freundlicher Verlauf statt
+           dunklem Overlay über leerem Grund */
+        .story-hero-cover.no-image { background: linear-gradient(135deg, #D67171 0%, #E0926E 55%, #FFD54F 100%); }
+        .story-hero-cover.no-image .hero-overlay { background: rgba(0,0,0,0.10); }
         @media (max-width: 767px) {
             .story-hero-cover { aspect-ratio: 4 / 3; }
             .story-hero-cover .hero-title-box #main-title { font-size: 1.7rem; letter-spacing: 0.5px; }
@@ -242,6 +249,12 @@
             box-shadow: 0 1px 3px rgba(0,0,0,0.03); -webkit-tap-highlight-color: transparent;
         }
         .tool-btn:hover { background: #fff; border-color: rgba(0,0,0,0.09); color: #333; transform: translateY(-1px); box-shadow: 0 3px 10px rgba(0,0,0,0.06); }
+        .tool-btn:focus-visible, .activity-tab:focus-visible, .quiz-option:focus-visible,
+        .toolbar-header:focus-visible, .schatz-start-btn:focus-visible, .wortschatz-play:focus-visible,
+        .hero-like-btn:focus-visible, .composer-add-btn:focus-visible, .btn-send:focus-visible,
+        .quiz-reveal-btn:focus-visible, .nav-btn:focus-visible, .btn-cta-nav:focus-visible {
+            outline: 3px solid var(--accent-coral); outline-offset: 2px;
+        }
         .tool-btn:active { transform: scale(0.95); box-shadow: none; transition-duration: 0.06s; }
         .group-text .tool-btn.active { background: #D67171; color: #fff; border-color: #c96363; box-shadow: inset 0 2px 4px rgba(0,0,0,0.15), 0 1px 4px rgba(214,113,113,0.25); }
         .group-view .tool-btn.active { background: #5aab5a; color: #fff; border-color: #4e9a4e; box-shadow: inset 0 2px 4px rgba(0,0,0,0.15), 0 1px 4px rgba(90,171,90,0.25); }
@@ -262,10 +275,7 @@
         .font-size-control .tool-btn:first-child { border-right: 1px solid rgba(0,0,0,0.06); }
         .font-size-control .tool-btn:hover { background: rgba(0,0,0,0.03); }
         .font-size-control .tool-btn:active { transform: scale(0.93); background: rgba(0,0,0,0.06); }
-        .btn-coral { }
         .btn-coral.active { background: #D67171; color: white; border-color: #c96363; }
-
-        .fab-tools { display: none !important; }
 
         @media (max-width: 767px) {
             .brand-name { display: none; }
@@ -286,7 +296,6 @@
             .nav-logo { height: 50px; }
             .brand-name { font-size: 1.5rem; display: block; }
             .nav-left { gap: 15px; }
-            .fab-tools { display: none !important; }
         }
 
         /* --- CONTENT --- */
@@ -309,7 +318,7 @@
 
         /* --- SECTIONS --- */
         .author-box, .quiz-section, .comments-section, .related-section { margin-bottom: 40px; }
-        .section-title { text-align: center; font-family: var(--font-heading); color: var(--accent-coral); font-size: 1.5rem; margin-bottom: 20px; }
+        .section-title { text-align: center; font-family: var(--font-heading); color: var(--accent-coral); font-size: 1.5rem; font-weight: 600; margin: 0 0 20px 0; }
 
         /* === HERO-WRAPPER & LIKE === */
         .hero-wrapper { position: relative; overflow: visible; margin-bottom: 20px; }
@@ -392,7 +401,7 @@
             margin-bottom: 4px; flex-wrap: wrap;
         }
         .comment-author { font-family: var(--font-heading); color: var(--accent-coral); font-size: 1rem; }
-        .comment-time { color: #999; font-size: 0.78rem; }
+        .comment-time { color: #5a6368; font-size: 0.78rem; }
         .comment-text {
             color: var(--text-dark); font-size: 0.95rem; line-height: 1.5;
             word-wrap: break-word;
@@ -414,7 +423,7 @@
         }
         .composer-preview[data-count="3"] { border-style: solid; border-color: var(--accent-coral); }
         .composer-preview-label {
-            font-family: var(--font-body); font-size: 0.85rem; color: #999;
+            font-family: var(--font-body); font-size: 0.85rem; color: #5a6368;
             margin-bottom: 10px;
         }
         #composer-counter { font-weight: 600; color: var(--accent-coral); }
@@ -547,10 +556,13 @@
             .picker-cat-emoji { font-size: 1.6rem; }
             .picker-blocks-content { max-height: 280px; }
         }
+        /* Global: keine Animationen/Transitions für Nutzer mit Bewegungs-Empfindlichkeit
+           (besonders relevant für die ADHS-/Autismus-Zielgruppe) */
         @media (prefers-reduced-motion: reduce) {
-            .hero-like-btn, .hero-like-heart, .hero-like-toast,
-            .composer-chip, .composer-emoji-picker, .picker-category, .picker-block, .particle {
-                animation: none !important; transition: none !important;
+            *, *::before, *::after {
+                animation: none !important;
+                transition: none !important;
+                scroll-behavior: auto !important;
             }
         }
 
@@ -569,6 +581,9 @@
             display: flex; align-items: center; justify-content: space-between;
             border: 2px solid var(--primary-yellow); border-radius: 10px; padding: 12px; margin-bottom: 10px;
             cursor: pointer; font-weight: 600; background: #fff; transition: all 0.3s ease;
+            /* Button-Resets: Quiz-Optionen sind echte <button> für Tastatur + Screenreader */
+            width: 100%; box-sizing: border-box; text-align: left;
+            font-family: inherit; font-size: 1em; color: inherit;
         }
         .quiz-option.correct { background: #fffbe6; border-color: #f1c40f; color: #b7950b; box-shadow: 0 0 10px rgba(241,196,15,0.3); pointer-events: none; }
         .quiz-option.try-again { opacity: 0.6; background-color: #f4f4f4; border-color: #ddd; color: #999; animation: gentleShake 0.4s ease-in-out; cursor: default; }
@@ -577,7 +592,7 @@
             background: transparent; border: 1.5px dashed #ddd;
             padding: 8px 18px; border-radius: 20px; cursor: pointer;
             font-family: var(--font-body); font-size: 0.9rem;
-            color: #999; transition: all 0.2s ease;
+            color: #5a6368; transition: all 0.2s ease;
             -webkit-tap-highlight-color: transparent;
         }
         .quiz-reveal-btn:hover { color: var(--accent-coral); border-color: var(--accent-coral); background: rgba(214,113,113,0.04); }
@@ -845,11 +860,11 @@
         .related-img { width: 100%; height: 140px; object-fit: cover; border-bottom: 2px solid #eee; }
         .related-content { padding: 15px; flex-grow: 1; display: flex; flex-direction: column; justify-content: space-between; }
         .related-title { font-family: var(--font-heading); font-size: 1.1rem; line-height: 1.3; margin-bottom: 10px; color: var(--accent-teal); }
-        .related-meta { display: flex; justify-content: space-between; font-size: 0.85rem; color: #777; font-weight: 600; }
+        .related-meta { display: flex; justify-content: space-between; font-size: 0.85rem; color: #5a6368; font-weight: 600; }
 
         .clearfix::after { content: ""; display: table; clear: both; }
-        footer { text-align: center; margin-top: 50px; color: #888; font-size: 0.9rem; padding-top: 20px; border-top: 1px solid #eee; }
-        .footer-links a { color: #888; text-decoration: none; margin: 0 5px; }
+        footer { text-align: center; margin-top: 50px; color: #5a6368; font-size: 0.9rem; padding-top: 20px; border-top: 1px solid #eee; }
+        .footer-links a { color: #5a6368; text-decoration: underline; margin: 0 5px; }
         .hidden { display: none; }
 
         /* --- NEUROTYP-SPEZIFISCH --- */
@@ -923,7 +938,7 @@
         body.haeppchen-active .adhs-progress-bar { display: block; }
 
         .swipe-hint {
-            text-align: center; color: #bbb; font-size: 0.8rem;
+            text-align: center; color: #5a6368; font-size: 0.8rem;
             font-family: var(--font-body); margin-top: 10px;
             animation: fadeOut 3s ease forwards; animation-delay: 2s;
         }
@@ -949,7 +964,7 @@
         }
         .report-link {
             background: none; border: none; padding: 8px 14px; cursor: pointer;
-            color: #888; font-family: var(--font-body); font-size: 0.95rem;
+            color: #5a6368; font-family: var(--font-body); font-size: 0.95rem;
             border-radius: 10px; text-decoration: underline;
             min-height: 36px;
         }
@@ -1328,15 +1343,17 @@
             z-index: 9999;
             overflow: hidden;
         }
-        .confetti-piece {
+        /* Auf .tafel-confetti gescoped — die globale .confetti-piece-Regel (Häppchen-Konfetti)
+           darf nicht überschrieben werden (dortige Animation hat feste 3s-Dauer). */
+        .tafel-confetti .confetti-piece {
             position: absolute;
             top: -30px;
             width: 14px; height: 14px;
             border-radius: 3px;
-            animation: confettiFall linear forwards;
+            animation: tafelConfettiFall linear forwards;
             will-change: transform, opacity;
         }
-        @keyframes confettiFall {
+        @keyframes tafelConfettiFall {
             0%   { transform: translateY(0) rotate(0deg);   opacity: 1; }
             85%  { opacity: 1; }
             100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
@@ -1429,7 +1446,7 @@
         /* === QUIZ im Tafel-Modus: 1 Frage pro Slide, Antworten horizontal === */
         body.view-tafel #panel-quiz .quiz-question { display: none; padding: 0; border: none; margin: 0; }
         body.view-tafel #panel-quiz .quiz-question.is-tafel-current { display: block; }
-        body.view-tafel #panel-quiz .quiz-question > div:first-child {
+        body.view-tafel #panel-quiz .quiz-question > .quiz-q-title {
             font-size: 2.2rem;
             font-weight: 700;
             color: var(--accent-teal);
@@ -1527,11 +1544,6 @@
         }
         .tafel-hub-close:hover { background: var(--accent-coral); color: #fff; border-color: var(--accent-coral); transform: rotate(90deg); }
         body:not(.view-tafel) .tafel-hub-close { display: none; }
-        body.view-tafel .activity-hub.tafel-collapsed {
-            transform: scale(0.05);
-            opacity: 0;
-            pointer-events: none;
-        }
         /* Wenn Activity-Hub offen ist, Trigger-Button verstecken */
         body.view-tafel:has(.activity-hub:not(.tafel-collapsed)) .tafel-games-trigger { display: none; }
 
@@ -1552,8 +1564,6 @@
     <link rel="stylesheet" href="../fonts/fonts.css">
 </head>
 <body>
-
-    <button class="fab-tools" onclick="toggleMobileToolbar()" aria-label="Werkzeuge öffnen">🛠️</button>
 
     <nav class="main-navbar" aria-label="Hauptnavigation">
         <div class="nav-left">
@@ -1599,7 +1609,7 @@
     <article class="main-card">
         <div class="hero-wrapper">
             <div class="story-hero-cover">
-                <img class="hero-bg" src="{{HERO_IMAGE_URL}}" alt="" aria-hidden="true" onerror="this.style.display='none'">
+                <img class="hero-bg" src="{{HERO_IMAGE_URL}}" alt="" aria-hidden="true" onerror="this.style.display='none';this.closest('.story-hero-cover').classList.add('no-image')">
                 <div class="hero-overlay"></div>
                 <div class="hero-title-box">
                     <h1 id="main-title">{{STORY_TITLE}}</h1>
@@ -1618,7 +1628,7 @@
         {{STORY_IMAGES_HTML}}
 
         <div class="toolbar-container collapsed" id="toolbar">
-            <div class="toolbar-header" onclick="toggleToolbarCollapse()" id="toolbar-close-btn" role="button" tabindex="0" aria-label="Zauberkasten öffnen oder schließen">
+            <div class="toolbar-header" onclick="toggleToolbarCollapse()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleToolbarCollapse();}" id="toolbar-close-btn" role="button" tabindex="0" aria-label="Zauberkasten öffnen oder schließen">
                 <span class="toolbar-header-label">
                     <span class="header-icon" aria-hidden="true">🪄</span>
                     <span class="header-text">Zauberkasten</span>
@@ -1679,7 +1689,7 @@
         </div>
 
         <div class="activity-hub">
-            <div class="section-title">🎮 Spielzeit!</div>
+            <h2 class="section-title">🎮 Spielzeit!</h2>
             <div class="activity-tabs" role="tablist" aria-label="Spielformate">
                 <button class="activity-tab active" role="tab" aria-selected="true"
                         aria-controls="panel-quiz" id="tab-quiz" data-tab="quiz"
@@ -1720,12 +1730,12 @@
         </div>
 
         <div class="related-section">
-            <div class="section-title">Das könnte dir auch gefallen</div>
+            <h2 class="section-title">Das könnte dir auch gefallen</h2>
             <div class="related-grid">{{RELATED_STORIES_HTML}}</div>
         </div>
 
         <div class="comments-section">
-            <div class="section-title comments-title">💬 Was sagst du zur Geschichte?</div>
+            <h2 class="section-title comments-title">💬 Was sagst du zur Geschichte?</h2>
 
             <div class="comments-list">
                 <div class="comment">
@@ -1851,6 +1861,15 @@
 
         const storyRaw = rawStory.replace(/\n/g, "<br>");
         const summaryRaw = rawSummary.replace(/\n/g, "<br>");
+
+        // HTML-Escape für alle LLM-generierten Inhalte (Quiz, Weiterdenken, Wortschatz, Schatz):
+        // ein "<" oder "&" vom Modell darf das Markup nicht zerbrechen.
+        function escapeHtml(s) {
+            return String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c]);
+        }
+
+        // Bewegungs-Empfindlichkeit: Konfetti/Partikel/Smooth-Scroll abschalten
+        const REDUCED_MOTION = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
         // Dictionary Parser
         let dictionary = {};
@@ -1998,7 +2017,7 @@
 
             // HTML zusammenbauen: Überschriften als <h3>, Text als <p>
             let html = allGroups.map((group, i) => {
-                let imgTag = imgPositions[i] ? `<img src="${imgPositions[i]}" alt="Illustration" class="story-inline-img" onerror="this.style.display='none'">` : '';
+                let imgTag = imgPositions[i] ? `<img src="${imgPositions[i]}" alt="Illustration zur Geschichte" class="story-inline-img" loading="lazy" decoding="async" onerror="this.style.display='none'">` : '';
                 let headingHtml = '';
                 if (group.heading) {
                     let processedH = group.heading.split(/\s+/).map(w => processWord(w)).join(' ');
@@ -2050,10 +2069,10 @@
             let qHTML = "";
             quizData.forEach((item, i) => {
                 qHTML += `<div class="quiz-question" data-correct="${item.correct}" style="margin-bottom:30px; border-bottom:1px dashed #eee; padding-bottom:20px;">
-                            <div style="font-weight:bold; margin-bottom:15px; color:var(--accent-teal);">${i+1}. ${item.q}</div>`;
+                            <h3 class="quiz-q-title" style="font-weight:bold; font-size:1em; margin:0 0 15px 0; color:var(--accent-teal);">${i+1}. ${escapeHtml(item.q)}</h3>`;
                 item.a.forEach((ans, j) => {
                     const isCorrect = (j === item.correct);
-                    qHTML += `<div class="quiz-option" onclick="checkQuizAnswer(this, ${isCorrect})"><span>${ans}</span></div>`;
+                    qHTML += `<button type="button" class="quiz-option" onclick="checkQuizAnswer(this, ${isCorrect})"><span>${escapeHtml(ans)}</span></button>`;
                 });
                 qHTML += `<button type="button" class="quiz-reveal-btn" onclick="revealQuizAnswer(this)">💡 Auflösen</button>`;
                 qHTML += `</div>`;
@@ -2080,18 +2099,18 @@
             }
             const introEl = document.querySelector('.weitererzaehlen-intro');
             if (data.frage && introEl) {
-                introEl.innerHTML = data.frage + ' <span style="display:block; font-size:0.85em; margin-top:4px; opacity:0.75;">Hier gibt es kein richtig oder falsch.</span>';
+                introEl.innerHTML = escapeHtml(data.frage) + ' <span style="display:block; font-size:0.85em; margin-top:4px; opacity:0.75;">Hier gibt es kein richtig oder falsch.</span>';
             }
             let html = '';
             data.optionen.forEach((opt, i) => {
                 html += `<div class="weitererzaehlen-card" onclick="toggleWeitererzaehlen(${i})" id="wet-card-${i}">
                             <div class="weitererzaehlen-card-header">
-                                <span class="weitererzaehlen-emoji">${opt.emoji || '✨'}</span>
-                                <span class="weitererzaehlen-titel">${opt.titel || ''}</span>
+                                <span class="weitererzaehlen-emoji">${escapeHtml(opt.emoji || '✨')}</span>
+                                <span class="weitererzaehlen-titel">${escapeHtml(opt.titel || '')}</span>
                                 <span class="weitererzaehlen-chevron">▼</span>
                             </div>
                             <div class="weitererzaehlen-text">
-                                <div class="weitererzaehlen-text-body">${opt.text || ''}</div>
+                                <div class="weitererzaehlen-text-body">${escapeHtml(opt.text || '')}</div>
                                 <div class="weitererzaehlen-hinweis">So könnte es sein — oder ganz anders. Was denkst du?</div>
                             </div>
                         </div>`;
@@ -2161,14 +2180,14 @@
             }
 
             const listHtml = items.map(it => {
-                const safeWord = it.wort.replace(/'/g, "\\'");
+                const safeWord = escapeHtml(it.wort.replace(/'/g, "\\'"));
                 return `
                     <li class="wortschatz-item">
                         <div class="wortschatz-item-text">
-                            <span class="wortschatz-wort">${it.wort}</span>
-                            <span class="wortschatz-bedeutung">${it.bedeutung}</span>
+                            <span class="wortschatz-wort">${escapeHtml(it.wort)}</span>
+                            <span class="wortschatz-bedeutung">${escapeHtml(it.bedeutung)}</span>
                         </div>
-                        <button type="button" class="wortschatz-play" aria-label="${it.wort} vorlesen"
+                        <button type="button" class="wortschatz-play" aria-label="${escapeHtml(it.wort)} vorlesen"
                                 onclick="speakWortschatzItem(this, '${safeWord}')">🔊</button>
                     </li>`;
             }).join('');
@@ -2214,10 +2233,10 @@
             const buttonLabel = found > 0 ? 'Weitersuchen' : 'Los geht’s!';
             panel.innerHTML = `
                 <div class="schatz-intro-card">
-                    <span class="schatz-intro-emoji">${data.emoji || '🔍'}</span>
+                    <span class="schatz-intro-emoji">${escapeHtml(data.emoji || '🔍')}</span>
                     <h3 class="schatz-intro-title">Schatz-Suche</h3>
-                    <p class="schatz-intro-thema">„${data.thema || ''}“</p>
-                    <p class="schatz-intro-text">${data.einleitung || 'Finde versteckte Wörter im Text. Tippe sie einfach an!'}</p>
+                    <p class="schatz-intro-thema">„${escapeHtml(data.thema || '')}“</p>
+                    <p class="schatz-intro-text">${escapeHtml(data.einleitung || 'Finde versteckte Wörter im Text. Tippe sie einfach an!')}</p>
                     <div class="schatz-progress">Gefunden: <span class="schatz-progress-number">${found}</span> / ${data.ziel}</div>
                     <button type="button" class="schatz-start-btn" onclick="startSchatzsuche()">
                         <span>🔍</span><span>${buttonLabel}</span>
@@ -2228,13 +2247,13 @@
         function renderSchatzComplete(panel, data) {
             const chips = schatzState.found.map(w => {
                 const pretty = w.charAt(0).toUpperCase() + w.slice(1);
-                return `<li class="schatz-found-chip">${pretty}</li>`;
+                return `<li class="schatz-found-chip">${escapeHtml(pretty)}</li>`;
             }).join('');
             panel.innerHTML = `
                 <div class="schatz-complete">
                     <span class="schatz-complete-emoji">🏆</span>
                     <h3 class="schatz-complete-title">Schatz gefunden!</h3>
-                    <p class="schatz-complete-text">Du hast ${data.ziel} ${(data.thema || '').toLowerCase()} entdeckt:</p>
+                    <p class="schatz-complete-text">Du hast ${data.ziel} ${escapeHtml((data.thema || '').toLowerCase())} entdeckt:</p>
                     <ul class="schatz-found-list">${chips}</ul>
                     <button type="button" class="schatz-start-btn" onclick="resetSchatzsuche()">
                         <span>🔄</span><span>Nochmal spielen</span>
@@ -2249,7 +2268,7 @@
             updateSchatzBanner();
             const chunkVisible = !document.getElementById('chunk-view').classList.contains('hidden');
             const target = chunkVisible ? document.getElementById('chunk-view') : document.getElementById('full-text-view');
-            if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            if (target) target.scrollIntoView({ behavior: REDUCED_MOTION ? 'auto' : 'smooth', block: 'start' });
         }
 
         function endSchatzsuche() {
@@ -2336,7 +2355,7 @@
                 }
             }
             if (imgUrl) {
-                imgHtml = `<img src="${imgUrl}" alt="Illustration" class="story-inline-img" onerror="this.style.display='none'">`;
+                imgHtml = `<img src="${imgUrl}" alt="Illustration zur Geschichte" class="story-inline-img" loading="lazy" decoding="async" onerror="this.style.display='none'">`;
             }
             let headingHtml = '';
             if (state.chunkHeadings && state.chunkHeadings[state.chunkIndex]) {
@@ -2498,6 +2517,7 @@
             } catch(e) {}
         }
         function showConfetti() {
+            if (REDUCED_MOTION) return;
             let container = document.createElement('div');
             container.className = 'confetti-container';
             let colors = ['#D67171', '#FFD54F', '#2a9d8f', '#7209b7', '#00509d', '#f1c40f'];
@@ -2520,9 +2540,6 @@
             let n = Math.max(12, Math.min(40, s + d)); document.body.style.fontSize = n + "px";
         }
         function toggleMenu() { document.getElementById('mobile-menu').classList.toggle('open'); }
-        function toggleMobileToolbar() {
-            const tb = document.getElementById('toolbar'); tb.classList.toggle('open');
-        }
         function toggleToolbarCollapse() {
             const tb = document.getElementById('toolbar');
             tb.classList.toggle('collapsed');
@@ -2552,7 +2569,9 @@
             btn.remove();
         }
 
-        window.onload = function() {
+        // DOMContentLoaded statt window.onload: Text soll sofort lesbar sein,
+        // nicht erst wenn alle Story-Bilder fertig geladen sind.
+        document.addEventListener('DOMContentLoaded', function() {
             renderText(); renderQuiz(); renderWeitererzaehlen(); renderSchatzsuche(); renderWortschatz(); initActivityTabs();
 
             // Ansicht ist exklusiv — höchstens einen Modus aktivieren
@@ -2573,7 +2592,7 @@
             if (viewMode === 'linien') toggleLeselinien();
             else if (viewMode === 'fahrplan') toggleFahrplan();
             else if (viewMode === 'haeppchen') toggleViewMode();
-        };
+        });
 
         // --- INHALTE-MELDEN MODAL ---
         document.addEventListener('DOMContentLoaded', function initReportModal() {
@@ -2651,6 +2670,16 @@
             const toast = document.getElementById('hero-like-toast');
             if (!btn) return;
 
+            // Persistenz pro Story: der Like überlebt einen Reload (Grundstein für echte Sammlung)
+            const likeKey = 'lesekumpel-liked-{{SLUG}}';
+            try {
+                if (localStorage.getItem(likeKey) === 'true') {
+                    btn.classList.add('is-liked');
+                    btn.setAttribute('aria-pressed', 'true');
+                    if (heart) heart.textContent = '❤️';
+                }
+            } catch(e) {}
+
             let toastTimer = null;
             function showToast(text) {
                 if (!toast) return;
@@ -2661,6 +2690,7 @@
             }
 
             function spawnHearts(host) {
+                if (REDUCED_MOTION) return;
                 const items = ['❤️','💖','💗','❤️'];
                 for (let i = 0; i < 10; i++) {
                     const p = document.createElement('span');
@@ -2680,6 +2710,7 @@
             btn.addEventListener('click', () => {
                 const liked = btn.classList.toggle('is-liked');
                 btn.setAttribute('aria-pressed', liked ? 'true' : 'false');
+                try { localStorage.setItem(likeKey, liked ? 'true' : 'false'); } catch(e) {}
                 if (liked) {
                     heart.textContent = '❤️';
                     btn.classList.remove('is-firing'); void btn.offsetWidth; btn.classList.add('is-firing');
@@ -2736,10 +2767,6 @@
             };
 
             let selectedBlocks = [];
-
-            function escapeHtml(s) {
-                return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c]);
-            }
 
             function updatePreview() {
                 chipsContainer.innerHTML = '';
@@ -2940,7 +2967,6 @@
             }
         }
 
-        let tafelObserver = null;
         let tafelMutationObserver = null;
         let tafelRebuildObserver = null;
         let tafelRebuildLock = false;
@@ -3091,7 +3117,6 @@
         }
 
         function exitTafelLayout() {
-            if (tafelObserver) { tafelObserver.disconnect(); tafelObserver = null; }
             if (tafelMutationObserver) { tafelMutationObserver.disconnect(); tafelMutationObserver = null; }
             if (tafelRebuildObserver) { tafelRebuildObserver.disconnect(); tafelRebuildObserver = null; }
             document.body.classList.remove('view-tafel-cover');
@@ -3240,10 +3265,11 @@
             tafelPrevIdx = idx;
             updatePageIndicator();
             updateTafelNavState();
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+            window.scrollTo({ top: 0, behavior: REDUCED_MOTION ? 'auto' : 'smooth' });
         }
 
         function spawnTafelConfetti() {
+            if (REDUCED_MOTION) return;
             // Vorherigen Confetti-Layer entfernen falls noch da
             document.querySelector('.tafel-confetti')?.remove();
             const container = document.createElement('div');
@@ -3442,47 +3468,6 @@
                     hub.appendChild(closeBtn);
                 }
             }
-        }
-
-        function refreshTafelObserver() {
-            const stage = document.querySelector('.tafel-image-stage');
-            if (stage) setupTafelObserver(stage);
-        }
-
-        function setupTafelObserver(stage) {
-            if (tafelObserver) { tafelObserver.disconnect(); tafelObserver = null; }
-            const paragraphs = Array.from(document.querySelectorAll('#full-text-view p'));
-            const stageImgs = Array.from(stage.querySelectorAll('.tafel-stage-img'));
-            const positions = (window.imagePositions || []).slice().sort((a, b) => a.paragraphIndex - b.paragraphIndex);
-            if (!paragraphs.length || !stageImgs.length) return;
-
-            function activateScene(scene) {
-                stageImgs.forEach(img => {
-                    img.classList.toggle('is-active', Number(img.dataset.scene) === scene);
-                });
-            }
-
-            function sceneForParagraph(pIdx) {
-                let bestScene = 0; // Hero
-                for (const pos of positions) {
-                    // paragraphIndex ist 1-basiert in den Daten; pIdx ist 0-basierter Array-Index
-                    if (pos.paragraphIndex <= pIdx + 1) bestScene = pos.scene;
-                    else break;
-                }
-                return bestScene;
-            }
-
-            tafelObserver = new IntersectionObserver((entries) => {
-                const inFocus = entries
-                    .filter(e => e.isIntersecting)
-                    .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
-                if (!inFocus) return;
-                const idx = paragraphs.indexOf(inFocus.target);
-                if (idx < 0) return;
-                activateScene(sceneForParagraph(idx));
-            }, { threshold: [0.3, 0.6, 0.9], rootMargin: '-20% 0% -40% 0%' });
-
-            paragraphs.forEach(p => tafelObserver.observe(p));
         }
 
         // === Initialisierung ===
