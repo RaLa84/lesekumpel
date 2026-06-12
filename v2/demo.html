@@ -42,6 +42,7 @@
       padding: 28px 24px;
     }
     .filter-card > * + * { margin-top: 24px; }
+    #formatPills { justify-content: center; }
 
     /* Author Filter (oben) */
     .author-filter-container {
@@ -353,6 +354,19 @@
       border-radius: var(--radius-pill);
       margin-left: 6px;
     }
+    /* Comic-Tiles: Coral-Akzent links + eigenes Badge */
+    .story-tile.tile-comic { border-left: 4px solid var(--coral); }
+    .tile-comic-badge {
+      display: inline-block;
+      background: rgba(249,115,82,0.16);
+      border: 1px solid var(--coral);
+      color: var(--navy);
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: var(--radius-pill);
+      margin: 0 6px 10px 0;
+    }
     .tile-meta {
       display: flex;
       justify-content: space-between;
@@ -510,6 +524,13 @@
         <!-- Sub-Level-Pills (conditional) -->
         <div class="sublevel-pills" id="sublevelPills"></div>
 
+        <!-- Format-Filter: Text vs. Comic -->
+        <div class="pill-group" id="formatPills" role="group" aria-label="Format w&auml;hlen">
+          <button type="button" class="pill active" data-format="all">Alle Formate</button>
+          <button type="button" class="pill" data-format="text">&#128214; Textgeschichten</button>
+          <button type="button" class="pill" data-format="comic">&#127912; Comics</button>
+        </div>
+
         <!-- Suche + Sortierung -->
         <div class="filter-row-search">
           <div class="search-wrapper">
@@ -609,12 +630,34 @@
        ============================================================ */
     const GH_USER = 'RaLa84';
     const GH_REPO = 'lesekumpel';
+    /* Drei Quell-Ordner: Demo-Texte, kuratierte Texte, Comics.
+       type steuert den Format-Filter und die Tile-Optik. */
+    const FOLDERS = [
+      { folder: 'demo-texte', type: 'text' },
+      { folder: 'texte', type: 'text' },
+      { folder: 'comicgeschichten', type: 'comic' }
+    ];
+    /* Bereits ins v2-Design migrierte Stories — Keys sind 'ordner/datei.html'.
+       Wird von scripts/migrate-stories-to-v2.py erweitert. */
     const V2_PORTED = new Set([
-      'liliths-wochenende-mit-pino-1h9o.html',
-      'liliths-wochenende-mit-pino-163g.html',
-      'liliths-wochenende-mit-pino-12kl.html',
-      'doenerella-ipdb.html',
-      'doenerella-f11p.html'
+      'demo-texte/abfall-sortieren-1c36.html',
+      'demo-texte/das-drachenei-bnvv.html',
+      'demo-texte/till-macht-ferien-rm20.html',
+      'demo-texte/ben-sucht-hamster-henry-1q0b.html',
+      'demo-texte/lina-und-der-marienkaefer-1w21.html',
+      'demo-texte/drei-freunde-am-spielplatz-r423.html',
+      'demo-texte/streit-am-eisstand-1kcp.html',
+      'demo-texte/die-singenden-weltraumwale-1bvz.html',
+      'demo-texte/warum-pinguine-nicht-frieren-l29e.html',
+      'demo-texte/holzi-und-der-verlorene-highscore-f4gl.html',
+      'demo-texte/doenerella-f11p.html',
+      'demo-texte/doenerella-ipdb.html',
+      'demo-texte/liliths-wochenende-mit-pino-12kl.html',
+      'demo-texte/liliths-wochenende-mit-pino-163g.html',
+      'demo-texte/liliths-wochenende-mit-pino-1h9o.html',
+      'comicgeschichten/baerli-sucht-honig.html',
+      'comicgeschichten/leos-roter-ball.html',
+      'comicgeschichten/flauschi-macht-einen-pups.html'
     ]);
 
     const authorColors = {
@@ -652,6 +695,7 @@
     let fAuthor = 'all';
     let fCategory = 'all';
     let fLevel = 'all';
+    let fFormat = 'all';
 
     const bookGrid = document.getElementById('bookGrid');
     const searchEl = document.getElementById('searchInput');
@@ -662,61 +706,87 @@
     const bioCard = document.getElementById('authorBio');
     const bioInner = document.getElementById('bioInner');
 
-    /* Fetch Liste */
-    fetch('https://api.github.com/repos/' + GH_USER + '/' + GH_REPO + '/contents/demo-texte')
-      .then(r => r.ok ? r.json() : [])
-      .then(data => {
-        loadEl.style.display = 'none';
-        stories = data
+    /* Fetch Listen: drei Ordner via GitHub-API (= 3 API-Calls).
+       Die Metadaten-Fetches danach gehen gegen die Site selbst
+       (GitHub Pages / lokaler Server), nicht gegen die API. */
+    Promise.all(FOLDERS.map(cfg =>
+      fetch('https://api.github.com/repos/' + GH_USER + '/' + GH_REPO + '/contents/' + cfg.folder)
+        .then(r => r.ok ? r.json() : [])
+        .then(data => (Array.isArray(data) ? data : [])
           .filter(f => f.name.endsWith('.html'))
           .map(f => ({
             name: f.name,
-            path: '../demo-texte/' + f.name,
-            v2Path: 'demo-texte/' + f.name,
+            key: cfg.folder + '/' + f.name,
+            type: cfg.type,
+            path: '../' + cfg.folder + '/' + f.name,
+            v2Path: cfg.folder + '/' + f.name,
             date: new Date(0),
             dateString: '',
             author: '',
             readingLevel: '',
             displayTitle: '',
             isValid: false
-          }));
+          })))
+        .catch(() => [])
+    ))
+      .then(lists => {
+        loadEl.style.display = 'none';
+        stories = lists.flat();
+        if (stories.length === 0) {
+          loadEl.style.display = '';
+          loadEl.textContent = 'Keine Geschichten gefunden — bitte später erneut versuchen.';
+          return;
+        }
         render();
         loadMeta();
-      })
-      .catch(err => {
-        loadEl.textContent = 'Fehler: ' + err.message;
       });
 
     async function loadMeta() {
       sortStatusEl.textContent = 'Lade Metadaten …';
-      await Promise.all(stories.map(async (s) => {
-        try {
-          const res = await fetch(s.path);
-          const txt = await res.text();
-          const md = txt.match(/<meta\s+name=["']date["']\s+content=["']([^"']+)["']/i);
-          if (md && md[1]) { s.date = new Date(md[1]); s.isValid = true; }
-          if (s.date.getTime() > 0) {
-            s.dateString = s.date.toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit', year: 'numeric' });
-          }
-          const ma = txt.match(/<meta\s+name=["']author["']\s+content=["']([^"']+)["']/i);
-          if (ma && ma[1]) s.author = ma[1];
-          const ml = txt.match(/<meta\s+name=["']reading-level["']\s+content=["']([^"']+)["']/i);
-          if (ml && ml[1]) s.readingLevel = ml[1];
-          const mt = txt.match(/<title>([^<]+)<\/title>/i);
-          if (mt && mt[1]) {
-            s.displayTitle = mt[1]
-              .replace(/\s*[—–-]\s*Lesetext\s+für\s+[^|]*\|\s*Lesekumpel.*$/i, '')
-              .replace(/\s*\(.*?\)\s*[—–-]\s*[^|]*\|\s*Lesekumpel.*$/i, '')
-              .replace(/\s*[—–-]\s*[^|]*\|\s*Lesekumpel.*$/i, '')
-              .replace(/\s*[—–-]\s*Lesekumpel\s*v?2?\s*$/i, '')
-              .trim();
-          }
-        } catch (e) { /* skip */ }
-      }));
+      /* Gestaffelt in Batches à 16, damit ~280 parallele Requests den
+         Browser/Server nicht fluten. */
+      const BATCH = 16;
+      for (let i = 0; i < stories.length; i += BATCH) {
+        await Promise.all(stories.slice(i, i + BATCH).map(async (s) => {
+          try {
+            const res = await fetch(s.path);
+            const txt = await res.text();
+            const md = txt.match(/<meta\s+name=["']date["']\s+content=["']([^"']+)["']/i);
+            if (md && md[1]) { s.date = new Date(md[1]); s.isValid = true; }
+            if (s.date.getTime() > 0) {
+              s.dateString = s.date.toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit', year: 'numeric' });
+            }
+            const ma = txt.match(/<meta\s+name=["']author["']\s+content=["']([^"']+)["']/i);
+            if (ma && ma[1]) s.author = ma[1];
+            const ml = txt.match(/<meta\s+name=["']reading-level["']\s+content=["']([^"']+)["']/i);
+            if (ml && ml[1]) s.readingLevel = ml[1];
+            const mt = txt.match(/<title>([^<]+)<\/title>/i);
+            if (mt && mt[1]) {
+              s.displayTitle = mt[1]
+                .replace(/\s*[—–-]\s*Lesetext\s+für\s+[^|]*\|\s*Lesekumpel.*$/i, '')
+                .replace(/\s*\(.*?\)\s*[—–-]\s*[^|]*\|\s*Lesekumpel.*$/i, '')
+                .replace(/\s*[—–-]\s*[^|]*\|\s*Lesekumpel.*$/i, '')
+                .replace(/\s*[—–-]\s*Lesekumpel\s*v?2?\s*$/i, '')
+                .trim();
+            }
+          } catch (e) { /* skip */ }
+        }));
+        sortStatusEl.textContent = 'Lade Metadaten … ' + Math.min(i + BATCH, stories.length) + '/' + stories.length;
+      }
       stories = stories.filter(s => s.isValid);
       sortStatusEl.textContent = 'Neueste zuerst';
       render();
     }
+
+    /* Format-Filter (Text / Comic) */
+    document.getElementById('formatPills').addEventListener('click', (e) => {
+      const btn = e.target.closest('.pill');
+      if (!btn) return;
+      document.querySelectorAll('#formatPills .pill').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      fFormat = btn.dataset.format;
+      render();
+    });
 
     /* Persona-Filter */
     document.getElementById('authorFilter').addEventListener('click', (e) => {
@@ -797,6 +867,7 @@
       const term = searchEl.value.toLowerCase();
       const sortMode = sortEl.value;
       let f = stories.filter(s => {
+        if (fFormat !== 'all' && s.type !== fFormat) return false;
         if (fAuthor !== 'all') {
           if (!s.author || s.author.toLowerCase() !== fAuthor.toLowerCase()) return false;
         }
@@ -822,20 +893,24 @@
         return;
       }
       bookGrid.innerHTML = list.map((s, i) => {
-        const color = authorColors[s.author] || 'var(--mint)';
-        const ported = V2_PORTED.has(s.name);
+        const isComic = s.type === 'comic';
+        const color = authorColors[s.author] || (isComic ? 'var(--coral)' : 'var(--mint)');
+        const ported = V2_PORTED.has(s.key);
         const href = ported ? s.v2Path : s.path;
         const slug = s.name.replace(/\.html$/, '');
-        const thumbUrl = '../bilder/thumbs/' + slug + '-1.webp';
+        /* Comics haben Panel-Bilder in /comics/, Texte Thumbs in /bilder/thumbs/ */
+        const thumbUrl = isComic ? '../comics/' + slug + '-1.png' : '../bilder/thumbs/' + slug + '-1.webp';
+        const fallbackIcon = isComic ? '🎨' : '📖';
         const levelDisplay = s.readingLevel ? (s.readingLevel.split(',')[0].trim() + ' · ' + getLevelLabel(s.readingLevel)) : '';
         return '' +
-          '<article class="story-tile" style="animation-delay:' + (i * 40) + 'ms;">' +
+          '<article class="story-tile' + (isComic ? ' tile-comic' : '') + '" style="animation-delay:' + (i * 40) + 'ms;">' +
             '<a href="' + href + '">' +
               '<div class="tile-cover" style="background: linear-gradient(135deg, ' + color + '22 0%, ' + color + '44 100%);">' +
-                '<img src="' + thumbUrl + '" alt="" loading="lazy" onerror="var p=this.parentElement;this.remove();p.innerHTML=\'<span class=tile-cover-icon>📖</span>\';">' +
+                '<img src="' + thumbUrl + '" alt="" loading="lazy" onerror="var p=this.parentElement;this.remove();p.innerHTML=\'<span class=tile-cover-icon>' + fallbackIcon + '</span>\';">' +
               '</div>' +
               '<div class="tile-body">' +
                 '<div class="tile-title">' + (s.displayTitle || formatName(s.name)) + '</div>' +
+                (isComic ? '<span class="tile-comic-badge">🎨 Comic</span>' : '') +
                 (levelDisplay ? '<span class="tile-level-badge">' + levelDisplay + '</span>' : '') +
                 (ported ? '<span class="tile-ported-badge">Neu im Design</span>' : '') +
                 '<div class="tile-meta" style="margin-top:8px;">' +
