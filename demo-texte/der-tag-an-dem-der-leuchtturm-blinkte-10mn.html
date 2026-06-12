@@ -95,7 +95,40 @@
         body::before { width: 420px; height: 420px; background: #FFE9B3; top: -130px; left: -150px; }
         body::after  { width: 380px; height: 380px; background: #C5EBE4; bottom: -130px; right: -130px; }
         body.nt-autismus::before, body.nt-autismus::after { display: none; }
-        body.dyslexia-mode { font-family: var(--font-dyslexic) !important; letter-spacing: 0.05em; line-height: 2.1; }
+
+        /* Skip-Link: unsichtbar, bei Tastatur-Fokus sichtbar (WCAG 2.4.1) */
+        .skip-link {
+            position: absolute; left: -9999px;
+            background: var(--navy); color: #fff;
+            padding: 10px 18px; border-radius: 0 0 10px 10px;
+            font-weight: 600; font-size: 0.9rem; z-index: 10000;
+            text-decoration: none;
+        }
+        .skip-link:focus { position: fixed; left: 50%; top: 0; transform: translateX(-50%); }
+
+        /* Nur für Screenreader (global — wird u. a. vom Quiz-Status genutzt) */
+        .sr-only {
+            position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+            overflow: hidden; clip: rect(0, 0, 0, 0); border: 0;
+        }
+        /* Lesefreundlich: mehr Buchstaben-/Wortabstand und Zeilenhöhe im Story-Text
+           (Lexend bleibt — kein Comic Sans; Spacing hilft bei LRS am meisten) */
+        body.dyslexia-mode .story-text,
+        body.dyslexia-mode #chunk-display {
+            letter-spacing: 0.04em; word-spacing: 0.16em; line-height: 2.05 !important;
+        }
+
+        /* Hoher Kontrast: reines Schwarz auf Weiß, kräftige Rahmen, Deko aus */
+        body.high-contrast { background: #fff; }
+        body.high-contrast::before, body.high-contrast::after { display: none; }
+        body.high-contrast .main-card { border: 2px solid var(--navy); }
+        body.high-contrast .story-text, body.high-contrast #chunk-display,
+        body.high-contrast .story-text p { color: #000; }
+        body.high-contrast .story-hero-cover .hero-overlay {
+            background: radial-gradient(ellipse at center, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.75) 100%);
+        }
+        body.high-contrast .toolbar-group { background: #fff; border: 1px solid var(--navy); }
+        body.high-contrast .quiz-card, body.high-contrast .activity-hub { background: #fff; border-color: var(--navy); }
 
         .highlight-active {
             background-color: #ffeb3b !important; border-radius: 4px;
@@ -125,6 +158,11 @@
         }
         .btn-cta-nav:hover { background: var(--navy); color: #fff; transform: translateY(-2px) scaleX(1.04) scaleY(0.97); }
         .nav-btn:hover { color: var(--lila); }
+        /* Kinder-Lese-Modus: Auf Story-Seiten sind Marketing-Links (Preise, Registrieren …)
+           ausgeblendet — das Kind sieht nur Logo + Bibliothek. Das volle Menü bleibt
+           für Eltern hinter dem Burger erreichbar (auch am Desktop). */
+        .nav-links-desktop a:not([href$="demo.html"]) { display: none; }
+        .btn-cta-nav { display: none !important; }
         .nav-right { display: flex; align-items: center; gap: 15px; }
         .burger-icon { font-size: 1.8rem; cursor: pointer; display: block; color: var(--text-dark); }
         .mobile-menu {
@@ -141,10 +179,11 @@
         }
 
         /* --- HEADER — Book-First --- */
+        /* Keine Versalien: Großbuchstaben zerstören das Wortbild — für Leseanfänger
+           und LRS-Kinder deutlich schwerer zu lesen */
         h1#main-title {
             font-family: var(--font-heading); color: var(--accent-coral); font-size: 2.2rem;
             text-align: center; line-height: 1.15; margin-bottom: 6px; margin-top: 0;
-            text-transform: uppercase; letter-spacing: 1px;
             overflow-wrap: break-word; word-wrap: break-word; hyphens: auto; -webkit-hyphens: auto; max-width: 100%;
             text-shadow: -1.5px -1.5px 0 #fff, 1.5px -1.5px 0 #fff, -1.5px 1.5px 0 #fff, 1.5px 1.5px 0 #fff, 0 3px 10px rgba(249,115,82,0.12);
         }
@@ -208,7 +247,7 @@
         }
         @media (max-width: 767px) {
             .story-hero-cover { aspect-ratio: 4 / 3; }
-            .story-hero-cover .hero-title-box #main-title { font-size: 1.7rem; letter-spacing: 0.5px; }
+            .story-hero-cover .hero-title-box #main-title { font-size: 1.7rem; }
             .story-hero-cover .hero-bg { filter: blur(10px) saturate(1.1) brightness(0.92); }
         }
         body.haeppchen-active .story-hero-cover { display: none; }
@@ -330,13 +369,11 @@
             .toolbar-container.collapsed .toolbar-header .header-icon { width: 148px; height: 148px; }
             .toolbar-container:not(.collapsed) { bottom: 0; right: 0; max-width: 100%; border-radius: 20px 20px 0 0; border-bottom: none; }
             body { padding-bottom: 80px; }
-            h1#main-title { font-size: 1.6rem; letter-spacing: 0.5px; }
+            h1#main-title { font-size: 1.6rem; }
             .main-card { padding: 24px 20px; }
         }
         @media (min-width: 768px) {
-            .burger-icon { display: none; }
             .nav-links-desktop { display: flex; }
-            .btn-cta-nav { display: inline-block; }
             .nav-logo-box { width: 54px; height: 54px; }
             .brand-name { font-size: 1.5rem; display: block; }
             .nav-left { gap: 15px; }
@@ -1795,6 +1832,8 @@
 </head>
 <body>
 
+    <a href="#main-content" class="skip-link">Zum Inhalt springen</a>
+
     <nav class="main-navbar" aria-label="Hauptnavigation">
         <div class="nav-left">
             <span class="nav-logo-box"><img src="../Konzept_Rebranding/logo-lesekumpel-512.webp" alt="Lesekumpel Logo" class="nav-logo"></span>
@@ -1803,7 +1842,7 @@
                 <a href="../landingpage.html#mission" class="nav-btn">F&uuml;r euch</a>
                 <a href="../landingpage.html#how-it-works" class="nav-btn">So funktioniert&rsquo;s</a>
                 <a href="../ueber-uns.html" class="nav-btn">&Uuml;ber uns</a>
-                <a href="../demo.html" class="nav-btn">Demo-Texte</a>
+                <a href="../demo.html" class="nav-btn">📚 Bibliothek</a>
                 <a href="../preise.html" class="nav-btn">Preise</a>
                 <a href="../neue-geschichte.html" class="nav-btn">Geschichte erstellen</a>
                 <a href="../mein-konto.html" class="nav-btn">Mein Konto</a>
@@ -1835,7 +1874,7 @@
         <button type="button" class="schatz-banner-close" onclick="endSchatzsuche()" aria-label="Schatzsuche beenden">✕</button>
     </div>
 
-    <main>
+    <main id="main-content">
     <article class="main-card">
         <div class="hero-wrapper">
             <div class="story-hero-cover">
@@ -1919,6 +1958,10 @@
                     <div class="toolbar-group-buttons">
                         <button class="tool-btn" onclick="toggleWordReader()" id="btn-word-reader" aria-label="Wörter hören"
                                 data-speak="Wörter hören: Tipp danach auf ein Wort in der Geschichte, und ich spreche es dir vor."><span class="btn-icon">👂</span> <span class="btn-label">Wörter hören</span></button>
+                        <button type="button" class="tool-btn" onclick="toggleDyslexia(this)" id="btn-dyslexia" aria-label="Lesefreundliche Schrift"
+                                data-speak="Lesefreundlich: Ich mache mehr Platz zwischen den Buchstaben und Wörtern."><span class="btn-icon">💛</span> <span class="btn-label">Lesefreundlich</span></button>
+                        <button type="button" class="tool-btn" onclick="toggleContrast(this)" id="btn-contrast" aria-label="Hoher Kontrast"
+                                data-speak="Kontrast: Ich mache die Schrift extra dunkel und den Hintergrund ganz hell."><span class="btn-icon">🌓</span> <span class="btn-label">Kontrast</span></button>
                         <div class="font-size-control" role="group" aria-label="Vorlese-Tempo">
                             <button type="button" class="tool-btn" id="btn-tempo-slow" onclick="setSpeechRate(0.7)" aria-label="Langsam vorlesen"
                                     data-speak="Schildkröte: Ich lese ganz langsam vor.">🐢</button>
@@ -1999,6 +2042,7 @@
                 </button>
             </div>
             <div id="panel-quiz" class="activity-panel active" role="tabpanel" aria-labelledby="tab-quiz">
+                <div id="quiz-status" class="sr-only" role="status" aria-live="polite"></div>
                 <div id="quiz-wrapper" class="quiz-card"></div>
             </div>
             <div id="panel-weiterdenken" class="activity-panel" role="tabpanel" aria-labelledby="tab-weiterdenken">
@@ -2476,7 +2520,7 @@
                                 <button type="button" class="quiz-option" onclick="checkQuizAnswer(this, ${isCorrect})"><span>${escapeHtml(ans)}</span></button>
                               </div>`;
                 });
-                qHTML += `<button type="button" class="quiz-reveal-btn" onclick="revealQuizAnswer(this)">💡 Auflösen</button>`;
+                qHTML += `<button type="button" class="quiz-reveal-btn" onclick="revealQuizAnswer(this)" data-speak="Zeigt dir die richtige Antwort.">💡 Lösung zeigen</button>`;
                 qHTML += `</div>`;
             });
             const quizWrapper = document.getElementById('quiz-wrapper');
@@ -2991,6 +3035,18 @@
             if (!active && state.syllables) toggleSyllables();
             try { localStorage.setItem('lesekumpel-leselinien-default', active ? 'true' : 'false'); } catch(e) {}
         }
+        function toggleDyslexia(btn) {
+            const active = document.body.classList.toggle('dyslexia-mode');
+            const b = btn || document.getElementById('btn-dyslexia');
+            if (b) b.classList.toggle('active', active);
+            try { localStorage.setItem('lesekumpel-lesefreundlich', active ? 'true' : 'false'); } catch(e) {}
+        }
+        function toggleContrast(btn) {
+            const active = document.body.classList.toggle('high-contrast');
+            const b = btn || document.getElementById('btn-contrast');
+            if (b) b.classList.toggle('active', active);
+            try { localStorage.setItem('lesekumpel-kontrast', active ? 'true' : 'false'); } catch(e) {}
+        }
         function toggleFahrplan() {
             let btn = document.getElementById('btn-fahrplan');
             let willActivate = !document.body.classList.contains('fahrplan-active');
@@ -3094,17 +3150,22 @@
             const bubble = document.getElementById('buddy-bubble');
             if (bubble) bubble.hidden = true;
         }
+        function setQuizStatus(text) {
+            const s = document.getElementById('quiz-status');
+            if (s) { s.textContent = ''; setTimeout(() => { s.textContent = text; }, 50); }
+        }
         function checkQuizAnswer(element, isCorrect) {
             if(element.classList.contains('correct') || element.classList.contains('try-again')) return;
             if (isCorrect) {
                 element.classList.add('correct'); element.innerHTML += " 🌟";
                 speak('Richtig! Super gemacht!');
+                setQuizStatus('Richtig! Super gemacht!');
                 // Alle Fragen gelöst? → Buddy feiert + Konfetti
                 const all = document.querySelectorAll('#quiz-wrapper .quiz-question');
                 const allDone = all.length > 0 && Array.from(all).every(q => q.querySelector('.quiz-option.correct'));
                 if (allDone) setTimeout(() => { showConfetti(); buddyCheer('Wow! Du hast alle Fragen richtig. Du bist ein Quiz-Star!'); }, 900);
             }
-            else { element.classList.add('try-again'); speak('Probier es nochmal!'); }
+            else { element.classList.add('try-again'); speak('Probier es nochmal!'); setQuizStatus('Das war nicht richtig. Probier es nochmal!'); }
         }
 
         function revealQuizAnswer(btn) {
@@ -3134,6 +3195,17 @@
             // Spul-Balken der Player-Leiste ('change' = beim Loslassen/Tastendruck)
             const pbRange = document.getElementById('pb-range');
             if (pbRange) pbRange.addEventListener('change', () => playerSeek(parseFloat(pbRange.value)));
+            // Leere "Das könnte dir auch gefallen"-Sektion verstecken (Pipeline liefert aktuell keine Empfehlungen)
+            const relGrid = document.querySelector('.related-grid');
+            if (relGrid && relGrid.children.length === 0) {
+                const sec = document.querySelector('.related-section');
+                if (sec) sec.style.display = 'none';
+            }
+            // Lesefreundlich-/Kontrast-Einstellungen wiederherstellen
+            try {
+                if (localStorage.getItem('lesekumpel-lesefreundlich') === 'true') toggleDyslexia();
+                if (localStorage.getItem('lesekumpel-kontrast') === 'true') toggleContrast();
+            } catch(e) {}
 
             // Ansicht ist exklusiv — höchstens einen Modus aktivieren
             // Priorität: explizite localStorage-Wahl > Neurotyp-Default
