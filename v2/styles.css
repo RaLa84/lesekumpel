@@ -1819,7 +1819,8 @@ a:hover { text-decoration-thickness: 2px; }
   transition: all 0.2s;
 }
 .toggle-btn:hover { border-color: var(--mint); }
-.toggle-btn.selected {
+.toggle-btn.selected,
+.toggle-btn.active {
   background: var(--mint);
   border-color: var(--mint);
   color: var(--navy);

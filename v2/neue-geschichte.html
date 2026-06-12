@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Neue Geschichte — Lesekumpel</title>
+  <meta name="description" content="W&auml;hle, wie du heute lesen willst: Autorengeschichte, Top-100-W&ouml;rter, Lesestufen oder Geschichte bauen.">
+
+  <link rel="icon" type="image/webp" href="../Konzept_Rebranding/logo-lesekumpel-512.webp">
+  <link rel="stylesheet" href="../fonts/fonts.css">
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .hub-wrap {
+      max-width: 900px;
+      margin: 0 auto;
+      padding: 48px 24px 90px;
+      position: relative;
+    }
+    .hub-hero {
+      text-align: center;
+      margin-bottom: 36px;
+      position: relative;
+      z-index: 1;
+    }
+    .hub-hero h1 {
+      font-size: clamp(2rem, 5vw, 2.8rem);
+      margin-bottom: 10px;
+    }
+    .hub-hero h1 .accent { color: var(--lila); }
+    .hub-hero p { font-size: 1.05rem; color: var(--text-soft); }
+    .hub-deco-1 { top: 8%; left: 4%; color: var(--yellow); width: 26px; }
+    .hub-deco-2 { top: 16%; right: 6%; color: var(--coral); width: 20px; opacity: 0.5; }
+    .hub-deco-3 { bottom: 14%; left: 3%; color: var(--mint); width: 22px; opacity: 0.5; }
+  </style>
+</head>
+<body data-page="erstellen">
+
+  <a href="#main" class="skip-link">Zum Inhalt springen</a>
+
+  <div class="sandbox-banner">
+  Du bist im Redesign-Sandbox <strong>v2</strong>. <a href="../index.html">Zur Live-Version wechseln &rarr;</a>
+</div>
+<nav class="navbar" aria-label="Hauptnavigation">
+  <div class="navbar-inner">
+    <a href="index.html" class="navbar-brand">
+      <img src="../Konzept_Rebranding/logo-lesekumpel-512.webp" alt="Lesekumpel Logo" class="navbar-logo">
+      <span>Lese<span class="brand-name">kumpel</span></span>
+    </a>
+    <div class="navbar-links">
+      <a href="index.html#mission" data-nav="mission">F&uuml;r euch</a>
+      <a href="index.html#how-it-works" data-nav="how">So funktioniert&rsquo;s</a>
+      <a href="ueber-uns.html" data-nav="ueber-uns">&Uuml;ber uns</a>
+      <a href="demo.html" data-nav="demo">Demo-Texte</a>
+      <a href="preise.html" data-nav="preise">Preise</a>
+      <a href="neue-geschichte.html" data-nav="erstellen">Geschichte erstellen</a>
+      <a href="mein-konto.html" data-nav="mein-konto">Mein Konto</a>
+    </div>
+    <a href="index.html#registrieren" class="btn btn-primary navbar-cta">Jetzt registrieren</a>
+    <button type="button" class="burger" aria-label="Men&uuml; &ouml;ffnen" aria-expanded="false" aria-controls="mobile-menu" onclick="toggleMenu()">&#9776;</button>
+  </div>
+  <div id="mobile-menu" class="mobile-menu">
+    <a href="index.html#mission" onclick="toggleMenu()">F&uuml;r euch</a>
+    <a href="index.html#how-it-works" onclick="toggleMenu()">So funktioniert&rsquo;s</a>
+    <a href="ueber-uns.html" onclick="toggleMenu()">&Uuml;ber uns</a>
+    <a href="demo.html" onclick="toggleMenu()">Demo-Texte</a>
+    <a href="preise.html" onclick="toggleMenu()">Preise</a>
+    <a href="neue-geschichte.html" onclick="toggleMenu()">Geschichte erstellen</a>
+    <a href="mein-konto.html" onclick="toggleMenu()">Mein Konto</a>
+    <a href="index.html#registrieren" class="mobile-menu-cta" onclick="toggleMenu()">Jetzt registrieren &rarr;</a>
+  </div>
+</nav>
+
+  <main id="main">
+    <div class="hub-wrap">
+
+      <!-- Deko -->
+      <svg aria-hidden="true" class="deco-star hub-deco-1" style="position:absolute;" viewBox="0 0 32 32"><polygon points="16,2 20,12 30,12 22,19 25,30 16,23 7,30 10,19 2,12 12,12" fill="currentColor" opacity="0.55"/></svg>
+      <svg aria-hidden="true" class="deco-sparkle hub-deco-2" style="position:absolute;" viewBox="0 0 24 24"><path d="M12 2L13.5 9 21 12L13.5 14.5L12 22L10.5 14.5L3 12L10.5 9Z" fill="currentColor"/></svg>
+      <svg aria-hidden="true" class="deco-star hub-deco-3" style="position:absolute;" viewBox="0 0 32 32"><polygon points="16,2 20,12 30,12 22,19 25,30 16,23 7,30 10,19 2,12 12,12" fill="currentColor"/></svg>
+
+      <section class="hub-hero">
+        <h1>Wie m&ouml;chtest du heute <span class="accent">lesen</span>?</h1>
+        <p>Such dir aus, wie deine n&auml;chste Geschichte entsteht.</p>
+      </section>
+
+      <section class="modus-grid" aria-label="Geschichtenmodi">
+
+        <!-- 1. Autorengeschichte (aktiv, Coral) -->
+        <a href="neue-autorengeschichte.html" class="modus-card" style="--card-accent:#F97352;--card-tint:rgba(249,115,82,0.12);">
+          <span class="modus-tag">&#9733; Klassisch</span>
+          <div class="modus-icon-circle"><span class="modus-icon" aria-hidden="true">&#128214;</span></div>
+          <h3 class="modus-titel">Autorengeschichte</h3>
+          <p class="modus-beschreibung">Such dir einen Autor aus und beschreibe, was in deiner Geschichte passieren soll &mdash; Lesekumpel schreibt sie f&uuml;r dich.</p>
+          <div class="modus-visual avatar-stack" aria-hidden="true">
+            <img src="../avatars/pip-punkt.webp" class="mini-avatar" alt="">
+            <img src="../avatars/mia-mitte.webp" class="mini-avatar" alt="">
+            <img src="../avatars/stella-stimmenreich.webp" class="mini-avatar" alt="">
+            <img src="../avatars/holzi-pixelkopf.webp" class="mini-avatar" alt="">
+            <span class="mini-avatar-more">+5</span>
+          </div>
+          <span class="modus-go">Los geht's &rarr;</span>
+        </a>
+
+        <!-- 2. Top 100 Basiswörter (Stub, Yellow) -->
+        <a href="neue-top100.html" class="modus-card coming-soon" style="--card-accent:#FFD95A;--card-tint:rgba(255,217,90,0.20);">
+          <span class="modus-tag">In Arbeit</span>
+          <div class="modus-icon-circle"><span class="modus-icon" aria-hidden="true">&#128175;</span></div>
+          <h3 class="modus-titel">Top 100 Basisw&ouml;rter</h3>
+          <p class="modus-beschreibung">Lerne spielerisch die ersten 100 W&ouml;rter und bau dir daraus deine eigenen Mini-Geschichten.</p>
+          <div class="modus-visual" aria-hidden="true">
+            <span class="wort-pill">der</span>
+            <span class="wort-pill">die</span>
+            <span class="wort-pill">ist</span>
+            <span class="wort-pill">und</span>
+            <span class="wort-pill">ein</span>
+          </div>
+          <span class="modus-go">Mehr erfahren &rarr;</span>
+        </a>
+
+        <!-- 3. Lesestufen (Stub, Mint) -->
+        <a href="neue-lesestufen.html" class="modus-card coming-soon" style="--card-accent:#2FB8A6;--card-tint:rgba(47,184,166,0.12);">
+          <span class="modus-tag">In Arbeit</span>
+          <div class="modus-icon-circle"><span class="modus-icon" aria-hidden="true">&#127891;</span></div>
+          <h3 class="modus-titel">Lesestufen</h3>
+          <p class="modus-beschreibung">Was nehmt ihr gerade in der Schule durch? Lesekumpel baut genau diese Buchstaben in eine Geschichte zu deinem Lieblings-Thema (z.&nbsp;B. &bdquo;Minecraft&ldquo;).</p>
+          <div class="modus-visual" aria-hidden="true">
+            <span class="letter-tile">S</span>
+            <span class="letter-tile">ch</span>
+            <span class="letter-tile">au</span>
+          </div>
+          <span class="modus-go">Mehr erfahren &rarr;</span>
+        </a>
+
+        <!-- 4. Geschichte bauen (Stub, Lila) -->
+        <a href="neue-geschichte-bauen.html" class="modus-card coming-soon" style="--card-accent:#7D6AE6;--card-tint:rgba(125,106,230,0.12);">
+          <span class="modus-tag">In Arbeit</span>
+          <div class="modus-icon-circle"><span class="modus-icon" aria-hidden="true">&#9999;&#65039;</span></div>
+          <h3 class="modus-titel">Geschichte bauen</h3>
+          <p class="modus-beschreibung">Du erfindest deine eigene Geschichte: Wer ist die Hauptfigur, wo spielt sie, wie endet sie? Lesekumpel schreibt sie f&uuml;r dich.</p>
+          <div class="modus-visual blocks" aria-hidden="true">
+            <span class="block" style="background:rgba(125,106,230,0.45);transform:rotate(-4deg);"></span>
+            <span class="block" style="background:rgba(125,106,230,0.65);transform:rotate(2deg);"></span>
+            <span class="block" style="background:rgba(125,106,230,0.85);transform:rotate(-2deg);"></span>
+          </div>
+          <span class="modus-go">Mehr erfahren &rarr;</span>
+        </a>
+
+      </section>
+    </div>
+  </main>
+
+  <footer class="modern-footer">
+  <div class="footer-grid">
+    <div class="footer-brand-block">
+      <div class="footer-brand-row">
+        <img src="../Konzept_Rebranding/logo-lesekumpel-512.webp" alt="Lesekumpel Logo">
+        <span>Lese<span class="brand-yellow">kumpel</span></span>
+      </div>
+      <p class="footer-tagline">Die inklusive Lese-App, die jedes Kind lieben lernt. Neurodivers gestaltet, immer kostenlos.</p>
+    </div>
+
+    <div>
+      <h4>Entdecken</h4>
+      <ul>
+        <li><a href="demo.html">Demo-Texte</a></li>
+        <li><a href="neue-geschichte.html">Geschichte erstellen</a></li>
+        <li><a href="index.html#mission">F&uuml;r euch</a></li>
+        <li><a href="index.html#faq">FAQ</a></li>
+      </ul>
+    </div>
+
+    <div>
+      <h4>Mehr</h4>
+      <ul>
+        <li><a href="ueber-uns.html">&Uuml;ber uns</a></li>
+        <li><a href="preise.html">Preise</a></li>
+        <li><a href="mein-konto.html">Mein Konto</a></li>
+        <li><a href="../blog-warum-lesekumpel.html">Blog</a></li>
+      </ul>
+    </div>
+
+    <div>
+      <h4>Rechtliches</h4>
+      <ul>
+        <li><a href="impressum.html">Impressum</a></li>
+        <li><a href="datenschutz.html">Datenschutz</a></li>
+        <li><a href="../knowledge-base/snacks/index.html">Wissen</a></li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="footer-bottom">
+    <span>&copy; 2026 Lesekumpel &middot; Inklusive Lese-App f&uuml;r jedes Gehirn</span>
+    <span><a href="../index.html">&larr; Zur Live-Version</a> &middot; <span class="footer-sandbox-label">v2 Sandbox</span></span>
+  </div>
+</footer>
+
+  <script src="scripts.js?v=4"></script>
+</body>
+</html>
