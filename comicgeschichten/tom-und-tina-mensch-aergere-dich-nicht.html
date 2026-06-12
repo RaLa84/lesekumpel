@@ -407,6 +407,491 @@
             h1#book-title { font-size: 1.6rem; }
             .main-card { padding: 18px; margin: 15px; }
         }
+
+        /* ════════════════════════════════════════════════════════════════
+           BAUSTEINE AUS DEM LESE-TEMPLATE (Konsistenz zur Leuchtturm-Seite)
+           ════════════════════════════════════════════════════════════════ */
+
+        /* — Global: Bewegungs-Empfindlichkeit + Screenreader-only — */
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation: none !important;
+                transition: none !important;
+                scroll-behavior: auto !important;
+            }
+        }
+        .sr-only {
+            position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+            overflow: hidden; clip: rect(0, 0, 0, 0); border: 0;
+        }
+
+        /* — Maskottchen-Zauberkasten (FAB rechts unten) — */
+        .kumpel-fab {
+            background: #fff; border-radius: 24px; padding: 0;
+            box-shadow: 0 4px 24px rgba(0,0,0,0.04), 0 1px 4px rgba(0,0,0,0.02);
+            border: 1px solid rgba(0,0,0,0.03); transition: all 0.3s ease;
+        }
+        .kumpel-fab.collapsed {
+            position: fixed; bottom: 24px; right: 24px; z-index: 4500;
+            width: 92px; height: 92px; margin: 0; border-radius: 50%;
+            background: linear-gradient(135deg, #FEFBF6 0%, #EDF9F6 55%, #F1EEFC 100%);
+            box-shadow: 0 4px 20px rgba(47,184,166,0.2), 0 2px 6px rgba(0,0,0,0.06);
+            border: 1.5px solid rgba(47,184,166,0.2);
+            overflow: visible;
+        }
+        .kumpel-fab.collapsed:hover { transform: translateY(-2px) scale(1.03); }
+        .kumpel-fab:not(.collapsed) {
+            position: fixed; bottom: 24px; right: 24px; z-index: 4500;
+            max-width: 400px; border-radius: 24px;
+            box-shadow: 0 6px 32px rgba(0,0,0,0.12), 0 2px 8px rgba(0,0,0,0.06);
+            border: 2px solid var(--mint); max-height: 70vh; overflow-y: auto;
+        }
+        .kumpel-header {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 16px 22px; cursor: pointer; -webkit-user-select: none; user-select: none; gap: 14px;
+        }
+        .kumpel-fab.collapsed .kumpel-header { padding: 0; width: 100%; height: 100%; justify-content: center; gap: 0; }
+        .kumpel-header-label {
+            font-family: var(--font-heading); font-size: 1.1rem; color: var(--navy);
+            display: flex; align-items: center; gap: 10px; font-weight: 600;
+        }
+        .kumpel-fab.collapsed .kumpel-header-label { gap: 0; pointer-events: none; }
+        .kumpel-fab.collapsed .kumpel-text { display: none !important; }
+        .kumpel-toggle {
+            font-size: 1.3rem; color: var(--navy);
+            display: inline-flex; align-items: center; justify-content: center;
+            width: 34px; height: 34px; border-radius: 50%;
+            background: rgba(47,184,166,0.15); line-height: 1;
+        }
+        .kumpel-toggle::before { content: "\00d7"; }
+        .kumpel-fab.collapsed .kumpel-toggle { display: none; }
+        .kumpel-icon { width: 54px; height: 54px; display: inline-flex; align-items: center; justify-content: center; pointer-events: none; }
+        .buddy-img {
+            width: 54px; height: 54px; object-fit: contain; pointer-events: none;
+            filter: drop-shadow(0 3px 8px rgba(0,0,0,0.18));
+            animation: buddyFloat 4s ease-in-out infinite;
+        }
+        .kumpel-fab.collapsed .buddy-img, .kumpel-fab.collapsed .kumpel-icon { width: 180px; height: 180px; }
+        @keyframes buddyFloat {
+            0%, 100% { transform: translateY(0) rotate(-2deg); }
+            50% { transform: translateY(-5px) rotate(2deg); }
+        }
+        .buddy-img.cheer { animation: buddyJump 0.9s cubic-bezier(0.34, 1.56, 0.64, 1); }
+        @keyframes buddyJump {
+            0%, 100% { transform: translateY(0); }
+            30% { transform: translateY(-16px) rotate(-7deg); }
+            60% { transform: translateY(0); }
+            80% { transform: translateY(-7px) rotate(4deg); }
+        }
+        .buddy-bubble {
+            position: absolute; bottom: calc(100% + 10px); right: 0; white-space: nowrap;
+            background: #fff; border: 2px solid var(--primary-yellow); border-radius: 16px;
+            padding: 10px 16px; font-family: var(--font-heading); font-weight: 600;
+            font-size: 1.05rem; color: var(--text-dark);
+            box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+            animation: bubblePop 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .buddy-bubble[hidden] { display: none; }
+        .kumpel-body { padding: 0 14px 16px; display: flex; flex-direction: column; gap: 8px; }
+        .kumpel-fab.collapsed .kumpel-body { display: none; }
+        .kumpel-group { border-radius: 20px; padding: 14px 16px 12px; }
+        .kumpel-group.group-buddy { background: #F1EEFC; }
+        .kumpel-group.group-text { background: #FEEDE8; }
+        .kumpel-group.group-extra { background: #FFF4D6; }
+        .kumpel-group-label {
+            font-family: var(--font-heading); font-size: 0.78rem; font-weight: 600;
+            color: #5a6368; margin-bottom: 10px; padding-left: 2px;
+        }
+        .kumpel-group-buttons { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+        .kumpel-group-buttons > .tool-btn {
+            flex-direction: column; gap: 4px;
+            min-height: 62px; min-width: 78px; padding: 8px 10px;
+            border-radius: 14px; background: rgba(255,255,255,0.9);
+        }
+        .kumpel-group-buttons > .tool-btn .btn-icon { font-size: 1.7em; line-height: 1; }
+        .kumpel-group-buttons > .tool-btn .btn-label { font-size: 0.82em; }
+        .buddy-actions { display: flex; flex-direction: column; gap: 8px; }
+        .buddy-menu-btn {
+            display: flex; align-items: center; gap: 12px;
+            min-height: 56px; min-width: 200px;
+            border: none; border-radius: 14px; background: #fff9e5;
+            cursor: pointer; padding: 8px 16px;
+            font-family: var(--font-heading); font-weight: 600; font-size: 1.05rem; color: var(--text-dark);
+            transition: transform 0.15s ease, background 0.15s ease;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .buddy-menu-btn:hover { background: #fff3b8; transform: translateX(3px); }
+        .buddy-menu-btn .bm-icon { font-size: 1.5rem; width: 36px; text-align: center; }
+        .font-size-control {
+            display: inline-flex; border-radius: 14px; overflow: hidden;
+            border: 1.5px solid var(--border-soft); background: rgba(255,255,255,0.9);
+            min-height: 62px;
+        }
+        .font-size-control .tool-btn {
+            border: none; border-radius: 0; min-width: 48px; min-height: 62px;
+            justify-content: center; font-size: 1.05em; padding: 10px 12px; background: transparent;
+        }
+        .font-size-control .tool-btn:first-child { border-right: 1px solid rgba(0,0,0,0.06); }
+        @media (max-width: 600px) {
+            .kumpel-fab.collapsed { bottom: 16px; right: 16px; width: 76px; height: 76px; }
+            .kumpel-fab.collapsed .buddy-img, .kumpel-fab.collapsed .kumpel-icon { width: 148px; height: 148px; }
+            .kumpel-fab:not(.collapsed) { bottom: 0; right: 0; max-width: 100%; border-radius: 20px 20px 0 0; border-bottom: none; }
+        }
+
+        /* — „Was ist das?"-Modus — */
+        body.explain-mode { cursor: help; }
+        body.explain-mode [data-speak] { outline: 3px dashed var(--accent-salmon); outline-offset: 2px; }
+
+        /* — Audio-Player-Leiste — */
+        .player-bar {
+            position: fixed; bottom: 0; left: 0; right: 0; z-index: 4450;
+            display: flex; align-items: center; gap: 12px;
+            background: #fff; border-top: 3px solid var(--mint);
+            padding: 10px 16px calc(10px + env(safe-area-inset-bottom));
+            box-shadow: 0 -6px 24px rgba(43,49,64,0.14);
+        }
+        .player-bar[hidden] { display: none; }
+        .pb-btn {
+            width: 52px; height: 52px; border-radius: 50%; border: none;
+            background: var(--mint); color: var(--navy); font-size: 1.3rem; cursor: pointer;
+            flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center;
+            transition: transform 0.15s ease; -webkit-tap-highlight-color: transparent;
+        }
+        .pb-btn:hover { transform: scale(1.06); }
+        .pb-stop { background: var(--cream-light); border: 2px solid var(--border-soft); width: 44px; height: 44px; font-size: 1rem; }
+        .pb-range { flex: 1; accent-color: var(--mint); height: 36px; cursor: pointer; min-width: 0; }
+        .pb-count { font-family: var(--font-heading); font-weight: 600; font-size: 0.9rem; color: var(--navy); min-width: 52px; text-align: center; flex-shrink: 0; }
+        body.player-active { padding-bottom: 130px; }
+        body.player-active .kumpel-fab.collapsed,
+        body.player-active .kumpel-fab:not(.collapsed) { bottom: 96px; }
+        @media (max-width: 600px) {
+            body.player-active { padding-bottom: 150px; }
+            body.player-active .kumpel-fab.collapsed { bottom: 92px; }
+            .pb-count { min-width: 44px; font-size: 0.8rem; }
+        }
+
+        /* — Like-Herz auf dem Comic-Bild — */
+        .hero-like-btn {
+            position: absolute; top: 14px; right: 14px; z-index: 10;
+            width: 46px; height: 46px;
+            display: inline-flex; align-items: center; justify-content: center;
+            background: rgba(255,255,255,0.85);
+            -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
+            border: none; border-radius: 50%;
+            box-shadow: 0 4px 14px rgba(0,0,0,0.18);
+            cursor: pointer; overflow: visible;
+            transition: all 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+            -webkit-tap-highlight-color: transparent;
+        }
+        .hero-like-heart { font-size: 1.6rem; line-height: 1; display: inline-block; }
+        .hero-like-btn:hover { transform: scale(1.08); background: rgba(255,255,255,0.95); }
+        .hero-like-btn.is-liked {
+            background: rgba(255, 235, 235, 0.95);
+            box-shadow: 0 4px 14px rgba(249,115,82,0.35), 0 0 0 2px rgba(249,115,82,0.25);
+        }
+        .hero-like-toast {
+            position: absolute; top: 70px; right: 14px; z-index: 11;
+            background: var(--navy); color: #fff;
+            padding: 8px 14px; border-radius: 10px;
+            font-family: var(--font-body); font-weight: 600; font-size: 0.85rem;
+            white-space: nowrap; box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+            opacity: 0; transform: translateY(-6px) scale(0.95); pointer-events: none;
+            transition: opacity 0.25s ease, transform 0.25s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .hero-like-toast.is-visible { opacity: 1; transform: translateY(0) scale(1); }
+        .particle {
+            position: absolute; pointer-events: none;
+            -webkit-user-select: none; user-select: none;
+            font-size: 1.1rem; left: 50%; top: 50%;
+            --tx: 0px; --ty: -60px; --rot: 0deg; --dur: 1.1s;
+            animation: particleFly var(--dur) cubic-bezier(0.2, 0.6, 0.3, 1) forwards;
+        }
+        .particle.large { font-size: 1.6rem; }
+        @keyframes particleFly {
+            0%   { transform: translate(-50%, -50%) scale(0.4) rotate(0); opacity: 1; }
+            20%  { transform: translate(calc(-50% + var(--tx)*0.4), calc(-50% + var(--ty)*0.4)) scale(1.2) rotate(calc(var(--rot)*0.4)); opacity: 1; }
+            100% { transform: translate(calc(-50% + var(--tx)), calc(-50% + var(--ty))) scale(0.5) rotate(var(--rot)); opacity: 0; }
+        }
+
+        /* — Konfetti + Geschafft-Karte — */
+        @keyframes confettiFall {
+            0% { transform: translateY(-100vh) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+        }
+        .confetti-container {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none; z-index: 9999; overflow: hidden;
+        }
+        .confetti-piece {
+            position: absolute; width: 10px; height: 10px; top: -10px;
+            animation: confettiFall 3s ease-in forwards;
+        }
+        .done-card {
+            text-align: center; background: linear-gradient(135deg, #fff9e5 0%, #fff 100%);
+            border: 2px solid var(--primary-yellow); border-radius: 24px;
+            padding: 26px 20px; margin: 4px 0 24px; width: 100%; box-sizing: border-box;
+            animation: bubblePop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .done-buddy { width: 110px; height: auto; }
+        .done-star { font-size: 2.2rem; line-height: 1; }
+        .done-title { font-family: var(--font-heading); color: var(--navy); font-size: 1.5rem; margin: 6px 0 16px; }
+        .done-cta {
+            background: var(--mint); color: var(--navy); border: none;
+            min-height: 54px; font-size: 1rem; padding: 12px 26px; border-radius: 999px;
+            font-family: var(--font-heading); font-weight: 700; cursor: pointer;
+            box-shadow: 0 4px 14px rgba(47,184,166,0.3);
+            transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+            -webkit-tap-highlight-color: transparent;
+        }
+        .done-cta:hover { background: var(--navy); color: #fff; transform: translateY(-2px); }
+
+        /* — Autor-Box — */
+        .author-box { width: 100%; margin-bottom: 24px; box-sizing: border-box; }
+        .author-card { border: 1px solid var(--border-soft); border-left: 5px solid var(--lila); border-radius: 20px; padding: 20px; display: flex; align-items: center; gap: 20px; background: #fff; box-shadow: 0 2px 12px rgba(43,49,64,0.05); }
+        .author-img { width: 70px; height: 70px; border-radius: 50%; border: 3px solid var(--primary-yellow); padding: 2px; }
+        .author-name { font-family: var(--font-heading); color: var(--navy); font-size: 1.3rem; margin: 0; }
+
+        /* — Kommentarbereich (1:1 von der Leseseite) — */
+        .comments-section { width: 100%; margin-bottom: 24px; box-sizing: border-box; }
+        .section-title { text-align: center; font-family: var(--font-heading); color: var(--navy); font-size: 1.5rem; font-weight: 600; margin: 0 0 20px 0; }
+        .comments-list { margin-bottom: 20px; display: flex; flex-direction: column; gap: 12px; }
+        .comment {
+            display: flex; gap: 14px; align-items: flex-start;
+            background: #fff; border: 2px solid var(--border-soft);
+            border-radius: 18px; padding: 14px 16px;
+            box-shadow: 0 2px 8px rgba(43,49,64,0.04);
+        }
+        .comment:nth-child(3n+1) { border-color: rgba(47,184,166,0.45); }
+        .comment:nth-child(3n+2) { border-color: rgba(255,217,90,0.7); }
+        .comment:nth-child(3n)   { border-color: rgba(125,106,230,0.4); }
+        .comment-avatar {
+            flex-shrink: 0; width: 48px; height: 48px;
+            display: flex; align-items: center; justify-content: center;
+            background: var(--cream-light); border: 2px solid var(--primary-yellow);
+            border-radius: 50%; font-size: 1.6rem; line-height: 1;
+        }
+        .comment-body { flex: 1; min-width: 0; }
+        .comment-header { display: flex; align-items: baseline; gap: 10px; margin-bottom: 4px; flex-wrap: wrap; }
+        .comment-author { font-family: var(--font-heading); color: var(--navy); font-size: 1rem; }
+        .comment-time { color: #5a6368; font-size: 0.78rem; }
+        .comment-blocks { display: flex; flex-wrap: wrap; gap: 6px; }
+        .comment-block {
+            display: inline-flex; align-items: center; gap: 4px;
+            background: #FFF4D6; border: 1.5px solid var(--primary-yellow);
+            border-radius: 999px; padding: 3px 10px;
+            font-family: var(--font-body); font-weight: 600; font-size: 0.9rem;
+            color: var(--text-dark);
+        }
+        .comments-box { position: relative; border: 1px solid var(--border-soft); border-radius: 20px; padding: 20px; background: var(--cream-light); box-shadow: 0 2px 8px rgba(43,49,64,0.04); }
+        .composer-preview {
+            background: #fff; border: 2px solid var(--border-soft);
+            border-radius: 16px; padding: 14px 16px; margin-bottom: 12px;
+            transition: border-color 0.2s ease;
+        }
+        .composer-preview[data-count="3"] { border-color: var(--mint); }
+        .composer-preview-label { font-family: var(--font-body); font-size: 0.85rem; color: #5a6368; margin-bottom: 10px; }
+        #composer-counter { font-weight: 600; color: var(--navy); }
+        .composer-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 10px; }
+        .composer-chips:empty { margin-bottom: 0; }
+        .composer-chip {
+            display: inline-flex; align-items: center; gap: 6px;
+            background: #fff; border: 2px solid var(--primary-yellow);
+            border-radius: 999px; padding: 6px 8px 6px 12px;
+            font-family: var(--font-body); font-weight: 600; font-size: 0.95rem;
+            color: var(--text-dark);
+            animation: chipIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+        }
+        .composer-chip.is-removing { animation: chipOut 0.2s ease-in forwards; }
+        @keyframes chipIn  { 0%{opacity:0;transform:scale(0.6)} 100%{opacity:1;transform:scale(1)} }
+        @keyframes chipOut { 0%{opacity:1;transform:scale(1)} 100%{opacity:0;transform:scale(0.6)} }
+        .composer-chip-remove {
+            width: 22px; height: 22px; border-radius: 50%;
+            background: #f4f4f4; border: none; color: #888;
+            font-size: 0.78rem; line-height: 1; cursor: pointer;
+            display: inline-flex; align-items: center; justify-content: center;
+            transition: background 0.15s ease, color 0.15s ease;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .composer-chip-remove:hover { background: var(--accent-salmon); color: #fff; }
+        .composer-add-btn {
+            display: inline-flex; align-items: center; gap: 8px;
+            background: var(--primary-yellow); border: none;
+            color: var(--navy); border-radius: 999px;
+            padding: 12px 20px; min-height: 52px;
+            font-family: var(--font-heading); font-weight: 700; font-size: 1rem;
+            cursor: pointer; transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 3px 10px rgba(255,217,90,0.5);
+            -webkit-tap-highlight-color: transparent;
+        }
+        .composer-add-btn:hover:not(:disabled) { transform: translateY(-2px); }
+        .composer-add-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+        .composer-add-btn[aria-expanded="true"] { background: var(--primary-yellow); }
+        .composer-actions { display: flex; justify-content: flex-end; margin-top: 8px; position: relative; }
+        .btn-send {
+            background-color: var(--mint); color: var(--navy); border: none;
+            padding: 12px 32px; min-height: 52px; border-radius: 999px;
+            font-family: var(--font-heading); font-weight: 700; font-size: 1rem;
+            cursor: pointer; box-shadow: 0 3px 10px rgba(47,184,166,0.35);
+            transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .btn-send:hover:not(:disabled) { background: var(--navy); color: #fff; transform: translateY(-2px); }
+        .btn-send:disabled { opacity: 0.4; cursor: not-allowed; }
+        .composer-emoji-picker {
+            position: absolute; bottom: calc(100% + 12px); left: 0; z-index: 20;
+            background: #fff; border: 2px solid #eee; border-radius: 16px;
+            box-shadow: 0 12px 40px rgba(0,0,0,0.14);
+            padding: 18px 16px 14px;
+            min-width: 300px; max-width: 380px;
+            animation: pickerPop 0.2s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+        }
+        .composer-emoji-picker[hidden] { display: none; }
+        @keyframes pickerPop {
+            0%   { opacity: 0; transform: translateY(8px) scale(0.92); }
+            100% { opacity: 1; transform: translateY(0) scale(1); }
+        }
+        .picker-close {
+            position: absolute; top: 6px; right: 8px;
+            width: 28px; height: 28px; padding: 0;
+            background: transparent; border: none; border-radius: 50%;
+            font-size: 1rem; color: #888; cursor: pointer;
+            transition: background 0.15s ease; z-index: 2;
+        }
+        .picker-close:hover { background: #f4f4f4; color: var(--text-dark); }
+        .picker-stage[hidden] { display: none; }
+        .picker-title {
+            font-family: var(--font-heading); color: var(--navy);
+            font-size: 1.1rem; text-align: center; margin: 0 0 14px;
+        }
+        .picker-category-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+        .picker-category {
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            gap: 6px; padding: 16px 8px; min-height: 96px;
+            border-radius: 16px; cursor: pointer;
+            font-family: var(--font-heading); font-weight: 600; font-size: 0.95rem;
+            color: var(--text-dark);
+            transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+            -webkit-tap-highlight-color: transparent;
+        }
+        .picker-category[data-category="good"] { background: #E7F6F3; border: 2px solid var(--mint); }
+        .picker-category[data-category="hmm"]  { background: #FFF4D6; border: 2px solid var(--primary-yellow); }
+        .picker-category[data-category="no"]   { background: #FEEDE8; border: 2px solid var(--accent-salmon); }
+        .picker-category:hover { transform: translateY(-3px); box-shadow: 0 4px 12px rgba(43,49,64,0.12); }
+        .picker-cat-emoji { font-size: 2rem; line-height: 1; }
+        .picker-cat-label { font-size: 0.85rem; }
+        .picker-stage-header {
+            display: flex; align-items: center; justify-content: space-between;
+            margin-bottom: 12px; padding-right: 32px;
+        }
+        .picker-back {
+            background: transparent; border: none; padding: 4px 8px;
+            color: var(--syl-blue); font-family: var(--font-body); font-weight: 600;
+            font-size: 0.85rem; cursor: pointer; border-radius: 6px;
+            transition: background 0.15s ease;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .picker-back:hover { background: #F1EEFC; }
+        .picker-stage-title { font-family: var(--font-heading); color: var(--text-dark); font-size: 1rem; }
+        .picker-blocks-content { max-height: 320px; overflow-y: auto; padding-right: 4px; }
+        .picker-emoji-group { margin-bottom: 12px; }
+        .picker-emoji-group:last-child { margin-bottom: 0; }
+        .picker-emoji-group-header {
+            display: flex; align-items: center; gap: 6px; margin-bottom: 6px;
+            font-family: var(--font-body); font-weight: 600; font-size: 0.85rem; color: #5a6368;
+        }
+        .picker-emoji-group-emoji { font-size: 1.3rem; line-height: 1; }
+        .picker-emoji-group-label { font-size: 0.78rem; }
+        .picker-block-row { display: flex; flex-wrap: wrap; gap: 6px; }
+        .picker-block {
+            background: #fff; border: 2px solid #eee; border-radius: 999px;
+            padding: 6px 12px; font-family: var(--font-body); font-weight: 600; font-size: 0.92rem;
+            color: var(--text-dark); cursor: pointer;
+            transition: all 0.18s ease;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .picker-block:hover { background: #E7F6F3; border-color: var(--mint); transform: translateY(-2px); }
+        @media (max-width: 480px) {
+            .composer-emoji-picker { min-width: 260px; max-width: 300px; }
+            .picker-category-grid { gap: 8px; }
+            .picker-cat-emoji { font-size: 1.6rem; }
+        }
+
+        /* — Inhalt melden — */
+        .report-trigger-wrapper { text-align: center; margin-top: 18px; width: 100%; }
+        .report-link {
+            background: none; border: none; padding: 8px 14px; cursor: pointer;
+            color: #5a6368; font-family: var(--font-body); font-size: 0.95rem;
+            border-radius: 10px; text-decoration: underline; min-height: 36px;
+        }
+        .report-link:hover { color: var(--lila); background: rgba(125, 106, 230, 0.08); }
+        .report-modal-backdrop {
+            position: fixed; inset: 0; background: rgba(0, 0, 0, 0.55);
+            display: none; align-items: center; justify-content: center;
+            z-index: 10000; padding: 20px; overflow-y: auto;
+        }
+        .report-modal-backdrop.is-open { display: flex; }
+        .report-modal-backdrop[hidden] { display: none !important; }
+        .report-modal {
+            background: #fff; border-radius: 16px; padding: 28px 24px 24px;
+            max-width: 480px; width: 100%; position: relative;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            font-family: var(--font-body); color: var(--text-dark);
+            max-height: calc(100vh - 40px); overflow-y: auto;
+            line-height: 1.6; font-size: 1rem;
+        }
+        .report-modal h2 { font-family: var(--font-heading); color: var(--navy); margin: 0 0 8px; font-size: 1.5rem; }
+        .report-modal > p { margin: 0 0 16px; color: #555; }
+        .report-close {
+            position: absolute; top: 10px; right: 12px;
+            background: none; border: none; font-size: 1.8rem; line-height: 1;
+            color: #888; cursor: pointer; padding: 4px 10px; border-radius: 8px;
+        }
+        .report-close:hover { background: #f3f3f3; color: var(--lila); }
+        .report-modal fieldset { border: none; padding: 0; margin: 0 0 16px; }
+        .report-modal .reason-option {
+            display: flex; align-items: center; gap: 10px;
+            padding: 10px 12px; border-radius: 10px; cursor: pointer;
+            min-height: 44px; transition: background 0.15s ease;
+        }
+        .report-modal .reason-option:hover { background: var(--cream); }
+        .report-modal .reason-option input[type="radio"] { width: 20px; height: 20px; accent-color: var(--mint); flex-shrink: 0; }
+        .report-modal label.field { display: block; margin: 14px 0 0; font-weight: 600; font-size: 0.95rem; }
+        .report-modal label.field .hint { display: block; font-weight: 400; font-size: 0.85rem; color: #777; margin-top: 2px; }
+        .report-modal textarea, .report-modal input[type="email"] {
+            width: 100%; box-sizing: border-box; margin-top: 6px;
+            padding: 10px 12px; border: 2px solid #e0e0e0; border-radius: 10px;
+            font-family: var(--font-body); font-size: 1rem; color: var(--text-dark);
+            background: #fff; resize: vertical;
+        }
+        .report-modal textarea:focus, .report-modal input[type="email"]:focus { outline: none; border-color: var(--mint); }
+        .report-modal .actions { display: flex; gap: 10px; justify-content: flex-end; margin-top: 20px; flex-wrap: wrap; }
+        .report-modal .btn-primary, .report-modal .btn-secondary {
+            font-family: var(--font-heading); font-size: 1rem; padding: 10px 20px;
+            border-radius: 10px; border: none; cursor: pointer; min-height: 44px;
+        }
+        .report-modal .btn-primary { background: var(--mint); color: var(--navy); }
+        .report-modal .btn-primary:hover { background: var(--navy); color: #fff; }
+        .report-modal .btn-secondary { background: #ececec; color: var(--text-dark); }
+        .report-modal .btn-secondary:hover { background: #dcdcdc; }
+        .report-success h2 { color: #1A8676; }
+        @media (max-width: 600px) {
+            .report-modal { padding: 24px 18px 20px; max-height: calc(100vh - 24px); }
+            .report-modal .actions { flex-direction: column-reverse; }
+            .report-modal .actions button { width: 100%; }
+        }
+
+        /* — Fokus-Ringe (Lila, wie Leseseite) — */
+        .buddy-menu-btn:focus-visible, .kumpel-header:focus-visible, .pb-btn:focus-visible,
+        .pb-range:focus-visible, .done-cta:focus-visible, .hero-like-btn:focus-visible,
+        .composer-add-btn:focus-visible, .btn-send:focus-visible, .report-link:focus-visible {
+            outline: 3px solid var(--lila); outline-offset: 2px;
+        }
+
+        /* — Kontrast-Modus — */
+        body.high-contrast { background: #fff; }
+        body.high-contrast::before, body.high-contrast::after { display: none; }
+        body.high-contrast .main-card { border: 2px solid var(--navy); }
+        body.high-contrast .panel-card { color: #000; border-color: var(--navy); }
+        body.high-contrast .kumpel-group { background: #fff; border: 1px solid var(--navy); }
     </style>
     <link rel="stylesheet" href="../fonts/fonts.css">
 </head>
@@ -444,15 +929,11 @@
                 <button class="panel-hotspot" data-panel="3" role="tab" aria-label="Panel 3 ansehen" aria-selected="false"></button>
                 <button class="panel-hotspot" data-panel="4" role="tab" aria-label="Panel 4 ansehen" aria-selected="false"></button>
             </div>
-        </div>
-
-        <div class="toolbar-container" role="toolbar" aria-label="Lese-Werkzeuge">
-            <button type="button" class="tool-btn" onclick="toggleTTS()" id="btn-tts" aria-label="Comic vorlesen">🔊 Vorlesen</button>
-            <button type="button" class="tool-btn" onclick="toggleWordReader()" id="btn-word-reader" aria-label="Wörter hören">👂 Wörter hören</button>
-            <button type="button" class="tool-btn" onclick="toggleSyllables()" id="btn-syllables" aria-label="Silbenfärbung">✂️ Silben</button>
-            <button type="button" class="tool-btn" onclick="toggleDyslexia()" id="btn-dyslexia" aria-label="Lesefreundliche Schrift">💛 Lesefreundlich</button>
-            <button type="button" class="tool-btn" onclick="changeFontSize(-2)" aria-label="Schrift kleiner">A−</button>
-            <button type="button" class="tool-btn" onclick="changeFontSize(2)" aria-label="Schrift größer">A+</button>
+            <button class="hero-like-btn" id="hero-like-btn" type="button" aria-pressed="false" aria-label="Diese Geschichte in deine Lieblings-Sammlung speichern"
+                    data-speak="Das Herz: Damit speicherst du die Geschichte bei deinen Lieblingen.">
+                <span class="hero-like-heart" aria-hidden="true">🤍</span>
+            </button>
+            <div class="hero-like-toast" id="hero-like-toast" role="status" aria-live="polite"></div>
         </div>
 
         <div class="active-panel-nav">
@@ -465,6 +946,24 @@
             <!-- Wird per JS gerendert (eine Karte pro aktivem Panel) -->
         </div>
 
+        <div class="done-card" id="done-card" hidden>
+            <img class="done-buddy" src="../Konzept_Rebranding/logo-lesekumpel-512.webp" alt="" aria-hidden="true">
+            <div class="done-star" aria-hidden="true">⭐</div>
+            <h2 class="done-title">Geschichte geschafft!</h2>
+            <button class="done-cta" type="button" onclick="comicRestart()"
+                    data-speak="Damit startest du die Geschichte noch einmal von vorn.">🔄 Nochmal von vorn</button>
+        </div>
+
+        <div class="author-box">
+            <div class="author-card">
+                <img src="../avatars/pip-punkt.webp" alt="Pip Punkt" class="author-img">
+                <div>
+                    <h3 class="author-name">Pip Punkt</h3>
+                    <p style="margin:5px 0 0 0; font-size:0.9rem;">Pip macht jeden Satz kurz und klar. Punkt. Fertig. Bei Pip kannst du jedes Wort lesen — und bist stolz darauf!</p>
+                </div>
+            </div>
+        </div>
+
         <div class="survey-section">
             <div class="survey-title">Gefällt dir die Geschichte?</div>
             <div class="vote-wrapper">
@@ -473,12 +972,205 @@
             </div>
             <div class="vote-danke" id="vote-danke" role="status" aria-live="polite"></div>
         </div>
+
+        <div class="comments-section">
+            <h2 class="section-title comments-title">💬 Was sagst du zur Geschichte?</h2>
+
+            <div class="comments-list">
+                <div class="comment">
+                    <div class="comment-avatar" aria-hidden="true">🦊</div>
+                    <div class="comment-body">
+                        <div class="comment-header">
+                            <span class="comment-author">Lesefuchs</span>
+                            <span class="comment-time">vor 2 Tagen</span>
+                        </div>
+                        <div class="comment-text comment-blocks">
+                            <span class="comment-block">⭐ Toll!</span>
+                            <span class="comment-block">😂 Lustig!</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="comment">
+                    <div class="comment-avatar" aria-hidden="true">🦄</div>
+                    <div class="comment-body">
+                        <div class="comment-header">
+                            <span class="comment-author">Sternkind</span>
+                            <span class="comment-time">gestern</span>
+                        </div>
+                        <div class="comment-text comment-blocks">
+                            <span class="comment-block">🥹 Süß!</span>
+                            <span class="comment-block">😂 Hahaha!</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="comments-box">
+                <div class="composer-preview" id="composer-preview" data-count="0">
+                    <div class="composer-preview-label">
+                        Deine Reaktion: <span id="composer-counter">0 von 3</span>
+                    </div>
+                    <div class="composer-chips" id="composer-chips"></div>
+                    <button class="composer-add-btn" id="composer-add-btn" type="button" aria-expanded="false" aria-controls="composer-emoji-picker"
+                            data-speak="Reaktion: Sag mit kleinen Bildern, wie dir die Geschichte gefallen hat.">
+                        <span aria-hidden="true">😊</span> + Reaktion hinzufügen
+                    </button>
+                </div>
+                <div class="composer-actions">
+                    <button class="btn-send" type="button" id="composer-send" disabled>Senden</button>
+                </div>
+
+                <div class="composer-emoji-picker" id="composer-emoji-picker" hidden role="dialog" aria-label="Reaktion wählen">
+                    <button class="picker-close" type="button" aria-label="Picker schließen">✕</button>
+
+                    <div class="picker-stage picker-categories" data-stage="categories">
+                        <div class="picker-title">Wie war's für dich?</div>
+                        <div class="picker-category-grid">
+                            <button class="picker-category" type="button" data-category="good">
+                                <span class="picker-cat-emoji" aria-hidden="true">😊</span>
+                                <span class="picker-cat-label">Gut</span>
+                            </button>
+                            <button class="picker-category" type="button" data-category="hmm">
+                                <span class="picker-cat-emoji" aria-hidden="true">😬</span>
+                                <span class="picker-cat-label">Hmm</span>
+                            </button>
+                            <button class="picker-category" type="button" data-category="no">
+                                <span class="picker-cat-emoji" aria-hidden="true">😞</span>
+                                <span class="picker-cat-label">Nö</span>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="picker-stage picker-blocks" data-stage="blocks" hidden>
+                        <div class="picker-stage-header">
+                            <button class="picker-back" type="button" aria-label="Zurück zu Kategorien">← zurück</button>
+                            <span class="picker-stage-title" id="picker-stage-title">😊 Gut</span>
+                        </div>
+                        <div class="picker-blocks-content" id="picker-blocks-content"></div>
+                    </div>
+                </div>
+            </div>
+            <div class="report-trigger-wrapper">
+                <button class="report-link" type="button" id="report-open"
+                        data-speak="Melden: Wenn dich etwas an der Geschichte stört, sag es uns hier — am besten zusammen mit einem Erwachsenen.">🚩 Inhalt melden</button>
+            </div>
+        </div>
     </div>
     </main>
 
+    <!-- Maskottchen-Zauberkasten (FAB rechts unten, wie auf den Leseseiten) -->
+    <div class="kumpel-fab collapsed" id="toolbar">
+        <div class="buddy-bubble" id="buddy-bubble" hidden>Tipp mich an! 🔊</div>
+        <div class="kumpel-header" onclick="toggleToolbarCollapse()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleToolbarCollapse();}" role="button" tabindex="0" aria-label="Lesekumpel: Hilfe und Werkzeuge öffnen oder schließen"
+             data-speak="Das bin ich, dein Lesekumpel! Tipp mich an, dann zeige ich dir meine Helfer und Werkzeuge.">
+            <span class="kumpel-header-label">
+                <span class="kumpel-icon" aria-hidden="true"><img class="buddy-img" id="buddy-img" src="../Konzept_Rebranding/logo-lesekumpel-512.webp" alt=""></span>
+                <span class="kumpel-text">Lesekumpel</span>
+            </span>
+            <span class="kumpel-toggle" aria-hidden="true"></span>
+        </div>
+        <div class="kumpel-body">
+            <div class="kumpel-group group-buddy">
+                <div class="kumpel-group-label">Dein Lesekumpel</div>
+                <div class="buddy-actions">
+                    <button type="button" class="buddy-menu-btn" onclick="buddyAction('read')"
+                            data-speak="Vorlesen: Ich lese dir den ganzen Comic vor.">
+                        <span class="bm-icon" aria-hidden="true">▶</span><span class="bm-label">Vorlesen</span>
+                    </button>
+                    <button type="button" class="buddy-menu-btn" onclick="buddyAction('explain')"
+                            data-speak="Was ist das: Tipp danach auf einen Knopf, und ich erkläre ihn dir.">
+                        <span class="bm-icon" aria-hidden="true">❓</span><span class="bm-label">Was ist das?</span>
+                    </button>
+                    <button type="button" class="buddy-menu-btn" onclick="buddyAction('help')"
+                            data-speak="Hilfe: Ich erkläre dir die ganze Seite.">
+                        <span class="bm-icon" aria-hidden="true">💡</span><span class="bm-label">Hilfe</span>
+                    </button>
+                </div>
+            </div>
+            <div class="kumpel-group group-text">
+                <div class="kumpel-group-label">Text</div>
+                <div class="kumpel-group-buttons">
+                    <button type="button" class="tool-btn" onclick="toggleSyllables()" id="btn-syllables" aria-label="Silbenfärbung"
+                            data-speak="Silben: Ich male die Wortteile bunt an. Das hilft beim Lesen."><span class="btn-icon">✂️</span> <span class="btn-label">Silben</span></button>
+                    <button type="button" class="tool-btn" onclick="toggleDyslexia()" id="btn-dyslexia" aria-label="Lesefreundliche Schrift"
+                            data-speak="Lesefreundlich: Ich mache mehr Platz zwischen den Buchstaben und Wörtern."><span class="btn-icon">💛</span> <span class="btn-label">Lesefreundlich</span></button>
+                    <div class="font-size-control">
+                        <button type="button" class="tool-btn" onclick="changeFontSize(-2)" aria-label="Schrift kleiner" data-speak="Hier wird die Schrift kleiner.">A−</button>
+                        <button type="button" class="tool-btn" onclick="changeFontSize(2)" aria-label="Schrift größer" data-speak="Hier wird die Schrift größer.">A+</button>
+                    </div>
+                </div>
+            </div>
+            <div class="kumpel-group group-extra">
+                <div class="kumpel-group-label">Extras</div>
+                <div class="kumpel-group-buttons">
+                    <button type="button" class="tool-btn" onclick="toggleWordReader()" id="btn-word-reader" aria-label="Wörter hören"
+                            data-speak="Wörter hören: Tipp danach auf ein Wort im Comic, und ich spreche es dir vor."><span class="btn-icon">👂</span> <span class="btn-label">Wörter hören</span></button>
+                    <div class="font-size-control" role="group" aria-label="Vorlese-Tempo">
+                        <button type="button" class="tool-btn" id="btn-tempo-slow" onclick="setSpeechRate(0.7)" aria-label="Langsam vorlesen"
+                                data-speak="Schildkröte: Ich lese ganz langsam vor.">🐢</button>
+                        <button type="button" class="tool-btn" id="btn-tempo-fast" onclick="setSpeechRate(0.95)" aria-label="Normal schnell vorlesen"
+                                data-speak="Hase: Ich lese normal schnell vor.">🐇</button>
+                    </div>
+                    <button type="button" class="tool-btn" onclick="toggleContrast()" id="btn-contrast" aria-label="Hoher Kontrast"
+                            data-speak="Kontrast: Ich mache die Schrift extra dunkel und den Hintergrund ganz hell."><span class="btn-icon">🌓</span> <span class="btn-label">Kontrast</span></button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Audio-Player-Leiste -->
+    <div class="player-bar" id="player-bar" hidden>
+        <button type="button" class="pb-btn" id="pb-toggle" onclick="playerPauseResume()" aria-label="Pause"
+                data-speak="Pause und weiter: Hier hältst du das Vorlesen an oder machst weiter.">⏸</button>
+        <input type="range" class="pb-range" id="pb-range" min="0" max="100" value="0" step="1" aria-label="Vorlese-Position"
+               data-speak="Der Balken zeigt, wo wir in der Geschichte sind. Schiebe ihn, um zu springen.">
+        <span class="pb-count" id="pb-count" aria-hidden="true">0/0</span>
+        <button type="button" class="pb-btn pb-stop" id="pb-stop" onclick="stopPlayer()" aria-label="Vorlesen beenden"
+                data-speak="Das X beendet das Vorlesen.">✕</button>
+    </div>
+
     <footer>
         <p>Erstellt von deinem KI-Lesekumpel 🤖</p>
+        <div class="footer-links"><a href="../datenschutz.html">Datenschutz</a> • <a href="../ueber-uns.html">Über uns</a> • <a href="../blog-warum-lesekumpel.html">Blog</a> • <a href="../knowledge-base/snacks/index.html">Wissen</a></div>
     </footer>
+
+    <div class="report-modal-backdrop" id="report-modal" role="dialog" aria-modal="true" aria-labelledby="report-title" hidden>
+        <div class="report-modal">
+            <button type="button" class="report-close" aria-label="Schließen">&times;</button>
+            <h2 id="report-title">Inhalt melden</h2>
+            <p>Was stört dich an dieser Geschichte?</p>
+            <form id="report-form" novalidate>
+                <fieldset>
+                    <legend class="sr-only">Meldegrund</legend>
+                    <label class="reason-option"><input type="radio" name="reason" value="Gewalt" required> Gewalt</label>
+                    <label class="reason-option"><input type="radio" name="reason" value="Angstmachend"> Angstmachend / verstörend</label>
+                    <label class="reason-option"><input type="radio" name="reason" value="Diskriminierung"> Diskriminierung oder Klischee</label>
+                    <label class="reason-option"><input type="radio" name="reason" value="Falschinformation"> Falsche Informationen</label>
+                    <label class="reason-option"><input type="radio" name="reason" value="Sprachfehler"> Sprach- oder Rechtschreibfehler</label>
+                    <label class="reason-option"><input type="radio" name="reason" value="Nicht altersgerecht"> Nicht altersgerecht</label>
+                    <label class="reason-option"><input type="radio" name="reason" value="Sonstiges"> Sonstiges</label>
+                </fieldset>
+                <label class="field">Details (optional)
+                    <textarea name="details" rows="3" maxlength="500" placeholder="Was genau stört dich?"></textarea>
+                </label>
+                <label class="field">Deine E-Mail (optional, für Rückfragen)
+                    <input type="email" name="reporter_email" autocomplete="email" placeholder="dein.name@beispiel.de">
+                    <span class="hint">Nur, falls du eine Rückmeldung möchtest. Wir nutzen die Adresse ausschließlich zur Beantwortung dieser Meldung.</span>
+                </label>
+                <div class="actions">
+                    <button type="button" class="btn-secondary" id="report-cancel">Abbrechen</button>
+                    <button type="submit" class="btn-primary">Meldung absenden</button>
+                </div>
+            </form>
+            <div class="report-success" hidden>
+                <h2>Danke für die Meldung! 💛</h2>
+                <p>Dein E-Mail-Programm öffnet sich gleich mit den Meldedaten. Schick die Mail bitte ab — wir schauen uns den Text an und entfernen ihn, falls nötig.</p>
+                <div class="actions">
+                    <button type="button" class="btn-primary" id="report-done">Schließen</button>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <script>
         function toggleMenu() {
@@ -510,6 +1202,63 @@
             document.getElementById('vote-danke').textContent =
                 art === 'up' ? 'Danke! Das freut uns. 💛' : 'Danke für dein Feedback!';
         }
+
+        /* ── speak-System (identisch zur Leseseite) ─────────────────────── */
+        const REDUCED_MOTION = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        let SPEECH_RATE = 0.9;
+        try { SPEECH_RATE = parseFloat(localStorage.getItem('lesekumpel-tts-rate')) || 0.9; } catch(e) {}
+        let _speakToken = 0;
+        function speak(text, opts = {}) {
+            if (!('speechSynthesis' in window) || !text) return;
+            // Fremder speak() während des Vorlesens → Player sauber pausieren
+            if (!opts._player && typeof player !== 'undefined' && player.active && !player.paused) {
+                playerPauseResume();
+            }
+            const token = ++_speakToken;
+            window.speechSynthesis.cancel();
+            const u = new SpeechSynthesisUtterance(text);
+            u.lang = 'de-DE';
+            const voice = pickGermanVoice();
+            if (voice) u.voice = voice;
+            u.rate = opts.rate || SPEECH_RATE;
+            if (opts.onboundary) u.onboundary = (ev) => { if (token === _speakToken) opts.onboundary(ev); };
+            const finish = () => { if (token === _speakToken && opts.onend) opts.onend(); };
+            u.onend = finish;
+            u.onerror = finish;
+            window.speechSynthesis.speak(u);
+        }
+        function stopSpeaking() { _speakToken++; window.speechSynthesis.cancel(); }
+        function setSpeechRate(r) {
+            SPEECH_RATE = r;
+            try { localStorage.setItem('lesekumpel-tts-rate', String(r)); } catch(e) {}
+            updateTempoButtons();
+            speak(r < 0.85 ? 'Ich lese jetzt ganz langsam vor.' : 'Ich lese jetzt normal schnell vor.');
+        }
+        function updateTempoButtons() {
+            const slow = document.getElementById('btn-tempo-slow'), fast = document.getElementById('btn-tempo-fast');
+            if (slow) slow.classList.toggle('active', SPEECH_RATE < 0.85);
+            if (fast) fast.classList.toggle('active', SPEECH_RATE >= 0.85);
+        }
+        function sayThis(btn) { speak(btn.getAttribute('data-say')); }
+
+        /* „Was ist das?"-Modus: nächster Tap spricht statt zu schalten */
+        let explainMode = false;
+        function startExplainMode() {
+            explainMode = true;
+            document.body.classList.add('explain-mode');
+            speak('Tipp jetzt auf einen Knopf. Ich sage dir, was er macht.');
+        }
+        document.addEventListener('click', function(e) {
+            if (!explainMode) return;
+            e.preventDefault();
+            e.stopPropagation();
+            explainMode = false;
+            document.body.classList.remove('explain-mode');
+            const el = e.target.closest('[data-speak]');
+            if (el) speak(el.getAttribute('data-speak'));
+            else if (e.target.closest('.panel-card') || e.target.closest('.comic-stage')) speak('Das ist der Comic. Tipp unten rechts auf mich und dann auf Vorlesen, dann lese ich ihn dir vor.');
+            else speak('Hm, dazu weiß ich nichts. Tipp auf einen Knopf!');
+        }, true);
 
         // --- COMIC-DATEN (entspricht YAML-Sidecar aus dem Plan) ---
         const comicData = {
@@ -593,7 +1342,7 @@
                 `Panel ${state.activePanel} von ${comicData.panels.length}`;
         }
 
-        function setActivePanel(n) {
+        function activatePanel(n) {
             const total = comicData.panels.length;
             // rolliert (Klick auf Pfeil am Ende geht zum Anfang & umgekehrt — spielerischer)
             if (n < 1) n = total;
@@ -601,71 +1350,268 @@
             state.activePanel = n;
             updateHotspots();
             renderActivePanel();
+            // Beim manuellen Erreichen des letzten Panels einmal feiern
+            if (n === total && (typeof player === 'undefined' || !player.active)) maybeComicDone();
         }
-
-        // --- VORLESEN: kette Utterances pro Panel, wandere mit dem Highlight ---
-        function toggleTTS() {
-            const btn = document.getElementById('btn-tts');
-            if (state.ttsRunning) {
-                state.ttsRunning = false;
-                window.speechSynthesis.cancel();
-                btn.classList.remove('active');
-                clearHighlights();
-                return;
-            }
-            state.ttsRunning = true;
-            btn.classList.add('active');
-            readPanelsSequentially(1);
-        }
-
-        function readPanelsSequentially(startNum) {
-            const total = comicData.panels.length;
-            if (!state.ttsRunning || startNum > total) {
-                state.ttsRunning = false;
-                document.getElementById('btn-tts').classList.remove('active');
-                clearHighlights();
-                return;
-            }
-            setActivePanel(startNum);
-            // Nach Render: alle word-interactive der aktuellen Karte sammeln
-            const spans = document.querySelectorAll('#panel-card-area .word-interactive');
-            let speechText = "";
-            const wordMap = [];
-            spans.forEach(span => {
-                const word = span.innerText;
-                const start = speechText.length;
-                speechText += word + " ";
-                wordMap.push({ start, end: speechText.length - 1, el: span });
-            });
-            if (!speechText.trim()) {
-                readPanelsSequentially(startNum + 1);
-                return;
-            }
-            const u = new SpeechSynthesisUtterance(speechText);
-            u.lang = "de-DE";
-            const voice = pickGermanVoice();
-            if (voice) u.voice = voice;
-            u.rate = 0.9;
-            u.onboundary = function(event) {
-                if (event.name === 'word') {
-                    const charIndex = event.charIndex;
-                    const current = wordMap.find(w => charIndex >= w.start && charIndex < w.end);
-                    clearHighlights();
-                    if (current) current.el.classList.add('highlight-active');
-                }
-            };
-            u.onend = function() {
-                clearHighlights();
-                if (state.ttsRunning) {
-                    // kurze Pause zwischen Panels (300 ms)
-                    setTimeout(() => readPanelsSequentially(startNum + 1), 300);
-                }
-            };
-            window.speechSynthesis.speak(u);
+        function setActivePanel(n) {
+            // Manueller Panel-Wechsel stoppt das Vorlesen (wie nextChunk auf der Leseseite)
+            if (typeof player !== 'undefined' && player.active) stopPlayer();
+            activatePanel(n);
         }
 
         function clearHighlights() {
             document.querySelectorAll('.highlight-active').forEach(el => el.classList.remove('highlight-active'));
+        }
+
+        /* ── Vorlese-Player mit Leiste: Panel-Queue (analog Satz-Queue der Leseseite) ──
+           Jedes Panel ist eine eigene Utterance — onend pro Panel feuert auch bei
+           Cloud-Stimmen zuverlässig, die Markierung ankert sich an jedem Panelanfang. */
+        let player = { active: false, paused: false, words: [], idx: 0 };
+
+        function buildPlayerWords() {
+            const words = [];
+            comicData.panels.forEach(panel => {
+                let panelWordIdx = 0;
+                panel.dialog.forEach(line => {
+                    line.text.split(' ').forEach(w => {
+                        words.push({ text: w, panel: panel.num, panelWordIdx: panelWordIdx++ });
+                    });
+                });
+            });
+            return words;
+        }
+
+        function playerHighlight(idx) {
+            clearHighlights();
+            const w = player.words[idx];
+            if (!w) return;
+            if (state.activePanel !== w.panel) activatePanel(w.panel);
+            const spans = document.querySelectorAll('#panel-card-area .word-interactive');
+            const el = spans[w.panelWordIdx];
+            if (el) el.classList.add('highlight-active');
+        }
+
+        function playerUpdateBar() {
+            const total = player.words.length;
+            const range = document.getElementById('pb-range');
+            const count = document.getElementById('pb-count');
+            if (range && total) range.value = Math.round((player.idx / Math.max(1, total - 1)) * 100);
+            if (count) count.textContent = (player.idx + 1) + '/' + total;
+        }
+
+        function playerSetUI(uiState) { // 'playing' | 'paused' | 'stopped'
+            const bar = document.getElementById('player-bar');
+            const barToggle = document.getElementById('pb-toggle');
+            if (uiState === 'stopped') {
+                document.body.classList.remove('player-active');
+                if (bar) bar.hidden = true;
+                return;
+            }
+            document.body.classList.add('player-active');
+            if (bar) bar.hidden = false;
+            const playing = uiState === 'playing';
+            if (barToggle) {
+                barToggle.textContent = playing ? '⏸' : '▶';
+                barToggle.setAttribute('aria-label', playing ? 'Pause' : 'Weiterlesen');
+            }
+        }
+
+        function playerSpeakFrom(startIdx) {
+            const words = player.words;
+            if (!words.length) return;
+            startIdx = Math.max(0, Math.min(words.length - 1, startIdx));
+            player.idx = startIdx;
+            player.progressed = false;
+            player.gen = (player.gen || 0) + 1;
+            const gen = player.gen;
+            clearTimeout(player._estTimer);
+
+            // Panel-Queue ab startIdx
+            const queue = [];
+            let cur = null;
+            for (let i = startIdx; i < words.length; i++) {
+                if (!cur || cur.panel !== words[i].panel) {
+                    cur = { panel: words[i].panel, fromIdx: i, text: '', map: [] };
+                    queue.push(cur);
+                }
+                cur.map.push({ start: cur.text.length, end: cur.text.length + words[i].text.length, idx: i });
+                cur.text += words[i].text + ' ';
+            }
+
+            const estDur = (w) => Math.max(200, (170 + w.length * 78) / SPEECH_RATE);
+
+            function speakPanel(k) {
+                if (gen !== player.gen || !player.active || player.paused) return;
+                if (k >= queue.length) {
+                    const reachedEnd = player.progressed;
+                    stopPlayer();
+                    if (reachedEnd) maybeComicDone();
+                    return;
+                }
+                const s = queue[k];
+                player.idx = s.fromIdx;
+                playerHighlight(s.fromIdx); // aktiviert auch das Panel — exakter Anker
+                playerUpdateBar();
+
+                let boundarySeen = false;
+                clearTimeout(player._estTimer);
+                const lastIdx = s.map[s.map.length - 1].idx;
+                function estimateTick() {
+                    if (gen !== player.gen || !player.active || player.paused || boundarySeen) return;
+                    if (!window.speechSynthesis.speaking) return;
+                    if (player.idx < lastIdx) {
+                        player.idx++;
+                        player.progressed = true;
+                        playerHighlight(player.idx);
+                        playerUpdateBar();
+                        player._estTimer = setTimeout(estimateTick, estDur(words[player.idx].text));
+                    }
+                }
+                player._estTimer = setTimeout(() => {
+                    if (gen !== player.gen || boundarySeen || !player.active || player.paused) return;
+                    if (!window.speechSynthesis.speaking) return;
+                    estimateTick();
+                }, 900);
+
+                speak(s.text, {
+                    _player: true,
+                    onboundary: (event) => {
+                        if (event.name !== 'word') return;
+                        boundarySeen = true;
+                        clearTimeout(player._estTimer);
+                        const hit = s.map.find(m => event.charIndex >= m.start && event.charIndex < m.end);
+                        if (!hit) return;
+                        player.idx = hit.idx;
+                        player.progressed = true;
+                        playerHighlight(hit.idx);
+                        playerUpdateBar();
+                    },
+                    onend: () => {
+                        clearTimeout(player._estTimer);
+                        if (gen !== player.gen || !player.active || player.paused) return;
+                        setTimeout(() => speakPanel(k + 1), 250); // kleine Panel-Pause
+                    }
+                });
+            }
+            speakPanel(0);
+        }
+
+        function togglePlayer() {
+            if (!player.active) {
+                const words = buildPlayerWords();
+                if (!words.length) return;
+                player = { active: true, paused: false, words, idx: 0, gen: (player.gen || 0) };
+                playerSetUI('playing');
+                playerSpeakFrom(0);
+            } else {
+                playerPauseResume();
+            }
+        }
+        function playerPauseResume() {
+            if (!player.active) return;
+            if (!player.paused) {
+                player.paused = true;
+                player.gen = (player.gen || 0) + 1;
+                clearTimeout(player._estTimer);
+                stopSpeaking();
+                playerSetUI('paused');
+            } else {
+                player.paused = false;
+                playerSetUI('playing');
+                playerSpeakFrom(player.idx);
+            }
+        }
+        function stopPlayer() {
+            player.active = false;
+            player.paused = false;
+            player.gen = (player.gen || 0) + 1;
+            clearTimeout(player._estTimer);
+            stopSpeaking();
+            clearHighlights();
+            playerSetUI('stopped');
+        }
+        function playerSeek(percent) {
+            if (!player.active || !player.words.length) return;
+            const idx = Math.round((percent / 100) * (player.words.length - 1));
+            if (player.paused) {
+                player.idx = idx;
+                playerHighlight(idx);
+                playerUpdateBar();
+            } else {
+                playerSpeakFrom(idx);
+            }
+        }
+
+        /* ── Geschafft + Konfetti + Buddy ───────────────────────────────── */
+        let comicDoneShown = false;
+        function maybeComicDone() {
+            if (comicDoneShown) return;
+            try {
+                if (sessionStorage.getItem('lesekumpel-fertig-tom-und-tina-mensch-aergere-dich-nicht')) return;
+                sessionStorage.setItem('lesekumpel-fertig-tom-und-tina-mensch-aergere-dich-nicht', '1');
+            } catch(e) {}
+            comicDoneShown = true;
+            showConfetti();
+            const card = document.getElementById('done-card');
+            if (card) {
+                card.hidden = false;
+                card.scrollIntoView({ behavior: REDUCED_MOTION ? 'auto' : 'smooth', block: 'center' });
+            }
+            buddyCheer('Geschafft! Du hast den ganzen Comic gelesen!');
+        }
+        function comicRestart() {
+            document.getElementById('done-card').hidden = true;
+            setActivePanel(1);
+        }
+        function showConfetti() {
+            if (REDUCED_MOTION) return;
+            const container = document.createElement('div');
+            container.className = 'confetti-container';
+            const colors = ['#F97352', '#FFD95A', '#2FB8A6', '#7D6AE6', '#5B4AC8', '#FFD95A'];
+            for (let i = 0; i < 40; i++) {
+                const piece = document.createElement('div');
+                piece.className = 'confetti-piece';
+                piece.style.left = Math.random() * 100 + '%';
+                piece.style.backgroundColor = colors[Math.floor(Math.random() * colors.length)];
+                piece.style.animationDelay = Math.random() * 2 + 's';
+                piece.style.borderRadius = Math.random() > 0.5 ? '50%' : '2px';
+                piece.style.width = (6 + Math.random() * 8) + 'px';
+                piece.style.height = piece.style.width;
+                container.appendChild(piece);
+            }
+            document.body.appendChild(container);
+            setTimeout(() => container.remove(), 4000);
+        }
+
+        function toggleToolbarCollapse() {
+            const tb = document.getElementById('toolbar');
+            tb.classList.toggle('collapsed');
+            const bubble = document.getElementById('buddy-bubble');
+            if (bubble) bubble.hidden = true;
+        }
+        function buddyAction(what) {
+            const tb = document.getElementById('toolbar');
+            if (tb && !tb.classList.contains('collapsed')) tb.classList.add('collapsed');
+            if (what === 'read') togglePlayer();
+            else if (what === 'explain') startExplainMode();
+            else if (what === 'help') speak('Hallo, ich bin dein Lesekumpel — der Knopf rechts unten! Oben siehst du den Comic. Tipp auf ein Bild, dann zeige ich dir den Text dazu. Tipp bei mir auf Vorlesen, dann lese ich dir alles vor. Mit den Pfeilen blätterst du.');
+        }
+        function buddyCheer(text) {
+            speak(text);
+            if (!REDUCED_MOTION) {
+                const img = document.getElementById('buddy-img');
+                if (img) { img.classList.remove('cheer'); void img.offsetWidth; img.classList.add('cheer'); setTimeout(() => img.classList.remove('cheer'), 1000); }
+            }
+        }
+        function initBuddy() {
+            try {
+                if (!localStorage.getItem('lesekumpel-buddy-intro')) {
+                    localStorage.setItem('lesekumpel-buddy-intro', '1');
+                    const bubble = document.getElementById('buddy-bubble');
+                    bubble.hidden = false;
+                    setTimeout(() => { bubble.hidden = true; }, 9000);
+                }
+            } catch(e) {}
         }
 
         // --- WÖRTER HÖREN ---
@@ -676,13 +1622,7 @@
 
         function handleWordClick(el) {
             if (!state.wordReader) return;
-            window.speechSynthesis.cancel();
-            const u = new SpeechSynthesisUtterance(el.innerText);
-            u.lang = "de-DE";
-            const voice = pickGermanVoice();
-            if (voice) u.voice = voice;
-            u.rate = 0.9;
-            window.speechSynthesis.speak(u);
+            speak(el.innerText);
         }
 
         // --- SILBEN-TOGGLE ---
@@ -692,11 +1632,19 @@
             renderActivePanel();
         }
 
-        // --- DYSLEXIE-TOGGLE ---
+        // --- LESEFREUNDLICH + KONTRAST (persistiert, gleiche Keys wie Leseseite) ---
         function toggleDyslexia() {
             state.dyslexia = !state.dyslexia;
             document.body.classList.toggle('dyslexia-mode', state.dyslexia);
-            document.getElementById('btn-dyslexia').className = state.dyslexia ? "tool-btn active" : "tool-btn";
+            const b = document.getElementById('btn-dyslexia');
+            if (b) b.classList.toggle('active', state.dyslexia);
+            try { localStorage.setItem('lesekumpel-lesefreundlich', state.dyslexia ? 'true' : 'false'); } catch(e) {}
+        }
+        function toggleContrast() {
+            const active = document.body.classList.toggle('high-contrast');
+            const b = document.getElementById('btn-contrast');
+            if (b) b.classList.toggle('active', active);
+            try { localStorage.setItem('lesekumpel-kontrast', active ? 'true' : 'false'); } catch(e) {}
         }
 
         // --- SCHRIFTGRÖSSE ---
@@ -727,6 +1675,275 @@
         // Initial-Render
         updateHotspots();
         renderActivePanel();
+        updateTempoButtons();
+        initBuddy();
+        // Einstellungen wiederherstellen (app-weit geteilt mit den Leseseiten)
+        try {
+            if (localStorage.getItem('lesekumpel-lesefreundlich') === 'true') toggleDyslexia();
+            if (localStorage.getItem('lesekumpel-kontrast') === 'true') toggleContrast();
+        } catch(e) {}
+        // Spul-Balken
+        const pbRange = document.getElementById('pb-range');
+        if (pbRange) pbRange.addEventListener('change', () => playerSeek(parseFloat(pbRange.value)));
+
+        /* === Like-Herz (persistiert pro Geschichte) === */
+        (function initHeroLike() {
+            const btn = document.getElementById('hero-like-btn');
+            const heart = btn ? btn.querySelector('.hero-like-heart') : null;
+            const toast = document.getElementById('hero-like-toast');
+            if (!btn) return;
+            const likeKey = 'lesekumpel-liked-tom-und-tina-mensch-aergere-dich-nicht';
+            try {
+                if (localStorage.getItem(likeKey) === 'true') {
+                    btn.classList.add('is-liked');
+                    btn.setAttribute('aria-pressed', 'true');
+                    if (heart) heart.textContent = '❤️';
+                }
+            } catch(e) {}
+            let toastTimer = null;
+            function showToast(text) {
+                if (!toast) return;
+                toast.textContent = text;
+                toast.classList.add('is-visible');
+                clearTimeout(toastTimer);
+                toastTimer = setTimeout(() => toast.classList.remove('is-visible'), 2400);
+            }
+            function spawnHearts(host) {
+                if (REDUCED_MOTION) return;
+                const items = ['❤️','💖','💗','❤️'];
+                for (let i = 0; i < 10; i++) {
+                    const p = document.createElement('span');
+                    p.className = 'particle large';
+                    p.textContent = items[i % items.length];
+                    const angle = (i / 10) * 360 - 90 + (Math.random() * 20 - 10);
+                    const dist = 60 + Math.random() * 25;
+                    const rad = angle * Math.PI / 180;
+                    p.style.setProperty('--tx', `${Math.cos(rad) * dist}px`);
+                    p.style.setProperty('--ty', `${Math.sin(rad) * dist}px`);
+                    p.style.setProperty('--rot', `${(Math.random() * 80 - 40)}deg`);
+                    host.appendChild(p);
+                    setTimeout(() => p.remove(), 1800);
+                }
+            }
+            btn.addEventListener('click', () => {
+                const liked = btn.classList.toggle('is-liked');
+                btn.setAttribute('aria-pressed', liked ? 'true' : 'false');
+                try { localStorage.setItem(likeKey, liked ? 'true' : 'false'); } catch(e) {}
+                if (liked) {
+                    heart.textContent = '❤️';
+                    spawnHearts(btn);
+                    showToast('❤️ In deine Lieblings-Sammlung gespeichert!');
+                } else {
+                    heart.textContent = '🤍';
+                }
+            });
+        })();
+
+        /* === Composer: Bausteine-System (1:1 von der Leseseite) === */
+        function escapeHtml(s) {
+            return String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c]);
+        }
+        (function initComposerBlocks() {
+            const previewBox = document.getElementById('composer-preview');
+            const chipsContainer = document.getElementById('composer-chips');
+            const counter = document.getElementById('composer-counter');
+            const addBtn = document.getElementById('composer-add-btn');
+            const sendBtn = document.getElementById('composer-send');
+            const picker = document.getElementById('composer-emoji-picker');
+            const closeBtn = picker ? picker.querySelector('.picker-close') : null;
+            if (!previewBox || !picker || !addBtn) return;
+            const MAX_BLOCKS = 3;
+            const blocksConfig = {
+                good: {
+                    title: '😊 Gut',
+                    emojis: [
+                        { emoji: '⭐', label: 'Toll',    blocks: ['Toll!','Mega!','Wow!','Super!'] },
+                        { emoji: '😂', label: 'Lustig',  blocks: ['Lustig!','Witzig!','Cool!','Hahaha!'] },
+                        { emoji: '🤯', label: 'Krass',   blocks: ['Krass!','Stark!','Hammer!','Voll cool!'] },
+                        { emoji: '😮', label: 'Wow',     blocks: ['Wow!','Oh!','Echt?','Boah!'] },
+                        { emoji: '🥹', label: 'Berührt', blocks: ['Süß!','Lieb!','Schön!','So zart!'] }
+                    ]
+                },
+                hmm: {
+                    title: '😬 Hmm',
+                    emojis: [
+                        { emoji: '😱', label: 'Spannend',     blocks: ['Spannend!','Aufregend!','Hui!','Boah!'] },
+                        { emoji: '🤔', label: 'Nachdenklich', blocks: ['Hmm.','Klug!','Schlau!','Tief.'] },
+                        { emoji: '😴', label: 'Langweilig',   blocks: ['Öde!','Müde.','Langweilig.','Lahm!'] }
+                    ]
+                },
+                no: {
+                    title: '😞 Nö',
+                    emojis: [
+                        { emoji: '😭', label: 'Traurig',  blocks: ['Traurig!','Schade.','Oje.','So traurig!'] },
+                        { emoji: '😡', label: 'Wütend',   blocks: ['Doof!','Gemein!','Unfair!','Ärgerlich!'] },
+                        { emoji: '🤢', label: 'Eklig',    blocks: ['Igitt!','Bäh!','Eklig!','Würg!'] },
+                        { emoji: '💩', label: 'Schlecht', blocks: ['Mies!','Nope!','Schade.','Nicht so.'] }
+                    ]
+                }
+            };
+            let selectedBlocks = [];
+            function updatePreview() {
+                chipsContainer.innerHTML = '';
+                selectedBlocks.forEach((b, idx) => {
+                    const chip = document.createElement('span');
+                    chip.className = 'composer-chip';
+                    chip.innerHTML = `<span aria-hidden="true">${escapeHtml(b.emoji)}</span> ${escapeHtml(b.text)}` +
+                        `<button class="composer-chip-remove" type="button" aria-label="Reaktion entfernen" data-idx="${idx}">✕</button>`;
+                    chipsContainer.appendChild(chip);
+                });
+                counter.textContent = `${selectedBlocks.length} von ${MAX_BLOCKS}`;
+                previewBox.setAttribute('data-count', String(selectedBlocks.length));
+                addBtn.disabled = selectedBlocks.length >= MAX_BLOCKS;
+                sendBtn.disabled = selectedBlocks.length === 0;
+            }
+            chipsContainer.addEventListener('click', (e) => {
+                const btn = e.target.closest('.composer-chip-remove');
+                if (!btn) return;
+                const idx = parseInt(btn.dataset.idx, 10);
+                const chip = btn.closest('.composer-chip');
+                chip.classList.add('is-removing');
+                setTimeout(() => { selectedBlocks.splice(idx, 1); updatePreview(); }, 180);
+            });
+            function addBlock(emoji, text) {
+                if (selectedBlocks.length >= MAX_BLOCKS) return;
+                selectedBlocks.push({ emoji, text });
+                updatePreview();
+            }
+            function showStage(stageName) {
+                picker.querySelectorAll('.picker-stage').forEach(s => { s.hidden = (s.dataset.stage !== stageName); });
+            }
+            function openPicker() {
+                if (selectedBlocks.length >= MAX_BLOCKS) return;
+                picker.hidden = false;
+                showStage('categories');
+                addBtn.setAttribute('aria-expanded', 'true');
+                setTimeout(() => {
+                    document.addEventListener('click', outsideClick, true);
+                    document.addEventListener('keydown', escClose);
+                }, 0);
+            }
+            function closePicker() {
+                picker.hidden = true;
+                addBtn.setAttribute('aria-expanded', 'false');
+                document.removeEventListener('click', outsideClick, true);
+                document.removeEventListener('keydown', escClose);
+            }
+            function outsideClick(e) {
+                if (!picker.contains(e.target) && e.target !== addBtn && !addBtn.contains(e.target)) closePicker();
+            }
+            function escClose(e) { if (e.key === 'Escape') closePicker(); }
+            function renderBlocksStage(categoryKey) {
+                const cfg = blocksConfig[categoryKey];
+                if (!cfg) return;
+                document.getElementById('picker-stage-title').textContent = cfg.title;
+                const content = document.getElementById('picker-blocks-content');
+                content.innerHTML = '';
+                cfg.emojis.forEach(item => {
+                    const group = document.createElement('div');
+                    group.className = 'picker-emoji-group';
+                    const header = document.createElement('div');
+                    header.className = 'picker-emoji-group-header';
+                    header.innerHTML = `<span class="picker-emoji-group-emoji" aria-hidden="true">${escapeHtml(item.emoji)}</span><span class="picker-emoji-group-label">${escapeHtml(item.label)}</span>`;
+                    group.appendChild(header);
+                    const row = document.createElement('div');
+                    row.className = 'picker-block-row';
+                    item.blocks.forEach(text => {
+                        const btn = document.createElement('button');
+                        btn.type = 'button';
+                        btn.className = 'picker-block';
+                        btn.textContent = text;
+                        btn.addEventListener('click', (e) => {
+                            e.stopPropagation();
+                            addBlock(item.emoji, text);
+                            closePicker();
+                        });
+                        row.appendChild(btn);
+                    });
+                    group.appendChild(row);
+                    content.appendChild(group);
+                });
+                showStage('blocks');
+            }
+            addBtn.addEventListener('click', (e) => {
+                e.stopPropagation();
+                if (picker.hidden) openPicker(); else closePicker();
+            });
+            if (closeBtn) closeBtn.addEventListener('click', closePicker);
+            picker.querySelectorAll('.picker-category').forEach(catBtn => {
+                catBtn.addEventListener('click', (e) => {
+                    e.stopPropagation();
+                    renderBlocksStage(catBtn.dataset.category);
+                });
+            });
+            const backBtn = picker.querySelector('.picker-back');
+            if (backBtn) backBtn.addEventListener('click', (e) => { e.stopPropagation(); showStage('categories'); });
+            if (sendBtn) sendBtn.addEventListener('click', () => {
+                if (selectedBlocks.length === 0) return;
+                const summary = selectedBlocks.map(b => `${b.emoji} ${b.text}`).join('  ');
+                alert(`Gesendet: ${summary}`);
+            });
+            updatePreview();
+        })();
+
+        /* === Inhalt melden (1:1 von der Leseseite) === */
+        (function initReportModal() {
+            const modal = document.getElementById('report-modal');
+            const openBtn = document.getElementById('report-open');
+            if (!modal || !openBtn) return;
+            const cancelBtn = document.getElementById('report-cancel');
+            const closeBtn = modal.querySelector('.report-close');
+            const doneBtn = document.getElementById('report-done');
+            const form = document.getElementById('report-form');
+            const success = modal.querySelector('.report-success');
+            function openModal() {
+                form.hidden = false;
+                success.hidden = true;
+                form.reset();
+                modal.hidden = false;
+                modal.classList.add('is-open');
+                document.body.style.overflow = 'hidden';
+                const firstRadio = form.querySelector('input[name="reason"]');
+                if (firstRadio) firstRadio.focus();
+            }
+            function closeModal() {
+                modal.hidden = true;
+                modal.classList.remove('is-open');
+                document.body.style.overflow = '';
+                openBtn.focus();
+            }
+            openBtn.addEventListener('click', openModal);
+            cancelBtn.addEventListener('click', closeModal);
+            closeBtn.addEventListener('click', closeModal);
+            doneBtn.addEventListener('click', closeModal);
+            modal.addEventListener('click', (e) => { if (e.target === modal) closeModal(); });
+            document.addEventListener('keydown', (e) => { if (e.key === 'Escape' && !modal.hidden) closeModal(); });
+            form.addEventListener('submit', (e) => {
+                e.preventDefault();
+                const data = new FormData(form);
+                const reason = data.get('reason');
+                if (!reason) {
+                    const firstRadio = form.querySelector('input[name="reason"]');
+                    if (firstRadio) firstRadio.focus();
+                    return;
+                }
+                const details = (data.get('details') || '').toString().trim();
+                const reporterEmail = (data.get('reporter_email') || '').toString().trim();
+                const title = document.querySelector('h1').textContent.trim();
+                const bodyLines = [
+                    `Geschichte: ${title}`,
+                    `URL: ${window.location.href}`,
+                    `Meldegrund: ${reason}`
+                ];
+                if (details) bodyLines.push(`Details: ${details}`);
+                if (reporterEmail) bodyLines.push(`Antwort an: ${reporterEmail}`);
+                bodyLines.push(`Zeitpunkt: ${new Date().toISOString()}`);
+                const mailto = `mailto:hallo@lesekumpel.de?subject=${encodeURIComponent('Inhaltsmeldung: ' + title)}&body=${encodeURIComponent(bodyLines.join('\n'))}`;
+                window.location.href = mailto;
+                form.hidden = true;
+                success.hidden = false;
+            });
+        })();
     </script>
 </body>
 </html>
