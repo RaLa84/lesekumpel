@@ -1,12 +1,21 @@
-// Baut eine lokale Test-Story aus dem Template + den Daten einer echten generierten Story.
-// Repliziert die Platzhalter-Ersetzung des n8n-Knotens "HTML assemblieren" so weit,
-// dass die Seite lokal in Playwright/Browser geprüft werden kann (Bilder/Fonts via CDN).
-// Aufruf: node n8n-config/scripts/build-test-story.mjs <template.html> <story.html> <output.html>
+// Baut eine Story aus dem Template + den Daten einer echten generierten Story.
+// Repliziert die Platzhalter-Ersetzung des n8n-Knotens "HTML assemblieren".
+//
+// Zwei Modi:
+//   Standard:  Vorschau-Build — relative Pfade werden auf die Live-Site umgebogen,
+//              damit die Datei lokal via file://-Nachbar-Server funktioniert.
+//   --real:    Regeneriert eine ECHTE Story in demo-texte/ — relative Pfade bleiben,
+//              SEO-Metadaten (description, keywords, reading-level, …) werden aus
+//              der alten Story übernommen.
+//
+// Aufruf: node n8n-config/scripts/build-test-story.mjs [--real] <template.html> <story.html> <output.html>
 
 import fs from 'node:fs';
 
-const [templatePath, storyPath, outPath] = process.argv.slice(2);
-if (!outPath) { console.error('Usage: build-test-story.mjs <template> <story> <out>'); process.exit(1); }
+const args = process.argv.slice(2);
+const REAL = args.includes('--real');
+const [templatePath, storyPath, outPath] = args.filter(a => a !== '--real');
+if (!outPath) { console.error('Usage: build-test-story.mjs [--real] <template> <story> <out>'); process.exit(1); }
 
 let template = fs.readFileSync(templatePath, 'utf8');
 const story = fs.readFileSync(storyPath, 'utf8');
@@ -50,11 +59,36 @@ for (const [ph, val] of Object.entries(visual)) {
 const imgs = story.match(/<img [^>]*class="hero-image"[^>]*>/g) || [];
 template = template.replaceAll('{{STORY_IMAGES_HTML}}', () => imgs.join('\n        '));
 
-// Restliche Platzhalter (SEO etc.) leeren — wie das Safety-Net in "HTML assemblieren"
+// --real: SEO-/Meta-Platzhalter aus der alten Story übernehmen statt zu leeren
+if (REAL) {
+  const ogImage = grab(/<meta property="og:image" content="([^"]*)"/);
+  const extra = {
+    READING_LEVEL_LABEL: grab(/<meta name="reading-level" content="([^"]*)"/),
+    META_DESCRIPTION: grab(/<meta name="description" content="([^"]*)"/),
+    META_KEYWORDS: grab(/<meta name="keywords" content="([^"]*)"/),
+    TOPIC: grab(/<meta name="topic" content="([^"]*)"/),
+    IMAGE_MODEL: grab(/<meta name="image-model" content="([^"]*)"/),
+    OG_IMAGE_URL: ogImage,
+    PERSONA_AVATAR_URL: ogImage,
+    STORY_PATH: 'demo-texte/' + visual.SLUG + '.html',
+    TYPICAL_AGE: grab(/Kinder ([0-9–\-]+) Jahre/),
+  };
+  try {
+    const raw = JSON.parse(story.match(/let rawStory = (.+);/)[1]);
+    extra.WORD_COUNT = String(raw.replace(/­/g, '').split(/\s+/).filter(Boolean).length);
+  } catch (e) { extra.WORD_COUNT = '0'; }
+  for (const [ph, val] of Object.entries(extra)) {
+    template = template.replaceAll(`{{${ph}}}`, () => val);
+  }
+}
+
+// Restliche Platzhalter leeren — wie das Safety-Net in "HTML assemblieren"
 template = template.replace(/\{\{[A-Z_]+\}\}/g, '');
 
-// Relative Pfade (Fonts, Logo, Nav) auf die Live-Site umbiegen, damit file:// funktioniert
-template = template.replaceAll('"../', '"https://rala84.github.io/lesekumpel/');
+// Nur im Vorschau-Modus: relative Pfade auf die Live-Site umbiegen
+if (!REAL) {
+  template = template.replaceAll('"../', '"https://rala84.github.io/lesekumpel/');
+}
 
 fs.writeFileSync(outPath, template);
 console.log(`OK: ${outPath} (${(template.length / 1024).toFixed(0)} KB)`);
