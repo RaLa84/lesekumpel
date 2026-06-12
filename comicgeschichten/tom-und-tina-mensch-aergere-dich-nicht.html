@@ -2,7 +2,7 @@
 <html lang="de">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="author" content="Pip Punkt">
     <meta name="date" content="2026-05-15T12:00:00+02:00">
     <title>Tom und Tina spielen Mensch ärgere dich nicht</title>
@@ -53,35 +53,35 @@
     </script>
 
     <style>
-        /* --- GRUNDDESIGN & VARIABLEN --- */
+        /* --- INSPIRED Design System (Rebranding) — analog zum Lese-Template --- */
         :root {
-            --bg-body: #FFF9E5;
+            --mint: #2FB8A6; --navy: #2B3140; --cream: #FFF6EF; --cream-light: #FEFBF6;
+            --lila: #7D6AE6; --border-soft: #D9D4CC;
+            --bg-body: var(--cream);
             --bg-card: #ffffff;
-            --primary-yellow: #FFD54F;
-            --accent-salmon: #D67171;
-            --accent-teal: #2a9d8f;
-            --text-dark: #2c3e50;
+            --primary-yellow: #FFD95A;
+            --accent-salmon: #F97352;
+            --accent-teal: var(--mint);
+            --text-dark: var(--navy);
 
-            --syl-blue: #00509d;
-            --syl-red: #c1121f;
-            --btn-red: #D67171;
-            --btn-red-shadow: #b05555;
-            --btn-grey: #ecf0f1;
-            --btn-grey-shadow: #bdc3c7;
+            /* Silbenfarben: AA-konform auf Weiß und Cream */
+            --syl-blue: #5B4AC8;
+            --syl-red: #C24420;
 
-            --speaker-tina: #f1c40f;
-            --speaker-tina-dark: #b9870c;
-            --speaker-tom: #3498db;
-            --speaker-tom-dark: #1f6391;
+            --speaker-tina: #FFD95A;
+            --speaker-tina-dark: #2B3140;
+            --speaker-tom: #2FB8A6;
+            --speaker-tom-dark: #2B3140;
 
-            --font-heading: 'Fredoka', 'Lexend', sans-serif;
-            --font-body: 'Quicksand', 'Lexend', sans-serif;
-            --font-dyslexic: 'Comic Sans MS', 'Chalkboard SE', sans-serif;
+            --font-heading: 'Fredoka', system-ui, sans-serif;
+            --font-body: 'Lexend', system-ui, sans-serif;
         }
 
+        /* Hintergrund auf <html>, damit die Deko-Blobs hinter dem Inhalt liegen */
+        html { background-color: var(--bg-body); }
         body {
             font-family: var(--font-body);
-            background-color: var(--bg-body);
+            background-color: transparent;
             color: var(--text-dark);
             margin: 0;
             padding-bottom: 50px;
@@ -89,55 +89,75 @@
             line-height: 1.8;
             letter-spacing: 0.02em;
         }
-
-        /* Dyslexie-Modus (global) */
-        body.dyslexia-mode {
-            font-family: var(--font-dyslexic) !important;
-            letter-spacing: 0.05em;
-            line-height: 2.1;
+        body::before, body::after {
+            content: ''; position: fixed; z-index: -1; border-radius: 50%;
+            filter: blur(70px); opacity: 0.55; pointer-events: none;
         }
+        body::before { width: 420px; height: 420px; background: #FFE9B3; top: -130px; left: -150px; }
+        body::after  { width: 380px; height: 380px; background: #C5EBE4; bottom: -130px; right: -130px; }
+
+        /* Skip-Link (WCAG 2.4.1) */
+        .skip-link {
+            position: absolute; left: -9999px;
+            background: var(--navy); color: #fff;
+            padding: 10px 18px; border-radius: 0 0 10px 10px;
+            font-weight: 600; font-size: 0.9rem; z-index: 10000;
+            text-decoration: none;
+        }
+        .skip-link:focus { position: fixed; left: 50%; top: 0; transform: translateX(-50%); }
+
+        /* Lesefreundlich: mehr Abstand statt Comic Sans (Lexend bleibt) */
         body.dyslexia-mode .panel-card {
-            line-height: 2.0;
+            letter-spacing: 0.04em;
+            word-spacing: 0.16em;
+            line-height: 2.05;
         }
 
-        /* --- NAVIGATION --- */
+        /* --- NAVIGATION (Kinder-Lese-Modus: nur Logo + Burger, wie Leseseiten) --- */
         .main-navbar {
-            background-color: #fff; padding: 10px 20px; border-bottom: 4px solid var(--primary-yellow);
+            background: rgba(255,255,255,0.92); -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px);
+            padding: 12px 24px; border-bottom: 3px solid var(--mint);
             display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000;
         }
         .nav-left { display: flex; align-items: center; gap: 10px; }
-        .nav-logo { height: 40px; width: auto; }
-        .brand-name { font-family: var(--font-heading); font-size: 1.2rem; color: var(--accent-salmon); font-weight: 600; text-decoration: none; }
-        .nav-links-desktop { display: none; gap: 15px; align-items: center; margin-left: 20px;}
-
-        .header-nav-btn { text-decoration: none; color: var(--text-dark); font-weight: 600; font-size: 1rem; display: flex; align-items: center; gap: 5px; }
-        .btn-new-story {
-            border: 2px solid var(--primary-yellow); background: #fff; padding: 8px 15px;
-            border-radius: 25px; color: var(--text-dark); font-weight: bold; transition: transform 0.2s; text-decoration: none;
-            font-size: 0.9rem;
-        }
-        .btn-new-story:hover { transform: scale(1.05); background: #fffbe6; }
-
+        .nav-logo-box { width: 44px; height: 44px; overflow: hidden; border-radius: 10px; flex-shrink: 0; }
+        .nav-logo { height: 100%; width: 100%; object-fit: contain; transform: scale(1.9); transform-origin: center; }
+        .brand-name { font-family: var(--font-heading); font-size: 1.2rem; color: var(--navy); font-weight: 700; text-decoration: none; }
         .nav-right { display: flex; align-items: center; gap: 15px; }
-        .user-burger-container { display: flex; align-items: center; gap: 15px; }
-        .user-profile { display: flex; align-items: center; gap: 8px; font-weight: bold; font-size: 0.9rem; }
-        .user-avatar { width: 32px; height: 32px; background-color: var(--primary-yellow); border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 1.2rem; }
-        .burger-icon { font-size: 1.8rem; cursor: pointer; display: block; color: var(--text-dark); }
+        .burger-icon {
+            font-size: 1.6rem; cursor: pointer; display: block; color: var(--text-dark);
+            background: #fff; border: 1px solid var(--border-soft); border-radius: 12px;
+            padding: 6px 12px; line-height: 1; min-height: 44px;
+            transition: background 0.15s ease;
+        }
+        .burger-icon:hover { background: var(--cream-light); }
 
+        /* Burger-Menü als Karten-Panel */
         .mobile-menu {
-            display: none; background: white; padding: 10px; position: absolute; top: 100%; left: 0; width: 100%;
-            border-bottom: 2px solid var(--primary-yellow); flex-direction: column; gap: 10px; z-index: 999;
+            display: none; background: #fff;
+            padding: 12px; position: absolute; top: calc(100% + 8px); right: 12px; left: auto;
+            width: min(320px, calc(100vw - 24px));
+            border: 1px solid var(--border-soft); border-radius: 20px;
+            box-shadow: 0 16px 40px rgba(43,49,64,0.16);
+            flex-direction: column; gap: 6px; z-index: 999;
             box-sizing: border-box; text-align: left;
         }
-        .mobile-menu.open { display: flex; }
-        .hidden-mobile { display: none; }
+        .mobile-menu.open { display: flex; animation: bubblePop 0.25s cubic-bezier(0.34, 1.56, 0.64, 1); }
+        @keyframes bubblePop {
+            from { opacity: 0; transform: translateY(8px) scale(0.9); }
+            to { opacity: 1; transform: none; }
+        }
+        .mobile-menu .header-nav-btn {
+            padding: 12px 16px; min-height: 48px; border-radius: 14px;
+            background: var(--cream-light); font-weight: 600;
+            transition: background 0.15s ease, transform 0.15s ease;
+        }
+        .mobile-menu .header-nav-btn:hover { background: #E7F6F3; transform: translateX(3px); }
+        .header-nav-btn { text-decoration: none; color: var(--text-dark); font-weight: 600; font-size: 1rem; display: flex; align-items: center; gap: 5px; }
 
         @media (min-width: 768px) {
-            .burger-icon { display: none; }
-            .nav-links-desktop { display: flex; }
-            .nav-logo { height: 50px; }
+            .nav-logo-box { width: 54px; height: 54px; }
             .brand-name { font-size: 1.5rem; display: block; }
-            .hidden-mobile { display: inline-block; }
         }
 
         /* --- COMIC HAUPTBEREICH --- */
@@ -145,33 +165,34 @@
             max-width: 800px;
             margin: 30px auto;
             background: var(--bg-card);
-            border: 4px solid var(--primary-yellow);
-            border-radius: 25px;
+            border: 1px solid var(--border-soft);
+            border-radius: 24px;
             padding: 25px;
             position: relative;
-            box-shadow: 0 10px 0 rgba(0,0,0,0.05);
+            box-shadow: 0 2px 12px rgba(43,49,64,0.05);
             display: flex; flex-direction: column; align-items: center;
         }
 
         h1#book-title {
-            font-family: var(--font-heading); color: var(--accent-salmon); font-size: 2.2rem;
+            font-family: var(--font-heading); color: var(--navy); font-size: 2.2rem;
             text-align: center; margin-top: 0; margin-bottom: 10px; line-height: 1.3;
         }
 
         .author-line {
-            color: #888; font-size: 0.95rem; margin-bottom: 20px;
+            color: #5a6368; font-size: 0.95rem; margin-bottom: 20px;
         }
-        .author-line strong { color: var(--accent-salmon); }
+        .author-line strong { color: var(--navy); }
 
         /* Comic-Bühne mit klickbaren Panel-Hotspots */
         .comic-stage {
             position: relative;
             width: 100%;
-            background-color: #f9f9f9;
-            border-radius: 15px;
-            border: 2px solid #eee;
+            background-color: var(--cream-light);
+            border-radius: 18px;
+            border: 1px solid var(--border-soft);
             overflow: hidden;
             margin-bottom: 20px;
+            box-shadow: 0 2px 12px rgba(43,49,64,0.06);
             line-height: 0; /* verhindert Spalt unter dem img */
         }
         .comic-stage img {
@@ -194,11 +215,11 @@
             transition: box-shadow 0.18s ease, background 0.18s ease, opacity 0.18s ease;
         }
         .panel-hotspot:hover {
-            background: rgba(255, 213, 79, 0.22);
-            box-shadow: inset 0 0 0 6px var(--primary-yellow);
+            background: rgba(47, 184, 166, 0.16);
+            box-shadow: inset 0 0 0 6px var(--mint);
         }
         .panel-hotspot:focus-visible {
-            box-shadow: inset 0 0 0 6px var(--accent-teal);
+            box-shadow: inset 0 0 0 6px var(--lila);
         }
         .panel-hotspot.active {
             box-shadow:
@@ -235,42 +256,49 @@
             width: 100%;
         }
         .nav-arrow {
-            background: #fff;
-            border: 2px solid #ddd;
+            background: var(--mint);
+            border: none;
             border-radius: 50%;
-            width: 44px; height: 44px;
-            font-size: 1.3rem;
-            color: var(--accent-salmon);
+            width: 56px; height: 56px;
+            font-size: 1.4rem;
+            color: var(--navy);
             cursor: pointer;
             display: flex; align-items: center; justify-content: center;
-            transition: all 0.15s;
+            box-shadow: 0 4px 14px rgba(47,184,166,0.3);
+            transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+            -webkit-tap-highlight-color: transparent;
         }
         .nav-arrow:hover {
-            border-color: var(--accent-salmon);
-            background: #fff5f5;
+            background: var(--navy);
+            color: #fff;
+            transform: translateY(-2px);
         }
+        .nav-arrow:focus-visible { outline: 3px solid var(--lila); outline-offset: 2px; }
         .panel-indicator {
             font-family: var(--font-heading);
             font-weight: 600;
-            color: var(--text-dark);
+            color: var(--navy);
             font-size: 1rem;
             min-width: 110px;
             text-align: center;
         }
 
-        /* --- TOOLBAR --- */
+        /* --- TOOLBAR (INSPIRED-Pills) --- */
         .toolbar-container {
-            border: 2px dashed #eee; border-radius: 15px; padding: 10px;
+            border: none; border-radius: 0; padding: 0;
             margin-bottom: 25px; display: flex; flex-wrap: wrap; justify-content: center; gap: 8px;
-            background: #fdfdfd; width: 100%; box-sizing: border-box;
+            background: transparent; width: 100%; box-sizing: border-box;
         }
         .tool-btn {
-            background: #fff; border: 2px solid #ddd; border-radius: 10px; padding: 8px 14px;
-            font-family: var(--font-body); font-weight: 600; color: #555; cursor: pointer;
-            display: flex; align-items: center; gap: 5px; transition: all 0.2s; font-size: 0.95rem;
+            background: var(--cream-light); border: 1.5px solid var(--border-soft); border-radius: 999px;
+            padding: 10px 18px; min-height: 46px;
+            font-family: var(--font-body); font-weight: 600; color: var(--navy); cursor: pointer;
+            display: flex; align-items: center; gap: 6px; transition: all 0.2s; font-size: 0.95rem;
+            -webkit-tap-highlight-color: transparent;
         }
-        .tool-btn:hover { border-color: var(--accent-teal); color: var(--accent-teal); }
-        .tool-btn.active { background: var(--accent-teal); color: #fff; border-color: var(--accent-teal); }
+        .tool-btn:hover { border-color: var(--mint); background: #fff; }
+        .tool-btn.active { background: var(--mint); color: var(--navy); border-color: var(--mint); box-shadow: 0 2px 8px rgba(47,184,166,0.3); }
+        .tool-btn:focus-visible { outline: 3px solid var(--lila); outline-offset: 2px; }
 
         /* --- AKTIVE PANEL-KARTE (nur EINE sichtbar) --- */
         .panel-card-area {
@@ -278,13 +306,14 @@
             margin-bottom: 25px;
         }
         .panel-card {
-            background: #fdfdfd;
-            border: 2px solid #eee;
-            border-left: 6px solid var(--accent-salmon);
-            border-radius: 14px;
+            background: #fff;
+            border: 1px solid var(--border-soft);
+            border-left: 6px solid var(--lila);
+            border-radius: 18px;
             padding: 18px 22px;
             font-size: 24px;
             line-height: 1.7;
+            box-shadow: 0 2px 12px rgba(43,49,64,0.05);
             animation: panel-fade-in 0.25s ease;
         }
         @keyframes panel-fade-in {
@@ -293,8 +322,8 @@
         }
         .panel-card .panel-num {
             display: inline-block;
-            background: var(--primary-yellow);
-            color: var(--text-dark);
+            background: var(--mint);
+            color: var(--navy);
             font-family: var(--font-heading);
             font-weight: 700;
             font-size: 1rem;
@@ -307,7 +336,7 @@
         }
         .panel-card .panel-label {
             font-family: var(--font-heading);
-            color: #888;
+            color: #5a6368;
             font-size: 0.95rem;
             vertical-align: middle;
         }
@@ -327,7 +356,7 @@
             align-self: flex-start;
         }
         .speaker-tina { background: var(--speaker-tina); color: var(--speaker-tina-dark); }
-        .speaker-tom { background: var(--speaker-tom); color: #fff; }
+        .speaker-tom { background: var(--speaker-tom); color: var(--speaker-tom-dark); }
 
         .dialog-line .speech {
             font-size: 1em;
@@ -344,25 +373,34 @@
             padding: 0 2px;
             transition: background-color 0.2s;
         }
-        .word-interactive:hover { background-color: #e3f2fd; }
+        .word-interactive:hover { background-color: #E7F6F3; }
         .word-interactive.highlight-active { background-color: #ffeb3b; }
 
         .syl-blue { color: var(--syl-blue); }
         .syl-red { color: var(--syl-red); }
 
         /* --- SURVEY --- */
-        .survey-section { border-top: 2px dashed #eee; width: 100%; padding-top: 20px; text-align: center; }
-        .vote-wrapper { display: flex; justify-content: center; gap: 20px; margin-top: 10px; }
+        .survey-section { border-top: 1px dashed var(--border-soft); width: 100%; padding-top: 20px; text-align: center; }
+        .survey-title { font-family: var(--font-heading); font-weight: 600; color: var(--navy); font-size: 1.1rem; }
+        .vote-wrapper { display: flex; justify-content: center; gap: 20px; margin-top: 12px; }
         .vote-card {
-            width: 50px; height: 50px; display: flex; justify-content: center; align-items: center;
-            background: #fff; border: 2px solid #eee; border-radius: 12px; font-size: 1.5rem;
-            cursor: pointer; box-shadow: 0 4px 0 #eee; transition: transform 0.1s;
+            width: 64px; height: 64px; display: flex; justify-content: center; align-items: center;
+            background: var(--cream-light); border: 2px solid var(--border-soft); border-radius: 18px; font-size: 1.7rem;
+            cursor: pointer; transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+            -webkit-tap-highlight-color: transparent;
         }
-        .vote-card:active { transform: translateY(4px); box-shadow: none; }
+        .vote-card:hover { transform: translateY(-3px); border-color: var(--mint); background: #fff; }
+        .vote-card:active { transform: scale(0.94); }
+        .vote-card.gewaehlt { background: rgba(47,184,166,0.18); border-color: var(--mint); }
+        .vote-card:focus-visible { outline: 3px solid var(--lila); outline-offset: 2px; }
+        .vote-danke {
+            margin-top: 12px; font-family: var(--font-heading); font-weight: 600;
+            color: var(--navy); min-height: 1.4em;
+        }
 
         /* --- FOOTER --- */
-        footer { text-align: center; margin-top: 50px; color: #888; font-size: 0.9rem; padding: 20px; border-top: 1px solid #eee; background: #fff; }
-        .footer-links a { color: #888; text-decoration: none; margin: 0 5px; }
+        footer { text-align: center; margin-top: 50px; color: #5a6368; font-size: 0.9rem; padding: 20px; border-top: 1px solid var(--border-soft); background: transparent; }
+        .footer-links a { color: #5a6368; text-decoration: underline; margin: 0 5px; }
 
         @media (max-width: 600px) {
             .panel-card { font-size: 20px; padding: 14px 16px; }
@@ -374,20 +412,15 @@
 </head>
 <body>
 
-    <nav class="main-navbar">
+    <a href="#main-content" class="skip-link">Zum Inhalt springen</a>
+
+    <nav class="main-navbar" aria-label="Hauptnavigation">
         <div class="nav-left">
-            <img src="https://github.com/RaLa84/lesekumpel/blob/main/bilder/marketing/logo1.png?raw=true" alt="Logo" class="nav-logo">
+            <span class="nav-logo-box"><img src="../Konzept_Rebranding/logo-lesekumpel-512.webp" alt="Lesekumpel Logo" class="nav-logo"></span>
             <a href="../index.html" class="brand-name">Lesekumpel</a>
-            <div class="nav-links-desktop">
-                <a href="../index.html" class="header-nav-btn">📚 Bibliothek</a>
-            </div>
         </div>
         <div class="nav-right">
-            <a href="https://rala84.app.n8n.cloud/form/d934fee1-a67d-4146-8b19-1e3c8a1a8967" class="btn-new-story hidden-mobile">✨ Neue Geschichte</a>
-            <div class="user-burger-container">
-                <div class="user-profile"><span>Lese-Kumpel</span><div class="user-avatar">📖</div></div>
-                <span class="burger-icon" onclick="toggleMenu()">☰</span>
-            </div>
+            <button type="button" class="burger-icon" aria-label="Menü öffnen" aria-expanded="false" aria-controls="mobile-menu" onclick="toggleMenu()">☰</button>
         </div>
         <div id="mobile-menu" class="mobile-menu">
             <a href="../index.html" class="header-nav-btn">📚 Bibliothek</a>
@@ -395,6 +428,7 @@
         </div>
     </nav>
 
+    <main id="main-content">
     <div class="main-card">
 
         <h1 id="book-title">Tom und Tina spielen<br>Mensch ärgere dich nicht</h1>
@@ -412,14 +446,13 @@
             </div>
         </div>
 
-        <div class="toolbar-container">
-            <button class="tool-btn" onclick="toggleTTS()" id="btn-tts">🔊 Alles lesen</button>
-            <button class="tool-btn" onclick="toggleWordReader()" id="btn-word-reader">👂 Wörter hören</button>
-            <button class="tool-btn" onclick="toggleSyllables()" id="btn-syllables">🔴🔵 Silben</button>
-            <button class="tool-btn" onclick="toggleDyslexia()" id="btn-dyslexia">🧠 Dyslexie</button>
-            <span style="width:1px; background:#ddd; margin:0 5px;"></span>
-            <button class="tool-btn" onclick="changeFontSize(2)">A+</button>
-            <button class="tool-btn" onclick="changeFontSize(-2)">A-</button>
+        <div class="toolbar-container" role="toolbar" aria-label="Lese-Werkzeuge">
+            <button type="button" class="tool-btn" onclick="toggleTTS()" id="btn-tts" aria-label="Comic vorlesen">🔊 Vorlesen</button>
+            <button type="button" class="tool-btn" onclick="toggleWordReader()" id="btn-word-reader" aria-label="Wörter hören">👂 Wörter hören</button>
+            <button type="button" class="tool-btn" onclick="toggleSyllables()" id="btn-syllables" aria-label="Silbenfärbung">✂️ Silben</button>
+            <button type="button" class="tool-btn" onclick="toggleDyslexia()" id="btn-dyslexia" aria-label="Lesefreundliche Schrift">💛 Lesefreundlich</button>
+            <button type="button" class="tool-btn" onclick="changeFontSize(-2)" aria-label="Schrift kleiner">A−</button>
+            <button type="button" class="tool-btn" onclick="changeFontSize(2)" aria-label="Schrift größer">A+</button>
         </div>
 
         <div class="active-panel-nav">
@@ -433,13 +466,15 @@
         </div>
 
         <div class="survey-section">
-            <div style="font-weight: bold; color: var(--accent-salmon);">Gefällt dir die Geschichte?</div>
+            <div class="survey-title">Gefällt dir die Geschichte?</div>
             <div class="vote-wrapper">
-                <div class="vote-card" onclick="alert('Super! Das freut uns.')">👍</div>
-                <div class="vote-card" onclick="alert('Danke für dein Feedback.')">👎</div>
+                <button type="button" class="vote-card" onclick="vote(this, 'up')" aria-label="Daumen hoch">👍</button>
+                <button type="button" class="vote-card" onclick="vote(this, 'down')" aria-label="Daumen runter">👎</button>
             </div>
+            <div class="vote-danke" id="vote-danke" role="status" aria-live="polite"></div>
         </div>
     </div>
+    </main>
 
     <footer>
         <p>Erstellt von deinem KI-Lesekumpel 🤖</p>
@@ -448,6 +483,32 @@
     <script>
         function toggleMenu() {
             document.getElementById('mobile-menu').classList.toggle('open');
+        }
+
+        // Lokale deutsche Stimme bevorzugen: Cloud-Stimmen liefern keine
+        // Wort-Events (Karaoke-Highlight), lokale schon — und gehen offline.
+        let _germanVoice = null;
+        function pickGermanVoice() {
+            if (_germanVoice) return _germanVoice;
+            const vs = ('speechSynthesis' in window) ? window.speechSynthesis.getVoices() : [];
+            _germanVoice = vs.find(v => v.lang && v.lang.toLowerCase().startsWith('de') && v.localService)
+                || vs.find(v => v.lang && v.lang.toLowerCase().startsWith('de'))
+                || null;
+            return _germanVoice;
+        }
+        if ('speechSynthesis' in window) {
+            try { window.speechSynthesis.getVoices(); } catch(e) {}
+            if ('onvoiceschanged' in window.speechSynthesis) {
+                window.speechSynthesis.onvoiceschanged = () => { _germanVoice = null; pickGermanVoice(); };
+            }
+        }
+
+        // Feedback ohne alert(): visuell + stille Statuszeile
+        function vote(btn, art) {
+            document.querySelectorAll('.vote-card').forEach(b => b.classList.remove('gewaehlt'));
+            btn.classList.add('gewaehlt');
+            document.getElementById('vote-danke').textContent =
+                art === 'up' ? 'Danke! Das freut uns. 💛' : 'Danke für dein Feedback!';
         }
 
         // --- COMIC-DATEN (entspricht YAML-Sidecar aus dem Plan) ---
@@ -582,6 +643,8 @@
             }
             const u = new SpeechSynthesisUtterance(speechText);
             u.lang = "de-DE";
+            const voice = pickGermanVoice();
+            if (voice) u.voice = voice;
             u.rate = 0.9;
             u.onboundary = function(event) {
                 if (event.name === 'word') {
@@ -616,6 +679,8 @@
             window.speechSynthesis.cancel();
             const u = new SpeechSynthesisUtterance(el.innerText);
             u.lang = "de-DE";
+            const voice = pickGermanVoice();
+            if (voice) u.voice = voice;
             u.rate = 0.9;
             window.speechSynthesis.speak(u);
         }
