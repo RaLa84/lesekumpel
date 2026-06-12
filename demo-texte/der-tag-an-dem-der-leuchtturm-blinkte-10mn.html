@@ -2624,11 +2624,13 @@
                 ? 'Alle richtig! Du bist ein Quiz-Star!'
                 : `Du hast ${earned} von ${quizData.length} Sternen gesammelt.`;
             document.getElementById('quiz-done').hidden = false;
+            // Auch hier kein Auto-Audio — Konfetti und Buddy-Sprung feiern stumm
             if (earned === quizData.length) {
                 showConfetti();
-                buddyCheer('Wow! Du hast alle Fragen richtig. Du bist ein Quiz-Star!');
-            } else {
-                speak(`Quiz geschafft! Du hast ${earned} von ${quizData.length} Sternen gesammelt.`);
+                if (!REDUCED_MOTION) {
+                    const img = document.getElementById('buddy-img');
+                    if (img) { img.classList.remove('cheer'); void img.offsetWidth; img.classList.add('cheer'); setTimeout(() => img.classList.remove('cheer'), 1000); }
+                }
             }
         }
 
@@ -3255,15 +3257,17 @@
         }
         function checkQuizAnswer(element, isCorrect) {
             if(element.classList.contains('correct') || element.classList.contains('try-again')) return;
+            // Bewusst KEINE Sprachausgabe bei richtig/falsch — Feedback nur visuell
+            // (Sterne, Wackeln, Konfetti). setQuizStatus ist aria-live und damit nur
+            // für Screenreader hörbar.
             if (isCorrect) {
                 element.classList.add('correct'); element.innerHTML += " 🌟";
-                speak('Richtig! Super gemacht!');
-                setQuizStatus('Richtig! Super gemacht!');
+                setQuizStatus('Richtig!');
                 quizStars[quizIdx] = true;
                 updateQuizProgress();
                 quizShowNext(); // Belohnungs-Dramaturgie: Weiter-Knopf hüpft rein
             }
-            else { element.classList.add('try-again'); speak('Probier es nochmal!'); setQuizStatus('Das war nicht richtig. Probier es nochmal!'); }
+            else { element.classList.add('try-again'); setQuizStatus('Das war nicht richtig. Probier es nochmal.'); }
         }
 
         function revealQuizAnswer(btn) {
