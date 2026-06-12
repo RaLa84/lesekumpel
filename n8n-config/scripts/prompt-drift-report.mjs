@@ -42,8 +42,8 @@ Die Persona-Systemprompts existieren doppelt: hartkodiert in den n8n-Knoten UND 
 Dieser Report zeigt, wie weit beide auseinanderliegen. Die Knoten-Versionen liegen als Kopien in
 \`n8n-config/_tmp/node-prompts/\` — Diff z. B. mit \`git diff --no-index prompts/pip-punkt.md n8n-config/_tmp/node-prompts/pip-punkt.md\`.
 
-**Offene Entscheidung:** Welche Version ist die gewollte? Danach entweder (a) Prompts zur Laufzeit
-per HTTP aus dem Repo laden oder (b) Sync-Skript Repo → n8n etablieren.
+**Single Source of Truth ist das Repo (\`prompts/*.md\`).** Nach Prompt-Änderungen syncen mit:
+\`node n8n-config/scripts/sync-prompts-repo-to-n8n.mjs\` (erst \`--dry-run\`).
 
 | Persona | Knoten (Zeichen) | Repo (Zeichen) | Identisch? | Abweichende Zeilen |
 |---------|-----------------|----------------|------------|--------------------|
@@ -69,16 +69,12 @@ for (const [nodeName, file] of MAP) {
 }
 
 report += `
-## Befund (2026-06-11)
+## Historie
 
-Stichprobe peter-past: Die Repo-Datei enthält eine komplette **REDEWIEDERGABE**-Sektion
-(indirekte Rede im Präsens etc.), die im n8n-Knoten fehlt → **das Repo ist die neuere Version**,
-die Verbesserungen wurden nie nach n8n synchronisiert.
-
-Achtung bei Samira: Der Knoten-Prompt ist bewusst für den Agent-Knoten (v1.9, Wikipedia-Tool)
-angepasst — NICHT blind aus dem Repo überschreiben.
-
-Empfehlung: Sync-Skript Repo → n8n (Skill-Personas 1:1, Samira manuell prüfen).
+**2026-06-11:** Drift entdeckt — 5 von 9 Knoten-Prompts waren älter als die Repo-Dateien
+(z. B. fehlte bei peter-past die komplette REDEWIEDERGABE-Sektion).
+**2026-06-12:** Repo → n8n gesynct via \`sync-prompts-repo-to-n8n.mjs\`, alle 9 identisch.
+Samira (agent v1.9) nutzt \`options.systemMessage\` — die Repo-Datei enthält die Wikipedia-Tool-Zeilen bereits.
 `;
 
 fs.writeFileSync(path.join(CONFIG_DIR, 'prompt-drift-report.md'), report);
