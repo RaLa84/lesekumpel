@@ -4,31 +4,38 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Neue Geschichte erstellen — Lesekumpel</title>
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Quicksand:wght@400;500;600;700&display=swap">
     <link rel="stylesheet" href="fonts/fonts.css">
     <style>
         :root {
-            --bg-body: #FFF9E5; --bg-card: #ffffff;
-            --primary-yellow: #FFD54F; --accent-coral: #D67171;
-            --accent-coral-light: #FDEAEA; --accent-coral-dark: #B85555;
-            --text-dark: #2D3436; --text-muted: #5a6368;
-            --success-green: #66BB6A;
-            --font-heading: 'Fredoka', cursive, sans-serif;
-            --font-body: 'Quicksand', sans-serif;
+            /* INSPIRED-Look — alte Variablennamen bleiben, neue Werte (Akzent: Salmon) */
+            --mint:#2FB8A6; --navy:#2B3140; --cream:#FFF6EF; --cream-light:#FEFBF6;
+            --salmon:#F97352; --lila:#7D6AE6; --border-soft:#D9D4CC;
+            --bg-body: var(--cream); --bg-card: #ffffff;
+            --primary-yellow: #FFD95A; --accent-coral: #F97352;
+            --accent-coral-light: #FDE7E0; --accent-coral-dark: #D9542F;
+            --text-dark: #2B3140; --text-muted: #5a6368;
+            --success-green: #2FB8A6;
+            --font-heading: 'Fredoka', system-ui, sans-serif;
+            --font-body: 'Lexend', system-ui, sans-serif;
         }
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: var(--font-body); background: var(--bg-body); color: var(--text-dark); line-height: 1.6; }
+        html { background: var(--cream); }
+        body { font-family: var(--font-body); background: transparent; color: var(--text-dark); line-height: 1.7; }
+        body::before, body::after { content:''; position: fixed; z-index:-1; border-radius:50%; filter: blur(70px); opacity:.55; pointer-events:none; }
+        body::before { width:420px; height:420px; background:#FFE9B3; top:-130px; left:-150px; }
+        body::after  { width:380px; height:380px; background:#C5EBE4; bottom:-130px; right:-130px; }
+        @media (prefers-reduced-motion: reduce) { body::before, body::after { display:none; } }
 
         /* --- NAVBAR --- */
         .main-navbar {
             background: rgba(255, 255, 255, 0.78); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
-            padding: 12px 24px; border-bottom: 3px solid rgba(255, 213, 79, 0.5);
+            padding: 12px 24px; border-bottom: 3px solid var(--mint);
             display: flex; justify-content: space-between; align-items: center;
             position: sticky; top: 0; z-index: 1000;
         }
         .nav-left { display: flex; align-items: center; gap: 10px; }
         .nav-logo { height: 40px; width: auto; border-radius: 50%; }
-        .brand-name { font-family: var(--font-heading); font-size: 1.2rem; color: var(--accent-coral); font-weight: 600; text-decoration: none; }
+        .brand-name { font-family: var(--font-heading); font-size: 1.2rem; color: var(--navy); font-weight: 700; text-decoration: none; }
         .nav-links-desktop { display: none; gap: 20px; align-items: center; margin-left: 16px; }
         .nav-btn { text-decoration: none; color: var(--text-dark); font-weight: 600; font-size: 0.95rem; display: flex; align-items: center; gap: 5px; transition: color 0.2s; }
         .nav-btn:hover { color: var(--accent-coral); }
