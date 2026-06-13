@@ -786,6 +786,131 @@
         .klassen-hinweis-icon { font-size: 1.6rem; flex-shrink: 0; line-height: 1.2; }
         .klassen-hinweis strong { color: #3d2e5f; }
 
+        /* === SAMIRA-WISSENSSEITE: Sachtext-Elemente === */
+        /* Steckbrief / Fakten-Karte */
+        .steckbrief-section { margin: 0 0 28px 0; }
+        .steckbrief-card {
+            background: linear-gradient(135deg, var(--cream) 0%, var(--cream-light) 100%);
+            border: 1px solid var(--border-soft); border-left: 5px solid var(--mint);
+            border-radius: 20px; padding: 20px 22px; box-shadow: 0 2px 12px rgba(43,49,64,0.05);
+        }
+        .steckbrief-head { display: flex; align-items: center; gap: 12px; margin-bottom: 14px; }
+        .steckbrief-emoji { font-size: 2rem; line-height: 1; flex-shrink: 0; }
+        .steckbrief-title {
+            font-family: var(--font-heading); font-weight: 600; color: var(--navy);
+            font-size: 1.25rem; margin: 0;
+        }
+        .steckbrief-rows { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+        .steckbrief-row {
+            display: flex; align-items: flex-start; gap: 10px;
+            background: #fff; border: 1.5px solid var(--border-soft); border-radius: 14px;
+            padding: 10px 12px;
+        }
+        .steckbrief-row-icon { font-size: 1.3rem; line-height: 1.2; flex-shrink: 0; }
+        .steckbrief-row-text { min-width: 0; }
+        .steckbrief-row-label {
+            font-family: var(--font-heading); font-weight: 600; color: var(--lila);
+            font-size: 0.8rem; display: block; letter-spacing: 0.02em;
+        }
+        .steckbrief-row-wert { color: var(--navy); font-size: 0.98rem; line-height: 1.4; }
+        @media (max-width: 600px) { .steckbrief-rows { grid-template-columns: 1fr; } }
+
+        /* Wahr oder Falsch? — Mythen-Check */
+        .mythen-intro {
+            text-align: center; color: #5a6368; font-size: 0.98rem; line-height: 1.5;
+            margin: 0 auto 16px auto; max-width: 480px;
+        }
+        .mythen-list { display: flex; flex-direction: column; gap: 16px; }
+        .mythen-card {
+            background: #fff; border: 2px solid var(--border-soft); border-radius: 18px;
+            padding: 16px 18px; box-shadow: 0 2px 8px rgba(43,49,64,0.04);
+        }
+        .mythen-frage {
+            font-family: var(--font-heading); font-weight: 600; color: var(--navy);
+            font-size: 1.08rem; line-height: 1.35; margin: 0 0 14px 0;
+        }
+        .mythen-buttons { display: flex; gap: 10px; }
+        .mythen-btn {
+            flex: 1; min-height: 56px; border-radius: 16px; cursor: pointer;
+            font-family: var(--font-heading); font-weight: 600; font-size: 1.05rem;
+            display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+            border: 3px solid var(--mint); background: #fff; color: var(--navy);
+            box-shadow: 0 3px 0 rgba(47,184,166,0.35);
+            transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+            -webkit-tap-highlight-color: transparent;
+        }
+        .mythen-btn.btn-wahr { border-color: var(--mint); box-shadow: 0 3px 0 rgba(47,184,166,0.35); }
+        .mythen-btn.btn-falsch { border-color: var(--accent-coral); box-shadow: 0 3px 0 rgba(249,115,82,0.32); }
+        .mythen-btn:hover:not(:disabled) { transform: translateY(-2px); }
+        .mythen-btn:active:not(:disabled) { transform: translateY(0) scale(0.97); }
+        .mythen-btn:disabled { cursor: default; }
+        .mythen-btn.is-correct { background: rgba(47,184,166,0.18); border-color: var(--mint); box-shadow: 0 0 10px rgba(47,184,166,0.3); }
+        .mythen-btn.is-wrong { background: #f4f4f4; border-color: #ddd; color: #999; box-shadow: none; animation: gentleShake 0.4s ease-in-out; }
+        .mythen-aufloesung {
+            margin-top: 14px; padding: 12px 14px; border-radius: 14px;
+            background: var(--cream-light); border: 1.5px dashed var(--border-soft);
+            color: var(--navy); font-size: 0.98rem; line-height: 1.5;
+            display: flex; gap: 10px; align-items: flex-start;
+        }
+        .mythen-aufloesung[hidden] { display: none; }
+        .mythen-aufloesung.is-wahr { background: rgba(47,184,166,0.1); border-color: rgba(47,184,166,0.5); }
+        .mythen-aufloesung.is-falsch { background: rgba(249,115,82,0.08); border-color: rgba(249,115,82,0.45); }
+        .mythen-aufloesung-icon { font-size: 1.3rem; line-height: 1.2; flex-shrink: 0; }
+
+        /* Das habe ich gelernt */
+        .lernziele-section { margin: 0 0 36px 0; }
+        .lernziele-card {
+            background: linear-gradient(135deg, #E7F6F3 0%, var(--cream-light) 100%);
+            border: 1px solid rgba(47,184,166,0.4); border-radius: 20px;
+            padding: 22px 24px; box-shadow: 0 2px 12px rgba(43,49,64,0.05);
+        }
+        .lernziele-title {
+            font-family: var(--font-heading); font-weight: 600; color: var(--navy);
+            font-size: 1.2rem; margin: 0 0 14px 0; display: flex; align-items: center; gap: 10px;
+        }
+        .lernziele-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 10px; }
+        .lernziele-item {
+            display: flex; align-items: flex-start; gap: 12px;
+            color: var(--navy); font-size: 1.02rem; line-height: 1.5;
+        }
+        .lernziele-check {
+            flex-shrink: 0; width: 28px; height: 28px; border-radius: 50%;
+            background: var(--mint); color: #fff; font-weight: 700;
+            display: inline-flex; align-items: center; justify-content: center; font-size: 0.95rem;
+            box-shadow: 0 2px 6px rgba(47,184,166,0.35);
+        }
+
+        /* Woher weiß Samira das? — Quellen-Box */
+        .quellen-section { margin: 0 0 40px 0; }
+        .quellen-box {
+            display: flex; align-items: flex-start; gap: 14px;
+            background: #f8f4ff; border: 2px dashed #d4c7f0; border-radius: 16px;
+            padding: 18px 20px;
+        }
+        .quellen-icon { font-size: 1.7rem; flex-shrink: 0; line-height: 1.2; }
+        .quellen-body { min-width: 0; flex: 1; }
+        .quellen-headline {
+            font-family: var(--font-heading); font-weight: 600; color: #3d2e5f;
+            font-size: 1.05rem; margin: 0 0 4px 0;
+        }
+        .quellen-intro { color: #5a4a7a; font-size: 0.92rem; line-height: 1.45; margin: 0 0 10px 0; }
+        .quellen-list { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 6px; }
+        .quellen-item { display: flex; align-items: baseline; gap: 8px; font-size: 0.95rem; }
+        .quellen-item-bullet { color: var(--lila); flex-shrink: 0; }
+        .quellen-link { color: var(--syl-blue); font-weight: 600; text-decoration: underline; word-break: break-word; }
+        .quellen-link:hover { color: var(--lila); }
+        .quellen-name { color: #5a4a7a; font-weight: 600; }
+
+        /* Sachtext-Bilder mit Untertitel */
+        .story-figure { margin: 20px 0 10px 0; }
+        .story-figure .story-inline-img { margin: 0; }
+        .story-figcaption {
+            font-family: var(--font-body); font-size: 0.88rem; font-style: italic;
+            color: #5a6368; line-height: 1.45; text-align: center;
+            margin: 8px auto 0 auto; max-width: 92%; padding: 0 4px;
+        }
+        body.high-contrast .story-figcaption { color: #000; }
+
         /* --- ACTIVITY HUB (Tab-Navigation für Lern-Spiele) --- */
         .activity-hub {
             margin-bottom: 40px;
@@ -1965,6 +2090,8 @@
         <img src="https://rala84.github.io/lesekumpel/bilder/warum-schlafen-fledermaeuse-kopfueber-1iqw-3.png" alt="Warum schlafen Fledermäuse kopfüber?" class="hero-image" onerror="this.style.display='none'">
         <img src="https://rala84.github.io/lesekumpel/bilder/warum-schlafen-fledermaeuse-kopfueber-1iqw-4.png" alt="Warum schlafen Fledermäuse kopfüber?" class="hero-image" onerror="this.style.display='none'">
 
+        <section class="steckbrief-section" id="steckbrief-section" hidden aria-label="Steckbrief"></section>
+
         <div class="toolbar-container collapsed" id="toolbar">
             <div class="buddy-bubble" id="buddy-bubble" hidden>Tipp mich an! 🔊</div>
             <div class="toolbar-header" onclick="toggleToolbarCollapse()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleToolbarCollapse();}" id="toolbar-close-btn" role="button" tabindex="0" aria-label="Lesekumpel: Hilfe und Werkzeuge öffnen oder schließen"
@@ -2052,6 +2179,8 @@
             <div id="chunk-stars" class="chunk-stars" aria-hidden="true"></div>
         </div>
 
+        <section class="lernziele-section" id="lernziele-section" hidden aria-label="Das habe ich gelernt"></section>
+
         <div class="done-card" id="done-card" hidden>
             <img class="done-buddy" src="https://rala84.github.io/lesekumpel/Konzept_Rebranding/logo-lesekumpel-512.webp" alt="" aria-hidden="true">
             <div class="done-star" aria-hidden="true">⭐</div>
@@ -2097,6 +2226,12 @@
                         onclick="switchActivityTab('wortschatz')">
                     <span class="tab-icon">📖</span><span class="tab-label">Wortsammlung</span>
                 </button>
+                <button class="activity-tab" role="tab" aria-selected="false"
+                        aria-controls="panel-mythen" id="tab-mythen" data-tab="mythen"
+                        data-speak="Wahr oder Falsch: Hier prüfst du, ob eine Behauptung stimmt."
+                        onclick="switchActivityTab('mythen')">
+                    <span class="tab-icon">🕵️</span><span class="tab-label">Wahr oder Falsch?</span>
+                </button>
             </div>
             <div id="panel-quiz" class="activity-panel active" role="tabpanel" aria-labelledby="tab-quiz">
                 <div id="quiz-status" class="sr-only" role="status" aria-live="polite"></div>
@@ -2114,7 +2249,10 @@
             </div>
             <div id="panel-schatz" class="activity-panel" role="tabpanel" aria-labelledby="tab-schatz"></div>
             <div id="panel-wortschatz" class="activity-panel" role="tabpanel" aria-labelledby="tab-wortschatz"></div>
+            <div id="panel-mythen" class="activity-panel" role="tabpanel" aria-labelledby="tab-mythen"></div>
         </div>
+
+        <section class="quellen-section" id="quellen-section" hidden aria-label="Woher weiß Samira das?"></section>
 
         <div class="related-section">
             <h2 class="section-title">Das könnte dir auch gefallen</h2>
@@ -2240,16 +2378,43 @@
         /* ============================================================
          * DYNAMISCHE INJEKTION — diese Werte werden von N8N befüllt
          * ============================================================ */
-        let rawStory = "Du bist in ei­ner dunk­len Höh­le und schaust nach o­ben. Was ist das? Da hän­gen ganz vie­le klei­ne, schwar­ze Pa­ke­te von der De­cke. Plötz­lich ent­fal­tet ei­nes da­von Flü­gel. Es ist ei­ne Fle­der­maus!\n\nA­ber wa­rum hän­gen die ei­gent­lich ko­pfü­ber? Das ist su­per schlau von ih­nen! Fle­der­mäu­se kön­nen näm­lich nicht ein­fach so vom Bo­den losf­lie­gen wie ein Vo­gel. Ih­re Flü­gel sind da­für nicht stark ge­nug.\n\nWenn sie ko­pfü­ber hän­gen, kön­nen sie sich bei Ge­fahr ein­fach fal­len las­sen. Mit­ten im Fal­len brei­ten sie ih­re Flü­gel aus und zack – schon flie­gen sie los. Das ist, als wür­dest du von ei­nem Sprungb­rett sprin­gen, an­statt lang­sam ins Was­ser zu klet­tern.\n\nUnd wie fin­den sie nachts ihr Fut­ter? Da­für ha­ben sie ei­nen Trick, der sich E­cho-Or­tung nennt. Das be­deu­tet: Die Fle­der­maus stößt ganz ho­he Tö­ne aus, die wir Men­schen nicht hö­ren kön­nen.\n\nDie­se Tö­ne pral­len von al­lem ab, was im Weg ist, zum Beis­piel von ei­nem le­cke­ren In­sekt. Das E­cho, al­so der zu­rück­ge­wor­fe­ne Ton, kommt zur Fle­der­maus zu­rück. So weiß sie ganz ge­nau, wo das In­sekt fliegt. Echt jetzt, das ist wie ein ein­ge­bau­tes Su­per­hel­den-Ra­dar!";
-        let emojiStory = "Du bist in ei-ner dunk-len Höh-le und schaust nach o-ben. Was ist das? Da hän-gen ganz vie-le klei-ne, schwar-ze Pa-ke-te von der De-cke. Plötz-lich ent-fal-tet ei-nes da-von Flü-gel. Es ist ei-ne Fle-der-maus!\n\nA-ber wa-rum hän-gen die ei-gent-lich ko-pfü-ber? Das ist su-per schlau von ih-nen! Fle-der-mäu-se kön-nen näm-lich nicht ein-fach so vom Bo-den losf-lie-gen wie ein Vo-gel. Ih-re Flü-gel sind da-für nicht stark ge-nug.\n\nWenn sie ko-pfü-ber hän-gen, kön-nen sie sich bei Ge-fahr ein-fach fal-len las-sen. Mit-ten im Fal-len brei-ten sie ih-re Flü-gel aus und zack – schon flie-gen sie los. Das ist, als wür-dest du von ei-nem Sprungb-rett sprin-gen, an-statt lang-sam ins Was-ser zu klet-tern.\n\nUnd wie fin-den sie nachts ihr Fut-ter? Da-für ha-ben sie ei-nen Trick, der sich E-cho-Or-tung nennt. Das be-deu-tet: Die Fle-der-maus stößt ganz ho-he Tö-ne aus, die wir Men-schen nicht hö-ren kön-nen.\n\nDie-se Tö-ne pral-len von al-lem ab, was im Weg ist, zum Beis-piel von ei-nem le-cke-ren In-sekt. Das E-cho, al-so der zu-rück-ge-wor-fe-ne Ton, kommt zur Fle-der-maus zu-rück. So weiß sie ganz ge-nau, wo das In-sekt fliegt. Echt jetzt, das ist wie ein ein-ge-bau-tes Su-per-hel-den-Ra-dar!";
+        let rawStory = "Du bist in ei­ner dunk­len Höh­le und schaust nach o­ben. Was ist das? Da hän­gen ganz vie­le klei­ne, schwar­ze Pa­ke­te von der De­cke. Plötz­lich ent­fal­tet ei­nes da­von Flü­gel. Es ist ei­ne Fle­der­maus!\n\n**Warum hängt sie kopfüber?**\nA­ber wa­rum hän­gen die ei­gent­lich ko­pfü­ber? Das ist su­per schlau von ih­nen! Fle­der­mäu­se kön­nen näm­lich nicht ein­fach so vom Bo­den losf­lie­gen wie ein Vo­gel. Ih­re Flü­gel sind da­für nicht stark ge­nug.\n\nWenn sie ko­pfü­ber hän­gen, kön­nen sie sich bei Ge­fahr ein­fach fal­len las­sen. Mit­ten im Fal­len brei­ten sie ih­re Flü­gel aus und zack – schon flie­gen sie los. Das ist, als wür­dest du von ei­nem Sprungb­rett sprin­gen, an­statt lang­sam ins Was­ser zu klet­tern.\n\n**Jagen im Dunkeln**\nUnd wie fin­den sie nachts ihr Fut­ter? Da­für ha­ben sie ei­nen Trick, der sich E­cho-Or­tung nennt. Das be­deu­tet: Die Fle­der­maus stößt ganz ho­he Tö­ne aus, die wir Men­schen nicht hö­ren kön­nen.\n\n**Das eingebaute Super-Radar**\nDie­se Tö­ne pral­len von al­lem ab, was im Weg ist, zum Beis­piel von ei­nem le­cke­ren In­sekt. Das E­cho, al­so der zu­rück­ge­wor­fe­ne Ton, kommt zur Fle­der­maus zu­rück. So weiß sie ganz ge­nau, wo das In­sekt fliegt. Echt jetzt, das ist wie ein ein­ge­bau­tes Su­per­hel­den-Ra­dar!";
+        let emojiStory = "Du bist in ei-ner dunk-len Höh-le und schaust nach o-ben. Was ist das? Da hän-gen ganz vie-le klei-ne, schwar-ze Pa-ke-te von der De-cke. Plötz-lich ent-fal-tet ei-nes da-von Flü-gel. Es ist ei-ne Fle-der-maus!\n\n**Warum hängt sie kopfüber?**\nA-ber wa-rum hän-gen die ei-gent-lich ko-pfü-ber? Das ist su-per schlau von ih-nen! Fle-der-mäu-se kön-nen näm-lich nicht ein-fach so vom Bo-den losf-lie-gen wie ein Vo-gel. Ih-re Flü-gel sind da-für nicht stark ge-nug.\n\nWenn sie ko-pfü-ber hän-gen, kön-nen sie sich bei Ge-fahr ein-fach fal-len las-sen. Mit-ten im Fal-len brei-ten sie ih-re Flü-gel aus und zack – schon flie-gen sie los. Das ist, als wür-dest du von ei-nem Sprungb-rett sprin-gen, an-statt lang-sam ins Was-ser zu klet-tern.\n\n**Jagen im Dunkeln**\nUnd wie fin-den sie nachts ihr Fut-ter? Da-für ha-ben sie ei-nen Trick, der sich E-cho-Or-tung nennt. Das be-deu-tet: Die Fle-der-maus stößt ganz ho-he Tö-ne aus, die wir Men-schen nicht hö-ren kön-nen.\n\n**Das eingebaute Super-Radar**\nDie-se Tö-ne pral-len von al-lem ab, was im Weg ist, zum Beis-piel von ei-nem le-cke-ren In-sekt. Das E-cho, al-so der zu-rück-ge-wor-fe-ne Ton, kommt zur Fle-der-maus zu-rück. So weiß sie ganz ge-nau, wo das In-sekt fliegt. Echt jetzt, das ist wie ein ein-ge-bau-tes Su-per-hel-den-Ra-dar!";
         let rawSummary = "Fledermäuse schlafen kopfüber, weil sie sich so bei Gefahr einfach fallen lassen und sofort losfliegen können. Um im Dunkeln zu jagen, nutzen sie die Echo-Ortung: Sie rufen hohe Töne und hören auf das Echo, das von ihrer Beute zurückgeworfen wird.";
         let emojiSummary = "Fle-der-mäu-se schla-fen ko-pfü-ber, weil sie sich so bei Ge-fahr ein-fach fal-len las-sen und so-fort losf-lie-gen kön-nen. Um im Dun-keln zu ja-gen, nut-zen sie die E-cho-Or-tung: Sie ru-fen ho-he Tö-ne und hö-ren auf das E-cho, das von ih-rer Beu-te zu-rück-ge-wor-fen wird.";
         const quizData = [{"q":"Warum hängen Fledermäuse eigentlich kopfüber?","a":["Damit sie sich einfach fallen lassen und dann losfliegen können.","Weil sie sonst nicht einschlafen können.","Damit sie besser sehen können, wer vorbeikommt."],"correct":0},{"q":"Welchen Trick benutzen Fledermäuse, um im Dunkeln Futter zu finden?","a":["Sie haben eine eingebaute Taschenlampe.","Sie benutzen die Echo-Ortung.","Sie riechen ihr Futter von sehr weit."],"correct":1},{"q":"Was sind die 'kleinen, schwarzen Pakete', die von der Decke hängen?","a":["Fledermäuse.","Alte Spinnennetze.","Versteckte Schätze."],"correct":0}];
         const rawDictionaryEntry = [{"wort":"entfaltet","silben":"ent-fal-tet","bedeutung":"breitet etwas aus oder macht es auf"},{"wort":"kopfüber","silben":"kopf-ü-ber","bedeutung":"mit dem Kopf nach unten hängen"},{"wort":"Echo-Ortung","silben":"E-cho-Or-tung","bedeutung":"Tiere finden ihren Weg oder Beute, indem sie Töne aussenden und deren Rückprall hören"},{"wort":"prallen ab","silben":"pral-len ab","bedeutung":"werden von etwas zurückgeworfen"},{"wort":"zurückgeworfene","silben":"zu-rück-ge-wor-fe-ne","bedeutung":"Töne oder Licht, die von einer Oberfläche abprallen und zurückkommen"}];
         const weitererzaehlenData = {"frage":"Wie geht es weiter?","optionen":[{"emoji":"🦇","titel":"Flatternder Schwarm","text":"Plötzlich hörst du ein lautes Flattern! Nicht nur eine Fledermaus, sondern Dutzende erwachen und sausen pfeilschnell durch die Höhle. Sie ziehen eine nach der anderen in die dunkle Weite. Dein Herz pocht. Was suchen sie wohl draußen? Und gibt es vielleicht noch andere Geheimnisse hier unten, die nur sie kennen?"},{"emoji":"🤫","titel":"Geheimes Echo","text":"Während du noch überlegst, wie gut ihr Echo-Radar funktioniert, hörst du plötzlich einen Ton, der ganz anders ist. Kein hohes Piepsen, sondern ein leises, wisperndes Geräusch, das dich neugierig macht. Es klingt fast so, als würde die Höhle selbst flüstern oder als ob die Fledermäuse ein Geheimnis teilen wollen."},{"emoji":"✨","titel":"Schlafende Magie","text":"Die eine Fledermaus schwebt leise davon, fast wie ein Schatten. Die anderen kleinen Pakete hängen weiterhin still. Du fragst dich, was sie träumen, wenn sie kopfüber schlafen. Vielleicht von saftigen Insekten unter dem Sternenhimmel oder von einem besonderen Ort tief in der Höhle? Die Stille fühlt sich plötzlich ganz magisch an."}]};
         const schatzsucheData = {"thema":"Bewegungs-Wörter","emoji":"🤸‍♀️","ziel":3,"einleitung":"In dieser Geschichte steckt ganz viel Bewegung! Finde drei Wörter, die zeigen, wie sich etwas bewegt — einfach antippen!","schatzwoerter":["hängen","entfaltet","flügel","losfliegen","fallen","breiten","fliegen","springen","klettern","stößt","prallen","kommt","fliegt"]};
-        const imagePositions = [{"scene":1,"paragraphIndex":null},{"scene":2,"paragraphIndex":null},{"scene":3,"paragraphIndex":null},{"scene":4,"paragraphIndex":null}];
+        const imagePositions = [{"scene":1,"paragraphIndex":null,"caption":"In dunklen Höhlen hängen Fledermäuse kopfüber von der Decke — wie kleine schwarze Pakete."},{"scene":2,"paragraphIndex":null,"caption":"Beim Schlafen wickeln viele Fledermäuse ihre Flügel wie einen Umhang um sich."},{"scene":3,"paragraphIndex":null,"caption":"Mit hohen Tönen und dem Echo findet die Fledermaus im Dunkeln ihre Beute."},{"scene":4,"paragraphIndex":null,"caption":"Eine Fledermaus auf nächtlicher Jagd: Ihr Echo-Radar zeigt ihr, wo das Insekt fliegt."}];
         window.imagePositions = imagePositions; // Für Tafel-Modus (Sticky-Bild)
+
+        /* --- SAMIRA-WISSENSSEITE: Sachtext-Elemente (universell, N8N-füllbar) --- */
+        const steckbriefData = {"emoji":"🦇","titel":"Steckbrief: Die Fledermaus","zeilen":[
+            {"icon":"📏","label":"Größe","wert":"Flügel so breit wie ein Schulheft (ca. 25 cm)"},
+            {"icon":"⚖️","label":"Gewicht","wert":"So leicht wie 2 Gummibärchen (ca. 7 g)"},
+            {"icon":"🏠","label":"Zuhause","wert":"Dunkle Höhlen, alte Dächer und Baumhöhlen"},
+            {"icon":"🍽️","label":"Futter","wert":"Insekten — bis zu 1000 Mücken pro Nacht"},
+            {"icon":"🌙","label":"Wann wach","wert":"Nachts — sie ist nachtaktiv"},
+            {"icon":"✨","label":"Superkraft","wert":"Hören im Dunkeln mit Echo-Ortung"}
+        ]};
+
+        const mythenData = [
+            {"behauptung":"Fledermäuse sind blind.","istWahr":false,"erklaerung":"Falsch! Fledermäuse können sogar ganz gut sehen. Im Dunkeln benutzen sie aber lieber ihr Echo-Radar."},
+            {"behauptung":"Fledermäuse hängen kopfüber, um schnell losfliegen zu können.","istWahr":true,"erklaerung":"Richtig! Sie lassen sich einfach fallen und fliegen mitten im Fall los."},
+            {"behauptung":"Fledermäuse sind Vögel.","istWahr":false,"erklaerung":"Falsch! Fledermäuse sind Säugetiere — so wie du. Ihre Babys trinken Milch."}
+        ];
+
+        const lernzieleData = [
+            "Fledermäuse hängen kopfüber, damit sie sich fallen lassen und sofort losfliegen können.",
+            "Mit der Echo-Ortung finden sie im Dunkeln ihr Futter.",
+            "Fledermäuse sind Säugetiere — und sie sind nicht blind."
+        ];
+
+        const quellenData = [
+            {"quelle":"Wikipedia — Fledermäuse","url":"https://de.wikipedia.org/wiki/Fledermäuse"},
+            {"quelle":"NABU — Alles über Fledermäuse","url":"https://www.nabu.de/tiere-und-pflanzen/saeugetiere/fledermaeuse/"}
+        ];
         /* ============================================================ */
 
         // Emoji-Text nutzt dieselbe Silbentrenner-Konvention wie rawStory:
@@ -2504,6 +2669,13 @@
             // Bilder positionieren: bevorzugt via paragraphIndex aus imagePositions
             // (Mapping aus der Pipeline), Fallback auf gleichmäßige Verteilung.
             let imgPositions = {};
+            let imgCaptions = {}; // Sachtext-Untertitel je Bildposition (Samira-Wissensseiten)
+            // Caption je Szene aus imagePositions (N8N kann hier "caption" mitliefern)
+            const captionForScene = (scene) => {
+                if (!Array.isArray(imagePositions)) return '';
+                const m = imagePositions.find(p => p && p.scene === scene);
+                return (m && typeof m.caption === 'string') ? m.caption.trim() : '';
+            };
             if (inlineImages.length > 0 && !state.summary) {
                 const mappingActive = Array.isArray(imagePositions)
                     && imagePositions.length > 0
@@ -2520,6 +2692,7 @@
                         const groupIdx = allGroups.findIndex(g => g.sectionIndex >= targetSection);
                         if (groupIdx < 0) return; // keine passende Position — Bild wird übersprungen
                         imgPositions[groupIdx] = img.src;
+                        imgCaptions[groupIdx] = captionForScene(img.scene);
                     });
                 } else if (document.body.classList.contains('haeppchen-active')) {
                     let interval = Math.max(1, Math.floor(allGroups.length / inlineImages.length));
@@ -2527,6 +2700,7 @@
                         let pos = interval * i;
                         if (pos >= allGroups.length) pos = allGroups.length - 1;
                         imgPositions[pos] = img.src;
+                        imgCaptions[pos] = captionForScene(img.scene);
                     });
                 } else {
                     let interval = Math.max(1, Math.floor(allGroups.length / (inlineImages.length + 1)));
@@ -2534,13 +2708,21 @@
                         let pos = interval * (i + 1);
                         if (pos >= allGroups.length) pos = allGroups.length - 1;
                         imgPositions[pos] = img.src;
+                        imgCaptions[pos] = captionForScene(img.scene);
                     });
                 }
             }
 
             // HTML zusammenbauen: Überschriften als <h3>, Text als <p>
             let html = allGroups.map((group, i) => {
-                let imgTag = imgPositions[i] ? `<img src="${imgPositions[i]}" alt="Illustration zur Geschichte" class="story-inline-img" loading="lazy" decoding="async" onerror="this.style.display='none'">` : '';
+                let imgTag = '';
+                if (imgPositions[i]) {
+                    const cap = imgCaptions[i] ? imgCaptions[i].trim() : '';
+                    const imgEl = `<img src="${imgPositions[i]}" alt="${cap ? escapeHtml(cap) : 'Illustration zur Geschichte'}" class="story-inline-img" loading="lazy" decoding="async" onerror="this.style.display='none'">`;
+                    imgTag = cap
+                        ? `<figure class="story-figure">${imgEl}<figcaption class="story-figcaption">${escapeHtml(cap)}</figcaption></figure>`
+                        : imgEl;
+                }
                 let headingHtml = '';
                 if (group.heading) {
                     let processedH = group.heading.split(/\s+/).map(w => processWord(w)).join(' ');
@@ -2569,6 +2751,7 @@
                 return g.heading.split(/\s+/).map(w => processWord(w)).join(' ');
             });
             state.chunkImages = allGroups.map((_, i) => imgPositions[i] || null);
+            state.chunkCaptions = allGroups.map((_, i) => imgCaptions[i] || null);
             updateChunkDisplay();
             updateButtons();
         }
@@ -2748,6 +2931,121 @@
                 p.classList.toggle('active', isActive);
             });
             try { localStorage.setItem('lesekumpel-activity-tab', tabName); } catch(e) {}
+        }
+
+        // === SAMIRA-WISSENSSEITE: Render-Funktionen (alle universell, leer → ausgeblendet) ===
+
+        function renderSteckbrief() {
+            const section = document.getElementById('steckbrief-section');
+            if (!section) return;
+            const data = (typeof steckbriefData !== 'undefined') ? steckbriefData : null;
+            const zeilen = (data && Array.isArray(data.zeilen)) ? data.zeilen.filter(z => z && (z.label || z.wert)) : [];
+            if (!data || zeilen.length === 0) { section.hidden = true; section.style.display = 'none'; return; }
+            const rows = zeilen.map(z => `
+                <div class="steckbrief-row">
+                    <span class="steckbrief-row-icon" aria-hidden="true">${escapeHtml(z.icon || '•')}</span>
+                    <span class="steckbrief-row-text">
+                        <span class="steckbrief-row-label">${escapeHtml(z.label || '')}</span>
+                        <span class="steckbrief-row-wert">${escapeHtml(z.wert || '')}</span>
+                    </span>
+                </div>`).join('');
+            section.innerHTML = `
+                <div class="steckbrief-card">
+                    <div class="steckbrief-head">
+                        <span class="steckbrief-emoji" aria-hidden="true">${escapeHtml(data.emoji || '📋')}</span>
+                        <h2 class="steckbrief-title">${escapeHtml(data.titel || 'Steckbrief')}</h2>
+                    </div>
+                    <div class="steckbrief-rows">${rows}</div>
+                </div>`;
+            section.hidden = false; section.style.display = '';
+        }
+
+        function renderLernziele() {
+            const section = document.getElementById('lernziele-section');
+            if (!section) return;
+            const items = (typeof lernzieleData !== 'undefined' && Array.isArray(lernzieleData))
+                ? lernzieleData.map(s => (s || '').trim()).filter(Boolean) : [];
+            if (items.length === 0) { section.hidden = true; section.style.display = 'none'; return; }
+            const lis = items.map(s => `
+                <li class="lernziele-item"><span class="lernziele-check" aria-hidden="true">✓</span><span>${escapeHtml(s)}</span></li>`).join('');
+            section.innerHTML = `
+                <div class="lernziele-card">
+                    <h2 class="lernziele-title"><span aria-hidden="true">🎓</span> Das habe ich gelernt</h2>
+                    <ul class="lernziele-list">${lis}</ul>
+                </div>`;
+            section.hidden = false; section.style.display = '';
+        }
+
+        function renderQuellen() {
+            const section = document.getElementById('quellen-section');
+            if (!section) return;
+            const items = (typeof quellenData !== 'undefined' && Array.isArray(quellenData))
+                ? quellenData.filter(q => q && q.quelle) : [];
+            if (items.length === 0) { section.hidden = true; section.style.display = 'none'; return; }
+            const lis = items.map(q => {
+                const name = escapeHtml(q.quelle);
+                const inner = q.url
+                    ? `<a class="quellen-link" href="${escapeHtml(q.url)}" target="_blank" rel="noopener">${name}</a>`
+                    : `<span class="quellen-name">${name}</span>`;
+                return `<li class="quellen-item"><span class="quellen-item-bullet" aria-hidden="true">▸</span>${inner}</li>`;
+            }).join('');
+            section.innerHTML = `
+                <div class="quellen-box">
+                    <span class="quellen-icon" aria-hidden="true">🔍</span>
+                    <div class="quellen-body">
+                        <h2 class="quellen-headline">Woher weiß Samira das?</h2>
+                        <p class="quellen-intro">Diese Fakten habe ich für dich nachgeschaut bei:</p>
+                        <ul class="quellen-list">${lis}</ul>
+                    </div>
+                </div>`;
+            section.hidden = false; section.style.display = '';
+        }
+
+        // Wahr oder Falsch? — Mythen-Check (Activity-Tab)
+        function renderMythen() {
+            const panel = document.getElementById('panel-mythen');
+            const tab = document.querySelector('[data-tab="mythen"]');
+            const data = (typeof mythenData !== 'undefined' && Array.isArray(mythenData))
+                ? mythenData.filter(m => m && m.behauptung) : [];
+            if (data.length === 0) {
+                if (tab) tab.style.display = 'none';
+                if (panel) panel.style.display = 'none';
+                return;
+            }
+            const cards = data.map((m, i) => `
+                <div class="mythen-card" data-wahr="${m.istWahr ? '1' : '0'}">
+                    <p class="mythen-frage">${escapeHtml(m.behauptung)}</p>
+                    <div class="mythen-buttons">
+                        <button type="button" class="mythen-btn btn-wahr" onclick="answerMythen(this, ${i}, true)" data-speak="Antworte mit Wahr.">👍 Wahr</button>
+                        <button type="button" class="mythen-btn btn-falsch" onclick="answerMythen(this, ${i}, false)" data-speak="Antworte mit Falsch.">👎 Falsch</button>
+                    </div>
+                    <div class="mythen-aufloesung" hidden>
+                        <span class="mythen-aufloesung-icon" aria-hidden="true"></span>
+                        <span class="mythen-aufloesung-text">${escapeHtml(m.erklaerung || '')}</span>
+                    </div>
+                </div>`).join('');
+            panel.innerHTML = `
+                <p class="mythen-intro">Stimmt das wirklich? Tippe auf „Wahr“ oder „Falsch“ — und finde es heraus!</p>
+                <div class="mythen-list">${cards}</div>`;
+        }
+
+        function answerMythen(btn, index, choseWahr) {
+            const card = btn.closest('.mythen-card');
+            if (!card || card.dataset.answered === '1') return;
+            const istWahr = card.dataset.wahr === '1';
+            const richtig = (choseWahr === istWahr);
+            card.dataset.answered = '1';
+            card.querySelectorAll('.mythen-btn').forEach(b => { b.disabled = true; });
+            const correctBtn = card.querySelector(istWahr ? '.btn-wahr' : '.btn-falsch');
+            if (correctBtn) correctBtn.classList.add('is-correct');
+            if (!richtig) btn.classList.add('is-wrong');
+            const loesung = card.querySelector('.mythen-aufloesung');
+            if (loesung) {
+                loesung.hidden = false;
+                loesung.classList.add(istWahr ? 'is-wahr' : 'is-falsch');
+                const icon = loesung.querySelector('.mythen-aufloesung-icon');
+                if (icon) icon.textContent = istWahr ? '✅' : '❌';
+            }
         }
 
         function initActivityTabs() {
@@ -2963,14 +3261,21 @@
             if(state.chunkIndex >= state.chunks.length) state.chunkIndex = 0;
             let imgHtml = '';
             // Bild für diesen Chunk finden — fallback auf letztes verfügbares
-            let imgUrl = null;
+            let imgUrl = null, imgCap = '';
             if (state.chunkImages) {
                 for (let j = state.chunkIndex; j >= 0; j--) {
-                    if (state.chunkImages[j]) { imgUrl = state.chunkImages[j]; break; }
+                    if (state.chunkImages[j]) {
+                        imgUrl = state.chunkImages[j];
+                        imgCap = (state.chunkCaptions && state.chunkCaptions[j]) ? state.chunkCaptions[j] : '';
+                        break;
+                    }
                 }
             }
             if (imgUrl) {
-                imgHtml = `<img src="${imgUrl}" alt="Illustration zur Geschichte" class="story-inline-img" loading="lazy" decoding="async" onerror="this.style.display='none'">`;
+                const imgEl = `<img src="${imgUrl}" alt="${imgCap ? escapeHtml(imgCap) : 'Illustration zur Geschichte'}" class="story-inline-img" loading="lazy" decoding="async" onerror="this.style.display='none'">`;
+                imgHtml = imgCap
+                    ? `<figure class="story-figure">${imgEl}<figcaption class="story-figcaption">${escapeHtml(imgCap)}</figcaption></figure>`
+                    : imgEl;
             }
             let headingHtml = '';
             if (state.chunkHeadings && state.chunkHeadings[state.chunkIndex]) {
@@ -3424,7 +3729,7 @@
         // DOMContentLoaded statt window.onload: Text soll sofort lesbar sein,
         // nicht erst wenn alle Story-Bilder fertig geladen sind.
         document.addEventListener('DOMContentLoaded', function() {
-            renderText(); renderQuiz(); renderWeitererzaehlen(); renderSchatzsuche(); renderWortschatz(); initActivityTabs();
+            renderText(); renderQuiz(); renderWeitererzaehlen(); renderSchatzsuche(); renderWortschatz(); renderMythen(); renderSteckbrief(); renderLernziele(); renderQuellen(); initActivityTabs();
             initBuddy(); updateTempoButtons();
             // Spul-Balken der Player-Leiste ('change' = beim Loslassen/Tastendruck)
             const pbRange = document.getElementById('pb-range');
