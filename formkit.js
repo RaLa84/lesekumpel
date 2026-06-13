@@ -148,7 +148,7 @@
       go(idx + 1);
     }
 
-    function go(i) {
+    function go(i, noSave) {
       if (i < 0 || i >= stepEls.length) return;
       idx = i;
       stepEls.forEach(function (el, k) { el.classList.toggle('active', k === idx); });
@@ -159,7 +159,7 @@
       backBtn.style.visibility = idx === 0 ? 'hidden' : 'visible';
       updateRemain();
       refresh();
-      save();
+      if (!noSave) save();
       window.scrollTo({ top: 0, behavior: reducedMotion() ? 'auto' : 'smooth' });
       if (autoSpeak) {
         var q = stepEls[idx].getAttribute('data-question');
@@ -196,9 +196,9 @@
 
     // Autosave-Banner / Fortsetzen
     function offerResume(bannerEl) {
-      if (!bannerEl || !opts.storageKey) { go(0); return; }
+      if (!bannerEl || !opts.storageKey) { go(0, true); return; }
       var saved = restore(opts.storageKey);
-      if (!saved || !saved.data) { go(0); return; }
+      if (!saved || !saved.data) { go(0, true); return; }
       bannerEl.classList.add('show');
       bannerEl.querySelector('.resume-yes').addEventListener('click', function () {
         if (opts.applyState) opts.applyState(saved.data);
@@ -208,11 +208,11 @@
       bannerEl.querySelector('.resume-no').addEventListener('click', function () {
         clearSaved(opts.storageKey);
         bannerEl.classList.remove('show');
-        go(0);
+        go(0, true);
       });
     }
 
-    go(0);
+    go(0, true);
 
     return {
       refresh: refresh,
