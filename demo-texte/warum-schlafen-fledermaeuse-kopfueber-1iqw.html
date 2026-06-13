@@ -1,7 +1,8 @@
+<!DOCTYPE html>
 <html lang="de">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <title>Warum schlafen Fledermäuse kopfüber? — Lesetext für 120–250 Wörter, Samira Wissensfreund | Lesekumpel</title>
     <meta name="description" content="Lesetext für 7–10-Jährige: Warum schlafen Fledermäuse kopfüber?. Ein Sachtext über Fledermäuse: Warum hängen sie kopfüber, wie finden sie im Dunkeln den Weg?">
@@ -64,19 +65,70 @@
 
     <style>
         /* --- GRUNDLAGEN --- */
+        /* INSPIRED Design System (Rebranding) — Tokens aus Konzept_Rebranding/
+           design-system_rebranded.html bzw. v2/styles.css. Die alten Variablen-
+           NAMEN bleiben erhalten (weniger invasiv), zeigen aber auf die neue Palette. */
         :root {
-            --bg-body: #FFF9E5; --bg-card: #ffffff;
-            --primary-yellow: #FFD54F; --accent-coral: #D67171; --accent-teal: #2a9d8f;
-            --text-dark: #2D3436; --font-heading: 'Fredoka', cursive, sans-serif;
-            --font-body: 'Quicksand', sans-serif; --font-dyslexic: 'Comic Sans MS', 'Chalkboard SE', sans-serif;
-            --syl-blue: #00509d; --syl-red: #c1121f; --trans-color: #7209b7;
+            --mint: #2FB8A6; --navy: #2B3140; --cream: #FFF6EF; --cream-light: #FEFBF6;
+            --lila: #7D6AE6; --border-soft: #D9D4CC;
+            --bg-body: var(--cream); --bg-card: #ffffff;
+            --primary-yellow: #FFD95A; --accent-coral: #F97352; --accent-teal: var(--mint);
+            --text-dark: var(--navy); --border-card: var(--border-soft);
+            --font-heading: 'Fredoka', system-ui, sans-serif;
+            --font-body: 'Lexend', system-ui, sans-serif;
+            --font-dyslexic: 'Comic Sans MS', 'Chalkboard SE', sans-serif;
+            /* Silbenfarben: AA-konform auf Weiß UND Cream (aus v2/styles.css) */
+            --syl-blue: #5B4AC8; --syl-red: #C24420; --trans-color: var(--lila);
         }
 
+        /* Hintergrund liegt auf <html>, damit die Deko-Blobs (body::before/::after,
+           z-index -1) zwischen Hintergrund und Inhalt schweben können */
+        html { background-color: var(--bg-body); }
         body {
-            font-family: var(--font-body); background-color: var(--bg-body); color: var(--text-dark);
+            font-family: var(--font-body); background-color: transparent; color: var(--text-dark);
             line-height: 1.7; margin: 0; padding-bottom: 50px; transition: all 0.3s ease; font-size: 22px;
         }
-        body.dyslexia-mode { font-family: var(--font-dyslexic) !important; letter-spacing: 0.05em; line-height: 2.1; }
+        body::before, body::after {
+            content: ''; position: fixed; z-index: -1; border-radius: 50%;
+            filter: blur(70px); opacity: 0.55; pointer-events: none;
+        }
+        body::before { width: 420px; height: 420px; background: #FFE9B3; top: -130px; left: -150px; }
+        body::after  { width: 380px; height: 380px; background: #C5EBE4; bottom: -130px; right: -130px; }
+        body.nt-autismus::before, body.nt-autismus::after { display: none; }
+
+        /* Skip-Link: unsichtbar, bei Tastatur-Fokus sichtbar (WCAG 2.4.1) */
+        .skip-link {
+            position: absolute; left: -9999px;
+            background: var(--navy); color: #fff;
+            padding: 10px 18px; border-radius: 0 0 10px 10px;
+            font-weight: 600; font-size: 0.9rem; z-index: 10000;
+            text-decoration: none;
+        }
+        .skip-link:focus { position: fixed; left: 50%; top: 0; transform: translateX(-50%); }
+
+        /* Nur für Screenreader (global — wird u. a. vom Quiz-Status genutzt) */
+        .sr-only {
+            position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px;
+            overflow: hidden; clip: rect(0, 0, 0, 0); border: 0;
+        }
+        /* Lesefreundlich: mehr Buchstaben-/Wortabstand und Zeilenhöhe im Story-Text
+           (Lexend bleibt — kein Comic Sans; Spacing hilft bei LRS am meisten) */
+        body.dyslexia-mode .story-text,
+        body.dyslexia-mode #chunk-display {
+            letter-spacing: 0.04em; word-spacing: 0.16em; line-height: 2.05 !important;
+        }
+
+        /* Hoher Kontrast: reines Schwarz auf Weiß, kräftige Rahmen, Deko aus */
+        body.high-contrast { background: #fff; }
+        body.high-contrast::before, body.high-contrast::after { display: none; }
+        body.high-contrast .main-card { border: 2px solid var(--navy); }
+        body.high-contrast .story-text, body.high-contrast #chunk-display,
+        body.high-contrast .story-text p { color: #000; }
+        body.high-contrast .story-hero-cover .hero-overlay {
+            background: radial-gradient(ellipse at center, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.75) 100%);
+        }
+        body.high-contrast .toolbar-group { background: #fff; border: 1px solid var(--navy); }
+        body.high-contrast .quiz-card, body.high-contrast .activity-hub { background: #fff; border-color: var(--navy); }
 
         .highlight-active {
             background-color: #ffeb3b !important; border-radius: 4px;
@@ -85,61 +137,96 @@
 
         /* --- NAVIGATION --- */
         .main-navbar {
-            background: rgba(255,255,255,0.78); -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px);
-            padding: 12px 24px; border-bottom: 3px solid rgba(255,213,79,0.5);
+            background: rgba(255,255,255,0.92); -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px);
+            padding: 12px 24px; border-bottom: 3px solid var(--mint);
             display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000;
         }
         .nav-left { display: flex; align-items: center; gap: 10px; }
-        .nav-logo { height: 40px; width: auto; }
-        .brand-name { font-family: var(--font-heading); font-size: 1.2rem; color: var(--accent-coral); font-weight: 600; text-decoration: none; }
+        /* Maskottchen-Logo: das WEBP hat viel transparenten Rand — der scale-Crop
+           (Trick aus v2/styles.css) schneidet ihn weg, overflow:hidden begrenzt */
+        .nav-logo-box { width: 44px; height: 44px; overflow: hidden; border-radius: 10px; flex-shrink: 0; }
+        .nav-logo { height: 100%; width: 100%; object-fit: contain; transform: scale(1.9); transform-origin: center; }
+        .brand-name { font-family: var(--font-heading); font-size: 1.2rem; color: var(--navy); font-weight: 700; text-decoration: none; }
+        .brand-name .brand-accent { color: inherit; }
         .nav-links-desktop { display: none; gap: 15px; align-items: center; }
         .nav-btn { text-decoration: none; color: var(--text-dark); font-weight: 600; font-size: 1rem; display: flex; align-items: center; gap: 5px; }
         .btn-cta-nav {
-            display: none; background: var(--accent-coral); color: #fff; padding: 11px 26px;
-            border-radius: 28px; font-weight: 600; transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            display: none; background: var(--mint); color: var(--navy); padding: 11px 26px;
+            border-radius: 999px; font-weight: 600; transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
             text-decoration: none; font-family: var(--font-body); font-size: 0.9rem;
-            border: none; box-shadow: 0 4px 14px rgba(214,113,113,0.3);
+            border: none; box-shadow: 0 4px 14px rgba(47,184,166,0.28);
         }
-        .btn-cta-nav:hover { background: #B85555; transform: translateY(-2px) scaleX(1.04) scaleY(0.97); }
-        .nav-btn:hover { color: var(--accent-coral); }
+        .btn-cta-nav:hover { background: var(--navy); color: #fff; transform: translateY(-2px) scaleX(1.04) scaleY(0.97); }
+        .nav-btn:hover { color: var(--lila); }
+        /* Kinder-Lese-Modus: Auf Story-Seiten zeigt der Header nur Logo + Brand.
+           Alle Links (inkl. Bibliothek) und der Registrieren-CTA stecken hinterm
+           Burger — für Eltern erreichbar, fürs lesende Kind unsichtbar. */
+        .nav-links-desktop { display: none !important; }
+        .btn-cta-nav { display: none !important; }
         .nav-right { display: flex; align-items: center; gap: 15px; }
-        .burger-icon { font-size: 1.8rem; cursor: pointer; display: block; color: var(--text-dark); }
-        .mobile-menu {
-            display: none; background: white; padding: 10px; position: absolute; top: 100%; left: 0; width: 100%;
-            border-bottom: 2px solid var(--primary-yellow); flex-direction: column; gap: 10px; z-index: 999;
+        .burger-icon {
+            font-size: 1.6rem; cursor: pointer; display: block; color: var(--text-dark);
+            background: #fff; border: 1px solid var(--border-soft); border-radius: 12px;
+            padding: 6px 12px; line-height: 1; min-height: 44px;
+            transition: background 0.15s ease;
         }
-        .mobile-menu.open { display: flex; }
+        .burger-icon:hover { background: var(--cream-light); }
+        /* Burger-Menü: Karten-Panel rechts statt nackter Linkliste */
+        .mobile-menu {
+            display: none; background: #fff;
+            padding: 12px; position: absolute; top: calc(100% + 8px); right: 12px; left: auto;
+            width: min(320px, calc(100vw - 24px));
+            border: 1px solid var(--border-soft); border-radius: 20px;
+            box-shadow: 0 16px 40px rgba(43,49,64,0.16);
+            flex-direction: column; gap: 6px; z-index: 999;
+        }
+        .mobile-menu.open { display: flex; animation: bubblePop 0.25s cubic-bezier(0.34, 1.56, 0.64, 1); }
+        .mobile-menu .nav-btn {
+            padding: 12px 16px; min-height: 48px; border-radius: 14px;
+            background: var(--cream-light); font-weight: 600;
+            transition: background 0.15s ease, transform 0.15s ease;
+        }
+        .mobile-menu .nav-btn:hover { background: #E7F6F3; color: var(--navy); transform: translateX(3px); }
+        .mobile-menu .menu-cta {
+            background: var(--mint); color: var(--navy); justify-content: center;
+            font-family: var(--font-heading); font-weight: 700; margin-top: 4px;
+            box-shadow: 0 3px 10px rgba(47,184,166,0.3);
+        }
+        .mobile-menu .menu-cta:hover { background: var(--navy); color: #fff; transform: none; }
 
         /* --- MAIN CARD --- */
         .main-card {
             max-width: 900px; margin: 30px auto; background: var(--bg-card);
-            border: 4px solid var(--primary-yellow); border-radius: 25px; padding: 36px 40px;
-            position: relative; box-shadow: 0 10px 0 rgba(0,0,0,0.05);
+            border: 1px solid var(--border-soft); border-radius: 24px; padding: 36px 40px;
+            position: relative; box-shadow: 0 2px 12px rgba(43,49,64,0.05);
         }
 
         /* --- HEADER — Book-First --- */
+        /* Keine Versalien: Großbuchstaben zerstören das Wortbild — für Leseanfänger
+           und LRS-Kinder deutlich schwerer zu lesen */
         h1#main-title {
             font-family: var(--font-heading); color: var(--accent-coral); font-size: 2.2rem;
             text-align: center; line-height: 1.15; margin-bottom: 6px; margin-top: 0;
-            text-transform: uppercase; letter-spacing: 1px;
             overflow-wrap: break-word; word-wrap: break-word; hyphens: auto; -webkit-hyphens: auto; max-width: 100%;
-            text-shadow: -1.5px -1.5px 0 #fff, 1.5px -1.5px 0 #fff, -1.5px 1.5px 0 #fff, 1.5px 1.5px 0 #fff, 0 3px 10px rgba(214,113,113,0.12);
+            text-shadow: -1.5px -1.5px 0 #fff, 1.5px -1.5px 0 #fff, -1.5px 1.5px 0 #fff, 1.5px 1.5px 0 #fff, 0 3px 10px rgba(249,115,82,0.12);
         }
         .author-line {
             display: flex; align-items: center; justify-content: center; gap: 8px; margin-bottom: 6px;
         }
         .author-line .author-avatar { width: 26px; height: 26px; border-radius: 50%; object-fit: cover; }
         .author-line .author-credit {
-            font-family: var(--font-body); font-size: 0.9rem; color: #999; font-weight: 500; font-style: italic;
+            font-family: var(--font-body); font-size: 0.9rem; color: #5a6368; font-weight: 500; font-style: italic;
         }
         .neurotype-hint {
-            text-align: center; font-size: 0.75rem; color: #a0a0a0; font-family: var(--font-body); margin-bottom: 12px;
+            text-align: center; font-size: 0.75rem; color: #5a6368; font-family: var(--font-body); margin-bottom: 12px;
         }
         .quality-badge, .neurotype-badge { display: none; }
-        .story-text { line-height: 1.85 !important; color: #2a2a2a; }
+        .story-text { line-height: 1.85 !important; color: var(--navy); }
 
         .hero-image { width: 100%; border-radius: 15px; margin-bottom: 30px; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
-        .story-inline-img { width: 100%; border-radius: 15px; margin: 20px 0 10px 0; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
+        /* aspect-ratio reserviert die Bildfläche vor dem Laden — kein Layout-Sprung beim Lesen.
+           Story-Bilder werden quadratisch (1024×1024) generiert. */
+        .story-inline-img { width: 100%; aspect-ratio: 1 / 1; height: auto; object-fit: cover; border-radius: 15px; margin: 20px 0 10px 0; box-shadow: 0 5px 15px rgba(0,0,0,0.1); }
 
         /* --- HERO COVER (Blur + Titel-Overlay) --- */
         .story-hero-cover {
@@ -166,9 +253,24 @@
             margin: 0; color: #fff; font-size: 2.6rem;
             text-shadow: 0 2px 8px rgba(0,0,0,0.55), 0 0 2px rgba(0,0,0,0.4);
         }
+        /* Fallback ohne Hero-Bild (skipImages / Bildfehler): freundlicher Verlauf statt
+           dunklem Overlay über leerem Grund */
+        /* Bildloser Hero: INSPIRED-Gradient (Lila→Coral, wie v2) + Buddy + Sparkles */
+        .story-hero-cover.no-image { background: linear-gradient(135deg, var(--lila) 0%, var(--accent-coral) 100%); }
+        .story-hero-cover.no-image .hero-overlay {
+            background: rgba(43,49,64,0.12) url('https://rala84.github.io/lesekumpel/Konzept_Rebranding/logo-lesekumpel-512.webp') no-repeat right 14px bottom 6px / 120px auto;
+        }
+        .story-hero-cover.no-image::after {
+            content: ''; position: absolute; top: 14px; right: 14px; width: 80px; height: 80px; z-index: 2; pointer-events: none;
+            background:
+                url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Cpolygon points='16,2 20,12 30,12 22,19 25,30 16,23 7,30 10,19 2,12 12,12' fill='%23FFD95A' opacity='0.5'/%3E%3C/svg%3E") no-repeat,
+                url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M12,2 L14,10 L22,12 L14,14 L12,22 L10,14 L2,12 L10,10 Z' fill='%23FFFFFF' opacity='0.45'/%3E%3C/svg%3E") no-repeat;
+            background-size: 38px 38px, 22px 22px;
+            background-position: 8px 8px, 50px 38px;
+        }
         @media (max-width: 767px) {
             .story-hero-cover { aspect-ratio: 4 / 3; }
-            .story-hero-cover .hero-title-box #main-title { font-size: 1.7rem; letter-spacing: 0.5px; }
+            .story-hero-cover .hero-title-box #main-title { font-size: 1.7rem; }
             .story-hero-cover .hero-bg { filter: blur(10px) saturate(1.1) brightness(0.92); }
         }
         body.haeppchen-active .story-hero-cover { display: none; }
@@ -179,28 +281,38 @@
             box-shadow: 0 4px 24px rgba(0,0,0,0.04), 0 1px 4px rgba(0,0,0,0.02);
             border: 1px solid rgba(0,0,0,0.03); overflow: hidden; transition: all 0.3s ease;
         }
+        /* Zugeklappt: großer runder Knopf, nur das Maskottchen (kein Text, kein +) */
         .toolbar-container.collapsed {
             position: fixed; bottom: 24px; right: 24px; z-index: 4500;
-            max-width: fit-content; margin: 0; border-radius: 28px;
-            background: linear-gradient(135deg, #fff5ec 0%, #fef0f0 50%, #f0f0ff 100%);
-            box-shadow: 0 4px 20px rgba(214,113,113,0.18), 0 2px 6px rgba(0,0,0,0.06);
-            border: 1.5px solid rgba(214,113,113,0.12);
+            width: 92px; height: 92px; margin: 0; border-radius: 50%;
+            background: linear-gradient(135deg, #FEFBF6 0%, #EDF9F6 55%, #F1EEFC 100%);
+            box-shadow: 0 4px 20px rgba(47,184,166,0.2), 0 2px 6px rgba(0,0,0,0.06);
+            border: 1.5px solid rgba(47,184,166,0.2);
         }
+        .toolbar-container.collapsed .toolbar-header { padding: 0; width: 100%; height: 100%; justify-content: center; gap: 0; }
+        .toolbar-container.collapsed .toolbar-header-label { gap: 0; pointer-events: none; }
+        .toolbar-container.collapsed .header-text { display: none !important; }
+        .toolbar-container.collapsed .toolbar-toggle-icon { display: none; }
+        /* Das WEBP hat viel transparenten Rand — das Bild darf deshalb deutlich
+           größer sein als der Knopf, damit das Maskottchen den Kreis füllt.
+           pointer-events:none, damit der unsichtbare Überstand nichts verdeckt. */
+        .buddy-img, .toolbar-header .header-icon { pointer-events: none; }
+        .toolbar-container.collapsed .buddy-img,
+        .toolbar-container.collapsed .toolbar-header .header-icon { width: 180px; height: 180px; }
         .toolbar-container.collapsed:hover {
             transform: translateY(-2px) scale(1.03);
-            box-shadow: 0 6px 28px rgba(214,113,113,0.25), 0 2px 8px rgba(0,0,0,0.08);
+            box-shadow: 0 6px 28px rgba(47,184,166,0.3), 0 2px 8px rgba(0,0,0,0.08);
         }
         .toolbar-header {
             display: flex; justify-content: space-between; align-items: center;
             padding: 16px 22px; cursor: pointer; -webkit-user-select: none; user-select: none; gap: 14px;
         }
         .toolbar-header-label {
-            font-family: var(--font-heading); font-size: 1.1rem; color: var(--accent-coral);
+            font-family: var(--font-heading); font-size: 1.1rem; color: var(--navy);
             display: flex; align-items: center; gap: 10px; font-weight: 600;
         }
         .toolbar-header-label .header-icon { font-size: 1.9em; display: inline-block; line-height: 1; }
-        .toolbar-header-label .header-text { display: none; }
-        .toolbar-container.collapsed .toolbar-header-label .header-text { display: inline; white-space: nowrap; }
+        .toolbar-header-label .header-text { display: inline; white-space: nowrap; }
         @keyframes tool-wiggle {
             0%, 100% { transform: rotate(0deg); }
             25% { transform: rotate(-12deg); }
@@ -208,11 +320,11 @@
         }
         .toolbar-container.collapsed .header-icon { animation: tool-wiggle 0.6s ease-in-out 2; }
         .toolbar-toggle-icon {
-            font-size: 1.3rem; color: var(--accent-coral); font-weight: 300;
+            font-size: 1.3rem; color: var(--navy); font-weight: 300;
             transition: background 0.2s;
             display: inline-flex; align-items: center; justify-content: center;
             width: 34px; height: 34px; border-radius: 50%;
-            background: rgba(214,113,113,0.10); line-height: 1;
+            background: rgba(47,184,166,0.15); line-height: 1;
         }
         .toolbar-toggle-icon::before { content: "\00d7"; }
         .toolbar-container.collapsed .toolbar-toggle-icon::before { content: "+"; }
@@ -222,12 +334,12 @@
             position: fixed; bottom: 24px; right: 24px; left: auto; z-index: 4500;
             max-width: 400px; margin: 0; border-radius: 24px;
             box-shadow: 0 6px 32px rgba(0,0,0,0.12), 0 2px 8px rgba(0,0,0,0.06);
-            border: 2px solid var(--primary-yellow); max-height: 70vh; overflow-y: auto;
+            border: 2px solid var(--mint); max-height: 70vh; overflow-y: auto;
         }
         .toolbar-group { border-radius: 20px; padding: 14px 16px 12px; }
-        .toolbar-group.group-text { background: #fef2f0; }
-        .toolbar-group.group-view { background: #effaf0; }
-        .toolbar-group.group-extra { background: #fff7ec; }
+        .toolbar-group.group-text { background: #FEEDE8; }
+        .toolbar-group.group-view { background: #E7F6F3; }
+        .toolbar-group.group-extra { background: #FFF4D6; }
         .toolbar-group-label {
             font-family: var(--font-heading); font-size: 0.78rem; font-weight: 600;
             color: #6b635a; margin-bottom: 10px; padding-left: 2px;
@@ -236,16 +348,24 @@
         .tool-btn {
             background: rgba(255,255,255,0.9); border: 1.5px solid rgba(0,0,0,0.05); border-radius: 14px;
             padding: 10px 16px; min-height: 46px; min-width: 100px;
-            font-family: var(--font-heading); font-weight: 500; color: #5a5550; cursor: pointer;
+            font-family: var(--font-heading); font-weight: 500; color: #3B4252; cursor: pointer;
             display: inline-flex; align-items: center; justify-content: center; gap: 7px;
             transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1); font-size: 0.85em; line-height: 1;
             box-shadow: 0 1px 3px rgba(0,0,0,0.03); -webkit-tap-highlight-color: transparent;
         }
         .tool-btn:hover { background: #fff; border-color: rgba(0,0,0,0.09); color: #333; transform: translateY(-1px); box-shadow: 0 3px 10px rgba(0,0,0,0.06); }
+        /* Fokus-Ringe in Lila (INSPIRED: kontrastiert mit allen Flächen-Tokens) */
+        .tool-btn:focus-visible, .activity-tab:focus-visible, .quiz-option:focus-visible,
+        .toolbar-header:focus-visible, .schatz-start-btn:focus-visible, .wortschatz-play:focus-visible,
+        .hero-like-btn:focus-visible, .composer-add-btn:focus-visible, .btn-send:focus-visible,
+        .quiz-reveal-btn:focus-visible, .nav-btn:focus-visible, .btn-cta-nav:focus-visible {
+            outline: 3px solid var(--lila); outline-offset: 2px;
+        }
         .tool-btn:active { transform: scale(0.95); box-shadow: none; transition-duration: 0.06s; }
-        .group-text .tool-btn.active { background: #D67171; color: #fff; border-color: #c96363; box-shadow: inset 0 2px 4px rgba(0,0,0,0.15), 0 1px 4px rgba(214,113,113,0.25); }
-        .group-view .tool-btn.active { background: #5aab5a; color: #fff; border-color: #4e9a4e; box-shadow: inset 0 2px 4px rgba(0,0,0,0.15), 0 1px 4px rgba(90,171,90,0.25); }
-        .group-extra .tool-btn.active { background: #e6a030; color: #fff; border-color: #d49328; box-shadow: inset 0 2px 4px rgba(0,0,0,0.15), 0 1px 4px rgba(230,160,48,0.25); }
+        /* Aktiv-Zustände: INSPIRED-Flächen mit Navy-Text (alle AA-konform) */
+        .group-text .tool-btn.active { background: var(--accent-coral); color: var(--navy); border-color: #e2603f; box-shadow: inset 0 2px 4px rgba(0,0,0,0.12), 0 1px 4px rgba(249,115,82,0.3); }
+        .group-view .tool-btn.active { background: var(--mint); color: var(--navy); border-color: #28a392; box-shadow: inset 0 2px 4px rgba(0,0,0,0.12), 0 1px 4px rgba(47,184,166,0.3); }
+        .group-extra .tool-btn.active { background: var(--primary-yellow); color: var(--navy); border-color: #ecc63e; box-shadow: inset 0 2px 4px rgba(0,0,0,0.12), 0 1px 4px rgba(255,217,90,0.4); }
         .tool-btn.active:hover { filter: brightness(1.05); }
         .tool-btn.active:active { transform: scale(0.95); filter: brightness(0.95); }
         .tool-btn .btn-icon { font-size: 1.1em; line-height: 1; flex-shrink: 0; }
@@ -262,35 +382,28 @@
         .font-size-control .tool-btn:first-child { border-right: 1px solid rgba(0,0,0,0.06); }
         .font-size-control .tool-btn:hover { background: rgba(0,0,0,0.03); }
         .font-size-control .tool-btn:active { transform: scale(0.93); background: rgba(0,0,0,0.06); }
-        .btn-coral { }
-        .btn-coral.active { background: #D67171; color: white; border-color: #c96363; }
-
-        .fab-tools { display: none !important; }
+        .btn-coral.active { background: var(--accent-coral); color: var(--navy); border-color: #e2603f; }
 
         @media (max-width: 767px) {
             .brand-name { display: none; }
             .hidden-mobile { display: none !important; }
-            .toolbar-container.collapsed { bottom: 16px; right: 16px; }
-            .toolbar-container.collapsed .toolbar-header { padding: 14px 18px; gap: 10px; }
-            .toolbar-container.collapsed .header-icon { font-size: 1.7em; }
-            .toolbar-container.collapsed .toolbar-header-label { font-size: 1rem; }
+            .toolbar-container.collapsed { bottom: 16px; right: 16px; width: 76px; height: 76px; }
+            .toolbar-container.collapsed .buddy-img,
+            .toolbar-container.collapsed .toolbar-header .header-icon { width: 148px; height: 148px; }
             .toolbar-container:not(.collapsed) { bottom: 0; right: 0; max-width: 100%; border-radius: 20px 20px 0 0; border-bottom: none; }
             body { padding-bottom: 80px; }
-            h1#main-title { font-size: 1.6rem; letter-spacing: 0.5px; }
+            h1#main-title { font-size: 1.6rem; }
             .main-card { padding: 24px 20px; }
         }
         @media (min-width: 768px) {
-            .burger-icon { display: none; }
             .nav-links-desktop { display: flex; }
-            .btn-cta-nav { display: inline-block; }
-            .nav-logo { height: 50px; }
+            .nav-logo-box { width: 54px; height: 54px; }
             .brand-name { font-size: 1.5rem; display: block; }
             .nav-left { gap: 15px; }
-            .fab-tools { display: none !important; }
         }
 
         /* --- CONTENT --- */
-        .story-text { font-size: 1.2em; color: #444; margin-bottom: 40px; }
+        .story-text { font-size: 1.2em; color: var(--navy); margin-bottom: 40px; }
         .syl-blue { color: var(--syl-blue); }
         .syl-red { color: var(--syl-red); }
         .translated-word { color: var(--trans-color); font-weight: bold; font-style: italic; }
@@ -309,7 +422,7 @@
 
         /* --- SECTIONS --- */
         .author-box, .quiz-section, .comments-section, .related-section { margin-bottom: 40px; }
-        .section-title { text-align: center; font-family: var(--font-heading); color: var(--accent-coral); font-size: 1.5rem; margin-bottom: 20px; }
+        .section-title { text-align: center; font-family: var(--font-heading); color: var(--navy); font-size: 1.5rem; font-weight: 600; margin: 0 0 20px 0; }
 
         /* === HERO-WRAPPER & LIKE === */
         .hero-wrapper { position: relative; overflow: visible; margin-bottom: 20px; }
@@ -332,7 +445,7 @@
         .hero-like-btn:active { transform: scale(0.95); }
         .hero-like-btn.is-liked {
             background: rgba(255, 235, 235, 0.95);
-            box-shadow: 0 4px 14px rgba(214,113,113,0.35), 0 0 0 2px rgba(214,113,113,0.25);
+            box-shadow: 0 4px 14px rgba(249,115,82,0.35), 0 0 0 2px rgba(249,115,82,0.25);
         }
         .hero-like-btn.is-liked .hero-like-heart { animation: heroLikeIdle 1.8s ease-in-out infinite; }
         .hero-like-btn.is-firing .hero-like-heart { animation: heroLikeBurst 0.9s ease-out both; }
@@ -344,7 +457,7 @@
         }
         .hero-like-toast {
             position: absolute; top: 70px; right: 14px; z-index: 6;
-            background: var(--accent-coral); color: #fff;
+            background: var(--navy); color: #fff;
             padding: 8px 14px; border-radius: 10px;
             font-family: var(--font-body); font-weight: 600; font-size: 0.85rem;
             white-space: nowrap; box-shadow: 0 4px 12px rgba(0,0,0,0.2);
@@ -376,23 +489,28 @@
         /* === KOMMENTAR-VERLAUF === */
         .comments-list { margin-bottom: 20px; display: flex; flex-direction: column; gap: 12px; }
         .comment {
-            display: flex; gap: 12px;
-            background: #f9f9f9; border-radius: 14px; padding: 14px 16px;
+            display: flex; gap: 14px; align-items: flex-start;
+            background: #fff; border: 2px solid var(--border-soft);
+            border-radius: 18px; padding: 14px 16px;
+            box-shadow: 0 2px 8px rgba(43,49,64,0.04);
         }
+        .comment:nth-child(3n+1) { border-color: rgba(47,184,166,0.45); }
+        .comment:nth-child(3n+2) { border-color: rgba(255,217,90,0.7); }
+        .comment:nth-child(3n)   { border-color: rgba(125,106,230,0.4); }
         .comment-avatar {
             flex-shrink: 0;
-            width: 42px; height: 42px;
+            width: 48px; height: 48px;
             display: flex; align-items: center; justify-content: center;
-            background: #fff; border: 2px solid var(--primary-yellow);
-            border-radius: 50%; font-size: 1.5rem; line-height: 1;
+            background: var(--cream-light); border: 2px solid var(--primary-yellow);
+            border-radius: 50%; font-size: 1.6rem; line-height: 1;
         }
         .comment-body { flex: 1; min-width: 0; }
         .comment-header {
             display: flex; align-items: baseline; gap: 10px;
             margin-bottom: 4px; flex-wrap: wrap;
         }
-        .comment-author { font-family: var(--font-heading); color: var(--accent-coral); font-size: 1rem; }
-        .comment-time { color: #999; font-size: 0.78rem; }
+        .comment-author { font-family: var(--font-heading); color: var(--navy); font-size: 1rem; }
+        .comment-time { color: #5a6368; font-size: 0.78rem; }
         .comment-text {
             color: var(--text-dark); font-size: 0.95rem; line-height: 1.5;
             word-wrap: break-word;
@@ -408,16 +526,16 @@
 
         /* === COMPOSER (Bausteine-System V4) === */
         .composer-preview {
-            background: #fffdf2; border: 2px dashed var(--primary-yellow);
-            border-radius: 12px; padding: 14px 16px; margin-bottom: 12px;
-            transition: border-color 0.2s ease, border-style 0.2s ease;
+            background: #fff; border: 2px solid var(--border-soft);
+            border-radius: 16px; padding: 14px 16px; margin-bottom: 12px;
+            transition: border-color 0.2s ease;
         }
-        .composer-preview[data-count="3"] { border-style: solid; border-color: var(--accent-coral); }
+        .composer-preview[data-count="3"] { border-color: var(--mint); }
         .composer-preview-label {
-            font-family: var(--font-body); font-size: 0.85rem; color: #999;
+            font-family: var(--font-body); font-size: 0.85rem; color: #5a6368;
             margin-bottom: 10px;
         }
-        #composer-counter { font-weight: 600; color: var(--accent-coral); }
+        #composer-counter { font-weight: 600; color: var(--navy); }
         .composer-chips { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 10px; }
         .composer-chips:empty { margin-bottom: 0; }
         .composer-chip {
@@ -441,16 +559,16 @@
         }
         .composer-chip-remove:hover { background: var(--accent-coral); color: #fff; }
         .composer-add-btn {
-            display: inline-flex; align-items: center; gap: 6px;
-            background: #fffbe6; border: 2px solid var(--primary-yellow);
-            color: var(--text-dark); border-radius: 10px;
-            padding: 9px 14px; font-family: var(--font-body); font-weight: 600; font-size: 0.95rem;
-            cursor: pointer; transition: all 0.2s ease;
+            display: inline-flex; align-items: center; gap: 8px;
+            background: var(--primary-yellow); border: none;
+            color: var(--navy); border-radius: 999px;
+            padding: 12px 20px; min-height: 52px;
+            font-family: var(--font-heading); font-weight: 700; font-size: 1rem;
+            cursor: pointer; transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 3px 10px rgba(255,217,90,0.5);
             -webkit-tap-highlight-color: transparent;
         }
-        .composer-add-btn:hover:not(:disabled) {
-            transform: translateY(-1px); box-shadow: 0 3px 0 var(--primary-yellow);
-        }
+        .composer-add-btn:hover:not(:disabled) { transform: translateY(-2px); }
         .composer-add-btn:disabled { opacity: 0.5; cursor: not-allowed; }
         .composer-add-btn[aria-expanded="true"] { background: var(--primary-yellow); }
         .composer-actions { display: flex; justify-content: flex-end; margin-top: 8px; position: relative; }
@@ -487,21 +605,24 @@
         .picker-close:hover { background: #f4f4f4; color: var(--text-dark); }
         .picker-stage[hidden] { display: none; }
         .picker-title {
-            font-family: var(--font-heading); color: var(--accent-coral);
+            font-family: var(--font-heading); color: var(--navy);
             font-size: 1.1rem; text-align: center; margin: 0 0 14px;
         }
         .picker-category-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
         .picker-category {
             display: flex; flex-direction: column; align-items: center; justify-content: center;
-            gap: 4px; padding: 14px 8px;
-            background: #fffbe6; border: 2px solid var(--primary-yellow);
-            border-radius: 14px; cursor: pointer;
-            font-family: var(--font-body); font-weight: 600; font-size: 0.9rem;
+            gap: 6px; padding: 16px 8px; min-height: 96px;
+            border-radius: 16px; cursor: pointer;
+            font-family: var(--font-heading); font-weight: 600; font-size: 0.95rem;
             color: var(--text-dark);
             transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
             -webkit-tap-highlight-color: transparent;
         }
-        .picker-category:hover { transform: translateY(-3px); box-shadow: 0 5px 0 var(--primary-yellow); }
+        /* Jede Stimmung hat ihre Farbe */
+        .picker-category[data-category="good"] { background: #E7F6F3; border: 2px solid var(--mint); }
+        .picker-category[data-category="hmm"]  { background: #FFF4D6; border: 2px solid var(--primary-yellow); }
+        .picker-category[data-category="no"]   { background: #FEEDE8; border: 2px solid var(--accent-coral); }
+        .picker-category:hover { transform: translateY(-3px); box-shadow: 0 4px 12px rgba(43,49,64,0.12); }
         .picker-cat-emoji { font-size: 2rem; line-height: 1; }
         .picker-cat-label { font-size: 0.85rem; }
         .picker-stage-header {
@@ -510,7 +631,7 @@
         }
         .picker-back {
             background: transparent; border: none; padding: 4px 8px;
-            color: var(--accent-coral); font-family: var(--font-body); font-weight: 600;
+            color: var(--syl-blue); font-family: var(--font-body); font-weight: 600;
             font-size: 0.85rem; cursor: pointer; border-radius: 6px;
             transition: background 0.15s ease;
             -webkit-tap-highlight-color: transparent;
@@ -547,40 +668,63 @@
             .picker-cat-emoji { font-size: 1.6rem; }
             .picker-blocks-content { max-height: 280px; }
         }
+        /* Global: keine Animationen/Transitions für Nutzer mit Bewegungs-Empfindlichkeit
+           (besonders relevant für die ADHS-/Autismus-Zielgruppe) */
         @media (prefers-reduced-motion: reduce) {
-            .hero-like-btn, .hero-like-heart, .hero-like-toast,
-            .composer-chip, .composer-emoji-picker, .picker-category, .picker-block, .particle {
-                animation: none !important; transition: none !important;
+            *, *::before, *::after {
+                animation: none !important;
+                transition: none !important;
+                scroll-behavior: auto !important;
             }
         }
 
-        .author-card { border: 2px solid #eee; border-left: 5px solid var(--accent-coral); border-radius: 15px; padding: 20px; display: flex; align-items: center; gap: 20px; background: #fff; }
+        .author-card { border: 1px solid var(--border-soft); border-left: 5px solid var(--lila); border-radius: 20px; padding: 20px; display: flex; align-items: center; gap: 20px; background: #fff; box-shadow: 0 2px 12px rgba(43,49,64,0.05); }
         .author-img { width: 70px; height: 70px; border-radius: 50%; border: 3px solid var(--primary-yellow); padding: 2px; }
-        .author-name { font-family: var(--font-heading); color: var(--accent-coral); font-size: 1.3rem; margin: 0; }
+        .author-name { font-family: var(--font-heading); color: var(--navy); font-size: 1.3rem; margin: 0; }
 
-        .quiz-card { border: 2px solid #eee; border-radius: 15px; padding: 20px; background: #fff; }
+        .quiz-card { border: 1px solid var(--border-soft); border-radius: 16px; padding: 20px; background: var(--cream-light); }
 
         @keyframes gentleShake {
             0% { transform: translateX(0); } 25% { transform: translateX(-5px); }
             50% { transform: translateX(5px); } 75% { transform: translateX(-5px); }
             100% { transform: translateX(0); }
         }
+        /* Antwortkarten: groß, bunt, mit Letter-Badge — fühlt sich nach Spiel an.
+           Echte <button> für Tastatur + Screenreader. */
         .quiz-option {
-            display: flex; align-items: center; justify-content: space-between;
-            border: 2px solid var(--primary-yellow); border-radius: 10px; padding: 12px; margin-bottom: 10px;
-            cursor: pointer; font-weight: 600; background: #fff; transition: all 0.3s ease;
+            display: flex; align-items: center; gap: 12px;
+            border: 3px solid var(--mint); border-radius: 18px;
+            padding: 12px 16px; min-height: 64px; margin-bottom: 0;
+            cursor: pointer; font-weight: 600; background: #fff;
+            width: 100%; box-sizing: border-box; text-align: left;
+            font-family: var(--font-body); font-size: 1.05rem; color: var(--navy);
+            box-shadow: 0 3px 0 rgba(47,184,166,0.35);
+            transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+            -webkit-tap-highlight-color: transparent;
         }
-        .quiz-option.correct { background: #fffbe6; border-color: #f1c40f; color: #b7950b; box-shadow: 0 0 10px rgba(241,196,15,0.3); pointer-events: none; }
+        .quiz-option:hover:not(.correct):not(.try-again) { transform: translateY(-3px); }
+        .quiz-option.q-col-1 { border-color: var(--primary-yellow); box-shadow: 0 3px 0 rgba(255,217,90,0.6); }
+        .quiz-option.q-col-2 { border-color: var(--lila); box-shadow: 0 3px 0 rgba(125,106,230,0.35); }
+        .q-letter {
+            flex-shrink: 0; width: 36px; height: 36px; border-radius: 50%;
+            display: inline-flex; align-items: center; justify-content: center;
+            font-family: var(--font-heading); font-weight: 700; font-size: 1rem;
+            background: var(--mint); color: var(--navy);
+        }
+        .q-col-1 .q-letter { background: var(--primary-yellow); }
+        .q-col-2 .q-letter { background: var(--lila); color: #fff; }
+        .q-answer-text { flex: 1; }
+        .quiz-option.correct { background: rgba(47,184,166,0.18); border-color: var(--mint); color: var(--navy); box-shadow: 0 0 10px rgba(47,184,166,0.3); pointer-events: none; }
         .quiz-option.try-again { opacity: 0.6; background-color: #f4f4f4; border-color: #ddd; color: #999; animation: gentleShake 0.4s ease-in-out; cursor: default; }
         .quiz-reveal-btn {
             display: block; margin: 12px auto 0 auto;
             background: transparent; border: 1.5px dashed #ddd;
             padding: 8px 18px; border-radius: 20px; cursor: pointer;
             font-family: var(--font-body); font-size: 0.9rem;
-            color: #999; transition: all 0.2s ease;
+            color: #5a6368; transition: all 0.2s ease;
             -webkit-tap-highlight-color: transparent;
         }
-        .quiz-reveal-btn:hover { color: var(--accent-coral); border-color: var(--accent-coral); background: rgba(214,113,113,0.04); }
+        .quiz-reveal-btn:hover { color: var(--accent-coral); border-color: var(--accent-coral); background: rgba(249,115,82,0.04); }
         .quiz-reveal-btn:active { transform: scale(0.98); }
 
         /* --- WEITERERZÄHLEN --- */
@@ -591,7 +735,7 @@
         }
         .weitererzaehlen-cards { display: flex; flex-direction: column; gap: 14px; }
         .weitererzaehlen-card {
-            background: linear-gradient(135deg, #fef9e7 0%, #fff 100%);
+            background: linear-gradient(135deg, var(--cream-light) 0%, #fff 100%);
             border: 2px solid var(--primary-yellow); border-radius: 18px; padding: 18px 20px;
             cursor: pointer; transition: all 0.25s ease; position: relative; overflow: hidden;
             -webkit-tap-highlight-color: transparent;
@@ -604,7 +748,7 @@
         .weitererzaehlen-card.open {
             background: linear-gradient(135deg, #fff 0%, #fff9e5 100%);
             border-color: var(--accent-coral);
-            box-shadow: 0 4px 16px rgba(214,113,113,0.18);
+            box-shadow: 0 4px 16px rgba(249,115,82,0.18);
         }
         .weitererzaehlen-card-header { display: flex; align-items: center; gap: 14px; }
         .weitererzaehlen-emoji { font-size: 2rem; flex-shrink: 0; line-height: 1; }
@@ -645,29 +789,29 @@
         /* --- ACTIVITY HUB (Tab-Navigation für Lern-Spiele) --- */
         .activity-hub {
             margin-bottom: 40px;
-            border: 2px solid #eee; border-radius: 18px;
+            border: 2px solid var(--border-card); border-radius: 18px;
             padding: 24px 22px 20px; background: #fff;
             box-shadow: 0 2px 8px rgba(0,0,0,0.03);
         }
         .activity-hub .section-title { margin-top: 0; margin-bottom: 18px; }
         .activity-tabs {
             display: flex; gap: 6px; padding: 6px;
-            background: #fef5f0; border-radius: 16px;
+            background: var(--cream); border-radius: 999px;
             margin-bottom: 18px;
         }
         .activity-tab {
             flex: 1; min-height: 48px; padding: 12px 14px;
             display: inline-flex; align-items: center; justify-content: center; gap: 8px;
-            background: transparent; border: none; border-radius: 12px;
+            background: transparent; border: none; border-radius: 999px;
             font-family: var(--font-heading); font-weight: 600; font-size: 1rem;
-            color: var(--accent-coral); cursor: pointer;
+            color: var(--navy); cursor: pointer;
             transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
             -webkit-tap-highlight-color: transparent;
         }
-        .activity-tab:hover:not(.active) { background: rgba(214,113,113,0.08); }
+        .activity-tab:hover:not(.active) { background: rgba(47,184,166,0.12); }
         .activity-tab.active {
-            background: var(--accent-coral); color: #fff;
-            box-shadow: 0 3px 10px rgba(214,113,113,0.28);
+            background: var(--mint); color: var(--navy);
+            box-shadow: 0 3px 10px rgba(47,184,166,0.3);
         }
         .activity-tab .tab-icon { font-size: 1.25em; line-height: 1; }
         .activity-tab .tab-label { letter-spacing: 0.01em; }
@@ -687,14 +831,14 @@
 
         /* --- WORT-SCHATZSUCHE --- */
         .schatz-intro-card {
-            background: linear-gradient(135deg, #fff9e5 0%, #fffdf2 100%);
+            background: linear-gradient(135deg, var(--cream) 0%, var(--cream-light) 100%);
             border: 2px solid var(--primary-yellow); border-radius: 18px;
             padding: 28px 24px; text-align: center;
         }
         .schatz-intro-emoji { font-size: 2.6rem; line-height: 1; margin-bottom: 10px; display: block; }
         .schatz-intro-title {
             font-family: var(--font-heading); font-weight: 600;
-            color: var(--accent-coral); font-size: 1.35rem; margin: 0 0 6px 0;
+            color: var(--navy); font-size: 1.35rem; margin: 0 0 6px 0;
         }
         .schatz-intro-thema {
             font-family: var(--font-heading); font-weight: 500;
@@ -708,23 +852,23 @@
             font-family: var(--font-heading); font-size: 1.15rem; color: #8c6d2a;
             margin-bottom: 18px;
         }
-        .schatz-progress-number { font-size: 1.5rem; color: var(--accent-coral); font-weight: 700; }
+        .schatz-progress-number { font-size: 1.5rem; color: var(--navy); font-weight: 700; }
         .schatz-start-btn {
-            background: var(--accent-coral); color: #fff; border: none;
-            padding: 14px 30px; border-radius: 28px; cursor: pointer;
+            background: var(--mint); color: var(--navy); border: none;
+            padding: 14px 30px; border-radius: 999px; cursor: pointer;
             font-family: var(--font-heading); font-size: 1.05rem; font-weight: 600;
-            box-shadow: 0 4px 14px rgba(214,113,113,0.35);
+            box-shadow: 0 4px 14px rgba(47,184,166,0.35);
             transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
             display: inline-flex; align-items: center; gap: 10px;
             -webkit-tap-highlight-color: transparent;
         }
-        .schatz-start-btn:hover { background: #B85555; transform: translateY(-2px); box-shadow: 0 6px 18px rgba(214,113,113,0.45); }
+        .schatz-start-btn:hover { background: var(--navy); color: #fff; transform: translateY(-2px); box-shadow: 0 6px 18px rgba(43,49,64,0.35); }
         .schatz-start-btn:active { transform: translateY(0); }
 
         .schatz-complete { text-align: center; padding: 20px 10px; }
         .schatz-complete-emoji { font-size: 3rem; line-height: 1; display: block; margin-bottom: 10px; }
         .schatz-complete-title {
-            font-family: var(--font-heading); color: var(--accent-coral);
+            font-family: var(--font-heading); color: var(--navy);
             font-size: 1.5rem; margin: 0 0 8px 0;
         }
         .schatz-complete-text { color: #666; margin-bottom: 20px; }
@@ -733,7 +877,7 @@
             margin: 0 0 20px 0; padding: 0;
         }
         .schatz-found-chip {
-            background: #fff3b8; border: 2px solid #f1c40f; border-radius: 14px;
+            background: #FFF4D6; border: 2px solid var(--primary-yellow); border-radius: 14px;
             padding: 6px 14px; font-family: var(--font-heading); font-weight: 600;
             color: #8c6d2a; font-size: 0.95rem;
         }
@@ -755,9 +899,9 @@
         .schatz-banner {
             position: fixed; top: 72px; left: 12px; right: 12px; z-index: 3000;
             display: flex; align-items: center; gap: 12px;
-            background: linear-gradient(135deg, var(--accent-coral) 0%, #e88b8b 100%);
-            color: #fff; padding: 12px 16px; border-radius: 16px;
-            box-shadow: 0 6px 22px rgba(214,113,113,0.4);
+            background: linear-gradient(135deg, var(--accent-coral) 0%, #fb9b85 100%);
+            color: var(--navy); padding: 12px 16px; border-radius: 16px;
+            box-shadow: 0 6px 22px rgba(249,115,82,0.4);
             font-family: var(--font-heading);
             animation: schatzBannerIn 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
         }
@@ -776,7 +920,7 @@
             border-radius: 10px; font-size: 0.95rem; font-weight: 700;
         }
         .schatz-banner-close {
-            background: rgba(255,255,255,0.2); border: none; color: #fff;
+            background: rgba(255,255,255,0.35); border: none; color: var(--navy);
             width: 32px; height: 32px; border-radius: 50%; cursor: pointer;
             font-size: 0.9rem; font-weight: 700; flex-shrink: 0;
             display: inline-flex; align-items: center; justify-content: center;
@@ -784,7 +928,7 @@
         }
         .schatz-banner-close:hover { background: rgba(255,255,255,0.35); transform: scale(1.08); }
         .schatz-banner.celebrate {
-            background: linear-gradient(135deg, #f1c40f 0%, #ffd54f 100%);
+            background: linear-gradient(135deg, #f4c93c 0%, #FFD95A 100%);
             color: #5a4500;
         }
         .schatz-banner.celebrate .schatz-banner-count { background: rgba(255,255,255,0.4); color: #5a4500; }
@@ -805,27 +949,27 @@
         .wortschatz-list { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 10px; }
         .wortschatz-item {
             display: flex; align-items: center; gap: 14px;
-            background: #fff9e5; border: 2px solid #f1c40f; border-radius: 14px;
+            background: #FFF4D6; border: 2px solid var(--primary-yellow); border-radius: 14px;
             padding: 12px 16px;
         }
         .wortschatz-item-text { flex-grow: 1; min-width: 0; }
         .wortschatz-wort {
             font-family: var(--font-heading); font-weight: 600;
-            color: var(--accent-coral); font-size: 1.1rem; display: block;
+            color: var(--navy); font-size: 1.1rem; display: block;
         }
         .wortschatz-bedeutung { color: #555; font-size: 0.98rem; line-height: 1.45; }
         .wortschatz-play {
-            background: var(--accent-coral); color: #fff; border: none;
+            background: var(--mint); color: var(--navy); border: none;
             width: 40px; height: 40px; border-radius: 50%; cursor: pointer;
             font-size: 1.1rem; flex-shrink: 0;
             display: inline-flex; align-items: center; justify-content: center;
             transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
-            box-shadow: 0 3px 10px rgba(214,113,113,0.3);
+            box-shadow: 0 3px 10px rgba(47,184,166,0.3);
             -webkit-tap-highlight-color: transparent;
         }
-        .wortschatz-play:hover { background: #B85555; transform: scale(1.08); }
+        .wortschatz-play:hover { background: var(--navy); color: #fff; transform: scale(1.08); }
         .wortschatz-play:active { transform: scale(0.95); }
-        .wortschatz-play.active { background: #f1c40f; color: #5a4500; }
+        .wortschatz-play.active { background: var(--primary-yellow); color: var(--navy); }
 
         @media (max-width: 767px) {
             .wortschatz-item { padding: 10px 12px; gap: 10px; }
@@ -834,22 +978,30 @@
             .wortschatz-play { width: 38px; height: 38px; font-size: 1rem; }
         }
 
-        .comments-box { border: 2px solid #eee; border-radius: 15px; padding: 20px; }
+        .comments-box { border: 1px solid var(--border-soft); border-radius: 20px; padding: 20px; background: var(--cream-light); box-shadow: 0 2px 8px rgba(43,49,64,0.04); }
         .comment-input { width: 100%; border: 2px solid var(--primary-yellow); border-radius: 10px; padding: 15px; font-family: var(--font-body); font-size: 1rem; box-sizing: border-box; outline: none; }
-        .btn-send { background-color: var(--accent-coral); color: white; border: none; padding: 10px 30px; border-radius: 10px; font-weight: bold; font-size: 1rem; float: right; margin-top: 10px; cursor: pointer; box-shadow: 0 4px 0 #b85c5c; }
+        .btn-send {
+            background-color: var(--mint); color: var(--navy); border: none;
+            padding: 12px 32px; min-height: 52px; border-radius: 999px;
+            font-family: var(--font-heading); font-weight: 700; font-size: 1rem;
+            float: right; margin-top: 10px; cursor: pointer;
+            box-shadow: 0 3px 10px rgba(47,184,166,0.35);
+            transition: all 0.2s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .btn-send:hover:not(:disabled) { background: var(--navy); color: #fff; transform: translateY(-2px); }
         .single-comment { background-color: #f9f9f9; border-radius: 10px; padding: 15px; margin-bottom: 15px; }
 
         .related-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; }
-        .related-card { background: #fff; border: 2px solid #eee; border-radius: 15px; overflow: hidden; text-decoration: none; color: var(--text-dark); transition: transform 0.2s, box-shadow 0.2s; display: flex; flex-direction: column; }
+        .related-card { background: #fff; border: 2px solid var(--border-card); border-radius: 15px; overflow: hidden; text-decoration: none; color: var(--text-dark); transition: transform 0.2s, box-shadow 0.2s; display: flex; flex-direction: column; }
         .related-card:hover { transform: translateY(-5px); box-shadow: 0 5px 15px rgba(0,0,0,0.1); border-color: var(--primary-yellow); }
         .related-img { width: 100%; height: 140px; object-fit: cover; border-bottom: 2px solid #eee; }
         .related-content { padding: 15px; flex-grow: 1; display: flex; flex-direction: column; justify-content: space-between; }
-        .related-title { font-family: var(--font-heading); font-size: 1.1rem; line-height: 1.3; margin-bottom: 10px; color: var(--accent-teal); }
-        .related-meta { display: flex; justify-content: space-between; font-size: 0.85rem; color: #777; font-weight: 600; }
+        .related-title { font-family: var(--font-heading); font-size: 1.1rem; line-height: 1.3; margin-bottom: 10px; color: var(--navy); }
+        .related-meta { display: flex; justify-content: space-between; font-size: 0.85rem; color: #5a6368; font-weight: 600; }
 
         .clearfix::after { content: ""; display: table; clear: both; }
-        footer { text-align: center; margin-top: 50px; color: #888; font-size: 0.9rem; padding-top: 20px; border-top: 1px solid #eee; }
-        .footer-links a { color: #888; text-decoration: none; margin: 0 5px; }
+        footer { text-align: center; margin-top: 50px; color: #5a6368; font-size: 0.9rem; padding-top: 20px; border-top: 1px solid #eee; }
+        .footer-links a { color: #5a6368; text-decoration: underline; margin: 0 5px; }
         .hidden { display: none; }
 
         /* --- NEUROTYP-SPEZIFISCH --- */
@@ -893,19 +1045,15 @@
                 padding: 10px 0;
             }
             body.haeppchen-active .chunk-controls .tool-btn {
-                background: var(--accent-coral);
-                color: #fff;
-                border-color: #c96363;
-                border-radius: 28px;
-                padding: 12px 24px;
-                font-size: 0.95em;
-                box-shadow: 0 4px 14px rgba(214,113,113,0.3);
-                min-width: 120px;
+                background: var(--mint);
+                color: var(--navy);
+                border-color: #28a392;
+                box-shadow: 0 4px 14px rgba(47,184,166,0.3);
             }
             body.haeppchen-active .chunk-controls .tool-btn:hover {
-                filter: brightness(1.08);
+                filter: brightness(1.06);
                 transform: translateY(-2px);
-                box-shadow: 0 6px 18px rgba(214,113,113,0.4);
+                box-shadow: 0 6px 18px rgba(47,184,166,0.4);
             }
             body.haeppchen-active .swipe-hint { display: none !important; }
         }
@@ -923,7 +1071,7 @@
         body.haeppchen-active .adhs-progress-bar { display: block; }
 
         .swipe-hint {
-            text-align: center; color: #bbb; font-size: 0.8rem;
+            text-align: center; color: #5a6368; font-size: 0.8rem;
             font-family: var(--font-body); margin-top: 10px;
             animation: fadeOut 3s ease forwards; animation-delay: 2s;
         }
@@ -949,11 +1097,11 @@
         }
         .report-link {
             background: none; border: none; padding: 8px 14px; cursor: pointer;
-            color: #888; font-family: var(--font-body); font-size: 0.95rem;
+            color: #5a6368; font-family: var(--font-body); font-size: 0.95rem;
             border-radius: 10px; text-decoration: underline;
             min-height: 36px;
         }
-        .report-link:hover { color: var(--accent-coral); background: rgba(214, 113, 113, 0.06); }
+        .report-link:hover { color: var(--lila); background: rgba(125, 106, 230, 0.08); }
         .report-link:focus-visible {
             outline: 2px solid var(--accent-coral); outline-offset: 2px;
             text-decoration: none;
@@ -975,7 +1123,7 @@
             max-height: calc(100vh - 40px); overflow-y: auto;
         }
         .report-modal h2 {
-            font-family: var(--font-heading); color: var(--accent-coral);
+            font-family: var(--font-heading); color: var(--navy);
             margin: 0 0 8px; font-size: 1.5rem;
         }
         .report-modal > p { margin: 0 0 16px; color: #555; }
@@ -998,7 +1146,7 @@
         }
         .report-modal .reason-option:hover { background: var(--bg-body); }
         .report-modal .reason-option input[type="radio"] {
-            width: 20px; height: 20px; accent-color: var(--accent-coral); flex-shrink: 0;
+            width: 20px; height: 20px; accent-color: var(--mint); flex-shrink: 0;
         }
         .report-modal label.field {
             display: block; margin: 14px 0 0; font-weight: 600; font-size: 0.95rem;
@@ -1027,16 +1175,16 @@
             border-radius: 10px; border: none; cursor: pointer; min-height: 44px;
         }
         .report-modal .btn-primary {
-            background: var(--accent-coral); color: #fff;
+            background: var(--mint); color: var(--navy);
         }
-        .report-modal .btn-primary:hover { background: #c25a5a; }
+        .report-modal .btn-primary:hover { background: var(--navy); color: #fff; }
         .report-modal .btn-secondary {
             background: #ececec; color: var(--text-dark);
         }
         .report-modal .btn-secondary:hover { background: #dcdcdc; }
 
-        .report-success h2 { color: var(--accent-teal); }
-        .report-success p { color: #444; }
+        .report-success h2 { color: #1A8676; }
+        .report-success p { color: var(--navy); }
 
         @media (max-width: 768px) {
             .report-modal { padding: 24px 18px 20px; max-height: calc(100vh - 24px); }
@@ -1051,7 +1199,7 @@
         body.view-tafel { font-size: 48px; }
 
         /* Navbar/Header größer (Logo, Brand, Nav-Links) für Lesbarkeit aus Klassenraumdistanz */
-        body.view-tafel .nav-logo { height: 70px; }
+        body.view-tafel .nav-logo-box { width: 70px; height: 70px; }
         body.view-tafel .brand-name { font-size: 2.2rem; display: block; }
         body.view-tafel .main-navbar { padding: 16px 32px; }
         body.view-tafel .nav-btn { font-size: 1.35rem; gap: 8px; }
@@ -1095,7 +1243,7 @@
         /* Tafel-Titel: groß und zentriert in der Story-Spalte */
         .tafel-title {
             font-family: var(--font-heading);
-            color: var(--accent-coral);
+            color: var(--lila);
             font-size: 7rem;
             line-height: 1.0;
             margin: 0 0 28px 0;
@@ -1212,7 +1360,7 @@
             font-weight: 600;
             letter-spacing: 0.18em;
             text-transform: uppercase;
-            color: var(--accent-coral);
+            color: var(--lila);
             margin-bottom: 40px;
             text-align: center;
         }
@@ -1259,17 +1407,14 @@
         body.view-tafel .feedback-section,
         body.view-tafel footer { display: none; }
 
-        /* === TOOLBAR: bleibt rechts unten wie Original, nur größer für Touch === */
+        /* === TOOLBAR: bleibt rechts unten wie Original, nur größer für Touch (Logo-only) === */
         body.view-tafel .toolbar-container.collapsed {
             bottom: 36px; right: 36px;
-            min-width: 130px; min-height: 130px;
-            border-radius: 36px;
+            width: 140px; height: 140px;
+            border-radius: 50%;
         }
-        body.view-tafel .toolbar-container.collapsed .toolbar-header { padding: 26px 32px; gap: 18px; }
-        body.view-tafel .toolbar-container.collapsed .header-icon { font-size: 3em; }
-        body.view-tafel .toolbar-container.collapsed .toolbar-header-label { font-size: 1.7rem; }
-        body.view-tafel .toolbar-container.collapsed .toolbar-header-label .header-text { display: inline; }
-        body.view-tafel .toolbar-container.collapsed .toolbar-toggle-icon { font-size: 2rem; }
+        body.view-tafel .toolbar-container.collapsed .buddy-img,
+        body.view-tafel .toolbar-container.collapsed .toolbar-header .header-icon { width: 270px; height: 270px; }
 
         body.view-tafel .toolbar-container:not(.collapsed) {
             bottom: 36px; right: 36px;
@@ -1328,15 +1473,17 @@
             z-index: 9999;
             overflow: hidden;
         }
-        .confetti-piece {
+        /* Auf .tafel-confetti gescoped — die globale .confetti-piece-Regel (Häppchen-Konfetti)
+           darf nicht überschrieben werden (dortige Animation hat feste 3s-Dauer). */
+        .tafel-confetti .confetti-piece {
             position: absolute;
             top: -30px;
             width: 14px; height: 14px;
             border-radius: 3px;
-            animation: confettiFall linear forwards;
+            animation: tafelConfettiFall linear forwards;
             will-change: transform, opacity;
         }
-        @keyframes confettiFall {
+        @keyframes tafelConfettiFall {
             0%   { transform: translateY(0) rotate(0deg);   opacity: 1; }
             85%  { opacity: 1; }
             100% { transform: translateY(110vh) rotate(720deg); opacity: 0; }
@@ -1397,7 +1544,7 @@
             cursor: pointer;
             font-family: var(--font-heading);
             font-size: 1.7rem;
-            color: var(--accent-coral);
+            color: var(--navy);
             font-weight: 600;
         }
         .tafel-games-trigger .games-icon { font-size: 3em; line-height: 1; }
@@ -1429,10 +1576,10 @@
         /* === QUIZ im Tafel-Modus: 1 Frage pro Slide, Antworten horizontal === */
         body.view-tafel #panel-quiz .quiz-question { display: none; padding: 0; border: none; margin: 0; }
         body.view-tafel #panel-quiz .quiz-question.is-tafel-current { display: block; }
-        body.view-tafel #panel-quiz .quiz-question > div:first-child {
+        body.view-tafel #panel-quiz .quiz-question .quiz-q-title {
             font-size: 2.2rem;
             font-weight: 700;
-            color: var(--accent-teal);
+            color: var(--navy);
             text-align: center;
             margin-bottom: 36px;
             line-height: 1.3;
@@ -1442,8 +1589,18 @@
             gap: 20px;
             margin-bottom: 28px;
         }
-        body.view-tafel #panel-quiz .quiz-option {
+        /* Jede Antwort-Zeile (Antwort + Vorlese-Knopf) wird zur Spalte: Antwort groß, 🔊 darunter */
+        body.view-tafel .quiz-answer-row {
             flex: 1 1 0;
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+            gap: 10px;
+            margin-bottom: 0;
+        }
+        body.view-tafel .quiz-answer-row .speak-btn { align-self: center; width: 64px; min-height: 56px; font-size: 1.4rem; }
+        body.view-tafel #panel-quiz .quiz-option {
+            flex: 1;
             min-height: 160px;
             padding: 24px;
             font-size: 1.45rem;
@@ -1455,7 +1612,7 @@
             transition: transform 0.15s ease, background 0.2s ease, border-color 0.2s ease;
         }
         body.view-tafel #panel-quiz .quiz-option:hover:not(.correct):not(.try-again) {
-            background: rgba(214,113,113,0.06);
+            background: rgba(249,115,82,0.06);
             border-color: var(--accent-coral);
             transform: translateY(-2px);
         }
@@ -1496,7 +1653,7 @@
         .tafel-quiz-nav .tafel-quiz-indicator {
             font-family: var(--font-heading);
             font-size: 1.4rem;
-            color: var(--accent-coral);
+            color: var(--lila);
             font-weight: 600;
             letter-spacing: 0.05em;
             min-width: 200px;
@@ -1527,13 +1684,201 @@
         }
         .tafel-hub-close:hover { background: var(--accent-coral); color: #fff; border-color: var(--accent-coral); transform: rotate(90deg); }
         body:not(.view-tafel) .tafel-hub-close { display: none; }
-        body.view-tafel .activity-hub.tafel-collapsed {
-            transform: scale(0.05);
-            opacity: 0;
-            pointer-events: none;
-        }
         /* Wenn Activity-Hub offen ist, Trigger-Button verstecken */
         body.view-tafel:has(.activity-hub:not(.tafel-collapsed)) .tafel-games-trigger { display: none; }
+
+        /* ════════════════════════════════════════════════════════════════
+           AUDIO-FIRST & KINDER-DESIGN (Nichtleser-Zugänglichkeit)
+           ════════════════════════════════════════════════════════════════ */
+
+        /* — Vorlese-Knöpfe (🔊) an Quiz, Spielen, Schatz — */
+        .speak-btn {
+            flex-shrink: 0; width: 46px; min-height: 46px; border-radius: 12px;
+            border: 2px solid var(--border-card, #F5E6A3); background: #fffbe6;
+            cursor: pointer; font-size: 1.05rem;
+            display: inline-flex; align-items: center; justify-content: center;
+            transition: transform 0.15s ease, background 0.15s ease;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .speak-btn:hover { transform: scale(1.08); background: #fff; border-color: var(--mint); }
+        .speak-btn:active { transform: scale(0.9); }
+        .quiz-q-row { display: flex; gap: 10px; align-items: flex-start; margin-bottom: 16px; }
+        .quiz-q-row .quiz-q-title { flex: 1; padding-top: 8px; font-weight: 700; font-size: 1.15rem; margin: 0; color: var(--navy); }
+        .quiz-q-row .speak-btn { border-radius: 50%; }
+        .quiz-answer-row { display: flex; gap: 10px; align-items: stretch; margin-bottom: 12px; }
+        .quiz-answer-row .quiz-option { margin-bottom: 0; flex: 1; }
+        .quiz-answer-row .speak-btn { min-height: 0; width: 48px; border-radius: 50%; align-self: center; height: 48px; }
+
+        /* — Schritt-Quiz: eine Frage zur Zeit, Sterne, Weiter-Knopf, Abschluss — */
+        body:not(.view-tafel) #panel-quiz .quiz-question:not(.q-active) { display: none; }
+        #panel-quiz .quiz-question.q-active { animation: activityFadeIn 0.25s ease-out; }
+        .quiz-progress {
+            display: flex; align-items: center; justify-content: space-between; gap: 12px;
+            margin-bottom: 16px; flex-wrap: wrap;
+        }
+        .qp-stars { font-size: 1.5rem; letter-spacing: 5px; color: #f1c40f; line-height: 1; }
+        .qp-label { font-family: var(--font-heading); font-weight: 600; color: var(--navy); font-size: 1rem; }
+        .quiz-next-wrap { text-align: center; margin-top: 18px; }
+        .quiz-next-btn, .quiz-retry-btn {
+            background: var(--mint); color: var(--navy); border: none;
+            min-height: 58px; padding: 14px 38px; border-radius: 999px;
+            font-family: var(--font-heading); font-weight: 700; font-size: 1.15rem;
+            cursor: pointer; box-shadow: 0 4px 14px rgba(47,184,166,0.4);
+            animation: bubblePop 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            transition: transform 0.15s ease;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .quiz-next-btn:hover, .quiz-retry-btn:hover { transform: translateY(-3px); }
+        .quiz-next-btn:focus-visible, .quiz-retry-btn:focus-visible { outline: 3px solid var(--lila); outline-offset: 2px; }
+        .quiz-done { text-align: center; padding: 16px 8px; }
+        .quiz-done .done-buddy { width: 120px; height: auto; }
+        .quiz-done-title { font-family: var(--font-heading); color: var(--navy); font-size: 1.5rem; margin: 8px 0 6px; }
+        .quiz-done-stars { font-size: 2rem; letter-spacing: 8px; color: #f1c40f; margin-bottom: 8px; }
+        .quiz-done-text { color: var(--navy); margin: 0 0 16px; }
+        body.view-tafel #quiz-progress, body.view-tafel #quiz-next-wrap, body.view-tafel #quiz-done { display: none !important; }
+
+        /* Jeder Spiele-Tab hat seine eigene Farbe (alle mit Navy-Text, AA) */
+        #tab-weiterdenken.active { background: var(--primary-yellow); box-shadow: 0 3px 10px rgba(255,217,90,0.55); }
+        #tab-schatz.active { background: #CDC2F5; box-shadow: 0 3px 10px rgba(125,106,230,0.3); }
+        #tab-wortschatz.active { background: var(--accent-coral); box-shadow: 0 3px 10px rgba(249,115,82,0.35); }
+        .weitererzaehlen-card-header .speak-btn { width: 40px; min-height: 40px; font-size: 0.95rem; }
+        .schatz-intro-actions { display: flex; gap: 10px; justify-content: center; align-items: center; }
+
+        /* — Häppchen: große runde Pfeile + Sternenleiste — */
+        .chunk-controls .chunk-arrow {
+            width: 64px; height: 64px; min-width: 64px; min-height: 64px; border-radius: 50%;
+            font-size: 1.6rem; padding: 0; justify-content: center;
+            background: var(--mint); color: var(--navy); border-color: #28a392;
+            box-shadow: 0 4px 14px rgba(47,184,166,0.3);
+        }
+        .chunk-controls .chunk-arrow:hover { background: var(--navy); color: #fff; transform: translateY(-2px); }
+        .chunk-stars { text-align: center; margin-top: 10px; letter-spacing: 4px; }
+        .chunk-stars .star { color: #e8e0c8; font-size: 1.25rem; }
+        .chunk-stars .star.on { color: #f1c40f; text-shadow: 0 0 6px rgba(241,196,15,0.45); }
+
+        /* — „Geschichte geschafft!"-Karte — */
+        .done-card {
+            text-align: center; background: linear-gradient(135deg, #fff9e5 0%, #fff 100%);
+            border: 2px solid var(--primary-yellow); border-radius: 24px;
+            padding: 26px 20px; margin: 4px 0 32px;
+            animation: bubblePop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .done-buddy { width: 110px; height: auto; }
+        .done-star { font-size: 2.2rem; line-height: 1; }
+        .done-title { font-family: var(--font-heading); color: var(--navy); font-size: 1.5rem; margin: 6px 0 16px; }
+        .done-cta {
+            background: var(--mint); color: var(--navy); border-color: #28a392;
+            min-height: 54px; font-size: 1rem; padding: 12px 26px; border-radius: 999px;
+            box-shadow: 0 4px 14px rgba(47,184,166,0.3);
+        }
+        .done-cta:hover { background: var(--navy); color: #fff; }
+
+        /* — Lese-Buddy: das Maskottchen sitzt im Zauberkasten-Header (FAB rechts unten) — */
+        .toolbar-header .header-icon { width: 54px; height: 54px; display: inline-flex; align-items: center; justify-content: center; overflow: visible; }
+        .buddy-img {
+            width: 54px; height: 54px; object-fit: contain;
+            filter: drop-shadow(0 3px 8px rgba(0,0,0,0.18));
+            animation: buddyFloat 4s ease-in-out infinite;
+        }
+        @keyframes buddyFloat {
+            0%, 100% { transform: translateY(0) rotate(-2deg); }
+            50% { transform: translateY(-5px) rotate(2deg); }
+        }
+        .buddy-img.cheer { animation: buddyJump 0.9s cubic-bezier(0.34, 1.56, 0.64, 1); }
+        @keyframes buddyJump {
+            0%, 100% { transform: translateY(0); }
+            30% { transform: translateY(-16px) rotate(-7deg); }
+            60% { transform: translateY(0); }
+            80% { transform: translateY(-7px) rotate(4deg); }
+        }
+        /* Sprechblase: hängt über dem (collapsed) FAB rechts unten */
+        .buddy-bubble {
+            position: absolute; bottom: calc(100% + 10px); right: 0; white-space: nowrap;
+            background: #fff; border: 2px solid var(--primary-yellow); border-radius: 16px;
+            padding: 10px 16px; font-family: var(--font-heading); font-weight: 600;
+            font-size: 1.05rem; color: var(--text-dark);
+            box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+            animation: bubblePop 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .buddy-bubble[hidden] { display: none; }
+        .toolbar-container.collapsed { overflow: visible; }
+        /* Buddy-Aktionsgruppe im Panel */
+        .toolbar-group.group-buddy { background: #F1EEFC; }
+        .buddy-actions { display: flex; flex-direction: column; gap: 8px; }
+        .buddy-menu-btn {
+            display: flex; align-items: center; gap: 12px;
+            min-height: 56px; min-width: 200px;
+            border: none; border-radius: 14px; background: #fff9e5;
+            cursor: pointer; padding: 8px 16px;
+            font-family: var(--font-heading); font-weight: 600; font-size: 1.05rem; color: var(--text-dark);
+            transition: transform 0.15s ease, background 0.15s ease;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .buddy-menu-btn:hover { background: #fff3b8; transform: translateX(3px); }
+        .buddy-menu-btn:active { transform: scale(0.97); }
+        .buddy-menu-btn .bm-icon { font-size: 1.5rem; width: 36px; text-align: center; }
+        .buddy-menu-btn:focus-visible,
+        .speak-btn:focus-visible, .chunk-arrow:focus-visible, .done-cta:focus-visible {
+            outline: 3px solid var(--lila); outline-offset: 2px;
+        }
+        @keyframes bubblePop {
+            from { opacity: 0; transform: translateY(8px) scale(0.9); }
+            to { opacity: 1; transform: none; }
+        }
+        @media (max-width: 767px) {
+            .buddy-img, .toolbar-header .header-icon { width: 46px; height: 46px; }
+            .buddy-menu-btn { min-width: 170px; }
+        }
+
+        /* — „Was ist das?"-Modus: zeigt an, was antippbar ist — */
+        body.explain-mode { cursor: help; }
+        body.explain-mode [data-speak] { outline: 3px dashed var(--accent-coral); outline-offset: 2px; }
+
+        /* — Symbol-first Zauberkasten: großes Icon über kleinem Label — */
+        .toolbar-group-buttons > .tool-btn {
+            flex-direction: column; gap: 4px;
+            min-height: 62px; min-width: 78px; padding: 8px 10px;
+        }
+        .toolbar-group-buttons > .tool-btn .btn-icon { font-size: 1.7em; }
+        .toolbar-group-buttons > .tool-btn .btn-label { font-size: 0.92em; }
+        .font-size-control .tool-btn { min-height: 62px; font-size: 1.1em; }
+
+        /* — Audio-Player-Leiste (fixed bottom, läuft beim Vorlesen mit) — */
+        .player-bar {
+            position: fixed; bottom: 0; left: 0; right: 0; z-index: 4450;
+            display: flex; align-items: center; gap: 12px;
+            background: #fff; border-top: 3px solid var(--mint);
+            padding: 10px 16px calc(10px + env(safe-area-inset-bottom));
+            box-shadow: 0 -6px 24px rgba(43,49,64,0.14);
+        }
+        .player-bar[hidden] { display: none; }
+        .pb-btn {
+            width: 52px; height: 52px; border-radius: 50%; border: none;
+            background: var(--mint); color: var(--navy); font-size: 1.3rem; cursor: pointer;
+            flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center;
+            transition: transform 0.15s ease; -webkit-tap-highlight-color: transparent;
+        }
+        .pb-btn:hover { transform: scale(1.06); }
+        .pb-btn:active { transform: scale(0.93); }
+        .pb-stop { background: var(--cream-light); border: 2px solid var(--border-soft); width: 44px; height: 44px; font-size: 1rem; }
+        .pb-range { flex: 1; accent-color: var(--mint); height: 36px; cursor: pointer; min-width: 0; }
+        .pb-count { font-family: var(--font-heading); font-weight: 600; font-size: 0.9rem; color: var(--navy); min-width: 52px; text-align: center; flex-shrink: 0; }
+        .pb-btn:focus-visible, .pb-range:focus-visible { outline: 3px solid var(--lila); outline-offset: 2px; }
+        /* Inhalt + Zauberkasten-FAB rücken hoch, solange die Leiste sichtbar ist */
+        body.player-active { padding-bottom: 130px; }
+        body.player-active .toolbar-container.collapsed,
+        body.player-active .toolbar-container:not(.collapsed) { bottom: 96px; }
+        @media (max-width: 767px) {
+            body.player-active { padding-bottom: 150px; }
+            body.player-active .toolbar-container.collapsed { bottom: 92px; }
+            body.player-active .toolbar-container:not(.collapsed) { bottom: 86px; }
+            .pb-count { min-width: 44px; font-size: 0.8rem; }
+        }
+
+        /* — Tafel-Modus: Player/Geschafft-Karte/Player-Leiste stören dort nicht — */
+        body.view-tafel .done-card,
+        body.view-tafel .player-bar { display: none !important; }
+        body.view-tafel .buddy-img, body.view-tafel .toolbar-header .header-icon { width: 84px; height: 84px; }
 
         /* 1-Spalten-Fallback wenn Viewport zu schmal für 2-Spalten ist (z.B. Toggle-Test am Desktop) */
         @media (max-width: 1500px) {
@@ -1553,17 +1898,17 @@
 </head>
 <body>
 
-    <button class="fab-tools" onclick="toggleMobileToolbar()" aria-label="Werkzeuge öffnen">🛠️</button>
+    <a href="#main-content" class="skip-link">Zum Inhalt springen</a>
 
     <nav class="main-navbar" aria-label="Hauptnavigation">
         <div class="nav-left">
-            <img src="../bilder/marketing/logo1.png" alt="Lesekumpel Logo" class="nav-logo">
-            <a href="../landingpage.html" class="brand-name">Lesekumpel</a>
+            <span class="nav-logo-box"><img src="../Konzept_Rebranding/logo-lesekumpel-512.webp" alt="Lesekumpel Logo" class="nav-logo"></span>
+            <a href="../landingpage.html" class="brand-name">Lese<span class="brand-accent">kumpel</span></a>
             <div class="nav-links-desktop">
                 <a href="../landingpage.html#mission" class="nav-btn">F&uuml;r euch</a>
                 <a href="../landingpage.html#how-it-works" class="nav-btn">So funktioniert&rsquo;s</a>
                 <a href="../ueber-uns.html" class="nav-btn">&Uuml;ber uns</a>
-                <a href="../demo.html" class="nav-btn">Demo-Texte</a>
+                <a href="../demo.html" class="nav-btn">📚 Bibliothek</a>
                 <a href="../preise.html" class="nav-btn">Preise</a>
                 <a href="../neue-geschichte.html" class="nav-btn">Geschichte erstellen</a>
                 <a href="../mein-konto.html" class="nav-btn">Mein Konto</a>
@@ -1579,10 +1924,9 @@
             <a href="../ueber-uns.html" class="nav-btn" onclick="toggleMenu()">&Uuml;ber uns</a>
             <a href="../demo.html" class="nav-btn" onclick="toggleMenu()">Demo-Texte</a>
             <a href="../preise.html" class="nav-btn" onclick="toggleMenu()">Preise</a>
-            <a href="../neue-geschichte.html" class="nav-btn" onclick="toggleMenu()">Geschichte erstellen</a>
+            <a href="../neue-geschichte.html" class="nav-btn" onclick="toggleMenu()">&#10024; Geschichte erstellen</a>
             <a href="../mein-konto.html" class="nav-btn" onclick="toggleMenu()">Mein Konto</a>
-            <a href="../neue-geschichte.html" class="nav-btn" onclick="toggleMenu()">&#10024; Neue Geschichte</a>
-            <a href="../landingpage.html#registrieren" class="nav-btn" onclick="toggleMenu()">Jetzt registrieren</a>
+            <a href="../landingpage.html#registrieren" class="nav-btn menu-cta" onclick="toggleMenu()">Jetzt registrieren &rarr;</a>
         </div>
     </nav>
 
@@ -1595,17 +1939,18 @@
         <button type="button" class="schatz-banner-close" onclick="endSchatzsuche()" aria-label="Schatzsuche beenden">✕</button>
     </div>
 
-    <main>
+    <main id="main-content">
     <article class="main-card">
         <div class="hero-wrapper">
             <div class="story-hero-cover">
-                <img class="hero-bg" src="https://rala84.github.io/lesekumpel/bilder/warum-schlafen-fledermaeuse-kopfueber-1iqw-1.png" alt="" aria-hidden="true" onerror="this.style.display='none'">
+                <img class="hero-bg" src="https://rala84.github.io/lesekumpel/bilder/warum-schlafen-fledermaeuse-kopfueber-1iqw-1.png" alt="" aria-hidden="true" onerror="this.style.display='none';this.closest('.story-hero-cover').classList.add('no-image')">
                 <div class="hero-overlay"></div>
                 <div class="hero-title-box">
                     <h1 id="main-title">Warum schlafen Fledermäuse kopfüber?</h1>
                 </div>
             </div>
-            <button class="hero-like-btn" id="hero-like-btn" type="button" aria-pressed="false" aria-label="Diese Geschichte in deine Lieblings-Sammlung speichern">
+            <button class="hero-like-btn" id="hero-like-btn" type="button" aria-pressed="false" aria-label="Diese Geschichte in deine Lieblings-Sammlung speichern"
+                    data-speak="Das Herz: Damit speicherst du die Geschichte bei deinen Lieblingen.">
                 <span class="hero-like-heart" aria-hidden="true">🤍</span>
             </button>
             <div class="hero-like-toast" id="hero-like-toast" role="status" aria-live="polite"></div>
@@ -1621,39 +1966,74 @@
         <img src="https://rala84.github.io/lesekumpel/bilder/warum-schlafen-fledermaeuse-kopfueber-1iqw-4.png" alt="Warum schlafen Fledermäuse kopfüber?" class="hero-image" onerror="this.style.display='none'">
 
         <div class="toolbar-container collapsed" id="toolbar">
-            <div class="toolbar-header" onclick="toggleToolbarCollapse()" id="toolbar-close-btn" role="button" tabindex="0" aria-label="Zauberkasten öffnen oder schließen">
+            <div class="buddy-bubble" id="buddy-bubble" hidden>Tipp mich an! 🔊</div>
+            <div class="toolbar-header" onclick="toggleToolbarCollapse()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleToolbarCollapse();}" id="toolbar-close-btn" role="button" tabindex="0" aria-label="Lesekumpel: Hilfe und Werkzeuge öffnen oder schließen"
+                 data-speak="Das bin ich, dein Lesekumpel! Tipp mich an, dann zeige ich dir meine Helfer und Werkzeuge.">
                 <span class="toolbar-header-label">
-                    <span class="header-icon" aria-hidden="true">🪄</span>
-                    <span class="header-text">Zauberkasten</span>
+                    <span class="header-icon" aria-hidden="true"><img class="buddy-img" id="buddy-img" src="https://rala84.github.io/lesekumpel/Konzept_Rebranding/logo-lesekumpel-512.webp" alt=""></span>
+                    <span class="header-text">Lesekumpel</span>
                 </span>
                 <span class="toolbar-toggle-icon" id="toolbar-chevron" aria-hidden="true"></span>
             </div>
             <div class="toolbar-body" id="toolbar-body">
+                <div class="toolbar-group group-buddy">
+                    <div class="toolbar-group-label">Dein Lesekumpel</div>
+                    <div class="buddy-actions">
+                        <button type="button" class="buddy-menu-btn" onclick="buddyAction('read')"
+                                data-speak="Vorlesen: Ich lese dir die ganze Geschichte vor.">
+                            <span class="bm-icon" aria-hidden="true">▶</span><span class="bm-label">Vorlesen</span>
+                        </button>
+                        <button type="button" class="buddy-menu-btn" onclick="buddyAction('explain')"
+                                data-speak="Was ist das: Tipp danach auf einen Knopf, und ich erkläre ihn dir.">
+                            <span class="bm-icon" aria-hidden="true">❓</span><span class="bm-label">Was ist das?</span>
+                        </button>
+                        <button type="button" class="buddy-menu-btn" onclick="buddyAction('help')"
+                                data-speak="Hilfe: Ich erkläre dir die ganze Seite.">
+                            <span class="bm-icon" aria-hidden="true">💡</span><span class="bm-label">Hilfe</span>
+                        </button>
+                    </div>
+                </div>
                 <div class="toolbar-group group-text">
                     <div class="toolbar-group-label">Text</div>
                     <div class="toolbar-group-buttons">
-                        <button class="tool-btn btn-coral" onclick="toggleSummaryMode()" id="btn-summary" aria-label="Einfache Sprache"><span class="btn-icon">📖</span> Einfach</button>
-                        <button class="tool-btn" onclick="toggleSyllables()" id="btn-syllables" aria-label="Silbentrennung"><span class="btn-icon">✂️</span> Silben</button>
-                        <button class="tool-btn" onclick="toggleEmojis()" id="btn-emojis" aria-label="Gefühle mit Emojis"><span class="btn-icon">😊</span> Emojis</button>
+                        <button class="tool-btn btn-coral" onclick="toggleSummaryMode()" id="btn-summary" aria-label="Einfache Sprache"
+                                data-speak="Einfach: Ich zeige dir die Geschichte in kurzen, einfachen Sätzen."><span class="btn-icon">📖</span> <span class="btn-label">Einfach</span></button>
+                        <button class="tool-btn" onclick="toggleSyllables()" id="btn-syllables" aria-label="Silbentrennung"
+                                data-speak="Silben: Ich male die Wortteile bunt an. Das hilft beim Lesen."><span class="btn-icon">✂️</span> <span class="btn-label">Silben</span></button>
+                        <button class="tool-btn" onclick="toggleEmojis()" id="btn-emojis" aria-label="Gefühle mit Emojis"
+                                data-speak="Emojis: Ich zeige kleine Gesichter bei den Gefühlen in der Geschichte."><span class="btn-icon">😊</span> <span class="btn-label">Emojis</span></button>
                     </div>
                 </div>
                 <div class="toolbar-group group-view">
                     <div class="toolbar-group-label">Ansicht</div>
                     <div class="toolbar-group-buttons">
-                        <button class="tool-btn" onclick="toggleViewMode()" id="view-toggle-btn" aria-label="Text in Häppchen"><span class="btn-icon">🧩</span> Häppchen</button>
-                        <button class="tool-btn" onclick="toggleLeselinien()" id="btn-leselinien" aria-label="Leselinien"><span class="btn-icon">📏</span> Linien</button>
-                        <button class="tool-btn" onclick="toggleFahrplan()" id="btn-fahrplan" aria-label="Fahrplan"><span class="btn-icon">🗺️</span> Fahrplan</button>
+                        <button class="tool-btn" onclick="toggleViewMode()" id="view-toggle-btn" aria-label="Text in Häppchen"
+                                data-speak="Häppchen: Ich zeige dir immer nur ein kleines Stück der Geschichte."><span class="btn-icon">🧩</span> <span class="btn-label">Häppchen</span></button>
+                        <button class="tool-btn" onclick="toggleLeselinien()" id="btn-leselinien" aria-label="Leselinien"
+                                data-speak="Linien: Ich male Linien unter den Text. Das hilft, in der Zeile zu bleiben."><span class="btn-icon">📏</span> <span class="btn-label">Linien</span></button>
+                        <button class="tool-btn" onclick="toggleFahrplan()" id="btn-fahrplan" aria-label="Fahrplan"
+                                data-speak="Fahrplan: Ich gebe jedem Absatz eine Nummer, damit du weißt, wo du bist."><span class="btn-icon">🗺️</span> <span class="btn-label">Fahrplan</span></button>
                         <div class="font-size-control">
-                            <button class="tool-btn" onclick="changeFontSize(-2)" aria-label="Schrift kleiner">A−</button>
-                            <button class="tool-btn" onclick="changeFontSize(2)" aria-label="Schrift größer">A+</button>
+                            <button class="tool-btn" onclick="changeFontSize(-2)" aria-label="Schrift kleiner" data-speak="Hier wird die Schrift kleiner.">A−</button>
+                            <button class="tool-btn" onclick="changeFontSize(2)" aria-label="Schrift größer" data-speak="Hier wird die Schrift größer.">A+</button>
                         </div>
                     </div>
                 </div>
                 <div class="toolbar-group group-extra">
                     <div class="toolbar-group-label">Extras</div>
                     <div class="toolbar-group-buttons">
-                        <button class="tool-btn" onclick="toggleTTS()" id="btn-tts" aria-label="Vorlesen"><span class="btn-icon">🔊</span> Vorlesen</button>
-                        <button class="tool-btn" onclick="toggleWordReader()" id="btn-word-reader" aria-label="Wörter hören"><span class="btn-icon">👂</span> Wörter hören</button>
+                        <button class="tool-btn" onclick="toggleWordReader()" id="btn-word-reader" aria-label="Wörter hören"
+                                data-speak="Wörter hören: Tipp danach auf ein Wort in der Geschichte, und ich spreche es dir vor."><span class="btn-icon">👂</span> <span class="btn-label">Wörter hören</span></button>
+                        <button type="button" class="tool-btn" onclick="toggleDyslexia(this)" id="btn-dyslexia" aria-label="Lesefreundliche Schrift"
+                                data-speak="Lesefreundlich: Ich mache mehr Platz zwischen den Buchstaben und Wörtern."><span class="btn-icon">💛</span> <span class="btn-label">Lesefreundlich</span></button>
+                        <button type="button" class="tool-btn" onclick="toggleContrast(this)" id="btn-contrast" aria-label="Hoher Kontrast"
+                                data-speak="Kontrast: Ich mache die Schrift extra dunkel und den Hintergrund ganz hell."><span class="btn-icon">🌓</span> <span class="btn-label">Kontrast</span></button>
+                        <div class="font-size-control" role="group" aria-label="Vorlese-Tempo">
+                            <button type="button" class="tool-btn" id="btn-tempo-slow" onclick="setSpeechRate(0.7)" aria-label="Langsam vorlesen"
+                                    data-speak="Schildkröte: Ich lese ganz langsam vor.">🐢</button>
+                            <button type="button" class="tool-btn" id="btn-tempo-fast" onclick="setSpeechRate(0.95)" aria-label="Normal schnell vorlesen"
+                                    data-speak="Hase: Ich lese normal schnell vor.">🐇</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -1665,10 +2045,19 @@
             <div id="chunk-display"></div>
             <div id="swipe-hint" class="swipe-hint" style="display:none;">← wischen zum Blättern →</div>
             <div class="chunk-controls">
-                <button class="tool-btn" onclick="prevChunk()">← Zurück</button>
+                <button type="button" class="tool-btn chunk-arrow" onclick="prevChunk()" aria-label="Ein Häppchen zurück" data-speak="Der Pfeil nach links blättert ein Häppchen zurück.">←</button>
                 <div id="chunk-progress" class="progress-ring" style="--p: 20%;">1/5</div>
-                <button class="tool-btn" onclick="nextChunk()" id="btn-next-chunk">Weiter →</button>
+                <button type="button" class="tool-btn chunk-arrow" onclick="nextChunk()" id="btn-next-chunk" aria-label="Ein Häppchen weiter" data-speak="Der Pfeil nach rechts blättert ein Häppchen weiter.">→</button>
             </div>
+            <div id="chunk-stars" class="chunk-stars" aria-hidden="true"></div>
+        </div>
+
+        <div class="done-card" id="done-card" hidden>
+            <img class="done-buddy" src="https://rala84.github.io/lesekumpel/Konzept_Rebranding/logo-lesekumpel-512.webp" alt="" aria-hidden="true">
+            <div class="done-star" aria-hidden="true">⭐</div>
+            <h2 class="done-title">Geschichte geschafft!</h2>
+            <button class="tool-btn done-cta" type="button" onclick="goToGames()"
+                    data-speak="Hier geht es zu den Spielen über die Geschichte.">🎮 Zur Spielzeit</button>
         </div>
 
         <div class="author-box">
@@ -1682,30 +2071,35 @@
         </div>
 
         <div class="activity-hub">
-            <div class="section-title">🎮 Spielzeit!</div>
+            <h2 class="section-title">🎮 Spielzeit!</h2>
             <div class="activity-tabs" role="tablist" aria-label="Spielformate">
                 <button class="activity-tab active" role="tab" aria-selected="true"
                         aria-controls="panel-quiz" id="tab-quiz" data-tab="quiz"
+                        data-speak="Quiz: Hier beantwortest du Fragen zur Geschichte."
                         onclick="switchActivityTab('quiz')">
                     <span class="tab-icon">🧠</span><span class="tab-label">Quiz</span>
                 </button>
                 <button class="activity-tab" role="tab" aria-selected="false"
                         aria-controls="panel-weiterdenken" id="tab-weiterdenken" data-tab="weiterdenken"
+                        data-speak="Weiterdenken: Hier gibt es Ideen, wie die Geschichte weitergehen könnte."
                         onclick="switchActivityTab('weiterdenken')">
                     <span class="tab-icon">🌟</span><span class="tab-label">Weiterdenken</span>
                 </button>
                 <button class="activity-tab" role="tab" aria-selected="false"
                         aria-controls="panel-schatz" id="tab-schatz" data-tab="schatz"
+                        data-speak="Schatz: Hier suchst du versteckte Wörter in der Geschichte."
                         onclick="switchActivityTab('schatz')">
                     <span class="tab-icon">🔍</span><span class="tab-label">Schatz</span>
                 </button>
                 <button class="activity-tab" role="tab" aria-selected="false"
                         aria-controls="panel-wortschatz" id="tab-wortschatz" data-tab="wortschatz"
+                        data-speak="Wortsammlung: Hier hörst du neue Wörter und was sie bedeuten."
                         onclick="switchActivityTab('wortschatz')">
                     <span class="tab-icon">📖</span><span class="tab-label">Wortsammlung</span>
                 </button>
             </div>
             <div id="panel-quiz" class="activity-panel active" role="tabpanel" aria-labelledby="tab-quiz">
+                <div id="quiz-status" class="sr-only" role="status" aria-live="polite"></div>
                 <div id="quiz-wrapper" class="quiz-card"></div>
             </div>
             <div id="panel-weiterdenken" class="activity-panel" role="tabpanel" aria-labelledby="tab-weiterdenken">
@@ -1723,12 +2117,12 @@
         </div>
 
         <div class="related-section">
-            <div class="section-title">Das könnte dir auch gefallen</div>
+            <h2 class="section-title">Das könnte dir auch gefallen</h2>
             <div class="related-grid"></div>
         </div>
 
         <div class="comments-section">
-            <div class="section-title comments-title">💬 Was sagst du zur Geschichte?</div>
+            <h2 class="section-title comments-title">💬 Was sagst du zur Geschichte?</h2>
 
             <div class="comments-list">
                 <div class="comment">
@@ -1779,7 +2173,8 @@
                         Deine Reaktion: <span id="composer-counter">0 von 3</span>
                     </div>
                     <div class="composer-chips" id="composer-chips"></div>
-                    <button class="composer-add-btn" id="composer-add-btn" type="button" aria-expanded="false" aria-controls="composer-emoji-picker">
+                    <button class="composer-add-btn" id="composer-add-btn" type="button" aria-expanded="false" aria-controls="composer-emoji-picker"
+                            data-speak="Reaktion: Sag mit kleinen Bildern, wie dir die Geschichte gefallen hat.">
                         <span aria-hidden="true">😊</span> + Reaktion hinzufügen
                     </button>
                 </div>
@@ -1818,11 +2213,22 @@
                 </div>
             </div>
             <div class="report-trigger-wrapper">
-                <button class="report-link" type="button" id="report-open">🚩 Inhalt melden</button>
+                <button class="report-link" type="button" id="report-open" data-speak="Melden: Wenn dich etwas an der Geschichte stört, sag es uns hier — am besten zusammen mit einem Erwachsenen.">🚩 Inhalt melden</button>
             </div>
         </div>
     </article>
     </main>
+
+    <!-- Audio-Player-Leiste: erscheint beim Vorlesen, läuft mit, pausierbar, spulbar -->
+    <div class="player-bar" id="player-bar" hidden>
+        <button type="button" class="pb-btn" id="pb-toggle" onclick="playerPauseResume()" aria-label="Pause"
+                data-speak="Pause und weiter: Hier hältst du das Vorlesen an oder machst weiter.">⏸</button>
+        <input type="range" class="pb-range" id="pb-range" min="0" max="100" value="0" step="1" aria-label="Vorlese-Position"
+               data-speak="Der Balken zeigt, wo wir in der Geschichte sind. Schiebe ihn, um zu springen.">
+        <span class="pb-count" id="pb-count" aria-hidden="true">0/0</span>
+        <button type="button" class="pb-btn pb-stop" id="pb-stop" onclick="stopPlayer()" aria-label="Vorlesen beenden"
+                data-speak="Das X beendet das Vorlesen.">✕</button>
+    </div>
 
     <footer>
         <p>Erstellt von deinem KI-Lesekumpel 🤖</p>
@@ -1854,6 +2260,139 @@
 
         const storyRaw = rawStory.replace(/\n/g, "<br>");
         const summaryRaw = rawSummary.replace(/\n/g, "<br>");
+
+        // HTML-Escape für alle LLM-generierten Inhalte (Quiz, Weiterdenken, Wortschatz, Schatz):
+        // ein "<" oder "&" vom Modell darf das Markup nicht zerbrechen.
+        function escapeHtml(s) {
+            return String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c]);
+        }
+
+        // Bewegungs-Empfindlichkeit: Konfetti/Partikel/Smooth-Scroll abschalten
+        const REDUCED_MOTION = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+        /* ── Audio-Kern: zentrale Sprachausgabe ──────────────────────────
+           Alles auf der Seite spricht über diese eine Funktion (immer nur
+           eine Stimme gleichzeitig). Der Token verhindert, dass das onend
+           einer abgebrochenen Äußerung den Zustand der neuen überschreibt. */
+        let SPEECH_RATE = 0.9;
+        try { SPEECH_RATE = parseFloat(localStorage.getItem('lesekumpel-tts-rate')) || 0.9; } catch(e) {}
+        /* Lokale deutsche Stimme bevorzugen: Cloud-Stimmen (z. B. "Google Deutsch"
+           in Chrome) liefern KEINE boundary-Events — ohne sie steht das
+           Karaoke-Highlight still. Lokale Stimmen können beides und gehen offline. */
+        let _germanVoice = null;
+        function pickGermanVoice() {
+            if (_germanVoice) return _germanVoice;
+            const vs = ('speechSynthesis' in window) ? window.speechSynthesis.getVoices() : [];
+            _germanVoice = vs.find(v => v.lang && v.lang.toLowerCase().startsWith('de') && v.localService)
+                || vs.find(v => v.lang && v.lang.toLowerCase().startsWith('de'))
+                || null;
+            return _germanVoice;
+        }
+        if ('speechSynthesis' in window && 'onvoiceschanged' in window.speechSynthesis) {
+            window.speechSynthesis.onvoiceschanged = () => { _germanVoice = null; pickGermanVoice(); };
+        }
+        // Stimmen laden asynchron — getVoices() früh anstoßen, damit beim ersten
+        // speak() schon eine lokale Stimme wählbar ist
+        if ('speechSynthesis' in window) { try { window.speechSynthesis.getVoices(); } catch(e) {} }
+
+        let _speakToken = 0;
+        function speak(text, opts = {}) {
+            if (!('speechSynthesis' in window) || !text) return;
+            // Fremder speak() während des Vorlesens (z. B. 🔊-Knopf im Quiz):
+            // Player sauber pausieren statt ihn still abzuwürgen
+            if (!opts._player && typeof player !== 'undefined' && player.active && !player.paused) {
+                playerPauseResume();
+            }
+            const token = ++_speakToken;
+            window.speechSynthesis.cancel();
+            const u = new SpeechSynthesisUtterance(text);
+            u.lang = 'de-DE';
+            const voice = pickGermanVoice();
+            if (voice) u.voice = voice;
+            u.rate = opts.rate || SPEECH_RATE;
+            if (opts.onboundary) u.onboundary = (ev) => { if (token === _speakToken) opts.onboundary(ev); };
+            const finish = () => { if (token === _speakToken && opts.onend) opts.onend(); };
+            u.onend = finish;
+            u.onerror = finish;
+            window.speechSynthesis.speak(u);
+        }
+        function stopSpeaking() { _speakToken++; window.speechSynthesis.cancel(); }
+
+        function setSpeechRate(r) {
+            SPEECH_RATE = r;
+            try { localStorage.setItem('lesekumpel-tts-rate', String(r)); } catch(e) {}
+            updateTempoButtons();
+            speak(r < 0.85 ? 'Ich lese jetzt ganz langsam vor.' : 'Ich lese jetzt normal schnell vor.');
+        }
+        function updateTempoButtons() {
+            const slow = document.getElementById('btn-tempo-slow'), fast = document.getElementById('btn-tempo-fast');
+            if (slow) slow.classList.toggle('active', SPEECH_RATE < 0.85);
+            if (fast) fast.classList.toggle('active', SPEECH_RATE >= 0.85);
+        }
+
+        // Spricht den data-say-Text eines Buttons (für Quiz, Spiele, Wortschatz)
+        function sayThis(btn) { speak(btn.getAttribute('data-say')); }
+
+        /* ── „Was ist das?"-Modus ─────────────────────────────────────────
+           Der nächste Tap auf ein Element SPRICHT seine Erklärung (data-speak)
+           statt die Aktion auszuführen. Danach endet der Modus von selbst. */
+        let explainMode = false;
+        function startExplainMode() {
+            explainMode = true;
+            document.body.classList.add('explain-mode');
+            speak('Tipp jetzt auf einen Knopf. Ich sage dir, was er macht.');
+        }
+        document.addEventListener('click', function(e) {
+            if (!explainMode) return;
+            e.preventDefault();
+            e.stopPropagation();
+            explainMode = false;
+            document.body.classList.remove('explain-mode');
+            const el = e.target.closest('[data-speak]');
+            if (el) speak(el.getAttribute('data-speak'));
+            else if (e.target.closest('.story-text')) speak('Das ist die Geschichte. Tipp unten rechts auf mich und dann auf Vorlesen, dann lese ich sie dir vor.');
+            else speak('Hm, dazu weiß ich nichts. Tipp auf einen Knopf!');
+        }, true);
+
+        /* ── Lese-Buddy (im Zauberkasten-FAB verschmolzen) ────────────────
+           Das Maskottchen IST der Werkzeugkasten-Knopf rechts unten.
+           Bei Neurotyp Autismus bleibt es still (keine Sprechblase, kein
+           Jubel-Audio) — Reizarmut. */
+        function buddyAction(what) {
+            // Panel schließen, dann Aktion
+            const tb = document.getElementById('toolbar');
+            if (tb && !tb.classList.contains('collapsed')) tb.classList.add('collapsed');
+            if (what === 'read') {
+                togglePlayer();
+            } else if (what === 'explain') {
+                startExplainMode();
+            } else if (what === 'help') {
+                speak('Hallo, ich bin dein Lesekumpel — der Knopf rechts unten! Oben steht die Geschichte. Tipp bei mir auf Vorlesen, dann lese ich sie dir vor. Bei mir findest du auch Werkzeuge für die Schrift. Und weiter unten warten Spiele auf dich!');
+            }
+        }
+        function buddyCheer(text) {
+            if (isAutismus) return;
+            speak(text);
+            if (!REDUCED_MOTION) {
+                const img = document.getElementById('buddy-img');
+                if (img) {
+                    img.classList.remove('cheer'); void img.offsetWidth; img.classList.add('cheer');
+                    setTimeout(() => img.classList.remove('cheer'), 1000);
+                }
+            }
+        }
+        function initBuddy() {
+            // Erstbesuch: stille Sprechblase überm FAB (kein Auto-Audio — iOS & Reizarmut)
+            if (isAutismus) return;
+            try {
+                if (!localStorage.getItem('lesekumpel-buddy-intro')) {
+                    localStorage.setItem('lesekumpel-buddy-intro', '1');
+                    const bubble = document.getElementById('buddy-bubble');
+                    bubble.hidden = false;
+                    setTimeout(() => { bubble.hidden = true; }, 9000);
+                }
+            } catch(e) {}
+        }
 
         // Dictionary Parser
         let dictionary = {};
@@ -2001,11 +2540,11 @@
 
             // HTML zusammenbauen: Überschriften als <h3>, Text als <p>
             let html = allGroups.map((group, i) => {
-                let imgTag = imgPositions[i] ? `<img src="${imgPositions[i]}" alt="Illustration" class="story-inline-img" onerror="this.style.display='none'">` : '';
+                let imgTag = imgPositions[i] ? `<img src="${imgPositions[i]}" alt="Illustration zur Geschichte" class="story-inline-img" loading="lazy" decoding="async" onerror="this.style.display='none'">` : '';
                 let headingHtml = '';
                 if (group.heading) {
                     let processedH = group.heading.split(/\s+/).map(w => processWord(w)).join(' ');
-                    headingHtml = `<h3 style="margin:1.2em 0 0.3em 0; font-size:0.75em; color:var(--accent-teal); font-family:var(--font-heading); font-weight:600; letter-spacing:0.03em; opacity:0.75;">${processedH}</h3>`;
+                    headingHtml = `<h3 style="margin:1.2em 0 0.3em 0; font-size:0.75em; color:#1A8676; font-family:var(--font-heading); font-weight:600; letter-spacing:0.03em;">${processedH}</h3>`;
                 }
                 let textHtml = '';
                 if (group.text) {
@@ -2049,26 +2588,114 @@
             return `<span class="word-interactive" style="${style}" onclick="clickWord(this, '${clean}')">${display}</span>`;
         }
 
+        /* ── Schritt-Quiz: eine Frage zur Zeit, Sterne sammeln, Belohnung am Ende ── */
+        let quizIdx = 0;
+        let quizStars = [];
+
         function renderQuiz() {
-            let qHTML = "";
-            quizData.forEach((item, i) => {
-                qHTML += `<div class="quiz-question" data-correct="${item.correct}" style="margin-bottom:30px; border-bottom:1px dashed #eee; padding-bottom:20px;">
-                            <div style="font-weight:bold; margin-bottom:15px; color:var(--accent-teal);">${i+1}. ${item.q}</div>`;
-                item.a.forEach((ans, j) => {
-                    const isCorrect = (j === item.correct);
-                    qHTML += `<div class="quiz-option" onclick="checkQuizAnswer(this, ${isCorrect})"><span>${ans}</span></div>`;
-                });
-                qHTML += `<button type="button" class="quiz-reveal-btn" onclick="revealQuizAnswer(this)">💡 Auflösen</button>`;
-                qHTML += `</div>`;
-            });
             const quizWrapper = document.getElementById('quiz-wrapper');
             const tab = document.querySelector('[data-tab="quiz"]');
             const panel = document.getElementById('panel-quiz');
-            if (quizData && quizData.length > 0) {
-                quizWrapper.innerHTML = qHTML;
-            } else {
+            if (!quizData || quizData.length === 0) {
                 if (tab) tab.style.display = 'none';
                 if (panel) panel.style.display = 'none';
+                return;
+            }
+            quizIdx = 0;
+            quizStars = quizData.map(() => false);
+            const letters = ['A', 'B', 'C', 'D', 'E'];
+            let qHTML = `
+                <div class="quiz-progress" id="quiz-progress" data-speak="Hier siehst du, bei welcher Frage du bist und wie viele Sterne du schon hast.">
+                    <span class="qp-stars" id="qp-stars" aria-hidden="true"></span>
+                    <span class="qp-label" id="qp-label"></span>
+                </div>`;
+            quizData.forEach((item, i) => {
+                qHTML += `<div class="quiz-question" data-correct="${item.correct}" data-qidx="${i}">
+                            <div class="quiz-q-row">
+                                <button type="button" class="speak-btn" data-say="${escapeHtml(item.q)}" onclick="sayThis(this)" aria-label="Frage vorlesen">🔊</button>
+                                <h3 class="quiz-q-title">${escapeHtml(item.q)}</h3>
+                            </div>`;
+                item.a.forEach((ans, j) => {
+                    const isCorrect = (j === item.correct);
+                    qHTML += `<div class="quiz-answer-row">
+                                <button type="button" class="quiz-option q-col-${j % 3}" onclick="checkQuizAnswer(this, ${isCorrect})">
+                                    <span class="q-letter" aria-hidden="true">${letters[j] || '•'}</span>
+                                    <span class="q-answer-text">${escapeHtml(ans)}</span>
+                                </button>
+                                <button type="button" class="speak-btn" data-say="${escapeHtml(ans)}" onclick="sayThis(this)" aria-label="Antwort vorlesen">🔊</button>
+                              </div>`;
+                });
+                qHTML += `<button type="button" class="quiz-reveal-btn" onclick="revealQuizAnswer(this)" data-speak="Zeigt dir die richtige Antwort.">💡 Lösung zeigen</button>`;
+                qHTML += `</div>`;
+            });
+            qHTML += `
+                <div class="quiz-next-wrap" id="quiz-next-wrap" hidden>
+                    <button type="button" class="quiz-next-btn" id="quiz-next-btn" onclick="quizNext()" data-speak="Weiter zur nächsten Frage.">Weiter ➜</button>
+                </div>
+                <div class="quiz-done" id="quiz-done" hidden>
+                    <img class="done-buddy" src="https://rala84.github.io/lesekumpel/Konzept_Rebranding/logo-lesekumpel-512.webp" alt="" aria-hidden="true">
+                    <h3 class="quiz-done-title">Quiz geschafft!</h3>
+                    <div class="quiz-done-stars" id="quiz-done-stars" aria-hidden="true"></div>
+                    <p class="quiz-done-text" id="quiz-done-text"></p>
+                    <button type="button" class="quiz-retry-btn" onclick="renderQuiz()" data-speak="Spiel das Quiz noch einmal von vorn.">🔄 Nochmal spielen</button>
+                </div>`;
+            quizWrapper.innerHTML = qHTML;
+            showQuizQuestion(0);
+        }
+
+        function showQuizQuestion(i) {
+            quizIdx = i;
+            document.querySelectorAll('#quiz-wrapper .quiz-question').forEach((q, j) => q.classList.toggle('q-active', j === i));
+            const nextWrap = document.getElementById('quiz-next-wrap');
+            if (nextWrap) nextWrap.hidden = true;
+            const done = document.getElementById('quiz-done');
+            if (done) done.hidden = true;
+            const prog = document.getElementById('quiz-progress');
+            if (prog) prog.hidden = false;
+            updateQuizProgress();
+        }
+
+        function updateQuizProgress() {
+            const stars = document.getElementById('qp-stars');
+            const label = document.getElementById('qp-label');
+            if (stars) stars.textContent = quizStars.map(s => s ? '⭐' : '☆').join(' ');
+            if (label) label.innerHTML = `Frage <b>${quizIdx + 1}</b> von ${quizData.length}`;
+        }
+
+        function quizShowNext() {
+            const wrap = document.getElementById('quiz-next-wrap');
+            const btn = document.getElementById('quiz-next-btn');
+            if (!wrap || !btn) return;
+            const last = quizIdx >= quizData.length - 1;
+            btn.textContent = last ? 'Fertig! 🎉' : 'Weiter ➜';
+            btn.setAttribute('data-speak', last ? 'Fertig! Zeig mir mein Ergebnis.' : 'Weiter zur nächsten Frage.');
+            wrap.hidden = false;
+        }
+
+        function quizNext() {
+            if (quizIdx < quizData.length - 1) showQuizQuestion(quizIdx + 1);
+            else quizFinish();
+        }
+
+        function quizFinish() {
+            document.querySelectorAll('#quiz-wrapper .quiz-question').forEach(q => q.classList.remove('q-active'));
+            const nextWrap = document.getElementById('quiz-next-wrap');
+            if (nextWrap) nextWrap.hidden = true;
+            const prog = document.getElementById('quiz-progress');
+            if (prog) prog.hidden = true;
+            const earned = quizStars.filter(Boolean).length;
+            document.getElementById('quiz-done-stars').textContent = quizStars.map(s => s ? '⭐' : '☆').join(' ');
+            document.getElementById('quiz-done-text').textContent = earned === quizData.length
+                ? 'Alle richtig! Du bist ein Quiz-Star!'
+                : `Du hast ${earned} von ${quizData.length} Sternen gesammelt.`;
+            document.getElementById('quiz-done').hidden = false;
+            // Auch hier kein Auto-Audio — Konfetti und Buddy-Sprung feiern stumm
+            if (earned === quizData.length) {
+                showConfetti();
+                if (!REDUCED_MOTION) {
+                    const img = document.getElementById('buddy-img');
+                    if (img) { img.classList.remove('cheer'); void img.offsetWidth; img.classList.add('cheer'); setTimeout(() => img.classList.remove('cheer'), 1000); }
+                }
             }
         }
 
@@ -2083,18 +2710,19 @@
             }
             const introEl = document.querySelector('.weitererzaehlen-intro');
             if (data.frage && introEl) {
-                introEl.innerHTML = data.frage + ' <span style="display:block; font-size:0.85em; margin-top:4px; opacity:0.75;">Hier gibt es kein richtig oder falsch.</span>';
+                introEl.innerHTML = escapeHtml(data.frage) + ' <span style="display:block; font-size:0.85em; margin-top:4px; opacity:0.75;">Hier gibt es kein richtig oder falsch.</span>';
             }
             let html = '';
             data.optionen.forEach((opt, i) => {
                 html += `<div class="weitererzaehlen-card" onclick="toggleWeitererzaehlen(${i})" id="wet-card-${i}">
                             <div class="weitererzaehlen-card-header">
-                                <span class="weitererzaehlen-emoji">${opt.emoji || '✨'}</span>
-                                <span class="weitererzaehlen-titel">${opt.titel || ''}</span>
+                                <span class="weitererzaehlen-emoji">${escapeHtml(opt.emoji || '✨')}</span>
+                                <span class="weitererzaehlen-titel">${escapeHtml(opt.titel || '')}</span>
+                                <button type="button" class="speak-btn" data-say="${escapeHtml((opt.titel || '') + '. ' + (opt.text || ''))}" onclick="event.stopPropagation();sayThis(this)" aria-label="Idee vorlesen">🔊</button>
                                 <span class="weitererzaehlen-chevron">▼</span>
                             </div>
                             <div class="weitererzaehlen-text">
-                                <div class="weitererzaehlen-text-body">${opt.text || ''}</div>
+                                <div class="weitererzaehlen-text-body">${escapeHtml(opt.text || '')}</div>
                                 <div class="weitererzaehlen-hinweis">So könnte es sein — oder ganz anders. Was denkst du?</div>
                             </div>
                         </div>`;
@@ -2164,15 +2792,15 @@
             }
 
             const listHtml = items.map(it => {
-                const safeWord = it.wort.replace(/'/g, "\\'");
                 return `
                     <li class="wortschatz-item">
                         <div class="wortschatz-item-text">
-                            <span class="wortschatz-wort">${it.wort}</span>
-                            <span class="wortschatz-bedeutung">${it.bedeutung}</span>
+                            <span class="wortschatz-wort">${escapeHtml(it.wort)}</span>
+                            <span class="wortschatz-bedeutung">${escapeHtml(it.bedeutung)}</span>
                         </div>
-                        <button type="button" class="wortschatz-play" aria-label="${it.wort} vorlesen"
-                                onclick="speakWortschatzItem(this, '${safeWord}')">🔊</button>
+                        <button type="button" class="wortschatz-play" aria-label="${escapeHtml(it.wort)} mit Erklärung vorlesen"
+                                data-wort="${escapeHtml(it.wort)}" data-bedeutung="${escapeHtml(it.bedeutung)}"
+                                onclick="speakWortschatzItem(this)">🔊</button>
                     </li>`;
             }).join('');
 
@@ -2181,16 +2809,12 @@
                 <ul class="wortschatz-list">${listHtml}</ul>`;
         }
 
-        function speakWortschatzItem(btn, word) {
-            window.speechSynthesis.cancel();
+        function speakWortschatzItem(btn) {
             document.querySelectorAll('.wortschatz-play.active').forEach(b => b.classList.remove('active'));
-            const u = new SpeechSynthesisUtterance(word);
-            u.lang = 'de-DE';
-            u.rate = 0.9;
-            u.onend = function() { btn.classList.remove('active'); };
-            u.onerror = function() { btn.classList.remove('active'); };
+            // Wort UND Erklärung vorlesen — Nichtleser bekommen sonst nur das nackte Wort
+            const text = btn.dataset.wort + '. Das bedeutet: ' + btn.dataset.bedeutung;
             btn.classList.add('active');
-            window.speechSynthesis.speak(u);
+            speak(text, { onend: () => btn.classList.remove('active') });
         }
 
         // --- WORT-SCHATZSUCHE ---
@@ -2217,27 +2841,30 @@
             const buttonLabel = found > 0 ? 'Weitersuchen' : 'Los geht’s!';
             panel.innerHTML = `
                 <div class="schatz-intro-card">
-                    <span class="schatz-intro-emoji">${data.emoji || '🔍'}</span>
+                    <span class="schatz-intro-emoji">${escapeHtml(data.emoji || '🔍')}</span>
                     <h3 class="schatz-intro-title">Schatz-Suche</h3>
-                    <p class="schatz-intro-thema">„${data.thema || ''}“</p>
-                    <p class="schatz-intro-text">${data.einleitung || 'Finde versteckte Wörter im Text. Tippe sie einfach an!'}</p>
+                    <p class="schatz-intro-thema">„${escapeHtml(data.thema || '')}“</p>
+                    <p class="schatz-intro-text">${escapeHtml(data.einleitung || 'Finde versteckte Wörter im Text. Tippe sie einfach an!')}</p>
                     <div class="schatz-progress">Gefunden: <span class="schatz-progress-number">${found}</span> / ${data.ziel}</div>
-                    <button type="button" class="schatz-start-btn" onclick="startSchatzsuche()">
-                        <span>🔍</span><span>${buttonLabel}</span>
-                    </button>
+                    <div class="schatz-intro-actions">
+                        <button type="button" class="speak-btn" data-say="${escapeHtml('Schatz-Suche! ' + (data.einleitung || 'Finde versteckte Wörter im Text. Tippe sie einfach an!') + ' Du suchst: ' + (data.thema || ''))}" onclick="sayThis(this)" aria-label="Erklärung vorlesen">🔊</button>
+                        <button type="button" class="schatz-start-btn" onclick="startSchatzsuche()" data-speak="Hier startest du die Schatz-Suche im Text.">
+                            <span>🔍</span><span>${buttonLabel}</span>
+                        </button>
+                    </div>
                 </div>`;
         }
 
         function renderSchatzComplete(panel, data) {
             const chips = schatzState.found.map(w => {
                 const pretty = w.charAt(0).toUpperCase() + w.slice(1);
-                return `<li class="schatz-found-chip">${pretty}</li>`;
+                return `<li class="schatz-found-chip">${escapeHtml(pretty)}</li>`;
             }).join('');
             panel.innerHTML = `
                 <div class="schatz-complete">
                     <span class="schatz-complete-emoji">🏆</span>
                     <h3 class="schatz-complete-title">Schatz gefunden!</h3>
-                    <p class="schatz-complete-text">Du hast ${data.ziel} ${(data.thema || '').toLowerCase()} entdeckt:</p>
+                    <p class="schatz-complete-text">Du hast ${data.ziel} ${escapeHtml((data.thema || '').toLowerCase())} entdeckt:</p>
                     <ul class="schatz-found-list">${chips}</ul>
                     <button type="button" class="schatz-start-btn" onclick="resetSchatzsuche()">
                         <span>🔄</span><span>Nochmal spielen</span>
@@ -2252,7 +2879,7 @@
             updateSchatzBanner();
             const chunkVisible = !document.getElementById('chunk-view').classList.contains('hidden');
             const target = chunkVisible ? document.getElementById('chunk-view') : document.getElementById('full-text-view');
-            if (target) target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            if (target) target.scrollIntoView({ behavior: REDUCED_MOTION ? 'auto' : 'smooth', block: 'start' });
         }
 
         function endSchatzsuche() {
@@ -2282,6 +2909,9 @@
                 updateSchatzBanner();
                 if (schatzState.found.length >= schatzsucheData.ziel) {
                     showSchatzsucheComplete();
+                } else {
+                    const rest = schatzsucheData.ziel - schatzState.found.length;
+                    speak(rest === 1 ? 'Toll! Nur noch eins!' : 'Toll! Noch ' + rest + '!');
                 }
             } else if (!isSchatz) {
                 el.classList.add('word-schatz-miss');
@@ -2314,6 +2944,7 @@
         function showSchatzsucheComplete() {
             schatzState.active = false;
             try { showConfetti(); } catch(e) {}
+            buddyCheer('Juhu! Du hast den ganzen Schatz gefunden!');
             const banner = document.getElementById('schatz-banner');
             const thema = document.getElementById('schatz-banner-thema');
             if (banner) banner.classList.add('celebrate');
@@ -2339,11 +2970,11 @@
                 }
             }
             if (imgUrl) {
-                imgHtml = `<img src="${imgUrl}" alt="Illustration" class="story-inline-img" onerror="this.style.display='none'">`;
+                imgHtml = `<img src="${imgUrl}" alt="Illustration zur Geschichte" class="story-inline-img" loading="lazy" decoding="async" onerror="this.style.display='none'">`;
             }
             let headingHtml = '';
             if (state.chunkHeadings && state.chunkHeadings[state.chunkIndex]) {
-                headingHtml = `<div style="font-weight:600; font-size:0.75em; color:var(--accent-teal); font-family:var(--font-heading); margin-bottom:0.4em; letter-spacing:0.03em; opacity:0.75;">${state.chunkHeadings[state.chunkIndex]}</div>`;
+                headingHtml = `<div style="font-weight:600; font-size:0.75em; color:#1A8676; font-family:var(--font-heading); margin-bottom:0.4em; letter-spacing:0.03em;">${state.chunkHeadings[state.chunkIndex]}</div>`;
             }
             document.getElementById('chunk-display').innerHTML = imgHtml + headingHtml + (state.chunks[state.chunkIndex] || "");
             let current = state.chunkIndex + 1, total = state.chunks.length;
@@ -2353,39 +2984,251 @@
             // ADHS Progress-Leiste
             let bar = document.getElementById('adhs-progress-fill');
             if (bar) bar.style.width = ((current / total) * 100) + '%';
+            // Sternenleiste: Fortschritt auch ohne Zahlenverständnis erkennbar
+            let stars = document.getElementById('chunk-stars');
+            if (stars) {
+                stars.innerHTML = total <= 12
+                    ? Array.from({ length: total }, (_, j) => `<span class="star${j < current ? ' on' : ''}">★</span>`).join('')
+                    : '';
+            }
         }
 
-        function toggleSyllables() { state.syllables = !state.syllables; renderText(); renderQuiz(); }
+        // Quiz-Texte haben keine Silben-Spans — Quiz nicht neu rendern (würde den Spielstand zurücksetzen)
+        function toggleSyllables() { state.syllables = !state.syllables; renderText(); }
         function toggleEmojis() { state.emojis = !state.emojis; renderText(); document.getElementById('btn-emojis').className = state.emojis ? "tool-btn active" : "tool-btn"; }
         function toggleSummaryMode() { state.summary = !state.summary; state.chunkIndex=0; renderText(); }
 
-        function toggleTTS() {
-            const btn = document.getElementById('btn-tts');
-            if (window.speechSynthesis.speaking) {
-                window.speechSynthesis.cancel(); btn.classList.remove('active'); clearHighlights();
-            } else {
-                let container = document.getElementById('chunk-view').classList.contains('hidden')
-                    ? document.getElementById('full-text-view') : document.getElementById('chunk-display');
-                let spans = container.querySelectorAll('.word-interactive');
-                let speechText = "", wordMap = [];
-                spans.forEach(span => {
-                    let word = span.innerText, start = speechText.length;
-                    speechText += word + " ";
-                    wordMap.push({ start, end: speechText.length - 1, el: span });
-                });
-                let u = new SpeechSynthesisUtterance(speechText);
-                u.lang = "de-DE"; u.rate = 0.9;
-                u.onboundary = function(event) {
-                    if (event.name === 'word') {
-                        let current = wordMap.find(w => event.charIndex >= w.start && event.charIndex < w.end);
-                        clearHighlights();
-                        if (current) current.el.classList.add('highlight-active');
-                    }
-                };
-                u.onend = function() { btn.classList.remove('active'); clearHighlights(); };
-                window.speechSynthesis.speak(u);
-                btn.classList.add('active');
+        /* ── Vorlese-Player mit Audio-Leiste ──────────────────────────────
+           Liest Geschichte/Häppchen mit Karaoke-Highlight + Auto-Scroll.
+           Die feste Leiste unten zeigt den Fortschritt (Wort-Index aus den
+           boundary-Events), ist pausierbar und per Balken spulbar.
+           Pause arbeitet cancel-basiert (zuverlässig auf allen Plattformen,
+           speechSynthesis.pause() ist auf Chrome/Android notorisch kaputt) —
+           Resume startet am gemerkten Wortanfang. */
+        let player = { active: false, paused: false, words: [], idx: 0, chunkMode: false };
+
+        function playerCollectWords() {
+            const chunkMode = !document.getElementById('chunk-view').classList.contains('hidden');
+            const container = chunkMode ? document.getElementById('chunk-display') : document.getElementById('full-text-view');
+            const words = [];
+            container.querySelectorAll('.word-interactive').forEach(span => words.push({ text: span.innerText, el: span }));
+            return { words, chunkMode };
+        }
+
+        function playerHighlight(idx) {
+            clearHighlights();
+            const w = player.words[idx];
+            if (!w) return;
+            w.el.classList.add('highlight-active');
+            const r = w.el.getBoundingClientRect();
+            if (r.top < 90 || r.bottom > window.innerHeight - 180) {
+                w.el.scrollIntoView({ behavior: REDUCED_MOTION ? 'auto' : 'smooth', block: 'center' });
             }
+        }
+
+        function playerUpdateBar() {
+            const total = player.words.length;
+            const range = document.getElementById('pb-range');
+            const count = document.getElementById('pb-count');
+            if (range && total) range.value = Math.round((player.idx / Math.max(1, total - 1)) * 100);
+            if (count) count.textContent = (player.idx + 1) + '/' + total;
+        }
+
+        function playerSetUI(uiState) { // 'playing' | 'paused' | 'stopped'
+            const big = document.getElementById('read-player-btn');
+            const bigIcon = document.getElementById('read-player-icon');
+            const bigLabel = document.getElementById('read-player-label');
+            const bar = document.getElementById('player-bar');
+            const barToggle = document.getElementById('pb-toggle');
+            if (uiState === 'stopped') {
+                document.body.classList.remove('player-active');
+                if (bar) bar.hidden = true;
+                if (big) { big.classList.remove('playing'); bigIcon.textContent = '▶'; bigLabel.textContent = 'Vorlesen'; }
+                return;
+            }
+            document.body.classList.add('player-active');
+            if (bar) bar.hidden = false;
+            const playing = uiState === 'playing';
+            if (big) {
+                big.classList.toggle('playing', playing);
+                bigIcon.textContent = playing ? '⏸' : '▶';
+                bigLabel.textContent = playing ? 'Pause' : 'Weiter';
+            }
+            if (barToggle) {
+                barToggle.textContent = playing ? '⏸' : '▶';
+                barToggle.setAttribute('aria-label', playing ? 'Pause' : 'Weiterlesen');
+            }
+        }
+
+        /* Satzweise Wiedergabe: Jeder Satz ist eine eigene Utterance. Das
+           Satz-Ende (onend) feuert auch bei Cloud-Stimmen zuverlässig — die
+           Markierung ankert sich also an JEDEM Satzanfang exakt neu. Innerhalb
+           des Satzes übernehmen echte boundary-Events (lokale Stimmen) oder die
+           Schätzung; Drift ist damit auf maximal einen Satz begrenzt.
+           Bonus: umgeht Chromes Abbruch-Bug bei sehr langen Utterances. */
+        function playerSpeakFrom(startIdx) {
+            const words = player.words;
+            if (!words.length) return;
+            startIdx = Math.max(0, Math.min(words.length - 1, startIdx));
+            player.idx = startIdx;
+            player.progressed = false;
+            // Generation: invalidiert laufende Timer/Queues bei Stop/Pause/Neustart
+            player.gen = (player.gen || 0) + 1;
+            const gen = player.gen;
+            clearTimeout(player._estTimer);
+
+            // Satz-Queue bauen (Satzende = Wort endet auf .!?… ; lange Sätze splitten)
+            const SENT_END = /[.!?…]["'»«‚'")\]]*$/;
+            const MAX_CHUNK = 28;
+            const sentences = [];
+            let cur = null;
+            for (let i = startIdx; i < words.length; i++) {
+                if (!cur) cur = { fromIdx: i, text: '', map: [] };
+                cur.map.push({ start: cur.text.length, end: cur.text.length + words[i].text.length, idx: i });
+                cur.text += words[i].text + ' ';
+                const count = i - cur.fromIdx + 1;
+                if ((SENT_END.test(words[i].text) && count >= 2) || count >= MAX_CHUNK) {
+                    sentences.push(cur); cur = null;
+                }
+            }
+            if (cur) sentences.push(cur);
+
+            const estDur = (w) => Math.max(200, (170 + w.length * 78) / SPEECH_RATE);
+
+            function speakSentence(k) {
+                if (gen !== player.gen || !player.active || player.paused) return;
+                if (k >= sentences.length) {
+                    // natürliches Ende der Geschichte/des Häppchens
+                    const wasChunk = player.chunkMode;
+                    // „Geschafft" nur bei echter Wiedergabe (progressed kommt nur aus
+                    // boundary-Events oder Schätz-Ticks, die speechSynthesis.speaking
+                    // voraussetzen) — Geräte ohne Stimme lösen nichts aus
+                    const reachedEnd = player.progressed;
+                    stopPlayer();
+                    if (reachedEnd && (!wasChunk || state.chunkIndex === state.chunks.length - 1)) storyFinished();
+                    return;
+                }
+                const s = sentences[k];
+                // Anker: der Satzanfang ist ein exakter Sync-Punkt
+                player.idx = s.fromIdx;
+                playerHighlight(s.fromIdx);
+                playerUpdateBar();
+
+                let boundarySeen = false;
+                clearTimeout(player._estTimer);
+                const lastIdx = s.map[s.map.length - 1].idx;
+                function estimateTick() {
+                    if (gen !== player.gen || !player.active || player.paused || boundarySeen) return;
+                    if (!window.speechSynthesis.speaking) return; // Satzende regelt onend
+                    if (player.idx < lastIdx) {
+                        player.idx++;
+                        player.progressed = true;
+                        playerHighlight(player.idx);
+                        playerUpdateBar();
+                        player._estTimer = setTimeout(estimateTick, estDur(words[player.idx].text));
+                    }
+                }
+                player._estTimer = setTimeout(() => {
+                    if (gen !== player.gen || boundarySeen || !player.active || player.paused) return;
+                    if (!window.speechSynthesis.speaking) return;
+                    estimateTick();
+                }, 1000);
+
+                speak(s.text, {
+                    _player: true,
+                    onboundary: (event) => {
+                        if (event.name !== 'word') return;
+                        boundarySeen = true;
+                        clearTimeout(player._estTimer);
+                        const hit = s.map.find(m => event.charIndex >= m.start && event.charIndex < m.end);
+                        if (!hit) return;
+                        player.idx = hit.idx;
+                        player.progressed = true;
+                        playerHighlight(hit.idx);
+                        playerUpdateBar();
+                    },
+                    onend: () => {
+                        clearTimeout(player._estTimer);
+                        if (gen !== player.gen || !player.active || player.paused) return;
+                        speakSentence(k + 1);
+                    }
+                });
+            }
+            speakSentence(0);
+        }
+
+        function togglePlayer() {
+            if (!player.active) {
+                const c = playerCollectWords();
+                if (!c.words.length) return;
+                player = { active: true, paused: false, words: c.words, idx: 0, chunkMode: c.chunkMode };
+                playerSetUI('playing');
+                playerSpeakFrom(0);
+            } else {
+                playerPauseResume();
+            }
+        }
+
+        function playerPauseResume() {
+            if (!player.active) return;
+            if (!player.paused) {
+                player.paused = true;
+                player.gen = (player.gen || 0) + 1; // Schätz-Timer stoppen
+                clearTimeout(player._estTimer);
+                stopSpeaking();
+                playerSetUI('paused');
+            } else {
+                player.paused = false;
+                playerSetUI('playing');
+                playerSpeakFrom(player.idx);
+            }
+        }
+
+        function stopPlayer() {
+            player.active = false;
+            player.paused = false;
+            player.gen = (player.gen || 0) + 1; // Schätz-Timer stoppen
+            clearTimeout(player._estTimer);
+            stopSpeaking();
+            clearHighlights();
+            playerSetUI('stopped');
+        }
+        // Kompatibilität für ältere Aufrufer (nextChunk/prevChunk)
+        function resetPlayerUI() { stopPlayer(); }
+
+        function playerSeek(percent) {
+            if (!player.active || !player.words.length) return;
+            const idx = Math.round((percent / 100) * (player.words.length - 1));
+            if (player.paused) {
+                player.idx = idx;
+                playerHighlight(idx);
+                playerUpdateBar();
+            } else {
+                playerSpeakFrom(idx);
+            }
+        }
+
+        /* „Geschichte geschafft!" — einmal pro Besuch: Konfetti + Karte + Buddy-Lob */
+        let storyDone = false;
+        function storyFinished() {
+            if (storyDone) return;
+            storyDone = true;
+            try {
+                if (sessionStorage.getItem('lesekumpel-fertig-warum-schlafen-fledermaeuse-kopfueber-1iqw')) return;
+                sessionStorage.setItem('lesekumpel-fertig-warum-schlafen-fledermaeuse-kopfueber-1iqw', '1');
+            } catch(e) {}
+            showConfetti();
+            const card = document.getElementById('done-card');
+            if (card) {
+                card.hidden = false;
+                card.scrollIntoView({ behavior: REDUCED_MOTION ? 'auto' : 'smooth', block: 'center' });
+            }
+            buddyCheer('Geschafft! Du hast die ganze Geschichte gehört. Unten warten Spiele auf dich!');
+        }
+        function goToGames() {
+            const hub = document.querySelector('.activity-hub');
+            if (hub) hub.scrollIntoView({ behavior: REDUCED_MOTION ? 'auto' : 'smooth', block: 'start' });
+            speak('Jetzt ist Spielzeit!');
         }
 
         function clearHighlights() { document.querySelectorAll('.highlight-active').forEach(el => el.classList.remove('highlight-active')); }
@@ -2394,11 +3237,7 @@
             // Schatzsuche-Modus hat Vorrang: blockiert TTS während aktiv
             if (schatzState.active) { checkSchatzwort(el, word); return; }
             if (!state.wordReader) return;
-            window.speechSynthesis.cancel();
-            let u = new SpeechSynthesisUtterance(el.innerText);
-            u.lang = 'de-DE';
-            u.rate = 0.9;
-            window.speechSynthesis.speak(u);
+            speak(el.innerText);
         }
         function addParagraphNumbers() {
             document.querySelectorAll('#full-text-view p').forEach((p, i) => {
@@ -2427,6 +3266,18 @@
             if (active && !state.syllables) toggleSyllables();
             if (!active && state.syllables) toggleSyllables();
             try { localStorage.setItem('lesekumpel-leselinien-default', active ? 'true' : 'false'); } catch(e) {}
+        }
+        function toggleDyslexia(btn) {
+            const active = document.body.classList.toggle('dyslexia-mode');
+            const b = btn || document.getElementById('btn-dyslexia');
+            if (b) b.classList.toggle('active', active);
+            try { localStorage.setItem('lesekumpel-lesefreundlich', active ? 'true' : 'false'); } catch(e) {}
+        }
+        function toggleContrast(btn) {
+            const active = document.body.classList.toggle('high-contrast');
+            const b = btn || document.getElementById('btn-contrast');
+            if (b) b.classList.toggle('active', active);
+            try { localStorage.setItem('lesekumpel-kontrast', active ? 'true' : 'false'); } catch(e) {}
         }
         function toggleFahrplan() {
             let btn = document.getElementById('btn-fahrplan');
@@ -2481,14 +3332,15 @@
         }
         function nextChunk() {
             if(state.chunkIndex < state.chunks.length-1) {
+                stopSpeaking(); resetPlayerUI();
                 state.chunkIndex++; updateChunkDisplay();
                 if (document.body.classList.contains('haeppchen-active')) {
                     playTickSound();
-                    if (state.chunkIndex === state.chunks.length - 1) { setTimeout(showConfetti, 500); }
+                    if (state.chunkIndex === state.chunks.length - 1) { setTimeout(storyFinished, 500); }
                 }
             }
         }
-        function prevChunk() { if(state.chunkIndex > 0) { state.chunkIndex--; updateChunkDisplay(); } }
+        function prevChunk() { if(state.chunkIndex > 0) { stopSpeaking(); resetPlayerUI(); state.chunkIndex--; updateChunkDisplay(); } }
 
         function playTickSound() {
             try {
@@ -2501,9 +3353,10 @@
             } catch(e) {}
         }
         function showConfetti() {
+            if (REDUCED_MOTION) return;
             let container = document.createElement('div');
             container.className = 'confetti-container';
-            let colors = ['#D67171', '#FFD54F', '#2a9d8f', '#7209b7', '#00509d', '#f1c40f'];
+            let colors = ['#F97352', '#FFD95A', '#2FB8A6', '#7D6AE6', '#5B4AC8', '#FFD95A'];
             for (let i = 0; i < 40; i++) {
                 let piece = document.createElement('div');
                 piece.className = 'confetti-piece';
@@ -2523,17 +3376,29 @@
             let n = Math.max(12, Math.min(40, s + d)); document.body.style.fontSize = n + "px";
         }
         function toggleMenu() { document.getElementById('mobile-menu').classList.toggle('open'); }
-        function toggleMobileToolbar() {
-            const tb = document.getElementById('toolbar'); tb.classList.toggle('open');
-        }
         function toggleToolbarCollapse() {
             const tb = document.getElementById('toolbar');
             tb.classList.toggle('collapsed');
+            const bubble = document.getElementById('buddy-bubble');
+            if (bubble) bubble.hidden = true;
+        }
+        function setQuizStatus(text) {
+            const s = document.getElementById('quiz-status');
+            if (s) { s.textContent = ''; setTimeout(() => { s.textContent = text; }, 50); }
         }
         function checkQuizAnswer(element, isCorrect) {
             if(element.classList.contains('correct') || element.classList.contains('try-again')) return;
-            if (isCorrect) { element.classList.add('correct'); element.innerHTML += " 🌟"; }
-            else { element.classList.add('try-again'); }
+            // Bewusst KEINE Sprachausgabe bei richtig/falsch — Feedback nur visuell
+            // (Sterne, Wackeln, Konfetti). setQuizStatus ist aria-live und damit nur
+            // für Screenreader hörbar.
+            if (isCorrect) {
+                element.classList.add('correct'); element.innerHTML += " 🌟";
+                setQuizStatus('Richtig!');
+                quizStars[quizIdx] = true;
+                updateQuizProgress();
+                quizShowNext(); // Belohnungs-Dramaturgie: Weiter-Knopf hüpft rein
+            }
+            else { element.classList.add('try-again'); setQuizStatus('Das war nicht richtig. Probier es nochmal.'); }
         }
 
         function revealQuizAnswer(btn) {
@@ -2553,10 +3418,28 @@
                 }
             });
             btn.remove();
+            quizShowNext(); // auch nach "Lösung zeigen" geht es weiter (ohne Stern)
         }
 
-        window.onload = function() {
+        // DOMContentLoaded statt window.onload: Text soll sofort lesbar sein,
+        // nicht erst wenn alle Story-Bilder fertig geladen sind.
+        document.addEventListener('DOMContentLoaded', function() {
             renderText(); renderQuiz(); renderWeitererzaehlen(); renderSchatzsuche(); renderWortschatz(); initActivityTabs();
+            initBuddy(); updateTempoButtons();
+            // Spul-Balken der Player-Leiste ('change' = beim Loslassen/Tastendruck)
+            const pbRange = document.getElementById('pb-range');
+            if (pbRange) pbRange.addEventListener('change', () => playerSeek(parseFloat(pbRange.value)));
+            // Leere "Das könnte dir auch gefallen"-Sektion verstecken (Pipeline liefert aktuell keine Empfehlungen)
+            const relGrid = document.querySelector('.related-grid');
+            if (relGrid && relGrid.children.length === 0) {
+                const sec = document.querySelector('.related-section');
+                if (sec) sec.style.display = 'none';
+            }
+            // Lesefreundlich-/Kontrast-Einstellungen wiederherstellen
+            try {
+                if (localStorage.getItem('lesekumpel-lesefreundlich') === 'true') toggleDyslexia();
+                if (localStorage.getItem('lesekumpel-kontrast') === 'true') toggleContrast();
+            } catch(e) {}
 
             // Ansicht ist exklusiv — höchstens einen Modus aktivieren
             // Priorität: explizite localStorage-Wahl > Neurotyp-Default
@@ -2576,7 +3459,7 @@
             if (viewMode === 'linien') toggleLeselinien();
             else if (viewMode === 'fahrplan') toggleFahrplan();
             else if (viewMode === 'haeppchen') toggleViewMode();
-        };
+        });
 
         // --- INHALTE-MELDEN MODAL ---
         document.addEventListener('DOMContentLoaded', function initReportModal() {
@@ -2654,6 +3537,16 @@
             const toast = document.getElementById('hero-like-toast');
             if (!btn) return;
 
+            // Persistenz pro Story: der Like überlebt einen Reload (Grundstein für echte Sammlung)
+            const likeKey = 'lesekumpel-liked-warum-schlafen-fledermaeuse-kopfueber-1iqw';
+            try {
+                if (localStorage.getItem(likeKey) === 'true') {
+                    btn.classList.add('is-liked');
+                    btn.setAttribute('aria-pressed', 'true');
+                    if (heart) heart.textContent = '❤️';
+                }
+            } catch(e) {}
+
             let toastTimer = null;
             function showToast(text) {
                 if (!toast) return;
@@ -2664,6 +3557,7 @@
             }
 
             function spawnHearts(host) {
+                if (REDUCED_MOTION) return;
                 const items = ['❤️','💖','💗','❤️'];
                 for (let i = 0; i < 10; i++) {
                     const p = document.createElement('span');
@@ -2683,6 +3577,7 @@
             btn.addEventListener('click', () => {
                 const liked = btn.classList.toggle('is-liked');
                 btn.setAttribute('aria-pressed', liked ? 'true' : 'false');
+                try { localStorage.setItem(likeKey, liked ? 'true' : 'false'); } catch(e) {}
                 if (liked) {
                     heart.textContent = '❤️';
                     btn.classList.remove('is-firing'); void btn.offsetWidth; btn.classList.add('is-firing');
@@ -2739,10 +3634,6 @@
             };
 
             let selectedBlocks = [];
-
-            function escapeHtml(s) {
-                return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c]);
-            }
 
             function updatePreview() {
                 chipsContainer.innerHTML = '';
@@ -2943,7 +3834,6 @@
             }
         }
 
-        let tafelObserver = null;
         let tafelMutationObserver = null;
         let tafelRebuildObserver = null;
         let tafelRebuildLock = false;
@@ -3094,7 +3984,6 @@
         }
 
         function exitTafelLayout() {
-            if (tafelObserver) { tafelObserver.disconnect(); tafelObserver = null; }
             if (tafelMutationObserver) { tafelMutationObserver.disconnect(); tafelMutationObserver = null; }
             if (tafelRebuildObserver) { tafelRebuildObserver.disconnect(); tafelRebuildObserver = null; }
             document.body.classList.remove('view-tafel-cover');
@@ -3243,16 +4132,17 @@
             tafelPrevIdx = idx;
             updatePageIndicator();
             updateTafelNavState();
-            window.scrollTo({ top: 0, behavior: 'smooth' });
+            window.scrollTo({ top: 0, behavior: REDUCED_MOTION ? 'auto' : 'smooth' });
         }
 
         function spawnTafelConfetti() {
+            if (REDUCED_MOTION) return;
             // Vorherigen Confetti-Layer entfernen falls noch da
             document.querySelector('.tafel-confetti')?.remove();
             const container = document.createElement('div');
             container.className = 'tafel-confetti';
             document.body.appendChild(container);
-            const colors = ['#D67171', '#FFD54F', '#2a9d8f', '#7209b7', '#00509d', '#FF6B9D', '#5aab5a'];
+            const colors = ['#F97352', '#FFD95A', '#2FB8A6', '#7D6AE6', '#5B4AC8', '#FF6B9D', '#2FB8A6'];
             const pieces = 80;
             for (let i = 0; i < pieces; i++) {
                 const piece = document.createElement('div');
@@ -3377,10 +4267,10 @@
             const questions = document.querySelectorAll('#panel-quiz .quiz-question');
             if (!questions.length) return;
 
-            // Antworten in einen Wrapper für horizontales Flex-Layout packen (idempotent)
+            // Antworten (inkl. Vorlese-Knopf-Zeilen) in einen Wrapper für horizontales Flex-Layout packen (idempotent)
             questions.forEach(q => {
                 if (q.querySelector('.quiz-options-wrap')) return;
-                const opts = q.querySelectorAll('.quiz-option');
+                const opts = q.querySelectorAll('.quiz-answer-row');
                 if (!opts.length) return;
                 const wrap = document.createElement('div');
                 wrap.className = 'quiz-options-wrap';
@@ -3445,47 +4335,6 @@
                     hub.appendChild(closeBtn);
                 }
             }
-        }
-
-        function refreshTafelObserver() {
-            const stage = document.querySelector('.tafel-image-stage');
-            if (stage) setupTafelObserver(stage);
-        }
-
-        function setupTafelObserver(stage) {
-            if (tafelObserver) { tafelObserver.disconnect(); tafelObserver = null; }
-            const paragraphs = Array.from(document.querySelectorAll('#full-text-view p'));
-            const stageImgs = Array.from(stage.querySelectorAll('.tafel-stage-img'));
-            const positions = (window.imagePositions || []).slice().sort((a, b) => a.paragraphIndex - b.paragraphIndex);
-            if (!paragraphs.length || !stageImgs.length) return;
-
-            function activateScene(scene) {
-                stageImgs.forEach(img => {
-                    img.classList.toggle('is-active', Number(img.dataset.scene) === scene);
-                });
-            }
-
-            function sceneForParagraph(pIdx) {
-                let bestScene = 0; // Hero
-                for (const pos of positions) {
-                    // paragraphIndex ist 1-basiert in den Daten; pIdx ist 0-basierter Array-Index
-                    if (pos.paragraphIndex <= pIdx + 1) bestScene = pos.scene;
-                    else break;
-                }
-                return bestScene;
-            }
-
-            tafelObserver = new IntersectionObserver((entries) => {
-                const inFocus = entries
-                    .filter(e => e.isIntersecting)
-                    .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
-                if (!inFocus) return;
-                const idx = paragraphs.indexOf(inFocus.target);
-                if (idx < 0) return;
-                activateScene(sceneForParagraph(idx));
-            }, { threshold: [0.3, 0.6, 0.9], rootMargin: '-20% 0% -40% 0%' });
-
-            paragraphs.forEach(p => tafelObserver.observe(p));
         }
 
         // === Initialisierung ===
