@@ -3,15 +3,15 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Top 100 Wörter — Lesekumpel</title>
+    <title>Social Story erstellen — Lesekumpel</title>
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fredoka:wght@400;600;700&family=Quicksand:wght@400;500;600;700&display=swap">
     <link rel="stylesheet" href="fonts/fonts.css">
     <style>
         :root {
             --bg-body: #FFF9E5; --bg-card: #ffffff;
             --primary-yellow: #FFD54F;
-            /* Format-Akzent: Orange */
-            --accent-coral: #F4A93C; --accent-coral-light: #FDF0DC; --accent-coral-dark: #D98E1F;
+            /* Format-Akzent: Mint */
+            --accent-coral: #66BB6A; --accent-coral-light: #E5F4E6; --accent-coral-dark: #4E9E52;
             --text-dark: #2D3436; --text-muted: #5a6368;
             --font-heading: 'Fredoka', cursive, sans-serif;
             --font-body: 'Quicksand', sans-serif;
@@ -27,7 +27,7 @@
         .nav-links-desktop { display: none; gap: 20px; align-items: center; margin-left: 16px; }
         .nav-btn { text-decoration: none; color: var(--text-dark); font-weight: 600; font-size: 0.95rem; display: flex; align-items: center; gap: 5px; transition: color 0.2s; }
         .nav-btn:hover { color: var(--accent-coral); }
-        .btn-cta-nav { display: none; background: var(--accent-coral); color: #fff; padding: 11px 26px; border-radius: 28px; font-weight: 600; transition: all 0.3s cubic-bezier(0.34,1.56,0.64,1); text-decoration: none; font-family: var(--font-body); font-size: 0.9rem; border: none; box-shadow: 0 4px 14px rgba(244,169,60,0.3); }
+        .btn-cta-nav { display: none; background: var(--accent-coral); color: #fff; padding: 11px 26px; border-radius: 28px; font-weight: 600; transition: all 0.3s cubic-bezier(0.34,1.56,0.64,1); text-decoration: none; font-family: var(--font-body); font-size: 0.9rem; border: none; box-shadow: 0 4px 14px rgba(102,187,106,0.3); }
         .btn-cta-nav:hover { background: var(--accent-coral-dark); transform: translateY(-2px) scaleX(1.04) scaleY(0.97); }
         .nav-right { display: flex; align-items: center; gap: 15px; }
         .burger-icon { font-size: 1.8rem; cursor: pointer; display: block; color: var(--text-dark); background: none; border: none; padding: 0; }
@@ -40,57 +40,44 @@
         .main-container { max-width: 700px; margin: 0 auto; padding: 30px 20px 60px; }
 
         /* --- FORM-HERO --- */
-        .form-hero { text-align: center; margin-bottom: 28px; }
+        .form-hero { text-align: center; margin-bottom: 24px; }
         .form-hero-icon { font-size: 3.4rem; line-height: 1; margin-bottom: 8px; }
         .form-hero h1 { font-family: var(--font-heading); font-size: 1.8rem; color: var(--accent-coral); margin-bottom: 6px; }
         .form-hero p { color: var(--text-muted); font-size: 1rem; }
         @media (min-width: 768px) { .form-hero h1 { font-size: 2.2rem; } }
 
+        /* --- INFO-BOX (für Eltern) --- */
+        .info-box { background: var(--accent-coral-light); border: 2px solid var(--accent-coral); border-radius: 16px; padding: 16px 20px; margin-bottom: 30px; font-size: 0.92rem; color: var(--text-dark); }
+        .info-box strong { color: var(--accent-coral-dark); }
+
         /* --- SECTIONS --- */
         .form-section { margin-bottom: 32px; animation: fadeIn 0.35s ease; }
+        .form-section.hidden { display: none; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
         .section-title { font-family: var(--font-heading); color: var(--accent-coral); font-size: 1.3rem; margin-bottom: 6px; }
         .section-sub { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 16px; }
         .section-divider { border: none; border-top: 2px solid rgba(255,213,79,0.3); margin: 28px 0; }
 
-        /* --- WORT-GRUPPEN + PILLEN --- */
-        .wort-gruppe { margin-bottom: 20px; }
-        .wort-gruppe-title { font-family: var(--font-heading); font-size: 1rem; color: var(--text-muted); margin-bottom: 10px; display: flex; align-items: center; gap: 8px; }
-        .wort-liste { display: flex; flex-wrap: wrap; gap: 10px; }
-        .wort-pill {
-            display: inline-flex; align-items: center; justify-content: center;
-            min-height: 44px; padding: 8px 18px;
-            background: #fff; border: 2px solid #eee; border-radius: 999px;
-            color: var(--text-dark); font-family: var(--font-heading); font-weight: 600;
-            font-size: 1.05rem; cursor: pointer; transition: all 0.2s; -webkit-user-select: none; user-select: none;
-        }
-        .wort-pill:hover { border-color: var(--accent-coral); transform: translateY(-2px); }
-        .wort-pill.active { background: var(--primary-yellow); border-color: var(--primary-yellow); box-shadow: 0 3px 8px rgba(255,213,79,0.4); }
-        .wort-pill.active::before { content: '✓ '; color: var(--accent-coral-dark); margin-right: 2px; }
+        /* --- INPUTS --- */
+        .text-input, .textarea-input { width: 100%; padding: 14px 18px; border: 2px solid var(--accent-coral-light); border-radius: 14px; font-family: var(--font-body); font-size: 1rem; color: var(--text-dark); background: #fff; transition: border-color 0.2s, box-shadow 0.2s; }
+        .text-input:focus, .textarea-input:focus { border-color: var(--accent-coral); box-shadow: 0 0 0 3px rgba(102,187,106,0.15); outline: none; }
+        .textarea-input { min-height: 80px; resize: vertical; }
 
-        /* --- ZÄHLER --- */
-        .wort-counter {
-            position: sticky; bottom: 14px; z-index: 50;
-            display: inline-flex; align-items: center; gap: 8px;
-            background: var(--accent-coral); color: #fff;
-            font-family: var(--font-heading); font-weight: 600; font-size: 0.95rem;
-            padding: 8px 18px; border-radius: 999px; box-shadow: 0 4px 14px rgba(244,169,60,0.4);
-        }
-
-        /* --- THEMEN-KACHELN --- */
-        .toggle-group { display: flex; flex-wrap: wrap; gap: 10px; }
-        .toggle-btn {
-            display: flex; flex-direction: column; align-items: center; gap: 4px;
-            padding: 14px 20px; border: 2px solid #eee; border-radius: 18px; background: #fff;
+        /* --- SITUATIONS-KACHELN --- */
+        .sit-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+        @media (min-width: 560px) { .sit-grid { grid-template-columns: repeat(3, 1fr); } }
+        .sit-card {
+            display: flex; flex-direction: column; align-items: center; gap: 8px;
+            padding: 18px 12px; border: 2px solid #eee; border-radius: 18px; background: #fff;
             font-family: var(--font-body); font-weight: 600; font-size: 0.9rem; cursor: pointer;
-            transition: all 0.2s; color: var(--text-dark); min-width: 96px; min-height: 44px;
+            transition: all 0.2s; color: var(--text-dark); text-align: center; min-height: 44px;
         }
-        .toggle-btn .toggle-emoji { font-size: 1.8rem; line-height: 1; }
-        .toggle-btn:hover { border-color: var(--accent-coral); transform: translateY(-2px); }
-        .toggle-btn.active { background: var(--accent-coral-light); border-color: var(--accent-coral); color: var(--accent-coral-dark); }
+        .sit-card .sit-emoji { font-size: 2rem; line-height: 1; }
+        .sit-card:hover { border-color: var(--accent-coral); transform: translateY(-3px); box-shadow: 0 6px 16px rgba(0,0,0,0.06); }
+        .sit-card.active { background: var(--accent-coral-light); border-color: var(--accent-coral); color: var(--accent-coral-dark); }
 
         /* --- SUBMIT --- */
-        .btn-submit { width: 100%; background: var(--accent-coral); color: #fff; border: none; border-radius: 28px; padding: 18px 52px; font-family: var(--font-body); font-weight: 700; font-size: 1.1rem; cursor: pointer; transition: all 0.3s cubic-bezier(0.34,1.56,0.64,1); box-shadow: 0 4px 14px rgba(244,169,60,0.3); margin-top: 8px; }
+        .btn-submit { width: 100%; background: var(--accent-coral); color: #fff; border: none; border-radius: 28px; padding: 18px 52px; font-family: var(--font-body); font-weight: 700; font-size: 1.1rem; cursor: pointer; transition: all 0.3s cubic-bezier(0.34,1.56,0.64,1); box-shadow: 0 4px 14px rgba(102,187,106,0.3); margin-top: 8px; }
         .btn-submit:hover:not(:disabled) { background: var(--accent-coral-dark); transform: translateY(-2px) scale(1.02); }
         .btn-submit:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
 
@@ -102,17 +89,13 @@
         /* --- PREVIEW MODAL --- */
         .preview-modal { display: none; position: fixed; inset: 0; background: rgba(45,52,54,0.55); z-index: 9100; align-items: center; justify-content: center; padding: 20px; animation: fadeIn 0.2s ease; }
         .preview-modal.visible { display: flex; }
-        .preview-card { background: #fff; border-radius: 24px; padding: 30px 26px; max-width: 460px; width: 100%; max-height: 90vh; overflow-y: auto; box-shadow: 0 12px 40px rgba(0,0,0,0.18); border-top: 6px solid var(--accent-coral); text-align: center; }
+        .preview-card { background: #fff; border-radius: 24px; padding: 30px 26px; max-width: 480px; width: 100%; max-height: 90vh; overflow-y: auto; box-shadow: 0 12px 40px rgba(0,0,0,0.18); border-top: 6px solid var(--accent-coral); text-align: center; }
         .preview-emoji { font-size: 3rem; margin-bottom: 8px; }
         .preview-headline { font-family: var(--font-heading); font-size: 1.4rem; color: var(--accent-coral); margin-bottom: 8px; }
         .preview-sub { color: var(--text-muted); font-size: 0.95rem; margin-bottom: 18px; }
-        .preview-summary { text-align: left; background: #FFF9E5; border-radius: 14px; padding: 16px 18px; margin-bottom: 20px; }
-        .preview-summary dt { font-size: 0.72rem; font-weight: 700; color: var(--accent-coral); text-transform: uppercase; letter-spacing: 0.5px; margin-top: 10px; }
-        .preview-summary dt:first-child { margin-top: 0; }
-        .preview-summary dd { font-size: 1rem; color: var(--text-dark); margin: 2px 0 0; }
-        .preview-words { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 4px; }
-        .preview-words span { background: var(--primary-yellow); border-radius: 999px; padding: 3px 12px; font-family: var(--font-heading); font-weight: 600; font-size: 0.9rem; }
-        .preview-btn { background: var(--accent-coral); color: #fff; border: none; border-radius: 24px; padding: 14px 32px; font-family: var(--font-body); font-weight: 700; font-size: 1rem; cursor: pointer; box-shadow: 0 4px 12px rgba(244,169,60,0.3); transition: all 0.2s; }
+        .preview-example { text-align: left; background: #FFF9E5; border-radius: 14px; padding: 18px 20px; margin-bottom: 20px; font-size: 1.05rem; line-height: 1.6; color: var(--text-dark); }
+        .preview-example .ex-label { font-size: 0.72rem; font-weight: 700; color: var(--accent-coral); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 8px; }
+        .preview-btn { background: var(--accent-coral); color: #fff; border: none; border-radius: 24px; padding: 14px 32px; font-family: var(--font-body); font-weight: 700; font-size: 1rem; cursor: pointer; box-shadow: 0 4px 12px rgba(102,187,106,0.3); transition: all 0.2s; }
         .preview-btn:hover { background: var(--accent-coral-dark); transform: translateY(-1px); }
 
         /* --- FOOTER --- */
@@ -162,37 +145,49 @@
     <div class="hub-back"><a href="neue-geschichte.html">← Zurück zur Auswahl</a></div>
 
     <section class="form-hero">
-        <div class="form-hero-icon" aria-hidden="true">💯</div>
-        <h1>Deine 100-Wörter-Geschichte</h1>
-        <p>Tipp die Wörter an, die du üben willst — Lesekumpel baut daraus eine Mini-Geschichte.</p>
+        <div class="form-hero-icon" aria-hidden="true">🫶</div>
+        <h1>Social Story erstellen</h1>
+        <p>Eine ruhige Geschichte, die auf eine neue Situation vorbereitet.</p>
     </section>
 
+    <div class="info-box">
+        <strong>Was ist eine Social Story?</strong> Eine kurze Geschichte nach der Methode von Carol Gray. Sie beschreibt eine Situation aus der <strong>Ich-Perspektive</strong> des Kindes, ruhig und positiv, und erklärt, was passiert und wie man sich verhalten kann. So weiß das Kind vorher, was es erwartet.
+    </div>
+
     <div class="form-section">
-        <div class="section-title">1. Wähle deine Wörter</div>
-        <div class="section-sub">Tipp ein paar Wörter an, die in deiner Geschichte vorkommen sollen.</div>
-        <div id="wort-gruppen"></div>
+        <div class="section-title">1. Welche Situation?</div>
+        <div class="section-sub">Worauf soll die Geschichte vorbereiten?</div>
+        <div class="sit-grid" id="sit-grid">
+            <button class="sit-card" data-sit="Zahnarztbesuch" onclick="selectSit(this)"><span class="sit-emoji" aria-hidden="true">🦷</span> Zahnarzt</button>
+            <button class="sit-card" data-sit="Erster Tag im Kindergarten" onclick="selectSit(this)"><span class="sit-emoji" aria-hidden="true">🎒</span> Neuer Kindergarten</button>
+            <button class="sit-card" data-sit="Wenn ich wütend werde" onclick="selectSit(this)"><span class="sit-emoji" aria-hidden="true">😤</span> Wenn ich wütend bin</button>
+            <button class="sit-card" data-sit="Friseurbesuch" onclick="selectSit(this)"><span class="sit-emoji" aria-hidden="true">✂️</span> Friseur</button>
+            <button class="sit-card" data-sit="Ein Geburtstagsfest" onclick="selectSit(this)"><span class="sit-emoji" aria-hidden="true">🎂</span> Geburtstag</button>
+            <button class="sit-card" data-sit="Arztbesuch" onclick="selectSit(this)"><span class="sit-emoji" aria-hidden="true">🩺</span> Arzt</button>
+            <button class="sit-card" data-sit="custom" onclick="selectSit(this)"><span class="sit-emoji" aria-hidden="true">✏️</span> Eigene Situation</button>
+        </div>
+        <div class="form-section hidden" id="custom-sit-wrap" style="margin-top:14px;margin-bottom:0;">
+            <input type="text" class="text-input" id="custom-sit" placeholder="Beschreibe die Situation — z.B. Übernachten bei Oma" oninput="updateSubmit()">
+        </div>
     </div>
 
     <hr class="section-divider">
 
     <div class="form-section">
-        <div class="section-title">2. Worum soll's gehen?</div>
-        <div class="section-sub">Such dir ein Thema aus.</div>
-        <div class="toggle-group" id="thema-grid">
-            <button class="toggle-btn" data-thema="Bauernhof" onclick="selectThema('Bauernhof')"><span class="toggle-emoji" aria-hidden="true">🐮</span> Bauernhof</button>
-            <button class="toggle-btn" data-thema="Weltall" onclick="selectThema('Weltall')"><span class="toggle-emoji" aria-hidden="true">🚀</span> Weltall</button>
-            <button class="toggle-btn" data-thema="Fußball" onclick="selectThema('Fußball')"><span class="toggle-emoji" aria-hidden="true">⚽</span> Fußball</button>
-            <button class="toggle-btn" data-thema="Zuhause" onclick="selectThema('Zuhause')"><span class="toggle-emoji" aria-hidden="true">🏠</span> Zuhause</button>
-            <button class="toggle-btn" data-thema="Tiere" onclick="selectThema('Tiere')"><span class="toggle-emoji" aria-hidden="true">🦊</span> Tiere</button>
-            <button class="toggle-btn" data-thema="Meer" onclick="selectThema('Meer')"><span class="toggle-emoji" aria-hidden="true">🌊</span> Meer</button>
-        </div>
+        <div class="section-title">2. Für wen ist die Geschichte?</div>
+        <div class="section-sub">Der Name kommt in der Geschichte vor.</div>
+        <input type="text" class="text-input" id="kindname" placeholder="Name des Kindes — z.B. Lena" oninput="updateSubmit()">
     </div>
 
-    <div style="text-align:center;margin-bottom:18px;">
-        <span class="wort-counter"><span aria-hidden="true">📚</span> <span id="counter-text">0 Wörter gewählt</span></span>
+    <hr class="section-divider">
+
+    <div class="form-section">
+        <div class="section-title">3. Noch etwas wichtig? <span style="font-weight:400;font-size:0.85rem;color:var(--text-muted);">(freiwillig)</span></div>
+        <div class="section-sub">Gibt es Dinge, die dein Kind beruhigen oder die wichtig sind?</div>
+        <textarea class="textarea-input" id="details" placeholder="z.B. Lena nimmt ihren Teddy mit. Sie mag es, wenn man ihr vorher erklärt, was kommt."></textarea>
     </div>
 
-    <button class="btn-submit" id="btn-submit" disabled onclick="previewSubmit()">✨ Mini-Geschichte machen</button>
+    <button class="btn-submit" id="btn-submit" disabled onclick="previewSubmit()">✨ Social Story erstellen</button>
 
 </main>
 
@@ -201,8 +196,8 @@
     <div class="preview-card">
         <div class="preview-emoji" aria-hidden="true">✨</div>
         <div class="preview-headline" id="preview-headline">Bald geht's los!</div>
-        <p class="preview-sub">Das Geschichten-Mixen kommt ganz bald. Das hast du gewählt:</p>
-        <dl class="preview-summary" id="preview-summary"></dl>
+        <p class="preview-sub">Das Erstellen von Social Stories kommt ganz bald. So könnte der Anfang klingen:</p>
+        <div class="preview-example" id="preview-example"></div>
         <button class="preview-btn" onclick="closePreview()">Alles klar!</button>
     </div>
 </div>
@@ -227,67 +222,53 @@ function toggleMenu() {
     btn.setAttribute('aria-expanded', menu.classList.contains('open'));
 }
 
-// --- Top-100-Grundwortschatz, in kindgerechte Gruppen sortiert ---
-const WORT_GRUPPEN = [
-    { titel: 'Kleine Wörter', emoji: '🔤', woerter: ['der', 'die', 'das', 'und', 'ist', 'ein', 'ich', 'du', 'wir', 'auf', 'mit', 'hat'] },
-    { titel: 'Tun-Wörter', emoji: '🏃', woerter: ['gehen', 'sehen', 'lachen', 'rennen', 'spielen', 'essen', 'malen', 'springen', 'finden', 'helfen'] },
-    { titel: 'Tiere', emoji: '🐾', woerter: ['Hund', 'Katze', 'Maus', 'Vogel', 'Pferd', 'Fisch', 'Hase', 'Bär'] },
-    { titel: 'Rund ums Kind', emoji: '🧒', woerter: ['Mama', 'Papa', 'Oma', 'Opa', 'Haus', 'Ball', 'Baum', 'Sonne', 'Auto', 'Buch'] }
-];
+let state = { situation: null, isCustom: false };
 
-let state = { woerter: new Set(), thema: null };
-
-function renderGruppen() {
-    const root = document.getElementById('wort-gruppen');
-    root.innerHTML = WORT_GRUPPEN.map((g, gi) => `
-        <div class="wort-gruppe">
-            <div class="wort-gruppe-title"><span aria-hidden="true">${g.emoji}</span> ${g.titel}</div>
-            <div class="wort-liste">
-                ${g.woerter.map(w => `<button class="wort-pill" data-wort="${w}" onclick="toggleWort(this)">${w}</button>`).join('')}
-            </div>
-        </div>
-    `).join('');
-}
-
-function toggleWort(btn) {
-    const w = btn.dataset.wort;
-    if (state.woerter.has(w)) { state.woerter.delete(w); btn.classList.remove('active'); }
-    else { state.woerter.add(w); btn.classList.add('active'); }
-    updateCounter();
-}
-
-function selectThema(thema) {
-    state.thema = thema;
-    document.querySelectorAll('#thema-grid .toggle-btn').forEach(b => b.classList.remove('active'));
-    document.querySelector(`#thema-grid .toggle-btn[data-thema="${thema}"]`).classList.add('active');
+function selectSit(btn) {
+    document.querySelectorAll('#sit-grid .sit-card').forEach(c => c.classList.remove('active'));
+    btn.classList.add('active');
+    const val = btn.dataset.sit;
+    state.isCustom = (val === 'custom');
+    state.situation = state.isCustom ? null : val;
+    document.getElementById('custom-sit-wrap').classList.toggle('hidden', !state.isCustom);
     updateSubmit();
 }
 
-function updateCounter() {
-    const n = state.woerter.size;
-    document.getElementById('counter-text').textContent = n === 1 ? '1 Wort gewählt' : n + ' Wörter gewählt';
-    updateSubmit();
+function getSituation() {
+    if (state.isCustom) return document.getElementById('custom-sit').value.trim();
+    return state.situation;
 }
 
 function updateSubmit() {
-    document.getElementById('btn-submit').disabled = !(state.woerter.size >= 1 && state.thema);
+    const sit = getSituation();
+    const name = document.getElementById('kindname').value.trim();
+    document.getElementById('btn-submit').disabled = !(sit && name);
 }
 
-// --- FRONTEND-ONLY: Vorschau statt Webhook ---
+// --- FRONTEND-ONLY: Vorschau mit Carol-Gray-Beispielsatz (Ich-Perspektive) ---
 function previewSubmit() {
-    const woerter = [...state.woerter];
-    document.getElementById('preview-summary').innerHTML = `
-        <dt>Thema</dt><dd>${escapeHtml(state.thema)}</dd>
-        <dt>Deine Wörter (${woerter.length})</dt>
-        <dd><div class="preview-words">${woerter.map(w => `<span>${escapeHtml(w)}</span>`).join('')}</div></dd>
-    `;
+    const name = document.getElementById('kindname').value.trim();
+    const sit = getSituation();
+    const details = document.getElementById('details').value.trim();
+
+    const beispiele = {
+        'Zahnarztbesuch': `Ich heiße ${name}. Heute gehe ich zum Zahnarzt. Der Zahnarzt schaut sich meine Zähne an. Das ist ganz normal. Ich darf ruhig atmen. Wenn ich still sitze, geht alles ganz schnell.`,
+        'Erster Tag im Kindergarten': `Ich heiße ${name}. Heute gehe ich zum ersten Mal in den Kindergarten. Dort gibt es andere Kinder zum Spielen. Eine Erzieherin passt auf uns auf. Es ist okay, wenn ich am Anfang ein bisschen aufgeregt bin.`,
+        'Wenn ich wütend werde': `Ich heiße ${name}. Manchmal werde ich wütend. Das passiert allen Menschen. Wenn ich wütend bin, kann ich tief durchatmen. Ich kann bis fünf zählen. Danach fühle ich mich oft schon besser.`,
+        'Friseurbesuch': `Ich heiße ${name}. Heute gehe ich zum Friseur. Der Friseur schneidet meine Haare. Das tut nicht weh. Ich sitze ruhig auf dem Stuhl. Danach sehen meine Haare schön ordentlich aus.`,
+        'Ein Geburtstagsfest': `Ich heiße ${name}. Heute ist ein Geburtstagsfest. Es kommen viele Kinder. Wir spielen zusammen und essen Kuchen. Wenn es mir zu laut wird, darf ich eine kleine Pause machen.`,
+        'Arztbesuch': `Ich heiße ${name}. Heute gehe ich zum Arzt. Der Arzt möchte sehen, ob ich gesund bin. Manchmal hört er mein Herz mit einem kalten Gerät ab. Das ist okay. Mama oder Papa sind die ganze Zeit bei mir.`
+    };
+
+    let text = beispiele[sit] || `Ich heiße ${name}. Heute erlebe ich etwas Neues: ${sit}. Das ist ganz normal. Ich weiß vorher, was passiert. So fühle ich mich sicher.`;
+    if (details) text += ` ${details}`;
+
+    document.getElementById('preview-example').innerHTML =
+        `<div class="ex-label">Beispiel-Anfang</div>${escapeHtml(text)}`;
     document.getElementById('preview-modal').classList.add('visible');
 }
 function closePreview() { document.getElementById('preview-modal').classList.remove('visible'); }
 function escapeHtml(s) { return String(s).replace(/[&<>"]/g, c => ({ '&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;' }[c])); }
-
-renderGruppen();
-updateCounter();
 </script>
 
 </body>
