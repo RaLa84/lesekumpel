@@ -224,6 +224,8 @@ Each object has this shape (no other keys):
   "characters_present": ["<name>", "<name>"],
   "props_shown": [ { "name": "<prop name from VISUAL LOCK>", "hand": "left | right | both | none" } ],
   "setting_focus": "<short English noting which part of the SETTING ANCHOR is in frame, e.g. 'foreground waves, distant horizon'>",
+  "medium": "<exactly one of: real-scene | on-screen-game | dream | imagination | memory — default real-scene; pick another ONLY when the chosen paragraph clearly happens inside a video game, on a screen, in a dream, in imagination, or in a recalled memory>",
+  "sceneSetting": "<short English naming WHERE / in which world this single moment happens; may differ from the global SETTING ANCHOR when the moment is in a game, on a screen, in a dream, or at a different location>",
   "mood": "<one adjective, e.g. 'curious' or 'triumphant'>",
   "framingType": "<exactly one of: overview | detail | interaction | habitat | establishing | reaction — must be UNIQUE across all ${imageCount} scenes>",
   "invariantCheck": "<one English sentence asserting this scene respects every SCENE INVARIANT above>",
@@ -253,7 +255,18 @@ HARD CONSTRAINTS (never violate):
 - "lighting" MUST be from the (filtered) LIGHTING pool and UNIQUE across scenes.
 - "composition" MUST be from the COMPOSITION pool and UNIQUE across scenes.
 - "framingType" MUST be UNIQUE across scenes.
+- "medium" is one of the five allowed values; use "real-scene" unless the paragraph clearly happens elsewhere (game / screen / dream / imagination / memory).
+- props_shown respects the PROP TIMELINE (no props from later paragraphs) AND includes the moment's focal object — see PROP TIMELINE & FOCUS below.
 - paragraphIndex MUST be distinct AND strictly increasing AND >= 1 — see PARAGRAPH-INDEX RULES above.
+
+WORLD / MEDIUM (read the chosen paragraph carefully):
+- Most moments are "real-scene". Set "medium" to something else ONLY when the paragraph's action happens inside a video game, on a TV/computer/phone/handheld screen, in a dream, in the character's imagination, or in a remembered past.
+- Crucial example: if the text says the character throws a tomato AT A TARGET IN A GAME (or scores, jumps, shoots, defeats something "im Spiel"), the medium is "on-screen-game" — the tomato and the target are game graphics on a screen, NOT a real thrown object in the room. Never render an in-game or imagined action as a literal real-world event.
+- "sceneSetting" names this moment's place/world. For real-scene it is a sub-location of the global SETTING ANCHOR; otherwise it names the other world (e.g. "inside the platformer game level shown on the TV").
+
+PROP TIMELINE & FOCUS (validated against the story):
+- props_shown may ONLY contain props that already exist at this scene's paragraphIndex. Read the chosen paragraph AND all earlier paragraphs. If a prop carries a "FIRST APPEARS: from paragraph N onward" note in the VISUAL LOCK, include it ONLY when N <= this scene's paragraphIndex. A prop the character only buys, finds, builds or receives in a LATER paragraph MUST NOT appear (e.g. an ice cream bought at the end must not be held during an earlier negotiation).
+- The FOCAL object of the moment — the physical thing the momentSummary is about (e.g. the toy car being haggled over) — MUST be listed in props_shown if it is a PROP in the VISUAL LOCK.
 
 PLAUSIBILITY (final check before output — every scene must pass):
 - Inspect VISUAL LOCK: are there humans, animals, both, or only objects?

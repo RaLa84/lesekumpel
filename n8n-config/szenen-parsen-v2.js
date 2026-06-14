@@ -132,6 +132,19 @@ return scenes.map(s => {
   const props       = Array.isArray(s.props_shown) ? s.props_shown.filter(p => p && has(p.name)) : [];
   const setFocus    = clean(s.setting_focus);
   const mood        = clean(s.mood) || 'warm';
+  const medium      = clean(s.medium) || 'real-scene';
+  const sceneSetting = clean(s.sceneSetting);
+
+  // Bei nicht-realem Medium (Spiel/Screen/Traum/Vorstellung/Erinnerung) wird das
+  // Moment NICHT als reales Ereignis gerendert, sondern als das jeweilige Medium.
+  // Verhindert z.B. "Kind wirft echte Tomate" obwohl der Wurf im Spiel passiert.
+  const MEDIUM_DIRECTIVE = {
+    'on-screen-game': 'DEPICT AS: this moment happens inside a video game. Render it as game graphics shown on a screen (TV, monitor, handheld or phone). In-game characters and objects are game sprites / game art, NOT real. If a real-world character is present they appear in front of the screen (e.g. holding a controller); the game action stays on the screen. This is NOT a real-world event.',
+    'dream':       'DEPICT AS: this moment is a dream. Render it with a soft, dreamlike atmosphere (gentle glow, slightly surreal), clearly not a literal real-world event.',
+    'imagination': 'DEPICT AS: this moment is the character imagining something. Render the imagined content as a soft daydream, clearly distinct from reality.',
+    'memory':      'DEPICT AS: this moment is a remembered past scene, rendered with a gentle nostalgic tone.'
+  };
+  const mediumDirective = (medium && medium !== 'real-scene') ? (MEDIUM_DIRECTIVE[medium] || '') : '';
 
   const propsLine = props.length > 0
     ? props.map(p => `${clean(p.name)} (${clean(p.hand) || 'in hand'})`).join(', ')
@@ -148,20 +161,25 @@ return scenes.map(s => {
     `  In frame:      ${charsLine}`,
     `  Props shown:   ${propsLine}`,
     setFocus ? `  Setting focus: ${setFocus}` : '',
+    sceneSetting ? `  Scene setting: ${sceneSetting}` : '',
+    (medium && medium !== 'real-scene') ? `  Medium:        ${medium}` : '',
     `  Mood:          ${mood}`
   ].filter(Boolean).join('\n');
 
-  // Finaler Prompt: FULL-BLEED Lead → safetyContext → VISUAL LOCK → SCENE → STYLE → NEGATIVE
+  // Finaler Prompt: FULL-BLEED Lead → safetyContext → VISUAL LOCK → SCENE → [MEDIUM] → STYLE → NEGATIVE
   const positiveSections = [
     fullBleedMandate,
     safetyContext + '.',
     visualLock,
     sceneBlock,
+    mediumDirective,
     'ART STYLE: ' + imageStylePositive
   ].filter(Boolean);
   const positive = positiveSections.join('\n\n');
 
-  const fullNegative = [imageStyleNegative, safetyNegative, frameNegative, dynamicNegative].filter(has).join(', ');
+  // Timeline-Negativ: keine Props aus anderen Story-Momenten (z.B. spät gekauftes Eis)
+  const timelineNegative = 'no objects that belong to other story moments, no props the character only obtains later in the story';
+  const fullNegative = [imageStyleNegative, safetyNegative, frameNegative, dynamicNegative, timelineNegative].filter(has).join(', ');
   const finalPrompt  = positive + '\n\n| NEGATIVE: ' + fullNegative;
 
   return {

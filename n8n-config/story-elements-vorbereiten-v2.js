@@ -33,7 +33,8 @@ Output ONLY a JSON object (no markdown, no explanation):
       "shape": "rectangular",
       "count": 1,
       "heldBy": "Character name or null",
-      "heldIn": "left hand | right hand | both hands | none"
+      "heldIn": "left hand | right hand | both hands | none",
+      "appearsFromParagraph": 0
     }
   ],
   "setting": {
@@ -84,6 +85,7 @@ PROPS:
 - "count" (integer) and "heldIn" REQUIRED.
 - "color", "material", "size", "shape" REQUIRED — describe so two illustrators would draw the same object.
 - "heldBy" is the character NAME holding the prop, or null if it sits in the setting.
+- "appearsFromParagraph" (integer, 0-based) REQUIRED: the index of the FIRST numbered paragraph in the Story below in which this prop appears or comes into existence. Use 0 if it is present from the start; use the later paragraph index if a character only buys, finds, builds or receives it partway through. This gates which scenes may show the prop, so a prop obtained at the end is not drawn in earlier scenes.
 
 SETTING:
 - All four sub-slots ("location", "timeOfDay", "weather", "lightDirection") REQUIRED.
@@ -99,6 +101,6 @@ CONSISTENCY:
 - If the story does not mention a visual detail, INVENT a plausible value and keep it consistent.
 - Once invented, treat it as fixed canon — do not vary it between fields.
 
-Story:
-${d.storyText}`;
+Story (paragraphs numbered 0-based; a blank line separates paragraphs — use these indices for appearsFromParagraph):
+${(d.storyText || '').split(/\n\n+/).map((p, i) => `[${i}] ${p}`).join('\n\n')}`;
 return { json: { ...d, elementsUserPrompt } };

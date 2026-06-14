@@ -136,6 +136,10 @@ function buildPropBlock(p, idx) {
   if (typeof p.count === 'number') lines.push(`  COUNT:    ${p.count}`);
   if (has(p.heldBy))   lines.push(`  HELD BY:  ${clean(p.heldBy)} (${clean(p.heldIn) || 'see story'})`);
   else if (has(p.heldIn) && clean(p.heldIn) !== 'none') lines.push(`  HELD IN:  ${clean(p.heldIn)}`);
+  // Prop-Zeitachse: ab welchem Absatz die Prop existiert (>0). Der Szenen-Compiler
+  // darf die Prop nur in Szenen ab diesem paragraphIndex zeigen.
+  if (typeof p.appearsFromParagraph === 'number' && p.appearsFromParagraph > 0)
+    lines.push(`  FIRST APPEARS: from paragraph ${p.appearsFromParagraph} onward`);
   return lines.join('\n');
 }
 
