@@ -144,7 +144,7 @@ function buildSettingBlock(s) {
   if (typeof s === 'string') {
     return `SETTING ANCHOR (global atmosphere stays constant; micro-location varies per scene per 'Setting focus'):\n  ${clean(s)}`;
   }
-  const lines = ['SETTING ANCHOR (global atmosphere stays constant; micro-location varies per scene per 'Setting focus'):'];
+  const lines = ["SETTING ANCHOR (global atmosphere stays constant; micro-location varies per scene per 'Setting focus'):"];
   if (has(s.location))       lines.push(`  LOCATION:        ${clean(s.location)}`);
   if (has(s.timeOfDay))      lines.push(`  TIME-OF-DAY:     ${clean(s.timeOfDay)}`);
   if (has(s.weather))        lines.push(`  WEATHER:         ${clean(s.weather)}`);

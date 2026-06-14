@@ -27,8 +27,98 @@ const imageStyleNegative = prev.imageStyleNegative || "no text, no watermarks, n
 const imageCount = prev.imageCount || 1;
 const sceneRules = Array.isArray(prev.sceneRules) ? prev.sceneRules : [];
 
-// Pflicht-Plausibilitaetsregeln, die IMMER gelten — verhindern Setting-Halluzinationen
-// wie "Mensch unter Wasser neben Delfin" oder "Mensch im Lavasee".
+// ════════════════════════════════════════════════════════════════════════════════
+// DIVERSITY POOLS — keep in sync with diversity-pools.js
+// Multi-Achsen-Diversität: camera × lighting × composition. Jede Achse hat einen
+// Pool, der pro Szene aus genau einem Wert besteht. Pro Story müssen die drei
+// Achsen orthogonal variieren — siehe Constraint-Block im Compiler-Prompt unten.
+// ════════════════════════════════════════════════════════════════════════════════
+
+const CAMERA = [
+  'extreme-close-up', 'close-up', 'medium-shot', 'medium-wide',
+  'wide', 'extreme-wide', 'low-angle', 'high-angle',
+  'bird-eye', 'worm-eye', 'over-the-shoulder', 'dutch-angle'
+];
+
+const LIGHTING = [
+  'dawn', 'morning', 'midday', 'afternoon', 'golden-hour', 'dusk',
+  'night', 'stormy', 'misty', 'bright-indoor', 'candlelight'
+];
+
+const COMPOSITION = [
+  'foreground-subject', 'subject-in-landscape', 'close-portrait',
+  'over-shoulder', 'group-shot', 'environment-trace'
+];
+
+// Story-Arc-Templates: dramaturgische Camera-Sequenz pro Bilder-Anzahl.
+// Wenn ein Template aktiv ist, MUSS Bild i die camera template[i-1] haben.
+// Wiederholungen in einem Template sind erlaubt (medium-wide × 2 bei 4 Bildern)
+// — lighting und composition sorgen dann für die Diversität.
+const STORY_ARC_TEMPLATES = {
+  2: ['wide', 'close-up'],
+  3: ['wide', 'medium-shot', 'close-up'],
+  4: ['wide', 'medium-wide', 'close-up', 'medium-wide']
+};
+
+// Pool-Filter aus Story-Setting (location, timeOfDay, weather).
+// Konservativ: lieber etwas mehr erlauben als zu eng zu filtern.
+function buildAllowedLighting(setting) {
+  const loc = String(setting?.location || '').toLowerCase();
+  const tod = String(setting?.timeOfDay || '').toLowerCase();
+  const weather = String(setting?.weather || '').toLowerCase();
+
+  let lighting = [...LIGHTING];
+
+  if (/\bdawn|sunrise|early morning\b/.test(tod)) {
+    lighting = lighting.filter(l => ['dawn', 'morning', 'misty'].includes(l));
+  } else if (/\bmorning\b/.test(tod)) {
+    lighting = lighting.filter(l => ['dawn', 'morning', 'midday', 'misty', 'bright-indoor'].includes(l));
+  } else if (/\bmidday|noon\b/.test(tod)) {
+    lighting = lighting.filter(l => ['morning', 'midday', 'afternoon', 'bright-indoor'].includes(l));
+  } else if (/\bafternoon\b/.test(tod)) {
+    lighting = lighting.filter(l => ['midday', 'afternoon', 'golden-hour', 'bright-indoor'].includes(l));
+  } else if (/\bevening|sunset|dusk|golden hour\b/.test(tod)) {
+    lighting = lighting.filter(l => ['afternoon', 'golden-hour', 'dusk', 'candlelight'].includes(l));
+  } else if (/\bnight|midnight|after dark\b/.test(tod)) {
+    lighting = lighting.filter(l => ['dusk', 'night', 'candlelight', 'stormy'].includes(l));
+  }
+
+  if (/\bstorm|thunder|heavy rain|blizzard\b/.test(weather)) {
+    lighting = ['stormy', 'misty', 'night'];
+  } else if (/\bfog|mist|nebel\b/.test(weather)) {
+    lighting = lighting.filter(l => ['misty', 'dawn', 'dusk', 'night'].includes(l));
+    if (lighting.length === 0) lighting = ['misty'];
+  }
+
+  if (/\bindoor|inside|room|kitchen|bedroom|classroom|library|house interior\b/.test(loc)) {
+    lighting = lighting.filter(l => ['bright-indoor', 'candlelight', 'morning', 'afternoon', 'dusk', 'night'].includes(l));
+    if (lighting.length === 0) lighting = ['bright-indoor'];
+  }
+
+  if (/\bunderwater|under water|sea floor|inside an aquarium\b/.test(loc)) {
+    lighting = lighting.filter(l => ['misty', 'dusk', 'morning'].includes(l));
+    if (lighting.length === 0) lighting = ['misty'];
+  }
+
+  // Mindest-Pool-Größe: bei 4-Bild-Stories brauchen wir mindestens 4 unique Werte.
+  if (lighting.length < 4) {
+    const fallback = ['morning', 'afternoon', 'golden-hour', 'misty'];
+    for (const f of fallback) {
+      if (!lighting.includes(f)) lighting.push(f);
+      if (lighting.length >= 4) break;
+    }
+  }
+  return lighting;
+}
+
+const storyElements = prev.storyElements || {};
+const allowedLighting = buildAllowedLighting(storyElements.setting || {});
+const arcTemplate = STORY_ARC_TEMPLATES[imageCount] || null;
+
+// ════════════════════════════════════════════════════════════════════════════════
+// Pflicht-Plausibilitaetsregeln (BLEIBEN UNVERAENDERT)
+// ════════════════════════════════════════════════════════════════════════════════
+
 const PLAUSIBILITY_INVARIANTS = [
   "Humans (if present in VISUAL LOCK) appear only in plausible settings; humans cannot be underwater, in lava, in outer space without a suit, inside walls, or sharing the same physical space as wild animals in their hostile habitat.",
   "For underwater animals (dolphin, whale, fish, octopus), if a human is in VISUAL LOCK, the human OBSERVES from a boat, pier, shore, or aquarium glass — never swims alongside the animal.",
@@ -38,6 +128,16 @@ const PLAUSIBILITY_INVARIANTS = [
 
 const allRules = [...sceneRules, ...PLAUSIBILITY_INVARIANTS];
 const rulesBlock = allRules.map((r, i) => `${i+1}. ${r}`).join('\n');
+
+// ════════════════════════════════════════════════════════════════════════════════
+// Compiler-Prompt für den Szenen-LLM
+// ════════════════════════════════════════════════════════════════════════════════
+
+const arcConstraintBlock = arcTemplate
+  ? `STORY-ARC TEMPLATE (CAMERA SEQUENCE — HARD CONSTRAINT, follow exactly in order):
+${arcTemplate.map((cam, i) => `  Scene ${i+1}: camera="${cam}"`).join('\n')}
+Each scene's "camera" field MUST equal the value above for that scene index.`
+  : `STORY-ARC TEMPLATE: none for this image count. Choose camera values freely from the CAMERA pool, but all values across scenes must be unique.`;
 
 const sceneUserPrompt = `You are a scene-slot compiler for a children's book illustrator. You receive a fixed VISUAL LOCK (characters, props, setting) and your job is to choose ${imageCount} story moment(s) and fill a small action/composition slot per moment. You do NOT describe characters, outfits, props or settings — those come from the VISUAL LOCK and are inserted verbatim downstream.
 
@@ -92,6 +192,23 @@ EXAMPLE C (3-paragraph story, 1 scene):
 
 VERIFY before output: each scene's momentSummary must describe content from its chosen paragraph. If they don't match, fix paragraphIndex.
 
+MULTI-AXIS DIVERSITY (CRITICAL — three orthogonal axes that create visually distinct images):
+
+Each scene MUST pick exactly one value per axis from the pools below.
+
+CAMERA pool (12 values): ${CAMERA.join(', ')}
+LIGHTING pool (filtered for this story's setting — only these values are plausible): ${allowedLighting.join(', ')}
+COMPOSITION pool (6 values): ${COMPOSITION.join(', ')}
+
+${arcConstraintBlock}
+
+DIVERSITY CONSTRAINTS (validated):
+- "lighting" values MUST be unique across all ${imageCount} scenes.
+- "composition" values MUST be unique across all ${imageCount} scenes.
+- "framingType" values MUST be unique across all ${imageCount} scenes (separate semantic axis, see below).
+
+If the story spans a long time (e.g. a day), let "lighting" progress naturally (e.g. morning → afternoon → golden-hour → dusk). If it spans a short time (e.g. one moment), pick lightings that are atmospherically different but still plausible.
+
 TASK: Output ONLY a JSON array with exactly ${imageCount} objects. Pick ${imageCount} distinct moment(s) from the story that together cover the story arc. Each scene shows exactly ONE moment — never combine two moments, never show the same character twice.
 
 Each object has this shape (no other keys):
@@ -101,7 +218,9 @@ Each object has this shape (no other keys):
   "paragraphIndex": <integer — see PARAGRAPH-INDEX RULES above, must be >= 1, distinct, strictly increasing>,
   "action": "<the action verb, e.g. 'reaching for', 'running across', 'kneeling beside'>",
   "pose": "<short English describing body pose, e.g. 'feet slightly apart, arms outstretched'>",
-  "camera": "<camera angle + framing, e.g. 'eye-level medium shot, frontal' or 'low-angle wide shot'>",
+  "camera": "<EXACTLY one value from CAMERA pool; if STORY-ARC TEMPLATE active, MUST equal template value for this scene index>",
+  "lighting": "<EXACTLY one value from LIGHTING pool above; unique across scenes>",
+  "composition": "<EXACTLY one value from COMPOSITION pool; unique across scenes>",
   "characters_present": ["<name>", "<name>"],
   "props_shown": [ { "name": "<prop name from VISUAL LOCK>", "hand": "left | right | both | none" } ],
   "setting_focus": "<short English noting which part of the SETTING ANCHOR is in frame, e.g. 'foreground waves, distant horizon'>",
@@ -111,8 +230,8 @@ Each object has this shape (no other keys):
   "compositionCheck": "<one English sentence asserting this scene is a full-bleed square 1:1 image with painted scene reaching all four corners, no white margin, no inner matte, no frame>"
 }
 
-FRAMING DIVERSITY (CRITICAL — failing this produces ${imageCount} near-identical images):
-Some stories revolve around a single subject or repeated activity (e.g. an animal in one habitat, a character doing one thing). Even then, the ${imageCount} scenes MUST show the topic from visually distinct angles. Pick ${imageCount} different framingType values from this menu:
+FRAMING DIVERSITY (semantic axis — distinct from camera, also unique across scenes):
+Pick ${imageCount} different framingType values from this menu:
 
   - overview     → wide framing, full context visible, distant camera, subject small in frame
   - detail       → tight close-up on ONE feature, body part or single action; near camera; rest of body/scene cropped out
@@ -130,7 +249,10 @@ HARD CONSTRAINTS (never violate):
 - You MAY NOT show the same named character twice in one scene.
 - "characters_present" must be a strict subset of the names that appear as CHARACTER #n in the VISUAL LOCK.
 - "props_shown.name" must match a PROP #n name from the VISUAL LOCK; if unsure, return an empty array.
-- camera, pose AND framingType MUST be unique across scenes; characters_present MAY repeat across scenes (same character in different moments).
+- "camera" MUST be from the CAMERA pool (enum); if STORY-ARC TEMPLATE is active, MUST equal template value.
+- "lighting" MUST be from the (filtered) LIGHTING pool and UNIQUE across scenes.
+- "composition" MUST be from the COMPOSITION pool and UNIQUE across scenes.
+- "framingType" MUST be UNIQUE across scenes.
 - paragraphIndex MUST be distinct AND strictly increasing AND >= 1 — see PARAGRAPH-INDEX RULES above.
 
 PLAUSIBILITY (final check before output — every scene must pass):
@@ -142,4 +264,15 @@ PLAUSIBILITY (final check before output — every scene must pass):
 
 Output ONLY the JSON array, no markdown, no explanation.`;
 
-return [{ json: { ...prev, sceneUserPrompt, styleRefUrl } }];
+return [{ json: {
+  ...prev,
+  sceneUserPrompt,
+  styleRefUrl,
+  // Pool-Definitionen für nachgelagerte Audit-/Validierungs-Stages durchreichen
+  diversityPools: {
+    camera: CAMERA,
+    lighting: allowedLighting,
+    composition: COMPOSITION,
+    arcTemplate: arcTemplate
+  }
+} }];
