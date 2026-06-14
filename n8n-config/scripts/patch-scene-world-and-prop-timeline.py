@@ -80,7 +80,16 @@ DST.write_text(json.dumps(wf, ensure_ascii=False, indent=2), encoding="utf-8")
 print(f"OK — updated-workflow.json geschrieben ({DST})")
 
 # PUT-Body: nur erlaubte Felder für die n8n Public API
-put_body = {k: wf[k] for k in ("name", "nodes", "connections", "settings") if k in wf}
+put_body = {k: wf[k] for k in ("name", "nodes", "connections") if k in wf}
+# settings: nur die vom Public-API-Schema erlaubten Keys (sonst HTTP 400
+# "settings must NOT have additional properties" — z.B. timeSavedMode/availableInMCP)
+ALLOWED_SETTINGS = {
+    "saveExecutionProgress", "saveManualExecutions", "saveDataErrorExecution",
+    "saveDataSuccessExecution", "executionTimeout", "errorWorkflow", "timezone",
+    "executionOrder", "callerPolicy",
+}
+if isinstance(wf.get("settings"), dict):
+    put_body["settings"] = {k: v for k, v in wf["settings"].items() if k in ALLOWED_SETTINGS}
 if wf.get("staticData") is not None:
     put_body["staticData"] = wf["staticData"]
 PUT_BODY.write_text(json.dumps(put_body, ensure_ascii=False, indent=2), encoding="utf-8")
