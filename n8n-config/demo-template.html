@@ -1830,9 +1830,9 @@
             .buddy-menu-btn { min-width: 170px; }
         }
 
-        /* — „Was ist das?"-Modus: zeigt an, was antippbar ist — */
-        body.explain-mode { cursor: help; }
-        body.explain-mode [data-speak] { outline: 3px dashed var(--accent-coral); outline-offset: 2px; }
+        /* Im geöffneten Panel kein Logo/Titel (zugeklappt bleibt der Maskottchen-FAB) */
+        .toolbar-container:not(.collapsed) .toolbar-header-label { display: none; }
+        .toolbar-container:not(.collapsed) .toolbar-header { justify-content: flex-end; }
 
         /* — Symbol-first Zauberkasten: großes Icon über kleinem Label — */
         .toolbar-group-buttons > .tool-btn {
@@ -2021,14 +2021,6 @@
                         <button type="button" class="buddy-menu-btn" id="btn-read-aloud" hidden onclick="buddyAction('read-aloud')"
                                 data-speak="Jetzt liest du mir vor! Ich höre zu und male die Wörter grün an.">
                             <span class="bm-icon" aria-hidden="true">🎤</span><span class="bm-label">Jetzt liest du!</span>
-                        </button>
-                        <button type="button" class="buddy-menu-btn" onclick="buddyAction('explain')"
-                                data-speak="Was ist das: Tipp danach auf einen Knopf, und ich erkläre ihn dir.">
-                            <span class="bm-icon" aria-hidden="true">❓</span><span class="bm-label">Was ist das?</span>
-                        </button>
-                        <button type="button" class="buddy-menu-btn" onclick="buddyAction('help')"
-                                data-speak="Hilfe: Ich erkläre dir die ganze Seite.">
-                            <span class="bm-icon" aria-hidden="true">💡</span><span class="bm-label">Hilfe</span>
                         </button>
                     </div>
                 </div>
@@ -2395,27 +2387,6 @@
         // Spricht den data-say-Text eines Buttons (für Quiz, Spiele, Wortschatz)
         function sayThis(btn) { speak(btn.getAttribute('data-say')); }
 
-        /* ── „Was ist das?"-Modus ─────────────────────────────────────────
-           Der nächste Tap auf ein Element SPRICHT seine Erklärung (data-speak)
-           statt die Aktion auszuführen. Danach endet der Modus von selbst. */
-        let explainMode = false;
-        function startExplainMode() {
-            explainMode = true;
-            document.body.classList.add('explain-mode');
-            speak('Tipp jetzt auf einen Knopf. Ich sage dir, was er macht.');
-        }
-        document.addEventListener('click', function(e) {
-            if (!explainMode) return;
-            e.preventDefault();
-            e.stopPropagation();
-            explainMode = false;
-            document.body.classList.remove('explain-mode');
-            const el = e.target.closest('[data-speak]');
-            if (el) speak(el.getAttribute('data-speak'));
-            else if (e.target.closest('.story-text')) speak('Das ist die Geschichte. Tipp unten rechts auf mich und dann auf Vorlesen, dann lese ich sie dir vor.');
-            else speak('Hm, dazu weiß ich nichts. Tipp auf einen Knopf!');
-        }, true);
-
         /* ── Lese-Buddy (im Zauberkasten-FAB verschmolzen) ────────────────
            Das Maskottchen IST der Werkzeugkasten-Knopf rechts unten.
            Bei Neurotyp Autismus bleibt es still (keine Sprechblase, kein
@@ -2428,10 +2399,6 @@
                 togglePlayer();
             } else if (what === 'read-aloud') {
                 startReadAloud();
-            } else if (what === 'explain') {
-                startExplainMode();
-            } else if (what === 'help') {
-                speak('Hallo, ich bin dein Lesekumpel — der Knopf rechts unten! Oben steht die Geschichte. Tipp bei mir auf Vorlesen, dann lese ich sie dir vor. Oder tipp auf "Jetzt liest du", dann liest du mir vor und ich male die Wörter grün an. Bei mir findest du auch Werkzeuge für die Schrift.');
             }
         }
         function buddyCheer(text) {

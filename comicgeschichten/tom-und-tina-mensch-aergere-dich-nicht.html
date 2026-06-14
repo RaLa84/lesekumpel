@@ -538,9 +538,9 @@
             .kumpel-fab:not(.collapsed) { bottom: 0; right: 0; max-width: 100%; border-radius: 20px 20px 0 0; border-bottom: none; }
         }
 
-        /* — „Was ist das?"-Modus — */
-        body.explain-mode { cursor: help; }
-        body.explain-mode [data-speak] { outline: 3px dashed var(--accent-salmon); outline-offset: 2px; }
+        /* Im geöffneten Panel kein Logo/Titel (zugeklappt bleibt der Maskottchen-FAB) */
+        .kumpel-fab:not(.collapsed) .kumpel-header-label { display: none; }
+        .kumpel-fab:not(.collapsed) .kumpel-header { justify-content: flex-end; }
 
         /* — Audio-Player-Leiste — */
         .player-bar {
@@ -1077,14 +1077,6 @@
                             data-speak="Vorlesen: Ich lese dir den ganzen Comic vor.">
                         <span class="bm-icon" aria-hidden="true">▶</span><span class="bm-label">Vorlesen</span>
                     </button>
-                    <button type="button" class="buddy-menu-btn" onclick="buddyAction('explain')"
-                            data-speak="Was ist das: Tipp danach auf einen Knopf, und ich erkläre ihn dir.">
-                        <span class="bm-icon" aria-hidden="true">❓</span><span class="bm-label">Was ist das?</span>
-                    </button>
-                    <button type="button" class="buddy-menu-btn" onclick="buddyAction('help')"
-                            data-speak="Hilfe: Ich erkläre dir die ganze Seite.">
-                        <span class="bm-icon" aria-hidden="true">💡</span><span class="bm-label">Hilfe</span>
-                    </button>
                 </div>
             </div>
             <div class="kumpel-group group-text">
@@ -1240,25 +1232,6 @@
             if (fast) fast.classList.toggle('active', SPEECH_RATE >= 0.85);
         }
         function sayThis(btn) { speak(btn.getAttribute('data-say')); }
-
-        /* „Was ist das?"-Modus: nächster Tap spricht statt zu schalten */
-        let explainMode = false;
-        function startExplainMode() {
-            explainMode = true;
-            document.body.classList.add('explain-mode');
-            speak('Tipp jetzt auf einen Knopf. Ich sage dir, was er macht.');
-        }
-        document.addEventListener('click', function(e) {
-            if (!explainMode) return;
-            e.preventDefault();
-            e.stopPropagation();
-            explainMode = false;
-            document.body.classList.remove('explain-mode');
-            const el = e.target.closest('[data-speak]');
-            if (el) speak(el.getAttribute('data-speak'));
-            else if (e.target.closest('.panel-card') || e.target.closest('.comic-stage')) speak('Das ist der Comic. Tipp unten rechts auf mich und dann auf Vorlesen, dann lese ich ihn dir vor.');
-            else speak('Hm, dazu weiß ich nichts. Tipp auf einen Knopf!');
-        }, true);
 
         // --- COMIC-DATEN (entspricht YAML-Sidecar aus dem Plan) ---
         const comicData = {
@@ -1555,8 +1528,6 @@
             const tb = document.getElementById('toolbar');
             if (tb && !tb.classList.contains('collapsed')) tb.classList.add('collapsed');
             if (what === 'read') togglePlayer();
-            else if (what === 'explain') startExplainMode();
-            else if (what === 'help') speak('Hallo, ich bin dein Lesekumpel — der Knopf rechts unten! Oben siehst du den Comic. Tipp auf ein Bild, dann zeige ich dir den Text dazu. Tipp bei mir auf Vorlesen, dann lese ich dir alles vor. Mit den Pfeilen blätterst du.');
         }
         function buddyCheer(text) {
             speak(text);
