@@ -1875,9 +1875,47 @@
             .pb-count { min-width: 44px; font-size: 0.8rem; }
         }
 
-        /* — Tafel-Modus: Player/Geschafft-Karte/Player-Leiste stören dort nicht — */
+        /* — „Jetzt liest du!": grün gelesene Wörter + Mikro-Leiste — */
+        .word-interactive.read-correct { color: #1A8676; font-weight: 600; }   /* AA-grün auf Weiß/Cream */
+        .word-interactive.read-current { background: rgba(47,184,166,0.18); border-radius: 4px; }
+        .word-interactive.read-pulse { animation: readPulse 0.6s ease-in-out 2; }
+        @keyframes readPulse {
+            0%, 100% { background: rgba(47,184,166,0.18); }
+            50% { background: var(--primary-yellow); }
+        }
+        .mic-bar {
+            position: fixed; bottom: 0; left: 0; right: 0; z-index: 4450;
+            display: flex; align-items: center; gap: 12px;
+            background: #fff; border-top: 3px solid var(--accent-coral);
+            padding: 10px 16px calc(10px + env(safe-area-inset-bottom));
+            box-shadow: 0 -6px 24px rgba(43,49,64,0.14);
+        }
+        .mic-bar[hidden] { display: none; }
+        .mic-dot { font-size: 1.5rem; flex-shrink: 0; animation: micPulse 1.2s ease-in-out infinite; }
+        @keyframes micPulse { 0%,100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.18); opacity: 0.7; } }
+        .mic-label { flex: 1; font-family: var(--font-heading); font-weight: 600; color: var(--navy); font-size: 1rem; min-width: 0; }
+        .mic-count { font-family: var(--font-heading); font-weight: 600; font-size: 0.9rem; color: var(--navy); min-width: 52px; text-align: center; flex-shrink: 0; }
+        body.mic-active { padding-bottom: 130px; }
+        body.mic-active .toolbar-container.collapsed,
+        body.mic-active .toolbar-container:not(.collapsed) { bottom: 96px; }
+        @media (max-width: 767px) {
+            body.mic-active { padding-bottom: 150px; }
+            body.mic-active .toolbar-container.collapsed { bottom: 92px; }
+            .mic-label { font-size: 0.88rem; }
+            .mic-count { min-width: 40px; font-size: 0.8rem; }
+        }
+        .done-self-badge {
+            display: inline-block; margin: 0 0 14px; padding: 6px 16px;
+            background: rgba(47,184,166,0.18); border: 2px solid var(--mint);
+            border-radius: 999px; font-family: var(--font-heading); font-weight: 700;
+            color: #1A8676; font-size: 0.95rem;
+        }
+        .done-self-badge[hidden] { display: none; }
+
+        /* — Tafel-Modus: Player/Geschafft-Karte/Leisten stören dort nicht — */
         body.view-tafel .done-card,
-        body.view-tafel .player-bar { display: none !important; }
+        body.view-tafel .player-bar,
+        body.view-tafel .mic-bar { display: none !important; }
         body.view-tafel .buddy-img, body.view-tafel .toolbar-header .header-icon { width: 84px; height: 84px; }
 
         /* 1-Spalten-Fallback wenn Viewport zu schmal für 2-Spalten ist (z.B. Toggle-Test am Desktop) */
@@ -1982,6 +2020,10 @@
                                 data-speak="Vorlesen: Ich lese dir die ganze Geschichte vor.">
                             <span class="bm-icon" aria-hidden="true">▶</span><span class="bm-label">Vorlesen</span>
                         </button>
+                        <button type="button" class="buddy-menu-btn" id="btn-read-aloud" hidden onclick="buddyAction('read-aloud')"
+                                data-speak="Jetzt liest du mir vor! Ich höre zu und male die Wörter grün an.">
+                            <span class="bm-icon" aria-hidden="true">🎤</span><span class="bm-label">Jetzt liest du!</span>
+                        </button>
                         <button type="button" class="buddy-menu-btn" onclick="buddyAction('explain')"
                                 data-speak="Was ist das: Tipp danach auf einen Knopf, und ich erkläre ihn dir.">
                             <span class="bm-icon" aria-hidden="true">❓</span><span class="bm-label">Was ist das?</span>
@@ -2055,6 +2097,7 @@
             <img class="done-buddy" src="https://rala84.github.io/lesekumpel/Konzept_Rebranding/logo-lesekumpel-512.webp" alt="" aria-hidden="true">
             <div class="done-star" aria-hidden="true">⭐</div>
             <h2 class="done-title">Geschichte geschafft!</h2>
+            <div class="done-self-badge" id="done-self-badge" hidden>🎤 Selbst gelesen — Leseheld!</div>
             <button class="tool-btn done-cta" type="button" onclick="goToGames()"
                     data-speak="Hier geht es zu den Spielen über die Geschichte.">🎮 Zur Spielzeit</button>
         </div>
@@ -2229,6 +2272,28 @@
                 data-speak="Das X beendet das Vorlesen.">✕</button>
     </div>
 
+    <!-- Mikro-Leiste: erscheint, während das Kind selbst vorliest -->
+    <div class="mic-bar" id="mic-bar" hidden>
+        <span class="mic-dot" id="mic-dot" aria-hidden="true">🎤</span>
+        <span class="mic-label" id="mic-label">Ich höre zu — lies mir vor!</span>
+        <span class="mic-count" id="mic-count" aria-hidden="true">0/0</span>
+        <button type="button" class="pb-btn pb-stop" id="mic-stop" onclick="stopReadAloud()" aria-label="Selber-Lesen beenden"
+                data-speak="Das X beendet das Selber-Lesen.">✕</button>
+    </div>
+
+    <!-- Erststart-Hinweis fürs Mikrofon (Datenschutz, kindgerecht + Erwachsene) -->
+    <div class="report-modal-backdrop" id="mic-consent" role="dialog" aria-modal="true" aria-labelledby="mic-consent-title" hidden>
+        <div class="report-modal">
+            <h2 id="mic-consent-title">🎤 Jetzt liest du!</h2>
+            <p>Lies die Geschichte laut vor — dein Lesekumpel hört zu und malt die Wörter <b>grün</b> an, wenn du sie liest. Es gibt kein Falsch: Du kannst so oft lesen, wie du magst!</p>
+            <p style="font-size:0.9rem; color:#555;"><b>Für die Großen:</b> Zum Zuhören nutzt dein Gerät kurz das Mikrofon. Die Spracherkennung läuft über den Browser (bei Chrome via Google). Es wird nichts gespeichert. Frag am besten einen Erwachsenen, bevor du startest.</p>
+            <div class="actions">
+                <button type="button" class="btn-secondary" id="mic-consent-cancel">Abbrechen</button>
+                <button type="button" class="btn-primary" id="mic-consent-ok">Los geht's! 🎤</button>
+            </div>
+        </div>
+    </div>
+
     <footer>
         <p>Erstellt von deinem KI-Lesekumpel 🤖</p>
         <div class="footer-links"><a href="#">Impressum</a> • <a href="../datenschutz.html">Datenschutz</a> • <a href="../ueber-uns.html">Über uns</a> • <a href="../blog-warum-lesekumpel.html">Blog</a> &bull; <a href="../knowledge-base/snacks/index.html">Wissen</a></div>
@@ -2363,10 +2428,12 @@
             if (tb && !tb.classList.contains('collapsed')) tb.classList.add('collapsed');
             if (what === 'read') {
                 togglePlayer();
+            } else if (what === 'read-aloud') {
+                startReadAloud();
             } else if (what === 'explain') {
                 startExplainMode();
             } else if (what === 'help') {
-                speak('Hallo, ich bin dein Lesekumpel — der Knopf rechts unten! Oben steht die Geschichte. Tipp bei mir auf Vorlesen, dann lese ich sie dir vor. Bei mir findest du auch Werkzeuge für die Schrift. Und weiter unten warten Spiele auf dich!');
+                speak('Hallo, ich bin dein Lesekumpel — der Knopf rechts unten! Oben steht die Geschichte. Tipp bei mir auf Vorlesen, dann lese ich sie dir vor. Oder tipp auf "Jetzt liest du", dann liest du mir vor und ich male die Wörter grün an. Bei mir findest du auch Werkzeuge für die Schrift.');
             }
         }
         function buddyCheer(text) {
@@ -3112,6 +3179,7 @@
 
         function togglePlayer() {
             if (!player.active) {
+                if (typeof readAloud !== 'undefined' && readAloud.active) stopReadAloud(); // Mikro + TTS nie gleichzeitig
                 const c = playerCollectWords();
                 if (!c.words.length) return;
                 player = { active: true, paused: false, words: c.words, idx: 0, chunkMode: c.chunkMode };
@@ -3180,6 +3248,220 @@
             const hub = document.querySelector('.activity-hub');
             if (hub) hub.scrollIntoView({ behavior: REDUCED_MOTION ? 'auto' : 'smooth', block: 'start' });
             speak('Jetzt ist Spielzeit!');
+        }
+
+        /* ══════════════════════════════════════════════════════════════════
+           „JETZT LIEST DU!" — Spracherkennung + Lese-Check (MVP)
+           Das Kind liest laut vor; per Web Speech Recognition gleichen wir
+           gegen den BEKANNTEN Text ab (Alignment, kein freies Diktat) und
+           färben gelesene Wörter grün. Ermutigend, nie „falsch".
+           Datenschutz: Web Speech streamt Audio an den Browser-Dienst
+           (Chrome → Google). Kein Speichern. Erststart-Consent. Eine spätere
+           on-device-Engine (Vosk) ließe sich hier hinter createRecognizer()
+           kapseln, ohne den Rest zu ändern.
+           ══════════════════════════════════════════════════════════════════ */
+        const SpeechRec = window.SpeechRecognition || window.webkitSpeechRecognition;
+        const READ_ALOUD_SUPPORTED = !!SpeechRec;
+        let readAloud = { active: false, expected: [], pos: 0, rec: null, watchdog: null };
+
+        // Normalisierung: kleinschreiben, Silbentrenner/Satzzeichen weg, ß/Umlaute beibehalten
+        function normWord(s) {
+            return (s || '')
+                .toLowerCase()
+                .replace(/­/g, '')                 // Soft Hyphen
+                .replace(/[.,!?:;„“"»«‚'()\-–—…]/g, '')
+                .replace(/\s+/g, '')
+                .trim();
+        }
+
+        // Levenshtein (klein, nur für kurze Wörter) — für großzügiges Fuzzy-Matching
+        function lev(a, b) {
+            if (a === b) return 0;
+            const m = a.length, n = b.length;
+            if (!m) return n; if (!n) return m;
+            let prev = Array.from({ length: n + 1 }, (_, i) => i);
+            for (let i = 1; i <= m; i++) {
+                let cur = [i];
+                for (let j = 1; j <= n; j++) {
+                    cur[j] = Math.min(prev[j] + 1, cur[j - 1] + 1, prev[j - 1] + (a[i-1] === b[j-1] ? 0 : 1));
+                }
+                prev = cur;
+            }
+            return prev[n];
+        }
+
+        // Großzügiger Wort-Vergleich: exakt, oder Präfix (Lautier-Versuch), oder
+        // Levenshtein-Toleranz je nach Wortlänge.
+        function wordsMatch(said, target) {
+            if (!said || !target) return false;
+            if (said === target) return true;
+            if (target.length >= 4 && (target.startsWith(said) || said.startsWith(target)) && said.length >= 3) return true;
+            const tol = target.length <= 4 ? 1 : (target.length <= 8 ? 2 : 3);
+            return lev(said, target) <= tol;
+        }
+
+        function startReadAloud() {
+            if (!READ_ALOUD_SUPPORTED) {
+                speak('Das Selber-Lesen geht auf diesem Gerät leider nicht. Probier es mit Chrome!');
+                return;
+            }
+            if (readAloud.active) { stopReadAloud(); return; }
+            // Erststart-Einverständnis
+            let consented = false;
+            try { consented = localStorage.getItem('lesekumpel-mic-consent') === '1'; } catch(e) {}
+            if (!consented) { openMicConsent(); return; }
+            beginReadAloud();
+        }
+
+        function beginReadAloud() {
+            stopPlayer();           // Mikro + TTS nie gleichzeitig
+            stopSpeaking();
+            // sichtbare Wörter sammeln (gleiche Quelle wie der Vorlese-Player)
+            const chunkMode = !document.getElementById('chunk-view').classList.contains('hidden');
+            const container = chunkMode ? document.getElementById('chunk-display') : document.getElementById('full-text-view');
+            const expected = [];
+            container.querySelectorAll('.word-interactive').forEach(el => {
+                const n = normWord(el.innerText);
+                if (n) expected.push({ el, norm: n });
+            });
+            if (!expected.length) return;
+            // alte Markierungen putzen
+            document.querySelectorAll('.read-correct, .read-current').forEach(el => el.classList.remove('read-correct', 'read-current'));
+
+            const rec = createRecognizer();
+            if (!rec) return;
+            readAloud = { active: true, expected, pos: 0, rec, watchdog: null };
+            micBarSet(true);
+            markCurrent();
+            armWatchdog();
+            try { rec.start(); } catch(e) {}
+        }
+
+        function createRecognizer() {
+            let rec;
+            try { rec = new SpeechRec(); } catch(e) { return null; }
+            rec.lang = 'de-DE';
+            rec.continuous = true;
+            rec.interimResults = true;
+            rec.onresult = (event) => {
+                if (!readAloud.active) return;
+                // alle neuen Wörter aus dem (auch interim) Transcript ziehen
+                let words = [];
+                for (let i = event.resultIndex; i < event.results.length; i++) {
+                    const t = event.results[i][0] && event.results[i][0].transcript;
+                    if (t) words = words.concat(t.split(/\s+/));
+                }
+                words.map(normWord).filter(Boolean).forEach(consumeSpokenWord);
+            };
+            rec.onerror = (e) => {
+                if (e.error === 'not-allowed' || e.error === 'service-not-allowed') {
+                    stopReadAloud();
+                    buddyCheer('Ich darf das Mikrofon nicht benutzen. Frag einen Erwachsenen um Hilfe!');
+                } else if (e.error === 'no-speech') {
+                    // ignorieren — Watchdog kümmert sich
+                }
+            };
+            rec.onend = () => {
+                // Chrome stoppt nach Stille — neu starten, solange aktiv
+                if (readAloud.active) { try { rec.start(); } catch(e) {} }
+            };
+            return rec;
+        }
+
+        // Ein erkanntes Wort gegen die nächsten erwarteten Wörter abgleichen
+        function consumeSpokenWord(said) {
+            if (!readAloud.active) return;
+            const exp = readAloud.expected;
+            // Fenster: aktuelles + 2 voraus (erlaubt 1 übersprungenes Wort)
+            for (let off = 0; off <= 2 && readAloud.pos + off < exp.length; off++) {
+                if (wordsMatch(said, exp[readAloud.pos + off].norm)) {
+                    // übersprungene Wörter still als gelesen markieren (kein Rot)
+                    for (let k = 0; k <= off; k++) {
+                        const w = exp[readAloud.pos + k];
+                        w.el.classList.remove('read-current');
+                        w.el.classList.add('read-correct');
+                    }
+                    readAloud.pos += off + 1;
+                    try { playTickSound(); } catch(e) {}
+                    if (readAloud.pos >= exp.length) { finishReadAloud(); return; }
+                    markCurrent();
+                    armWatchdog();
+                    return;
+                }
+            }
+            // kein Treffer → ignorieren (kein Negativ-Feedback)
+        }
+
+        function markCurrent() {
+            document.querySelectorAll('.read-current').forEach(el => el.classList.remove('read-current'));
+            const w = readAloud.expected[readAloud.pos];
+            if (!w) return;
+            w.el.classList.add('read-current');
+            const r = w.el.getBoundingClientRect();
+            if (r.top < 90 || r.bottom > window.innerHeight - 180) {
+                w.el.scrollIntoView({ behavior: REDUCED_MOTION ? 'auto' : 'smooth', block: 'center' });
+            }
+            const cnt = document.getElementById('mic-count');
+            if (cnt) cnt.textContent = readAloud.pos + '/' + readAloud.expected.length;
+        }
+
+        // Stocken: ~4s ohne Fortschritt → sanfter Hinweis (kein Auto-Vorsprechen)
+        function armWatchdog() {
+            clearTimeout(readAloud.watchdog);
+            readAloud.watchdog = setTimeout(() => {
+                if (!readAloud.active) return;
+                const w = readAloud.expected[readAloud.pos];
+                if (w && !REDUCED_MOTION) { w.el.classList.remove('read-pulse'); void w.el.offsetWidth; w.el.classList.add('read-pulse'); }
+                showBuddyBubble('Versuch’s nochmal! 💪');
+                armWatchdog(); // weiter beobachten
+            }, 4000);
+        }
+
+        function finishReadAloud() {
+            stopReadAloud(true);
+            try { sessionStorage.setItem('lesekumpel-selbst-gelesen-der-tag-an-dem-der-leuchtturm-blinkte-10mn', '1'); } catch(e) {}
+            showConfetti();
+            const card = document.getElementById('done-card');
+            const badge = document.getElementById('done-self-badge');
+            if (badge) badge.hidden = false;
+            if (card) { card.hidden = false; card.scrollIntoView({ behavior: REDUCED_MOTION ? 'auto' : 'smooth', block: 'center' }); }
+            buddyCheer('Wow, du hast alles selbst gelesen! Du bist ein echter Leseheld!');
+        }
+
+        function stopReadAloud(keepGreen) {
+            const wasActive = readAloud.active;
+            readAloud.active = false;
+            clearTimeout(readAloud.watchdog);
+            if (readAloud.rec) { try { readAloud.rec.onend = null; readAloud.rec.stop(); } catch(e) {} }
+            document.querySelectorAll('.read-current, .read-pulse').forEach(el => el.classList.remove('read-current', 'read-pulse'));
+            // grüne Treffer bleiben sichtbar (Erfolg); bei explizitem Stopp ohne keepGreen auch
+            micBarSet(false);
+            return wasActive;
+        }
+
+        function micBarSet(on) {
+            const bar = document.getElementById('mic-bar');
+            if (bar) bar.hidden = !on;
+            document.body.classList.toggle('mic-active', on);
+        }
+
+        function showBuddyBubble(text) {
+            const bubble = document.getElementById('buddy-bubble');
+            if (!bubble || isAutismus) return;
+            bubble.textContent = text;
+            bubble.hidden = false;
+            clearTimeout(showBuddyBubble._t);
+            showBuddyBubble._t = setTimeout(() => { bubble.hidden = true; }, 4000);
+        }
+
+        function openMicConsent() {
+            const m = document.getElementById('mic-consent');
+            if (!m) { beginReadAloud(); return; }
+            m.hidden = false; m.classList.add('is-open');
+        }
+        function closeMicConsent() {
+            const m = document.getElementById('mic-consent');
+            if (m) { m.hidden = true; m.classList.remove('is-open'); }
         }
 
         function clearHighlights() { document.querySelectorAll('.highlight-active').forEach(el => el.classList.remove('highlight-active')); }
@@ -3293,10 +3575,15 @@
         }
         function prevChunk() { if(state.chunkIndex > 0) { stopSpeaking(); resetPlayerUI(); state.chunkIndex--; updateChunkDisplay(); } }
 
+        // EINEN AudioContext teilen — Browser limitieren die Anzahl hart (~6);
+        // beim Selber-Lesen klingt der Pling pro Wort, das wären sonst hunderte Contexts.
+        let _tickCtx = null;
         function playTickSound() {
             try {
-                let ctx = new (window.AudioContext || window.webkitAudioContext)();
-                let osc = ctx.createOscillator(); let gain = ctx.createGain();
+                if (!_tickCtx) _tickCtx = new (window.AudioContext || window.webkitAudioContext)();
+                const ctx = _tickCtx;
+                if (ctx.state === 'suspended') ctx.resume();
+                const osc = ctx.createOscillator(); const gain = ctx.createGain();
                 osc.connect(gain); gain.connect(ctx.destination);
                 osc.frequency.value = 880; osc.type = 'sine';
                 gain.gain.value = 0.08;
@@ -3380,6 +3667,18 @@
             // Spul-Balken der Player-Leiste ('change' = beim Loslassen/Tastendruck)
             const pbRange = document.getElementById('pb-range');
             if (pbRange) pbRange.addEventListener('change', () => playerSeek(parseFloat(pbRange.value)));
+            // „Jetzt liest du!"-Knopf nur zeigen, wenn der Browser Spracherkennung kann
+            const raBtn = document.getElementById('btn-read-aloud');
+            if (raBtn && READ_ALOUD_SUPPORTED) raBtn.hidden = false;
+            // Mikro-Consent-Dialog verkabeln
+            const mc = document.getElementById('mic-consent');
+            if (mc) {
+                const ok = document.getElementById('mic-consent-ok');
+                const cancel = document.getElementById('mic-consent-cancel');
+                if (ok) ok.addEventListener('click', () => { try { localStorage.setItem('lesekumpel-mic-consent', '1'); } catch(e) {} closeMicConsent(); beginReadAloud(); });
+                if (cancel) cancel.addEventListener('click', closeMicConsent);
+                mc.addEventListener('click', (e) => { if (e.target === mc) closeMicConsent(); });
+            }
             // Leere "Das könnte dir auch gefallen"-Sektion verstecken (Pipeline liefert aktuell keine Empfehlungen)
             const relGrid = document.querySelector('.related-grid');
             if (relGrid && relGrid.children.length === 0) {
