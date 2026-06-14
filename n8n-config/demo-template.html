@@ -3288,13 +3288,19 @@
             return prev[n];
         }
 
-        // Großzügiger Wort-Vergleich: exakt, oder Präfix (Lautier-Versuch), oder
-        // Levenshtein-Toleranz je nach Wortlänge.
+        // SEHR großzügiger Wort-Vergleich (echte Kinder-ASR ist ungenau):
+        // exakt | eines im anderen enthalten (getrennte Komposita "Leucht Turm",
+        // Plural-/Endungsfehler) | gleicher Wortanfang (ASR trifft den Start meist,
+        // Lese-/Hörfehler sitzen am Wortende) | ~40 % Levenshtein-Toleranz.
         function wordsMatch(said, target) {
             if (!said || !target) return false;
             if (said === target) return true;
-            if (target.length >= 4 && (target.startsWith(said) || said.startsWith(target)) && said.length >= 3) return true;
-            const tol = target.length <= 4 ? 1 : (target.length <= 8 ? 2 : 3);
+            const shorter = said.length <= target.length ? said : target;
+            const longer  = said.length <= target.length ? target : said;
+            if (shorter.length >= 3 && longer.indexOf(shorter) !== -1) return true;   // Enthaltensein
+            const p = Math.min(4, shorter.length);
+            if (shorter.length >= 3 && said.slice(0, p) === target.slice(0, p)) return true; // gleicher Anfang
+            const tol = Math.max(1, Math.floor(longer.length * 0.4));
             return lev(said, target) <= tol;
         }
 
@@ -3328,7 +3334,7 @@
 
             const rec = createRecognizer();
             if (!rec) return;
-            readAloud = { active: true, expected, pos: 0, rec, watchdog: null };
+            readAloud = { active: true, expected, pos: 0, rec, watchdog: null, _proc: 0, _tlen: 0 };
             micBarSet(true);
             markCurrent();
             armWatchdog();
@@ -3343,13 +3349,20 @@
             rec.interimResults = true;
             rec.onresult = (event) => {
                 if (!readAloud.active) return;
-                // alle neuen Wörter aus dem (auch interim) Transcript ziehen
-                let words = [];
-                for (let i = event.resultIndex; i < event.results.length; i++) {
-                    const t = event.results[i][0] && event.results[i][0].transcript;
-                    if (t) words = words.concat(t.split(/\s+/));
+                // Gesamtes Transcript dieser Erkennungs-Sitzung zusammensetzen (final+interim)
+                let full = '';
+                for (let i = 0; i < event.results.length; i++) {
+                    full += ' ' + (event.results[i][0] && event.results[i][0].transcript || '');
                 }
-                words.map(normWord).filter(Boolean).forEach(consumeSpokenWord);
+                const tokens = full.split(/\s+/).map(normWord).filter(Boolean);
+                // Bei neuem Erkennungs-Lauf (Auto-Restart) schrumpft die Liste → Zähler zurück
+                if (tokens.length < (readAloud._tlen || 0)) readAloud._proc = 0;
+                readAloud._tlen = tokens.length;
+                // Nur neue Tokens verarbeiten; das LETZTE (noch wachsende interim-)Token
+                // bleibt re-verarbeitbar, damit es beim Finalisieren nicht verloren geht.
+                const upto = Math.max(0, tokens.length - 1);
+                for (let i = (readAloud._proc || 0); i < tokens.length; i++) consumeSpokenWord(tokens[i]);
+                readAloud._proc = upto;
             };
             rec.onerror = (e) => {
                 if (e.error === 'not-allowed' || e.error === 'service-not-allowed') {
@@ -3370,8 +3383,9 @@
         function consumeSpokenWord(said) {
             if (!readAloud.active) return;
             const exp = readAloud.expected;
-            // Fenster: aktuelles + 2 voraus (erlaubt 1 übersprungenes Wort)
-            for (let off = 0; off <= 2 && readAloud.pos + off < exp.length; off++) {
+            // Fenster: aktuelles + bis zu 4 voraus (erlaubt mehrere übersprungene Wörter,
+            // damit ein vernuscheltes Wort die ganze Geschichte nicht blockiert)
+            for (let off = 0; off <= 4 && readAloud.pos + off < exp.length; off++) {
                 if (wordsMatch(said, exp[readAloud.pos + off].norm)) {
                     // übersprungene Wörter still als gelesen markieren (kein Rot)
                     for (let k = 0; k <= off; k++) {
