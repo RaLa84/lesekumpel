@@ -20,6 +20,18 @@
         body::before { width:420px; height:420px; background:#FFE9B3; top:-130px; left:-150px; }
         body::after  { width:380px; height:380px; background:#C5EBE4; bottom:-130px; right:-130px; }
 
+        /* Dezente farbige Blobs (statisch, tief im Hintergrund) */
+        .bg-blob { position: fixed; z-index: -1; pointer-events: none; filter: blur(10px); }
+
+        /* Legasthenie-Schrift */
+        body.dyslexia-mode { --font-body: 'Atkinson Hyperlegible', system-ui, sans-serif; letter-spacing: 0.03em; word-spacing: 0.14em; }
+        /* Hoher Kontrast */
+        body.high-contrast { background: #fff; }
+        body.high-contrast::before, body.high-contrast::after { display: none; }
+        body.high-contrast .format-card { border-color: var(--navy); border-top-color: var(--navy); }
+        body.high-contrast .format-text, body.high-contrast .hub-hero p { color: #1a1d24; }
+        body.high-contrast .floating-deco, body.high-contrast .mascot-glow, body.high-contrast .hero-sparkle, body.high-contrast .format-medallion::after, body.high-contrast .bg-blob { display: none; }
+
         /* --- NAVBAR (INSPIRED) --- */
         .main-navbar { background: rgba(255,255,255,0.92); -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px); padding: 12px 24px; border-bottom: 3px solid var(--mint); display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; }
         .nav-left { display: flex; align-items: center; gap: 10px; }
@@ -29,60 +41,114 @@
         .nav-links-desktop { display: none; gap: 18px; align-items: center; margin-left: 18px; }
         .nav-btn { text-decoration: none; color: var(--navy); font-weight: 600; font-size: 0.95rem; transition: color 0.2s; }
         .nav-btn:hover { color: var(--mint); }
-        .nav-right { display: flex; align-items: center; gap: 15px; }
+        .nav-right { display: flex; align-items: center; gap: 10px; position: relative; }
         .burger-icon { font-size: 1.6rem; cursor: pointer; display: block; color: var(--navy); background: #fff; border: 1px solid var(--border-soft); border-radius: 12px; padding: 6px 12px; line-height: 1; min-height: 44px; transition: background 0.15s ease; }
         .burger-icon:hover { background: var(--cream-light); }
         .mobile-menu { display: none; background: #fff; padding: 12px; position: absolute; top: calc(100% + 8px); right: 12px; width: min(320px, calc(100vw - 24px)); border: 1px solid var(--border-soft); border-radius: 20px; box-shadow: 0 16px 40px rgba(43,49,64,0.16); flex-direction: column; gap: 6px; z-index: 999; }
         .mobile-menu.open { display: flex; animation: bubblePop 0.25s cubic-bezier(0.34,1.56,0.64,1); }
         @keyframes bubblePop { from { opacity: 0; transform: translateY(8px) scale(0.9); } to { opacity: 1; transform: none; } }
-        .mobile-menu .nav-btn { padding: 12px 16px; min-height: 48px; border-radius: 14px; background: var(--cream-light); display: flex; align-items: center; transition: background 0.15s ease, transform 0.15s ease; }
+        .mobile-menu .nav-btn { padding: 12px 16px; min-height: 48px; border-radius: 14px; background: var(--cream-light); display: flex; align-items: center; }
         .mobile-menu .nav-btn:hover { background: #E7F6F3; transform: translateX(3px); }
         @media (min-width: 768px) { .nav-logo-box { width: 54px; height: 54px; } .brand-name { font-size: 1.5rem; } }
         @media (min-width: 1024px) { .burger-icon { display: none; } .nav-links-desktop { display: flex; } }
 
-        /* --- MAIN --- */
-        .main-container { max-width: 880px; margin: 0 auto; padding: 28px 20px 70px; }
+        /* --- aA TOOLBAR --- */
+        .aa-btn { font-family: var(--font-heading); font-weight: 700; cursor: pointer; color: var(--navy); background: #fff; border: 1px solid var(--border-soft); border-radius: 12px; padding: 6px 14px; min-height: 44px; line-height: 1; transition: background 0.15s; }
+        .aa-btn:hover { background: var(--cream-light); }
+        .aa-btn .aa-a1 { font-size: 0.85rem; } .aa-btn .aa-a2 { font-size: 1.15rem; }
+        .aa-panel { display: none; position: absolute; top: calc(100% + 8px); right: 0; width: min(300px, calc(100vw - 24px)); background: #fff; border: 1px solid var(--border-soft); border-radius: 20px; box-shadow: 0 16px 40px rgba(43,49,64,0.16); padding: 16px; z-index: 1001; flex-direction: column; gap: 14px; }
+        .aa-panel.open { display: flex; animation: bubblePop 0.25s cubic-bezier(0.34,1.56,0.64,1); }
+        .aa-group-label { font-family: var(--font-heading); font-weight: 600; font-size: 0.8rem; color: #6b635a; margin-bottom: 6px; }
+        .aa-row { display: flex; gap: 8px; align-items: center; }
+        .aa-tool { flex: 1; display: inline-flex; align-items: center; justify-content: center; gap: 6px; min-height: 46px; padding: 8px 12px; background: var(--cream-light); border: 1.5px solid var(--border-soft); border-radius: 14px; font-family: var(--font-body); font-weight: 600; font-size: 0.92rem; color: var(--navy); cursor: pointer; transition: all 0.15s; }
+        .aa-tool:hover { border-color: var(--mint); }
+        .aa-tool[aria-pressed="true"] { background: var(--mint); border-color: var(--mint); color: var(--navy); box-shadow: inset 0 2px 4px rgba(0,0,0,0.1); }
+        .aa-tool.size { flex: 0 0 56px; font-family: var(--font-heading); font-weight: 700; }
+        .aa-size-val { font-family: var(--font-heading); font-weight: 600; min-width: 44px; text-align: center; color: var(--navy); }
+        .aa-btn:focus-visible, .aa-tool:focus-visible, .format-card:focus-visible { outline: 3px solid var(--lila); outline-offset: 2px; }
 
-        /* --- HERO mit Buddy --- */
-        .hub-hero { text-align: center; margin-bottom: 30px; }
-        .hub-hero img { width: 130px; height: 130px; object-fit: contain; margin: 0 auto 10px; display: block; }
-        .hub-hero h1 { font-family: var(--font-heading); font-size: 1.9rem; color: var(--navy); margin-bottom: 6px; }
-        .hub-hero p { color: #5a6368; font-size: 1.02rem; }
-        @media (min-width: 768px) { .hub-hero img { width: 168px; height: 168px; } .hub-hero h1 { font-size: 2.4rem; } }
+        /* --- MAIN --- */
+        .main-container { max-width: 1140px; margin: 0 auto; padding: 18px 20px 70px; position: relative; }
+
+        /* --- FLOATING DEKO --- */
+        .floating-deco { position: absolute; pointer-events: none; z-index: 0; }
+        .deco-star { animation: float 7s ease-in-out infinite; }
+        .deco-circle { border-radius: 50%; animation: float-slow 9s ease-in-out infinite; }
+        .deco-sparkle { animation: sparkle-blink 4s ease-in-out infinite; }
+        @keyframes float { 0%,100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-16px) rotate(6deg); } }
+        @keyframes float-slow { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-12px) rotate(-3deg); } }
+        @keyframes sparkle-blink { 0%,100% { opacity: 0.3; transform: scale(0.85); } 50% { opacity: 1; transform: scale(1.15); } }
+
+        /* --- HERO mit Maskottchen-Magie --- */
+        .hub-hero { text-align: center; margin-bottom: 28px; position: relative; z-index: 1; }
+        .hub-hero-mascot { position: relative; width: 168px; height: 150px; margin: 0 auto 2px; display: flex; align-items: center; justify-content: center; }
+        .mascot-glow { position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); width: 220px; height: 220px; background: radial-gradient(circle, rgba(255,217,90,0.5) 0%, rgba(255,217,90,0.16) 40%, rgba(255,217,90,0) 70%); pointer-events: none; z-index: 0; }
+        .hub-hero-mascot img { position: relative; z-index: 1; width: 150px; height: 150px; object-fit: contain;
+            filter: drop-shadow(3px 0 0 #fff) drop-shadow(-3px 0 0 #fff) drop-shadow(0 3px 0 #fff) drop-shadow(0 -3px 0 #fff) drop-shadow(0 14px 18px rgba(43,49,64,0.20));
+            transform: rotate(-3deg); transition: transform 0.45s cubic-bezier(0.34,1.56,0.64,1); }
+        .hub-hero-mascot:hover img { transform: rotate(-3deg) translateY(-7px) scale(1.04); }
+        .hero-sparkle { position: absolute; z-index: 2; animation: sparkle-blink 3.5s ease-in-out infinite; }
+        .hub-hero h1 { font-family: var(--font-heading); font-size: 2rem; color: var(--navy); margin-bottom: 6px; }
+        .hub-hero p { color: #5a6368; font-size: 1.18rem; }
+        @media (min-width: 768px) { .hub-hero h1 { font-size: 2.5rem; } }
 
         /* --- FORMAT-GRID (alle gleichwertig) --- */
-        .format-grid { display: grid; grid-template-columns: 1fr; gap: 16px; }
-        @media (min-width: 640px) { .format-grid { grid-template-columns: repeat(2, 1fr); gap: 18px; } }
+        .format-grid { display: grid; grid-template-columns: 1fr; gap: 18px; position: relative; z-index: 1; }
+        @media (min-width: 640px) { .format-grid { grid-template-columns: repeat(2, 1fr); gap: 20px; } }
+        @media (min-width: 960px) { .format-grid { grid-template-columns: repeat(3, 1fr); } }
 
         .format-card {
-            position: relative; display: flex; align-items: flex-start; gap: 16px;
+            position: relative; display: flex; flex-direction: column; align-items: center;
+            text-align: center; gap: 14px;
             background: var(--bg-card); border: 1px solid var(--border-soft);
-            border-left: 6px solid var(--accent); border-radius: 22px;
-            padding: 22px 20px; text-decoration: none; color: var(--navy);
-            box-shadow: 0 2px 12px rgba(43,49,64,0.05);
+            border-top: 5px solid var(--accent); border-radius: 24px;
+            padding: 26px 22px 28px; text-decoration: none; color: var(--navy);
+            box-shadow: 0 3px 14px rgba(43,49,64,0.06);
             transition: transform 0.25s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.25s;
-            min-height: 120px;
+            min-height: 248px; overflow: hidden;
         }
-        .format-card:hover { transform: translateY(-4px); box-shadow: 0 12px 28px rgba(43,49,64,0.10); }
-        .format-card:focus-visible { outline: 3px solid var(--lila); outline-offset: 2px; }
-        .format-icon { flex-shrink: 0; width: 60px; height: 60px; border-radius: 16px; background: var(--accent-soft); display: flex; align-items: center; justify-content: center; font-size: 2rem; line-height: 1; }
-        .format-body { display: flex; flex-direction: column; gap: 4px; }
-        .format-title { font-family: var(--font-heading); font-size: 1.25rem; color: var(--navy); font-weight: 700; }
-        .format-text { font-size: 0.92rem; color: #5a6368; line-height: 1.5; }
+        .format-card::before { content:''; position:absolute; top:-40px; right:-40px; width:120px; height:120px; border-radius:50%; background: var(--accent-soft); opacity:0.7; pointer-events:none; }
+        .format-card:hover { transform: translateY(-4px); box-shadow: 0 14px 30px rgba(43,49,64,0.12); }
+
+        /* Reiches Medaillon */
+        .format-medallion {
+            position: relative; flex-shrink: 0; width: 104px; height: 104px; border-radius: 30px;
+            margin: 4px auto 2px;
+            display: flex; align-items: center; justify-content: center; font-size: 3rem; line-height: 1;
+            background: radial-gradient(circle at 32% 26%, rgba(255,255,255,0.55), rgba(255,255,255,0) 58%), linear-gradient(150deg, var(--accent) 0%, var(--accent) 58%, rgba(255,255,255,0.32) 135%);
+            border: 3px solid #fff;
+            box-shadow: 0 6px 14px var(--accent-soft), 0 2px 5px rgba(43,49,64,0.14), inset 0 2px 6px rgba(255,255,255,0.5);
+            transform: rotate(-3deg); transition: transform 0.35s cubic-bezier(0.34,1.56,0.64,1); z-index: 1;
+        }
+        .format-card:hover .format-medallion { transform: rotate(0deg) scale(1.06); }
+        .format-medallion::after { content:'✦'; position:absolute; top:-7px; right:-5px; color:var(--yellow); font-size:1.05rem; text-shadow:0 1px 2px rgba(43,49,64,0.18); }
+        .format-emoji { filter: drop-shadow(0 2px 3px rgba(43,49,64,0.22)); }
+
+        .format-body { display: flex; flex-direction: column; align-items: center; gap: 6px; position: relative; z-index: 1; }
+        .format-text { max-width: 32ch; }
+        .format-title { font-family: var(--font-heading); font-size: 1.5rem; color: var(--navy); font-weight: 700; }
+        .format-text { font-size: 1.08rem; color: #5a6368; line-height: 1.55; }
         .format-pill {
-            position: absolute; top: 14px; right: 14px;
-            font-size: 0.62rem; font-weight: 700; padding: 3px 10px; border-radius: 999px;
+            position: absolute; top: 14px; right: 14px; z-index: 2;
+            display: inline-flex; align-items: center; gap: 4px;
+            font-size: 0.64rem; font-weight: 700; padding: 4px 10px; border-radius: 999px;
             text-transform: uppercase; letter-spacing: 0.05em;
             background: #fff; color: var(--accent); border: 1px solid var(--accent);
         }
 
         /* --- FOOTER --- */
-        footer { text-align: center; margin-top: 60px; color: #5a6368; font-size: 0.9rem; padding: 22px; border-top: 1px solid var(--border-soft); background: transparent; }
+        footer { text-align: center; margin-top: 60px; color: #5a6368; font-size: 0.9rem; padding: 22px; border-top: 1px solid var(--border-soft); background: transparent; position: relative; z-index: 1; }
         .footer-social { display: flex; justify-content: center; gap: 20px; margin-bottom: 10px; }
         .footer-social a { color: var(--navy); transition: color 0.2s, transform 0.2s; display: flex; }
         .footer-social a:hover { color: var(--mint); transform: translateY(-2px); }
         .footer-links a { color: #5a6368; text-decoration: underline; margin: 0 5px; }
         .footer-links a:hover { color: var(--mint); }
+
+        /* --- REDUZIERTE BEWEGUNG --- */
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after { animation: none !important; transition: none !important; }
+            .hub-hero-mascot img, .format-medallion { transform: none; }
+        }
     </style>
 </head>
 <body>
@@ -101,7 +167,28 @@
         </div>
     </div>
     <div class="nav-right">
+        <button type="button" class="aa-btn" aria-label="Lese-Einstellungen" aria-expanded="false" aria-controls="aa-panel" onclick="toggleAA()"><span class="aa-a1">a</span><span class="aa-a2">A</span></button>
         <button type="button" class="burger-icon" aria-label="Menü öffnen" aria-expanded="false" aria-controls="mobile-menu" onclick="toggleMenu()">☰</button>
+
+        <div id="aa-panel" class="aa-panel" role="group" aria-label="Lese-Einstellungen">
+            <div>
+                <div class="aa-group-label">Schriftgröße</div>
+                <div class="aa-row">
+                    <button type="button" class="aa-tool size" onclick="changeFont(-1)" aria-label="Schrift kleiner">A−</button>
+                    <span class="aa-size-val" id="aa-size-val">Normal</span>
+                    <button type="button" class="aa-tool size" onclick="changeFont(1)" aria-label="Schrift größer">A+</button>
+                </div>
+            </div>
+            <div>
+                <div class="aa-group-label">Lesehilfe</div>
+                <div class="aa-row">
+                    <button type="button" class="aa-tool" id="aa-dys" aria-pressed="false" onclick="toggleDyslexia()">🔤 Legasthenie</button>
+                </div>
+                <div class="aa-row" style="margin-top:8px;">
+                    <button type="button" class="aa-tool" id="aa-hc" aria-pressed="false" onclick="toggleContrast()">◐ Hoher Kontrast</button>
+                </div>
+            </div>
+        </div>
     </div>
     <div id="mobile-menu" class="mobile-menu">
         <a href="landingpage.html#mission" class="nav-btn" onclick="toggleMenu()">F&uuml;r euch</a>
@@ -115,67 +202,79 @@
 
 <main class="main-container">
 
+    <!-- Dezente farbige Blobs (statisch, tief im Hintergrund) -->
+    <svg class="bg-blob" aria-hidden="true" style="top:-40px;right:-60px;width:340px;height:340px;color:#2FB8A6;opacity:0.12;" viewBox="-100 -100 200 200"><path fill="currentColor" d="M44.7,-76.4C58.8,-69.2,71.8,-58.5,79.6,-44.8C87.4,-31.1,90,-15.6,88.5,-0.9C87,13.9,81.4,27.8,73.6,40.4C65.8,53,55.8,64.3,43.2,71.7C30.6,79.1,15.3,82.6,0.3,82.1C-14.7,81.6,-29.4,77.1,-42.6,69.6C-55.8,62.1,-67.5,51.6,-75.3,38.6C-83.1,25.6,-87,12.8,-86.8,0.1C-86.6,-12.6,-82.3,-25.2,-74.8,-36.2C-67.3,-47.2,-56.6,-56.6,-44.5,-64.1C-32.4,-71.6,-16.2,-77.2,0,-77.2C16.2,-77.2,32.5,-83.6,44.7,-76.4Z"/></svg>
+    <svg class="bg-blob" aria-hidden="true" style="top:42%;left:-80px;width:300px;height:300px;color:#7D6AE6;opacity:0.10;" viewBox="-100 -100 200 200"><path fill="currentColor" d="M44.7,-76.4C58.8,-69.2,71.8,-58.5,79.6,-44.8C87.4,-31.1,90,-15.6,88.5,-0.9C87,13.9,81.4,27.8,73.6,40.4C65.8,53,55.8,64.3,43.2,71.7C30.6,79.1,15.3,82.6,0.3,82.1C-14.7,81.6,-29.4,77.1,-42.6,69.6C-55.8,62.1,-67.5,51.6,-75.3,38.6C-83.1,25.6,-87,12.8,-86.8,0.1C-86.6,-12.6,-82.3,-25.2,-74.8,-36.2C-67.3,-47.2,-56.6,-56.6,-44.5,-64.1C-32.4,-71.6,-16.2,-77.2,0,-77.2C16.2,-77.2,32.5,-83.6,44.7,-76.4Z"/></svg>
+    <svg class="bg-blob" aria-hidden="true" style="bottom:-30px;right:8%;width:280px;height:280px;color:#F97352;opacity:0.10;" viewBox="-100 -100 200 200"><path fill="currentColor" d="M44.7,-76.4C58.8,-69.2,71.8,-58.5,79.6,-44.8C87.4,-31.1,90,-15.6,88.5,-0.9C87,13.9,81.4,27.8,73.6,40.4C65.8,53,55.8,64.3,43.2,71.7C30.6,79.1,15.3,82.6,0.3,82.1C-14.7,81.6,-29.4,77.1,-42.6,69.6C-55.8,62.1,-67.5,51.6,-75.3,38.6C-83.1,25.6,-87,12.8,-86.8,0.1C-86.6,-12.6,-82.3,-25.2,-74.8,-36.2C-67.3,-47.2,-56.6,-56.6,-44.5,-64.1C-32.4,-71.6,-16.2,-77.2,0,-77.2C16.2,-77.2,32.5,-83.6,44.7,-76.4Z"/></svg>
+
+    <!-- Floating Deko -->
+    <svg aria-hidden="true" class="floating-deco deco-star" style="top:5%;left:3%;width:26px;color:var(--yellow);" viewBox="0 0 32 32"><polygon points="16,2 20,12 30,12 22,19 25,30 16,23 7,30 10,19 2,12 12,12" fill="currentColor" opacity="0.6"/></svg>
+    <svg aria-hidden="true" class="floating-deco deco-sparkle" style="top:13%;right:5%;width:20px;color:var(--salmon);" viewBox="0 0 24 24"><path d="M12 2L13.5 9 21 12L13.5 14.5L12 22L10.5 14.5L3 12L10.5 9Z" fill="currentColor" opacity="0.6"/></svg>
+    <div aria-hidden="true" class="floating-deco deco-circle" style="top:9%;left:48%;width:14px;height:14px;background:rgba(125,106,230,0.35);"></div>
+    <svg aria-hidden="true" class="floating-deco deco-star" style="bottom:16%;left:4%;width:22px;color:var(--mint);" viewBox="0 0 32 32"><polygon points="16,2 20,12 30,12 22,19 25,30 16,23 7,30 10,19 2,12 12,12" fill="currentColor" opacity="0.5"/></svg>
+    <svg aria-hidden="true" class="floating-deco deco-sparkle" style="bottom:22%;right:4%;width:18px;color:var(--yellow);" viewBox="0 0 24 24"><path d="M12 2L13.5 9 21 12L13.5 14.5L12 22L10.5 14.5L3 12L10.5 9Z" fill="currentColor" opacity="0.6"/></svg>
+
     <section class="hub-hero">
-        <img src="bilder/lesekumpel_logo_v2.png" alt="Lesekumpel Buddy — dein Lesefreund">
+        <div class="hub-hero-mascot">
+            <div class="mascot-glow" aria-hidden="true"></div>
+            <svg aria-hidden="true" class="hero-sparkle" style="top:6px;left:14px;width:18px;color:var(--mint);animation-delay:-1s;" viewBox="0 0 24 24"><path d="M12 2L13.5 9 21 12L13.5 14.5L12 22L10.5 14.5L3 12L10.5 9Z" fill="currentColor"/></svg>
+            <svg aria-hidden="true" class="hero-sparkle" style="bottom:18px;right:10px;width:14px;color:var(--salmon);animation-delay:-2s;" viewBox="0 0 24 24"><path d="M12 2L13.5 9 21 12L13.5 14.5L12 22L10.5 14.5L3 12L10.5 9Z" fill="currentColor"/></svg>
+            <svg aria-hidden="true" class="hero-sparkle" style="top:24px;right:22px;width:11px;color:var(--yellow);animation-delay:-0.5s;" viewBox="0 0 24 24"><path d="M12 2L13.5 9 21 12L13.5 14.5L12 22L10.5 14.5L3 12L10.5 9Z" fill="currentColor"/></svg>
+            <img src="bilder/lesekumpel_logo_v2.png" alt="Lesekumpel Buddy — dein Lesefreund">
+        </div>
         <h1>Was möchtest du heute machen?</h1>
         <p>Such dir ein Format aus — alle sind für dich da.</p>
     </section>
 
     <section class="format-grid" aria-label="Geschichtenformate">
 
-        <!-- Autorengeschichte (funktioniert real, keine Pille) -->
         <a href="neue-autorengeschichte.html" class="format-card" style="--accent:#F97352;--accent-soft:rgba(249,115,82,0.14);">
-            <span class="format-icon" aria-hidden="true">📖</span>
+            <span class="format-medallion" aria-hidden="true"><span class="format-emoji">📖</span></span>
             <span class="format-body">
                 <span class="format-title">Autorengeschichte</span>
                 <span class="format-text">Such dir einen Autor aus und beschreibe, was passieren soll.</span>
             </span>
         </a>
 
-        <!-- Comicgeschichte -->
         <a href="neue-comicgeschichte.html" class="format-card" style="--accent:#7D6AE6;--accent-soft:rgba(125,106,230,0.14);">
-            <span class="format-pill">Bald</span>
-            <span class="format-icon" aria-hidden="true">💬</span>
+            <span class="format-pill">⏳ Bald</span>
+            <span class="format-medallion" aria-hidden="true"><span class="format-emoji">💬</span></span>
             <span class="format-body">
                 <span class="format-title">Comicgeschichte</span>
                 <span class="format-text">Bau deinen eigenen Comic mit Bildern und Sprechblasen.</span>
             </span>
         </a>
 
-        <!-- Top 100 Wörter -->
         <a href="neue-top100.html" class="format-card" style="--accent:#E0982A;--accent-soft:rgba(242,169,59,0.18);">
-            <span class="format-pill">Bald</span>
-            <span class="format-icon" aria-hidden="true">💯</span>
+            <span class="format-pill">⏳ Bald</span>
+            <span class="format-medallion" aria-hidden="true"><span class="format-emoji">💯</span></span>
             <span class="format-body">
                 <span class="format-title">Top 100 Wörter</span>
                 <span class="format-text">Such dir Wörter aus und mach daraus deine Mini-Geschichte.</span>
             </span>
         </a>
 
-        <!-- Social Stories -->
         <a href="neue-social-story.html" class="format-card" style="--accent:#2FB8A6;--accent-soft:rgba(47,184,166,0.15);">
-            <span class="format-pill">Bald</span>
-            <span class="format-icon" aria-hidden="true">🫶</span>
+            <span class="format-pill">⏳ Bald</span>
+            <span class="format-medallion" aria-hidden="true"><span class="format-emoji">🫶</span></span>
             <span class="format-body">
                 <span class="format-title">Social Story</span>
                 <span class="format-text">Eine ruhige Geschichte, die auf eine neue Situation vorbereitet.</span>
             </span>
         </a>
 
-        <!-- Geschichten-Generator -->
         <a href="neue-geschichte-generator.html" class="format-card" style="--accent:#3F9FC4;--accent-soft:rgba(79,179,217,0.16);">
-            <span class="format-pill">Bald</span>
-            <span class="format-icon" aria-hidden="true">🪄</span>
+            <span class="format-pill">⏳ Bald</span>
+            <span class="format-medallion" aria-hidden="true"><span class="format-emoji">🪄</span></span>
             <span class="format-body">
                 <span class="format-title">Geschichten-Generator</span>
                 <span class="format-text">Tipp auf Bilder und bau deine Geschichte — ganz ohne Lesen.</span>
             </span>
         </a>
 
-        <!-- Sachtext mit Samira -->
-        <a href="neue-sachtext.html" class="format-card" style="--accent:#D85A82;--accent-soft:rgba(236,106,140,0.15);">
-            <span class="format-pill">Bald</span>
-            <span class="format-icon" aria-hidden="true">🔭</span>
+        <a href="neue-sachtext.html" class="format-card" style="--accent:#D85A82;--accent-soft:rgba(216,90,130,0.15);">
+            <span class="format-pill">⏳ Bald</span>
+            <span class="format-medallion" aria-hidden="true"><span class="format-emoji">🔭</span></span>
             <span class="format-body">
                 <span class="format-title">Sachtext mit Samira</span>
                 <span class="format-text">Staune über echte Fakten zu deinem Lieblingsthema.</span>
@@ -204,7 +303,47 @@ function toggleMenu() {
     var btn = document.querySelector('.burger-icon');
     menu.classList.toggle('open');
     btn.setAttribute('aria-expanded', menu.classList.contains('open'));
+    document.getElementById('aa-panel').classList.remove('open');
+    document.querySelector('.aa-btn').setAttribute('aria-expanded', 'false');
 }
+function toggleAA() {
+    var panel = document.getElementById('aa-panel');
+    var btn = document.querySelector('.aa-btn');
+    var open = panel.classList.toggle('open');
+    btn.setAttribute('aria-expanded', open);
+    document.getElementById('mobile-menu').classList.remove('open');
+}
+document.addEventListener('click', function (e) {
+    if (!e.target.closest('.nav-right')) {
+        document.getElementById('aa-panel').classList.remove('open');
+        document.querySelector('.aa-btn').setAttribute('aria-expanded', 'false');
+    }
+});
+
+// --- Lese-Einstellungen (localStorage) ---
+var A11Y_KEY = 'fk:hub-a11y';
+var SIZES = ['100%', '112%', '125%'];
+var SIZE_LABELS = ['Normal', 'Groß', 'Sehr groß'];
+var a11y = { size: 0, dyslexia: false, contrast: false };
+
+function loadA11y() {
+    try { var s = JSON.parse(localStorage.getItem(A11Y_KEY)); if (s) a11y = Object.assign(a11y, s); } catch (e) {}
+    applyA11y();
+}
+function saveA11y() { try { localStorage.setItem(A11Y_KEY, JSON.stringify(a11y)); } catch (e) {} }
+function applyA11y() {
+    document.documentElement.style.fontSize = SIZES[a11y.size];
+    document.getElementById('aa-size-val').textContent = SIZE_LABELS[a11y.size];
+    document.body.classList.toggle('dyslexia-mode', a11y.dyslexia);
+    document.getElementById('aa-dys').setAttribute('aria-pressed', a11y.dyslexia);
+    document.body.classList.toggle('high-contrast', a11y.contrast);
+    document.documentElement.style.background = a11y.contrast ? '#fff' : '';
+    document.getElementById('aa-hc').setAttribute('aria-pressed', a11y.contrast);
+}
+function changeFont(d) { a11y.size = Math.max(0, Math.min(SIZES.length - 1, a11y.size + d)); applyA11y(); saveA11y(); }
+function toggleDyslexia() { a11y.dyslexia = !a11y.dyslexia; applyA11y(); saveA11y(); }
+function toggleContrast() { a11y.contrast = !a11y.contrast; applyA11y(); saveA11y(); }
+loadA11y();
 </script>
 
 </body>
