@@ -1416,6 +1416,9 @@
             }
         }
 
+        /* Wort-für-Wort: jedes Wort eine eigene Utterance, Markierung per onstart
+           (feuert auf allen Stimmen zuverlässig) → exakter Sync, kein Schätzen.
+           playerHighlight aktiviert automatisch das Panel des jeweiligen Wortes. */
         function playerSpeakFrom(startIdx) {
             const words = player.words;
             if (!words.length) return;
@@ -1424,76 +1427,37 @@
             player.progressed = false;
             player.gen = (player.gen || 0) + 1;
             const gen = player.gen;
-            clearTimeout(player._estTimer);
 
-            // Panel-Queue ab startIdx
-            const queue = [];
-            let cur = null;
-            for (let i = startIdx; i < words.length; i++) {
-                if (!cur || cur.panel !== words[i].panel) {
-                    cur = { panel: words[i].panel, fromIdx: i, text: '', map: [] };
-                    queue.push(cur);
-                }
-                cur.map.push({ start: cur.text.length, end: cur.text.length + words[i].text.length, idx: i });
-                cur.text += words[i].text + ' ';
-            }
+            const voice = pickGermanVoice();
 
-            const estDur = (w) => Math.max(200, (170 + w.length * 78) / SPEECH_RATE);
-
-            function speakPanel(k) {
+            function speakWordAt(i) {
                 if (gen !== player.gen || !player.active || player.paused) return;
-                if (k >= queue.length) {
+                if (i >= words.length) {
                     const reachedEnd = player.progressed;
                     stopPlayer();
                     if (reachedEnd) maybeComicDone();
                     return;
                 }
-                const s = queue[k];
-                player.idx = s.fromIdx;
-                playerHighlight(s.fromIdx); // aktiviert auch das Panel — exakter Anker
-                playerUpdateBar();
-
-                let boundarySeen = false;
-                clearTimeout(player._estTimer);
-                const lastIdx = s.map[s.map.length - 1].idx;
-                function estimateTick() {
-                    if (gen !== player.gen || !player.active || player.paused || boundarySeen) return;
-                    if (!window.speechSynthesis.speaking) return;
-                    if (player.idx < lastIdx) {
-                        player.idx++;
-                        player.progressed = true;
-                        playerHighlight(player.idx);
-                        playerUpdateBar();
-                        player._estTimer = setTimeout(estimateTick, estDur(words[player.idx].text));
-                    }
-                }
-                player._estTimer = setTimeout(() => {
-                    if (gen !== player.gen || boundarySeen || !player.active || player.paused) return;
-                    if (!window.speechSynthesis.speaking) return;
-                    estimateTick();
-                }, 900);
-
-                speak(s.text, {
-                    _player: true,
-                    onboundary: (event) => {
-                        if (event.name !== 'word') return;
-                        boundarySeen = true;
-                        clearTimeout(player._estTimer);
-                        const hit = s.map.find(m => event.charIndex >= m.start && event.charIndex < m.end);
-                        if (!hit) return;
-                        player.idx = hit.idx;
-                        player.progressed = true;
-                        playerHighlight(hit.idx);
-                        playerUpdateBar();
-                    },
-                    onend: () => {
-                        clearTimeout(player._estTimer);
-                        if (gen !== player.gen || !player.active || player.paused) return;
-                        setTimeout(() => speakPanel(k + 1), 250); // kleine Panel-Pause
-                    }
-                });
+                const u = new SpeechSynthesisUtterance(words[i].text);
+                u.lang = 'de-DE';
+                if (voice) u.voice = voice;
+                u.rate = SPEECH_RATE;
+                u.onstart = () => {
+                    if (gen !== player.gen) return;
+                    player.idx = i;
+                    player.progressed = true;
+                    playerHighlight(i); // markiert das klingende Wort + blättert ggf. das Panel
+                    playerUpdateBar();
+                };
+                u.onend = () => {
+                    if (gen !== player.gen || !player.active || player.paused) return;
+                    speakWordAt(i + 1);
+                };
+                window.speechSynthesis.speak(u);
             }
-            speakPanel(0);
+            playerHighlight(startIdx);
+            playerUpdateBar();
+            speakWordAt(startIdx);
         }
 
         function togglePlayer() {
@@ -1511,8 +1475,7 @@
             if (!player.active) return;
             if (!player.paused) {
                 player.paused = true;
-                player.gen = (player.gen || 0) + 1;
-                clearTimeout(player._estTimer);
+                player.gen = (player.gen || 0) + 1; // laufende Wort-Kette invalidieren
                 stopSpeaking();
                 playerSetUI('paused');
             } else {
@@ -1524,8 +1487,7 @@
         function stopPlayer() {
             player.active = false;
             player.paused = false;
-            player.gen = (player.gen || 0) + 1;
-            clearTimeout(player._estTimer);
+            player.gen = (player.gen || 0) + 1; // laufende Wort-Kette invalidieren
             stopSpeaking();
             clearHighlights();
             playerSetUI('stopped');
