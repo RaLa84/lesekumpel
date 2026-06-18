@@ -140,7 +140,7 @@
             background: radial-gradient(ellipse at center, rgba(0,0,0,0.5) 0%, rgba(0,0,0,0.75) 100%);
         }
         body.high-contrast .toolbar-group { background: #fff; border: 1px solid var(--navy); }
-        body.high-contrast .quiz-card, body.high-contrast .activity-hub { background: #fff; border-color: var(--navy); }
+        body.high-contrast .quiz-card { background: #fff; border-color: var(--navy); }
 
         .highlight-active {
             background-color: #ffeb3b !important; border-radius: 4px;
@@ -803,14 +803,8 @@
         .klassen-hinweis-icon { font-size: 1.6rem; flex-shrink: 0; line-height: 1.2; }
         .klassen-hinweis strong { color: #3d2e5f; }
 
-        /* --- ACTIVITY HUB (Tab-Navigation für Lern-Spiele) --- */
-        .activity-hub {
-            margin-bottom: 40px;
-            border: 2px solid var(--border-card); border-radius: 18px;
-            padding: 24px 22px 20px; background: #fff;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.03);
-        }
-        .activity-hub .section-title { margin-top: 0; margin-bottom: 18px; }
+        /* --- ACTIVITY HUB (Spielauswahl — Karten stehen allein, kein Kasten/Titel) --- */
+        .activity-hub { margin: 8px 0 40px; }
         .activity-tabs {
             display: flex; gap: 6px; padding: 6px;
             background: var(--cream); border-radius: 999px;
@@ -841,7 +835,6 @@
         }
 
         @media (max-width: 767px) {
-            .activity-hub { padding: 18px 16px 16px; }
             .activity-tab { padding: 10px 8px; font-size: 0.95rem; gap: 6px; }
             .activity-tab .tab-label { font-size: 0.95em; }
         }
@@ -1008,13 +1001,26 @@
         .btn-send:hover:not(:disabled) { background: var(--navy); color: #fff; transform: translateY(-2px); }
         .single-comment { background-color: #f9f9f9; border-radius: 10px; padding: 15px; margin-bottom: 15px; }
 
-        .related-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; }
-        .related-card { background: #fff; border: 2px solid var(--border-card); border-radius: 15px; overflow: hidden; text-decoration: none; color: var(--text-dark); transition: transform 0.2s, box-shadow 0.2s; display: flex; flex-direction: column; }
-        .related-card:hover { transform: translateY(-5px); box-shadow: 0 5px 15px rgba(0,0,0,0.1); border-color: var(--primary-yellow); }
-        .related-img { width: 100%; height: 140px; object-fit: cover; border-bottom: 2px solid #eee; }
-        .related-content { padding: 15px; flex-grow: 1; display: flex; flex-direction: column; justify-content: space-between; }
-        .related-title { font-family: var(--font-heading); font-size: 1.1rem; line-height: 1.3; margin-bottom: 10px; color: var(--navy); }
-        .related-meta { display: flex; justify-content: space-between; font-size: 0.85rem; color: #5a6368; font-weight: 600; }
+        /* Vorschläge: gestapelte, vollbreite Karten (wie die Spiel-Buttons) */
+        .related-grid { display: flex; flex-direction: column; gap: 12px; }
+        .related-card {
+            display: flex; align-items: center; gap: 14px;
+            min-height: 64px; padding: 14px 16px; border-radius: 18px;
+            background: var(--cream-light); border: 2px solid var(--border-soft); color: var(--navy);
+            text-decoration: none; box-shadow: 0 2px 8px rgba(43,49,64,0.05);
+            transition: transform 0.15s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.15s ease, border-color 0.15s ease;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .related-card:hover { transform: translateY(-2px); border-color: var(--mint); box-shadow: 0 6px 18px rgba(43,49,64,0.12); background: #fff; }
+        .related-card:focus-visible { outline: 3px solid var(--lila); outline-offset: 2px; }
+        .related-card:active { transform: scale(0.98); }
+        .related-thumb {
+            flex-shrink: 0; width: 64px; height: 64px; border-radius: 14px;
+            object-fit: cover; background: #fff; border: 2px solid var(--primary-yellow);
+        }
+        .related-info { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+        .related-title { font-family: var(--font-heading); font-weight: 600; font-size: 1.05rem; color: var(--navy); line-height: 1.25; }
+        .related-reason { font-size: 0.85rem; color: #5a6368; }
 
         .clearfix::after { content: ""; display: table; clear: both; }
         footer { text-align: center; margin-top: 50px; color: #5a6368; font-size: 0.9rem; padding-top: 20px; border-top: 1px solid #eee; }
@@ -2017,19 +2023,18 @@
         }
 
         /* === SPIELZEIT: Auswahl-Karten === */
-        .spiel-chooser-intro { text-align: center; color: #5a6368; margin: -6px 0 18px; font-size: 1rem; }
         .activity-tabs.spiel-chooser {
-            display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px;
+            display: flex; flex-direction: column; gap: 12px;
             background: none; border-radius: 0; padding: 0; margin-bottom: 0;
         }
         .spiel-chooser .activity-tab {
-            flex: none; flex-direction: column; gap: 8px;
-            min-height: 110px; padding: 18px 12px; border-radius: 20px;
+            flex: none; flex-direction: row; justify-content: flex-start; gap: 14px;
+            width: 100%; min-height: 64px; padding: 14px 20px; border-radius: 18px;
             background: var(--cream-light); border: 2px solid var(--border-soft); color: var(--navy);
             box-shadow: 0 2px 8px rgba(43,49,64,0.05);
             transition: transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.15s ease, border-color 0.15s ease;
         }
-        .spiel-chooser .activity-tab:hover { transform: translateY(-3px); box-shadow: 0 6px 18px rgba(43,49,64,0.12); border-color: var(--mint); background: #fff; }
+        .spiel-chooser .activity-tab:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(43,49,64,0.12); border-color: var(--mint); background: #fff; }
         .spiel-chooser .activity-tab.active { background: var(--cream-light); color: var(--navy); box-shadow: 0 2px 8px rgba(43,49,64,0.05); }
         .spiel-chooser .activity-tab .tab-icon { font-size: 2rem; }
         .spiel-chooser .activity-tab .tab-label { font-size: 1.05rem; font-weight: 600; }
@@ -2229,8 +2234,7 @@
         </div>
 
         <div class="activity-hub">
-            <h2 class="section-title">🎮 Spielzeit!</h2>
-            <p class="spiel-chooser-intro">Wähle ein Spiel zur Geschichte!</p>
+            <h2 class="sr-only">Spielzeit</h2>
             <div class="activity-tabs spiel-chooser" aria-label="Spielauswahl">
                 <button class="activity-tab" id="tab-quiz" data-tab="quiz" onclick="openSpiel('quiz')">
                     <span class="tab-icon">🧠</span><span class="tab-label">Quiz</span>
@@ -2273,11 +2277,6 @@
             </div>
         </div>
 
-        <div class="related-section">
-            <h2 class="section-title">Das könnte dir auch gefallen</h2>
-            <div class="related-grid"></div>
-        </div>
-
         <div class="comments-section">
             <h2 class="section-title">Wie hat dir die Geschichte gefallen?</h2>
             <div class="rating-survey" id="rating-survey" role="group" aria-label="Wie hat dir die Geschichte gefallen?">
@@ -2298,6 +2297,33 @@
 
             <div class="report-trigger-wrapper">
                 <button class="report-link" type="button" id="report-open" data-speak="Melden: Wenn dich etwas an der Geschichte stört, sag es uns hier — am besten zusammen mit einem Erwachsenen.">🚩 Inhalt melden</button>
+            </div>
+        </div>
+
+        <div class="related-section">
+            <h2 class="section-title">📚 Noch eine Geschichte?</h2>
+            <div class="related-grid">
+                <a class="related-card" href="die-reise-zum-mond-1y60.html">
+                    <img class="related-thumb" src="../bilder/die-reise-zum-mond-1y60-1.png" alt="" loading="lazy" onerror="this.style.display='none'">
+                    <span class="related-info">
+                        <span class="related-title">Die Reise zum Mond</span>
+                        <span class="related-reason">Spannendes Abenteuer</span>
+                    </span>
+                </a>
+                <a class="related-card" href="der-kleine-fuchs-im-schnee-ur5p.html">
+                    <img class="related-thumb" src="../bilder/der-kleine-fuchs-im-schnee-ur5p-1.png" alt="" loading="lazy" onerror="this.style.display='none'">
+                    <span class="related-info">
+                        <span class="related-title">Der kleine Fuchs im Schnee</span>
+                        <span class="related-reason">Liebe Tiergeschichte</span>
+                    </span>
+                </a>
+                <a class="related-card" href="das-drachenei-bnvv.html">
+                    <img class="related-thumb" src="../bilder/das-drachenei-bnvv-1.png" alt="" loading="lazy" onerror="this.style.display='none'">
+                    <span class="related-info">
+                        <span class="related-title">Das Drachenei</span>
+                        <span class="related-reason">Magisch &amp; aufregend</span>
+                    </span>
+                </a>
             </div>
         </div>
     </article>
@@ -2372,8 +2398,8 @@
            Alles auf der Seite spricht über diese eine Funktion (immer nur
            eine Stimme gleichzeitig). Der Token verhindert, dass das onend
            einer abgebrochenen Äußerung den Zustand der neuen überschreibt. */
-        let SPEECH_RATE = 0.9;
-        try { SPEECH_RATE = parseFloat(localStorage.getItem('lesekumpel-tts-rate')) || 0.9; } catch(e) {}
+        let SPEECH_RATE = 0.7;
+        try { SPEECH_RATE = parseFloat(localStorage.getItem('lesekumpel-tts-rate')) || 0.7; } catch(e) {}
         /* Lokale deutsche Stimme bevorzugen: Cloud-Stimmen (z. B. "Google Deutsch"
            in Chrome) liefern KEINE boundary-Events — ohne sie steht das
            Karaoke-Highlight still. Lokale Stimmen können beides und gehen offline. */
@@ -3059,24 +3085,28 @@
            Pause arbeitet cancel-basiert (zuverlässig auf allen Plattformen,
            speechSynthesis.pause() ist auf Chrome/Android notorisch kaputt) —
            Resume startet am gemerkten Wortanfang. */
-        let player = { active: false, paused: false, words: [], idx: 0, chunkMode: false, isLast: false, atEnd: false };
+        // idx = -1 bedeutet „noch keine Stelle"; bleibt über Pause erhalten (Resume dort)
+        let player = { active: false, paused: false, words: [], idx: -1, chunkMode: false };
 
-        // Wörter EINES Blocks (Absatz/Überschrift bzw. aktueller Chunk) sammeln
-        function collectWordsIn(container) {
+        // Ganztext-Wortliste des aktuellen Containers (full-text bzw. aktueller Chunk)
+        function buildWords() {
+            const chunkMode = !document.getElementById('chunk-view').classList.contains('hidden');
+            const container = chunkMode ? document.getElementById('chunk-display') : document.getElementById('full-text-view');
             const words = [];
             if (container) container.querySelectorAll('.word-interactive').forEach(span => words.push({ text: span.innerText, el: span }));
+            player.words = words;
+            player.chunkMode = chunkMode;
             return words;
         }
 
-        // Obersten Abschnitt (p/h3 mit Wörtern) bestimmen, der im Viewport beginnt
-        function findTopBlock() {
-            const view = document.getElementById('full-text-view');
-            if (!view) return null;
-            const OFFSET = 80; // knapp unter der Sticky-Navbar
-            const blocks = Array.from(view.children).filter(el => el.querySelector && el.querySelector('.word-interactive'));
-            if (!blocks.length) return null;
-            const target = blocks.find(el => el.getBoundingClientRect().bottom > OFFSET) || blocks[blocks.length - 1];
-            return { el: target, isLast: target === blocks[blocks.length - 1] };
+        // Erstes Wort, das (knapp unter der Navbar) sichtbar ist
+        function topVisibleWordIndex() {
+            const OFFSET = 80;
+            const words = player.words;
+            for (let i = 0; i < words.length; i++) {
+                if (words[i].el.getBoundingClientRect().bottom > OFFSET) return i;
+            }
+            return 0;
         }
 
         function playerHighlight(idx) {
@@ -3109,9 +3139,10 @@
             btn.setAttribute('aria-label', playing ? 'Pause' : 'Weiterlesen');
         }
 
-        /* Wort-für-Wort-Wiedergabe EINES Abschnitts: jedes Wort ist eine eigene
-           Utterance (Markierung per onstart — zuverlässig auf allen Stimmen).
-           Am Abschnittsende wird AUTOMATISCH pausiert (nicht weitergelesen). */
+        /* Wort-für-Wort-Wiedergabe ab startIdx, fließend bis zum Ende: jedes Wort
+           ist eine eigene Utterance (Markierung per onstart — zuverlässig auf
+           allen Stimmen). Antippen/Pause/Stop erhöhen player.gen und beenden die
+           laufende Kette sauber. */
         function playerSpeakFrom(startIdx) {
             const words = player.words;
             if (!words.length) return;
@@ -3127,14 +3158,11 @@
             function speakWordAt(i) {
                 if (gen !== player.gen || !player.active || player.paused) return;
                 if (i >= words.length) {
-                    // Abschnittsende → automatisch pausieren, am obersten Wort verbleiben
+                    // Text-/Häppchen-Ende erreicht
                     const reachedEnd = player.progressed;
-                    player.paused = true;
-                    player.atEnd = true;
-                    player.gen = (player.gen || 0) + 1;
-                    clearHighlights();
-                    playerSetUI('paused');
-                    if (reachedEnd && player.isLast) storyFinished();
+                    const wasChunk = player.chunkMode;
+                    stopPlayer();
+                    if (reachedEnd && (!wasChunk || state.chunkIndex === state.chunks.length - 1)) storyFinished();
                     return;
                 }
                 const u = new SpeechSynthesisUtterance(words[i].text);
@@ -3157,34 +3185,23 @@
             speakWordAt(startIdx);
         }
 
-        // Liest den obersten Abschnitt im Viewport (bzw. den aktuellen Chunk)
-        function startBlock() {
+        // Ab Wort-Index idx fließend vorlesen (Start/Sprung)
+        function playFrom(idx) {
             if (typeof readAloud !== 'undefined' && readAloud.active) stopReadAloud(); // Mikro + TTS nie gleichzeitig
-            const chunkMode = !document.getElementById('chunk-view').classList.contains('hidden');
-            let words, isLast;
-            if (chunkMode) {
-                words = collectWordsIn(document.getElementById('chunk-display'));
-                isLast = (state.chunkIndex === state.chunks.length - 1);
-            } else {
-                const top = findTopBlock();
-                if (!top) return;
-                words = collectWordsIn(top.el);
-                isLast = top.isLast;
-            }
-            if (!words.length) return;
-            player = { active: true, paused: false, words, idx: 0, chunkMode, isLast, atEnd: false };
+            if (!player.words.length) return;
+            player.active = true;
+            player.paused = false;
             playerSetUI('playing');
-            playerSpeakFrom(0);
+            playerSpeakFrom(idx);
         }
 
         function togglePlayer() {
-            if (!player.active) {
-                startBlock();
-            } else if (player.paused && player.atEnd) {
-                startBlock();              // Abschnitt fertig → nächsten Viewport-Abschnitt lesen
-            } else {
-                playerPauseResume();       // mitten drin: Pause/Fortsetzen
-            }
+            if (player.active && !player.paused) { playerPauseResume(); return; } // Pause
+            // Start bzw. Fortsetzen
+            if (!player.words.length) buildWords();
+            if (!player.words.length) return;
+            const idx = (player.idx >= 0) ? player.idx : topVisibleWordIndex();
+            playFrom(idx);
         }
 
         function playerPauseResume() {
@@ -3195,18 +3212,15 @@
                 stopSpeaking();
                 playerSetUI('paused');
             } else {
-                player.paused = false;
-                player.atEnd = false;
-                playerSetUI('playing');
-                playerSpeakFrom(player.idx);
+                playFrom(player.idx);               // genau an gemerkter Stelle fortsetzen
             }
         }
 
         function stopPlayer() {
             player.active = false;
             player.paused = false;
-            player.atEnd = false;
-            player.gen = (player.gen || 0) + 1; // laufende Wort-Kette invalidieren
+            player.idx = -1;                        // Stelle zurücksetzen (nächstes Play: oberstes sichtbares Wort)
+            player.gen = (player.gen || 0) + 1;     // laufende Wort-Kette invalidieren
             stopSpeaking();
             clearHighlights();
             playerSetUI('stopped');
@@ -3470,8 +3484,13 @@
         function clickWord(el, word) {
             // Schatzsuche-Modus hat Vorrang: blockiert TTS während aktiv
             if (schatzState.active) { checkSchatzwort(el, word); return; }
-            if (!state.wordReader) return;
-            speak(el.innerText);
+            // „Wörter lesen"-Modus: nur dieses eine Wort vorlesen
+            if (state.wordReader) { speak(el.innerText); return; }
+            // Normal: ab hier fließend vorlesen (steuerbarer Startpunkt)
+            buildWords();
+            const idx = player.words.findIndex(w => w.el === el);
+            if (idx < 0) return;
+            playFrom(idx);
         }
         function addParagraphNumbers() {
             document.querySelectorAll('#full-text-view p').forEach((p, i) => {
