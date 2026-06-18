@@ -139,9 +139,10 @@
         .main-navbar {
             background: rgba(255,255,255,0.92); -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px);
             padding: 12px 24px; border-bottom: 3px solid var(--mint);
-            display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000;
+            display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; position: sticky; top: 0; z-index: 1000;
         }
-        .nav-left { display: flex; align-items: center; gap: 10px; }
+        .nav-left { display: flex; align-items: center; gap: 10px; justify-self: start; position: relative; }
+        .nav-center { justify-self: center; display: flex; align-items: center; }
         /* Maskottchen-Logo: das WEBP hat viel transparenten Rand — der scale-Crop
            (Trick aus v2/styles.css) schneidet ihn weg, overflow:hidden begrenzt */
         .nav-logo-box { width: 44px; height: 44px; overflow: hidden; border-radius: 10px; flex-shrink: 0; }
@@ -163,7 +164,19 @@
            Burger — für Eltern erreichbar, fürs lesende Kind unsichtbar. */
         .nav-links-desktop { display: none !important; }
         .btn-cta-nav { display: none !important; }
-        .nav-right { display: flex; align-items: center; gap: 15px; }
+        .nav-right { display: flex; align-items: center; gap: 15px; justify-self: end; }
+        /* Avatar des eingeloggten Kindes: rundes Icon mit Emoji auf bgColor */
+        .nav-avatar-btn {
+            width: 44px; height: 44px; border-radius: 50%; flex-shrink: 0;
+            display: inline-flex; align-items: center; justify-content: center;
+            background: var(--cream-light); border: 2px solid var(--primary-yellow);
+            font-size: 1.5rem; line-height: 1; text-decoration: none;
+            box-shadow: 0 2px 8px rgba(43,49,64,0.08);
+            transition: transform 0.15s ease, box-shadow 0.15s ease;
+        }
+        .nav-avatar-btn:hover { transform: scale(1.06); box-shadow: 0 4px 12px rgba(43,49,64,0.14); }
+        .nav-avatar-btn:active { transform: scale(0.96); }
+        .nav-avatar-emoji { pointer-events: none; }
         .burger-icon {
             font-size: 1.6rem; cursor: pointer; display: block; color: var(--text-dark);
             background: #fff; border: 1px solid var(--border-soft); border-radius: 12px;
@@ -174,7 +187,7 @@
         /* Burger-Menü: Karten-Panel rechts statt nackter Linkliste */
         .mobile-menu {
             display: none; background: #fff;
-            padding: 12px; position: absolute; top: calc(100% + 8px); right: 12px; left: auto;
+            padding: 12px; position: absolute; top: calc(100% + 8px); left: 0; right: auto;
             width: min(320px, calc(100vw - 24px));
             border: 1px solid var(--border-soft); border-radius: 20px;
             box-shadow: 0 16px 40px rgba(43,49,64,0.16);
@@ -1940,31 +1953,26 @@
 
     <nav class="main-navbar" aria-label="Hauptnavigation">
         <div class="nav-left">
-            <span class="nav-logo-box"><img src="../Konzept_Rebranding/logo-lesekumpel-512.webp" alt="Lesekumpel Logo" class="nav-logo"></span>
-            <a href="../landingpage.html" class="brand-name">Lese<span class="brand-accent">kumpel</span></a>
-            <div class="nav-links-desktop">
-                <a href="../landingpage.html#mission" class="nav-btn">F&uuml;r euch</a>
-                <a href="../landingpage.html#how-it-works" class="nav-btn">So funktioniert&rsquo;s</a>
-                <a href="../ueber-uns.html" class="nav-btn">&Uuml;ber uns</a>
-                <a href="../demo.html" class="nav-btn">📚 Bibliothek</a>
-                <a href="../preise.html" class="nav-btn">Preise</a>
-                <a href="../neue-geschichte.html" class="nav-btn">Geschichte erstellen</a>
-                <a href="../mein-konto.html" class="nav-btn">Mein Konto</a>
+            <button type="button" class="burger-icon" aria-label="Men&uuml; &ouml;ffnen" aria-expanded="false" aria-controls="mobile-menu" onclick="toggleMenu()">&#9776;</button>
+            <div id="mobile-menu" class="mobile-menu">
+                <button type="button" class="nav-btn" onclick="openLeseeinstellungen()">&#9881;&#65039; Leseeinstellungen</button>
+                <a href="../landingpage.html#mission" class="nav-btn" onclick="toggleMenu()">F&uuml;r euch</a>
+                <a href="../landingpage.html#how-it-works" class="nav-btn" onclick="toggleMenu()">So funktioniert&rsquo;s</a>
+                <a href="../ueber-uns.html" class="nav-btn" onclick="toggleMenu()">&Uuml;ber uns</a>
+                <a href="../demo.html" class="nav-btn" onclick="toggleMenu()">Demo-Texte</a>
+                <a href="../preise.html" class="nav-btn" onclick="toggleMenu()">Preise</a>
+                <a href="../neue-geschichte.html" class="nav-btn" onclick="toggleMenu()">&#10024; Geschichte erstellen</a>
+                <a href="../mein-konto.html" class="nav-btn" onclick="toggleMenu()">Mein Konto</a>
+                <a href="../landingpage.html#registrieren" class="nav-btn menu-cta" onclick="toggleMenu()">Jetzt registrieren &rarr;</a>
             </div>
         </div>
-        <div class="nav-right">
-            <a href="../landingpage.html#registrieren" class="btn-cta-nav">Jetzt registrieren</a>
-            <button type="button" class="burger-icon" aria-label="Navigationsmen&uuml; &ouml;ffnen" aria-expanded="false" aria-controls="mobile-menu" onclick="toggleMenu()">&#9776;</button>
+        <div class="nav-center">
+            <a href="../demo.html" class="nav-logo-box" aria-label="Zur Bibliothek"><img src="../Konzept_Rebranding/logo-lesekumpel-512.webp" alt="Lesekumpel" class="nav-logo"></a>
         </div>
-        <div id="mobile-menu" class="mobile-menu">
-            <a href="../landingpage.html#mission" class="nav-btn" onclick="toggleMenu()">F&uuml;r euch</a>
-            <a href="../landingpage.html#how-it-works" class="nav-btn" onclick="toggleMenu()">So funktioniert&rsquo;s</a>
-            <a href="../ueber-uns.html" class="nav-btn" onclick="toggleMenu()">&Uuml;ber uns</a>
-            <a href="../demo.html" class="nav-btn" onclick="toggleMenu()">Demo-Texte</a>
-            <a href="../preise.html" class="nav-btn" onclick="toggleMenu()">Preise</a>
-            <a href="../neue-geschichte.html" class="nav-btn" onclick="toggleMenu()">&#10024; Geschichte erstellen</a>
-            <a href="../mein-konto.html" class="nav-btn" onclick="toggleMenu()">Mein Konto</a>
-            <a href="../landingpage.html#registrieren" class="nav-btn menu-cta" onclick="toggleMenu()">Jetzt registrieren &rarr;</a>
+        <div class="nav-right">
+            <a href="../kind.html" class="nav-avatar-btn" id="nav-avatar" aria-label="Mein Bereich">
+                <span class="nav-avatar-emoji" id="nav-avatar-emoji">🦊</span>
+            </a>
         </div>
     </nav>
 
@@ -2288,6 +2296,7 @@
     </footer>
 
 
+    <script src="../konto-state.js"></script>
     <script>
         /* ============================================================
          * DYNAMISCHE INJEKTION — diese Werte werden von N8N befüllt
@@ -3591,6 +3600,28 @@
             let n = Math.max(12, Math.min(40, s + d)); document.body.style.fontSize = n + "px";
         }
         function toggleMenu() { document.getElementById('mobile-menu').classList.toggle('open'); }
+        // Menü-Punkt "Leseeinstellungen": klappt die schwebende Lese-Toolbar auf und schließt das Menü
+        function openLeseeinstellungen() {
+            var tb = document.getElementById('toolbar');
+            if (tb) tb.classList.remove('collapsed');
+            var m = document.getElementById('mobile-menu');
+            if (m) m.classList.remove('open');
+        }
+        // Navbar-Avatar: zeigt das aktive Kind (Emoji + bgColor) aus dem Konto-State.
+        // Ohne Login werden Demo-Daten geseedet (Lena 🦊).
+        (function initNavAvatar() {
+            try {
+                if (!window.Konto) return;
+                Konto.seedIfEmpty();
+                var c = Konto.getActiveChild();
+                if (c && c.avatar) {
+                    var em = document.getElementById('nav-avatar-emoji');
+                    var btn = document.getElementById('nav-avatar');
+                    if (em) em.textContent = c.avatar.base || '🦊';
+                    if (btn && c.avatar.bgColor) btn.style.background = c.avatar.bgColor;
+                }
+            } catch (e) {}
+        })();
         function toggleToolbarCollapse() {
             const tb = document.getElementById('toolbar');
             tb.classList.toggle('collapsed');
