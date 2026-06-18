@@ -1895,16 +1895,7 @@
         .pb-range { flex: 1; accent-color: var(--mint); height: 36px; cursor: pointer; min-width: 0; }
         .pb-count { font-family: var(--font-heading); font-weight: 600; font-size: 0.9rem; color: var(--navy); min-width: 52px; text-align: center; flex-shrink: 0; }
         .pb-btn:focus-visible, .pb-range:focus-visible { outline: 3px solid var(--lila); outline-offset: 2px; }
-        /* Inhalt + Zauberkasten-FAB rücken hoch, solange die Leiste sichtbar ist */
-        body.player-active { padding-bottom: 130px; }
-        body.player-active .toolbar-container.collapsed,
-        body.player-active .toolbar-container:not(.collapsed) { bottom: 96px; }
-        @media (max-width: 767px) {
-            body.player-active { padding-bottom: 150px; }
-            body.player-active .toolbar-container.collapsed { bottom: 92px; }
-            body.player-active .toolbar-container:not(.collapsed) { bottom: 86px; }
-            .pb-count { min-width: 44px; font-size: 0.8rem; }
-        }
+        /* Vorlesen läuft jetzt ohne Player-Leiste — keine Extra-Abstände nötig */
 
         /* — „Jetzt liest du!": grün gelesene Wörter + Mikro-Leiste — */
         .word-interactive.read-correct { color: #1A8676; font-weight: 600; }   /* AA-grün auf Weiß/Cream */
@@ -1987,7 +1978,8 @@
         .rab-icon { font-size: 1.8rem; line-height: 1; }
         .rab-btn.active { background: var(--accent-coral); color: #fff; border-color: #e2603f; box-shadow: inset 0 2px 6px rgba(0,0,0,0.15); }
         /* Während Vorlesen/Nachlesen übernimmt die Transportleiste — Aktionsleiste tritt zurück */
-        body.player-active .reading-action-bar,
+        /* Beim Vorlesen bleibt die Aktionsleiste sichtbar (Play/Pause-Toggle).
+           Nur beim Mikro-Modus „Nachlesen" tritt sie zurück. */
         body.mic-active .reading-action-bar { display: none; }
         body.view-tafel .reading-action-bar { display: none !important; }
 
@@ -2311,16 +2303,7 @@
     </article>
     </main>
 
-    <!-- Audio-Player-Leiste: erscheint beim Vorlesen, läuft mit, pausierbar, spulbar -->
-    <div class="player-bar" id="player-bar" hidden>
-        <button type="button" class="pb-btn" id="pb-toggle" onclick="playerPauseResume()" aria-label="Pause"
-                data-speak="Pause und weiter: Hier hältst du das Vorlesen an oder machst weiter.">⏸</button>
-        <input type="range" class="pb-range" id="pb-range" min="0" max="100" value="0" step="1" aria-label="Vorlese-Position"
-               data-speak="Der Balken zeigt, wo wir in der Geschichte sind. Schiebe ihn, um zu springen.">
-        <span class="pb-count" id="pb-count" aria-hidden="true">0/0</span>
-        <button type="button" class="pb-btn pb-stop" id="pb-stop" onclick="stopPlayer()" aria-label="Vorlesen beenden"
-                data-speak="Das X beendet das Vorlesen.">✕</button>
-    </div>
+    <!-- Vorlesen wird über den Knopf in der unteren Aktionsleiste gesteuert (Play/Pause) -->
 
     <!-- Mikro-Leiste: erscheint, während das Kind selbst vorliest -->
     <div class="mic-bar" id="mic-bar" hidden>
@@ -3076,14 +3059,24 @@
            Pause arbeitet cancel-basiert (zuverlässig auf allen Plattformen,
            speechSynthesis.pause() ist auf Chrome/Android notorisch kaputt) —
            Resume startet am gemerkten Wortanfang. */
-        let player = { active: false, paused: false, words: [], idx: 0, chunkMode: false };
+        let player = { active: false, paused: false, words: [], idx: 0, chunkMode: false, isLast: false, atEnd: false };
 
-        function playerCollectWords() {
-            const chunkMode = !document.getElementById('chunk-view').classList.contains('hidden');
-            const container = chunkMode ? document.getElementById('chunk-display') : document.getElementById('full-text-view');
+        // Wörter EINES Blocks (Absatz/Überschrift bzw. aktueller Chunk) sammeln
+        function collectWordsIn(container) {
             const words = [];
-            container.querySelectorAll('.word-interactive').forEach(span => words.push({ text: span.innerText, el: span }));
-            return { words, chunkMode };
+            if (container) container.querySelectorAll('.word-interactive').forEach(span => words.push({ text: span.innerText, el: span }));
+            return words;
+        }
+
+        // Obersten Abschnitt (p/h3 mit Wörtern) bestimmen, der im Viewport beginnt
+        function findTopBlock() {
+            const view = document.getElementById('full-text-view');
+            if (!view) return null;
+            const OFFSET = 80; // knapp unter der Sticky-Navbar
+            const blocks = Array.from(view.children).filter(el => el.querySelector && el.querySelector('.word-interactive'));
+            if (!blocks.length) return null;
+            const target = blocks.find(el => el.getBoundingClientRect().bottom > OFFSET) || blocks[blocks.length - 1];
+            return { el: target, isLast: target === blocks[blocks.length - 1] };
         }
 
         function playerHighlight(idx) {
@@ -3097,52 +3090,35 @@
             }
         }
 
-        function playerUpdateBar() {
-            const total = player.words.length;
-            const range = document.getElementById('pb-range');
-            const count = document.getElementById('pb-count');
-            if (range && total) range.value = Math.round((player.idx / Math.max(1, total - 1)) * 100);
-            if (count) count.textContent = (player.idx + 1) + '/' + total;
-        }
-
+        // UI = nur noch der Vorlesen-Knopf in der Aktionsleiste (kein Player-Bar mehr)
         function playerSetUI(uiState) { // 'playing' | 'paused' | 'stopped'
-            const big = document.getElementById('read-player-btn');
-            const bigIcon = document.getElementById('read-player-icon');
-            const bigLabel = document.getElementById('read-player-label');
-            const bar = document.getElementById('player-bar');
-            const barToggle = document.getElementById('pb-toggle');
+            const btn = document.getElementById('act-vorlesen');
+            if (!btn) return;
+            const icon = btn.querySelector('.rab-icon');
             if (uiState === 'stopped') {
                 document.body.classList.remove('player-active');
-                if (bar) bar.hidden = true;
-                if (big) { big.classList.remove('playing'); bigIcon.textContent = '▶'; bigLabel.textContent = 'Vorlesen'; }
+                btn.classList.remove('active');
+                if (icon) icon.textContent = '▶';
+                btn.setAttribute('aria-label', 'Vorlesen');
                 return;
             }
             document.body.classList.add('player-active');
-            if (bar) bar.hidden = false;
             const playing = uiState === 'playing';
-            if (big) {
-                big.classList.toggle('playing', playing);
-                bigIcon.textContent = playing ? '⏸' : '▶';
-                bigLabel.textContent = playing ? 'Pause' : 'Weiter';
-            }
-            if (barToggle) {
-                barToggle.textContent = playing ? '⏸' : '▶';
-                barToggle.setAttribute('aria-label', playing ? 'Pause' : 'Weiterlesen');
-            }
+            btn.classList.toggle('active', playing);
+            if (icon) icon.textContent = playing ? '⏸' : '▶';
+            btn.setAttribute('aria-label', playing ? 'Pause' : 'Weiterlesen');
         }
 
-        /* Wort-für-Wort-Wiedergabe: JEDES Wort ist eine eigene Utterance.
-           Die Markierung wird per onstart der jeweiligen Wort-Utterance gesetzt
-           — onstart/onend feuern auf ALLEN Stimmen zuverlässig (anders als das
-           onboundary-Wort-Event, das Cloud-Stimmen verschlucken). Dadurch klingt
-           und leuchtet immer GENAU dasselbe Wort: null Drift, kein Schätzen. */
+        /* Wort-für-Wort-Wiedergabe EINES Abschnitts: jedes Wort ist eine eigene
+           Utterance (Markierung per onstart — zuverlässig auf allen Stimmen).
+           Am Abschnittsende wird AUTOMATISCH pausiert (nicht weitergelesen). */
         function playerSpeakFrom(startIdx) {
             const words = player.words;
             if (!words.length) return;
             startIdx = Math.max(0, Math.min(words.length - 1, startIdx));
             player.idx = startIdx;
             player.progressed = false;
-            // Generation: invalidiert laufende Wort-Kette bei Stop/Pause/Neustart/Seek
+            // Generation: invalidiert laufende Wort-Kette bei Stop/Pause/Neustart
             player.gen = (player.gen || 0) + 1;
             const gen = player.gen;
 
@@ -3151,12 +3127,14 @@
             function speakWordAt(i) {
                 if (gen !== player.gen || !player.active || player.paused) return;
                 if (i >= words.length) {
-                    const wasChunk = player.chunkMode;
-                    // „Geschafft" nur bei echter Wiedergabe — progressed wird nur durch
-                    // ein echtes onstart gesetzt; Geräte ohne Stimme lösen nichts aus
+                    // Abschnittsende → automatisch pausieren, am obersten Wort verbleiben
                     const reachedEnd = player.progressed;
-                    stopPlayer();
-                    if (reachedEnd && (!wasChunk || state.chunkIndex === state.chunks.length - 1)) storyFinished();
+                    player.paused = true;
+                    player.atEnd = true;
+                    player.gen = (player.gen || 0) + 1;
+                    clearHighlights();
+                    playerSetUI('paused');
+                    if (reachedEnd && player.isLast) storyFinished();
                     return;
                 }
                 const u = new SpeechSynthesisUtterance(words[i].text);
@@ -3167,31 +3145,45 @@
                     if (gen !== player.gen) return;
                     player.idx = i;
                     player.progressed = true;
-                    playerHighlight(i);   // markiert exakt das jetzt klingende Wort
-                    playerUpdateBar();
+                    playerHighlight(i);
                 };
                 u.onend = () => {
                     if (gen !== player.gen || !player.active || player.paused) return;
-                    speakWordAt(i + 1);   // Vorgänger ist beendet → kein cancel nötig
+                    speakWordAt(i + 1);
                 };
                 window.speechSynthesis.speak(u);
             }
-            // Markierung sofort auf das Startwort (onstart bestätigt sie gleich)
             playerHighlight(startIdx);
-            playerUpdateBar();
             speakWordAt(startIdx);
+        }
+
+        // Liest den obersten Abschnitt im Viewport (bzw. den aktuellen Chunk)
+        function startBlock() {
+            if (typeof readAloud !== 'undefined' && readAloud.active) stopReadAloud(); // Mikro + TTS nie gleichzeitig
+            const chunkMode = !document.getElementById('chunk-view').classList.contains('hidden');
+            let words, isLast;
+            if (chunkMode) {
+                words = collectWordsIn(document.getElementById('chunk-display'));
+                isLast = (state.chunkIndex === state.chunks.length - 1);
+            } else {
+                const top = findTopBlock();
+                if (!top) return;
+                words = collectWordsIn(top.el);
+                isLast = top.isLast;
+            }
+            if (!words.length) return;
+            player = { active: true, paused: false, words, idx: 0, chunkMode, isLast, atEnd: false };
+            playerSetUI('playing');
+            playerSpeakFrom(0);
         }
 
         function togglePlayer() {
             if (!player.active) {
-                if (typeof readAloud !== 'undefined' && readAloud.active) stopReadAloud(); // Mikro + TTS nie gleichzeitig
-                const c = playerCollectWords();
-                if (!c.words.length) return;
-                player = { active: true, paused: false, words: c.words, idx: 0, chunkMode: c.chunkMode };
-                playerSetUI('playing');
-                playerSpeakFrom(0);
+                startBlock();
+            } else if (player.paused && player.atEnd) {
+                startBlock();              // Abschnitt fertig → nächsten Viewport-Abschnitt lesen
             } else {
-                playerPauseResume();
+                playerPauseResume();       // mitten drin: Pause/Fortsetzen
             }
         }
 
@@ -3204,6 +3196,7 @@
                 playerSetUI('paused');
             } else {
                 player.paused = false;
+                player.atEnd = false;
                 playerSetUI('playing');
                 playerSpeakFrom(player.idx);
             }
@@ -3212,6 +3205,7 @@
         function stopPlayer() {
             player.active = false;
             player.paused = false;
+            player.atEnd = false;
             player.gen = (player.gen || 0) + 1; // laufende Wort-Kette invalidieren
             stopSpeaking();
             clearHighlights();
@@ -3219,18 +3213,6 @@
         }
         // Kompatibilität für ältere Aufrufer (nextChunk/prevChunk)
         function resetPlayerUI() { stopPlayer(); }
-
-        function playerSeek(percent) {
-            if (!player.active || !player.words.length) return;
-            const idx = Math.round((percent / 100) * (player.words.length - 1));
-            if (player.paused) {
-                player.idx = idx;
-                playerHighlight(idx);
-                playerUpdateBar();
-            } else {
-                playerSpeakFrom(idx);
-            }
-        }
 
         /* „Geschichte geschafft!" — einmal pro Besuch: Konfetti + Karte + Buddy-Lob */
         let storyDone = false;
@@ -3729,9 +3711,6 @@
         document.addEventListener('DOMContentLoaded', function() {
             renderText(); renderQuiz(); renderWeitererzaehlen(); renderSchatzsuche(); renderWortschatz(); initActivityTabs();
             updateTempoButtons();
-            // Spul-Balken der Player-Leiste ('change' = beim Loslassen/Tastendruck)
-            const pbRange = document.getElementById('pb-range');
-            if (pbRange) pbRange.addEventListener('change', () => playerSeek(parseFloat(pbRange.value)));
             // „Nachlesen"-Knopf nur zeigen, wenn der Browser Spracherkennung kann
             const raBtn = document.getElementById('act-nachlesen');
             if (raBtn && READ_ALOUD_SUPPORTED) raBtn.hidden = false;
