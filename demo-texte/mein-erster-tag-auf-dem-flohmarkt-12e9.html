@@ -718,14 +718,6 @@
         .quiz-option:hover:not(.correct):not(.try-again) { transform: translateY(-3px); }
         .quiz-option.q-col-1 { border-color: var(--primary-yellow); box-shadow: 0 3px 0 rgba(255,217,90,0.6); }
         .quiz-option.q-col-2 { border-color: var(--lila); box-shadow: 0 3px 0 rgba(125,106,230,0.35); }
-        .q-letter {
-            flex-shrink: 0; width: 36px; height: 36px; border-radius: 50%;
-            display: inline-flex; align-items: center; justify-content: center;
-            font-family: var(--font-heading); font-weight: 700; font-size: 1rem;
-            background: var(--mint); color: var(--navy);
-        }
-        .q-col-1 .q-letter { background: var(--primary-yellow); }
-        .q-col-2 .q-letter { background: var(--lila); color: #fff; }
         .q-answer-text { flex: 1; }
         .quiz-option.correct { background: rgba(47,184,166,0.18); border-color: var(--mint); color: var(--navy); box-shadow: 0 0 10px rgba(47,184,166,0.3); pointer-events: none; }
         .quiz-option.try-again { opacity: 0.6; background-color: #f4f4f4; border-color: #ddd; color: #999; animation: gentleShake 0.4s ease-in-out; cursor: default; }
@@ -1715,12 +1707,13 @@
         }
         .speak-btn:hover { transform: scale(1.08); background: #fff; border-color: var(--mint); }
         .speak-btn:active { transform: scale(0.9); }
-        .quiz-q-row { display: flex; gap: 10px; align-items: flex-start; margin-bottom: 16px; }
-        .quiz-q-row .quiz-q-title { flex: 1; padding-top: 8px; font-weight: 700; font-size: 1.15rem; margin: 0; color: var(--navy); }
-        .quiz-q-row .speak-btn { border-radius: 50%; }
-        .quiz-answer-row { display: flex; gap: 10px; align-items: stretch; margin-bottom: 12px; }
-        .quiz-answer-row .quiz-option { margin-bottom: 0; flex: 1; }
-        .quiz-answer-row .speak-btn { min-height: 0; width: 48px; border-radius: 50%; align-self: center; height: 48px; }
+        /* Frage/Antwort: Text volle Breite, 🔊 darunter (kein A/B/C-Bubble) */
+        .quiz-q-row { display: flex; flex-direction: column; gap: 8px; align-items: flex-start; margin-bottom: 16px; }
+        .quiz-q-row .quiz-q-title { width: 100%; padding-top: 0; font-weight: 700; font-size: 1.15rem; margin: 0; color: var(--navy); }
+        .quiz-answer-row { display: flex; flex-direction: column; gap: 6px; align-items: flex-start; margin-bottom: 14px; }
+        .quiz-answer-row .quiz-option { margin-bottom: 0; width: 100%; }
+        .quiz-q-row .speak-btn,
+        .quiz-answer-row .speak-btn { min-height: 0; width: 44px; height: 44px; border-radius: 50%; align-self: flex-start; }
 
         /* — Schritt-Quiz: eine Frage zur Zeit, Sterne, Weiter-Knopf, Abschluss — */
         body:not(.view-tafel) #panel-quiz .quiz-question:not(.q-active) { display: none; }
@@ -2005,6 +1998,56 @@
         @media (max-width: 767px) {
             .settings-panel { width: 100%; max-height: 88vh; }
         }
+
+        /* === SPIELZEIT: Auswahl-Karten === */
+        .spiel-chooser-intro { text-align: center; color: #5a6368; margin: -6px 0 18px; font-size: 1rem; }
+        .activity-tabs.spiel-chooser {
+            display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px;
+            background: none; border-radius: 0; padding: 0; margin-bottom: 0;
+        }
+        .spiel-chooser .activity-tab {
+            flex: none; flex-direction: column; gap: 8px;
+            min-height: 110px; padding: 18px 12px; border-radius: 20px;
+            background: var(--cream-light); border: 2px solid var(--border-soft); color: var(--navy);
+            box-shadow: 0 2px 8px rgba(43,49,64,0.05);
+            transition: transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.15s ease, border-color 0.15s ease;
+        }
+        .spiel-chooser .activity-tab:hover { transform: translateY(-3px); box-shadow: 0 6px 18px rgba(43,49,64,0.12); border-color: var(--mint); background: #fff; }
+        .spiel-chooser .activity-tab.active { background: var(--cream-light); color: var(--navy); box-shadow: 0 2px 8px rgba(43,49,64,0.05); }
+        .spiel-chooser .activity-tab .tab-icon { font-size: 2rem; }
+        .spiel-chooser .activity-tab .tab-label { font-size: 1.05rem; font-weight: 600; }
+        /* Jede Karte eine eigene Farbe */
+        .spiel-chooser .activity-tab:nth-child(1) { border-color: rgba(47,184,166,0.5); }
+        .spiel-chooser .activity-tab:nth-child(2) { border-color: rgba(255,217,90,0.8); }
+        .spiel-chooser .activity-tab:nth-child(3) { border-color: rgba(125,106,230,0.5); }
+        .spiel-chooser .activity-tab:nth-child(4) { border-color: rgba(249,115,82,0.5); }
+
+        /* === SPIELZEIT: Vollbild-Ansicht === */
+        .spielzeit-overlay {
+            position: fixed; inset: 0; z-index: 4700;
+            background: var(--bg-body); overflow-y: auto;
+            display: flex; flex-direction: column;
+            animation: settingsFade 0.18s ease-out;
+        }
+        .spielzeit-overlay[hidden] { display: none; }
+        .spielzeit-topbar {
+            position: sticky; top: 0; z-index: 2;
+            display: flex; align-items: center; gap: 14px;
+            background: rgba(255,255,255,0.95); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px);
+            border-bottom: 3px solid var(--mint); padding: 12px 16px;
+        }
+        .spielzeit-back {
+            display: inline-flex; align-items: center; gap: 6px;
+            background: var(--mint); color: var(--navy); border: none;
+            padding: 10px 18px; min-height: 44px; border-radius: 999px;
+            font-family: var(--font-heading); font-weight: 600; font-size: 1rem; cursor: pointer;
+            box-shadow: 0 3px 10px rgba(47,184,166,0.3); -webkit-tap-highlight-color: transparent;
+            transition: transform 0.15s ease, background 0.15s ease;
+        }
+        .spielzeit-back:hover { background: var(--navy); color: #fff; transform: translateX(-2px); }
+        .spielzeit-back:focus-visible { outline: 3px solid var(--lila); outline-offset: 2px; }
+        .spielzeit-title { font-family: var(--font-heading); font-size: 1.3rem; font-weight: 700; color: var(--navy); }
+        .spielzeit-content { width: 100%; max-width: 760px; margin: 0 auto; padding: 22px 18px 60px; }
     </style>
     <link rel="stylesheet" href="../fonts/fonts.css">
 </head>
@@ -2157,48 +2200,47 @@
 
         <div class="activity-hub">
             <h2 class="section-title">🎮 Spielzeit!</h2>
-            <div class="activity-tabs" role="tablist" aria-label="Spielformate">
-                <button class="activity-tab active" role="tab" aria-selected="true"
-                        aria-controls="panel-quiz" id="tab-quiz" data-tab="quiz"
-                        data-speak="Quiz: Hier beantwortest du Fragen zur Geschichte."
-                        onclick="switchActivityTab('quiz')">
+            <p class="spiel-chooser-intro">Wähle ein Spiel zur Geschichte!</p>
+            <div class="activity-tabs spiel-chooser" aria-label="Spielauswahl">
+                <button class="activity-tab" id="tab-quiz" data-tab="quiz" onclick="openSpiel('quiz')">
                     <span class="tab-icon">🧠</span><span class="tab-label">Quiz</span>
                 </button>
-                <button class="activity-tab" role="tab" aria-selected="false"
-                        aria-controls="panel-weiterdenken" id="tab-weiterdenken" data-tab="weiterdenken"
-                        data-speak="Weiterdenken: Hier gibt es Ideen, wie die Geschichte weitergehen könnte."
-                        onclick="switchActivityTab('weiterdenken')">
+                <button class="activity-tab" id="tab-weiterdenken" data-tab="weiterdenken" onclick="openSpiel('weiterdenken')">
                     <span class="tab-icon">🌟</span><span class="tab-label">Weiterdenken</span>
                 </button>
-                <button class="activity-tab" role="tab" aria-selected="false"
-                        aria-controls="panel-schatz" id="tab-schatz" data-tab="schatz"
-                        data-speak="Schatz: Hier suchst du versteckte Wörter in der Geschichte."
-                        onclick="switchActivityTab('schatz')">
+                <button class="activity-tab" id="tab-schatz" data-tab="schatz" onclick="openSpiel('schatz')">
                     <span class="tab-icon">🔍</span><span class="tab-label">Schatz</span>
                 </button>
-                <button class="activity-tab" role="tab" aria-selected="false"
-                        aria-controls="panel-wortschatz" id="tab-wortschatz" data-tab="wortschatz"
-                        data-speak="Wortsammlung: Hier hörst du neue Wörter und was sie bedeuten."
-                        onclick="switchActivityTab('wortschatz')">
+                <button class="activity-tab" id="tab-wortschatz" data-tab="wortschatz" onclick="openSpiel('wortschatz')">
                     <span class="tab-icon">📖</span><span class="tab-label">Wortsammlung</span>
                 </button>
             </div>
-            <div id="panel-quiz" class="activity-panel active" role="tabpanel" aria-labelledby="tab-quiz">
-                <div id="quiz-status" class="sr-only" role="status" aria-live="polite"></div>
-                <div id="quiz-wrapper" class="quiz-card"></div>
+        </div>
+
+        <!-- Vollbild-Spielansicht: Auswahl-Karte öffnet hier das jeweilige Spiel -->
+        <div class="spielzeit-overlay" id="spielzeit-overlay" hidden>
+            <div class="spielzeit-topbar">
+                <button class="spielzeit-back" onclick="closeSpiel()" aria-label="Zurück zur Spielauswahl">← Zurück</button>
+                <span class="spielzeit-title" id="spielzeit-title"></span>
             </div>
-            <div id="panel-weiterdenken" class="activity-panel" role="tabpanel" aria-labelledby="tab-weiterdenken">
-                <p class="weitererzaehlen-intro">Hier gibt es kein richtig oder falsch — wähle, was dir am besten gefällt!</p>
-                <div id="weitererzaehlen-wrapper" class="weitererzaehlen-cards"></div>
-                <div class="klassen-hinweis">
-                    <span class="klassen-hinweis-icon">👩‍🏫</span>
-                    <div>
-                        <strong>Tipp für die Klasse:</strong> Stimmt per Handzeichen ab — welche Fortsetzung findet ihr am schönsten? Danach könnt ihr die gewählte Fortsetzung gemeinsam selbst weiterschreiben.
+            <div class="spielzeit-content">
+                <div id="panel-quiz" class="activity-panel active">
+                    <div id="quiz-status" class="sr-only" role="status" aria-live="polite"></div>
+                    <div id="quiz-wrapper" class="quiz-card"></div>
+                </div>
+                <div id="panel-weiterdenken" class="activity-panel">
+                    <p class="weitererzaehlen-intro">Hier gibt es kein richtig oder falsch — wähle, was dir am besten gefällt!</p>
+                    <div id="weitererzaehlen-wrapper" class="weitererzaehlen-cards"></div>
+                    <div class="klassen-hinweis">
+                        <span class="klassen-hinweis-icon">👩‍🏫</span>
+                        <div>
+                            <strong>Tipp für die Klasse:</strong> Stimmt per Handzeichen ab — welche Fortsetzung findet ihr am schönsten? Danach könnt ihr die gewählte Fortsetzung gemeinsam selbst weiterschreiben.
+                        </div>
                     </div>
                 </div>
+                <div id="panel-schatz" class="activity-panel"></div>
+                <div id="panel-wortschatz" class="activity-panel"></div>
             </div>
-            <div id="panel-schatz" class="activity-panel" role="tabpanel" aria-labelledby="tab-schatz"></div>
-            <div id="panel-wortschatz" class="activity-panel" role="tabpanel" aria-labelledby="tab-wortschatz"></div>
         </div>
 
         <div class="related-section">
@@ -2678,14 +2720,13 @@
             quizData.forEach((item, i) => {
                 qHTML += `<div class="quiz-question" data-correct="${item.correct}" data-qidx="${i}">
                             <div class="quiz-q-row">
-                                <button type="button" class="speak-btn" data-say="${escapeHtml(item.q)}" onclick="sayThis(this)" aria-label="Frage vorlesen">🔊</button>
                                 <h3 class="quiz-q-title">${escapeHtml(item.q)}</h3>
+                                <button type="button" class="speak-btn" data-say="${escapeHtml(item.q)}" onclick="sayThis(this)" aria-label="Frage vorlesen">🔊</button>
                             </div>`;
                 item.a.forEach((ans, j) => {
                     const isCorrect = (j === item.correct);
                     qHTML += `<div class="quiz-answer-row">
                                 <button type="button" class="quiz-option q-col-${j % 3}" onclick="checkQuizAnswer(this, ${isCorrect})">
-                                    <span class="q-letter" aria-hidden="true">${letters[j] || '•'}</span>
                                     <span class="q-answer-text">${escapeHtml(ans)}</span>
                                 </button>
                                 <button type="button" class="speak-btn" data-say="${escapeHtml(ans)}" onclick="sayThis(this)" aria-label="Antwort vorlesen">🔊</button>
@@ -2826,8 +2867,7 @@
                 return;
             }
             if (availableTabs.length === 1) {
-                const tabsBar = document.querySelector('.activity-tabs');
-                if (tabsBar) tabsBar.style.display = 'none';
+                // Nur ein Spiel: Karte sichtbar lassen (sonst nicht aufrufbar), Panel vorwählen
                 switchActivityTab(availableTabs[0]);
                 return;
             }
@@ -3642,11 +3682,28 @@
         }
         // Aus dem Burger-Menü aufgerufen
         function openLeseeinstellungen() { openSettings(); }
+
+        // Spielzeit: Auswahl-Karte öffnet das Spiel als Vollbild-Ansicht
+        const SPIEL_TITEL = { quiz: '🧠 Quiz', weiterdenken: '🌟 Weiterdenken', schatz: '🔍 Schatz', wortschatz: '📖 Wortsammlung' };
+        function openSpiel(name) {
+            switchActivityTab(name);   // aktiviert das passende Panel (bestehende Logik)
+            var ov = document.getElementById('spielzeit-overlay');
+            var t = document.getElementById('spielzeit-title');
+            if (t) t.textContent = SPIEL_TITEL[name] || 'Spielzeit';
+            if (ov) { ov.hidden = false; ov.scrollTop = 0; }
+            document.body.style.overflow = 'hidden';
+        }
+        function closeSpiel() {
+            var ov = document.getElementById('spielzeit-overlay');
+            if (ov) ov.hidden = true;
+            document.body.style.overflow = '';
+        }
         document.addEventListener('keydown', function (e) {
-            if (e.key === 'Escape') {
-                var ov = document.getElementById('settings-overlay');
-                if (ov && !ov.hidden) closeSettings();
-            }
+            if (e.key !== 'Escape') return;
+            var sp = document.getElementById('spielzeit-overlay');
+            if (sp && !sp.hidden) { closeSpiel(); return; }
+            var ov = document.getElementById('settings-overlay');
+            if (ov && !ov.hidden) closeSettings();
         });
         // Navbar-Avatar: zeigt das aktive Kind (Emoji + bgColor) aus dem Konto-State.
         // Ohne Login werden Demo-Daten geseedet (Lena 🦊).
