@@ -63,6 +63,18 @@
     }
     </script>
 
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        { "@type": "ListItem", "position": 1, "name": "Start", "item": "https://rala84.github.io/lesekumpel/landingpage.html" },
+        { "@type": "ListItem", "position": 2, "name": "Demo-Texte", "item": "https://rala84.github.io/lesekumpel/demo.html" },
+        { "@type": "ListItem", "position": 3, "name": "Mein erster Tag auf dem Flohmarkt", "item": "https://rala84.github.io/lesekumpel/demo-texte/mein-erster-tag-auf-dem-flohmarkt-12e9.html" }
+      ]
+    }
+    </script>
+
     <style>
         /* --- GRUNDLAGEN --- */
         /* INSPIRED Design System (Rebranding) — Tokens aus Konzept_Rebranding/
@@ -2038,10 +2050,12 @@
         /* === SPIELZEIT: Vollbild-Ansicht === */
         .spielzeit-overlay {
             position: fixed; inset: 0; z-index: 4700;
-            background: var(--bg-body); overflow-y: auto;
+            background: var(--bg-body); overflow-x: hidden; overflow-y: auto;
             display: flex; flex-direction: column;
             animation: settingsFade 0.18s ease-out;
         }
+        /* Padding nicht zur Breite addieren -> kein horizontales Überlaufen */
+        .spielzeit-overlay, .spielzeit-overlay * { box-sizing: border-box; }
         .spielzeit-overlay[hidden] { display: none; }
         .spielzeit-topbar {
             position: sticky; top: 0; z-index: 2;
@@ -2199,16 +2213,6 @@
             <div class="done-self-badge" id="done-self-badge" hidden>🎤 Selbst gelesen — Leseheld!</div>
             <button class="tool-btn done-cta" type="button" onclick="goToGames()"
                     data-speak="Hier geht es zu den Spielen über die Geschichte.">🎮 Zur Spielzeit</button>
-        </div>
-
-        <div class="author-box">
-            <div class="author-card">
-                <img src="https://rala84.github.io/lesekumpel/avatars/jonas-entdecker.webp" alt="Jonas Entdecker" class="author-img">
-                <div>
-                    <h3 class="author-name">Jonas Entdecker</h3>
-                    <p style="margin:5px 0 0 0; font-size:0.9rem;">Jonas erzählt Alltagsabenteuer aus der Ich-Perspektive — ehrlich, lustig und immer zum Mitfühlen.</p>
-                </div>
-            </div>
         </div>
 
         <div class="activity-hub">
