@@ -1944,6 +1944,68 @@
             }
             body.view-tafel .tafel-story-col { grid-area: story; align-self: stretch; }
         }
+
+        /* === FESTE AKTIONSLEISTE (Vorlesen / Nachlesen / Wörter lesen) === */
+        body { padding-bottom: 96px; }
+        .reading-action-bar {
+            position: fixed; left: 0; right: 0; bottom: 0; z-index: 4400;
+            display: flex; gap: 8px;
+            background: #fff; border-top: 3px solid var(--mint);
+            padding: 10px 12px calc(10px + env(safe-area-inset-bottom));
+            box-shadow: 0 -6px 24px rgba(43,49,64,0.12);
+        }
+        .rab-btn {
+            flex: 1 1 0; min-height: 60px;
+            display: inline-flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px;
+            background: var(--cream-light); border: 2px solid var(--border-soft); border-radius: 16px;
+            font-family: var(--font-heading); font-weight: 600; font-size: 0.95rem; color: var(--navy);
+            cursor: pointer; -webkit-tap-highlight-color: transparent;
+            transition: transform 0.12s ease, background 0.15s ease, border-color 0.15s ease;
+        }
+        .rab-btn:hover { background: #fff; border-color: var(--mint); }
+        .rab-btn:active { transform: scale(0.96); }
+        .rab-btn:focus-visible { outline: 3px solid var(--lila); outline-offset: 2px; }
+        .rab-btn[hidden] { display: none; }
+        .rab-icon { font-size: 1.5rem; line-height: 1; }
+        .rab-label { line-height: 1; }
+        .rab-btn.active { background: var(--accent-coral); color: #fff; border-color: #e2603f; box-shadow: inset 0 2px 6px rgba(0,0,0,0.15); }
+        /* Während Vorlesen/Nachlesen übernimmt die Transportleiste — Aktionsleiste tritt zurück */
+        body.player-active .reading-action-bar,
+        body.mic-active .reading-action-bar { display: none; }
+        body.view-tafel .reading-action-bar { display: none !important; }
+
+        /* === EINSTELLUNGS-OVERLAY (Lesehilfen einmal einstellen) === */
+        .settings-overlay {
+            position: fixed; inset: 0; z-index: 5000;
+            display: flex; align-items: center; justify-content: center;
+            background: rgba(43,49,64,0.45); -webkit-backdrop-filter: blur(3px); backdrop-filter: blur(3px);
+            padding: 20px; animation: settingsFade 0.18s ease-out;
+        }
+        .settings-overlay[hidden] { display: none; }
+        @keyframes settingsFade { from { opacity: 0; } to { opacity: 1; } }
+        .settings-panel {
+            background: var(--bg-card); border-radius: 24px;
+            width: min(440px, 100%); max-height: 85vh; overflow-y: auto;
+            box-shadow: 0 16px 48px rgba(43,49,64,0.25); border: 2px solid var(--mint);
+            animation: settingsPop 0.22s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        @keyframes settingsPop { 0% { transform: scale(0.92); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+        .settings-header {
+            display: flex; align-items: center; justify-content: space-between; padding: 18px 20px 12px;
+        }
+        .settings-title { font-family: var(--font-heading); color: var(--navy); font-size: 1.3rem; margin: 0; }
+        .settings-close {
+            width: 36px; height: 36px; border-radius: 50%; flex-shrink: 0;
+            background: rgba(47,184,166,0.15); border: none; color: var(--navy);
+            font-size: 1.4rem; line-height: 1; cursor: pointer;
+            display: inline-flex; align-items: center; justify-content: center; transition: background 0.15s ease;
+        }
+        .settings-close:hover { background: rgba(47,184,166,0.3); }
+        .settings-close:focus-visible { outline: 3px solid var(--lila); outline-offset: 2px; }
+        .settings-body { display: flex; flex-direction: column; gap: 10px; padding: 0 16px 18px; }
+        @media (max-width: 767px) {
+            .settings-panel { width: 100%; max-height: 88vh; }
+        }
     </style>
     <link rel="stylesheet" href="../fonts/fonts.css">
 </head>
@@ -2006,74 +2068,60 @@
         <img src="https://rala84.github.io/lesekumpel/bilder/mein-erster-tag-auf-dem-flohmarkt-12e9-3.png" alt="Mein erster Tag auf dem Flohmarkt" class="hero-image" onerror="this.style.display='none'">
         <img src="https://rala84.github.io/lesekumpel/bilder/mein-erster-tag-auf-dem-flohmarkt-12e9-4.png" alt="Mein erster Tag auf dem Flohmarkt" class="hero-image" onerror="this.style.display='none'">
 
-        <div class="toolbar-container collapsed" id="toolbar">
-            <div class="buddy-bubble" id="buddy-bubble" hidden>Tipp mich an! 🔊</div>
-            <div class="toolbar-header" onclick="toggleToolbarCollapse()" onkeydown="if(event.key==='Enter'||event.key===' '){event.preventDefault();toggleToolbarCollapse();}" id="toolbar-close-btn" role="button" tabindex="0" aria-label="Lesekumpel: Hilfe und Werkzeuge öffnen oder schließen"
-                 data-speak="Das bin ich, dein Lesekumpel! Tipp mich an, dann zeige ich dir meine Helfer und Werkzeuge.">
-                <span class="toolbar-header-label">
-                    <span class="header-icon" aria-hidden="true"><img class="buddy-img" id="buddy-img" src="https://rala84.github.io/lesekumpel/Konzept_Rebranding/logo-lesekumpel-512.webp" alt=""></span>
-                    <span class="header-text">Lesekumpel</span>
-                </span>
-                <span class="toolbar-toggle-icon" id="toolbar-chevron" aria-hidden="true"></span>
-            </div>
-            <div class="toolbar-body" id="toolbar-body">
-                <div class="toolbar-group group-buddy">
-                    <div class="toolbar-group-label">Dein Lesekumpel</div>
-                    <div class="buddy-actions">
-                        <button type="button" class="buddy-menu-btn" onclick="buddyAction('read')"
-                                data-speak="Vorlesen: Ich lese dir die ganze Geschichte vor.">
-                            <span class="bm-icon" aria-hidden="true">▶</span><span class="bm-label">Vorlesen</span>
-                        </button>
-                        <button type="button" class="buddy-menu-btn" id="btn-read-aloud" hidden onclick="buddyAction('read-aloud')"
-                                data-speak="Jetzt liest du mir vor! Ich höre zu und male die Wörter grün an.">
-                            <span class="bm-icon" aria-hidden="true">🎤</span><span class="bm-label">Jetzt liest du!</span>
-                        </button>
-                    </div>
+        <!-- Einstellungs-Menü (Lesehilfen, die man einmal einstellt) — geöffnet über Burger > Leseeinstellungen -->
+        <div class="settings-overlay" id="settings-overlay" hidden onclick="if(event.target===this)closeSettings()">
+            <div class="settings-panel" id="settings-panel" role="dialog" aria-modal="true" aria-labelledby="settings-title">
+                <div class="settings-header">
+                    <h2 class="settings-title" id="settings-title">⚙️ Leseeinstellungen</h2>
+                    <button type="button" class="settings-close" onclick="closeSettings()" aria-label="Einstellungen schließen">&times;</button>
                 </div>
-                <div class="toolbar-group group-text">
-                    <div class="toolbar-group-label">Text</div>
-                    <div class="toolbar-group-buttons">
-                        <button class="tool-btn btn-coral" onclick="toggleSummaryMode()" id="btn-summary" aria-label="Einfache Sprache"
-                                data-speak="Einfach: Ich zeige dir die Geschichte in kurzen, einfachen Sätzen."><span class="btn-icon">📖</span> <span class="btn-label">Einfach</span></button>
-                        <button class="tool-btn" onclick="toggleSyllables()" id="btn-syllables" aria-label="Silbentrennung"
-                                data-speak="Silben: Ich male die Wortteile bunt an. Das hilft beim Lesen."><span class="btn-icon">✂️</span> <span class="btn-label">Silben</span></button>
-                        <button class="tool-btn" onclick="toggleEmojis()" id="btn-emojis" aria-label="Gefühle mit Emojis"
-                                data-speak="Emojis: Ich zeige kleine Gesichter bei den Gefühlen in der Geschichte."><span class="btn-icon">😊</span> <span class="btn-label">Emojis</span></button>
-                    </div>
-                </div>
-                <div class="toolbar-group group-view">
-                    <div class="toolbar-group-label">Ansicht</div>
-                    <div class="toolbar-group-buttons">
-                        <button class="tool-btn" onclick="toggleViewMode()" id="view-toggle-btn" aria-label="Text in Häppchen"
-                                data-speak="Häppchen: Ich zeige dir immer nur ein kleines Stück der Geschichte."><span class="btn-icon">🧩</span> <span class="btn-label">Häppchen</span></button>
-                        <button class="tool-btn" onclick="toggleLeselinien()" id="btn-leselinien" aria-label="Leselinien"
-                                data-speak="Linien: Ich male Linien unter den Text. Das hilft, in der Zeile zu bleiben."><span class="btn-icon">📏</span> <span class="btn-label">Linien</span></button>
-                        <button class="tool-btn" onclick="toggleFahrplan()" id="btn-fahrplan" aria-label="Fahrplan"
-                                data-speak="Fahrplan: Ich gebe jedem Absatz eine Nummer, damit du weißt, wo du bist."><span class="btn-icon">🗺️</span> <span class="btn-label">Fahrplan</span></button>
-                        <div class="font-size-control">
-                            <button class="tool-btn" onclick="changeFontSize(-2)" aria-label="Schrift kleiner" data-speak="Hier wird die Schrift kleiner.">A−</button>
-                            <button class="tool-btn" onclick="changeFontSize(2)" aria-label="Schrift größer" data-speak="Hier wird die Schrift größer.">A+</button>
+                <div class="settings-body">
+                    <div class="toolbar-group group-text">
+                        <div class="toolbar-group-label">Text</div>
+                        <div class="toolbar-group-buttons">
+                            <button class="tool-btn btn-coral" onclick="toggleSummaryMode()" id="btn-summary" aria-label="Einfache Sprache"><span class="btn-icon">📖</span> <span class="btn-label">Einfach</span></button>
+                            <button class="tool-btn" onclick="toggleSyllables()" id="btn-syllables" aria-label="Silbentrennung"><span class="btn-icon">✂️</span> <span class="btn-label">Silben</span></button>
+                            <button class="tool-btn" onclick="toggleEmojis()" id="btn-emojis" aria-label="Gefühle mit Emojis"><span class="btn-icon">😊</span> <span class="btn-label">Emojis</span></button>
                         </div>
                     </div>
-                </div>
-                <div class="toolbar-group group-extra">
-                    <div class="toolbar-group-label">Extras</div>
-                    <div class="toolbar-group-buttons">
-                        <button class="tool-btn" onclick="toggleWordReader()" id="btn-word-reader" aria-label="Wörter hören"
-                                data-speak="Wörter hören: Tipp danach auf ein Wort in der Geschichte, und ich spreche es dir vor."><span class="btn-icon">👂</span> <span class="btn-label">Wörter hören</span></button>
-                        <button type="button" class="tool-btn" onclick="toggleDyslexia(this)" id="btn-dyslexia" aria-label="Lesefreundliche Schrift"
-                                data-speak="Lesefreundlich: Ich mache mehr Platz zwischen den Buchstaben und Wörtern."><span class="btn-icon">💛</span> <span class="btn-label">Lesefreundlich</span></button>
-                        <button type="button" class="tool-btn" onclick="toggleContrast(this)" id="btn-contrast" aria-label="Hoher Kontrast"
-                                data-speak="Kontrast: Ich mache die Schrift extra dunkel und den Hintergrund ganz hell."><span class="btn-icon">🌓</span> <span class="btn-label">Kontrast</span></button>
-                        <div class="font-size-control" role="group" aria-label="Vorlese-Tempo">
-                            <button type="button" class="tool-btn" id="btn-tempo-slow" onclick="setSpeechRate(0.7)" aria-label="Langsam vorlesen"
-                                    data-speak="Schildkröte: Ich lese ganz langsam vor.">🐢</button>
-                            <button type="button" class="tool-btn" id="btn-tempo-fast" onclick="setSpeechRate(0.95)" aria-label="Normal schnell vorlesen"
-                                    data-speak="Hase: Ich lese normal schnell vor.">🐇</button>
+                    <div class="toolbar-group group-view">
+                        <div class="toolbar-group-label">Ansicht</div>
+                        <div class="toolbar-group-buttons">
+                            <button class="tool-btn" onclick="toggleViewMode()" id="view-toggle-btn" aria-label="Text in Häppchen"><span class="btn-icon">🧩</span> <span class="btn-label">Häppchen</span></button>
+                            <button class="tool-btn" onclick="toggleLeselinien()" id="btn-leselinien" aria-label="Leselinien"><span class="btn-icon">📏</span> <span class="btn-label">Linien</span></button>
+                            <button class="tool-btn" onclick="toggleFahrplan()" id="btn-fahrplan" aria-label="Fahrplan"><span class="btn-icon">🗺️</span> <span class="btn-label">Fahrplan</span></button>
+                            <div class="font-size-control">
+                                <button class="tool-btn" onclick="changeFontSize(-2)" aria-label="Schrift kleiner">A−</button>
+                                <button class="tool-btn" onclick="changeFontSize(2)" aria-label="Schrift größer">A+</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="toolbar-group group-extra">
+                        <div class="toolbar-group-label">Extras</div>
+                        <div class="toolbar-group-buttons">
+                            <button type="button" class="tool-btn" onclick="toggleDyslexia(this)" id="btn-dyslexia" aria-label="Lesefreundliche Schrift"><span class="btn-icon">💛</span> <span class="btn-label">Lesefreundlich</span></button>
+                            <button type="button" class="tool-btn" onclick="toggleContrast(this)" id="btn-contrast" aria-label="Hoher Kontrast"><span class="btn-icon">🌓</span> <span class="btn-label">Kontrast</span></button>
+                            <div class="font-size-control" role="group" aria-label="Vorlese-Tempo">
+                                <button type="button" class="tool-btn" id="btn-tempo-slow" onclick="setSpeechRate(0.7)" aria-label="Langsam vorlesen">🐢</button>
+                                <button type="button" class="tool-btn" id="btn-tempo-fast" onclick="setSpeechRate(0.95)" aria-label="Normal schnell vorlesen">🐇</button>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
+
+        <!-- Feste Aktionsleiste unten: die 3 wichtigsten Lese-Werkzeuge -->
+        <div class="reading-action-bar" id="reading-action-bar" role="toolbar" aria-label="Lese-Werkzeuge">
+            <button type="button" class="rab-btn" id="act-vorlesen" onclick="actVorlesen()">
+                <span class="rab-icon" aria-hidden="true">▶</span><span class="rab-label">Vorlesen</span>
+            </button>
+            <button type="button" class="rab-btn" id="act-nachlesen" hidden onclick="actNachlesen()">
+                <span class="rab-icon" aria-hidden="true">🎤</span><span class="rab-label">Nachlesen</span>
+            </button>
+            <button type="button" class="rab-btn" id="act-woerter" onclick="actWoerter()">
+                <span class="rab-icon" aria-hidden="true">👂</span><span class="rab-label">Wörter lesen</span>
+            </button>
         </div>
 
         <div id="full-text-view" class="story-text"></div>
@@ -2394,20 +2442,13 @@
         // Spricht den data-say-Text eines Buttons (für Quiz, Spiele, Wortschatz)
         function sayThis(btn) { speak(btn.getAttribute('data-say')); }
 
-        /* ── Lese-Buddy (im Zauberkasten-FAB verschmolzen) ────────────────
-           Das Maskottchen IST der Werkzeugkasten-Knopf rechts unten.
-           Bei Neurotyp Autismus bleibt es still (keine Sprechblase, kein
-           Jubel-Audio) — Reizarmut. */
-        function buddyAction(what) {
-            // Panel schließen, dann Aktion
-            const tb = document.getElementById('toolbar');
-            if (tb && !tb.classList.contains('collapsed')) tb.classList.add('collapsed');
-            if (what === 'read') {
-                togglePlayer();
-            } else if (what === 'read-aloud') {
-                startReadAloud();
-            }
-        }
+        /* ── Aktionsleiste unten: die 3 Lese-Werkzeuge ────────────────────
+           Immer nur ein Modus aktiv. Vorlesen↔Nachlesen schließen sich intern
+           schon aus (togglePlayer/beginReadAloud stoppen den jeweils anderen);
+           Wörter-lesen schalten wir hier zusätzlich ab. */
+        function actVorlesen() { if (state.wordReader) toggleWordReader(); togglePlayer(); }
+        function actNachlesen() { if (state.wordReader) toggleWordReader(); startReadAloud(); }
+        function actWoerter() { toggleWordReader(); }
         function buddyCheer(text) {
             if (isAutismus) return;
             speak(text);
@@ -2418,18 +2459,6 @@
                     setTimeout(() => img.classList.remove('cheer'), 1000);
                 }
             }
-        }
-        function initBuddy() {
-            // Erstbesuch: stille Sprechblase überm FAB (kein Auto-Audio — iOS & Reizarmut)
-            if (isAutismus) return;
-            try {
-                if (!localStorage.getItem('lesekumpel-buddy-intro')) {
-                    localStorage.setItem('lesekumpel-buddy-intro', '1');
-                    const bubble = document.getElementById('buddy-bubble');
-                    bubble.hidden = false;
-                    setTimeout(() => { bubble.hidden = true; }, 9000);
-                }
-            } catch(e) {}
         }
 
         // Dictionary Parser
@@ -3451,7 +3480,7 @@
         }
 
         function clearHighlights() { document.querySelectorAll('.highlight-active').forEach(el => el.classList.remove('highlight-active')); }
-        function toggleWordReader() { state.wordReader = !state.wordReader; document.getElementById('btn-word-reader').className = state.wordReader ? "tool-btn active" : "tool-btn"; }
+        function toggleWordReader() { state.wordReader = !state.wordReader; const b = document.getElementById('act-woerter'); if (b) b.classList.toggle('active', state.wordReader); }
         function clickWord(el, word) {
             // Schatzsuche-Modus hat Vorrang: blockiert TTS während aktiv
             if (schatzState.active) { checkSchatzwort(el, word); return; }
@@ -3601,12 +3630,25 @@
         }
         function toggleMenu() { document.getElementById('mobile-menu').classList.toggle('open'); }
         // Menü-Punkt "Leseeinstellungen": klappt die schwebende Lese-Toolbar auf und schließt das Menü
-        function openLeseeinstellungen() {
-            var tb = document.getElementById('toolbar');
-            if (tb) tb.classList.remove('collapsed');
+        // Einstellungs-Overlay öffnen/schließen (Burger > Leseeinstellungen)
+        function openSettings() {
+            var ov = document.getElementById('settings-overlay');
+            if (ov) ov.hidden = false;
             var m = document.getElementById('mobile-menu');
             if (m) m.classList.remove('open');
         }
+        function closeSettings() {
+            var ov = document.getElementById('settings-overlay');
+            if (ov) ov.hidden = true;
+        }
+        // Aus dem Burger-Menü aufgerufen
+        function openLeseeinstellungen() { openSettings(); }
+        document.addEventListener('keydown', function (e) {
+            if (e.key === 'Escape') {
+                var ov = document.getElementById('settings-overlay');
+                if (ov && !ov.hidden) closeSettings();
+            }
+        });
         // Navbar-Avatar: zeigt das aktive Kind (Emoji + bgColor) aus dem Konto-State.
         // Ohne Login werden Demo-Daten geseedet (Lena 🦊).
         (function initNavAvatar() {
@@ -3622,12 +3664,6 @@
                 }
             } catch (e) {}
         })();
-        function toggleToolbarCollapse() {
-            const tb = document.getElementById('toolbar');
-            tb.classList.toggle('collapsed');
-            const bubble = document.getElementById('buddy-bubble');
-            if (bubble) bubble.hidden = true;
-        }
         function setQuizStatus(text) {
             const s = document.getElementById('quiz-status');
             if (s) { s.textContent = ''; setTimeout(() => { s.textContent = text; }, 50); }
@@ -3671,12 +3707,12 @@
         // nicht erst wenn alle Story-Bilder fertig geladen sind.
         document.addEventListener('DOMContentLoaded', function() {
             renderText(); renderQuiz(); renderWeitererzaehlen(); renderSchatzsuche(); renderWortschatz(); initActivityTabs();
-            initBuddy(); updateTempoButtons();
+            updateTempoButtons();
             // Spul-Balken der Player-Leiste ('change' = beim Loslassen/Tastendruck)
             const pbRange = document.getElementById('pb-range');
             if (pbRange) pbRange.addEventListener('change', () => playerSeek(parseFloat(pbRange.value)));
-            // „Jetzt liest du!"-Knopf nur zeigen, wenn der Browser Spracherkennung kann
-            const raBtn = document.getElementById('btn-read-aloud');
+            // „Nachlesen"-Knopf nur zeigen, wenn der Browser Spracherkennung kann
+            const raBtn = document.getElementById('act-nachlesen');
             if (raBtn && READ_ALOUD_SUPPORTED) raBtn.hidden = false;
             // Mikro-Consent-Dialog verkabeln
             const mc = document.getElementById('mic-consent');
