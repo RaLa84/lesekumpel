@@ -161,7 +161,33 @@ Damit ist Lesekumpel das echte Inklusions-Werkzeug, das CLELO sein wollte. Das i
 
 ---
 
-### 6. Onilo — direkter Konkurrent mit "Lernerfolg durch Lesespaß"
+### 6. Amira Lesen (Stiftung Lesen + Goethe-Institut) — kostenfreier DaZ-Spezialist
+
+| Aspekt | Daten |
+|--------|-------|
+| Träger | **Stiftung Lesen + Goethe-Institut** |
+| Modell | Virtuelle Bilderbuch-Hefte (DIN A6) mit Vorlese-Funktion + Mini-Spielen pro Geschichte |
+| Inhalt | **32 Geschichten** in 3 Niveaustufen (gelb 60–150 / blau 500 / grün 500–1.200 Wörter) |
+| Sprachen | **9 Sprachen** mit Native-Speaker-Vertonung: Deutsch, Arabisch, Türkisch, Russisch, Farsi, Italienisch, Polnisch, Spanisch, Englisch |
+| Preis | **Komplett kostenlos** |
+| Zielgruppe | Leseanfänger, primär **DaZ-Kinder** (Deutsch als Zweitsprache) — Geflüchteten-Kinder, mehrsprachige Familien |
+| Spielelemente | Artikelspiel · Quiz · Suchbild · Klang-Memory · Bingo |
+
+**Warum #6 — und warum komplementär:** Amira ist der **einzige kostenlose deutsche DaZ-Mehrsprachen-Player** mit seriöser Trägerschaft (Stiftung Lesen + Goethe). Für DaZ-Familien und Geflüchteten-Kinder ein etablierter Anker. In MV mit überdurchschnittlich vielen DaZ-Kindern in Grundschulen besonders relevant. Use-Case-mäßig aber nicht direkt konkurrierend — Amira ist Vorlese-Programm für Leseanfänger, Lesekumpel ist Selbstleser-App mit Persona-Buddy.
+
+**Lücken / Angriffsflächen:**
+- Nur 32 Geschichten — danach ist Schluss
+- Statische Bibliothek, nicht generativ
+- Keine Persona-Charaktere, kein durchgehender Lese-Buddy
+- Keine Neurotyp-Differenzierung (LRS/ADHS/Autismus)
+- Vorlese-fokussiert — Kind ist Hörer, nicht aktiver Selbstleser
+- Keine Aktualität (keine Texte zum Sportfest in 2 Wochen)
+
+**Strategie:** Komplementär statt Konkurrenz — **Amira ist großartig für die ersten 32 Geschichten, Lesekumpel ist da, wenn das Kind weiterlesen will**. Preis-Konter ist nicht möglich (Amira kostenlos), aber Lesekumpel argumentiert mit **unbegrenztem Nachschub + Persona-Bindung + Neurotyp-Modi**. *"Amira gibt 32 Bücher zum Einstieg. Lesekumpel gibt dem Kind seinen lebenslangen Lese-Buddy."*
+
+---
+
+### 7. Onilo — direkter Konkurrent mit "Lernerfolg durch Lesespaß"
 
 | Aspekt | Daten |
 |--------|-------|

@@ -273,10 +273,10 @@ h1.slide-title:has(+ .slide-subtitle) { margin-bottom: 0.5rem; }
 }
 .matrix-takeaway strong { font-family: var(--font-heading); font-size: 1.15rem; }
 
-/* ===== Ranking-Übersicht (8 Karten) ===== */
+/* ===== Ranking-Übersicht (9 Karten, 3x3) ===== */
 .ranking-grid {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   gap: 0.9rem;
 }
 .rank-card {
@@ -303,9 +303,10 @@ h1.slide-title:has(+ .slide-subtitle) { margin-bottom: 0.5rem; }
 .rank-card.r3::before { background: var(--mint); }
 .rank-card.r4::before { background: var(--yellow); }
 .rank-card.r5::before { background: var(--coral); opacity: 0.6; }
-.rank-card.r6::before { background: var(--lila); opacity: 0.6; }
-.rank-card.r7::before { background: var(--mint); opacity: 0.6; }
-.rank-card.r8::before { background: var(--navy); opacity: 0.6; }
+.rank-card.r6::before { background: var(--yellow); opacity: 0.6; }
+.rank-card.r7::before { background: var(--lila); opacity: 0.6; }
+.rank-card.r8::before { background: var(--mint); opacity: 0.6; }
+.rank-card.r9::before { background: var(--navy); opacity: 0.6; }
 
 .rank-card .rk-num {
   font-family: var(--font-heading);
@@ -321,7 +322,8 @@ h1.slide-title:has(+ .slide-subtitle) { margin-bottom: 0.5rem; }
 .rank-card.r5 .rk-num,
 .rank-card.r6 .rk-num,
 .rank-card.r7 .rk-num,
-.rank-card.r8 .rk-num { color: var(--navy); opacity: 0.7; }
+.rank-card.r8 .rk-num,
+.rank-card.r9 .rk-num { color: var(--navy); opacity: 0.7; }
 
 .rank-card h3 {
   font-size: 1.05rem;
@@ -939,6 +941,7 @@ h1.slide-title:has(+ .slide-subtitle) { margin-bottom: 0.5rem; }
       <div class="matrix-row"><div class="cell name">Antolin</div><div class="cell"><span class="mark-no">—</span></div><div class="cell"><span class="mark-yes">✓</span></div><div class="cell"><span class="mark-no">—</span></div><div class="cell"><span class="mark-no">—</span></div></div>
       <div class="matrix-row"><div class="cell name">Google Read Along</div><div class="cell"><span class="mark-no">—</span></div><div class="cell"><span class="mark-no">—</span></div><div class="cell"><span class="mark-no">—</span></div><div class="cell"><span class="mark-yes">✓</span></div></div>
       <div class="matrix-row"><div class="cell name">Polylino</div><div class="cell"><span class="mark-no">—</span></div><div class="cell"><span class="mark-yes">✓</span></div><div class="cell"><span class="mark-no">—</span></div><div class="cell"><span class="mark-no">—</span></div></div>
+      <div class="matrix-row"><div class="cell name">Amira Lesen</div><div class="cell"><span class="mark-no">—</span></div><div class="cell"><span class="mark-yes">✓</span></div><div class="cell"><span class="mark-no">—</span></div><div class="cell"><span class="mark-no">—</span></div></div>
       <div class="matrix-row"><div class="cell name">Leseludi</div><div class="cell"><span class="mark-no">—</span></div><div class="cell"><span class="mark-yes">✓</span></div><div class="cell"><span class="mark-no">—</span></div><div class="cell"><span class="mark-no">—</span></div></div>
       <div class="matrix-row"><div class="cell name">CLELO (Hardware)</div><div class="cell"><span class="mark-no">—</span></div><div class="cell"><span class="mark-yes">✓</span></div><div class="cell"><span class="mark-no">—</span></div><div class="cell"><span class="mark-no">—</span></div></div>
       <div class="matrix-row"><div class="cell name">ANTON (Allzweck)</div><div class="cell"><span class="mark-no">—</span></div><div class="cell"><span class="mark-yes">✓</span></div><div class="cell"><span class="mark-no">—</span></div><div class="cell"><span class="mark-no">—</span></div></div>
@@ -952,12 +955,12 @@ h1.slide-title:has(+ .slide-subtitle) { margin-bottom: 0.5rem; }
 
   <div class="slide-footer">
     <span class="brand"><span class="brand-dot"></span><span class="brand-name brand-name-lila">Lese</span>kumpel · Wettbewerb</span>
-    <span class="counter">01 / 13</span>
+    <span class="counter">01 / 14</span>
   </div>
 </section>
 
 <!-- ============================================ -->
-<!-- 2 — Ranking-Übersicht (alle 8)                -->
+<!-- 2 — Ranking-Übersicht (alle 9)                -->
 <!-- ============================================ -->
 <section class="slide" data-slide="2">
   <div class="blob lila tl-md shape-3" aria-hidden="true"></div>
@@ -995,17 +998,22 @@ h1.slide-title:has(+ .slide-subtitle) { margin-bottom: 0.5rem; }
         <p class="rk-tag">Hörbücher zum Mitlesen in 70+ Sprachen — Premium-B2B-Schul-Vertrieb</p>
       </div>
       <div class="rank-card r6">
-        <span class="rk-num">#6 · Komplementär</span>
+        <span class="rk-num">#6 · DaZ-Spezialist</span>
+        <h3>Amira Lesen</h3>
+        <p class="rk-tag">Kostenlose Bilderbücher in 9 Sprachen — Stiftung Lesen + Goethe-Institut, 32 Stories statisch</p>
+      </div>
+      <div class="rank-card r7">
+        <span class="rk-num">#7 · Komplementär</span>
         <h3>Leseludi</h3>
         <p class="rk-tag">Onboarding ins Lesen — Silben und Wörter erkennen für Erstleser</p>
       </div>
-      <div class="rank-card r7">
-        <span class="rk-num">#7 · Zielgruppen-Twin</span>
+      <div class="rank-card r8">
+        <span class="rk-num">#8 · Zielgruppen-Twin</span>
         <h3>CLELO</h3>
         <p class="rk-tag">Hardware-Leselerngerät mit KI — teilt unsere Mission, aber 279 € + Per-Story</p>
       </div>
-      <div class="rank-card r8">
-        <span class="rk-num">#8 · Umfeld</span>
+      <div class="rank-card r9">
+        <span class="rk-num">#9 · Umfeld</span>
         <h3>ANTON</h3>
         <p class="rk-tag">Allzweck-Lern-App, kostenlos — 10 Mio+ Downloads, Lesen ist Nebenfach</p>
       </div>
@@ -1014,7 +1022,7 @@ h1.slide-title:has(+ .slide-subtitle) { margin-bottom: 0.5rem; }
 
   <div class="slide-footer">
     <span class="brand"><span class="brand-dot"></span><span class="brand-name brand-name-lila">Lese</span>kumpel · Wettbewerb</span>
-    <span class="counter">02 / 13</span>
+    <span class="counter">02 / 14</span>
   </div>
 </section>
 
@@ -1063,7 +1071,7 @@ h1.slide-title:has(+ .slide-subtitle) { margin-bottom: 0.5rem; }
 
   <div class="slide-footer">
     <span class="brand"><span class="brand-dot"></span><span class="brand-name brand-name-lila">Lese</span>kumpel · Wettbewerb</span>
-    <span class="counter">03 / 13</span>
+    <span class="counter">03 / 14</span>
   </div>
 </section>
 
@@ -1112,7 +1120,7 @@ h1.slide-title:has(+ .slide-subtitle) { margin-bottom: 0.5rem; }
 
   <div class="slide-footer">
     <span class="brand"><span class="brand-dot"></span><span class="brand-name brand-name-lila">Lese</span>kumpel · Wettbewerb</span>
-    <span class="counter">04 / 13</span>
+    <span class="counter">04 / 14</span>
   </div>
 </section>
 
@@ -1161,7 +1169,7 @@ h1.slide-title:has(+ .slide-subtitle) { margin-bottom: 0.5rem; }
 
   <div class="slide-footer">
     <span class="brand"><span class="brand-dot"></span><span class="brand-name brand-name-lila">Lese</span>kumpel · Wettbewerb</span>
-    <span class="counter">05 / 13</span>
+    <span class="counter">05 / 14</span>
   </div>
 </section>
 
@@ -1210,7 +1218,7 @@ h1.slide-title:has(+ .slide-subtitle) { margin-bottom: 0.5rem; }
 
   <div class="slide-footer">
     <span class="brand"><span class="brand-dot"></span><span class="brand-name brand-name-lila">Lese</span>kumpel · Wettbewerb</span>
-    <span class="counter">06 / 13</span>
+    <span class="counter">06 / 14</span>
   </div>
 </section>
 
@@ -1258,17 +1266,66 @@ h1.slide-title:has(+ .slide-subtitle) { margin-bottom: 0.5rem; }
 
   <div class="slide-footer">
     <span class="brand"><span class="brand-dot"></span><span class="brand-name brand-name-lila">Lese</span>kumpel · Wettbewerb</span>
-    <span class="counter">07 / 13</span>
+    <span class="counter">07 / 14</span>
   </div>
 </section>
 
 <!-- ============================================ -->
-<!-- 8 — Leseludi                                  -->
+<!-- 8 — Amira Lesen                               -->
 <!-- ============================================ -->
 <section class="slide" data-slide="8">
+  <div class="blob yellow tr-md shape-3" aria-hidden="true"></div>
+
+  <div class="slide-tag">#6 · DaZ-Spezialist · kostenlos</div>
+  <h1 class="slide-title">Amira Lesen <span class="accent">— 32 Bilderbücher in 9 Sprachen, gratis.</span></h1>
+
+  <div class="slide-content">
+    <div class="comp-detail">
+      <div class="comp-visual">
+        <div class="comp-logo-box"><img src="wettbewerbsanalyse-bilder/Amira_lesen_logo.png" alt="Amira Lesen Logo"></div>
+        <div class="comp-text-box">
+          <span class="shot-overlay">Lesetext-Beispiel</span>
+          <img src="wettbewerbsanalyse-bilder/Amira_lesen_lesetext.png" alt="Amira Lesen Lesetext-Beispiel">
+        </div>
+      </div>
+      <div class="comp-info">
+        <div class="comp-section was">
+          <h4>Was Amira ist</h4>
+          <p>Kostenfreies Leseförderprogramm der <strong>Stiftung Lesen + Goethe-Institut</strong> — 32 Bilderbücher in 3 Niveaustufen, vertont in <strong>9 Sprachen</strong> (Deutsch, Arabisch, Türkisch, Russisch, Farsi, Italienisch, Polnisch, Spanisch, Englisch). Plus Mini-Spiele zu jeder Geschichte.</p>
+        </div>
+        <div class="comp-section usp">
+          <h4>Ihr Vorteil</h4>
+          <p>Komplett <strong>kostenlos</strong> + seriöse Trägerschaft (Stiftung Lesen / Goethe) — vor allem für DaZ-Familien und Geflüchteten-Kinder ein etablierter Anker.</p>
+        </div>
+        <div class="comp-section uns">
+          <h4>Unsere Abgrenzung</h4>
+          <p>Amira ist großartig für die <strong>ersten 32 Geschichten</strong> — danach ist Schluss. Lesekumpel ist da, wenn das Kind weiterlesen will: generativ, mit Persona-Buddy und LRS-/ADHS-/Autismus-Modi.</p>
+        </div>
+        <div class="comp-pricing">
+          <h4>Preise</h4>
+          <table>
+            <tr><th>Amira Lesen<small>32 Stories, 9 Sprachen</small></th><td>0 € (kostenlos)</td></tr>
+            <tr class="lk"><th>Lesekumpel Kaffeekasse<small>2 Credits, ohne Abo</small></th><td>1 €</td></tr>
+            <tr class="lk"><th>Lesekumpel Familienpaket<small>4 Kinderkonten · 15 Credits</small></th><td>6,99 €/Mon.</td></tr>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide-footer">
+    <span class="brand"><span class="brand-dot"></span><span class="brand-name brand-name-lila">Lese</span>kumpel · Wettbewerb</span>
+    <span class="counter">08 / 14</span>
+  </div>
+</section>
+
+<!-- ============================================ -->
+<!-- 9 — Leseludi                                  -->
+<!-- ============================================ -->
+<section class="slide" data-slide="9">
   <div class="blob mint tr-md shape-2" aria-hidden="true"></div>
 
-  <div class="slide-tag">#6 · Komplementär · Erstlesen</div>
+  <div class="slide-tag">#7 · Komplementär · Erstlesen</div>
   <h1 class="slide-title">Leseludi <span class="accent">— Onboarding ins Lesen.</span></h1>
 
   <div class="slide-content">
@@ -1307,17 +1364,17 @@ h1.slide-title:has(+ .slide-subtitle) { margin-bottom: 0.5rem; }
 
   <div class="slide-footer">
     <span class="brand"><span class="brand-dot"></span><span class="brand-name brand-name-lila">Lese</span>kumpel · Wettbewerb</span>
-    <span class="counter">08 / 13</span>
+    <span class="counter">09 / 14</span>
   </div>
 </section>
 
 <!-- ============================================ -->
-<!-- 9 — CLELO                                     -->
+<!-- 10 — CLELO                                    -->
 <!-- ============================================ -->
-<section class="slide" data-slide="9">
+<section class="slide" data-slide="10">
   <div class="blob lila bl-md shape-3" aria-hidden="true"></div>
 
-  <div class="slide-tag">#7 · Zielgruppen-Twin · Hardware</div>
+  <div class="slide-tag">#8 · Zielgruppen-Twin · Hardware</div>
   <h1 class="slide-title">CLELO <span class="accent">— gleiche Mission, falsches Preisschild.</span></h1>
 
   <div class="slide-content">
@@ -1357,17 +1414,17 @@ h1.slide-title:has(+ .slide-subtitle) { margin-bottom: 0.5rem; }
 
   <div class="slide-footer">
     <span class="brand"><span class="brand-dot"></span><span class="brand-name brand-name-lila">Lese</span>kumpel · Wettbewerb</span>
-    <span class="counter">09 / 13</span>
+    <span class="counter">10 / 14</span>
   </div>
 </section>
 
 <!-- ============================================ -->
-<!-- 10 — ANTON                                    -->
+<!-- 11 — ANTON                                    -->
 <!-- ============================================ -->
-<section class="slide" data-slide="10">
+<section class="slide" data-slide="11">
   <div class="blob yellow tr-md shape-2" aria-hidden="true"></div>
 
-  <div class="slide-tag">#8 · Umfeld · Allzweck-Lern-App</div>
+  <div class="slide-tag">#9 · Umfeld · Allzweck-Lern-App</div>
   <h1 class="slide-title">ANTON <span class="accent">— der schlafende Riese.</span></h1>
 
   <div class="slide-content">
@@ -1406,14 +1463,14 @@ h1.slide-title:has(+ .slide-subtitle) { margin-bottom: 0.5rem; }
 
   <div class="slide-footer">
     <span class="brand"><span class="brand-dot"></span><span class="brand-name brand-name-lila">Lese</span>kumpel · Wettbewerb</span>
-    <span class="counter">10 / 13</span>
+    <span class="counter">11 / 14</span>
   </div>
 </section>
 
 <!-- ============================================ -->
-<!-- 11 — Drei Marktbewegungen 2026                -->
+<!-- 12 — Drei Marktbewegungen 2026                -->
 <!-- ============================================ -->
-<section class="slide" data-slide="11">
+<section class="slide" data-slide="12">
   <div class="blob mint br-md shape-3" aria-hidden="true"></div>
 
   <div class="slide-tag">Marktbewegungen · 2026</div>
@@ -1461,14 +1518,14 @@ h1.slide-title:has(+ .slide-subtitle) { margin-bottom: 0.5rem; }
 
   <div class="slide-footer">
     <span class="brand"><span class="brand-dot"></span><span class="brand-name brand-name-lila">Lese</span>kumpel · Wettbewerb</span>
-    <span class="counter">11 / 13</span>
+    <span class="counter">12 / 14</span>
   </div>
 </section>
 
 <!-- ============================================ -->
-<!-- 12 — 4-Felder-Matrix                          -->
+<!-- 13 — 4-Felder-Matrix                          -->
 <!-- ============================================ -->
-<section class="slide" data-slide="12">
+<section class="slide" data-slide="13">
   <div class="blob mint tr-lg shape-1" aria-hidden="true"></div>
   <div class="blob yellow bl-md shape-4" aria-hidden="true"></div>
 
@@ -1493,6 +1550,7 @@ h1.slide-title:has(+ .slide-subtitle) { margin-bottom: 0.5rem; }
           <ul>
             <li>ANTON <em>(Allzweck, Lesen Nebenfach)</em></li>
             <li>Leseludi <em>(Erstlesen, günstige Eltern-Lizenz)</em></li>
+            <li>Amira Lesen <em>(32 Stories, 9 Sprachen, kostenlos)</em></li>
             <li>Google Read Along <em>(Free, aber kein Deutsch)</em></li>
           </ul>
         </div>
@@ -1531,14 +1589,14 @@ h1.slide-title:has(+ .slide-subtitle) { margin-bottom: 0.5rem; }
 
   <div class="slide-footer">
     <span class="brand"><span class="brand-dot"></span><span class="brand-name brand-name-lila">Lese</span>kumpel · Wettbewerb</span>
-    <span class="counter">12 / 13</span>
+    <span class="counter">13 / 14</span>
   </div>
 </section>
 
 <!-- ============================================ -->
-<!-- 13 — Marktpreis-Übersicht                     -->
+<!-- 14 — Marktpreis-Übersicht                     -->
 <!-- ============================================ -->
-<section class="slide" data-slide="13">
+<section class="slide" data-slide="14">
   <div class="blob coral tr-md shape-2" aria-hidden="true"></div>
   <div class="blob mint bl-md shape-3" aria-hidden="true"></div>
 
@@ -1653,7 +1711,7 @@ h1.slide-title:has(+ .slide-subtitle) { margin-bottom: 0.5rem; }
 
   <div class="slide-footer">
     <span class="brand"><span class="brand-dot"></span><span class="brand-name brand-name-lila">Lese</span>kumpel · Wettbewerb</span>
-    <span class="counter">13 / 13</span>
+    <span class="counter">14 / 14</span>
   </div>
 </section>
 
