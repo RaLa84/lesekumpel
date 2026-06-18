@@ -2075,6 +2075,27 @@
         .spielzeit-back:focus-visible { outline: 3px solid var(--lila); outline-offset: 2px; }
         .spielzeit-title { font-family: var(--font-heading); font-size: 1.3rem; font-weight: 700; color: var(--navy); }
         .spielzeit-content { width: 100%; max-width: 760px; margin: 0 auto; padding: 22px 18px 60px; }
+
+        /* === MICRO-SURVEY: Wie hat dir die Geschichte gefallen? === */
+        .rating-survey { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+        .rating-face {
+            flex: 1 1 0; min-width: 92px; max-width: 170px;
+            display: flex; flex-direction: column; align-items: center; gap: 6px;
+            padding: 16px 12px; border-radius: 18px;
+            background: var(--cream-light); border: 2px solid var(--border-soft); color: var(--navy);
+            cursor: pointer; -webkit-tap-highlight-color: transparent;
+            font-family: var(--font-heading); font-weight: 600;
+            transition: transform 0.15s cubic-bezier(0.34,1.56,0.64,1), border-color 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+        }
+        .rating-face:hover { transform: translateY(-3px); border-color: var(--mint); }
+        .rating-face:focus-visible { outline: 3px solid var(--lila); outline-offset: 2px; }
+        .rating-face:active { transform: scale(0.96); }
+        .rating-emoji { font-size: 2.4rem; line-height: 1; filter: grayscale(0.25); transition: filter 0.15s ease, transform 0.15s ease; }
+        .rating-label { font-size: 0.95rem; }
+        .rating-face.selected { border-color: var(--mint); background: #E7F6F3; box-shadow: 0 4px 14px rgba(47,184,166,0.25); }
+        .rating-face.selected .rating-emoji { filter: none; transform: scale(1.12); }
+        .rating-thanks { text-align: center; margin-top: 14px; font-family: var(--font-heading); font-weight: 600; color: var(--mint); font-size: 1.1rem; }
+        .rating-thanks[hidden] { display: none; }
     </style>
     <link rel="stylesheet" href="../fonts/fonts.css">
 </head>
@@ -2266,96 +2287,23 @@
         </div>
 
         <div class="comments-section">
-            <h2 class="section-title comments-title">💬 Was sagst du zur Geschichte?</h2>
-
-            <div class="comments-list">
-                <div class="comment">
-                    <div class="comment-avatar" aria-hidden="true">🦊</div>
-                    <div class="comment-body">
-                        <div class="comment-header">
-                            <span class="comment-author">Lesefuchs</span>
-                            <span class="comment-time">vor 2 Tagen</span>
-                        </div>
-                        <div class="comment-text comment-blocks">
-                            <span class="comment-block">⭐ Toll!</span>
-                            <span class="comment-block">🤯 Hammer!</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="comment">
-                    <div class="comment-avatar" aria-hidden="true">🦄</div>
-                    <div class="comment-body">
-                        <div class="comment-header">
-                            <span class="comment-author">Sternkind</span>
-                            <span class="comment-time">gestern</span>
-                        </div>
-                        <div class="comment-text comment-blocks">
-                            <span class="comment-block">🥹 Lieb!</span>
-                            <span class="comment-block">😱 Spannend!</span>
-                        </div>
-                    </div>
-                </div>
-                <div class="comment">
-                    <div class="comment-avatar" aria-hidden="true">🐉</div>
-                    <div class="comment-body">
-                        <div class="comment-header">
-                            <span class="comment-author">Drachenkind</span>
-                            <span class="comment-time">vor 3 Stunden</span>
-                        </div>
-                        <div class="comment-text comment-blocks">
-                            <span class="comment-block">⭐ Mega!</span>
-                            <span class="comment-block">🥹 Süß!</span>
-                            <span class="comment-block">🤯 Krass!</span>
-                        </div>
-                    </div>
-                </div>
+            <h2 class="section-title">Wie hat dir die Geschichte gefallen?</h2>
+            <div class="rating-survey" id="rating-survey" role="group" aria-label="Wie hat dir die Geschichte gefallen?">
+                <button type="button" class="rating-face" data-rating="1" aria-pressed="false" aria-label="Nicht so">
+                    <span class="rating-emoji" aria-hidden="true">😕</span>
+                    <span class="rating-label">Nicht so</span>
+                </button>
+                <button type="button" class="rating-face" data-rating="2" aria-pressed="false" aria-label="Okay">
+                    <span class="rating-emoji" aria-hidden="true">🙂</span>
+                    <span class="rating-label">Okay</span>
+                </button>
+                <button type="button" class="rating-face" data-rating="3" aria-pressed="false" aria-label="Super">
+                    <span class="rating-emoji" aria-hidden="true">😍</span>
+                    <span class="rating-label">Super</span>
+                </button>
             </div>
+            <div class="rating-thanks" id="rating-thanks" role="status" hidden>Danke für deine Bewertung! 💛</div>
 
-            <div class="comments-box">
-                <div class="composer-preview" id="composer-preview" data-count="0">
-                    <div class="composer-preview-label">
-                        Deine Reaktion: <span id="composer-counter">0 von 3</span>
-                    </div>
-                    <div class="composer-chips" id="composer-chips"></div>
-                    <button class="composer-add-btn" id="composer-add-btn" type="button" aria-expanded="false" aria-controls="composer-emoji-picker"
-                            data-speak="Reaktion: Sag mit kleinen Bildern, wie dir die Geschichte gefallen hat.">
-                        <span aria-hidden="true">😊</span> + Reaktion hinzufügen
-                    </button>
-                </div>
-                <div class="composer-actions">
-                    <button class="btn-send" type="button" id="composer-send" disabled>Senden</button>
-                </div>
-
-                <div class="composer-emoji-picker" id="composer-emoji-picker" hidden role="dialog" aria-label="Reaktion wählen">
-                    <button class="picker-close" type="button" aria-label="Picker schließen">✕</button>
-
-                    <div class="picker-stage picker-categories" data-stage="categories">
-                        <div class="picker-title">Wie war's für dich?</div>
-                        <div class="picker-category-grid">
-                            <button class="picker-category" type="button" data-category="good">
-                                <span class="picker-cat-emoji" aria-hidden="true">😊</span>
-                                <span class="picker-cat-label">Gut</span>
-                            </button>
-                            <button class="picker-category" type="button" data-category="hmm">
-                                <span class="picker-cat-emoji" aria-hidden="true">😬</span>
-                                <span class="picker-cat-label">Hmm</span>
-                            </button>
-                            <button class="picker-category" type="button" data-category="no">
-                                <span class="picker-cat-emoji" aria-hidden="true">😞</span>
-                                <span class="picker-cat-label">Nö</span>
-                            </button>
-                        </div>
-                    </div>
-
-                    <div class="picker-stage picker-blocks" data-stage="blocks" hidden>
-                        <div class="picker-stage-header">
-                            <button class="picker-back" type="button" aria-label="Zurück zu Kategorien">← zurück</button>
-                            <span class="picker-stage-title" id="picker-stage-title">😊 Gut</span>
-                        </div>
-                        <div class="picker-blocks-content" id="picker-blocks-content"></div>
-                    </div>
-                </div>
-            </div>
             <div class="report-trigger-wrapper">
                 <button class="report-link" type="button" id="report-open" data-speak="Melden: Wenn dich etwas an der Geschichte stört, sag es uns hier — am besten zusammen mit einem Erwachsenen.">🚩 Inhalt melden</button>
             </div>
@@ -3957,171 +3905,31 @@
             });
         })();
 
-        /* === Composer: Bausteine-System (V4) === */
-        (function initComposerBlocks() {
-            const previewBox = document.getElementById('composer-preview');
-            const chipsContainer = document.getElementById('composer-chips');
-            const counter = document.getElementById('composer-counter');
-            const addBtn = document.getElementById('composer-add-btn');
-            const sendBtn = document.getElementById('composer-send');
-            const picker = document.getElementById('composer-emoji-picker');
-            const closeBtn = picker ? picker.querySelector('.picker-close') : null;
-            if (!previewBox || !picker || !addBtn) return;
+        /* === Micro-Survey: Wie hat dir die Geschichte gefallen? (3-Smiley-Skala) === */
+        (function initRatingSurvey() {
+            const survey = document.getElementById('rating-survey');
+            if (!survey) return;
+            const thanks = document.getElementById('rating-thanks');
+            const faces = Array.from(survey.querySelectorAll('.rating-face'));
+            const KEY = 'lesekumpel-rating:' + location.pathname;
 
-            const MAX_BLOCKS = 3;
-
-            const blocksConfig = {
-                good: {
-                    title: '😊 Gut',
-                    emojis: [
-                        { emoji: '⭐', label: 'Toll',    blocks: ['Toll!','Mega!','Wow!','Super!'] },
-                        { emoji: '😂', label: 'Lustig',  blocks: ['Lustig!','Witzig!','Cool!','Hahaha!'] },
-                        { emoji: '🤯', label: 'Krass',   blocks: ['Krass!','Stark!','Hammer!','Voll cool!'] },
-                        { emoji: '😮', label: 'Wow',     blocks: ['Wow!','Oh!','Echt?','Boah!'] },
-                        { emoji: '🥹', label: 'Berührt', blocks: ['Süß!','Lieb!','Schön!','So zart!'] }
-                    ]
-                },
-                hmm: {
-                    title: '😬 Hmm',
-                    emojis: [
-                        { emoji: '😱', label: 'Spannend',     blocks: ['Spannend!','Aufregend!','Hui!','Boah!'] },
-                        { emoji: '🤔', label: 'Nachdenklich', blocks: ['Hmm.','Klug!','Schlau!','Tief.'] },
-                        { emoji: '😴', label: 'Langweilig',   blocks: ['Öde!','Müde.','Langweilig.','Lahm!'] }
-                    ]
-                },
-                no: {
-                    title: '😞 Nö',
-                    emojis: [
-                        { emoji: '😭', label: 'Traurig',  blocks: ['Traurig!','Schade.','Oje.','So traurig!'] },
-                        { emoji: '😡', label: 'Wütend',   blocks: ['Doof!','Gemein!','Unfair!','Ärgerlich!'] },
-                        { emoji: '🤢', label: 'Eklig',    blocks: ['Igitt!','Bäh!','Eklig!','Würg!'] },
-                        { emoji: '💩', label: 'Schlecht', blocks: ['Mies!','Nope!','Schade.','Nicht so.'] }
-                    ]
-                }
-            };
-
-            let selectedBlocks = [];
-
-            function updatePreview() {
-                chipsContainer.innerHTML = '';
-                selectedBlocks.forEach((b, idx) => {
-                    const chip = document.createElement('span');
-                    chip.className = 'composer-chip';
-                    chip.innerHTML = `<span aria-hidden="true">${escapeHtml(b.emoji)}</span> ${escapeHtml(b.text)}` +
-                        `<button class="composer-chip-remove" type="button" aria-label="Reaktion entfernen" data-idx="${idx}">✕</button>`;
-                    chipsContainer.appendChild(chip);
-                });
-                counter.textContent = `${selectedBlocks.length} von ${MAX_BLOCKS}`;
-                previewBox.setAttribute('data-count', String(selectedBlocks.length));
-                addBtn.disabled = selectedBlocks.length >= MAX_BLOCKS;
-                sendBtn.disabled = selectedBlocks.length === 0;
-            }
-
-            chipsContainer.addEventListener('click', (e) => {
-                const btn = e.target.closest('.composer-chip-remove');
-                if (!btn) return;
-                const idx = parseInt(btn.dataset.idx, 10);
-                const chip = btn.closest('.composer-chip');
-                chip.classList.add('is-removing');
-                setTimeout(() => {
-                    selectedBlocks.splice(idx, 1);
-                    updatePreview();
-                }, 180);
-            });
-
-            function addBlock(emoji, text) {
-                if (selectedBlocks.length >= MAX_BLOCKS) return;
-                selectedBlocks.push({ emoji, text });
-                updatePreview();
-            }
-
-            function showStage(stageName) {
-                picker.querySelectorAll('.picker-stage').forEach(s => {
-                    s.hidden = (s.dataset.stage !== stageName);
+            function mark(val) {
+                faces.forEach(f => {
+                    const on = f.dataset.rating === String(val);
+                    f.classList.toggle('selected', on);
+                    f.setAttribute('aria-pressed', on ? 'true' : 'false');
                 });
             }
+            // gespeicherte Bewertung wiederherstellen
+            try { const saved = localStorage.getItem(KEY); if (saved) mark(saved); } catch (e) {}
 
-            function openPicker() {
-                if (selectedBlocks.length >= MAX_BLOCKS) return;
-                picker.hidden = false;
-                showStage('categories');
-                addBtn.setAttribute('aria-expanded', 'true');
-                setTimeout(() => {
-                    document.addEventListener('click', outsideClick, true);
-                    document.addEventListener('keydown', escClose);
-                }, 0);
-            }
-            function closePicker() {
-                picker.hidden = true;
-                addBtn.setAttribute('aria-expanded', 'false');
-                document.removeEventListener('click', outsideClick, true);
-                document.removeEventListener('keydown', escClose);
-            }
-            function outsideClick(e) {
-                if (!picker.contains(e.target) && e.target !== addBtn && !addBtn.contains(e.target)) {
-                    closePicker();
-                }
-            }
-            function escClose(e) { if (e.key === 'Escape') closePicker(); }
-
-            function renderBlocksStage(categoryKey) {
-                const cfg = blocksConfig[categoryKey];
-                if (!cfg) return;
-                document.getElementById('picker-stage-title').textContent = cfg.title;
-                const content = document.getElementById('picker-blocks-content');
-                content.innerHTML = '';
-                cfg.emojis.forEach(item => {
-                    const group = document.createElement('div');
-                    group.className = 'picker-emoji-group';
-                    const header = document.createElement('div');
-                    header.className = 'picker-emoji-group-header';
-                    header.innerHTML = `<span class="picker-emoji-group-emoji" aria-hidden="true">${escapeHtml(item.emoji)}</span><span class="picker-emoji-group-label">${escapeHtml(item.label)}</span>`;
-                    group.appendChild(header);
-                    const row = document.createElement('div');
-                    row.className = 'picker-block-row';
-                    item.blocks.forEach(text => {
-                        const btn = document.createElement('button');
-                        btn.type = 'button';
-                        btn.className = 'picker-block';
-                        btn.textContent = text;
-                        btn.addEventListener('click', (e) => {
-                            e.stopPropagation();
-                            addBlock(item.emoji, text);
-                            closePicker();
-                        });
-                        row.appendChild(btn);
-                    });
-                    group.appendChild(row);
-                    content.appendChild(group);
-                });
-                showStage('blocks');
-            }
-
-            addBtn.addEventListener('click', (e) => {
-                e.stopPropagation();
-                if (picker.hidden) openPicker(); else closePicker();
-            });
-            if (closeBtn) closeBtn.addEventListener('click', closePicker);
-
-            picker.querySelectorAll('.picker-category').forEach(catBtn => {
-                catBtn.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    renderBlocksStage(catBtn.dataset.category);
-                });
-            });
-            const backBtn = picker.querySelector('.picker-back');
-            if (backBtn) backBtn.addEventListener('click', (e) => {
-                e.stopPropagation();
-                showStage('categories');
-            });
-
-            if (sendBtn) sendBtn.addEventListener('click', () => {
-                if (selectedBlocks.length === 0) return;
-                const summary = selectedBlocks.map(b => `${b.emoji} ${b.text}`).join('  ');
-                alert(`Gesendet: ${summary}`);
-            });
-
-            updatePreview();
+            faces.forEach(f => f.addEventListener('click', () => {
+                const val = f.dataset.rating;
+                mark(val);
+                try { localStorage.setItem(KEY, val); } catch (e) {}
+                if (thanks) thanks.hidden = false;
+                if (typeof speak === 'function') speak('Danke für deine Bewertung!');
+            }));
         })();
     </script>
 
