@@ -1707,13 +1707,17 @@
         }
         .speak-btn:hover { transform: scale(1.08); background: #fff; border-color: var(--mint); }
         .speak-btn:active { transform: scale(0.9); }
-        /* Frage/Antwort: Text volle Breite, 🔊 darunter (kein A/B/C-Bubble) */
-        .quiz-q-row { display: flex; flex-direction: column; gap: 8px; align-items: flex-start; margin-bottom: 16px; }
-        .quiz-q-row .quiz-q-title { width: 100%; padding-top: 0; font-weight: 700; font-size: 1.15rem; margin: 0; color: var(--navy); }
-        .quiz-answer-row { display: flex; flex-direction: column; gap: 6px; align-items: flex-start; margin-bottom: 14px; }
-        .quiz-answer-row .quiz-option { margin-bottom: 0; width: 100%; }
+        /* Frage: 🔊 links neben dem Text · Antwort: 🔊 rechts (kein A/B/C-Bubble) */
+        .quiz-q-row { display: flex; flex-direction: row; gap: 10px; align-items: center; margin-bottom: 16px; }
+        .quiz-q-row .quiz-q-title { flex: 1; padding-top: 0; font-weight: 700; font-size: 1.15rem; margin: 0; color: var(--navy); }
+        .quiz-answer-row { display: flex; flex-direction: row; gap: 8px; align-items: center; margin-bottom: 12px; }
+        .quiz-answer-row .quiz-option { margin-bottom: 0; flex: 1; }
+        /* Kleineres, leichteres Lautsprecher-Icon, damit es den Block nicht bricht */
         .quiz-q-row .speak-btn,
-        .quiz-answer-row .speak-btn { min-height: 0; width: 44px; height: 44px; border-radius: 50%; align-self: flex-start; }
+        .quiz-answer-row .speak-btn {
+            flex-shrink: 0; width: 36px; height: 36px; min-height: 36px;
+            border-radius: 50%; border-width: 1.5px; font-size: 0.85rem;
+        }
 
         /* — Schritt-Quiz: eine Frage zur Zeit, Sterne, Weiter-Knopf, Abschluss — */
         body:not(.view-tafel) #panel-quiz .quiz-question:not(.q-active) { display: none; }
@@ -2720,8 +2724,8 @@
             quizData.forEach((item, i) => {
                 qHTML += `<div class="quiz-question" data-correct="${item.correct}" data-qidx="${i}">
                             <div class="quiz-q-row">
-                                <h3 class="quiz-q-title">${escapeHtml(item.q)}</h3>
                                 <button type="button" class="speak-btn" data-say="${escapeHtml(item.q)}" onclick="sayThis(this)" aria-label="Frage vorlesen">🔊</button>
+                                <h3 class="quiz-q-title">${escapeHtml(item.q)}</h3>
                             </div>`;
                 item.a.forEach((ans, j) => {
                     const isCorrect = (j === item.correct);
