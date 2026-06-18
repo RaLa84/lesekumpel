@@ -1707,17 +1707,26 @@
         }
         .speak-btn:hover { transform: scale(1.08); background: #fff; border-color: var(--mint); }
         .speak-btn:active { transform: scale(0.9); }
-        /* Frage: 🔊 links neben dem Text · Antwort: 🔊 rechts (kein A/B/C-Bubble) */
-        .quiz-q-row { display: flex; flex-direction: row; gap: 10px; align-items: center; margin-bottom: 16px; }
+        /* Frage = ruhiger Block, Antworten = Karten; 🔊 jeweils dezent IM Block integriert
+           (kein eigener Kasten, kein A/B/C-Bubble) */
+        .quiz-q-row {
+            display: flex; align-items: center; gap: 8px; margin-bottom: 18px;
+            background: var(--cream-light); border-radius: 14px; padding: 12px 14px;
+        }
         .quiz-q-row .quiz-q-title { flex: 1; padding-top: 0; font-weight: 700; font-size: 1.15rem; margin: 0; color: var(--navy); }
-        .quiz-answer-row { display: flex; flex-direction: row; gap: 8px; align-items: center; margin-bottom: 12px; }
-        .quiz-answer-row .quiz-option { margin-bottom: 0; flex: 1; }
-        /* Kleineres, leichteres Lautsprecher-Icon, damit es den Block nicht bricht */
+        .quiz-answer-row { position: relative; margin-bottom: 12px; }
+        .quiz-answer-row .quiz-option { width: 100%; margin-bottom: 0; padding-right: 50px; }
+        /* Dezentes, randloses Lautsprecher-Icon, das im Block sitzt */
         .quiz-q-row .speak-btn,
         .quiz-answer-row .speak-btn {
-            flex-shrink: 0; width: 36px; height: 36px; min-height: 36px;
-            border-radius: 50%; border-width: 1.5px; font-size: 0.85rem;
+            width: 34px; height: 34px; min-height: 34px; flex-shrink: 0;
+            border: none; background: transparent; box-shadow: none; border-radius: 50%;
+            font-size: 1.05rem; color: var(--navy); opacity: 0.7;
         }
+        .quiz-answer-row .speak-btn { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); }
+        .quiz-q-row .speak-btn:hover { opacity: 1; background: rgba(43,49,64,0.07); transform: scale(1.08); border-color: transparent; }
+        .quiz-answer-row .speak-btn:hover { opacity: 1; background: rgba(43,49,64,0.07); transform: translateY(-50%) scale(1.08); border-color: transparent; }
+        .quiz-answer-row .speak-btn:active { transform: translateY(-50%) scale(0.92); }
 
         /* — Schritt-Quiz: eine Frage zur Zeit, Sterne, Weiter-Knopf, Abschluss — */
         body:not(.view-tafel) #panel-quiz .quiz-question:not(.q-active) { display: none; }
