@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mein Lesekumpel</title>
+    <meta name="description" content="Deine Lesewelt: Bücher entdecken, vorlesen lassen und in deinem Tempo lesen.">
+    <meta name="robots" content="noindex">
+    <link rel="icon" href="bilder/lesekumpel_logo_v2.png">
+    <link rel="stylesheet" href="fonts/fonts.css">
+    <link rel="stylesheet" href="konto.css">
+</head>
+<body class="kid-body">
+    <a class="skip-link" href="#main-content">Zum Inhalt springen</a>
+
+    <!-- AKKU-CHECKIN-GATE -->
+    <div class="akku-gate" id="akku-gate" role="dialog" aria-modal="true" aria-labelledby="akku-title">
+        <svg aria-hidden="true" class="floating-deco deco-star" style="top:14%;left:14%;width:30px;color:var(--yellow);" viewBox="0 0 32 32"><polygon points="16,2 20,12 30,12 22,19 25,30 16,23 7,30 10,19 2,12 12,12" fill="currentColor" opacity="0.7"/></svg>
+        <svg aria-hidden="true" class="floating-deco deco-sparkle" style="top:22%;right:16%;width:24px;color:var(--salmon);animation-delay:-1.5s;" viewBox="0 0 24 24"><path d="M12 2L13.5 9 21 12L13.5 14.5L12 22L10.5 14.5L3 12L10.5 9Z" fill="currentColor" opacity="0.7"/></svg>
+        <div aria-hidden="true" class="floating-deco deco-circle" style="bottom:18%;left:20%;width:18px;height:18px;background:rgba(125,106,230,0.4);animation-delay:-2.5s;"></div>
+        <div class="mascot" aria-hidden="true"><span class="mascot-glow"></span><img class="mascot-img" src="bilder/lesekumpel_logo_v2.png" alt=""></div>
+        <div class="mascot-bubble" id="akku-bubble">Schön, dass du da bist! 🌟</div>
+        <h1 class="akku-title" id="akku-title">Wie ist dein Akku?
+            <button type="button" class="read-aloud-btn" data-read="Wie ist dein Akku heute? Voll, halb oder leer?" aria-label="Vorlesen">&#128266;</button>
+        </h1>
+        <p class="akku-q">Sag mir, wie du dich heute f&uuml;hlst.</p>
+        <div class="akku-options">
+            <button type="button" class="akku-tile acc-mint pop-in" style="animation-delay:.05s;" data-energy="hoch">
+                <span class="akku-emoji" aria-hidden="true">&#128267;</span>
+                <span>Voll Power</span>
+                <span class="akku-sub">Ich hab viel Energie!</span>
+            </button>
+            <button type="button" class="akku-tile acc-yellow pop-in" style="animation-delay:.15s;" data-energy="mittel">
+                <span class="akku-emoji" aria-hidden="true">&#128578;</span>
+                <span>Halb voll</span>
+                <span class="akku-sub">Geht so.</span>
+            </button>
+            <button type="button" class="akku-tile acc-lila pop-in" style="animation-delay:.25s;" data-energy="niedrig">
+                <span class="akku-emoji" aria-hidden="true">&#128564;</span>
+                <span>Fast leer</span>
+                <span class="akku-sub">Ich bin m&uuml;de.</span>
+            </button>
+        </div>
+        <button type="button" class="btn-text akku-later" id="akku-later">Sp&auml;ter &mdash; jetzt nicht</button>
+    </div>
+
+    <main id="main-content">
+        <div class="kid-wrap" style="position:relative;">
+            <svg aria-hidden="true" class="floating-deco deco-star" style="top:120px;right:6%;width:24px;color:var(--yellow);" viewBox="0 0 32 32"><polygon points="16,2 20,12 30,12 22,19 25,30 16,23 7,30 10,19 2,12 12,12" fill="currentColor" opacity="0.6"/></svg>
+            <svg aria-hidden="true" class="floating-deco deco-sparkle" style="top:240px;left:2%;width:20px;color:var(--lila);animation-delay:-2s;" viewBox="0 0 24 24"><path d="M12 2L13.5 9 21 12L13.5 14.5L12 22L10.5 14.5L3 12L10.5 9Z" fill="currentColor" opacity="0.6"/></svg>
+            <div class="a11y-bar" style="padding-left:0;padding-right:0;">
+                <button type="button" class="a11y-btn" data-a11y="dyslexia">&#128068; Leichter lesen</button>
+                <button type="button" class="a11y-btn" data-a11y="contrast">&#9680; Mehr Kontrast</button>
+            </div>
+
+            <!-- HEADER -->
+            <header class="kid-header">
+                <div class="kid-mascot" id="kid-mascot" aria-hidden="true">&#129418;</div>
+                <div>
+                    <div class="kid-hello" id="kid-hello">Hallo!</div>
+                    <div class="kid-sub" id="kid-sub"></div>
+                </div>
+                <button type="button" class="kid-energy-pill" id="energy-pill" aria-label="Akku neu w&auml;hlen">
+                    <span id="energy-pill-emoji">&#128578;</span> <span id="energy-pill-label">Akku</span>
+                </button>
+            </header>
+
+            <!-- SECTION-NAV -->
+            <nav class="sub-tabs" style="margin-top:18px;" aria-label="Bereiche">
+                <button type="button" class="sub-tab active" data-kidsec="start">&#127968; Start</button>
+                <button type="button" class="sub-tab" data-kidsec="bibliothek">&#128218; Meine B&uuml;cher</button>
+                <button type="button" class="sub-tab" data-kidsec="empfehlungen">&#10024; F&uuml;r dich</button>
+            </nav>
+
+            <!-- START -->
+            <section data-kidsec-panel="start">
+                <h2 class="kid-section-title" id="home-title">Was m&ouml;chtest du tun?
+                    <button type="button" class="read-aloud-btn" id="home-read" aria-label="Vorlesen">&#128266;</button>
+                </h2>
+                <div id="home-extra"></div>
+                <div class="kid-tiles reveal-stagger" id="home-tiles"></div>
+            </section>
+
+            <!-- BIBLIOTHEK -->
+            <section data-kidsec-panel="bibliothek" hidden>
+                <h2 class="kid-section-title">Meine B&uuml;cher
+                    <button type="button" class="read-aloud-btn" data-read="Deine Bücher. Tippe auf ein Buch, um es zu lesen." aria-label="Vorlesen">&#128266;</button>
+                </h2>
+                <div id="library-list" class="reveal-stagger"></div>
+            </section>
+
+            <!-- EMPFEHLUNGEN -->
+            <section data-kidsec-panel="empfehlungen" hidden>
+                <h2 class="kid-section-title" id="rec-title">F&uuml;r dich ausgesucht
+                    <button type="button" class="read-aloud-btn" data-read="Für dich ausgesuchte Geschichten." aria-label="Vorlesen">&#128266;</button>
+                </h2>
+                <p class="kid-sub" id="rec-note" style="margin-bottom:14px;"></p>
+                <div id="rec-list" class="reveal-stagger"></div>
+            </section>
+
+            <!-- weiche Eltern-Tür -->
+            <div style="text-align:center;margin-top:40px;">
+                <button type="button" class="btn-text" id="parent-door" style="opacity:0.7;">&#128274; F&uuml;r Eltern</button>
+            </div>
+        </div>
+    </main>
+
+    <!-- ELTERN-TÜR (Modal mit kleiner Rechenaufgabe) -->
+    <div class="lk-modal" id="parent-modal" role="dialog" aria-modal="true" aria-labelledby="pm-title">
+        <div class="lk-modal-card">
+            <div aria-hidden="true" style="font-size:2.2rem;">&#128274;</div>
+            <h2 id="pm-title">Nur f&uuml;r Erwachsene</h2>
+            <p class="step-hint" id="pm-q">L&ouml;se die Aufgabe, um in den Eltern-Bereich zu gelangen.</p>
+            <input type="number" id="pm-input" class="form-input" inputmode="numeric" aria-labelledby="pm-q" style="text-align:center;font-size:1.2rem;">
+            <div class="lk-modal-error" id="pm-err" role="alert" aria-live="assertive"></div>
+            <div class="lk-modal-actions">
+                <button type="button" class="btn-secondary" id="pm-cancel">Zur&uuml;ck</button>
+                <button type="button" class="btn-primary" id="pm-ok">Weiter</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="formkit.js"></script>
+    <script src="konto-state.js"></script>
+    <script src="konto-fx.js"></script>
+    <script>
+    (function () {
+        'use strict';
+
+        // ---- A11y ----
+        Konto.applyA11y();
+        document.querySelectorAll('[data-a11y]').forEach(function (btn) {
+            var key = btn.getAttribute('data-a11y');
+            if (Konto.getA11y()[key]) btn.classList.add('on');
+            btn.addEventListener('click', function () { btn.classList.toggle('on', Konto.toggleA11y(key)); });
+        });
+
+        // ---- Vorlese-Knöpfe (statische) ----
+        document.querySelectorAll('[data-read]').forEach(function (b) {
+            FormKit.attachReadAloud(b, b.getAttribute('data-read'));
+        });
+
+        // ---- Kind laden (Seed falls leer) ----
+        if (!Konto.getActiveChild()) Konto.seedIfEmpty();
+        var child = Konto.getActiveChild();
+
+        var ENERGY = {
+            hoch: { emoji: '🔋', label: 'Voll Power', hello: 'Los geht\'s' },
+            mittel: { emoji: '🙂', label: 'Gut drauf', hello: 'Schön, dass du da bist' },
+            niedrig: { emoji: '😴', label: 'Müde-Modus', hello: 'Ganz entspannt' }
+        };
+
+        function toast(msg) { KontoFX.toast(msg, { speak: true }); }
+
+        // ================= AKKU-GATE =================
+        var gate = document.getElementById('akku-gate');
+        var gateRelease = null;
+        function showGate() {
+            gate.classList.add('show');
+            KontoFX.mascotBubble(document.getElementById('akku-bubble'), null, { delay: 500 });
+            gateRelease = KontoFX.trapFocus(gate, { initial: '.akku-tile', onEscape: dismissGateSoft });
+        }
+        function hideGate() {
+            gate.classList.remove('show');
+            document.getElementById('akku-bubble').classList.remove('show');
+            if (gateRelease) { gateRelease(); gateRelease = null; }
+        }
+        // „Später" / Escape: kein Druck — heute als erledigt markieren, Energie unverändert
+        function dismissGateSoft() {
+            child = Konto.updateChild(child.id, {
+                energy: { current: child.energy.current || 'mittel', checkedInAt: Konto.todayStr() }
+            });
+            hideGate();
+            renderAll();
+        }
+
+        var ENERGY_CONFETTI = {
+            hoch: ['#2FB8A6', '#FFD95A', '#F97352'],
+            mittel: ['#FFD95A', '#2FB8A6', '#7D6AE6'],
+            niedrig: ['#7D6AE6', '#2FB8A6', '#C5C0F0']
+        };
+        function setEnergy(level, fromGate, originEl) {
+            var hist = (child.energyHistory || []).slice(-6);
+            hist.push(level);
+            child = Konto.updateChild(child.id, {
+                energy: { current: level, checkedInAt: Konto.todayStr() },
+                energyHistory: hist
+            });
+            if (fromGate) {
+                // 🎉 Feier am Übergang (Origin-Position vor dem Schließen erfassen)
+                KontoFX.confetti(originEl || null, { colors: ENERGY_CONFETTI[level] || null, count: level === 'niedrig' ? 60 : 110 });
+                KontoFX.sparkleBurst(originEl);
+            }
+            hideGate();
+            renderAll();
+            if (fromGate) {
+                var msg = level === 'niedrig' ? 'Alles gut. Wir machen es heute ganz ruhig. 🌙'
+                    : level === 'hoch' ? 'Super, dann auf geht\'s! 🚀' : 'Schön. Viel Spaß beim Lesen! 💛';
+                toast(msg);
+            }
+        }
+
+        document.querySelectorAll('.akku-tile').forEach(function (t) {
+            t.addEventListener('click', function () { setEnergy(t.getAttribute('data-energy'), true, t); });
+        });
+        document.getElementById('akku-later').addEventListener('click', dismissGateSoft);
+        document.getElementById('energy-pill').addEventListener('click', showGate);
+
+        // ================= RENDER =================
+        function esc(s) { return FormKit.escapeHtml(String(s == null ? '' : s)); }
+
+        function renderHeader() {
+            var em = ENERGY[child.energy.current] || ENERGY.mittel;
+            document.getElementById('kid-mascot').textContent = (child.avatar && child.avatar.base) || '🦊';
+            document.getElementById('kid-mascot').style.background = (child.avatar && child.avatar.bgColor) || 'var(--accent-coral-light)';
+            document.getElementById('kid-hello').innerHTML = 'Hallo <span class="handwrite">' + esc(child.name) + '</span>!';
+            document.getElementById('kid-sub').textContent = em.hello;
+            document.getElementById('energy-pill-emoji').textContent = em.emoji;
+            document.getElementById('energy-pill-label').textContent = em.label;
+        }
+
+        function homeTile(opts) {
+            var b = document.createElement(opts.href ? 'a' : 'button');
+            b.className = 'kid-tile ' + (opts.acc || 'acc-mint') + (opts.accent ? ' accent' : '');
+            if (opts.href) { b.href = opts.href; } else { b.type = 'button'; }
+            b.innerHTML = '<span class="kid-tile-emoji" aria-hidden="true">' + opts.emoji + '</span>' +
+                '<span class="kid-tile-label">' + esc(opts.label) + '</span>' +
+                (opts.sub ? '<span class="kid-tile-sub">' + esc(opts.sub) + '</span>' : '');
+            if (opts.onClick) b.addEventListener('click', opts.onClick);
+            return b;
+        }
+
+        function firstVorlesen() {
+            return (child.recommendations || []).filter(function (r) { return r.kind === 'vorlesen'; })[0]
+                || (child.recommendations || [])[0];
+        }
+
+        function renderHome() {
+            var ruhe = child.energy.current === 'niedrig';
+            var extra = document.getElementById('home-extra');
+            var grid = document.getElementById('home-tiles');
+            grid.innerHTML = '';
+            extra.innerHTML = '';
+            document.getElementById('home-title').childNodes[0].nodeValue =
+                ruhe ? 'Mach es dir gemütlich ' : 'Was möchtest du tun? ';
+
+            if (ruhe) {
+                // RUHE-MODUS: kein Druck, Vorlesen + Pause
+                extra.innerHTML = '<div class="info-card" style="margin-bottom:18px;">Dein Akku ist fast leer &mdash; das ist v&ouml;llig okay. ' +
+                    'Heute musst du gar nichts. Lass dir etwas vorlesen oder mach einfach Pause. &#127769;</div>';
+                var v = firstVorlesen();
+                grid.appendChild(homeTile({
+                    emoji: '🗣️', label: 'Vorlesen lassen', sub: v ? v.title : 'ganz entspannt', accent: true, acc: 'acc-salmon',
+                    onClick: function () { toast('Ich lese dir vor: ' + (v ? v.title : 'eine Geschichte') + ' 💛'); }
+                }));
+                grid.appendChild(pauseTile());
+                return;
+            }
+
+            // MITTEL / HOCH
+            grid.appendChild(homeTile({ emoji: '📚', label: 'Meine Bücher', sub: 'weiterlesen', acc: 'acc-mint', onClick: function () { showSection('bibliothek'); } }));
+            grid.appendChild(homeTile({ emoji: '✨', label: 'Für dich', sub: 'neue Geschichten', acc: 'acc-salmon', onClick: function () { showSection('empfehlungen'); } }));
+            if (child.rights === 'erstellen') {
+                grid.appendChild(homeTile({ emoji: '✍️', label: 'Selbst machen', sub: 'eigene Geschichte', acc: 'acc-yellow', href: 'neue-geschichte.html' }));
+            }
+            grid.appendChild(pauseTile());
+
+            if (child.energy.current === 'hoch') {
+                extra.innerHTML = '<div class="info-card" style="margin-bottom:18px;">&#11088; <strong>Lust auf eine Mini-Mission?</strong> ' +
+                    'Lies heute eine Geschichte zu Ende &mdash; nur wenn du magst! Kein Muss.</div>';
+            }
+        }
+
+        function pauseTile() {
+            return homeTile({
+                emoji: '🌙', label: 'Pause machen', sub: 'ist immer okay', acc: 'acc-lila',
+                onClick: function () {
+                    var grid = document.getElementById('home-tiles');
+                    var extra = document.getElementById('home-extra');
+                    extra.innerHTML = '';
+                    grid.innerHTML = '<div class="dashboard-card" style="grid-column:1/-1;text-align:center;">' +
+                        '<div style="font-size:3rem;">🌙</div>' +
+                        '<h3 class="card-h3" style="margin-top:8px;">Auch Pause machen ist super!</h3>' +
+                        '<p class="step-hint">Du hast heute genug getan. Bis bald, ich freu mich auf dich! 💛</p>' +
+                        '<button type="button" class="btn-secondary" id="back-home" style="margin-top:8px;">Zur&uuml;ck</button></div>';
+                    FormKit.speak('Auch Pause machen ist super! Bis bald.');
+                    document.getElementById('back-home').addEventListener('click', renderHome);
+                }
+            });
+        }
+
+        function renderLibrary() {
+            var list = document.getElementById('library-list');
+            var books = child.library || [];
+            if (!books.length) {
+                list.innerHTML = '<div class="info-card">Hier sammeln sich deine B&uuml;cher, sobald du losliest. Schau mal bei <strong>F&uuml;r dich</strong> vorbei! &#10024;</div>';
+                return;
+            }
+            list.innerHTML = books.map(function (b) {
+                var status = b.status === 'neu' ? '<span class="status-pill status-neu">Neu</span>' : '<span class="status-pill status-gelesen">Gelesen</span>';
+                return '<button type="button" class="kid-book">' +
+                    '<span class="kid-book-emoji" aria-hidden="true">' + (b.icon || '📖') + '</span>' +
+                    '<span class="kid-book-info"><span class="kid-book-title">' + esc(b.title) + '</span></span>' +
+                    status + '</button>';
+            }).join('');
+            list.querySelectorAll('.kid-book').forEach(function (el, i) {
+                el.addEventListener('click', function () { toast('Viel Spaß mit: ' + books[i].title + ' 📖'); });
+            });
+        }
+
+        function renderRecs() {
+            var ruhe = child.energy.current === 'niedrig';
+            var recs = (child.recommendations || []).slice();
+            // Ruhe-Modus: nur Vorlesen-Geschichten
+            if (ruhe) recs = recs.filter(function (r) { return r.kind === 'vorlesen'; });
+            // nach Phase (zum Niveau passend) sortieren
+            var phase = child.level && child.level.phase || 2;
+            recs.sort(function (a, b) { return Math.abs((a.phase || 2) - phase) - Math.abs((b.phase || 2) - phase); });
+
+            document.getElementById('rec-note').textContent = ruhe
+                ? 'Heute ganz ruhig — nur Geschichten zum Vorlesen. 🌙'
+                : 'Passend zu dem, was du magst. 💛';
+
+            var list = document.getElementById('rec-list');
+            if (!recs.length) {
+                list.innerHTML = '<div class="info-card">Gerade keine Vorschl&auml;ge &mdash; aber morgen wieder! &#128522;</div>';
+                return;
+            }
+            list.innerHTML = recs.map(function (r) {
+                var flag = r.kind === 'vorlesen'
+                    ? '<span class="status-pill status-vorlesen">🗣️ Vorlesen</span>'
+                    : '<span class="status-pill status-selbst">📖 Selbst lesen</span>';
+                return '<button type="button" class="kid-book">' +
+                    '<span class="kid-book-emoji" aria-hidden="true">' + (r.icon || '📖') + '</span>' +
+                    '<span class="kid-book-info"><span class="kid-book-title">' + esc(r.title) + '</span>' +
+                    '<span class="kid-book-reason">' + esc(r.reason || '') + '</span></span>' +
+                    flag + '</button>';
+            }).join('');
+            list.querySelectorAll('.kid-book').forEach(function (el, i) {
+                el.addEventListener('click', function () {
+                    var r = recs[i];
+                    toast(r.kind === 'vorlesen' ? 'Ich lese dir vor: ' + r.title + ' 💛' : 'Viel Spaß mit: ' + r.title + ' 📖');
+                });
+            });
+        }
+
+        function renderAll() { renderHeader(); renderHome(); renderLibrary(); renderRecs(); }
+
+        // ---- Section-Nav ----
+        function showSection(name) {
+            document.querySelectorAll('[data-kidsec-panel]').forEach(function (p) {
+                p.hidden = p.getAttribute('data-kidsec-panel') !== name;
+            });
+            document.querySelectorAll('.sub-tab[data-kidsec]').forEach(function (t) {
+                var on = t.getAttribute('data-kidsec') === name;
+                t.classList.toggle('active', on);
+                if (on) t.setAttribute('aria-current', 'true'); else t.removeAttribute('aria-current');
+            });
+            window.scrollTo({ top: 0, behavior: FormKit.reducedMotion() ? 'auto' : 'smooth' });
+        }
+        document.querySelectorAll('.sub-tab[data-kidsec]').forEach(function (t) {
+            t.addEventListener('click', function () { showSection(t.getAttribute('data-kidsec')); });
+        });
+        FormKit.attachReadAloud(document.getElementById('home-read'), function () {
+            return document.getElementById('home-title').childNodes[0].nodeValue;
+        });
+
+        // ---- weiche Eltern-Tür (fokus-gefangenes Modal) ----
+        var pModal = document.getElementById('parent-modal');
+        var pRelease = null, pAnswer = 0;
+        function openParentGate() {
+            var a = 2 + (child.id % 7), b = 3 + ((child.id + 4) % 6);
+            pAnswer = a + b;
+            document.getElementById('pm-q').textContent = 'Was ist ' + a + ' + ' + b + '?';
+            document.getElementById('pm-input').value = '';
+            document.getElementById('pm-err').textContent = '';
+            pModal.classList.add('show');
+            pRelease = KontoFX.trapFocus(pModal, { initial: '#pm-input', onEscape: closeParentGate });
+        }
+        function closeParentGate() {
+            pModal.classList.remove('show');
+            if (pRelease) { pRelease(); pRelease = null; }
+        }
+        function submitParentGate() {
+            var val = parseInt(document.getElementById('pm-input').value, 10);
+            if (val === pAnswer) { window.location.href = 'mein-konto.html'; }
+            else {
+                document.getElementById('pm-err').textContent = 'Das stimmt noch nicht. Versuch es nochmal. 🙂';
+                var inp = document.getElementById('pm-input'); inp.value = ''; inp.focus();
+            }
+        }
+        document.getElementById('parent-door').addEventListener('click', openParentGate);
+        document.getElementById('pm-ok').addEventListener('click', submitParentGate);
+        document.getElementById('pm-cancel').addEventListener('click', closeParentGate);
+        document.getElementById('pm-input').addEventListener('keydown', function (e) {
+            if (e.key === 'Enter') { e.preventDefault(); submitParentGate(); }
+        });
+
+        // ================= INIT =================
+        renderAll();
+        if (child.energy.checkedInAt !== Konto.todayStr()) showGate();
+    })();
+    </script>
+</body>
+</html>

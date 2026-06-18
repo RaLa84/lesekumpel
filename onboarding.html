@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profil einrichten &ndash; Lesekumpel</title>
+    <meta name="description" content="Richte in wenigen Schritten ein Lesekumpel-Profil ein, das genau zu deinem Kind passt.">
+    <meta name="robots" content="noindex">
+    <link rel="icon" href="bilder/lesekumpel_logo_v2.png">
+    <link rel="stylesheet" href="fonts/fonts.css">
+    <link rel="stylesheet" href="konto.css">
+    <link rel="stylesheet" href="formkit.css">
+</head>
+<body>
+    <a class="skip-link" href="#main-content">Zum Inhalt springen</a>
+
+    <nav class="main-navbar" aria-label="Hauptnavigation">
+        <div class="nav-left">
+            <span class="nav-logo-box"><img src="bilder/lesekumpel_logo_v2.png" alt="Lesekumpel Logo" class="nav-logo"></span>
+            <a href="landingpage.html" class="brand-name">Lesekumpel</a>
+        </div>
+        <div class="nav-right">
+            <a href="anmelden.html" class="nav-btn">Abbrechen</a>
+        </div>
+    </nav>
+
+    <div class="a11y-bar">
+        <button type="button" class="a11y-btn" data-a11y="dyslexia">&#128068; Leichter lesen</button>
+        <button type="button" class="a11y-btn" data-a11y="contrast">&#9680; Mehr Kontrast</button>
+    </div>
+
+    <main id="main-content">
+        <div class="wizard" id="wiz" style="position:relative;">
+            <svg aria-hidden="true" class="floating-deco deco-star" style="top:-6px;left:4%;width:26px;color:var(--yellow);" viewBox="0 0 32 32"><polygon points="16,2 20,12 30,12 22,19 25,30 16,23 7,30 10,19 2,12 12,12" fill="currentColor" opacity="0.7"/></svg>
+            <svg aria-hidden="true" class="floating-deco deco-sparkle" style="top:30px;right:5%;width:20px;color:var(--salmon);animation-delay:-1.5s;" viewBox="0 0 24 24"><path d="M12 2L13.5 9 21 12L13.5 14.5L12 22L10.5 14.5L3 12L10.5 9Z" fill="currentColor" opacity="0.7"/></svg>
+            <div aria-hidden="true" class="floating-deco deco-circle" style="top:8px;right:18%;width:13px;height:13px;background:rgba(125,106,230,0.35);animation-delay:-2.5s;"></div>
+            <div class="wizard-head">
+                <img class="wizard-buddy" src="bilder/lesekumpel_logo_v2.png" alt="">
+                <h1 class="wizard-title">Wir richten deinen <span class="handwrite">Lesekumpel</span> ein</h1>
+                <p class="wizard-sub">Damit wir Geschichten finden, die genau passen. Du kannst alles sp&auml;ter &auml;ndern.</p>
+            </div>
+
+            <div class="resume-banner" id="resume-banner">
+                <span>&#128075; Du warst schon dabei. Da weitermachen, wo du aufgeh&ouml;rt hast?</span>
+                <button type="button" class="resume-yes">Ja, weiter</button>
+                <button type="button" class="resume-no">Neu starten</button>
+            </div>
+
+            <div class="wizard-progress" data-fk-progress aria-hidden="true"></div>
+            <div class="wizard-remain" data-fk-remain aria-live="polite"></div>
+
+            <!-- 1 · DATEN -->
+            <section class="wizard-step" data-question="Wie hei&szlig;t dein Kind und wie alt ist es?" data-next-label="Avatar gestalten">
+                <div class="step-card">
+                    <div class="step-q">
+                        <h2>Wer liest mit uns?</h2>
+                        <button type="button" class="icon-btn" data-fk-read aria-label="Frage vorlesen">&#128266;</button>
+                    </div>
+                    <p class="step-hint">Sag uns den Namen und das Alter deines Kindes.</p>
+                    <div class="field">
+                        <label class="form-label" for="o-name">Name des Kindes</label>
+                        <div class="field-row">
+                            <input type="text" id="o-name" class="text-input" placeholder="z.B. Lena" autocomplete="off" maxlength="24">
+                            <button type="button" class="icon-btn" id="o-name-mic" aria-label="Namen sprechen statt tippen">&#127908;</button>
+                        </div>
+                    </div>
+                    <div class="field">
+                        <label class="form-label">Alter</label>
+                        <div class="choice-grid" role="group" aria-label="Alter w&auml;hlen">
+                            <button type="button" class="choice-tile" data-pick="single" data-field="age" data-type="num" data-value="4"><span class="choice-label">4</span></button>
+                            <button type="button" class="choice-tile" data-pick="single" data-field="age" data-type="num" data-value="5"><span class="choice-label">5</span></button>
+                            <button type="button" class="choice-tile" data-pick="single" data-field="age" data-type="num" data-value="6"><span class="choice-label">6</span></button>
+                            <button type="button" class="choice-tile" data-pick="single" data-field="age" data-type="num" data-value="7"><span class="choice-label">7</span></button>
+                            <button type="button" class="choice-tile" data-pick="single" data-field="age" data-type="num" data-value="8"><span class="choice-label">8</span></button>
+                            <button type="button" class="choice-tile" data-pick="single" data-field="age" data-type="num" data-value="9"><span class="choice-label">9</span></button>
+                            <button type="button" class="choice-tile" data-pick="single" data-field="age" data-type="num" data-value="10"><span class="choice-label">10</span></button>
+                        </div>
+                    </div>
+                    <div class="field-nudge" id="nudge-1">Bitte Namen eintragen und ein Alter w&auml;hlen. &#128522;</div>
+                </div>
+            </section>
+
+            <!-- 2 · AVATAR GESTALTEN -->
+            <section class="wizard-step" data-question="Bau dir deinen eigenen Avatar!" data-next-label="Interessen">
+                <div class="step-card">
+                    <div class="step-q">
+                        <h2>Bau deinen Avatar</h2>
+                        <button type="button" class="icon-btn" data-fk-read aria-label="Frage vorlesen">&#128266;</button>
+                    </div>
+                    <div class="buddy-guide"><img src="bilder/lesekumpel_logo_v2.png" alt=""> Such dir ein Tier, eine Farbe und etwas Cooles aus!</div>
+
+                    <div style="text-align:center;margin-bottom:18px;">
+                        <div id="avatar-preview" style="width:96px;height:96px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:3rem;border:3px solid var(--border-card);position:relative;">
+                            <span id="ap-base">&#129418;</span>
+                            <span id="ap-acc" style="position:absolute;bottom:-2px;right:-2px;font-size:1.4rem;"></span>
+                        </div>
+                    </div>
+
+                    <label class="form-label">Tier</label>
+                    <div class="choice-grid" style="margin-bottom:16px;" role="group" aria-label="Tier w&auml;hlen">
+                        <button type="button" class="choice-tile" data-pick="single" data-field="avatar.base" data-value="&#129418;"><span class="choice-emoji">&#129418;</span></button>
+                        <button type="button" class="choice-tile" data-pick="single" data-field="avatar.base" data-value="&#128059;"><span class="choice-emoji">&#128059;</span></button>
+                        <button type="button" class="choice-tile" data-pick="single" data-field="avatar.base" data-value="&#129420;"><span class="choice-emoji">&#129420;</span></button>
+                        <button type="button" class="choice-tile" data-pick="single" data-field="avatar.base" data-value="&#128049;"><span class="choice-emoji">&#128049;</span></button>
+                        <button type="button" class="choice-tile" data-pick="single" data-field="avatar.base" data-value="&#128040;"><span class="choice-emoji">&#128040;</span></button>
+                        <button type="button" class="choice-tile" data-pick="single" data-field="avatar.base" data-value="&#129423;"><span class="choice-emoji">&#129423;</span></button>
+                    </div>
+
+                    <label class="form-label">Farbe</label>
+                    <div class="choice-grid" style="grid-template-columns:repeat(auto-fit,minmax(60px,1fr));margin-bottom:16px;" role="group" aria-label="Farbe w&auml;hlen">
+                        <button type="button" class="choice-tile" data-pick="single" data-field="avatar.bgColor" data-value="#ffe0dc" aria-label="Rosa" style="min-height:48px;"><span style="display:block;width:28px;height:28px;border-radius:50%;background:#ffe0dc;"></span></button>
+                        <button type="button" class="choice-tile" data-pick="single" data-field="avatar.bgColor" data-value="#d8eaff" aria-label="Blau" style="min-height:48px;"><span style="display:block;width:28px;height:28px;border-radius:50%;background:#d8eaff;"></span></button>
+                        <button type="button" class="choice-tile" data-pick="single" data-field="avatar.bgColor" data-value="#e3f6d8" aria-label="Gr&uuml;n" style="min-height:48px;"><span style="display:block;width:28px;height:28px;border-radius:50%;background:#e3f6d8;"></span></button>
+                        <button type="button" class="choice-tile" data-pick="single" data-field="avatar.bgColor" data-value="#fff1c2" aria-label="Gelb" style="min-height:48px;"><span style="display:block;width:28px;height:28px;border-radius:50%;background:#fff1c2;"></span></button>
+                        <button type="button" class="choice-tile" data-pick="single" data-field="avatar.bgColor" data-value="#ede0fb" aria-label="Lila" style="min-height:48px;"><span style="display:block;width:28px;height:28px;border-radius:50%;background:#ede0fb;"></span></button>
+                    </div>
+
+                    <label class="form-label">Etwas Cooles (optional)</label>
+                    <div class="choice-grid" role="group" aria-label="Accessoire w&auml;hlen">
+                        <button type="button" class="choice-tile" data-pick="single" data-field="avatar.accessory" data-value=""><span class="choice-label">&ndash;</span></button>
+                        <button type="button" class="choice-tile" data-pick="single" data-field="avatar.accessory" data-value="&#127872;"><span class="choice-emoji">&#127872;</span></button>
+                        <button type="button" class="choice-tile" data-pick="single" data-field="avatar.accessory" data-value="&#9917;"><span class="choice-emoji">&#9917;</span></button>
+                        <button type="button" class="choice-tile" data-pick="single" data-field="avatar.accessory" data-value="&#127911;"><span class="choice-emoji">&#127911;</span></button>
+                        <button type="button" class="choice-tile" data-pick="single" data-field="avatar.accessory" data-value="&#11088;"><span class="choice-emoji">&#11088;</span></button>
+                        <button type="button" class="choice-tile" data-pick="single" data-field="avatar.accessory" data-value="&#128302;"><span class="choice-emoji">&#128302;</span></button>
+                    </div>
+                    <div class="field-nudge" id="nudge-2">W&auml;hl mindestens ein Tier aus. &#128522;</div>
+                </div>
+            </section>
+
+            <!-- 3 · INTERESSEN -->
+            <section class="wizard-step" data-question="Was magst du am liebsten?" data-next-label="Leseniveau">
+                <div class="step-card">
+                    <div class="step-q">
+                        <h2>Was magst du gern?</h2>
+                        <button type="button" class="icon-btn" data-fk-read aria-label="Frage vorlesen">&#128266;</button>
+                    </div>
+                    <p class="step-hint">Tippe alles an, was dir gef&auml;llt. Such dir ruhig mehrere aus!</p>
+                    <div class="choice-grid big" id="interest-grid" role="group" aria-label="Interessen w&auml;hlen"></div>
+                    <div class="field-nudge" id="nudge-3">W&auml;hl mindestens eine Sache, die du magst. &#128522;</div>
+                </div>
+            </section>
+
+            <!-- 4 · LESENIVEAU -->
+            <section class="wizard-step" data-question="Wie gut kannst du schon lesen?" data-next-label="F&ouml;rderbedarfe">
+                <div class="step-card">
+                    <div class="step-q">
+                        <h2>Wie gut liest du schon?</h2>
+                        <button type="button" class="icon-btn" data-fk-read aria-label="Frage vorlesen">&#128266;</button>
+                    </div>
+                    <p class="step-hint">Ganz ehrlich &mdash; es gibt kein richtig oder falsch. Wir passen die Geschichten an.</p>
+                    <div class="choice-grid" role="group" aria-label="Leseniveau w&auml;hlen">
+                        <button type="button" class="choice-tile xl" data-pick="single" data-field="selfAssessed" data-value="anfaenger"><span class="choice-emoji">&#127793;</span><span class="choice-label">Ich fange an</span><span class="choice-sub">erste W&ouml;rter</span></button>
+                        <button type="button" class="choice-tile xl" data-pick="single" data-field="selfAssessed" data-value="fortgeschritten"><span class="choice-emoji">&#127794;</span><span class="choice-label">Geht schon gut</span><span class="choice-sub">kurze S&auml;tze</span></button>
+                        <button type="button" class="choice-tile xl" data-pick="single" data-field="selfAssessed" data-value="geuebt"><span class="choice-emoji">&#127795;</span><span class="choice-label">Ich bin ge&uuml;bt</span><span class="choice-sub">ganze Geschichten</span></button>
+                    </div>
+
+                    <button type="button" class="btn-text" id="minitest-toggle" style="margin-top:16px;">&#129488; Lieber kurz ausprobieren?</button>
+                    <div id="minitest" style="display:none;margin-top:12px;background:var(--bg-warm-light);border-radius:16px;padding:18px 20px;">
+                        <p style="font-weight:700;margin-bottom:6px;">Lies diesen Satz laut vor:</p>
+                        <p id="minitest-sentence" style="font-size:1.3rem;font-family:var(--font-heading);margin-bottom:14px;">Der Fuchs springt &uuml;ber den kleinen Bach.</p>
+                        <p class="step-hint" style="margin-bottom:10px;">Wie war das f&uuml;r dich?</p>
+                        <div class="choice-grid">
+                            <button type="button" class="choice-tile" data-pick="single" data-field="selfAssessed" data-value="anfaenger"><span class="choice-emoji">&#128556;</span><span class="choice-label">Schwer</span></button>
+                            <button type="button" class="choice-tile" data-pick="single" data-field="selfAssessed" data-value="fortgeschritten"><span class="choice-emoji">&#128578;</span><span class="choice-label">Geht so</span></button>
+                            <button type="button" class="choice-tile" data-pick="single" data-field="selfAssessed" data-value="geuebt"><span class="choice-emoji">&#128513;</span><span class="choice-label">Leicht!</span></button>
+                        </div>
+                    </div>
+                    <div class="field-nudge" id="nudge-4">W&auml;hl, wie gut du schon liest. &#128522;</div>
+                </div>
+            </section>
+
+            <!-- 5 · FÖRDERBEDARFE -->
+            <section class="wizard-step" data-question="Gibt es etwas, das deinem Kind beim Lesen hilft?" data-next-label="Energieniveau">
+                <div class="step-card">
+                    <div class="step-q">
+                        <h2>Besondere Unterst&uuml;tzung?</h2>
+                        <button type="button" class="icon-btn" data-fk-read aria-label="Frage vorlesen">&#128266;</button>
+                    </div>
+                    <p class="step-hint"><strong>F&uuml;r die Eltern:</strong> W&auml;hlt aus, was zutrifft &mdash; wir stellen passende Lesehilfen automatisch voreingestellt ein. Mehrfachauswahl m&ouml;glich. Nichts auszuw&auml;hlen ist auch v&ouml;llig in Ordnung.</p>
+                    <div class="choice-grid big" role="group" aria-label="F&ouml;rderbedarfe w&auml;hlen">
+                        <button type="button" class="choice-tile" data-pick="multi" data-field="needs" data-value="lrs"><span class="choice-emoji">&#128214;</span><span class="choice-label">LRS / Legasthenie</span></button>
+                        <button type="button" class="choice-tile" data-pick="multi" data-field="needs" data-value="adhs"><span class="choice-emoji">&#9889;</span><span class="choice-label">ADHS</span></button>
+                        <button type="button" class="choice-tile" data-pick="multi" data-field="needs" data-value="autismus"><span class="choice-emoji">&#129504;</span><span class="choice-label">Autismus-Spektrum</span></button>
+                        <button type="button" class="choice-tile" data-pick="multi" data-field="needs" data-value="daz"><span class="choice-emoji">&#127757;</span><span class="choice-label">Deutsch als Zweitsprache</span></button>
+                        <button type="button" class="choice-tile" data-pick="multi" data-field="needs" data-value="sehen"><span class="choice-emoji">&#128065;&#65039;</span><span class="choice-label">Sehen</span></button>
+                        <button type="button" class="choice-tile" data-pick="multi" data-field="needs" data-value="hoeren"><span class="choice-emoji">&#128066;</span><span class="choice-label">H&ouml;ren</span></button>
+                    </div>
+                    <div id="help-preview" style="margin-top:18px;"></div>
+                </div>
+            </section>
+
+            <!-- 6 · ENERGIENIVEAU -->
+            <section class="wizard-step" data-question="Wie ist dein Akku gerade?" data-next-label="Motivation">
+                <div class="step-card">
+                    <div class="step-q">
+                        <h2>Wie voll ist dein Akku?</h2>
+                        <button type="button" class="icon-btn" data-fk-read aria-label="Frage vorlesen">&#128266;</button>
+                    </div>
+                    <p class="step-hint">Das hilft uns, dir heute das Richtige vorzuschlagen. Es darf sich jeden Tag &auml;ndern.</p>
+                    <div class="choice-grid" role="group" aria-label="Energie w&auml;hlen">
+                        <button type="button" class="choice-tile xl" data-pick="single" data-field="energy" data-value="hoch"><span class="choice-emoji">&#128267;</span><span class="choice-label">Voll Power</span></button>
+                        <button type="button" class="choice-tile xl" data-pick="single" data-field="energy" data-value="mittel"><span class="choice-emoji">&#128578;</span><span class="choice-label">Geht so</span></button>
+                        <button type="button" class="choice-tile xl" data-pick="single" data-field="energy" data-value="niedrig"><span class="choice-emoji">&#128564;</span><span class="choice-label">Bin m&uuml;de</span></button>
+                    </div>
+                    <div class="field-nudge" id="nudge-6">W&auml;hl, wie dein Akku gerade ist. &#128522;</div>
+                </div>
+            </section>
+
+            <!-- 7 · MOTIVATION -->
+            <section class="wizard-step" data-question="Was passt am besten?" data-next-label="Pausen-Versprechen">
+                <div class="step-card">
+                    <div class="step-q">
+                        <h2>Was passt am besten?</h2>
+                        <button type="button" class="icon-btn" data-fk-read aria-label="Frage vorlesen">&#128266;</button>
+                    </div>
+                    <p class="step-hint"><strong>F&uuml;r die Eltern:</strong> So treffen wir Ton und Schwierigkeit besser.</p>
+
+                    <label class="form-label">Mag dein Kind Lesen lernen?</label>
+                    <div class="choice-grid" style="margin-bottom:18px;" role="group" aria-label="Motivation">
+                        <button type="button" class="choice-tile" data-pick="single" data-field="motivation.wantsToLearn" data-value="ja"><span class="choice-emoji">&#128522;</span><span class="choice-label">Ja, gerne</span></button>
+                        <button type="button" class="choice-tile" data-pick="single" data-field="motivation.wantsToLearn" data-value="unsicher"><span class="choice-emoji">&#129300;</span><span class="choice-label">Mal so, mal so</span></button>
+                        <button type="button" class="choice-tile" data-pick="single" data-field="motivation.wantsToLearn" data-value="nein"><span class="choice-emoji">&#128533;</span><span class="choice-label">Noch nicht</span></button>
+                    </div>
+
+                    <label class="form-label">Wie soll gelesen werden?</label>
+                    <div class="choice-grid" style="margin-bottom:18px;" role="group" aria-label="Lesefokus">
+                        <button type="button" class="choice-tile" data-pick="single" data-field="motivation.focus" data-value="vorlesen"><span class="choice-emoji">&#128483;&#65039;</span><span class="choice-label">Vorlesen</span></button>
+                        <button type="button" class="choice-tile" data-pick="single" data-field="motivation.focus" data-value="gemischt"><span class="choice-emoji">&#129309;</span><span class="choice-label">Zusammen</span></button>
+                        <button type="button" class="choice-tile" data-pick="single" data-field="motivation.focus" data-value="selbst"><span class="choice-emoji">&#128104;&#8205;&#127979;</span><span class="choice-label">Selbst lesen</span></button>
+                    </div>
+
+                    <label class="form-label">Schwierigkeit (optional)</label>
+                    <div class="choice-grid" role="group" aria-label="Schwierigkeit">
+                        <button type="button" class="choice-tile" data-pick="single" data-field="motivation.difficulty" data-value="leicht"><span class="choice-label">Lieber leicht</span></button>
+                        <button type="button" class="choice-tile" data-pick="single" data-field="motivation.difficulty" data-value="mittel"><span class="choice-label">Mittel</span></button>
+                        <button type="button" class="choice-tile" data-pick="single" data-field="motivation.difficulty" data-value="herausfordernd"><span class="choice-label">Ruhig fordernd</span></button>
+                    </div>
+                    <div class="field-nudge" id="nudge-7">Bitte die ersten beiden Fragen beantworten. &#128522;</div>
+                </div>
+            </section>
+
+            <!-- 8 · ERLAUBNIS ZUM PAUSE MACHEN -->
+            <section class="wizard-step" data-question="Pause machen ist immer erlaubt." data-next-label="Rechte">
+                <div class="step-card">
+                    <div class="step-q">
+                        <h2>Pausen sind okay</h2>
+                        <button type="button" class="icon-btn" data-fk-read aria-label="Frage vorlesen">&#128266;</button>
+                    </div>
+                    <div class="buddy-guide"><img src="bilder/lesekumpel_logo_v2.png" alt=""> Bei uns gilt der <strong>&bdquo;Kein-Druck-Modus&ldquo;</strong>: Aufh&ouml;ren ist nie schlimm &mdash; im Gegenteil.</div>
+                    <p class="step-hint">Wenn der Akku leer ist, darf dein Kind jederzeit Pause machen oder sich nur vorlesen lassen. Wir nehmen Druck raus statt ihn zu machen. Versprochen?</p>
+                    <div class="choice-grid" role="group" aria-label="Pausen-Versprechen">
+                        <button type="button" class="choice-tile xl" data-pick="single" data-field="noDemandMode" data-type="bool" data-value="true"><span class="choice-emoji">&#129309;</span><span class="choice-label">Ja, Pausen sind okay</span></button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- 9 · RECHTE -->
+            <section class="wizard-step" data-question="Was darf dein Kind in der App tun?" data-next-label="Fertig">
+                <div class="step-card">
+                    <div class="step-q">
+                        <h2>Was darf dein Kind tun?</h2>
+                        <button type="button" class="icon-btn" data-fk-read aria-label="Frage vorlesen">&#128266;</button>
+                    </div>
+                    <p class="step-hint"><strong>F&uuml;r die Eltern:</strong> Du legst fest, ob dein Kind nur lesen oder auch eigene Geschichten erstellen darf. Auch sp&auml;ter &auml;nderbar.</p>
+                    <div class="choice-grid" role="group" aria-label="Rechte w&auml;hlen">
+                        <button type="button" class="choice-tile xl" data-pick="single" data-field="rights" data-value="nur-lesen"><span class="choice-emoji">&#128214;</span><span class="choice-label">Nur lesen</span><span class="choice-sub">Geschichten entdecken</span></button>
+                        <button type="button" class="choice-tile xl" data-pick="single" data-field="rights" data-value="erstellen"><span class="choice-emoji">&#9997;&#65039;</span><span class="choice-label">Lesen &amp; erstellen</span><span class="choice-sub">eigene Geschichten machen</span></button>
+                    </div>
+                    <div class="field-nudge" id="nudge-9">W&auml;hl, was dein Kind tun darf. &#128522;</div>
+                </div>
+            </section>
+
+            <div class="wizard-nav" data-fk-nav></div>
+        </div>
+    </main>
+
+    <script src="formkit.js"></script>
+    <script src="konto-state.js"></script>
+    <script src="konto-fx.js"></script>
+    <script>
+    (function () {
+        'use strict';
+        // ---- A11y-Schalter ----
+        Konto.applyA11y();
+        document.querySelectorAll('[data-a11y]').forEach(function (btn) {
+            var key = btn.getAttribute('data-a11y');
+            if (Konto.getA11y()[key]) btn.classList.add('on');
+            btn.addEventListener('click', function () { btn.classList.toggle('on', Konto.toggleA11y(key)); });
+        });
+
+        // ---- Datenmodell ----
+        function defaultData() {
+            return {
+                name: '', age: null,
+                avatar: { base: '🦊', bgColor: '#ffe0dc', accessory: '' },
+                interests: [], selfAssessed: '', needs: [],
+                energy: '', motivation: { wantsToLearn: '', focus: '', difficulty: '' },
+                noDemandMode: true, rights: ''
+            };
+        }
+        var D = defaultData();
+
+        // ---- Interessen-Katalog ----
+        var INTERESTS = [
+            { v: 'tiere', e: '🦊', l: 'Tiere' },
+            { v: 'weltraum', e: '🚀', l: 'Weltraum' },
+            { v: 'fussball', e: '⚽', l: 'Fußball' },
+            { v: 'fahrzeuge', e: '🚗', l: 'Fahrzeuge' },
+            { v: 'dinos', e: '🦖', l: 'Dinos' },
+            { v: 'fantasie', e: '✨', l: 'Fantasie' },
+            { v: 'freundschaft', e: '💛', l: 'Freundschaft' },
+            { v: 'abenteuer', e: '🏔️', l: 'Abenteuer' },
+            { v: 'natur', e: '🌳', l: 'Natur' },
+            { v: 'musik', e: '🎵', l: 'Musik' },
+            { v: 'meer', e: '🐠', l: 'Meer' },
+            { v: 'gaming', e: '🎮', l: 'Gaming' }
+        ];
+        var INT_MAP = {};
+        INTERESTS.forEach(function (it) { INT_MAP[it.v] = it; });
+        (function buildInterestGrid() {
+            var g = document.getElementById('interest-grid');
+            g.innerHTML = INTERESTS.map(function (it) {
+                return '<button type="button" class="choice-tile xl" data-pick="multi" data-field="interests" data-value="' + it.v + '">' +
+                    '<span class="choice-emoji">' + it.e + '</span><span class="choice-label">' + it.l + '</span></button>';
+            }).join('');
+        })();
+
+        // ---- Pfad-Helfer ----
+        function getPath(o, p) { return p.split('.').reduce(function (a, k) { return a == null ? a : a[k]; }, o); }
+        function setPath(o, p, v) {
+            var ks = p.split('.'), last = ks.pop();
+            var t = ks.reduce(function (a, k) { if (a[k] == null) a[k] = {}; return a[k]; }, o);
+            t[last] = v;
+        }
+        function castVal(btn) {
+            var t = btn.getAttribute('data-type'), v = btn.getAttribute('data-value');
+            if (t === 'num') return parseInt(v, 10);
+            if (t === 'bool') return v === 'true';
+            return v;
+        }
+
+        // ---- Avatar-Vorschau ----
+        function paintAvatar() {
+            var prev = document.getElementById('avatar-preview');
+            if (!prev) return;
+            prev.style.background = D.avatar.bgColor || '#ffe0dc';
+            document.getElementById('ap-base').innerHTML = D.avatar.base || '';
+            document.getElementById('ap-acc').innerHTML = D.avatar.accessory || '';
+        }
+
+        // ---- Lesehilfen-Vorschau ----
+        var HELP_LABELS = {
+            syllableColoring: 'Silben einfärben', dyslexiaFont: 'Legasthenie-Schrift',
+            karaokeTts: 'Mitlese-Vorlesen', chunkMode: 'Kurze Häppchen',
+            interestPriority: 'Lieblingsthemen zuerst', clearMode: 'Klare, wörtliche Sprache',
+            grammarColoring: 'Grammatik-Farben', highContrast: 'Hoher Kontrast',
+            focusZoom: 'Fokus-Zeile', wholeWord: 'Ganzwort-Methode', moreImages: 'Mehr Bilder'
+        };
+        function updateHelpPreview() {
+            var box = document.getElementById('help-preview');
+            if (!box) return;
+            var help = Konto.deriveReadingHelp(D.needs);
+            var active = Object.keys(help).filter(function (k) { return help[k]; });
+            if (!active.length) {
+                box.innerHTML = '<p class="step-hint" style="margin:0;">Keine besonderen Lesehilfen vorausgewählt. Du kannst sie später jederzeit einschalten.</p>';
+                return;
+            }
+            box.innerHTML = '<p class="form-label" style="margin-bottom:8px;">Diese Lesehilfen stellen wir vor:</p>' +
+                '<div class="interest-chips">' + active.map(function (k) {
+                    return '<span class="interest-chip">✅ ' + HELP_LABELS[k] + '</span>';
+                }).join('') + '</div>';
+        }
+
+        // ---- Auswahl zeichnen ----
+        function paint() {
+            document.querySelectorAll('[data-pick]').forEach(function (btn) {
+                var field = btn.getAttribute('data-field'), mode = btn.getAttribute('data-pick');
+                var cur = getPath(D, field), val = castVal(btn), on;
+                if (mode === 'multi') on = Array.isArray(cur) && cur.indexOf(val) >= 0;
+                else on = cur === val;
+                btn.classList.toggle('active', !!on);
+            });
+            var ni = document.getElementById('o-name');
+            if (ni && ni.value !== (D.name || '')) ni.value = D.name || '';
+            paintAvatar();
+            updateHelpPreview();
+        }
+
+        // ---- Klick-Handler ----
+        document.querySelectorAll('[data-pick]').forEach(function (btn) {
+            btn.addEventListener('click', function () {
+                var field = btn.getAttribute('data-field'), mode = btn.getAttribute('data-pick'), val = castVal(btn);
+                if (mode === 'multi') {
+                    var arr = getPath(D, field) || [];
+                    var i = arr.indexOf(val);
+                    if (i >= 0) arr.splice(i, 1); else arr.push(val);
+                    setPath(D, field, arr);
+                } else {
+                    setPath(D, field, val);
+                }
+                paint();
+                hideNudges();
+                if (window._wiz) window._wiz.refresh();
+            });
+        });
+
+        // ---- Name + Diktat ----
+        var nameInput = document.getElementById('o-name');
+        nameInput.addEventListener('input', function () { D.name = nameInput.value; if (window._wiz) window._wiz.refresh(); });
+        FormKit.attachDictation(nameInput, document.getElementById('o-name-mic'));
+
+        // ---- Mini-Test ----
+        document.getElementById('minitest-toggle').addEventListener('click', function () {
+            var m = document.getElementById('minitest');
+            var open = m.style.display !== 'none';
+            m.style.display = open ? 'none' : 'block';
+            this.innerHTML = open ? '🧐 Lieber kurz ausprobieren?' : '🔼 Test ausblenden';
+        });
+
+        // ---- Niveau-Mapping ----
+        function mapLevel(sa) {
+            if (sa === 'anfaenger') return { phase: 1, sub: '1.1', label: 'Der Start', selfAssessed: sa, miniTestScore: 0 };
+            if (sa === 'geuebt') return { phase: 4, sub: '4.1', label: 'Die Geschichte', selfAssessed: sa, miniTestScore: 0 };
+            return { phase: 2, sub: '2.1', label: 'Der Ausbau', selfAssessed: sa || 'fortgeschritten', miniTestScore: 0 };
+        }
+
+        // ---- Empfehlungen aus Interessen ----
+        function buildRecs(interests, phase) {
+            var recs = [];
+            (interests || []).slice(0, 3).forEach(function (v, i) {
+                var it = INT_MAP[v];
+                if (!it) return;
+                recs.push({ id: 'r' + i, title: it.l + ': Eine Geschichte', icon: it.e, reason: 'Weil du ' + it.l + ' magst', phase: phase, kind: 'selbst' });
+            });
+            recs.push({ id: 'rv', title: 'Gute-Nacht-Reise', icon: '🌙', reason: 'Ganz ruhig zum Vorlesen', phase: Math.max(1, phase - 1), kind: 'vorlesen' });
+            return recs;
+        }
+
+        // ---- Wizard ----
+        var steps = [
+            { validate: function () { return !!(D.name && D.name.trim()) && D.age != null; } },     // 1 Daten
+            { validate: function () { return !!D.avatar.base; } },                                   // 2 Avatar
+            { validate: function () { return D.interests.length > 0; } },                            // 3 Interessen
+            { validate: function () { return !!D.selfAssessed; } },                                  // 4 Niveau
+            { optional: true },                                                                      // 5 Förderbedarfe
+            { validate: function () { return !!D.energy; } },                                        // 6 Energie
+            { validate: function () { return !!D.motivation.wantsToLearn && !!D.motivation.focus; } },// 7 Motivation
+            { optional: true },                                                                      // 8 Pause (vorbelegt)
+            { validate: function () { return !!D.rights; } }                                         // 9 Rechte
+        ];
+
+        var nudgeMap = { 0: 'nudge-1', 1: 'nudge-2', 2: 'nudge-3', 3: 'nudge-4', 5: 'nudge-6', 6: 'nudge-7', 8: 'nudge-9' };
+        function hideNudges() { document.querySelectorAll('.field-nudge').forEach(function (n) { n.classList.remove('show'); }); }
+
+        var wiz = FormKit.Wizard({
+            root: document.getElementById('wiz'),
+            steps: steps,
+            storageKey: 'onboarding',
+            autoSpeak: false,
+            finalLabel: 'Fertig! 🎉',
+            getState: function () { return D; },
+            applyState: function (saved) {
+                D = Object.assign(defaultData(), saved || {});
+                if (!D.avatar) D.avatar = defaultData().avatar;
+                if (!D.motivation) D.motivation = defaultData().motivation;
+                paint();
+            },
+            onComplete: function () {
+                var level = mapLevel(D.selfAssessed);
+                var child = {
+                    name: D.name.trim(), age: D.age,
+                    avatar: D.avatar, interests: D.interests, level: level, needs: D.needs,
+                    readingHelp: Konto.deriveReadingHelp(D.needs),
+                    energy: { current: D.energy || 'mittel', checkedInAt: '' },
+                    motivation: { wantsToLearn: D.motivation.wantsToLearn, focus: D.motivation.focus, difficulty: D.motivation.difficulty || 'mittel' },
+                    noDemandMode: D.noDemandMode !== false,
+                    rights: D.rights,
+                    storiesRead: 0, quizzesSolved: 0, storiesRated: 0,
+                    weekActivity: [0, 0, 0, 0, 0, 0, 0], energyHistory: [],
+                    lastActive: 'gerade eben',
+                    library: [],
+                    recommendations: buildRecs(D.interests, level.phase),
+                    friends: []
+                };
+                if (!Konto.getParent()) {
+                    Konto.setParent({ name: 'Elternteil', email: '', emoji: '🧑', tier: 'entdecker', tierLabel: 'Entdecker', credits: 5, password: 'demo' });
+                }
+                var saved = Konto.addChild(child);
+                if (!saved) {
+                    KontoFX.toast('Speichern hat leider nicht geklappt — bitte Browser-Speicher prüfen. 🙏');
+                    return;
+                }
+                Konto.setActiveChild(saved.id);
+                Konto.setOnboarded(true);
+                wiz.clearSaved();
+
+                // 🎉 Feier am Übergang
+                var buddy = document.querySelector('.wizard-buddy');
+                KontoFX.confetti(buddy || null, { count: 120 });
+                KontoFX.sparkleBurst(buddy);
+                var head = document.querySelector('.wizard-head');
+                if (head) {
+                    var b = document.createElement('div');
+                    b.className = 'mascot-bubble';
+                    b.textContent = 'Juhu, fertig! Auf geht\'s, ' + (child.name || '') + '! 🎉';
+                    head.appendChild(b);
+                    KontoFX.mascotBubble(b, null, { delay: 60 });
+                }
+                setTimeout(function () { window.location.href = 'kind.html'; }, KontoFX.reduced() ? 200 : 1400);
+            }
+        });
+        window._wiz = wiz;
+
+        // Nudges bei ungültigem „Weiter" — Capture-Phase, damit der Index VOR
+        // dem formkit-Advance gelesen wird.
+        document.querySelector('[data-fk-next]').addEventListener('click', function () {
+            var i = wiz.index;
+            var s = steps[i] || {};
+            var invalid = s.validate && !s.validate();
+            if (invalid && !s.optional && nudgeMap[i]) {
+                hideNudges();
+                var n = document.getElementById(nudgeMap[i]);
+                if (n) n.classList.add('show');
+            } else { hideNudges(); }
+        }, true);
+        document.querySelector('[data-fk-back]').addEventListener('click', hideNudges, true);
+
+        // Resume / Start
+        wiz.offerResume(document.getElementById('resume-banner'));
+        paint();
+    })();
+    </script>
+</body>
+</html>

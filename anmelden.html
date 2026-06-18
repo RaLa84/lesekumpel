@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Anmelden &ndash; Lesekumpel</title>
+    <meta name="description" content="Melde dich bei Lesekumpel an oder starte neu mit dem Einrichten deines Lesekumpel-Profils.">
+    <meta name="robots" content="noindex">
+    <link rel="icon" href="bilder/lesekumpel_logo_v2.png">
+    <link rel="stylesheet" href="fonts/fonts.css">
+    <link rel="stylesheet" href="konto.css">
+</head>
+<body>
+    <a class="skip-link" href="#main-content">Zum Inhalt springen</a>
+
+    <!-- NAVBAR -->
+    <nav class="main-navbar" aria-label="Hauptnavigation">
+        <div class="nav-left">
+            <span class="nav-logo-box"><img src="bilder/lesekumpel_logo_v2.png" alt="Lesekumpel Logo" class="nav-logo"></span>
+            <a href="landingpage.html" class="brand-name">Lesekumpel</a>
+        </div>
+        <div class="nav-right">
+            <a href="landingpage.html" class="nav-btn">&larr; Zur&uuml;ck zur Startseite</a>
+        </div>
+    </nav>
+
+    <div class="a11y-bar">
+        <button type="button" class="a11y-btn" data-a11y="dyslexia">&#128068; Leichter lesen</button>
+        <button type="button" class="a11y-btn" data-a11y="contrast">&#9680; Mehr Kontrast</button>
+    </div>
+
+    <main id="main-content">
+        <div class="auth-wrap" style="position:relative;">
+            <svg aria-hidden="true" class="floating-deco deco-star" style="top:12%;left:10%;width:30px;color:var(--yellow);" viewBox="0 0 32 32"><polygon points="16,2 20,12 30,12 22,19 25,30 16,23 7,30 10,19 2,12 12,12" fill="currentColor" opacity="0.7"/></svg>
+            <svg aria-hidden="true" class="floating-deco deco-sparkle" style="top:20%;right:12%;width:22px;color:var(--salmon);animation-delay:-1s;" viewBox="0 0 24 24"><path d="M12 2L13.5 9 21 12L13.5 14.5L12 22L10.5 14.5L3 12L10.5 9Z" fill="currentColor" opacity="0.7"/></svg>
+            <div aria-hidden="true" class="floating-deco deco-circle" style="bottom:16%;left:16%;width:16px;height:16px;background:rgba(125,106,230,0.4);animation-delay:-2s;"></div>
+            <svg aria-hidden="true" class="floating-deco deco-star" style="bottom:12%;right:14%;width:22px;color:var(--mint);animation-delay:-3s;" viewBox="0 0 32 32"><polygon points="16,2 20,12 30,12 22,19 25,30 16,23 7,30 10,19 2,12 12,12" fill="currentColor" opacity="0.55"/></svg>
+
+            <div class="auth-card reveal" style="position:relative;z-index:1;">
+                <div class="mascot" aria-hidden="true"><span class="mascot-glow"></span><img class="mascot-img" src="bilder/lesekumpel_logo_v2.png" alt=""></div>
+                <div class="mascot-bubble" id="auth-bubble">Hi! Schön, dass du da bist! 👋</div>
+                <h1 class="auth-title"><span class="handwrite">Schön</span>, dass du da bist!</h1>
+                <p class="auth-sub">Melde dich an oder richte einen neuen Lesekumpel f&uuml;r dein Kind ein.</p>
+
+                <form class="auth-form" id="login-form" autocomplete="on">
+                    <div class="form-group">
+                        <label class="form-label" for="login-email">E-Mail</label>
+                        <input type="email" id="login-email" class="form-input" placeholder="z.B. mama@beispiel.de" autocomplete="email">
+                    </div>
+                    <div class="form-group" style="margin-bottom:0;">
+                        <label class="form-label" for="login-pw">Passwort</label>
+                        <input type="password" id="login-pw" class="form-input" placeholder="Dein Passwort" autocomplete="current-password">
+                    </div>
+                </form>
+
+                <div class="auth-actions">
+                    <button type="button" class="btn-primary" id="btn-login">Anmelden</button>
+                </div>
+
+                <p style="font-size:0.78rem;color:var(--text-muted);margin-top:12px;">
+                    Prototyp &mdash; jede Eingabe f&uuml;hrt zum Eltern-Bereich. Es werden keine echten Daten gepr&uuml;ft.
+                </p>
+
+                <div class="auth-divider">oder</div>
+
+                <div class="auth-newbox">
+                    <p><strong>Neu hier?</strong> Richte in wenigen Schritten ein Profil ein, das genau zu deinem Kind passt &mdash; Interessen, Leseniveau und passende Unterst&uuml;tzung.</p>
+                    <button type="button" class="btn-secondary" id="btn-new" style="width:100%;">Ich bin neu hier &rarr;</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-links"><a href="impressum.html">Impressum</a> &bull; <a href="datenschutz.html">Datenschutz</a> &bull; <a href="ueber-uns.html">&Uuml;ber uns</a></div>
+    </footer>
+
+    <script src="konto-state.js"></script>
+    <script src="konto-fx.js"></script>
+    <script>
+        // Maskottchen begrüßt
+        KontoFX.mascotBubble(document.getElementById('auth-bubble'), null, { delay: 600 });
+
+        // A11y-Schalter
+        Konto.applyA11y();
+        document.querySelectorAll('[data-a11y]').forEach(function (btn) {
+            var key = btn.getAttribute('data-a11y');
+            if (Konto.getA11y()[key]) btn.classList.add('on');
+            btn.addEventListener('click', function () {
+                btn.classList.toggle('on', Konto.toggleA11y(key));
+            });
+        });
+
+        // Mock-Login: sorgt für ein Eltern-Profil & geht zum Konto
+        document.getElementById('btn-login').addEventListener('click', function () {
+            if (!Konto.getParent()) Konto.seedIfEmpty();
+            window.location.href = 'mein-konto.html';
+        });
+        // Enter im Formular = Anmelden
+        document.getElementById('login-form').addEventListener('submit', function (e) {
+            e.preventDefault();
+            document.getElementById('btn-login').click();
+        });
+
+        // Neu → Onboarding
+        document.getElementById('btn-new').addEventListener('click', function () {
+            window.location.href = 'onboarding.html';
+        });
+    </script>
+</body>
+</html>
