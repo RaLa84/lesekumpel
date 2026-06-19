@@ -1022,12 +1022,14 @@
         .related-title { font-family: var(--font-heading); font-weight: 600; font-size: 0.95rem; color: var(--navy); line-height: 1.2; text-align: center; }
 
         .clearfix::after { content: ""; display: table; clear: both; }
-        footer { text-align: center; margin-top: 50px; color: #5a6368; font-size: 0.9rem; padding-top: 20px; border-top: 1px solid #eee; }
-        .footer-links a { color: #5a6368; text-decoration: underline; margin: 0 5px; }
-        .footer-credit { display: inline-flex; align-items: center; justify-content: center; gap: 7px; margin: 0 0 10px; }
+        footer { text-align: center; margin-top: 50px; color: #5a6368; font-size: 0.9rem; padding: 26px 16px 10px; border-top: 1px solid var(--border-soft); }
+        .footer-credit { display: inline-flex; align-items: center; justify-content: center; gap: 7px; margin: 0 0 16px; font-weight: 500; }
         .footer-credit svg { width: 15px; height: 15px; opacity: 0.7; flex-shrink: 0; }
-        .footer-report { background: none; border: none; padding: 0; margin: 0 5px; font: inherit; color: #5a6368; text-decoration: underline; cursor: pointer; }
-        .footer-report:hover { color: var(--lila); }
+        .footer-links { display: flex; flex-wrap: wrap; justify-content: center; align-items: center; gap: 8px 18px; margin: 0 0 16px; }
+        .footer-links a, .footer-report { color: #5a6368; text-decoration: none; font: inherit; transition: color 0.15s ease; }
+        .footer-links a:hover, .footer-report:hover { color: var(--lila); text-decoration: underline; }
+        .footer-report { background: none; border: none; padding: 0; cursor: pointer; }
+        .footer-copy { margin: 0; font-size: 0.8rem; color: #9aa0a6; }
         .hidden { display: none; }
 
         /* --- NEUROTYP-SPEZIFISCH --- */
@@ -2354,7 +2356,15 @@
 
     <footer>
         <p class="footer-credit"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"/><path d="M20 2v4"/><path d="M22 4h-4"/><circle cx="4" cy="20" r="2"/></svg><span>Text und Bilder mit KI erstellt</span></p>
-        <div class="footer-links"><a href="#">Impressum</a> • <a href="../datenschutz.html">Datenschutz</a> • <a href="../ueber-uns.html">Über uns</a> • <a href="../blog-warum-lesekumpel.html">Blog</a> &bull; <a href="../knowledge-base/snacks/index.html">Wissen</a> &bull; <button type="button" id="report-open" class="footer-report" data-speak="Melden: Wenn dich etwas an der Geschichte stört, sag es uns hier — am besten zusammen mit einem Erwachsenen.">Inhalt melden</button></div>
+        <nav class="footer-links" aria-label="Weitere Links">
+            <a href="#">Impressum</a>
+            <a href="../datenschutz.html">Datenschutz</a>
+            <a href="../ueber-uns.html">Über uns</a>
+            <a href="../blog-warum-lesekumpel.html">Blog</a>
+            <a href="../knowledge-base/snacks/index.html">Wissen</a>
+            <button type="button" id="report-open" class="footer-report" data-speak="Melden: Wenn dich etwas an der Geschichte stört, sag es uns hier — am besten zusammen mit einem Erwachsenen.">Inhalt melden</button>
+        </nav>
+        <p class="footer-copy">© 2026 Lesekumpel</p>
     </footer>
 
 
