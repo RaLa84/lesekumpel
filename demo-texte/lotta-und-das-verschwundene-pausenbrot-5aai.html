@@ -1259,21 +1259,21 @@
         body.view-tafel .feedback-section,
         body.view-tafel footer { display: none; }
 
-        /* === TOOLBAR: bleibt rechts unten wie Original, nur größer für Touch === */
+        /* === LESEHILFEN: kompakte Leiste unten mittig (statt Bubble rechts) === */
         body.view-tafel .toolbar-container.collapsed {
-            bottom: 36px; right: 36px;
-            min-width: 130px; min-height: 130px;
-            border-radius: 36px;
+            bottom: 24px; left: 50%; right: auto; transform: translateX(-50%);
+            min-width: 0; min-height: 0;
+            border-radius: 999px;
         }
-        body.view-tafel .toolbar-container.collapsed .toolbar-header { padding: 26px 32px; gap: 18px; }
-        body.view-tafel .toolbar-container.collapsed .header-icon { font-size: 3em; }
-        body.view-tafel .toolbar-container.collapsed .toolbar-header-label { font-size: 1.7rem; }
+        body.view-tafel .toolbar-container.collapsed .toolbar-header { padding: 16px 28px; gap: 14px; }
+        body.view-tafel .toolbar-container.collapsed .header-icon { font-size: 2em; }
+        body.view-tafel .toolbar-container.collapsed .toolbar-header-label { font-size: 1.3rem; }
         body.view-tafel .toolbar-container.collapsed .toolbar-header-label .header-text { display: inline; }
-        body.view-tafel .toolbar-container.collapsed .toolbar-toggle-icon { font-size: 2rem; }
+        body.view-tafel .toolbar-container.collapsed .toolbar-toggle-icon { font-size: 1.6rem; }
 
         body.view-tafel .toolbar-container:not(.collapsed) {
-            bottom: 36px; right: 36px;
-            max-width: 720px;
+            bottom: 24px; left: 50%; right: auto; transform: translateX(-50%);
+            width: min(720px, 92vw); max-width: 720px;
             border-radius: 28px;
         }
         body.view-tafel .toolbar-header { padding: 18px 24px; }
@@ -1354,17 +1354,20 @@
         }
         body:not(.view-tafel) .tafel-page-indicator { display: none; }
 
-        /* Pagination-Pfeile (zentriert unten zwischen den beiden Tool-Bubbles) */
+        /* Pagination-Pfeile: links & rechts am Bildschirmrand, vertikal mittig (wie ein Slideshow-Blätterer) */
         .tafel-nav {
             position: fixed;
-            bottom: 48px;
-            left: 50%;
-            transform: translateX(-50%);
+            top: 50%;
+            left: 0; right: 0;
+            transform: translateY(-50%);
             display: flex;
-            gap: 24px;
+            justify-content: space-between;
+            padding: 0 28px;
+            pointer-events: none;   /* leerer Mittelbereich blockiert keine Klicks auf Bild/Text */
             z-index: 90;
         }
         .tafel-nav button {
+            pointer-events: auto;
             width: 120px; height: 120px;
             border-radius: 50%;
             font-size: 3.4rem;
@@ -1532,8 +1535,8 @@
             opacity: 0;
             pointer-events: none;
         }
-        /* Wenn Activity-Hub offen ist, Trigger-Button verstecken */
-        body.view-tafel:has(.activity-hub:not(.tafel-collapsed)) .tafel-games-trigger { display: none; }
+        /* (Activity-Hub lebt jetzt fest auf der Abschluss-Seite — die "Spiele"-Bubble springt nur dorthin
+           und bleibt immer sichtbar.) */
 
         /* 1-Spalten-Fallback nur noch unterhalb des Tafel-Breakpoints (z.B. Toggle-Test am schmalen Viewport).
            Laptops 1024–1500px bekommen so echte 2 Spalten statt der gestapelten Variante. */
@@ -1548,6 +1551,49 @@
                 min-height: 0;
             }
             body.view-tafel .tafel-story-col { grid-area: story; align-self: stretch; }
+        }
+
+        /* === ABSCHLUSS-SEITE am Story-Ende: Quiz/Spiele + Survey + Empfehlungen gestapelt === */
+        body.view-tafel .tafel-abschluss.is-current {
+            display: flex;
+            flex-direction: column;
+            gap: 36px;
+            width: 100%;
+            max-height: calc(100vh - 120px);
+            overflow-y: auto;
+            padding-right: 8px;
+            animation: none;
+        }
+        .tafel-abschluss-title {
+            font-family: var(--font-heading);
+            color: var(--accent-coral);
+            font-size: 2.4rem;
+            text-align: center;
+            margin: 0;
+        }
+        /* Survey + Empfehlungen NUR innerhalb der Abschluss-Seite wieder einblenden
+           (im Tafel-Modus sind sie sonst global versteckt) */
+        body.view-tafel .tafel-abschluss .survey-section,
+        body.view-tafel .tafel-abschluss .related-section { display: block; margin: 0; }
+        /* Activity-Hub aus dem Floating-Modus lösen — fließt jetzt inline in der Seite */
+        body.view-tafel .tafel-abschluss .activity-hub,
+        body.view-tafel .tafel-abschluss .activity-hub.tafel-collapsed {
+            position: static;
+            width: auto; max-width: none;
+            max-height: none;
+            overflow: visible;
+            padding: 0;
+            box-shadow: none;
+            border-radius: 0;
+            transform: none;
+            opacity: 1;
+            pointer-events: auto;
+            left: auto; bottom: auto;
+        }
+        /* Empfehlungs-Grid kompakter in der schmaleren Spalte */
+        body.view-tafel .tafel-abschluss .related-grid {
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 14px;
         }
 
         /* ============================================================
@@ -1578,8 +1624,8 @@
             body.view-tafel .nav-btn { font-size: 1rem; }
             body.view-tafel .btn-cta-nav { font-size: 0.95rem; padding: 10px 18px; }
 
-            /* Navigations-Pfeile (unten Mitte) */
-            .tafel-nav { bottom: 32px; gap: 16px; }
+            /* Navigations-Pfeile an den Seitenrändern */
+            .tafel-nav { padding: 0 20px; }
             .tafel-nav button { width: 76px; height: 76px; font-size: 2.2rem; border-width: 3px; }
 
             /* "Spiele"-Bubble (unten links) */
@@ -1590,13 +1636,11 @@
             }
             .tafel-games-trigger .games-icon { font-size: 2em; }
 
-            /* Werkzeug-Bubble unten rechts (collapsed Toolbar) */
-            body.view-tafel .toolbar-container.collapsed {
-                min-width: 84px; min-height: 84px; border-radius: 24px;
-            }
-            body.view-tafel .toolbar-container.collapsed .toolbar-header { padding: 16px 22px; gap: 12px; }
-            body.view-tafel .toolbar-container.collapsed .header-icon { font-size: 2em; }
-            body.view-tafel .toolbar-container.collapsed .toolbar-header-label { font-size: 1.15rem; }
+            /* Lesehilfen-Leiste unten mittig — kompakte Pille */
+            body.view-tafel .toolbar-container.collapsed { border-radius: 999px; }
+            body.view-tafel .toolbar-container.collapsed .toolbar-header { padding: 12px 22px; gap: 12px; }
+            body.view-tafel .toolbar-container.collapsed .header-icon { font-size: 1.5em; }
+            body.view-tafel .toolbar-container.collapsed .toolbar-header-label { font-size: 1.05rem; }
 
             /* Activity-Hub-Panel tiefer setzen, da Bubbles/Pfeile kleiner sind */
             body.view-tafel .activity-hub { bottom: 130px; max-height: calc(100vh - 170px); }
@@ -3082,6 +3126,9 @@
             // 6. Seiten-Indikator vor den Sektionen einfügen
             setupPageIndicator();
 
+            // 6b. Abschluss-Seite (Quiz/Spiele + Survey + Empfehlungen) ans Story-Ende hängen
+            setupTafelAbschluss();
+
             // 7. Cover-Overlay (Titel + Autor auf Bild 1) anlegen
             setupTafelCoverOverlay();
 
@@ -3117,6 +3164,7 @@
                         paginateStoryByScenes();
                         if (document.querySelector('.tafel-section')) {
                             setupPageIndicator();
+                            setupTafelAbschluss();
                         }
                     }
                     // Nach jedem Tick: aktuelle Seite zeigen — im nächsten Frame, damit
@@ -3175,6 +3223,8 @@
             document.querySelectorAll('.quiz-question.is-tafel-current').forEach(q => q.classList.remove('is-tafel-current'));
             // Sektionen auflösen: <p>s zurück direkt unter #full-text-view (entfernt auch is-current)
             depaginateStory();
+            // Abschluss-Seite auflösen: Activity-Hub/Survey/Empfehlungen zurück in die main-card
+            dissolveTafelAbschluss();
             tafelCurrentIdx = 0;
             // Story-Wrapper auflösen: Kinder zurück an die Original-Stelle hängen
             const storyCol = document.querySelector('.tafel-story-col');
@@ -3282,6 +3332,8 @@
             tafelCurrentIdx = idx;
             sections.forEach((s, i) => s.classList.toggle('is-current', i === idx));
             const currentSec = sections[idx];
+            // Auf der Abschluss-Seite das Quiz (neu) aufbereiten — robust gegen renderQuiz-Timing
+            if (currentSec.classList.contains('tafel-abschluss')) setupTafelQuiz();
             // Bild zur Sektion aktivieren
             const targetScene = Number(currentSec.dataset.scene);
             document.querySelectorAll('.tafel-stage-img').forEach(img => {
@@ -3292,10 +3344,12 @@
             const overlay = document.querySelector('.tafel-cover-overlay');
             const endOverlay = document.querySelector('.tafel-end-overlay');
             const isCover = currentSec.dataset.cover === 'true';
+            const isAbschluss = currentSec.classList.contains('tafel-abschluss');
             const isLast = idx === sections.length - 1;
             if (stage) stage.classList.toggle('is-cover-page', isCover);
             if (overlay) overlay.classList.toggle('is-active', isCover);
-            if (endOverlay) endOverlay.classList.toggle('is-active', isLast && !isCover);
+            // "Ende"-Stempel nur auf der letzten Story-Slide, nicht auf der Abschluss-Seite (dort steht "Geschafft!")
+            if (endOverlay) endOverlay.classList.toggle('is-active', isLast && !isCover && !isAbschluss);
             // Body-Klasse für Cover-Modus: Layout auf 1-Spalte (Bild zentriert) statt 2-Spalten
             document.body.classList.toggle('view-tafel-cover', isCover);
             // Konfetti nur wenn wir frisch zur letzten Slide kommen (nicht bei Re-Render)
@@ -3383,8 +3437,12 @@
                 return;
             }
             indicator.style.visibility = '';
-            // Story-Slides = alle Sektionen außer Cover
-            const storySlides = sections.filter(s => s.dataset.cover !== 'true');
+            if (current.classList.contains('tafel-abschluss')) {
+                indicator.textContent = 'Geschafft! 🎉';
+                return;
+            }
+            // Story-Slides = alle Sektionen außer Cover und Abschluss-Seite
+            const storySlides = sections.filter(s => s.dataset.cover !== 'true' && !s.classList.contains('tafel-abschluss'));
             const storyIdx = storySlides.indexOf(current) + 1;
             indicator.textContent = `Abschnitt ${storyIdx} von ${storySlides.length}`;
         }
@@ -3415,19 +3473,63 @@
             nextBtn.disabled = tafelCurrentIdx >= sections.length - 1;
         }
 
-        // === Spiele-Bubble links unten ===
+        // === Abschluss-Seite: letzte Slide mit Quiz/Spielen, Survey und Empfehlungen ===
+        function setupTafelAbschluss() {
+            const storyCol = document.querySelector('.tafel-story-col');
+            const view = document.getElementById('full-text-view');
+            if (!storyCol || !view) return;
+            let abschluss = storyCol.querySelector('.tafel-abschluss');
+            if (!abschluss) {
+                abschluss = document.createElement('section');
+                abschluss.className = 'tafel-section tafel-abschluss';
+                const title = document.createElement('div');
+                title.className = 'tafel-abschluss-title';
+                title.textContent = '🎉 Geschafft!';
+                abschluss.appendChild(title);
+                // Aktivitäten + Survey + Empfehlungen einsammeln. Bewusst AUSSERHALB von
+                // #full-text-view, damit renderText() (Silben/Emoji/Sprache) sie nicht löscht.
+                ['.survey-section', '.activity-hub', '.related-section'].forEach(sel => {
+                    const el = document.querySelector(sel);
+                    if (el) abschluss.appendChild(el);
+                });
+                view.insertAdjacentElement('afterend', abschluss);
+            }
+            // data-scene = Szene des letzten Absatzes, damit links dasselbe Bild bleibt
+            const textSections = view.querySelectorAll('.tafel-section');
+            const lastText = textSections[textSections.length - 1];
+            if (lastText && lastText.dataset.scene) abschluss.dataset.scene = lastText.dataset.scene;
+        }
+
+        function dissolveTafelAbschluss() {
+            const abschluss = document.querySelector('.tafel-abschluss');
+            if (!abschluss) return;
+            const mainCard = document.querySelector('.main-card');
+            if (mainCard) {
+                ['.activity-hub', '.survey-section', '.related-section'].forEach(sel => {
+                    const el = abschluss.querySelector(sel);
+                    if (el) mainCard.appendChild(el);
+                });
+            }
+            abschluss.remove();
+        }
+
+        function goToTafelAbschluss() {
+            const sections = getTafelSections();
+            const i = sections.findIndex(s => s.classList.contains('tafel-abschluss'));
+            if (i >= 0) showSection(i);
+        }
+
+        // === Spiele-Bubble links unten: springt zur Abschluss-Seite ===
         function setupTafelGamesTrigger() {
-            const hub = document.querySelector('.activity-hub');
-            if (hub) hub.classList.add('tafel-collapsed');
             // Quiz für Tafel umbauen: Antworten in Wrapper, Pagination-Nav, erste Frage aktiv
             setupTafelQuiz();
             if (document.querySelector('.tafel-games-trigger')) return;
             const btn = document.createElement('button');
             btn.type = 'button';
             btn.className = 'tafel-games-trigger';
-            btn.setAttribute('aria-label', 'Spiele öffnen');
+            btn.setAttribute('aria-label', 'Zu den Spielen springen');
             btn.innerHTML = '<span class="games-icon">🎮</span> Spiele';
-            btn.onclick = toggleTafelGames;
+            btn.onclick = goToTafelAbschluss;
             document.body.appendChild(btn);
         }
 
