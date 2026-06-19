@@ -1001,30 +1001,31 @@
         .btn-send:hover:not(:disabled) { background: var(--navy); color: #fff; transform: translateY(-2px); }
         .single-comment { background-color: #f9f9f9; border-radius: 10px; padding: 15px; margin-bottom: 15px; }
 
-        /* Vorschläge: gestapelte, vollbreite Karten (wie die Spiel-Buttons) */
-        .related-grid { display: flex; flex-direction: column; gap: 12px; }
+        /* Vorschläge: bild-geführtes Cover-Raster (Kinder wählen über das Bild) */
+        .related-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 14px; }
         .related-card {
-            display: flex; align-items: center; gap: 14px;
-            min-height: 64px; padding: 14px 16px; border-radius: 18px;
-            background: var(--cream-light); border: 2px solid var(--border-soft); color: var(--navy);
-            text-decoration: none; box-shadow: 0 2px 8px rgba(43,49,64,0.05);
-            transition: transform 0.15s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.15s ease, border-color 0.15s ease;
+            display: flex; flex-direction: column; gap: 8px;
+            text-decoration: none; color: var(--navy);
+            transition: transform 0.15s cubic-bezier(0.34,1.56,0.64,1);
             -webkit-tap-highlight-color: transparent;
         }
-        .related-card:hover { transform: translateY(-2px); border-color: var(--mint); box-shadow: 0 6px 18px rgba(43,49,64,0.12); background: #fff; }
-        .related-card:focus-visible { outline: 3px solid var(--lila); outline-offset: 2px; }
-        .related-card:active { transform: scale(0.98); }
+        .related-card:hover { transform: translateY(-3px); }
+        .related-card:hover .related-thumb { border-color: var(--mint); box-shadow: 0 6px 18px rgba(43,49,64,0.18); }
+        .related-card:focus-visible { outline: 3px solid var(--lila); outline-offset: 3px; border-radius: 18px; }
+        .related-card:active { transform: scale(0.97); }
         .related-thumb {
-            flex-shrink: 0; width: 64px; height: 64px; border-radius: 14px;
-            object-fit: cover; background: #fff; border: 2px solid var(--primary-yellow);
+            width: 100%; aspect-ratio: 1 / 1; height: auto; object-fit: cover;
+            border-radius: 16px; border: 3px solid var(--primary-yellow); background: #fff;
+            box-shadow: 0 2px 8px rgba(43,49,64,0.08);
+            transition: border-color 0.15s ease, box-shadow 0.15s ease;
         }
-        .related-info { display: flex; flex-direction: column; gap: 2px; min-width: 0; }
-        .related-title { font-family: var(--font-heading); font-weight: 600; font-size: 1.05rem; color: var(--navy); line-height: 1.25; }
-        .related-reason { font-size: 0.85rem; color: #5a6368; }
+        .related-title { font-family: var(--font-heading); font-weight: 600; font-size: 0.95rem; color: var(--navy); line-height: 1.2; text-align: center; }
 
         .clearfix::after { content: ""; display: table; clear: both; }
         footer { text-align: center; margin-top: 50px; color: #5a6368; font-size: 0.9rem; padding-top: 20px; border-top: 1px solid #eee; }
         .footer-links a { color: #5a6368; text-decoration: underline; margin: 0 5px; }
+        .footer-report { background: none; border: none; padding: 0; margin: 0 5px; font: inherit; color: #5a6368; text-decoration: underline; cursor: pointer; }
+        .footer-report:hover { color: var(--lila); }
         .hidden { display: none; }
 
         /* --- NEUROTYP-SPEZIFISCH --- */
@@ -2250,10 +2251,6 @@
                 </button>
             </div>
             <div class="rating-thanks" id="rating-thanks" role="status" hidden>Danke für deine Bewertung! 💛</div>
-
-            <div class="report-trigger-wrapper">
-                <button class="report-link" type="button" id="report-open" data-speak="Melden: Wenn dich etwas an der Geschichte stört, sag es uns hier — am besten zusammen mit einem Erwachsenen.">🚩 Inhalt melden</button>
-            </div>
         </div>
 
         <div class="activity-hub">
@@ -2305,24 +2302,19 @@
             <div class="related-grid">
                 <a class="related-card" href="die-reise-zum-mond-1y60.html">
                     <img class="related-thumb" src="../bilder/die-reise-zum-mond-1y60-1.png" alt="" loading="lazy" onerror="this.style.display='none'">
-                    <span class="related-info">
-                        <span class="related-title">Die Reise zum Mond</span>
-                        <span class="related-reason">Spannendes Abenteuer</span>
-                    </span>
+                    <span class="related-title">Die Reise zum Mond</span>
                 </a>
                 <a class="related-card" href="der-kleine-fuchs-im-schnee-ur5p.html">
                     <img class="related-thumb" src="../bilder/der-kleine-fuchs-im-schnee-ur5p-1.png" alt="" loading="lazy" onerror="this.style.display='none'">
-                    <span class="related-info">
-                        <span class="related-title">Der kleine Fuchs im Schnee</span>
-                        <span class="related-reason">Liebe Tiergeschichte</span>
-                    </span>
+                    <span class="related-title">Der kleine Fuchs im Schnee</span>
                 </a>
                 <a class="related-card" href="das-drachenei-bnvv.html">
                     <img class="related-thumb" src="../bilder/das-drachenei-bnvv-1.png" alt="" loading="lazy" onerror="this.style.display='none'">
-                    <span class="related-info">
-                        <span class="related-title">Das Drachenei</span>
-                        <span class="related-reason">Magisch &amp; aufregend</span>
-                    </span>
+                    <span class="related-title">Das Drachenei</span>
+                </a>
+                <a class="related-card" href="die-schatzkarte-im-garten-1ub9.html">
+                    <img class="related-thumb" src="../bilder/die-schatzkarte-im-garten-1ub9-1.png" alt="" loading="lazy" onerror="this.style.display='none'">
+                    <span class="related-title">Die Schatzkarte im Garten</span>
                 </a>
             </div>
         </div>
@@ -2355,7 +2347,7 @@
 
     <footer>
         <p>Erstellt von deinem KI-Lesekumpel 🤖</p>
-        <div class="footer-links"><a href="#">Impressum</a> • <a href="../datenschutz.html">Datenschutz</a> • <a href="../ueber-uns.html">Über uns</a> • <a href="../blog-warum-lesekumpel.html">Blog</a> &bull; <a href="../knowledge-base/snacks/index.html">Wissen</a></div>
+        <div class="footer-links"><a href="#">Impressum</a> • <a href="../datenschutz.html">Datenschutz</a> • <a href="../ueber-uns.html">Über uns</a> • <a href="../blog-warum-lesekumpel.html">Blog</a> &bull; <a href="../knowledge-base/snacks/index.html">Wissen</a> &bull; <button type="button" id="report-open" class="footer-report" data-speak="Melden: Wenn dich etwas an der Geschichte stört, sag es uns hier — am besten zusammen mit einem Erwachsenen.">Inhalt melden</button></div>
     </footer>
 
 
