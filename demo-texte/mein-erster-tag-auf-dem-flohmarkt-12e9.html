@@ -1024,6 +1024,8 @@
         .clearfix::after { content: ""; display: table; clear: both; }
         footer { text-align: center; margin-top: 50px; color: #5a6368; font-size: 0.9rem; padding-top: 20px; border-top: 1px solid #eee; }
         .footer-links a { color: #5a6368; text-decoration: underline; margin: 0 5px; }
+        .footer-credit { display: inline-flex; align-items: center; justify-content: center; gap: 7px; margin: 0 0 10px; }
+        .footer-credit svg { width: 15px; height: 15px; opacity: 0.7; flex-shrink: 0; }
         .footer-report { background: none; border: none; padding: 0; margin: 0 5px; font: inherit; color: #5a6368; text-decoration: underline; cursor: pointer; }
         .footer-report:hover { color: var(--lila); }
         .hidden { display: none; }
@@ -1962,16 +1964,16 @@
         }
 
         /* === FESTE AKTIONSLEISTE (Vorlesen / Nachlesen / Wörter lesen) === */
-        body { padding-bottom: 96px; }
+        body { padding-bottom: 84px; }
         .reading-action-bar {
             position: fixed; left: 0; right: 0; bottom: 0; z-index: 4400;
             display: flex; gap: 8px;
             background: #fff; border-top: 3px solid var(--mint);
-            padding: 10px 12px calc(10px + env(safe-area-inset-bottom));
+            padding: 8px 12px calc(8px + env(safe-area-inset-bottom));
             box-shadow: 0 -6px 24px rgba(43,49,64,0.12);
         }
         .rab-btn {
-            flex: 1 1 0; min-height: 60px;
+            flex: 1 1 0; min-height: 50px;
             display: inline-flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px;
             background: var(--cream-light); border: 2px solid var(--border-soft); border-radius: 16px;
             font-family: var(--font-heading); font-weight: 600; font-size: 0.95rem; color: var(--navy);
@@ -1986,6 +1988,9 @@
         /* Einstellungs-Knopf: kleiner/dezenter als die zwei Lese-Aktionen */
         .rab-settings { flex: 0 0 auto; min-width: 56px; }
         .rab-settings .rab-icon { font-size: 1.4rem; opacity: 0.85; }
+        .rab-icon svg { width: 26px; height: 26px; display: block; }
+        .rab-settings .rab-icon svg { width: 20px; height: 20px; opacity: 0.9; }
+        .tab-icon svg { width: 26px; height: 26px; display: block; }
         .rab-btn.active { background: var(--accent-coral); color: #fff; border-color: #e2603f; box-shadow: inset 0 2px 6px rgba(0,0,0,0.15); }
         /* Während Vorlesen/Nachlesen übernimmt die Transportleiste — Aktionsleiste tritt zurück */
         /* Beim Vorlesen bleibt die Aktionsleiste sichtbar (Play/Pause-Toggle).
@@ -2204,13 +2209,13 @@
         <!-- Feste Aktionsleiste unten: die 3 wichtigsten Lese-Werkzeuge -->
         <div class="reading-action-bar" id="reading-action-bar" role="toolbar" aria-label="Lese-Werkzeuge">
             <button type="button" class="rab-btn" id="act-vorlesen" onclick="actVorlesen()" aria-label="Vorlesen">
-                <span class="rab-icon" aria-hidden="true">▶</span>
+                <span class="rab-icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 5a2 2 0 0 1 3.008-1.728l11.997 6.998a2 2 0 0 1 .003 3.458l-12 7A2 2 0 0 1 5 19z"/></svg></span>
             </button>
             <button type="button" class="rab-btn rab-settings" id="act-einstellungen" onclick="openSettings()" aria-label="Leseeinstellungen">
-                <span class="rab-icon" aria-hidden="true">⚙️</span>
+                <span class="rab-icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"/><circle cx="12" cy="12" r="3"/></svg></span>
             </button>
             <button type="button" class="rab-btn" id="act-woerter" onclick="actWoerter()" aria-label="Wörter lesen">
-                <span class="rab-icon" aria-hidden="true">☝️</span>
+                <span class="rab-icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 14a8 8 0 0 1-8 8"/><path d="M18 11v-1a2 2 0 0 0-2-2a2 2 0 0 0-2 2"/><path d="M14 10V9a2 2 0 0 0-2-2a2 2 0 0 0-2 2v1"/><path d="M10 9.5V4a2 2 0 0 0-2-2a2 2 0 0 0-2 2v10"/><path d="M18 11a2 2 0 1 1 4 0v3a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15"/></svg></span>
             </button>
         </div>
 
@@ -2259,16 +2264,16 @@
             <h2 class="section-title">Spiele</h2>
             <div class="activity-tabs spiel-chooser" aria-label="Spielauswahl">
                 <button class="activity-tab" id="tab-quiz" data-tab="quiz" onclick="openSpiel('quiz')">
-                    <span class="tab-icon">🧠</span><span class="tab-label">Quiz</span>
+                    <span class="tab-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 18V5"/><path d="M15 13a4.17 4.17 0 0 1-3-4 4.17 4.17 0 0 1-3 4"/><path d="M17.598 6.5A3 3 0 1 0 12 5a3 3 0 1 0-5.598 1.5"/><path d="M17.997 5.125a4 4 0 0 1 2.526 5.77"/><path d="M18 18a4 4 0 0 0 2-7.464"/><path d="M19.967 17.483A4 4 0 1 1 12 18a4 4 0 1 1-7.967-.517"/><path d="M6 18a4 4 0 0 1-2-7.464"/><path d="M6.003 5.125a4 4 0 0 0-2.526 5.77"/></svg></span><span class="tab-label">Quiz</span>
                 </button>
                 <button class="activity-tab" id="tab-weiterdenken" data-tab="weiterdenken" onclick="openSpiel('weiterdenken')">
-                    <span class="tab-icon">🌟</span><span class="tab-label">Weiterdenken</span>
+                    <span class="tab-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg></span><span class="tab-label">Weiterdenken</span>
                 </button>
                 <button class="activity-tab" id="tab-schatz" data-tab="schatz" onclick="openSpiel('schatz')">
-                    <span class="tab-icon">🔍</span><span class="tab-label">Schatz</span>
+                    <span class="tab-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m21 21-4.34-4.34"/><circle cx="11" cy="11" r="8"/></svg></span><span class="tab-label">Schatz</span>
                 </button>
                 <button class="activity-tab" id="tab-wortschatz" data-tab="wortschatz" onclick="openSpiel('wortschatz')">
-                    <span class="tab-icon">📖</span><span class="tab-label">Wortsammlung</span>
+                    <span class="tab-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 7v14"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/></svg></span><span class="tab-label">Wortsammlung</span>
                 </button>
             </div>
         </div>
@@ -2348,7 +2353,7 @@
     </div>
 
     <footer>
-        <p>Erstellt von deinem KI-Lesekumpel 🤖</p>
+        <p class="footer-credit"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"/><path d="M20 2v4"/><path d="M22 4h-4"/><circle cx="4" cy="20" r="2"/></svg><span>Text und Bilder mit KI erstellt</span></p>
         <div class="footer-links"><a href="#">Impressum</a> • <a href="../datenschutz.html">Datenschutz</a> • <a href="../ueber-uns.html">Über uns</a> • <a href="../blog-warum-lesekumpel.html">Blog</a> &bull; <a href="../knowledge-base/snacks/index.html">Wissen</a> &bull; <button type="button" id="report-open" class="footer-report" data-speak="Melden: Wenn dich etwas an der Geschichte stört, sag es uns hier — am besten zusammen mit einem Erwachsenen.">Inhalt melden</button></div>
     </footer>
 
@@ -3115,6 +3120,8 @@
         }
 
         // UI = nur noch der Vorlesen-Knopf in der Aktionsleiste (kein Player-Bar mehr)
+        const ICON_PLAY = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 5a2 2 0 0 1 3.008-1.728l11.997 6.998a2 2 0 0 1 .003 3.458l-12 7A2 2 0 0 1 5 19z"/></svg>';
+        const ICON_PAUSE = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="14" y="3" width="5" height="18" rx="1"/><rect x="5" y="3" width="5" height="18" rx="1"/></svg>';
         function playerSetUI(uiState) { // 'playing' | 'paused' | 'stopped'
             const btn = document.getElementById('act-vorlesen');
             if (!btn) return;
@@ -3122,14 +3129,14 @@
             if (uiState === 'stopped') {
                 document.body.classList.remove('player-active');
                 btn.classList.remove('active');
-                if (icon) icon.textContent = '▶';
+                if (icon) icon.innerHTML = ICON_PLAY;
                 btn.setAttribute('aria-label', 'Vorlesen');
                 return;
             }
             document.body.classList.add('player-active');
             const playing = uiState === 'playing';
             btn.classList.toggle('active', playing);
-            if (icon) icon.textContent = playing ? '⏸' : '▶';
+            if (icon) icon.innerHTML = playing ? ICON_PAUSE : ICON_PLAY;
             btn.setAttribute('aria-label', playing ? 'Pause' : 'Weiterlesen');
         }
 
