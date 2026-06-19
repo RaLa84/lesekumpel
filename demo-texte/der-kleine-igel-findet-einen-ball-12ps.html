@@ -1065,6 +1065,22 @@
             text-decoration-skip-ink: none;
         }
 
+        /* Fokus-Zeile / Leselineal — dimmt alles ausser einem Lesefenster.
+           position:fixed + box-shadow-Trick; pointer-events:none -> Antippen & Scrollen
+           laufen ungestoert weiter. Liegt unter Header (z1000) und Aktionsleiste (z4400). */
+        #reading-ruler {
+            position: fixed; left: 0; right: 0; top: 50%;
+            height: clamp(76px, 19vh, 150px);
+            transform: translateY(-50%);
+            pointer-events: none;
+            box-shadow: 0 0 0 100vmax rgba(20, 30, 48, 0.55);
+            border-top: 2px solid rgba(255, 213, 79, 0.95);
+            border-bottom: 2px solid rgba(255, 213, 79, 0.95);
+            z-index: 60;
+        }
+        #reading-ruler[hidden] { display: none; }
+        @media (prefers-reduced-motion: reduce) { #reading-ruler { transition: none; } }
+
         /* Fahrplan-Modus (Leser-Preference) */
         body.fahrplan-active { line-height: 1.9; }
         body.fahrplan-active .story-text p {
@@ -2238,6 +2254,7 @@
                             <button class="tool-btn" onclick="toggleViewMode()" id="view-toggle-btn" aria-label="Text in Häppchen"><span class="btn-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15.39 4.39a1 1 0 0 0 1.68-.474 2.5 2.5 0 1 1 3.014 3.015 1 1 0 0 0-.474 1.68l1.683 1.682a2.414 2.414 0 0 1 0 3.414L19.61 15.39a1 1 0 0 1-1.68-.474 2.5 2.5 0 1 0-3.014 3.015 1 1 0 0 1 .474 1.68l-1.683 1.682a2.414 2.414 0 0 1-3.414 0L8.61 19.61a1 1 0 0 0-1.68.474 2.5 2.5 0 1 1-3.014-3.015 1 1 0 0 0 .474-1.68l-1.683-1.682a2.414 2.414 0 0 1 0-3.414L4.39 8.61a1 1 0 0 1 1.68.474 2.5 2.5 0 1 0 3.014-3.015 1 1 0 0 1-.474-1.68l1.683-1.682a2.414 2.414 0 0 1 3.414 0z"/></svg></span> <span class="btn-label">Häppchen</span></button>
                             <button class="tool-btn" onclick="toggleLeselinien()" id="btn-leselinien" aria-label="Leselinien"><span class="btn-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.3 15.3a2.4 2.4 0 0 1 0 3.4l-2.6 2.6a2.4 2.4 0 0 1-3.4 0L2.7 8.7a2.41 2.41 0 0 1 0-3.4l2.6-2.6a2.41 2.41 0 0 1 3.4 0Z"/><path d="m14.5 12.5 2-2"/><path d="m11.5 9.5 2-2"/><path d="m8.5 6.5 2-2"/><path d="m17.5 15.5 2-2"/></svg></span> <span class="btn-label">Linien</span></button>
                             <button class="tool-btn" onclick="toggleFahrplan()" id="btn-fahrplan" aria-label="Fahrplan"><span class="btn-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 5h10"/><path d="M11 12h10"/><path d="M11 19h10"/><path d="M4 4h1v5"/><path d="M4 9h2"/><path d="M6.5 20H3.4c0-1 2.6-1.925 2.6-3.5a1.5 1.5 0 0 0-2.6-1.02"/></svg></span> <span class="btn-label">Fahrplan</span></button>
+                            <button class="tool-btn" onclick="toggleFokus()" id="btn-fokus" aria-label="Fokus-Zeile" aria-pressed="false"><span class="btn-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 7V5a2 2 0 0 1 2-2h2"/><path d="M17 3h2a2 2 0 0 1 2 2v2"/><path d="M21 17v2a2 2 0 0 1-2 2h-2"/><path d="M7 21H5a2 2 0 0 1-2-2v-2"/><path d="M7 12h10"/></svg></span> <span class="btn-label">Fokus</span></button>
                         </div>
                     </div>
                     <div class="toolbar-group group-extra">
@@ -2254,6 +2271,7 @@
         </div>
 
         <!-- Feste Aktionsleiste unten: die 3 wichtigsten Lese-Werkzeuge -->
+        <div id="reading-ruler" hidden></div>
         <div class="reading-action-bar" id="reading-action-bar" role="toolbar" aria-label="Lese-Werkzeuge">
             <button type="button" class="rab-btn" id="act-vorlesen" onclick="actVorlesen()" aria-label="Vorlesen">
                 <span class="rab-icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 5a2 2 0 0 1 3.008-1.728l11.997 6.998a2 2 0 0 1 .003 3.458l-12 7A2 2 0 0 1 5 19z"/></svg></span>
@@ -3616,6 +3634,15 @@
             else { removeParagraphNumbers(); }
             try { localStorage.setItem('lesekumpel-fahrplan-default', active ? 'true' : 'false'); } catch(e) {}
         }
+        function toggleFokus() {
+            const el = document.getElementById('reading-ruler');
+            const btn = document.getElementById('btn-fokus');
+            if (!el) return;
+            const on = el.hasAttribute('hidden');   // war versteckt -> wird aktiviert
+            if (on) el.removeAttribute('hidden'); else el.setAttribute('hidden', '');
+            if (btn) { btn.classList.toggle('active', on); btn.setAttribute('aria-pressed', on ? 'true' : 'false'); }
+            try { localStorage.setItem('lesekumpel-fokus', on ? 'true' : 'false'); } catch(e) {}
+        }
         let swipeInitialized = false;
         function setupSwipeIfNeeded() {
             if (swipeInitialized) return;
@@ -3835,6 +3862,7 @@
             try {
                 if (localStorage.getItem('lesekumpel-lesefreundlich') === 'true') toggleDyslexia();
                 if (localStorage.getItem('lesekumpel-kontrast') === 'true') toggleContrast();
+                if (localStorage.getItem('lesekumpel-fokus') === 'true') toggleFokus();
             } catch(e) {}
 
             // Ansicht ist exklusiv — höchstens einen Modus aktivieren
