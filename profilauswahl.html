@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wer liest heute? &ndash; Lesekumpel</title>
+    <meta name="description" content="W&auml;hle ein Kinderprofil oder wechsle in den Eltern-Bereich.">
+    <meta name="robots" content="noindex">
+    <link rel="icon" href="bilder/lesekumpel_logo_v2.png">
+    <link rel="stylesheet" href="fonts/fonts.css">
+    <link rel="stylesheet" href="konto.css">
+</head>
+<body>
+    <a class="skip-link" href="#main-content">Zum Inhalt springen</a>
+
+    <!-- NAVBAR -->
+    <nav class="main-navbar" aria-label="Hauptnavigation">
+        <div class="nav-left">
+            <span class="nav-logo-box"><img src="bilder/lesekumpel_logo_v2.png" alt="Lesekumpel Logo" class="nav-logo"></span>
+            <a href="landingpage.html" class="brand-name">Lesekumpel</a>
+        </div>
+        <div class="nav-right">
+            <a href="index.html" class="nav-btn">Bibliothek</a>
+        </div>
+    </nav>
+
+    <div class="a11y-bar">
+        <button type="button" class="a11y-btn" data-a11y="dyslexia">&#128068; Leichter lesen</button>
+        <button type="button" class="a11y-btn" data-a11y="contrast">&#9680; Mehr Kontrast</button>
+    </div>
+
+    <main id="main-content">
+        <div class="auth-wrap" style="position:relative;">
+            <svg aria-hidden="true" class="floating-deco deco-star" style="top:12%;left:10%;width:30px;color:var(--yellow);" viewBox="0 0 32 32"><polygon points="16,2 20,12 30,12 22,19 25,30 16,23 7,30 10,19 2,12 12,12" fill="currentColor" opacity="0.7"/></svg>
+            <svg aria-hidden="true" class="floating-deco deco-sparkle" style="top:20%;right:12%;width:22px;color:var(--salmon);animation-delay:-1s;" viewBox="0 0 24 24"><path d="M12 2L13.5 9 21 12L13.5 14.5L12 22L10.5 14.5L3 12L10.5 9Z" fill="currentColor" opacity="0.7"/></svg>
+            <div aria-hidden="true" class="floating-deco deco-circle" style="bottom:16%;left:16%;width:16px;height:16px;background:rgba(125,106,230,0.4);animation-delay:-2s;"></div>
+            <svg aria-hidden="true" class="floating-deco deco-star" style="bottom:12%;right:14%;width:22px;color:var(--mint);animation-delay:-3s;" viewBox="0 0 32 32"><polygon points="16,2 20,12 30,12 22,19 25,30 16,23 7,30 10,19 2,12 12,12" fill="currentColor" opacity="0.55"/></svg>
+
+            <div class="auth-card reveal" style="position:relative;z-index:1;max-width:560px;">
+                <div class="mascot" aria-hidden="true"><span class="mascot-glow"></span><img class="mascot-img" src="bilder/lesekumpel_logo_v2.png" alt=""></div>
+                <div class="mascot-bubble" id="pick-bubble">Wer m&ouml;chte heute lesen? 📚</div>
+                <h1 class="auth-title"><span class="handwrite">Wer</span> liest heute?</h1>
+                <p class="auth-sub">Tippe auf dein Profil &mdash; dann geht&rsquo;s los.</p>
+
+                <div class="children-grid reveal-stagger" id="children-grid" style="margin-bottom:18px;"></div>
+
+                <!-- dezenter Eltern-Zugang -->
+                <div class="auth-divider">oder</div>
+                <div style="text-align:center;">
+                    <button type="button" class="btn-text" id="parent-door" style="opacity:0.7;">&#128274; Eltern-Bereich</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer>
+        <div class="footer-links"><a href="impressum.html">Impressum</a> &bull; <a href="datenschutz.html">Datenschutz</a> &bull; <a href="ueber-uns.html">&Uuml;ber uns</a></div>
+    </footer>
+
+    <!-- ELTERN-TÜR (Modal mit kleiner Rechenaufgabe) -->
+    <div class="lk-modal" id="parent-modal" role="dialog" aria-modal="true" aria-labelledby="pm-title">
+        <div class="lk-modal-card">
+            <div aria-hidden="true" style="font-size:2.2rem;">&#128274;</div>
+            <h2 id="pm-title">Nur f&uuml;r Erwachsene</h2>
+            <p class="step-hint" id="pm-q">L&ouml;se die Aufgabe, um in den Eltern-Bereich zu gelangen.</p>
+            <input type="number" id="pm-input" class="form-input" inputmode="numeric" aria-labelledby="pm-q" style="text-align:center;font-size:1.2rem;">
+            <div class="lk-modal-error" id="pm-err" role="alert" aria-live="assertive"></div>
+            <div class="lk-modal-actions">
+                <button type="button" class="btn-secondary" id="pm-cancel">Zur&uuml;ck</button>
+                <button type="button" class="btn-primary" id="pm-ok">Weiter</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="formkit.js"></script>
+    <script src="konto-state.js"></script>
+    <script src="konto-fx.js"></script>
+    <script>
+    (function () {
+        'use strict';
+
+        function esc(s) {
+            return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+                return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+            });
+        }
+
+        // ---- Robustheit: bei Direktaufruf ohne Login Mock-Daten anlegen ----
+        if (!Konto.getParent() || !Konto.getChildren().length) Konto.seedIfEmpty();
+
+        // ---- A11y ----
+        Konto.applyA11y();
+        document.querySelectorAll('[data-a11y]').forEach(function (btn) {
+            var key = btn.getAttribute('data-a11y');
+            if (Konto.getA11y()[key]) btn.classList.add('on');
+            btn.addEventListener('click', function () {
+                btn.classList.toggle('on', Konto.toggleA11y(key));
+            });
+        });
+
+        // ---- Maskottchen ----
+        KontoFX.mascotBubble(document.getElementById('pick-bubble'), null, { delay: 600 });
+
+        // ---- Kinder-Kacheln ----
+        window.pickChild = function (id) {
+            Konto.setActiveChild(id);
+            window.location.href = 'kind.html';
+        };
+        var kids = Konto.getChildren();
+        var html = kids.map(function (c) {
+            var av = c.avatar || {};
+            return '<button class="child-card" onclick="pickChild(' + c.id + ')" aria-label="Profil von ' + esc(c.name) + ' &ouml;ffnen">' +
+                '<div class="child-avatar" style="background:' + esc(av.bgColor || '#ffe0dc') + '">' + esc(av.base || '🦊') + '</div>' +
+                '<div><div class="child-name">' + esc(c.name) + '</div>' +
+                '<span class="lesestufe-badge">Phase ' + (c.level ? c.level.phase : '–') + ' &middot; ' + esc(c.level ? c.level.label : '') + '</span></div>' +
+            '</button>';
+        }).join('');
+        // ANTON-Pendant zu "Anderes Nutzerkonto": neues Kind anlegen
+        html += '<button class="child-card" onclick="window.location.href=\'onboarding.html\'" aria-label="Neues Kinderprofil anlegen" style="border-style:dashed;">' +
+            '<div class="child-avatar" style="background:var(--cream-light);">&#10133;</div>' +
+            '<div><div class="child-name">Kind hinzuf&uuml;gen</div>' +
+            '<div class="child-meta">Neues Profil einrichten</div></div>' +
+        '</button>';
+        document.getElementById('children-grid').innerHTML = html;
+
+        // ---- weiche Eltern-Tür (fokus-gefangenes Modal, Rechenaufgabe) ----
+        var pModal = document.getElementById('parent-modal');
+        var pRelease = null, pAnswer = 0;
+        function openParentGate() {
+            var a = 3 + Math.floor(Math.random() * 6);   // 3..8
+            var b = 2 + Math.floor(Math.random() * 5);   // 2..6
+            pAnswer = a + b;
+            document.getElementById('pm-q').textContent = 'Was ist ' + a + ' + ' + b + '?';
+            document.getElementById('pm-input').value = '';
+            document.getElementById('pm-err').textContent = '';
+            pModal.classList.add('show');
+            pRelease = KontoFX.trapFocus(pModal, { initial: '#pm-input', onEscape: closeParentGate });
+        }
+        function closeParentGate() {
+            pModal.classList.remove('show');
+            if (pRelease) { pRelease(); pRelease = null; }
+        }
+        function submitParentGate() {
+            var val = parseInt(document.getElementById('pm-input').value, 10);
+            if (val === pAnswer) { window.location.href = 'mein-konto.html'; }
+            else {
+                document.getElementById('pm-err').textContent = 'Das stimmt noch nicht. Versuch es nochmal. 🙂';
+                var inp = document.getElementById('pm-input'); inp.value = ''; inp.focus();
+            }
+        }
+        document.getElementById('parent-door').addEventListener('click', openParentGate);
+        document.getElementById('pm-ok').addEventListener('click', submitParentGate);
+        document.getElementById('pm-cancel').addEventListener('click', closeParentGate);
+        document.getElementById('pm-input').addEventListener('keydown', function (e) {
+            if (e.key === 'Enter') { e.preventDefault(); submitParentGate(); }
+        });
+    })();
+    </script>
+</body>
+</html>

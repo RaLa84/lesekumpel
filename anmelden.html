@@ -58,7 +58,7 @@
                 </div>
 
                 <p style="font-size:0.78rem;color:var(--text-muted);margin-top:12px;">
-                    Prototyp &mdash; jede Eingabe f&uuml;hrt zum Eltern-Bereich. Es werden keine echten Daten gepr&uuml;ft.
+                    Prototyp &mdash; jede Eingabe f&uuml;hrt zur Profilauswahl. Es werden keine echten Daten gepr&uuml;ft.
                 </p>
 
                 <div class="auth-divider">oder</div>
@@ -91,10 +91,10 @@
             });
         });
 
-        // Mock-Login: sorgt für ein Eltern-Profil & geht zum Konto
+        // Mock-Login: sorgt für ein Eltern-Profil & geht zur Profilauswahl
         document.getElementById('btn-login').addEventListener('click', function () {
             if (!Konto.getParent()) Konto.seedIfEmpty();
-            window.location.href = 'mein-konto.html';
+            window.location.href = 'profilauswahl.html';
         });
         // Enter im Formular = Anmelden
         document.getElementById('login-form').addEventListener('submit', function (e) {
