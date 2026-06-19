@@ -1253,6 +1253,400 @@
             .report-modal .actions button { width: 100%; }
         }
 
+        /* — Vorlese-Knöpfe (🔊) an Quiz, Spielen, Schatz — */
+        .speak-btn {
+            flex-shrink: 0; width: 46px; min-height: 46px; border-radius: 12px;
+            border: 2px solid var(--border-card, #F5E6A3); background: #fffbe6;
+            cursor: pointer; font-size: 1.05rem;
+            display: inline-flex; align-items: center; justify-content: center;
+            transition: transform 0.15s ease, background 0.15s ease;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .speak-btn:hover { transform: scale(1.08); background: #fff; border-color: var(--mint); }
+        .speak-btn:active { transform: scale(0.9); }
+        /* Frage = ruhiger Block, Antworten = Karten; 🔊 jeweils dezent IM Block integriert
+           (kein eigener Kasten, kein A/B/C-Bubble) */
+        .quiz-q-row {
+            display: flex; align-items: center; gap: 8px; margin-bottom: 18px;
+            background: var(--cream-light); border-radius: 14px; padding: 12px 14px;
+        }
+        .quiz-q-row .quiz-q-title { flex: 1; padding-top: 0; font-weight: 700; font-size: 1.15rem; margin: 0; color: var(--navy); }
+        .quiz-answer-row { position: relative; margin-bottom: 12px; }
+        .quiz-answer-row .quiz-option { width: 100%; margin-bottom: 0; padding-right: 50px; }
+        /* Dezentes, randloses Lautsprecher-Icon, das im Block sitzt */
+        .quiz-q-row .speak-btn,
+        .quiz-answer-row .speak-btn {
+            width: 34px; height: 34px; min-height: 34px; flex-shrink: 0;
+            border: none; background: transparent; box-shadow: none; border-radius: 50%;
+            font-size: 1.05rem; color: var(--navy); opacity: 0.7;
+        }
+        .quiz-answer-row .speak-btn { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); }
+        .quiz-q-row .speak-btn:hover { opacity: 1; background: rgba(43,49,64,0.07); transform: scale(1.08); border-color: transparent; }
+        .quiz-answer-row .speak-btn:hover { opacity: 1; background: rgba(43,49,64,0.07); transform: translateY(-50%) scale(1.08); border-color: transparent; }
+        .quiz-answer-row .speak-btn:active { transform: translateY(-50%) scale(0.92); }
+
+        /* — Schritt-Quiz: eine Frage zur Zeit, Sterne, Weiter-Knopf, Abschluss — */
+        body:not(.view-tafel) #panel-quiz .quiz-question:not(.q-active) { display: none; }
+        #panel-quiz .quiz-question.q-active { animation: activityFadeIn 0.25s ease-out; }
+        .quiz-progress {
+            display: flex; align-items: center; justify-content: space-between; gap: 12px;
+            margin-bottom: 16px; flex-wrap: wrap;
+        }
+        .qp-stars { font-size: 1.5rem; letter-spacing: 5px; color: #f1c40f; line-height: 1; }
+        .qp-label { font-family: var(--font-heading); font-weight: 600; color: var(--navy); font-size: 1rem; }
+        .quiz-next-wrap { text-align: center; margin-top: 18px; }
+        .quiz-next-btn, .quiz-retry-btn {
+            background: var(--mint); color: var(--navy); border: none;
+            min-height: 58px; padding: 14px 38px; border-radius: 999px;
+            font-family: var(--font-heading); font-weight: 700; font-size: 1.15rem;
+            cursor: pointer; box-shadow: 0 4px 14px rgba(47,184,166,0.4);
+            animation: bubblePop 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            transition: transform 0.15s ease;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .quiz-next-btn:hover, .quiz-retry-btn:hover { transform: translateY(-3px); }
+        .quiz-next-btn:focus-visible, .quiz-retry-btn:focus-visible { outline: 3px solid var(--lila); outline-offset: 2px; }
+        .quiz-done { text-align: center; padding: 16px 8px; }
+        .quiz-done .done-buddy { width: 120px; height: auto; }
+        .quiz-done-title { font-family: var(--font-heading); color: var(--navy); font-size: 1.5rem; margin: 8px 0 6px; }
+        .quiz-done-stars { font-size: 2rem; letter-spacing: 8px; color: #f1c40f; margin-bottom: 8px; }
+        .quiz-done-text { color: var(--navy); margin: 0 0 16px; }
+        body.view-tafel #quiz-progress, body.view-tafel #quiz-next-wrap, body.view-tafel #quiz-done { display: none !important; }
+
+        /* Jeder Spiele-Tab hat seine eigene Farbe (alle mit Navy-Text, AA) */
+        #tab-weiterdenken.active { background: var(--primary-yellow); box-shadow: 0 3px 10px rgba(255,217,90,0.55); }
+        #tab-schatz.active { background: #CDC2F5; box-shadow: 0 3px 10px rgba(125,106,230,0.3); }
+        #tab-wortschatz.active { background: var(--accent-coral); box-shadow: 0 3px 10px rgba(249,115,82,0.35); }
+        .weitererzaehlen-card-header .speak-btn { width: 40px; min-height: 40px; font-size: 0.95rem; }
+        .schatz-intro-actions { display: flex; gap: 10px; justify-content: center; align-items: center; }
+
+        /* — Häppchen: große runde Pfeile + Sternenleiste — */
+        .chunk-controls .chunk-arrow {
+            width: 64px; height: 64px; min-width: 64px; min-height: 64px; border-radius: 50%;
+            font-size: 1.6rem; padding: 0; justify-content: center;
+            background: var(--mint); color: var(--navy); border-color: #28a392;
+            box-shadow: 0 4px 14px rgba(47,184,166,0.3);
+        }
+        .chunk-controls .chunk-arrow:hover { background: var(--navy); color: #fff; transform: translateY(-2px); }
+        .chunk-stars { text-align: center; margin-top: 10px; letter-spacing: 4px; }
+        .chunk-stars .star { color: #e8e0c8; font-size: 1.25rem; }
+        .chunk-stars .star.on { color: #f1c40f; text-shadow: 0 0 6px rgba(241,196,15,0.45); }
+
+        /* — „Geschichte geschafft!"-Karte — */
+        .done-card {
+            text-align: center; background: linear-gradient(135deg, #fff9e5 0%, #fff 100%);
+            border: 2px solid var(--primary-yellow); border-radius: 24px;
+            padding: 26px 20px; margin: 4px 0 32px;
+            animation: bubblePop 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .done-buddy { width: 110px; height: auto; }
+        .done-star { font-size: 2.2rem; line-height: 1; }
+        .done-title { font-family: var(--font-heading); color: var(--navy); font-size: 1.5rem; margin: 6px 0 16px; }
+        .done-cta {
+            background: var(--mint); color: var(--navy); border-color: #28a392;
+            min-height: 54px; font-size: 1rem; padding: 12px 26px; border-radius: 999px;
+            box-shadow: 0 4px 14px rgba(47,184,166,0.3);
+        }
+        .done-cta:hover { background: var(--navy); color: #fff; }
+
+        /* — Lese-Buddy: das Maskottchen sitzt im Zauberkasten-Header (FAB rechts unten) — */
+        .toolbar-header .header-icon { width: 54px; height: 54px; display: inline-flex; align-items: center; justify-content: center; overflow: visible; }
+        .buddy-img {
+            width: 54px; height: 54px; object-fit: contain;
+            filter: drop-shadow(0 3px 8px rgba(0,0,0,0.18));
+            animation: buddyFloat 4s ease-in-out infinite;
+        }
+        @keyframes buddyFloat {
+            0%, 100% { transform: translateY(0) rotate(-2deg); }
+            50% { transform: translateY(-5px) rotate(2deg); }
+        }
+        .buddy-img.cheer { animation: buddyJump 0.9s cubic-bezier(0.34, 1.56, 0.64, 1); }
+        @keyframes buddyJump {
+            0%, 100% { transform: translateY(0); }
+            30% { transform: translateY(-16px) rotate(-7deg); }
+            60% { transform: translateY(0); }
+            80% { transform: translateY(-7px) rotate(4deg); }
+        }
+        /* Sprechblase: hängt über dem (collapsed) FAB rechts unten */
+        .buddy-bubble {
+            position: absolute; bottom: calc(100% + 10px); right: 0; white-space: nowrap;
+            background: #fff; border: 2px solid var(--primary-yellow); border-radius: 16px;
+            padding: 10px 16px; font-family: var(--font-heading); font-weight: 600;
+            font-size: 1.05rem; color: var(--text-dark);
+            box-shadow: 0 6px 18px rgba(0,0,0,0.12);
+            animation: bubblePop 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        .buddy-bubble[hidden] { display: none; }
+        .toolbar-container.collapsed { overflow: visible; }
+        /* Buddy-Aktionsgruppe im Panel */
+        .toolbar-group.group-buddy { background: #F1EEFC; }
+        .buddy-actions { display: flex; flex-direction: column; gap: 8px; }
+        .buddy-menu-btn {
+            display: flex; align-items: center; gap: 12px;
+            min-height: 56px; min-width: 200px;
+            border: none; border-radius: 14px; background: #fff9e5;
+            cursor: pointer; padding: 8px 16px;
+            font-family: var(--font-heading); font-weight: 600; font-size: 1.05rem; color: var(--text-dark);
+            transition: transform 0.15s ease, background 0.15s ease;
+            -webkit-tap-highlight-color: transparent;
+        }
+        .buddy-menu-btn:hover { background: #fff3b8; transform: translateX(3px); }
+        .buddy-menu-btn:active { transform: scale(0.97); }
+        .buddy-menu-btn .bm-icon { font-size: 1.5rem; width: 36px; text-align: center; }
+        .buddy-menu-btn:focus-visible,
+        .speak-btn:focus-visible, .chunk-arrow:focus-visible, .done-cta:focus-visible {
+            outline: 3px solid var(--lila); outline-offset: 2px;
+        }
+        @keyframes bubblePop {
+            from { opacity: 0; transform: translateY(8px) scale(0.9); }
+            to { opacity: 1; transform: none; }
+        }
+        @media (max-width: 767px) {
+            .buddy-img, .toolbar-header .header-icon { width: 46px; height: 46px; }
+            .buddy-menu-btn { min-width: 170px; }
+        }
+
+        /* Im geöffneten Panel kein Logo/Titel (zugeklappt bleibt der Maskottchen-FAB) */
+        .toolbar-container:not(.collapsed) .toolbar-header-label { display: none; }
+        .toolbar-container:not(.collapsed) .toolbar-header { justify-content: flex-end; }
+
+        /* — Symbol-first Zauberkasten: großes Icon über kleinem Label — */
+        .toolbar-group-buttons > .tool-btn {
+            flex-direction: column; gap: 4px;
+            min-height: 62px; min-width: 78px; padding: 8px 10px;
+        }
+        .toolbar-group-buttons > .tool-btn .btn-icon { font-size: 1.7em; }
+        .toolbar-group-buttons > .tool-btn .btn-label { font-size: 0.92em; }
+        .font-size-control .tool-btn { min-height: 62px; font-size: 1.1em; }
+
+        /* — Audio-Player-Leiste (fixed bottom, läuft beim Vorlesen mit) — */
+        .player-bar {
+            position: fixed; bottom: 0; left: 0; right: 0; z-index: 4450;
+            display: flex; align-items: center; gap: 12px;
+            background: #fff; border-top: 3px solid var(--mint);
+            padding: 10px 16px calc(10px + env(safe-area-inset-bottom));
+            box-shadow: 0 -6px 24px rgba(43,49,64,0.14);
+        }
+        .player-bar[hidden] { display: none; }
+        .pb-btn {
+            width: 52px; height: 52px; border-radius: 50%; border: none;
+            background: var(--mint); color: var(--navy); font-size: 1.3rem; cursor: pointer;
+            flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center;
+            transition: transform 0.15s ease; -webkit-tap-highlight-color: transparent;
+        }
+        .pb-btn:hover { transform: scale(1.06); }
+        .pb-btn:active { transform: scale(0.93); }
+        .pb-stop { background: var(--cream-light); border: 2px solid var(--border-soft); width: 44px; height: 44px; font-size: 1rem; }
+        .pb-range { flex: 1; accent-color: var(--mint); height: 36px; cursor: pointer; min-width: 0; }
+        .pb-count { font-family: var(--font-heading); font-weight: 600; font-size: 0.9rem; color: var(--navy); min-width: 52px; text-align: center; flex-shrink: 0; }
+        .pb-btn:focus-visible, .pb-range:focus-visible { outline: 3px solid var(--lila); outline-offset: 2px; }
+        /* Vorlesen läuft jetzt ohne Player-Leiste — keine Extra-Abstände nötig */
+
+        /* — „Jetzt liest du!": grün gelesene Wörter + Mikro-Leiste — */
+        .word-interactive.read-correct { color: #1A8676; font-weight: 600; }   /* AA-grün auf Weiß/Cream */
+        .word-interactive.read-current { background: rgba(47,184,166,0.18); border-radius: 4px; }
+        .word-interactive.read-pulse { animation: readPulse 0.6s ease-in-out 2; }
+        @keyframes readPulse {
+            0%, 100% { background: rgba(47,184,166,0.18); }
+            50% { background: var(--primary-yellow); }
+        }
+        .mic-bar {
+            position: fixed; bottom: 0; left: 0; right: 0; z-index: 4450;
+            display: flex; align-items: center; gap: 12px;
+            background: #fff; border-top: 3px solid var(--accent-coral);
+            padding: 10px 16px calc(10px + env(safe-area-inset-bottom));
+            box-shadow: 0 -6px 24px rgba(43,49,64,0.14);
+        }
+        .mic-bar[hidden] { display: none; }
+        .mic-dot { font-size: 1.5rem; flex-shrink: 0; animation: micPulse 1.2s ease-in-out infinite; }
+        @keyframes micPulse { 0%,100% { transform: scale(1); opacity: 1; } 50% { transform: scale(1.18); opacity: 0.7; } }
+        .mic-label { flex: 1; font-family: var(--font-heading); font-weight: 600; color: var(--navy); font-size: 1rem; min-width: 0; }
+        .mic-count { font-family: var(--font-heading); font-weight: 600; font-size: 0.9rem; color: var(--navy); min-width: 52px; text-align: center; flex-shrink: 0; }
+        body.mic-active { padding-bottom: 130px; }
+        body.mic-active .toolbar-container.collapsed,
+        body.mic-active .toolbar-container:not(.collapsed) { bottom: 96px; }
+        @media (max-width: 767px) {
+            body.mic-active { padding-bottom: 150px; }
+            body.mic-active .toolbar-container.collapsed { bottom: 92px; }
+            .mic-label { font-size: 0.88rem; }
+            .mic-count { min-width: 40px; font-size: 0.8rem; }
+        }
+        .done-self-badge {
+            display: inline-block; margin: 0 0 14px; padding: 6px 16px;
+            background: rgba(47,184,166,0.18); border: 2px solid var(--mint);
+            border-radius: 999px; font-family: var(--font-heading); font-weight: 700;
+            color: #1A8676; font-size: 0.95rem;
+        }
+        .done-self-badge[hidden] { display: none; }
+
+        /* — Tafel-Modus: Player/Geschafft-Karte/Leisten stören dort nicht — */
+        body.view-tafel .done-card,
+        body.view-tafel .player-bar,
+        body.view-tafel .mic-bar { display: none !important; }
+        body.view-tafel .buddy-img, body.view-tafel .toolbar-header .header-icon { width: 84px; height: 84px; }
+
+        /* 1-Spalten-Fallback wenn Viewport zu schmal für 2-Spalten ist (z.B. Toggle-Test am Desktop) */
+        @media (max-width: 1500px) {
+            body.view-tafel .main-card {
+                grid-template-columns: 1fr;
+                grid-template-areas: "image" "story" "extras";
+            }
+            body.view-tafel .tafel-image-stage {
+                position: relative; top: auto;
+                height: auto; aspect-ratio: 16/9;
+                min-height: 0;
+            }
+            body.view-tafel .tafel-story-col { grid-area: story; align-self: stretch; }
+        }
+
+        /* === FESTE AKTIONSLEISTE (Vorlesen / Nachlesen / Wörter lesen) === */
+        body { padding-bottom: 84px; }
+        .reading-action-bar {
+            position: fixed; left: 0; right: 0; bottom: 0; z-index: 4400;
+            display: flex; gap: 8px;
+            background: #fff; border-top: 3px solid var(--mint);
+            padding: 8px 12px calc(8px + env(safe-area-inset-bottom));
+            box-shadow: 0 -6px 24px rgba(43,49,64,0.12);
+        }
+        .rab-btn {
+            flex: 1 1 0; min-height: 50px;
+            display: inline-flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px;
+            background: var(--cream-light); border: 2px solid var(--border-soft); border-radius: 16px;
+            font-family: var(--font-heading); font-weight: 600; font-size: 0.95rem; color: var(--navy);
+            cursor: pointer; -webkit-tap-highlight-color: transparent;
+            transition: transform 0.12s ease, background 0.15s ease, border-color 0.15s ease;
+        }
+        .rab-btn:hover { background: #fff; border-color: var(--mint); }
+        .rab-btn:active { transform: scale(0.96); }
+        .rab-btn:focus-visible { outline: 3px solid var(--lila); outline-offset: 2px; }
+        .rab-btn[hidden] { display: none; }
+        .rab-icon { font-size: 1.8rem; line-height: 1; }
+        /* Einstellungs-Knopf: kleiner/dezenter als die zwei Lese-Aktionen */
+        .rab-settings { flex: 0 0 auto; min-width: 56px; }
+        .rab-settings .rab-icon { font-size: 1.4rem; opacity: 0.85; }
+        .rab-icon svg { width: 26px; height: 26px; display: block; }
+        .rab-settings .rab-icon svg { width: 20px; height: 20px; opacity: 0.9; }
+        .tab-icon svg { width: 26px; height: 26px; display: block; }
+        .rab-icon, .rab-icon svg, .tab-icon, .tab-icon svg, .nav-icon-btn svg { pointer-events: none; }
+        .rab-btn.active { background: var(--accent-coral); color: #fff; border-color: #e2603f; box-shadow: inset 0 2px 6px rgba(0,0,0,0.15); }
+        /* Während Vorlesen/Nachlesen übernimmt die Transportleiste — Aktionsleiste tritt zurück */
+        /* Beim Vorlesen bleibt die Aktionsleiste sichtbar (Play/Pause-Toggle).
+           Nur beim Mikro-Modus „Nachlesen" tritt sie zurück. */
+        body.mic-active .reading-action-bar { display: none; }
+        body.view-tafel .reading-action-bar { display: none !important; }
+
+        /* === EINSTELLUNGS-OVERLAY (Lesehilfen einmal einstellen) === */
+        .settings-overlay {
+            position: fixed; inset: 0; z-index: 5000;
+            display: flex; align-items: center; justify-content: center;
+            background: rgba(43,49,64,0.45); -webkit-backdrop-filter: blur(3px); backdrop-filter: blur(3px);
+            padding: 20px; animation: settingsFade 0.18s ease-out;
+        }
+        .settings-overlay[hidden] { display: none; }
+        @keyframes settingsFade { from { opacity: 0; } to { opacity: 1; } }
+        .settings-panel {
+            background: var(--bg-card); border-radius: 24px;
+            width: min(440px, 100%); max-height: 85vh; overflow-y: auto;
+            box-shadow: 0 16px 48px rgba(43,49,64,0.25); border: 2px solid var(--mint);
+            animation: settingsPop 0.22s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        @keyframes settingsPop { 0% { transform: scale(0.92); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+        .settings-header {
+            display: flex; align-items: center; justify-content: space-between; padding: 18px 20px 12px;
+        }
+        .settings-title { font-family: var(--font-heading); color: var(--navy); font-size: 1.3rem; margin: 0; }
+        .settings-close {
+            width: 36px; height: 36px; border-radius: 50%; flex-shrink: 0;
+            background: rgba(47,184,166,0.15); border: none; color: var(--navy);
+            font-size: 1.4rem; line-height: 1; cursor: pointer;
+            display: inline-flex; align-items: center; justify-content: center; transition: background 0.15s ease;
+        }
+        .settings-close:hover { background: rgba(47,184,166,0.3); }
+        .settings-close:focus-visible { outline: 3px solid var(--lila); outline-offset: 2px; }
+        .settings-body { display: flex; flex-direction: column; gap: 10px; padding: 0 16px 18px; }
+        .settings-body .toolbar-group-buttons { display: grid; grid-template-columns: repeat(auto-fit, minmax(80px, 1fr)); gap: 8px; }
+        .settings-body .tool-btn { flex-direction: column; gap: 6px; width: 100%; min-width: 0; min-height: 64px; padding: 10px 6px; }
+        .settings-body .tool-btn .btn-label { font-size: 0.8rem; }
+        .settings-body .tool-btn .btn-icon svg, .settings-body .font-size-control .tool-btn svg { width: 22px; height: 22px; }
+        .settings-body .tool-btn svg, .settings-body .btn-icon { pointer-events: none; }
+        .settings-body .font-size-control { grid-column: 1 / -1; display: flex; width: 100%; }
+        .settings-body .font-size-control .tool-btn { flex: 1; flex-direction: row; min-height: 46px; }
+        @media (max-width: 767px) {
+            .settings-panel { width: 100%; max-height: 88vh; }
+        }
+
+        /* === SPIELZEIT: Auswahl-Karten === */
+        .activity-tabs.spiel-chooser {
+            display: flex; flex-direction: column; gap: 12px;
+            background: none; border-radius: 0; padding: 0; margin-bottom: 0;
+        }
+        .spiel-chooser .activity-tab {
+            flex: none; flex-direction: row; justify-content: flex-start; gap: 14px;
+            width: 100%; min-height: 64px; padding: 14px 20px; border-radius: 18px;
+            background: var(--cream-light); border: 2px solid var(--border-soft); color: var(--navy);
+            box-shadow: 0 2px 8px rgba(43,49,64,0.05);
+            transition: transform 0.15s cubic-bezier(0.34, 1.56, 0.64, 1), box-shadow 0.15s ease, border-color 0.15s ease;
+        }
+        .spiel-chooser .activity-tab:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(43,49,64,0.12); border-color: var(--mint); background: #fff; }
+        .spiel-chooser .activity-tab.active { background: var(--cream-light); color: var(--navy); box-shadow: 0 2px 8px rgba(43,49,64,0.05); }
+        .spiel-chooser .activity-tab .tab-icon { font-size: 2rem; }
+        .spiel-chooser .activity-tab .tab-label { font-size: 1.05rem; font-weight: 600; }
+        /* Jede Karte eine eigene Farbe */
+        .spiel-chooser .activity-tab:nth-child(1) { border-color: rgba(47,184,166,0.5); }
+        .spiel-chooser .activity-tab:nth-child(2) { border-color: rgba(255,217,90,0.8); }
+        .spiel-chooser .activity-tab:nth-child(3) { border-color: rgba(125,106,230,0.5); }
+        .spiel-chooser .activity-tab:nth-child(4) { border-color: rgba(249,115,82,0.5); }
+
+        /* === SPIELZEIT: Vollbild-Ansicht === */
+        .spielzeit-overlay {
+            position: fixed; inset: 0; z-index: 4700;
+            background: var(--bg-body); overflow-x: hidden; overflow-y: auto;
+            display: flex; flex-direction: column;
+            animation: settingsFade 0.18s ease-out;
+        }
+        /* Padding nicht zur Breite addieren -> kein horizontales Überlaufen */
+        .spielzeit-overlay, .spielzeit-overlay * { box-sizing: border-box; }
+        .spielzeit-overlay[hidden] { display: none; }
+        .spielzeit-topbar {
+            position: sticky; top: 0; z-index: 2;
+            display: flex; align-items: center; gap: 14px;
+            background: rgba(255,255,255,0.95); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px);
+            border-bottom: 3px solid var(--mint); padding: 12px 16px;
+        }
+        .spielzeit-back {
+            display: inline-flex; align-items: center; gap: 6px;
+            background: var(--mint); color: var(--navy); border: none;
+            padding: 10px 18px; min-height: 44px; border-radius: 999px;
+            font-family: var(--font-heading); font-weight: 600; font-size: 1rem; cursor: pointer;
+            box-shadow: 0 3px 10px rgba(47,184,166,0.3); -webkit-tap-highlight-color: transparent;
+            transition: transform 0.15s ease, background 0.15s ease;
+        }
+        .spielzeit-back:hover { background: var(--navy); color: #fff; transform: translateX(-2px); }
+        .spielzeit-back:focus-visible { outline: 3px solid var(--lila); outline-offset: 2px; }
+        .spielzeit-title { font-family: var(--font-heading); font-size: 1.3rem; font-weight: 700; color: var(--navy); }
+        .spielzeit-content { width: 100%; max-width: 760px; margin: 0 auto; padding: 22px 18px 60px; }
+
+        /* === MICRO-SURVEY: Wie hat dir die Geschichte gefallen? === */
+        .rating-survey { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+        .rating-face {
+            flex: 1 1 0; min-width: 92px; max-width: 170px;
+            display: flex; flex-direction: column; align-items: center; gap: 6px;
+            padding: 16px 12px; border-radius: 18px;
+            background: var(--cream-light); border: 2px solid var(--border-soft); color: var(--navy);
+            cursor: pointer; -webkit-tap-highlight-color: transparent;
+            font-family: var(--font-heading); font-weight: 600;
+            transition: transform 0.15s cubic-bezier(0.34,1.56,0.64,1), border-color 0.15s ease, box-shadow 0.15s ease, background 0.15s ease;
+        }
+        .rating-face:hover { transform: translateY(-3px); border-color: var(--mint); }
+        .rating-face:focus-visible { outline: 3px solid var(--lila); outline-offset: 2px; }
+        .rating-face:active { transform: scale(0.96); }
+        .rating-emoji { font-size: 2.4rem; line-height: 1; filter: grayscale(0.25); transition: filter 0.15s ease, transform 0.15s ease; }
+        .rating-label { font-size: 0.95rem; }
+        .rating-face.selected { border-color: var(--mint); background: #E7F6F3; box-shadow: 0 4px 14px rgba(47,184,166,0.25); }
+        .rating-face.selected .rating-emoji { filter: none; transform: scale(1.12); }
+        .rating-thanks { text-align: center; margin-top: 14px; font-family: var(--font-heading); font-weight: 600; color: var(--mint); font-size: 1.1rem; }
+        .rating-thanks[hidden] { display: none; }
+
         /* === TAFEL-ANSICHT v2: 2-Spalten-Layout mit Sticky-Bild === */
         /* Aktivierung über body.view-tafel (gesetzt vom JS: matchMedia, URL-Param oder Toggle) */
 
@@ -2924,10 +3318,6 @@
                     playerHighlight(i);
                 };
                 u.onend = () => {
-                    if (gen !== player.gen || !player.active || player.paused) return;
-                    speakWordAt(i + 1);
-                };
-                u.onerror = () => {
                     if (gen !== player.gen || !player.active || player.paused) return;
                     speakWordAt(i + 1);
                 };
