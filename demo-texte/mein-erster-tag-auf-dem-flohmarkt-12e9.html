@@ -1001,25 +1001,31 @@
         .btn-send:hover:not(:disabled) { background: var(--navy); color: #fff; transform: translateY(-2px); }
         .single-comment { background-color: #f9f9f9; border-radius: 10px; padding: 15px; margin-bottom: 15px; }
 
-        /* Vorschläge: bild-geführtes Cover-Raster (Kinder wählen über das Bild) */
-        .related-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 14px; }
+        /* Vorschläge: einheitliche Cover-Kacheln (clean & modern), Titel als Overlay */
+        .related-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 16px; }
         .related-card {
-            display: flex; flex-direction: column; gap: 8px;
-            text-decoration: none; color: var(--navy);
-            transition: transform 0.15s cubic-bezier(0.34,1.56,0.64,1);
+            position: relative; display: block; aspect-ratio: 1 / 1; overflow: hidden;
+            border-radius: 16px; text-decoration: none;
+            background: linear-gradient(135deg, #e9e4f7, #e7f6f3);
+            box-shadow: 0 1px 2px rgba(43,49,64,0.08), 0 6px 16px rgba(43,49,64,0.10);
+            transition: transform 0.18s ease, box-shadow 0.18s ease;
             -webkit-tap-highlight-color: transparent;
         }
-        .related-card:hover { transform: translateY(-3px); }
-        .related-card:hover .related-thumb { border-color: var(--mint); box-shadow: 0 6px 18px rgba(43,49,64,0.18); }
-        .related-card:focus-visible { outline: 3px solid var(--lila); outline-offset: 3px; border-radius: 18px; }
-        .related-card:active { transform: scale(0.97); }
+        .related-card:hover { transform: translateY(-4px); box-shadow: 0 6px 12px rgba(43,49,64,0.12), 0 16px 32px rgba(43,49,64,0.18); }
+        .related-card:hover .related-thumb { transform: scale(1.05); }
+        .related-card:active { transform: translateY(-1px) scale(0.99); }
+        .related-card:focus-visible { outline: 3px solid var(--lila); outline-offset: 3px; }
         .related-thumb {
-            width: 100%; aspect-ratio: 1 / 1; height: auto; object-fit: cover;
-            border-radius: 16px; border: 3px solid var(--primary-yellow); background: #fff;
-            box-shadow: 0 2px 8px rgba(43,49,64,0.08);
-            transition: border-color 0.15s ease, box-shadow 0.15s ease;
+            position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; display: block;
+            transition: transform 0.25s ease;
         }
-        .related-title { font-family: var(--font-heading); font-weight: 600; font-size: 0.95rem; color: var(--navy); line-height: 1.2; text-align: center; }
+        .related-title {
+            position: absolute; left: 0; right: 0; bottom: 0; margin: 0;
+            padding: 30px 12px 11px;
+            background: linear-gradient(to top, rgba(20,22,30,0.82) 0%, rgba(20,22,30,0.5) 42%, rgba(20,22,30,0) 100%);
+            color: #fff; font-family: var(--font-heading); font-weight: 600; font-size: 0.95rem;
+            line-height: 1.2; text-align: left; text-shadow: 0 1px 3px rgba(0,0,0,0.45);
+        }
 
         .clearfix::after { content: ""; display: table; clear: both; }
         footer { text-align: center; margin-top: 50px; color: #5a6368; font-size: 0.9rem; padding: 26px 16px 10px; border-top: 1px solid var(--border-soft); }
