@@ -196,6 +196,10 @@
             transition: background 0.15s ease;
         }
         .burger-icon:hover { background: var(--cream-light); }
+        .nav-icon-btn { width: 44px; height: 44px; flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center; background: #fff; border: 1px solid var(--border-soft); border-radius: 12px; color: var(--navy); cursor: pointer; transition: background 0.15s ease; -webkit-tap-highlight-color: transparent; }
+        .nav-icon-btn:hover { background: var(--cream-light); }
+        .nav-icon-btn:focus-visible { outline: 3px solid var(--lila); outline-offset: 2px; }
+        .nav-icon-btn svg { width: 22px; height: 22px; }
         /* Burger-Menü: Karten-Panel rechts statt nackter Linkliste */
         .mobile-menu {
             display: none; background: #fff;
@@ -207,11 +211,15 @@
         }
         .mobile-menu.open { display: flex; animation: bubblePop 0.25s cubic-bezier(0.34, 1.56, 0.64, 1); }
         .mobile-menu .nav-btn {
-            padding: 12px 16px; min-height: 48px; border-radius: 14px;
-            background: var(--cream-light); font-weight: 600;
-            transition: background 0.15s ease, transform 0.15s ease;
+            display: flex; align-items: center; gap: 12px;
+            padding: 11px 12px; min-height: 44px; border-radius: 10px;
+            background: transparent; color: var(--navy); font-weight: 600; font-size: 0.98rem;
+            transition: background 0.15s ease;
         }
-        .mobile-menu .nav-btn:hover { background: #E7F6F3; color: var(--navy); transform: translateX(3px); }
+        .mobile-menu .nav-btn:hover { background: var(--cream-light); color: var(--navy); }
+        .mobile-menu .nav-btn svg { width: 18px; height: 18px; color: #8a8f98; flex-shrink: 0; transition: color 0.15s ease; }
+        .mobile-menu .nav-btn:hover svg { color: var(--navy); }
+        .menu-divider { height: 1px; background: var(--border-soft); margin: 6px 6px; }
         .mobile-menu .menu-cta {
             background: var(--mint); color: var(--navy); justify-content: center;
             font-family: var(--font-heading); font-weight: 700; margin-top: 4px;
@@ -2121,13 +2129,14 @@
         <div class="nav-left">
             <button type="button" class="burger-icon" aria-label="Men&uuml; &ouml;ffnen" aria-expanded="false" aria-controls="mobile-menu" onclick="toggleMenu()">&#9776;</button>
             <div id="mobile-menu" class="mobile-menu">
-                <a href="../landingpage.html#mission" class="nav-btn" onclick="toggleMenu()">F&uuml;r euch</a>
-                <a href="../landingpage.html#how-it-works" class="nav-btn" onclick="toggleMenu()">So funktioniert&rsquo;s</a>
-                <a href="../ueber-uns.html" class="nav-btn" onclick="toggleMenu()">&Uuml;ber uns</a>
-                <a href="../demo.html" class="nav-btn" onclick="toggleMenu()">Demo-Texte</a>
-                <a href="../preise.html" class="nav-btn" onclick="toggleMenu()">Preise</a>
-                <a href="../neue-geschichte.html" class="nav-btn" onclick="toggleMenu()">&#10024; Geschichte erstellen</a>
-                <a href="../mein-konto.html" class="nav-btn" onclick="toggleMenu()">Mein Konto</a>
+                <a href="../landingpage.html#mission" class="nav-btn" onclick="toggleMenu()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 9.5a5.5 5.5 0 0 1 9.591-3.676.56.56 0 0 0 .818 0A5.49 5.49 0 0 1 22 9.5c0 2.29-1.5 4-3 5.5l-5.492 5.313a2 2 0 0 1-3 .019L5 15c-1.5-1.5-3-3.2-3-5.5"/></svg><span>Für euch</span></a>
+                <a href="../landingpage.html#how-it-works" class="nav-btn" onclick="toggleMenu()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg><span>So funktioniert’s</span></a>
+                <a href="../ueber-uns.html" class="nav-btn" onclick="toggleMenu()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><path d="M16 3.128a4 4 0 0 1 0 7.744"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><circle cx="9" cy="7" r="4"/></svg><span>Über uns</span></a>
+                <a href="../demo.html" class="nav-btn" onclick="toggleMenu()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 7v14"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/></svg><span>Demo-Texte</span></a>
+                <a href="../preise.html" class="nav-btn" onclick="toggleMenu()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z"/><circle cx="7.5" cy="7.5" r=".5" fill="currentColor"/></svg><span>Preise</span></a>
+                <a href="../neue-geschichte.html" class="nav-btn" onclick="toggleMenu()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"/><path d="M20 2v4"/><path d="M22 4h-4"/><circle cx="4" cy="20" r="2"/></svg><span>Geschichte erstellen</span></a>
+                <div class="menu-divider"></div>
+                <a href="../mein-konto.html" class="nav-btn" onclick="toggleMenu()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>Mein Konto</span></a>
                 <a href="../landingpage.html#registrieren" class="nav-btn menu-cta" onclick="toggleMenu()">Jetzt registrieren &rarr;</a>
             </div>
         </div>
@@ -2135,6 +2144,7 @@
             <a href="../demo.html" class="nav-logo-box" aria-label="Zur Bibliothek"><img src="../Konzept_Rebranding/logo-lesekumpel-512.webp" alt="Lesekumpel" class="nav-logo"></a>
         </div>
         <div class="nav-right">
+            <button type="button" class="nav-icon-btn" id="nav-settings" onclick="openSettings()" aria-label="Leseeinstellungen"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"/><circle cx="12" cy="12" r="3"/></svg></button>
             <a href="../kind.html" class="nav-avatar-btn" id="nav-avatar" aria-label="Mein Bereich">
                 <span class="nav-avatar-emoji" id="nav-avatar-emoji">🦊</span>
             </a>
@@ -2218,9 +2228,6 @@
         <div class="reading-action-bar" id="reading-action-bar" role="toolbar" aria-label="Lese-Werkzeuge">
             <button type="button" class="rab-btn" id="act-vorlesen" onclick="actVorlesen()" aria-label="Vorlesen">
                 <span class="rab-icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 5a2 2 0 0 1 3.008-1.728l11.997 6.998a2 2 0 0 1 .003 3.458l-12 7A2 2 0 0 1 5 19z"/></svg></span>
-            </button>
-            <button type="button" class="rab-btn rab-settings" id="act-einstellungen" onclick="openSettings()" aria-label="Leseeinstellungen">
-                <span class="rab-icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"/><circle cx="12" cy="12" r="3"/></svg></span>
             </button>
             <button type="button" class="rab-btn" id="act-woerter" onclick="actWoerter()" aria-label="Wörter lesen">
                 <span class="rab-icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 14a8 8 0 0 1-8 8"/><path d="M18 11v-1a2 2 0 0 0-2-2a2 2 0 0 0-2 2"/><path d="M14 10V9a2 2 0 0 0-2-2a2 2 0 0 0-2 2v1"/><path d="M10 9.5V4a2 2 0 0 0-2-2a2 2 0 0 0-2 2v10"/><path d="M18 11a2 2 0 1 1 4 0v3a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.86-5.99-2.34l-3.6-3.6a2 2 0 0 1 2.83-2.82L7 15"/></svg></span>
