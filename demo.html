@@ -280,8 +280,7 @@
         <a href="preise.html">Preise</a>
         <a href="neue-geschichte.html">Geschichte erstellen</a>
       </div>
-      <a href="anmelden.html" class="nav-login">Mein Konto</a>
-      <a href="landingpage.html#registrieren" class="btn btn-primary navbar-cta">Jetzt registrieren</a>
+      <a href="anmelden.html" class="btn btn-primary navbar-cta">Jetzt registrieren</a>
       <button type="button" class="burger" aria-label="Men&uuml; &ouml;ffnen" aria-expanded="false" aria-controls="mobile-menu" onclick="toggleMenu()">&#9776;</button>
     </div>
     <div id="mobile-menu" class="mobile-menu">
@@ -291,8 +290,7 @@
       <a href="demo.html" onclick="toggleMenu()">Demo-Texte</a>
       <a href="preise.html" onclick="toggleMenu()">Preise</a>
       <a href="neue-geschichte.html" onclick="toggleMenu()">Geschichte erstellen</a>
-      <a href="anmelden.html" onclick="toggleMenu()">Mein Konto</a>
-      <a href="landingpage.html#registrieren" class="mobile-menu-cta" onclick="toggleMenu()">Jetzt registrieren &rarr;</a>
+      <a href="anmelden.html" class="mobile-menu-cta" onclick="toggleMenu()">Jetzt registrieren &rarr;</a>
     </div>
   </nav>
 
@@ -301,7 +299,6 @@
     <header class="demo-hero">
       <svg class="deco-sparkle demo-hero-deco-1 deco-hide-mobile" width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="M12,2 L14,10 L22,12 L14,14 L12,22 L10,14 L2,12 L10,10 Z" fill="#FFD95A" opacity="0.6"/></svg>
       <svg class="deco-star demo-hero-deco-2 deco-hide-mobile" width="28" height="28" viewBox="0 0 32 32" aria-hidden="true"><polygon points="16,2 20,12 30,12 22,19 25,30 16,23 7,30 10,19 2,12 12,12" fill="#F97352" opacity="0.45"/></svg>
-      <span class="section-badge reveal">&#128218; Demo-Texte</span>
       <h1 class="reveal">Such dir was <span class="accent"><span class="scribble-underline">Sch&ouml;nes</span></span> aus.</h1>
       <p class="reveal">Handverlesene Geschichten unserer KI-Autor:innen &mdash; gefiltert nach Persona, Leseniveau und Format. Klick eine Persona an, um ihre Pers&ouml;nlichkeit kennenzulernen.</p>
     </header>
@@ -394,8 +391,6 @@
             <option value="title">A &ndash; Z</option>
           </select>
         </div>
-
-        <div class="sort-status" id="sortStatus">Wird geladen &hellip;</div>
       </div>
     </section>
 
@@ -546,7 +541,6 @@
     const searchEl = document.getElementById('searchInput');
     const sortEl = document.getElementById('sortSelect');
     const loadEl = document.getElementById('loadingMsg');
-    const sortStatusEl = document.getElementById('sortStatus');
     const sublevelEl = document.getElementById('sublevelPills');
     const bioCard = document.getElementById('authorBio');
     const bioInner = document.getElementById('bioInner');
@@ -584,7 +578,6 @@
 
     /* 2. Metadaten gestaffelt nachladen (Batches a 16) */
     async function loadMeta() {
-      sortStatusEl.textContent = 'Lade Metadaten …';
       const BATCH = 16;
       for (let i = 0; i < stories.length; i += BATCH) {
         await Promise.all(stories.slice(i, i + BATCH).map(async (s) => {
@@ -609,10 +602,8 @@
             }
           } catch (e) { /* skip */ }
         }));
-        sortStatusEl.textContent = 'Lade Metadaten … ' + Math.min(i + BATCH, stories.length) + '/' + stories.length;
       }
       stories = stories.filter(s => s.isValid);
-      sortStatusEl.textContent = 'Neueste zuerst';
       render();
     }
 
