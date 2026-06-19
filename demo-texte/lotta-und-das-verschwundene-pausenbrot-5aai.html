@@ -1535,8 +1535,9 @@
         /* Wenn Activity-Hub offen ist, Trigger-Button verstecken */
         body.view-tafel:has(.activity-hub:not(.tafel-collapsed)) .tafel-games-trigger { display: none; }
 
-        /* 1-Spalten-Fallback wenn Viewport zu schmal für 2-Spalten ist (z.B. Toggle-Test am Desktop) */
-        @media (max-width: 1500px) {
+        /* 1-Spalten-Fallback nur noch unterhalb des Tafel-Breakpoints (z.B. Toggle-Test am schmalen Viewport).
+           Laptops 1024–1500px bekommen so echte 2 Spalten statt der gestapelten Variante. */
+        @media (max-width: 1023px) {
             body.view-tafel .main-card {
                 grid-template-columns: 1fr;
                 grid-template-areas: "image" "story" "extras";
@@ -1547,6 +1548,64 @@
                 min-height: 0;
             }
             body.view-tafel .tafel-story-col { grid-area: story; align-self: stretch; }
+        }
+
+        /* ============================================================
+           DESKTOP-GRÖSSENSTUFE (normale Monitore am Schreibtisch)
+           Tafel-Defaults sind für Klassenraum-Whiteboards aus Distanz dimensioniert
+           (48px Basis, 7rem Titel, 130px-Bubbles). Auf 1024–2199px breiten Desktops
+           wird alles auf angenehme Arm-Distanz-Größe heruntergezogen. Ab 2200px bleiben
+           die Whiteboard-Größen unverändert (diese Query greift dort nicht). */
+        @media (min-width: 1024px) and (max-width: 2199px) {
+            body.view-tafel { font-size: 26px; }
+
+            body.view-tafel .main-card { gap: 40px; padding: 32px; border-radius: 28px; }
+
+            body.view-tafel .tafel-page-indicator { font-size: 1rem; margin-bottom: 24px; }
+            body.view-tafel .story-text { font-size: 1.5em; line-height: 1.55; }
+            body.view-tafel .tafel-story-col { padding-top: 44px; }
+
+            .tafel-title { font-size: 3.4rem; }
+            .tafel-cover-overlay .cover-title { font-size: 4rem; margin-bottom: 28px; }
+            .tafel-cover-overlay .cover-author { font-size: 1.4rem; gap: 16px; }
+            .tafel-cover-overlay .cover-author img { width: 80px; height: 80px; }
+            .tafel-end-overlay .end-badge { font-size: 3.4rem; padding: 28px 70px; }
+
+            /* Header / Navbar dezent statt klassenraum-groß (beide Markup-Varianten) */
+            body.view-tafel .nav-logo { height: 44px; }
+            body.view-tafel .nav-logo-box { width: 44px; height: 44px; }
+            body.view-tafel .brand-name { font-size: 1.3rem; }
+            body.view-tafel .nav-btn { font-size: 1rem; }
+            body.view-tafel .btn-cta-nav { font-size: 0.95rem; padding: 10px 18px; }
+
+            /* Navigations-Pfeile (unten Mitte) */
+            .tafel-nav { bottom: 32px; gap: 16px; }
+            .tafel-nav button { width: 76px; height: 76px; font-size: 2.2rem; border-width: 3px; }
+
+            /* "Spiele"-Bubble (unten links) */
+            .tafel-games-trigger {
+                min-width: 84px; min-height: 84px;
+                padding: 16px 22px; gap: 12px;
+                border-radius: 24px; font-size: 1.15rem;
+            }
+            .tafel-games-trigger .games-icon { font-size: 2em; }
+
+            /* Werkzeug-Bubble unten rechts (collapsed Toolbar) */
+            body.view-tafel .toolbar-container.collapsed {
+                min-width: 84px; min-height: 84px; border-radius: 24px;
+            }
+            body.view-tafel .toolbar-container.collapsed .toolbar-header { padding: 16px 22px; gap: 12px; }
+            body.view-tafel .toolbar-container.collapsed .header-icon { font-size: 2em; }
+            body.view-tafel .toolbar-container.collapsed .toolbar-header-label { font-size: 1.15rem; }
+
+            /* Activity-Hub-Panel tiefer setzen, da Bubbles/Pfeile kleiner sind */
+            body.view-tafel .activity-hub { bottom: 130px; max-height: calc(100vh - 170px); }
+
+            /* Quiz / Voting auf Desktop-Maß */
+            body.view-tafel #panel-quiz .quiz-question > div:first-child { font-size: 1.5rem; margin-bottom: 24px; }
+            body.view-tafel #panel-quiz .quiz-option { min-height: 110px; font-size: 1.1rem; padding: 18px; }
+            body.view-tafel #panel-quiz .quiz-reveal-btn { font-size: 1.1rem; min-height: 52px; padding: 14px 30px; }
+            body.view-tafel .vote-card { width: 64px; height: 64px; font-size: 1.9rem; }
         }
     </style>
     <link rel="stylesheet" href="../fonts/fonts.css">
@@ -2911,7 +2970,9 @@
         //   2. matchMedia für sehr breite + touch Viewports (Auto-Erkennung)
         //   3. Toggle-Button in der Toolbar
 
-        const TAFEL_MQ = window.matchMedia('(min-width: 2200px), (min-width: 1600px) and (pointer: coarse) and (hover: none)');
+        // Tafel-Board ist jetzt der Standard auf allen Desktop-/Laptop-Breiten (>=1024px).
+        // Schmalere Viewports (Handy/Tablet portrait) behalten den klassischen scrollenden Lesemodus.
+        const TAFEL_MQ = window.matchMedia('(min-width: 1024px)');
 
         function readUrlView() { return new URLSearchParams(location.search).get('view'); }
 

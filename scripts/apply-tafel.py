@@ -5,13 +5,6 @@ from pathlib import Path
 
 REPO = Path(__file__).resolve().parent.parent
 SOURCE = REPO / "demo-texte" / "doenerella-im-weltall-11ym.html"
-TARGETS = [
-    "bens-drachen-am-huegel-uuvs.html",
-    "pip-raeumt-seinen-schreibtisch-auf-1abc.html",
-    "lina-und-der-marienkaefer-1w21.html",
-    "der-igel-im-garten-bei-nacht-10vo.html",
-    "der-junge-mit-dem-gelben-regenmantel-1lvp.html",
-]
 
 # Zusätzliche Ziele außerhalb von demo-texte/ (z.B. das n8n-Template, aus dem
 # künftige Stories generiert werden — strukturell identisch zu Standalone-Stories)
@@ -114,25 +107,35 @@ def apply_to_target(target_path: Path, css_block: str, js_block: str, force: boo
     return True, "ok"
 
 
+def discover_targets() -> list[Path]:
+    """Alle demo-texte/-Seiten finden, die den Tafel-Block schon enthalten (außer der Quelle).
+    So aktualisiert --force genau die bereits konvertierten self-contained Seiten."""
+    targets = []
+    for p in sorted((REPO / "demo-texte").glob("*.html")):
+        if p.resolve() == SOURCE.resolve():
+            continue
+        if TAFEL_MARKER in p.read_text(encoding="utf-8"):
+            targets.append(p)
+    return targets
+
+
 def main() -> int:
     force = "--force" in sys.argv
     src_html = SOURCE.read_text(encoding="utf-8")
     css_block = extract_tafel_css(src_html)
     js_block = extract_tafel_script(src_html)
 
+    targets = discover_targets()
     print(f"Tafel-CSS-Block:  {len(css_block):>6} Zeichen")
     print(f"Tafel-JS-Block:   {len(js_block):>6} Zeichen")
     print(f"Mode: {'UPDATE (--force)' if force else 'APPLY (nur neue)'}")
+    print(f"Gefundene Ziele (bereits konvertiert): {len(targets)}")
     print()
 
-    for fname in TARGETS:
-        target = REPO / "demo-texte" / fname
-        if not target.exists():
-            print(f"  [missing] {fname}: nicht gefunden")
-            continue
+    for target in targets:
         ok, msg = apply_to_target(target, css_block, js_block, force=force)
         mark = "[ok]" if ok else "[skip]"
-        print(f"  {mark} {fname}: {msg}")
+        print(f"  {mark} {target.name}: {msg}")
 
     for rel in EXTRA_TARGETS:
         target = REPO / rel
