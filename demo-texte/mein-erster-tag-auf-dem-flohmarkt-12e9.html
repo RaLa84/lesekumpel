@@ -2233,8 +2233,31 @@
                     data-speak="Hier geht es zu den Spielen über die Geschichte.">🎮 Zur Spielzeit</button>
         </div>
 
+        <div class="comments-section">
+            <h2 class="section-title">Hat dir die Geschichte gefallen?</h2>
+            <div class="rating-survey" id="rating-survey" role="group" aria-label="Hat dir die Geschichte gefallen?">
+                <button type="button" class="rating-face" data-rating="1" aria-pressed="false" aria-label="Nicht so">
+                    <span class="rating-emoji" aria-hidden="true">😕</span>
+                    <span class="rating-label">Nicht so</span>
+                </button>
+                <button type="button" class="rating-face" data-rating="2" aria-pressed="false" aria-label="Okay">
+                    <span class="rating-emoji" aria-hidden="true">🙂</span>
+                    <span class="rating-label">Okay</span>
+                </button>
+                <button type="button" class="rating-face" data-rating="3" aria-pressed="false" aria-label="Super">
+                    <span class="rating-emoji" aria-hidden="true">😍</span>
+                    <span class="rating-label">Super</span>
+                </button>
+            </div>
+            <div class="rating-thanks" id="rating-thanks" role="status" hidden>Danke für deine Bewertung! 💛</div>
+
+            <div class="report-trigger-wrapper">
+                <button class="report-link" type="button" id="report-open" data-speak="Melden: Wenn dich etwas an der Geschichte stört, sag es uns hier — am besten zusammen mit einem Erwachsenen.">🚩 Inhalt melden</button>
+            </div>
+        </div>
+
         <div class="activity-hub">
-            <h2 class="sr-only">Spielzeit</h2>
+            <h2 class="section-title">Spiele</h2>
             <div class="activity-tabs spiel-chooser" aria-label="Spielauswahl">
                 <button class="activity-tab" id="tab-quiz" data-tab="quiz" onclick="openSpiel('quiz')">
                     <span class="tab-icon">🧠</span><span class="tab-label">Quiz</span>
@@ -2277,31 +2300,8 @@
             </div>
         </div>
 
-        <div class="comments-section">
-            <h2 class="section-title">Wie hat dir die Geschichte gefallen?</h2>
-            <div class="rating-survey" id="rating-survey" role="group" aria-label="Wie hat dir die Geschichte gefallen?">
-                <button type="button" class="rating-face" data-rating="1" aria-pressed="false" aria-label="Nicht so">
-                    <span class="rating-emoji" aria-hidden="true">😕</span>
-                    <span class="rating-label">Nicht so</span>
-                </button>
-                <button type="button" class="rating-face" data-rating="2" aria-pressed="false" aria-label="Okay">
-                    <span class="rating-emoji" aria-hidden="true">🙂</span>
-                    <span class="rating-label">Okay</span>
-                </button>
-                <button type="button" class="rating-face" data-rating="3" aria-pressed="false" aria-label="Super">
-                    <span class="rating-emoji" aria-hidden="true">😍</span>
-                    <span class="rating-label">Super</span>
-                </button>
-            </div>
-            <div class="rating-thanks" id="rating-thanks" role="status" hidden>Danke für deine Bewertung! 💛</div>
-
-            <div class="report-trigger-wrapper">
-                <button class="report-link" type="button" id="report-open" data-speak="Melden: Wenn dich etwas an der Geschichte stört, sag es uns hier — am besten zusammen mit einem Erwachsenen.">🚩 Inhalt melden</button>
-            </div>
-        </div>
-
         <div class="related-section">
-            <h2 class="section-title">📚 Noch eine Geschichte?</h2>
+            <h2 class="section-title">Noch eine Geschichte?</h2>
             <div class="related-grid">
                 <a class="related-card" href="die-reise-zum-mond-1y60.html">
                     <img class="related-thumb" src="../bilder/die-reise-zum-mond-1y60-1.png" alt="" loading="lazy" onerror="this.style.display='none'">
