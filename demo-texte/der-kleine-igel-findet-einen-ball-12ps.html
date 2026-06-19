@@ -1983,6 +1983,9 @@
         .rab-btn:focus-visible { outline: 3px solid var(--lila); outline-offset: 2px; }
         .rab-btn[hidden] { display: none; }
         .rab-icon { font-size: 1.8rem; line-height: 1; }
+        /* Einstellungs-Knopf: kleiner/dezenter als die zwei Lese-Aktionen */
+        .rab-settings { flex: 0 0 auto; min-width: 56px; }
+        .rab-settings .rab-icon { font-size: 1.4rem; opacity: 0.85; }
         .rab-btn.active { background: var(--accent-coral); color: #fff; border-color: #e2603f; box-shadow: inset 0 2px 6px rgba(0,0,0,0.15); }
         /* Während Vorlesen/Nachlesen übernimmt die Transportleiste — Aktionsleiste tritt zurück */
         /* Beim Vorlesen bleibt die Aktionsleiste sichtbar (Play/Pause-Toggle).
@@ -2105,7 +2108,6 @@
         <div class="nav-left">
             <button type="button" class="burger-icon" aria-label="Men&uuml; &ouml;ffnen" aria-expanded="false" aria-controls="mobile-menu" onclick="toggleMenu()">&#9776;</button>
             <div id="mobile-menu" class="mobile-menu">
-                <button type="button" class="nav-btn" onclick="openLeseeinstellungen()">&#9881;&#65039; Leseeinstellungen</button>
                 <a href="../landingpage.html#mission" class="nav-btn" onclick="toggleMenu()">F&uuml;r euch</a>
                 <a href="../landingpage.html#how-it-works" class="nav-btn" onclick="toggleMenu()">So funktioniert&rsquo;s</a>
                 <a href="../ueber-uns.html" class="nav-btn" onclick="toggleMenu()">&Uuml;ber uns</a>
@@ -2201,8 +2203,8 @@
             <button type="button" class="rab-btn" id="act-vorlesen" onclick="actVorlesen()" aria-label="Vorlesen">
                 <span class="rab-icon" aria-hidden="true">▶</span>
             </button>
-            <button type="button" class="rab-btn" id="act-nachlesen" hidden onclick="actNachlesen()" aria-label="Nachlesen">
-                <span class="rab-icon" aria-hidden="true">🎤</span>
+            <button type="button" class="rab-btn rab-settings" id="act-einstellungen" onclick="openSettings()" aria-label="Leseeinstellungen">
+                <span class="rab-icon" aria-hidden="true">⚙️</span>
             </button>
             <button type="button" class="rab-btn" id="act-woerter" onclick="actWoerter()" aria-label="Wörter lesen">
                 <span class="rab-icon" aria-hidden="true">☝️</span>
@@ -3719,9 +3721,6 @@
         document.addEventListener('DOMContentLoaded', function() {
             renderText(); renderQuiz(); renderWeitererzaehlen(); renderSchatzsuche(); renderWortschatz(); initActivityTabs();
             updateTempoButtons();
-            // „Nachlesen"-Knopf nur zeigen, wenn der Browser Spracherkennung kann
-            const raBtn = document.getElementById('act-nachlesen');
-            if (raBtn && READ_ALOUD_SUPPORTED) raBtn.hidden = false;
             // Mikro-Consent-Dialog verkabeln
             const mc = document.getElementById('mic-consent');
             if (mc) {
