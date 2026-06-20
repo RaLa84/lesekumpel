@@ -1113,9 +1113,11 @@
         .tafel-image-stage {
             grid-area: image;
             position: sticky;
-            top: 32px;
+            top: 88px;   /* unter der Sticky-Navbar bleiben */
             aspect-ratio: 1 / 1;    /* JS überschreibt mit echtem Bildverhältnis */
-            max-height: calc(100vh - 64px);
+            /* Höhe an den sichtbaren Bereich koppeln (Navbar + Kartenränder + untere Leiste abziehen),
+               damit das Bild auf flachen Laptops nicht unten abgeschnitten wird */
+            max-height: calc(100vh - 170px);
             width: 100%;
             justify-self: center;
             align-self: start;
@@ -1193,8 +1195,12 @@
             display: none;
         }
         body.view-tafel-cover .tafel-image-stage {
-            width: min(2000px, 95vw);
-            max-width: none;
+            /* Cover über die HÖHE skalieren (Breite folgt dem Seitenverhältnis), damit das
+               Titelbild komplett in den Viewport passt und nicht unten abgeschnitten wird */
+            width: auto;
+            max-width: 95vw;
+            height: calc(100vh - 160px);
+            max-height: calc(100vh - 160px);
             justify-self: center;
         }
 
@@ -1605,7 +1611,7 @@
         @media (min-width: 1024px) and (max-width: 2199px) {
             body.view-tafel { font-size: 26px; }
 
-            body.view-tafel .main-card { gap: 40px; padding: 32px; border-radius: 28px; }
+            body.view-tafel .main-card { gap: 40px; padding: 28px; margin: 10px auto; border-radius: 28px; }
 
             body.view-tafel .tafel-page-indicator { font-size: 1rem; margin-bottom: 24px; }
             body.view-tafel .story-text { font-size: 1.5em; line-height: 1.55; }
