@@ -154,7 +154,7 @@
             display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; position: sticky; top: 0; z-index: 1000;
         }
         .nav-left { display: flex; align-items: center; gap: 10px; justify-self: start; position: relative; }
-        .nav-center { justify-self: center; display: flex; align-items: center; }
+        .nav-center { justify-self: center; display: flex; align-items: center; gap: 10px; }
         /* Maskottchen-Logo: das WEBP hat viel transparenten Rand — der scale-Crop
            (Trick aus v2/styles.css) schneidet ihn weg, overflow:hidden begrenzt */
         .nav-logo-box { width: 44px; height: 44px; overflow: hidden; border-radius: 10px; flex-shrink: 0; }
@@ -189,6 +189,11 @@
         .nav-avatar-btn:hover { transform: scale(1.06); box-shadow: 0 4px 12px rgba(43,49,64,0.14); }
         .nav-avatar-btn:active { transform: scale(0.96); }
         .nav-avatar-emoji { pointer-events: none; }
+        /* Lesezeichen-Button im Header (synchron mit dem Hero-Herz) */
+        .nav-bookmark-btn { position: relative; overflow: visible; }
+        .nav-bookmark-btn .like-heart { font-size: 1.3rem; line-height: 1; }
+        .nav-bookmark-btn.is-liked { background: rgba(255,235,235,0.95); border-color: rgba(214,113,113,0.45); }
+        .nav-bookmark-btn.is-firing { animation: heroLikeBurst 0.9s ease-out both; }
         .burger-icon {
             width: 44px; height: 44px; box-sizing: border-box; padding: 0;
             display: inline-flex; align-items: center; justify-content: center;
@@ -1533,7 +1538,21 @@
         /* Beim Vorlesen bleibt die Aktionsleiste sichtbar (Play/Pause-Toggle).
            Nur beim Mikro-Modus „Nachlesen" tritt sie zurück. */
         body.mic-active .reading-action-bar { display: none; }
-        body.view-tafel .reading-action-bar { display: none !important; }
+        /* Tafel-Modus: Lese-Werkzeug-Leiste sichtbar lassen, aber als kompakte,
+           zentrierte Pille unten (statt randlos über die ganze Breite) */
+        body.view-tafel .reading-action-bar {
+            left: 50%; right: auto; transform: translateX(-50%);
+            bottom: 20px;
+            width: auto; max-width: 92vw;
+            gap: 10px;
+            border: 1px solid var(--border-soft);
+            border-radius: 999px;
+            padding: 8px 14px;
+            box-shadow: 0 10px 28px rgba(43,49,64,0.16);
+        }
+        body.view-tafel .reading-action-bar .rab-btn {
+            flex: 0 0 auto; min-width: 62px; min-height: 54px; padding: 8px 18px; border-radius: 14px;
+        }
 
         /* === EINSTELLUNGS-OVERLAY (Lesehilfen einmal einstellen) === */
         .settings-overlay {
@@ -1646,6 +1665,23 @@
         .rating-face.selected .rating-emoji { filter: none; transform: scale(1.12); }
         .rating-thanks { text-align: center; margin-top: 14px; font-family: var(--font-heading); font-weight: 600; color: var(--mint); font-size: 1.1rem; }
         .rating-thanks[hidden] { display: none; }
+
+        /* === Flohmarkt-spezifische Tafel-Overrides ===
+           BEWUSST VOR dem TAFEL-Marker: apply-tafel.py extrahiert erst ab dem Marker,
+           hier definiertes CSS bleibt also bei einer Propagation erhalten. */
+        /* Spiele-Bubble entfällt — Spiele leben als Tab auf der Abschluss-Seite */
+        body.view-tafel .tafel-games-trigger { display: none !important; }
+        /* Abschluss-Seite: Tab-Navigation (Spiele / Feedback / Empfehlungen) */
+        .abschluss-tabbar { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin: 0 0 28px; }
+        .abschluss-tab { font-family: var(--font-heading); font-weight: 600; font-size: 1.05rem; padding: 10px 22px; border-radius: 999px; border: 2px solid var(--border-soft); background: #fff; color: var(--navy); cursor: pointer; transition: background .15s ease, color .15s ease, border-color .15s ease; }
+        .abschluss-tab:hover { border-color: var(--accent-coral); }
+        .abschluss-tab.active { background: var(--accent-coral); color: #fff; border-color: var(--accent-coral); }
+        body:not(.view-tafel) .abschluss-tabbar { display: none; }
+        .tafel-abschluss .abschluss-hidden { display: none !important; }
+        /* Survey (comments-section) + Empfehlungen auf der Abschluss-Seite sichtbar machen
+           (im Tafel-Modus sind beide sonst global versteckt) */
+        body.view-tafel .tafel-abschluss .comments-section,
+        body.view-tafel .tafel-abschluss .related-section { display: block; }
 
         /* === TAFEL-ANSICHT v2: 2-Spalten-Layout mit Sticky-Bild === */
         /* Aktivierung über body.view-tafel (gesetzt vom JS: matchMedia, URL-Param oder Toggle) */
@@ -2283,8 +2319,10 @@
         </div>
         <div class="nav-center">
             <a href="../demo.html" class="nav-logo-box" aria-label="Zur Bibliothek"><img src="../Konzept_Rebranding/logo-lesekumpel-512.webp" alt="Lesekumpel" class="nav-logo"></a>
+            <a href="../demo.html" class="brand-name">Lesekumpel</a>
         </div>
         <div class="nav-right">
+            <button type="button" class="nav-icon-btn nav-bookmark-btn js-like-btn" id="nav-bookmark" aria-label="Diese Geschichte merken" aria-pressed="false"><span class="like-heart" aria-hidden="true">🤍</span></button>
             <button type="button" class="nav-icon-btn" id="nav-settings" onclick="openSettings()" aria-label="Leseeinstellungen"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="1"/><path d="m9 20 3-6 3 6"/><path d="m6 8 6 2 6-2"/><path d="M12 10v4"/></svg></button>
             <a href="../kind.html" class="nav-avatar-btn" id="nav-avatar" aria-label="Mein Bereich">
                 <span class="nav-avatar-emoji" id="nav-avatar-emoji">🦊</span>
@@ -2311,9 +2349,9 @@
                     <h1 id="main-title">Mein erster Tag auf dem Flohmarkt</h1>
                 </div>
             </div>
-            <button class="hero-like-btn" id="hero-like-btn" type="button" aria-pressed="false" aria-label="Diese Geschichte in deine Lieblings-Sammlung speichern"
+            <button class="hero-like-btn js-like-btn" id="hero-like-btn" type="button" aria-pressed="false" aria-label="Diese Geschichte in deine Lieblings-Sammlung speichern"
                     data-speak="Das Herz: Damit speicherst du die Geschichte bei deinen Lieblingen.">
-                <span class="hero-like-heart" aria-hidden="true">🤍</span>
+                <span class="hero-like-heart like-heart" aria-hidden="true">🤍</span>
             </button>
             <div class="hero-like-toast" id="hero-like-toast" role="status" aria-live="polite"></div>
         </div>
@@ -4069,21 +4107,26 @@
         });
 
         /* === Hero-Like === */
-        (function initHeroLike() {
-            const btn = document.getElementById('hero-like-btn');
-            const heart = btn ? btn.querySelector('.hero-like-heart') : null;
+        (function initLikeButtons() {
+            // Mehrere Auslöser (Hero-Herz + Header-Lesezeichen) teilen sich denselben Zustand
+            const buttons = Array.from(document.querySelectorAll('.js-like-btn'));
+            if (!buttons.length) return;
             const toast = document.getElementById('hero-like-toast');
-            if (!btn) return;
 
             // Persistenz pro Story: der Like überlebt einen Reload (Grundstein für echte Sammlung)
             const likeKey = 'lesekumpel-liked-mein-erster-tag-auf-dem-flohmarkt-12e9';
-            try {
-                if (localStorage.getItem(likeKey) === 'true') {
-                    btn.classList.add('is-liked');
-                    btn.setAttribute('aria-pressed', 'true');
-                    if (heart) heart.textContent = '❤️';
-                }
-            } catch(e) {}
+            let liked = false;
+            try { liked = localStorage.getItem(likeKey) === 'true'; } catch(e) {}
+
+            function render() {
+                buttons.forEach(b => {
+                    b.classList.toggle('is-liked', liked);
+                    b.setAttribute('aria-pressed', liked ? 'true' : 'false');
+                    const h = b.querySelector('.like-heart');
+                    if (h) h.textContent = liked ? '❤️' : '🤍';
+                });
+            }
+            render();
 
             let toastTimer = null;
             function showToast(text) {
@@ -4112,20 +4155,17 @@
                 }
             }
 
-            btn.addEventListener('click', () => {
-                const liked = btn.classList.toggle('is-liked');
-                btn.setAttribute('aria-pressed', liked ? 'true' : 'false');
+            buttons.forEach(btn => btn.addEventListener('click', () => {
+                liked = !liked;
                 try { localStorage.setItem(likeKey, liked ? 'true' : 'false'); } catch(e) {}
+                render();
                 if (liked) {
-                    heart.textContent = '❤️';
                     btn.classList.remove('is-firing'); void btn.offsetWidth; btn.classList.add('is-firing');
                     spawnHearts(btn);
                     showToast('❤️ In deine Lieblings-Sammlung gespeichert!');
                     setTimeout(() => btn.classList.remove('is-firing'), 950);
-                } else {
-                    heart.textContent = '🤍';
                 }
-            });
+            }));
         })();
 
         /* === Micro-Survey: Wie hat dir die Geschichte gefallen? (3-Smiley-Skala) === */
@@ -4673,13 +4713,15 @@
                 title.className = 'tafel-abschluss-title';
                 title.textContent = '🎉 Geschafft!';
                 abschluss.appendChild(title);
-                // Aktivitäten + Survey + Empfehlungen einsammeln. Bewusst AUSSERHALB von
+                // Spiele + Survey + Empfehlungen einsammeln. Bewusst AUSSERHALB von
                 // #full-text-view, damit renderText() (Silben/Emoji/Sprache) sie nicht löscht.
-                ['.survey-section', '.activity-hub', '.related-section'].forEach(sel => {
+                // (Neue Shell: Mikro-Survey steckt in .comments-section, nicht .survey-section.)
+                ['.activity-hub', '.comments-section', '.related-section'].forEach(sel => {
                     const el = document.querySelector(sel);
                     if (el) abschluss.appendChild(el);
                 });
                 view.insertAdjacentElement('afterend', abschluss);
+                buildAbschlussTabs(abschluss);
             }
             // data-scene = Szene des letzten Absatzes, damit links dasselbe Bild bleibt
             const textSections = view.querySelectorAll('.tafel-section');
@@ -4687,14 +4729,42 @@
             if (lastText && lastText.dataset.scene) abschluss.dataset.scene = lastText.dataset.scene;
         }
 
+        // Abschluss-Seite: Tab-Navigation (Spiele / Feedback / Empfehlungen)
+        function buildAbschlussTabs(abschluss) {
+            if (!abschluss || abschluss.querySelector('.abschluss-tabbar')) return;
+            const panels = [
+                { label: '🎮 Spiele',      el: abschluss.querySelector('.activity-hub') },
+                { label: '💬 Feedback',    el: abschluss.querySelector('.comments-section') },
+                { label: '⭐ Mehr Bücher', el: abschluss.querySelector('.related-section') }
+            ].filter(p => p.el);
+            if (panels.length < 2) return;
+            const bar = document.createElement('div');
+            bar.className = 'abschluss-tabbar';
+            panels.forEach((p, i) => {
+                const b = document.createElement('button');
+                b.type = 'button';
+                b.className = 'abschluss-tab' + (i === 0 ? ' active' : '');
+                b.textContent = p.label;
+                b.onclick = () => {
+                    bar.querySelectorAll('.abschluss-tab').forEach(x => x.classList.toggle('active', x === b));
+                    panels.forEach(pp => pp.el.classList.toggle('abschluss-hidden', pp !== p));
+                };
+                bar.appendChild(b);
+                p.el.classList.toggle('abschluss-hidden', i !== 0);
+            });
+            const title = abschluss.querySelector('.tafel-abschluss-title');
+            if (title) title.insertAdjacentElement('afterend', bar);
+            else abschluss.prepend(bar);
+        }
+
         function dissolveTafelAbschluss() {
             const abschluss = document.querySelector('.tafel-abschluss');
             if (!abschluss) return;
             const mainCard = document.querySelector('.main-card');
             if (mainCard) {
-                ['.activity-hub', '.survey-section', '.related-section'].forEach(sel => {
+                ['.activity-hub', '.comments-section', '.related-section'].forEach(sel => {
                     const el = abschluss.querySelector(sel);
-                    if (el) mainCard.appendChild(el);
+                    if (el) { el.classList.remove('abschluss-hidden'); mainCard.appendChild(el); }
                 });
             }
             abschluss.remove();
