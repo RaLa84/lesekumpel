@@ -189,11 +189,20 @@
         .nav-avatar-btn:hover { transform: scale(1.06); box-shadow: 0 4px 12px rgba(43,49,64,0.14); }
         .nav-avatar-btn:active { transform: scale(0.96); }
         .nav-avatar-emoji { pointer-events: none; }
-        /* Lesezeichen-Button im Header (synchron mit dem Hero-Herz) */
-        .nav-bookmark-btn { position: relative; overflow: visible; }
-        .nav-bookmark-btn .like-heart { font-size: 1.3rem; line-height: 1; }
-        .nav-bookmark-btn.is-liked { background: rgba(255,235,235,0.95); border-color: rgba(214,113,113,0.45); }
-        .nav-bookmark-btn.is-firing { animation: heroLikeBurst 0.9s ease-out both; }
+        /* Lesezeichen-Herz oben rechts auf der Tafel-Bildbühne (synchron mit dem Hero-Herz) */
+        .tafel-bookmark {
+            position: absolute; top: 16px; right: 16px; z-index: 5;
+            width: 56px; height: 56px; border-radius: 50%;
+            display: inline-flex; align-items: center; justify-content: center;
+            background: rgba(255,255,255,0.92); border: none; cursor: pointer;
+            box-shadow: 0 4px 14px rgba(43,49,64,0.22);
+            transition: transform 0.15s ease, background 0.15s ease;
+        }
+        .tafel-bookmark .like-heart { font-size: 1.7rem; line-height: 1; }
+        .tafel-bookmark:hover { transform: scale(1.08); background: #fff; }
+        .tafel-bookmark:active { transform: scale(0.95); }
+        .tafel-bookmark.is-firing { animation: heroLikeBurst 0.9s ease-out both; }
+        body:not(.view-tafel) .tafel-bookmark { display: none; }
         .burger-icon {
             width: 44px; height: 44px; box-sizing: border-box; padding: 0;
             display: inline-flex; align-items: center; justify-content: center;
@@ -1682,6 +1691,13 @@
            (im Tafel-Modus sind beide sonst global versteckt) */
         body.view-tafel .tafel-abschluss .comments-section,
         body.view-tafel .tafel-abschluss .related-section { display: block; }
+        /* Abschluss-Seite: Inhalte oben ausrichten (kein großer Leerraum) und nur EIN "Geschafft!"
+           (große Titelzeile bleibt, kleine Indikator-Zeile oben wird ausgeblendet) */
+        body.view-tafel .tafel-story-col:has(.tafel-abschluss.is-current) { justify-content: flex-start; }
+        body.view-tafel .tafel-story-col:has(.tafel-abschluss.is-current) .tafel-page-indicator { display: none; }
+        /* leeres #full-text-view (min-height:50vh) auf der Abschluss-Seite einklappen,
+           sonst schiebt der Platzhalter die Inhalte nach unten */
+        body.view-tafel .tafel-story-col:has(.tafel-abschluss.is-current) #full-text-view { display: none; }
 
         /* === TAFEL-ANSICHT v2: 2-Spalten-Layout mit Sticky-Bild === */
         /* Aktivierung über body.view-tafel (gesetzt vom JS: matchMedia, URL-Param oder Toggle) */
@@ -2001,13 +2017,13 @@
         /* Pagination-Pfeile: links & rechts am Bildschirmrand, vertikal mittig (wie ein Slideshow-Blätterer) */
         .tafel-nav {
             position: fixed;
-            top: 50%;
+            bottom: 20px;
             left: 0; right: 0;
-            transform: translateY(-50%);
             display: flex;
             justify-content: space-between;
+            align-items: center;
             padding: 0 28px;
-            pointer-events: none;   /* leerer Mittelbereich blockiert keine Klicks auf Bild/Text */
+            pointer-events: none;   /* leerer Mittelbereich (Lesehilfen-Leiste) bleibt klickbar */
             z-index: 90;
         }
         .tafel-nav button {
@@ -2262,15 +2278,15 @@
             .tafel-end-overlay .end-badge { font-size: 3.4rem; padding: 28px 70px; }
 
             /* Header / Navbar dezent statt klassenraum-groß (beide Markup-Varianten) */
-            body.view-tafel .nav-logo { height: 44px; }
-            body.view-tafel .nav-logo-box { width: 44px; height: 44px; }
-            body.view-tafel .brand-name { font-size: 1.3rem; }
+            body.view-tafel .nav-logo-box { width: 64px; height: 64px; }
+            body.view-tafel .nav-logo { height: 100%; }
+            body.view-tafel .brand-name { font-size: 2rem; }
             body.view-tafel .nav-btn { font-size: 1rem; }
             body.view-tafel .btn-cta-nav { font-size: 0.95rem; padding: 10px 18px; }
 
             /* Navigations-Pfeile an den Seitenrändern */
-            .tafel-nav { padding: 0 20px; }
-            .tafel-nav button { width: 76px; height: 76px; font-size: 2.2rem; border-width: 3px; }
+            .tafel-nav { padding: 0 24px; }
+            .tafel-nav button { width: 64px; height: 64px; font-size: 1.9rem; border-width: 3px; }
 
             /* "Spiele"-Bubble (unten links) */
             .tafel-games-trigger {
@@ -2322,7 +2338,6 @@
             <a href="../demo.html" class="brand-name">Lesekumpel</a>
         </div>
         <div class="nav-right">
-            <button type="button" class="nav-icon-btn nav-bookmark-btn js-like-btn" id="nav-bookmark" aria-label="Diese Geschichte merken" aria-pressed="false"><span class="like-heart" aria-hidden="true">🤍</span></button>
             <button type="button" class="nav-icon-btn" id="nav-settings" onclick="openSettings()" aria-label="Leseeinstellungen"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="1"/><path d="m9 20 3-6 3 6"/><path d="m6 8 6 2 6-2"/><path d="M12 10v4"/></svg></button>
             <a href="../kind.html" class="nav-avatar-btn" id="nav-avatar" aria-label="Mein Bereich">
                 <span class="nav-avatar-emoji" id="nav-avatar-emoji">🦊</span>
@@ -4108,24 +4123,23 @@
 
         /* === Hero-Like === */
         (function initLikeButtons() {
-            // Mehrere Auslöser (Hero-Herz + Header-Lesezeichen) teilen sich denselben Zustand
-            const buttons = Array.from(document.querySelectorAll('.js-like-btn'));
-            if (!buttons.length) return;
+            // Alle Auslöser (Hero-Herz + Bild-Lesezeichen im Tafel-Modus) teilen sich denselben
+            // Zustand. Event-Delegation, damit auch später eingefügte .js-like-btn mitwirken.
             const toast = document.getElementById('hero-like-toast');
-
-            // Persistenz pro Story: der Like überlebt einen Reload (Grundstein für echte Sammlung)
             const likeKey = 'lesekumpel-liked-mein-erster-tag-auf-dem-flohmarkt-12e9';
             let liked = false;
             try { liked = localStorage.getItem(likeKey) === 'true'; } catch(e) {}
 
             function render() {
-                buttons.forEach(b => {
+                document.querySelectorAll('.js-like-btn').forEach(b => {
                     b.classList.toggle('is-liked', liked);
                     b.setAttribute('aria-pressed', liked ? 'true' : 'false');
                     const h = b.querySelector('.like-heart');
                     if (h) h.textContent = liked ? '❤️' : '🤍';
                 });
             }
+            // global, damit der Bild-Lesezeichen-Injector den Anfangszustand setzen kann
+            window.syncLikeButtons = render;
             render();
 
             let toastTimer = null;
@@ -4155,7 +4169,9 @@
                 }
             }
 
-            buttons.forEach(btn => btn.addEventListener('click', () => {
+            document.addEventListener('click', (e) => {
+                const btn = e.target.closest('.js-like-btn');
+                if (!btn) return;
                 liked = !liked;
                 try { localStorage.setItem(likeKey, liked ? 'true' : 'false'); } catch(e) {}
                 render();
@@ -4165,7 +4181,27 @@
                     showToast('❤️ In deine Lieblings-Sammlung gespeichert!');
                     setTimeout(() => btn.classList.remove('is-firing'), 950);
                 }
-            }));
+            });
+        })();
+
+        /* Bild-Lesezeichen: Herz oben rechts in die Tafel-Bildbühne einhängen, sobald sie existiert */
+        (function injectStageBookmark() {
+            function inject() {
+                const stage = document.querySelector('.tafel-image-stage');
+                if (!stage || stage.querySelector('.tafel-bookmark')) return;
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.className = 'tafel-bookmark js-like-btn';
+                btn.setAttribute('aria-label', 'Diese Geschichte merken');
+                btn.setAttribute('aria-pressed', 'false');
+                btn.innerHTML = '<span class="like-heart" aria-hidden="true">🤍</span>';
+                stage.appendChild(btn);
+                if (window.syncLikeButtons) window.syncLikeButtons();
+            }
+            const obs = new MutationObserver(inject);
+            obs.observe(document.body, { childList: true, subtree: true });
+            if (document.readyState !== 'loading') inject();
+            else document.addEventListener('DOMContentLoaded', inject);
         })();
 
         /* === Micro-Survey: Wie hat dir die Geschichte gefallen? (3-Smiley-Skala) === */
