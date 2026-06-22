@@ -108,13 +108,6 @@
     .btn-primary:hover { background: var(--navy); color: var(--white); transform: translateY(-3px) scale(1.02); box-shadow: 0 8px 22px rgba(43,49,64,0.35); text-decoration: none; }
     .btn-large { padding: 20px 44px; font-size: 1.05rem; }
 
-    /* ===== Section-Badge ===== */
-    .section-badge { display: inline-block; background: var(--mint); color: var(--navy); padding: 10px 22px; border-radius: var(--radius-pill); font-family: var(--font-heading); font-weight: 700; font-size: 1.2rem; line-height: 1.2; margin-bottom: 16px; }
-
-    /* ===== Scribble Underline ===== */
-    .scribble-underline { position: relative; display: inline-block; }
-    .scribble-underline::after { content: ''; position: absolute; left: 0; right: 0; bottom: -6px; height: 10px; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 10' preserveAspectRatio='none'%3E%3Cpath d='M2,7 Q50,2 100,6 T198,5' stroke='%23F97352' stroke-width='3' stroke-linecap='round' fill='none'/%3E%3C/svg%3E") no-repeat center / 100% 100%; }
-
     /* ===== Floating Decorations ===== */
     .deco-star, .deco-circle, .deco-sparkle, .deco-blob { position: absolute; pointer-events: none; z-index: 0; }
     .deco-star { animation: float 7s ease-in-out infinite; }
@@ -159,12 +152,9 @@
     /* ============================================================
        Demo-Seite spezifisch
        ============================================================ */
-    .demo-hero { text-align: center; padding: 70px 24px 32px; max-width: 820px; margin: 0 auto; position: relative; }
-    .demo-hero h1 { font-size: clamp(2.2rem, 5.5vw, 3.4rem); margin: 14px 0 12px; line-height: 1.1; letter-spacing: -0.02em; }
-    .demo-hero h1 .accent { color: var(--lila); }
-    .demo-hero p { font-size: 1.05rem; color: var(--text-muted); max-width: 640px; margin: 0 auto; }
-    .demo-hero-deco-1 { top: 18%; left: 8%; }
-    .demo-hero-deco-2 { top: 30%; right: 10%; }
+    .catalog-header { max-width: 1200px; margin: 0 auto; padding: 40px 24px 12px; }
+    .catalog-header h1 { font-size: clamp(1.7rem, 4vw, 2.4rem); letter-spacing: -0.02em; }
+    @media (min-width: 768px) { .catalog-header { padding: 56px 24px 16px; } }
 
     .filter-wrap { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
 
@@ -321,11 +311,8 @@
 
   <main id="main">
 
-    <header class="demo-hero">
-      <svg class="deco-sparkle demo-hero-deco-1 deco-hide-mobile" width="22" height="22" viewBox="0 0 24 24" aria-hidden="true"><path d="M12,2 L14,10 L22,12 L14,14 L12,22 L10,14 L2,12 L10,10 Z" fill="#FFD95A" opacity="0.6"/></svg>
-      <svg class="deco-star demo-hero-deco-2 deco-hide-mobile" width="28" height="28" viewBox="0 0 32 32" aria-hidden="true"><polygon points="16,2 20,12 30,12 22,19 25,30 16,23 7,30 10,19 2,12 12,12" fill="#F97352" opacity="0.45"/></svg>
-      <h1 class="reveal">Such dir was <span class="accent"><span class="scribble-underline">Sch&ouml;nes</span></span> aus.</h1>
-      <p class="reveal">Handverlesene Geschichten unserer KI-Autor:innen &mdash; gefiltert nach Persona, Leseniveau und Format. Klick eine Persona an, um ihre Pers&ouml;nlichkeit kennenzulernen.</p>
+    <header class="catalog-header">
+      <h1 class="reveal">Geschichten&#8209;Bibliothek</h1>
     </header>
 
     <section class="filter-wrap">
