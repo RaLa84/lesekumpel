@@ -1798,6 +1798,7 @@
                Werkzeug-Leiste verschwinden. Längere Absätze scrollen innerhalb der Spalte. */
             min-height: 0;
             max-height: clamp(200px, calc(100vh - 220px), 100vh);
+            overflow-x: hidden;   /* nur vertikal scrollen — keine ungewollte horizontale Scrollbar */
             overflow-y: auto;
             position: relative;
             padding-top: 56px;
@@ -2221,6 +2222,7 @@
             gap: 36px;
             width: 100%;
             max-height: calc(100vh - 120px);
+            overflow-x: hidden;   /* nur vertikal scrollen — keine ungewollte horizontale Scrollbar */
             overflow-y: auto;
             padding-right: 8px;
             animation: none;
