@@ -115,12 +115,6 @@
     .scribble-underline { position: relative; display: inline-block; }
     .scribble-underline::after { content: ''; position: absolute; left: 0; right: 0; bottom: -6px; height: 10px; background: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 10' preserveAspectRatio='none'%3E%3Cpath d='M2,7 Q50,2 100,6 T198,5' stroke='%23F97352' stroke-width='3' stroke-linecap='round' fill='none'/%3E%3C/svg%3E") no-repeat center / 100% 100%; }
 
-    /* ===== Pill-Filter ===== */
-    .pill-group { display: flex; gap: 10px; flex-wrap: wrap; justify-content: center; }
-    .pill { background: var(--white); border: 2px solid var(--border); color: var(--navy); border-radius: var(--radius-pill); padding: 10px 20px; font-family: var(--font-body); font-weight: 600; font-size: 0.92rem; cursor: pointer; transition: all 0.2s ease; }
-    .pill:hover { border-color: var(--mint); }
-    .pill.active { background: var(--mint); border-color: var(--mint); color: var(--navy); }
-
     /* ===== Floating Decorations ===== */
     .deco-star, .deco-circle, .deco-sparkle, .deco-blob { position: absolute; pointer-events: none; z-index: 0; }
     .deco-star { animation: float 7s ease-in-out infinite; }
@@ -172,24 +166,9 @@
     .demo-hero-deco-1 { top: 18%; left: 8%; }
     .demo-hero-deco-2 { top: 30%; right: 10%; }
 
-    .filter-wrap { max-width: 1080px; margin: 0 auto; padding: 0 24px; }
-    .filter-card { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius-card); box-shadow: var(--shadow-card); padding: 28px 24px; }
-    .filter-card > * + * { margin-top: 24px; }
+    .filter-wrap { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
 
-    /* Persona-Filter */
-    .author-filter-container { display: flex; gap: 14px; flex-wrap: wrap; justify-content: center; align-items: flex-start; }
-    .author-item { display: flex; flex-direction: column; align-items: center; gap: 6px; cursor: pointer; background: none; border: none; padding: 6px; font-family: inherit; transition: transform 0.2s; }
-    .author-item:hover { transform: translateY(-2px); }
-    .author-img-wrapper { width: 56px; height: 56px; border-radius: 50%; overflow: hidden; border: 3px solid transparent; background: var(--cream-light); display: flex; align-items: center; justify-content: center; font-size: 1.6rem; transition: all 0.2s; }
-    .author-img-wrapper img { width: 100%; height: 100%; object-fit: cover; }
-    .author-item.active .author-img-wrapper { border-color: var(--author-color, var(--mint)); box-shadow: 0 0 0 3px color-mix(in srgb, var(--author-color, var(--mint)) 35%, transparent); transform: scale(1.06); }
-    .author-name { font-size: 0.78rem; color: var(--navy); font-weight: 600; }
-    .author-item.active .author-name { color: var(--author-color, var(--lila)); }
-    .author-divider { width: 1px; height: 56px; background: var(--border); margin: 0 4px; align-self: center; }
-
-    /* Bio Card */
-    .author-bio-card { max-height: 0; overflow: hidden; opacity: 0; transition: max-height 0.35s ease, opacity 0.3s ease, margin 0.3s ease; margin-top: 0; }
-    .author-bio-card.visible { max-height: 260px; opacity: 1; margin-top: 20px; }
+    /* Bio-Streifen (Inhalt bei gewählter Persona) */
     .bio-inner { background: var(--cream-light); border: 1px solid var(--border); border-left: 4px solid var(--mint); border-radius: var(--radius-inner); padding: 18px 22px; display: flex; gap: 16px; align-items: center; }
     .bio-avatar { width: 64px; height: 64px; border-radius: 50%; object-fit: cover; flex-shrink: 0; border: 2px solid var(--white); box-shadow: var(--shadow-card); }
     .bio-text { flex: 1; min-width: 0; }
@@ -198,59 +177,88 @@
     .bio-neurotype { font-size: 0.74rem; font-weight: 700; padding: 3px 12px; border-radius: var(--radius-pill); color: var(--white); }
     .bio-desc { font-size: 0.92rem; line-height: 1.55; color: var(--navy); }
 
-    /* Filterzeilen (beschriftete Pill-Gruppen, Udemy-Stil) */
-    .filter-row { display: flex; align-items: center; gap: 12px; }
-    .filter-row + .filter-row { margin-top: 14px; }
-    .filter-row-label { flex-shrink: 0; width: 86px; font-family: var(--font-heading); font-weight: 600; font-size: 0.8rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.04em; }
-    .filter-row .pill-group { justify-content: flex-start; flex-wrap: wrap; flex: 1; min-width: 0; }
-    .pill { min-height: 40px; }
+    /* ===== Filter-Leiste (About-You-Stil: kompakte Dropdowns) ===== */
+    .filter-bar { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+    .filter-bar .search-wrapper { flex: 1; min-width: 220px; }
 
-    /* Suche */
+    .filter-dd { position: relative; }
+    .filter-dd-trigger {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: var(--white); border: 2px solid var(--border); color: var(--navy);
+      border-radius: var(--radius-pill); padding: 11px 18px; min-height: 44px;
+      font-family: var(--font-body); font-weight: 600; font-size: 0.92rem;
+      cursor: pointer; white-space: nowrap;
+      transition: border-color 0.2s, background 0.2s, box-shadow 0.2s, color 0.2s;
+    }
+    .filter-dd-trigger:hover { border-color: var(--mint); }
+    .filter-dd-trigger .caret { font-size: 0.65rem; opacity: 0.55; transition: transform 0.2s; }
+    .filter-dd-trigger[aria-expanded="true"] { border-color: var(--navy); box-shadow: 0 0 0 3px rgba(47,184,166,0.22); }
+    .filter-dd-trigger[aria-expanded="true"] .caret { transform: rotate(180deg); }
+    .filter-dd-trigger.active { background: rgba(47,184,166,0.16); border-color: var(--mint); color: #259e8e; }
+    .filter-dd-trigger .dd-val { font-weight: 700; }
+
+    .filter-dd-panel {
+      position: absolute; top: calc(100% + 8px); left: 0; z-index: 1200;
+      min-width: 230px; max-width: 320px; max-height: 340px; overflow-y: auto;
+      background: var(--white); border: 1px solid var(--border); border-radius: var(--radius-inner);
+      box-shadow: var(--shadow-card-hover); padding: 6px;
+    }
+    .filter-dd-panel.align-right { left: auto; right: 0; }
+    .filter-dd-panel[hidden] { display: none; }
+    .filter-dd-option {
+      display: flex; align-items: center; gap: 10px; width: 100%;
+      background: none; border: none; border-radius: 12px; padding: 9px 12px;
+      font-family: var(--font-body); font-weight: 600; font-size: 0.92rem; color: var(--navy);
+      cursor: pointer; text-align: left; transition: background 0.15s; min-height: 44px;
+    }
+    .filter-dd-option:hover { background: var(--cream-light); }
+    .filter-dd-option .opt-check { margin-left: auto; color: var(--mint); font-weight: 700; opacity: 0; }
+    .filter-dd-option.selected { color: #259e8e; }
+    .filter-dd-option.selected .opt-check { opacity: 1; }
+    .filter-dd-option .opt-avatar { width: 30px; height: 30px; border-radius: 50%; object-fit: cover; flex-shrink: 0; background: var(--cream-light); }
+    .filter-dd-divider { height: 1px; background: var(--border); margin: 6px 8px; }
+
+    /* Such-Feld */
     .search-wrapper { position: relative; }
     .search-wrapper svg { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); width: 18px; height: 18px; color: var(--navy); opacity: 0.5; pointer-events: none; }
-    .search-wrapper input { width: 100%; padding: 14px 18px 14px 42px; border: 2px solid var(--border); border-radius: var(--radius-input); background: var(--white); color: var(--navy); font-family: var(--font-body); font-size: 0.98rem; transition: border-color 0.2s, box-shadow 0.2s; }
-    .search-wrapper input:focus { outline: none; border-color: var(--navy); box-shadow: 0 0 0 3px rgba(47,184,166,0.32); }
-    .sort-select { padding: 12px 38px 12px 16px; border: 2px solid var(--border); border-radius: var(--radius-input); background: var(--white) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%232B3140' stroke-width='2' fill='none'/%3E%3C/svg%3E") no-repeat right 14px center; color: var(--navy); font-family: var(--font-body); font-weight: 600; font-size: 0.92rem; cursor: pointer; appearance: none; min-height: 44px; flex-shrink: 0; }
-    .sort-select:focus { outline: none; border-color: var(--navy); }
+    .search-wrapper input { width: 100%; padding: 12px 18px 12px 42px; border: 2px solid var(--border); border-radius: var(--radius-pill); background: var(--white); color: var(--navy); font-family: var(--font-body); font-size: 0.95rem; min-height: 44px; transition: border-color 0.2s, box-shadow 0.2s; }
+    .search-wrapper input:focus { outline: none; border-color: var(--navy); box-shadow: 0 0 0 3px rgba(47,184,166,0.22); }
 
-    /* Katalog-Toolbar: Ergebnis-Zähler + Sortierung */
-    .catalog-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-bottom: 14px; }
+    /* Bio-Streifen (erscheint bei gewählter Persona) */
+    .bio-banner { margin-top: 16px; }
+    .bio-banner[hidden] { display: none; }
+
+    /* Katalog-Toolbar: Ergebnis-Zähler + Reset + Sortierung */
+    .catalog-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-bottom: 22px; }
     .result-count { font-family: var(--font-heading); font-weight: 700; font-size: 1.05rem; color: var(--navy); }
     .result-count span { color: var(--mint); }
+    .toolbar-right { display: flex; align-items: center; gap: 14px; }
+    .reset-link { background: none; border: none; color: var(--text-muted); font-family: var(--font-body); font-weight: 700; font-size: 0.85rem; cursor: pointer; text-decoration: underline; padding: 6px 2px; white-space: nowrap; }
+    .reset-link:hover { color: var(--navy); }
+    .reset-link[hidden] { display: none; }
 
-    /* Aktive Filter-Chips */
-    .active-filters { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; margin-bottom: 22px; }
-    .active-filters:empty { display: none; }
-    .filter-chip { display: inline-flex; align-items: center; gap: 6px; background: rgba(47,184,166,0.16); border: 1.5px solid var(--mint); border-radius: var(--radius-pill); padding: 6px 8px 6px 14px; font-weight: 700; color: #259e8e; font-size: 0.85rem; cursor: pointer; font-family: var(--font-body); transition: all 0.15s; }
-    .filter-chip:hover { background: var(--white); }
-    .filter-chip .chip-x { display: inline-flex; align-items: center; justify-content: center; width: 18px; height: 18px; border-radius: 50%; background: var(--mint); color: #fff; font-size: 0.72rem; line-height: 1; }
-    .clear-all { background: none; border: none; color: var(--text-muted); font-family: var(--font-body); font-weight: 700; font-size: 0.82rem; cursor: pointer; text-decoration: underline; padding: 6px 4px; }
-    .clear-all:hover { color: var(--navy); }
-
-    /* Mobile: Persona-Reihe & Pill-Gruppen horizontal scrollbar */
+    /* Mobile */
     @media (max-width: 600px) {
-      .author-filter-container { flex-wrap: nowrap; overflow-x: auto; justify-content: flex-start; -webkit-overflow-scrolling: touch; scrollbar-width: none; padding-bottom: 4px; }
-      .author-filter-container::-webkit-scrollbar { display: none; }
-      .author-item, .author-divider { flex-shrink: 0; }
-      .filter-row { flex-direction: column; align-items: stretch; gap: 8px; }
-      .filter-row-label { width: auto; }
-      .filter-row .pill-group { flex-wrap: nowrap; overflow-x: auto; -webkit-overflow-scrolling: touch; scrollbar-width: none; padding-bottom: 2px; }
-      .filter-row .pill-group::-webkit-scrollbar { display: none; }
-      .pill { flex-shrink: 0; }
+      .filter-bar { gap: 8px; }
+      .filter-bar .filter-dd { flex: 1 1 40%; }
+      .filter-dd-trigger { width: 100%; justify-content: space-between; }
+      .filter-bar .search-wrapper { flex: 1 1 100%; order: 5; min-width: 0; }
+      .filter-dd-panel { left: 0; right: 0; min-width: 0; max-width: none; width: max(100%, 230px); }
     }
 
     /* Stories Grid */
     .stories-wrap { max-width: 1200px; margin: 40px auto 0; padding: 0 24px 0; }
-    .stories-grid { display: grid; grid-template-columns: 1fr; gap: 22px; }
+    .stories-grid { display: grid; grid-template-columns: 1fr; gap: 24px; }
     @media (min-width: 600px) { .stories-grid { grid-template-columns: repeat(2, 1fr); } }
     @media (min-width: 980px) { .stories-grid { grid-template-columns: repeat(3, 1fr); } }
+    @media (min-width: 1280px) { .stories-grid { grid-template-columns: repeat(4, 1fr); } }
 
     .story-tile { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius-card); box-shadow: var(--shadow-card); overflow: hidden; transition: transform 0.3s ease, box-shadow 0.3s ease; }
     .story-tile a { display: block; text-decoration: none; color: var(--navy); }
     .story-tile:hover { transform: translateY(-4px); box-shadow: var(--shadow-card-hover); }
     .story-tile.tile-comic { border-left: 4px solid var(--coral); }
     .tile-comic-badge { display: inline-block; background: rgba(249,115,82,0.16); border: 1px solid var(--coral); color: var(--navy); font-size: 0.7rem; font-weight: 700; padding: 3px 10px; border-radius: var(--radius-pill); margin: 0 6px 10px 0; }
-    .tile-cover { height: 160px; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; }
+    .tile-cover { height: 200px; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; }
     .tile-cover img { width: 100%; height: 100%; object-fit: cover; }
     .tile-cover-icon { font-size: 3rem; opacity: 0.55; }
     .tile-body { padding: 18px 20px 20px; }
@@ -321,109 +329,22 @@
     </header>
 
     <section class="filter-wrap">
-      <div class="filter-card">
-
-        <!-- Persona-Avatare -->
-        <div class="author-filter-container" id="authorFilter">
-          <button type="button" class="author-item active" data-author="all" style="--author-color: var(--mint)">
-            <span class="author-img-wrapper">&#128101;</span>
-            <span class="author-name">Alle</span>
-          </button>
-          <button type="button" class="author-item" data-author="Pip Punkt" style="--author-color: #6B5B9E">
-            <span class="author-img-wrapper"><img src="avatars/pip-punkt.webp" alt="Pip Punkt"></span>
-            <span class="author-name">Pip</span>
-          </button>
-          <button type="button" class="author-item" data-author="Mia Mitte" style="--author-color: #D67171">
-            <span class="author-img-wrapper"><img src="avatars/mia-mitte.webp" alt="Mia Mitte"></span>
-            <span class="author-name">Mia</span>
-          </button>
-          <button type="button" class="author-item" data-author="Peter Past" style="--author-color: #5B9BD5">
-            <span class="author-img-wrapper"><img src="avatars/peter-past.webp" alt="Peter Past"></span>
-            <span class="author-name">Peter</span>
-          </button>
-          <button type="button" class="author-item" data-author="Stella Stimmenreich" style="--author-color: #E8950A">
-            <span class="author-img-wrapper"><img src="avatars/stella-stimmenreich.webp" alt="Stella Stimmenreich"></span>
-            <span class="author-name">Stella</span>
-          </button>
-          <button type="button" class="author-item" data-author="Finja Feder" style="--author-color: #7E57C2">
-            <span class="author-img-wrapper"><img src="avatars/finja-feder.webp" alt="Finja Feder"></span>
-            <span class="author-name">Finja</span>
-          </button>
-          <span class="author-divider" aria-hidden="true"></span>
-          <button type="button" class="author-item" data-author="Samira Wissensfreund" style="--author-color: #E07B39">
-            <span class="author-img-wrapper"><img src="avatars/samira-wissensfreund.webp" alt="Samira Wissensfreund"></span>
-            <span class="author-name">Samira</span>
-          </button>
-          <button type="button" class="author-item" data-author="Holzi Pixelkopf" style="--author-color: #4CAF50">
-            <span class="author-img-wrapper"><img src="avatars/holzi-pixelkopf.webp" alt="Holzi Pixelkopf"></span>
-            <span class="author-name">Holzi</span>
-          </button>
-          <button type="button" class="author-item" data-author="Deniz Traumf&auml;nger" style="--author-color: #7E57C2">
-            <span class="author-img-wrapper"><img src="avatars/deniz-traumfaenger.webp" alt="Deniz Traumf&auml;nger"></span>
-            <span class="author-name">Deniz</span>
-          </button>
-          <button type="button" class="author-item" data-author="Jonas Entdecker" style="--author-color: #FF8A65">
-            <span class="author-img-wrapper"><img src="avatars/jonas-entdecker.webp" alt="Jonas Entdecker"></span>
-            <span class="author-name">Jonas</span>
-          </button>
-        </div>
-
-        <!-- Bio Card -->
-        <div class="author-bio-card" id="authorBio" aria-live="polite">
-          <div class="bio-inner" id="bioInner"></div>
-        </div>
-
-        <!-- Stufe -->
-        <div class="filter-row">
-          <span class="filter-row-label">Stufe</span>
-          <div class="pill-group" id="levelPills" role="group" aria-label="Lesestufe w&auml;hlen">
-            <button type="button" class="pill active" data-level="all">Alle</button>
-            <button type="button" class="pill" data-level="lesestarter">Lesestarter</button>
-            <button type="button" class="pill" data-level="wort-entdecker">Wort-Entdecker</button>
-            <button type="button" class="pill" data-level="lese-profis">Lese-Profis</button>
-          </div>
-        </div>
-
-        <!-- Neurotyp -->
-        <div class="filter-row">
-          <span class="filter-row-label">Neurotyp</span>
-          <div class="pill-group" id="neuroPills" role="group" aria-label="Neurotyp w&auml;hlen">
-            <button type="button" class="pill active" data-neuro="all">Alle</button>
-            <button type="button" class="pill" data-neuro="Standard">Standard</button>
-            <button type="button" class="pill" data-neuro="ADHS">ADHS</button>
-            <button type="button" class="pill" data-neuro="Autismus">Autismus</button>
-            <button type="button" class="pill" data-neuro="LRS">LRS</button>
-          </div>
-        </div>
-
-        <!-- Format -->
-        <div class="filter-row">
-          <span class="filter-row-label">Format</span>
-          <div class="pill-group" id="formatPills" role="group" aria-label="Format w&auml;hlen">
-            <button type="button" class="pill active" data-format="all">Alle</button>
-            <button type="button" class="pill" data-format="text">&#128214; Text</button>
-            <button type="button" class="pill" data-format="comic">&#127912; Comic</button>
-          </div>
-        </div>
-
-        <!-- Suche -->
-        <div class="search-wrapper">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-          <input type="text" id="searchInput" placeholder="Geschichte suchen &hellip;">
-        </div>
+      <!-- Filter-Leiste: per JS aus FACETS gebaut (Autor:in / Stufe / Neurotyp / Format + Suche) -->
+      <div class="filter-bar" id="filterBar"></div>
+      <!-- Bio-Streifen: erscheint bei gewählter Persona -->
+      <div class="bio-banner" id="bioBanner" hidden>
+        <div class="bio-inner" id="bioInner"></div>
       </div>
     </section>
 
     <section class="stories-wrap">
       <div class="catalog-toolbar">
         <div class="result-count" id="resultCount" aria-live="polite">Lade Geschichten &hellip;</div>
-        <select id="sortSelect" class="sort-select" aria-label="Sortierung">
-          <option value="newest">Neueste zuerst</option>
-          <option value="oldest">&Auml;lteste zuerst</option>
-          <option value="title">A &ndash; Z</option>
-        </select>
+        <div class="toolbar-right">
+          <button type="button" class="reset-link" id="resetLink" hidden>Zur&uuml;cksetzen</button>
+          <div class="filter-dd" id="sortDd"></div>
+        </div>
       </div>
-      <div class="active-filters" id="activeFilters"></div>
       <div class="demo-loading" id="loadingMsg">Lade Geschichten &hellip;</div>
       <div class="stories-grid" id="bookGrid"></div>
     </section>
@@ -571,23 +492,218 @@
       return 'Lese-Profis';
     }
 
+    /* ---- State ---- */
     let stories = [];
     let loading = true;
-    let fAuthor = 'all';
-    let fLevel = 'all';
-    let fNeuro = 'all';
-    let fFormat = 'all';
+    let sortMode = 'newest';
+    const state = { author: 'all', level: 'all', neuro: 'all', format: 'all' };
 
+    /* ---- Facetten-Konfiguration für die Filter-Leiste ---- */
+    const PERSONA_ORDER = ['Pip Punkt', 'Mia Mitte', 'Peter Past', 'Stella Stimmenreich', 'Finja Feder', '__divider__', 'Samira Wissensfreund', 'Holzi Pixelkopf', 'Deniz Traumfänger', 'Jonas Entdecker'];
+    const FACETS = [
+      {
+        key: 'author', label: 'Autor:in',
+        options: [{ v: 'all', label: 'Alle Autor:innen' }].concat(
+          PERSONA_ORDER.map(p => p === '__divider__'
+            ? { divider: true }
+            : { v: p, label: p, avatar: authorBios[p] && authorBios[p].avatar }))
+      },
+      { key: 'level', label: 'Stufe', options: [
+        { v: 'all', label: 'Alle Stufen' },
+        { v: 'lesestarter', label: 'Lesestarter' },
+        { v: 'wort-entdecker', label: 'Wort-Entdecker' },
+        { v: 'lese-profis', label: 'Lese-Profis' }
+      ] },
+      { key: 'neuro', label: 'Neurotyp', options: [
+        { v: 'all', label: 'Alle' },
+        { v: 'Standard', label: 'Standard' },
+        { v: 'ADHS', label: 'ADHS' },
+        { v: 'Autismus', label: 'Autismus' },
+        { v: 'LRS', label: 'LRS' }
+      ] },
+      { key: 'format', label: 'Format', options: [
+        { v: 'all', label: 'Alle' },
+        { v: 'text', label: '📖 Text' },
+        { v: 'comic', label: '🎨 Comic' }
+      ] }
+    ];
+    const SORT_OPTIONS = [
+      { v: 'newest', label: 'Neueste zuerst' },
+      { v: 'oldest', label: 'Älteste zuerst' },
+      { v: 'title', label: 'A – Z' }
+    ];
+
+    /* ---- DOM ---- */
     const bookGrid = document.getElementById('bookGrid');
-    const searchEl = document.getElementById('searchInput');
-    const sortEl = document.getElementById('sortSelect');
     const loadEl = document.getElementById('loadingMsg');
     const resultCountEl = document.getElementById('resultCount');
-    const activeFiltersEl = document.getElementById('activeFilters');
-    const bioCard = document.getElementById('authorBio');
+    const resetLink = document.getElementById('resetLink');
+    const filterBar = document.getElementById('filterBar');
+    const sortDd = document.getElementById('sortDd');
+    const bioBanner = document.getElementById('bioBanner');
     const bioInner = document.getElementById('bioInner');
+    let searchEl = null; /* wird in buildFilterBar gesetzt */
 
-    /* 1. Listen aller drei Ordner via GitHub-API (3 Calls) */
+    function esc(s) { return String(s == null ? '' : s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c])); }
+
+    /* ============================================================
+       Filter-Leiste + Dropdowns aufbauen
+       ============================================================ */
+    function ddOptionHtml(facetKey, opt, selectedVal) {
+      if (opt.divider) return '<div class="filter-dd-divider" role="separator"></div>';
+      const on = opt.v === selectedVal;
+      const avatar = opt.avatar ? '<img class="opt-avatar" src="' + opt.avatar + '" alt="">' : '';
+      return '<button type="button" class="filter-dd-option' + (on ? ' selected' : '') + '" role="option" aria-selected="' + (on ? 'true' : 'false') +
+        '" data-facet="' + facetKey + '" data-val="' + esc(opt.v) + '">' +
+        avatar + '<span>' + opt.label + '</span><span class="opt-check" aria-hidden="true">✓</span></button>';
+    }
+    function facetHtml(facet) {
+      return '<div class="filter-dd" data-facet="' + facet.key + '">' +
+        '<button type="button" class="filter-dd-trigger" aria-haspopup="listbox" aria-expanded="false">' +
+          '<span class="dd-label">' + facet.label + '</span><span class="caret" aria-hidden="true">▼</span>' +
+        '</button>' +
+        '<div class="filter-dd-panel" role="listbox" aria-label="' + facet.label + '" hidden>' +
+          facet.options.map(o => ddOptionHtml(facet.key, o, state[facet.key])).join('') +
+        '</div></div>';
+    }
+    function buildFilterBar() {
+      filterBar.innerHTML =
+        FACETS.map(facetHtml).join('') +
+        '<div class="search-wrapper">' +
+          '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>' +
+          '<input type="text" id="searchInput" placeholder="Geschichte suchen …" aria-label="Geschichte suchen">' +
+        '</div>';
+      searchEl = document.getElementById('searchInput');
+      searchEl.addEventListener('input', () => { render(); updateTriggers(); });
+
+      sortDd.innerHTML =
+        '<button type="button" class="filter-dd-trigger" aria-haspopup="listbox" aria-expanded="false">' +
+          '<span class="dd-label">Sortierung</span><span class="dd-val"></span><span class="caret" aria-hidden="true">▼</span>' +
+        '</button>' +
+        '<div class="filter-dd-panel align-right" role="listbox" aria-label="Sortierung" hidden>' +
+          SORT_OPTIONS.map(o => '<button type="button" class="filter-dd-option" role="option" data-facet="sort" data-val="' + o.v + '"><span>' + o.label + '</span><span class="opt-check" aria-hidden="true">✓</span></button>').join('') +
+        '</div>';
+
+      wireDropdowns();
+      updateTriggers();
+    }
+
+    /* ---- Generischer Dropdown-Controller (Klick-außerhalb + Escape) ---- */
+    function closeAllDropdowns(except) {
+      document.querySelectorAll('.filter-dd').forEach(dd => {
+        if (dd === except) return;
+        const t = dd.querySelector('.filter-dd-trigger');
+        const p = dd.querySelector('.filter-dd-panel');
+        if (t) t.setAttribute('aria-expanded', 'false');
+        if (p) p.hidden = true;
+      });
+    }
+    function wireDropdowns() {
+      document.querySelectorAll('.filter-dd').forEach(dd => {
+        const trigger = dd.querySelector('.filter-dd-trigger');
+        const panel = dd.querySelector('.filter-dd-panel');
+        trigger.addEventListener('click', (e) => {
+          e.stopPropagation();
+          const open = trigger.getAttribute('aria-expanded') === 'true';
+          closeAllDropdowns(dd);
+          trigger.setAttribute('aria-expanded', open ? 'false' : 'true');
+          panel.hidden = open;
+        });
+        panel.addEventListener('click', (e) => {
+          const opt = e.target.closest('.filter-dd-option');
+          if (!opt) return;
+          pickOption(opt.dataset.facet, opt.dataset.val);
+          trigger.setAttribute('aria-expanded', 'false');
+          panel.hidden = true;
+          trigger.focus();
+        });
+      });
+    }
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('.filter-dd')) closeAllDropdowns();
+    });
+    document.addEventListener('keydown', (e) => {
+      if (e.key !== 'Escape') return;
+      const openTrigger = document.querySelector('.filter-dd-trigger[aria-expanded="true"]');
+      closeAllDropdowns();
+      if (openTrigger) openTrigger.focus();
+    });
+
+    function pickOption(facet, val) {
+      if (facet === 'sort') { sortMode = val; }
+      else { state[facet] = val; if (facet === 'author') applyAuthorBio(val); }
+      updateTriggers();
+      render();
+    }
+
+    /* ---- Trigger-Labels, Active-State, Auswahl markieren, Reset-Sichtbarkeit ---- */
+    function shortLabel(facetKey, val) {
+      if (facetKey === 'author') return val.split(' ')[0]; /* "Pip Punkt" → "Pip" */
+      const facet = FACETS.find(f => f.key === facetKey);
+      const opt = facet && facet.options.find(o => o.v === val);
+      return opt ? opt.label : val;
+    }
+    function updateTriggers() {
+      FACETS.forEach(facet => {
+        const dd = filterBar.querySelector('.filter-dd[data-facet="' + facet.key + '"]');
+        if (!dd) return;
+        const trigger = dd.querySelector('.filter-dd-trigger');
+        const val = state[facet.key];
+        const active = val !== 'all';
+        trigger.classList.toggle('active', active);
+        trigger.querySelector('.dd-label').textContent = active ? facet.label + ': ' + shortLabel(facet.key, val) : facet.label;
+        dd.querySelectorAll('.filter-dd-option').forEach(o => {
+          const sel = o.dataset.val === val;
+          o.classList.toggle('selected', sel);
+          o.setAttribute('aria-selected', sel ? 'true' : 'false');
+        });
+      });
+      const sTrigger = sortDd.querySelector('.filter-dd-trigger');
+      if (sTrigger) {
+        const so = SORT_OPTIONS.find(o => o.v === sortMode);
+        sTrigger.querySelector('.dd-val').textContent = so ? ': ' + so.label : '';
+        sortDd.querySelectorAll('.filter-dd-option').forEach(o =>
+          o.classList.toggle('selected', o.dataset.val === sortMode));
+      }
+      const any = state.author !== 'all' || state.level !== 'all' || state.neuro !== 'all' || state.format !== 'all' || (searchEl && searchEl.value);
+      resetLink.hidden = !any;
+    }
+
+    function applyAuthorBio(name) {
+      const bio = authorBios[name];
+      if (bio) {
+        const color = authorColors[name] || 'var(--mint)';
+        bioInner.style.borderLeftColor = color;
+        bioInner.innerHTML =
+          '<img src="' + bio.avatar + '" alt="' + esc(name) + '" class="bio-avatar">' +
+          '<div class="bio-text">' +
+            '<div class="bio-header">' +
+              '<span class="bio-name">' + esc(name) + '</span>' +
+              '<span class="bio-neurotype" style="background:' + color + '">' + esc(bio.neurotype) + '</span>' +
+            '</div>' +
+            '<div class="bio-desc">' + esc(bio.desc) + '</div>' +
+          '</div>';
+        bioBanner.hidden = false;
+      } else {
+        bioBanner.hidden = true;
+      }
+    }
+
+    resetLink.addEventListener('click', () => {
+      state.author = state.level = state.neuro = state.format = 'all';
+      if (searchEl) searchEl.value = '';
+      applyAuthorBio('all');
+      updateTriggers();
+      render();
+    });
+
+    function updateCount(n) {
+      resultCountEl.innerHTML = '<span>' + n + '</span> ' + (n === 1 ? 'Geschichte' : 'Geschichten') + (loading ? ' · lädt …' : '');
+    }
+
+    /* ============================================================
+       Daten laden (3 Ordner) + Metadaten gestaffelt + progressiv rendern
+       ============================================================ */
     Promise.all(FOLDERS.map(cfg =>
       fetch('https://api.github.com/repos/' + GH_USER + '/' + GH_REPO + '/contents/' + cfg.folder)
         .then(r => r.ok ? r.json() : [])
@@ -627,7 +743,6 @@
         loadEl.textContent = 'Fehler beim Laden: ' + err.message;
       });
 
-    /* 2. Metadaten gestaffelt nachladen (Batches a 16) + progressiv rendern */
     async function loadMeta() {
       const BATCH = 16;
       for (let i = 0; i < stories.length; i += BATCH) {
@@ -664,113 +779,21 @@
       render();
     }
 
-    /* 3. Persona-Filter + Bio */
-    function applyAuthor(name) {
-      fAuthor = name;
-      document.querySelectorAll('.author-item').forEach(b =>
-        b.classList.toggle('active', b.dataset.author === name));
-      const bio = authorBios[name];
-      if (bio) {
-        const color = authorColors[name] || 'var(--mint)';
-        bioInner.style.borderLeftColor = color;
-        bioInner.innerHTML =
-          '<img src="' + bio.avatar + '" alt="' + name + '" class="bio-avatar">' +
-          '<div class="bio-text">' +
-            '<div class="bio-header">' +
-              '<span class="bio-name">' + name + '</span>' +
-              '<span class="bio-neurotype" style="background:' + color + '">' + bio.neurotype + '</span>' +
-            '</div>' +
-            '<div class="bio-desc">' + bio.desc + '</div>' +
-          '</div>';
-        bioCard.classList.add('visible');
-      } else {
-        bioCard.classList.remove('visible');
-      }
-    }
-    document.getElementById('authorFilter').addEventListener('click', (e) => {
-      const btn = e.target.closest('.author-item');
-      if (!btn) return;
-      applyAuthor(btn.dataset.author);
-      render();
-    });
-
-    /* 4. Pill-Filter (Stufe / Neurotyp / Format) — generisch */
-    function initPillGroup(id, attr, onPick) {
-      document.getElementById(id).addEventListener('click', (e) => {
-        const btn = e.target.closest('.pill');
-        if (!btn) return;
-        onPick(btn.dataset[attr]);
-        render();
-      });
-    }
-    function syncPillGroup(id, attr, value) {
-      document.getElementById(id).querySelectorAll('.pill').forEach(b =>
-        b.classList.toggle('active', b.dataset[attr] === value));
-    }
-    initPillGroup('levelPills', 'level', v => { fLevel = v; syncPillGroup('levelPills', 'level', v); });
-    initPillGroup('neuroPills', 'neuro', v => { fNeuro = v; syncPillGroup('neuroPills', 'neuro', v); });
-    initPillGroup('formatPills', 'format', v => { fFormat = v; syncPillGroup('formatPills', 'format', v); });
-
-    searchEl.addEventListener('input', render);
-    sortEl.addEventListener('change', render);
-
-    /* 5. Filter zurücksetzen (Chips) */
-    function resetFilter(kind) {
-      if (kind === 'author') applyAuthor('all');
-      else if (kind === 'level') { fLevel = 'all'; syncPillGroup('levelPills', 'level', 'all'); }
-      else if (kind === 'neuro') { fNeuro = 'all'; syncPillGroup('neuroPills', 'neuro', 'all'); }
-      else if (kind === 'format') { fFormat = 'all'; syncPillGroup('formatPills', 'format', 'all'); }
-      render();
-    }
-    function resetAll() {
-      applyAuthor('all');
-      fLevel = fNeuro = fFormat = 'all';
-      syncPillGroup('levelPills', 'level', 'all');
-      syncPillGroup('neuroPills', 'neuro', 'all');
-      syncPillGroup('formatPills', 'format', 'all');
-      searchEl.value = '';
-      render();
-    }
-    activeFiltersEl.addEventListener('click', (e) => {
-      const btn = e.target.closest('[data-reset]');
-      if (!btn) return;
-      if (btn.dataset.reset === 'all') resetAll(); else resetFilter(btn.dataset.reset);
-    });
-
-    function renderActiveFilters() {
-      const chips = [];
-      if (fAuthor !== 'all') chips.push(['author', fAuthor]);
-      if (fLevel !== 'all') chips.push(['level', LEVEL_LABELS[fLevel] || fLevel]);
-      if (fNeuro !== 'all') chips.push(['neuro', fNeuro]);
-      if (fFormat !== 'all') chips.push(['format', FORMAT_LABELS[fFormat] || fFormat]);
-      if (!chips.length) { activeFiltersEl.innerHTML = ''; return; }
-      activeFiltersEl.innerHTML = chips.map(([kind, label]) =>
-        '<button type="button" class="filter-chip" data-reset="' + kind + '" aria-label="Filter entfernen: ' + label + '">' +
-          label + ' <span class="chip-x" aria-hidden="true">✕</span></button>'
-      ).join('') + '<button type="button" class="clear-all" data-reset="all">Alle zurücksetzen</button>';
-    }
-
-    function updateCount(n) {
-      resultCountEl.innerHTML = '<span>' + n + '</span> ' + (n === 1 ? 'Geschichte' : 'Geschichten') +
-        (loading ? ' · lädt …' : '');
-    }
-
-    /* 6. Filtern, sortieren, rendern */
+    /* ---- Filtern, sortieren, rendern ---- */
     function render() {
-      const term = searchEl.value.toLowerCase();
-      const sortMode = sortEl.value;
+      const term = (searchEl ? searchEl.value : '').toLowerCase();
       let f = stories.filter(s => s.isValid).filter(s => {
-        if (fFormat !== 'all' && s.type !== fFormat) return false;
-        if (fAuthor !== 'all' && (!s.author || s.author.toLowerCase() !== fAuthor.toLowerCase())) return false;
-        if (fLevel !== 'all') {
+        if (state.format !== 'all' && s.type !== state.format) return false;
+        if (state.author !== 'all' && (!s.author || s.author.toLowerCase() !== state.author.toLowerCase())) return false;
+        if (state.level !== 'all') {
           if (!s.readingLevel) return false;
           const n = parseFloat(s.readingLevel.replace(/[^0-9.]/g, ''));
-          if (fLevel === 'lesestarter' && n > 2) return false;
-          if (fLevel === 'wort-entdecker' && (n <= 2 || n > 4)) return false;
-          if (fLevel === 'lese-profis' && n <= 4) return false;
+          if (state.level === 'lesestarter' && n > 2) return false;
+          if (state.level === 'wort-entdecker' && (n <= 2 || n > 4)) return false;
+          if (state.level === 'lese-profis' && n <= 4) return false;
         }
-        if (fNeuro !== 'all') {
-          if (!s.neurotype || !s.neurotype.toLowerCase().includes(fNeuro.toLowerCase())) return false;
+        if (state.neuro !== 'all') {
+          if (!s.neurotype || !s.neurotype.toLowerCase().includes(state.neuro.toLowerCase())) return false;
         }
         return true;
       });
@@ -780,7 +803,6 @@
       else if (sortMode === 'title') f.sort((a, b) => (a.displayTitle || formatName(a.name)).localeCompare(b.displayTitle || formatName(b.name), 'de'));
       renderGrid(f);
       updateCount(f.length);
-      renderActiveFilters();
     }
 
     function renderGrid(list) {
@@ -824,6 +846,9 @@
         .replace(/-/g, ' ')
         .replace(/\b\w/g, l => l.toUpperCase());
     }
+
+    /* ---- Start ---- */
+    buildFilterBar();
   </script>
 
 </body>
