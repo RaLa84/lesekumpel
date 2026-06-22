@@ -1669,7 +1669,7 @@
         /* Spiele-Bubble entfällt — Spiele leben als Tab auf der Abschluss-Seite */
         body.view-tafel .tafel-games-trigger { display: none !important; }
         /* Abschluss-Seite: Tab-Navigation (Spiele / Feedback / Empfehlungen) */
-        .abschluss-tabbar { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin: 0 0 28px; }
+        .abschluss-tabbar { display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin: 0 0 14px; }
         .abschluss-tab { font-family: var(--font-heading); font-weight: 600; font-size: 1.05rem; padding: 10px 22px; border-radius: 999px; border: 2px solid var(--border-soft); background: #fff; color: var(--navy); cursor: pointer; transition: background .15s ease, color .15s ease, border-color .15s ease; }
         .abschluss-tab:hover { border-color: var(--accent-coral); }
         .abschluss-tab.active { background: var(--accent-coral); color: #fff; border-color: var(--accent-coral); }
@@ -1710,7 +1710,7 @@
         body.view-tafel .tafel-cover-meta .cm-author-desc { font-size: 1.25rem; max-width: 54ch; }
         body.view-tafel .tafel-cover-meta .cm-hint { font-size: 1.5rem; }
         /* Abschluss-Seite: Überschrift + Tabs + Spiele-Chooser */
-        body.view-tafel .tafel-abschluss-title { font-size: 3rem; }
+        body.view-tafel .tafel-abschluss-title { font-size: 2.2rem; }
         body.view-tafel .abschluss-tab { font-size: 1.25rem; padding: 12px 28px; }
         body.view-tafel .spiel-chooser .activity-tab { min-height: 88px; padding: 22px 28px; font-size: 1.35rem; gap: 18px; border-radius: 22px; }
         body.view-tafel .spiel-chooser .activity-tab .tab-icon { font-size: 2.6rem; }
@@ -1737,7 +1737,7 @@
         body.view-tafel #spielzeit-overlay .wortschatz-bedeutung { font-size: 1.15rem; }
         /* Abschluss-Seite: Inhalte oben ausrichten (kein großer Leerraum) und nur EIN "Geschafft!"
            (große Titelzeile bleibt, kleine Indikator-Zeile oben wird ausgeblendet) */
-        body.view-tafel .tafel-story-col:has(.tafel-abschluss.is-current) { justify-content: flex-start; max-height: none; overflow: visible; }
+        body.view-tafel .tafel-story-col:has(.tafel-abschluss.is-current) { justify-content: flex-start; max-height: none; overflow: visible; padding-top: 24px; }
         body.view-tafel .tafel-story-col:has(.tafel-abschluss.is-current) .tafel-page-indicator { display: none; }
         /* leeres #full-text-view (min-height:50vh) auf der Abschluss-Seite einklappen,
            sonst schiebt der Platzhalter die Inhalte nach unten */
@@ -2207,7 +2207,7 @@
         body.view-tafel .tafel-abschluss.is-current {
             display: flex;
             flex-direction: column;
-            gap: 36px;
+            gap: 20px;
             width: 100%;
             max-height: calc(100vh - 120px);
             overflow-x: hidden;   /* nur vertikal scrollen — keine ungewollte horizontale Scrollbar */
@@ -2542,7 +2542,24 @@
 
         <div class="related-section">
             <h2 class="section-title">Noch eine Geschichte?</h2>
-            <div class="related-grid"></div>
+            <div class="related-grid">
+                <a class="related-card" href="warum-schlafen-fledermaeuse-kopfueber-1iqw.html">
+                    <img class="related-thumb" src="../bilder/warum-schlafen-fledermaeuse-kopfueber-1iqw-1.png" alt="" loading="lazy" onerror="this.style.display='none'">
+                    <span class="related-title">Warum schlafen Fledermäuse kopfüber?</span>
+                </a>
+                <a class="related-card" href="der-tag-am-strand-at12.html">
+                    <img class="related-thumb" src="../bilder/der-tag-am-strand-at12-1.png" alt="" loading="lazy" onerror="this.style.display='none'">
+                    <span class="related-title">Der Tag am Strand</span>
+                </a>
+                <a class="related-card" href="der-tag-an-dem-der-leuchtturm-blinkte-10mn.html">
+                    <img class="related-thumb" src="../bilder/der-tag-an-dem-der-leuchtturm-blinkte-10mn-1.png" alt="" loading="lazy" onerror="this.style.display='none'">
+                    <span class="related-title">Der Tag, an dem der Leuchtturm blinkte</span>
+                </a>
+                <a class="related-card" href="mein-erster-tag-auf-dem-flohmarkt-12e9.html">
+                    <img class="related-thumb" src="../bilder/mein-erster-tag-auf-dem-flohmarkt-12e9-1.png" alt="" loading="lazy" onerror="this.style.display='none'">
+                    <span class="related-title">Mein erster Tag auf dem Flohmarkt</span>
+                </a>
+            </div>
         </div>
     </article>
     </main>
