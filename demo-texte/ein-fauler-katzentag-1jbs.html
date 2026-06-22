@@ -1702,7 +1702,7 @@
         body.view-tafel #spielzeit-overlay .quiz-answer-row .speak-btn { width: 44px; min-height: 44px; }
         /* Abschluss-Seite: Inhalte oben ausrichten (kein großer Leerraum) und nur EIN "Geschafft!"
            (große Titelzeile bleibt, kleine Indikator-Zeile oben wird ausgeblendet) */
-        body.view-tafel .tafel-story-col:has(.tafel-abschluss.is-current) { justify-content: flex-start; }
+        body.view-tafel .tafel-story-col:has(.tafel-abschluss.is-current) { justify-content: flex-start; max-height: none; overflow: visible; }
         body.view-tafel .tafel-story-col:has(.tafel-abschluss.is-current) .tafel-page-indicator { display: none; }
         /* leeres #full-text-view (min-height:50vh) auf der Abschluss-Seite einklappen,
            sonst schiebt der Platzhalter die Inhalte nach unten */
@@ -1745,9 +1745,16 @@
             flex-direction: column;
             justify-content: center;
             align-self: stretch;
-            min-height: 100%;
+            box-sizing: border-box;
+            /* Höhe an den sichtbaren Bereich koppeln (wie das Bild), damit lange Absätze die
+               Spalte nicht über den Viewport hinaus wachsen lassen und unter der fixierten
+               Werkzeug-Leiste verschwinden. Längere Absätze scrollen innerhalb der Spalte. */
+            min-height: 0;
+            max-height: clamp(200px, calc(100vh - 220px), 100vh);
+            overflow-y: auto;
             position: relative;
-            padding-top: 64px;
+            padding-top: 56px;
+            padding-bottom: 28px;
         }
         body.view-tafel .tafel-page-indicator {
             position: absolute;
