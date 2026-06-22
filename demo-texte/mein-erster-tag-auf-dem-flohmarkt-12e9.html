@@ -95,10 +95,11 @@
 
         /* Hintergrund liegt auf <html>, damit die Deko-Blobs (body::before/::after,
            z-index -1) zwischen Hintergrund und Inhalt schweben können */
-        html { background-color: var(--bg-body); }
+        html { background-color: var(--bg-body); scrollbar-gutter: stable; }
         body {
             font-family: var(--font-body); background-color: transparent; color: var(--text-dark);
             line-height: 1.7; margin: 0; padding-bottom: 50px; transition: all 0.3s ease; font-size: 22px;
+            overflow-x: hidden;   /* verhindert transiente horizontale Scrollbar (Slide-Animation translateX) */
         }
         body::before, body::after {
             content: ''; position: fixed; z-index: -1; border-radius: 50%;
