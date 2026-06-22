@@ -4764,10 +4764,14 @@
         // Abschluss-Seite: Tab-Navigation (Spiele / Feedback / Empfehlungen)
         function buildAbschlussTabs(abschluss) {
             if (!abschluss || abschluss.querySelector('.abschluss-tabbar')) return;
+            // "Mehr Bücher" nur, wenn es tatsächlich Empfehlungs-Karten gibt
+            const relSection = abschluss.querySelector('.related-section');
+            const relGrid = abschluss.querySelector('.related-grid');
+            const relEl = (relGrid && relGrid.children.length > 0) ? relSection : null;
             const panels = [
                 { label: '🎮 Spiele',      el: abschluss.querySelector('.activity-hub') },
                 { label: '💬 Feedback',    el: abschluss.querySelector('.comments-section') },
-                { label: '⭐ Mehr Bücher', el: abschluss.querySelector('.related-section') }
+                { label: '⭐ Mehr Bücher', el: relEl }
             ].filter(p => p.el);
             if (panels.length < 2) return;
             const bar = document.createElement('div');

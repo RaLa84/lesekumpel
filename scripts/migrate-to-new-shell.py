@@ -35,10 +35,10 @@ SLOTS = {
 }
 
 
-def migrate(path: Path, donor_html: str, dry: bool = False):
+def migrate(path: Path, donor_html: str, dry: bool = False, force: bool = False):
     target = path.read_text(encoding="utf-8")
-    if NEW_SHELL_MARKER in target:
-        return False, "schon neue Shell — übersprungen"
+    if NEW_SHELL_MARKER in target and not force:
+        return False, "schon neue Shell — übersprungen (--force zum Neu-Propagieren)"
     # Slots aus der Zielseite extrahieren
     vals = {}
     for name, rx in SLOTS.items():
@@ -60,6 +60,7 @@ def migrate(path: Path, donor_html: str, dry: bool = False):
 
 def main() -> int:
     dry = "--dry-run" in sys.argv
+    force = "--force" in sys.argv
     args = [a for a in sys.argv[1:] if not a.startswith("--")]
     if not args:
         print("Keine Zieldateien angegeben.")
@@ -77,7 +78,7 @@ def main() -> int:
         if p.resolve() == DONOR.resolve():
             print(f"  [skip] {p.name}: ist die Donor-Seite")
             continue
-        ok, msg = migrate(p, donor_html, dry)
+        ok, msg = migrate(p, donor_html, dry, force)
         print(f"  [{'ok' if ok else 'skip'}] {p.name}: {msg}")
     return 0
 
