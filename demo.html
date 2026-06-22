@@ -243,20 +243,33 @@
     @media (min-width: 980px) { .stories-grid { grid-template-columns: repeat(3, 1fr); } }
     @media (min-width: 1280px) { .stories-grid { grid-template-columns: repeat(4, 1fr); } }
 
-    .story-tile { background: var(--white); border: 1px solid var(--border); border-radius: var(--radius-card); box-shadow: var(--shadow-card); overflow: hidden; transition: transform 0.3s ease, box-shadow 0.3s ease; }
-    .story-tile a { display: block; text-decoration: none; color: var(--navy); }
+    .story-tile { position: relative; display: flex; background: var(--white); border: 1px solid var(--border); border-radius: var(--radius-card); box-shadow: var(--shadow-card); overflow: hidden; transition: transform 0.3s ease, box-shadow 0.3s ease; }
+    .story-tile a { display: flex; flex-direction: column; width: 100%; height: 100%; text-decoration: none; color: var(--navy); }
     .story-tile:hover { transform: translateY(-4px); box-shadow: var(--shadow-card-hover); }
     .story-tile.tile-comic { border-left: 4px solid var(--coral); }
-    .tile-comic-badge { display: inline-block; background: rgba(249,115,82,0.16); border: 1px solid var(--coral); color: var(--navy); font-size: 0.7rem; font-weight: 700; padding: 3px 10px; border-radius: var(--radius-pill); margin: 0 6px 10px 0; }
-    .tile-cover { height: 200px; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; }
+    .tile-comic-badge { display: inline-block; background: rgba(249,115,82,0.16); border: 1px solid var(--coral); color: var(--navy); font-size: 0.7rem; font-weight: 700; padding: 3px 10px; border-radius: var(--radius-pill); }
+    .tile-badges { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
+    .tile-badges:empty { display: none; }
+    .tile-cover { height: 200px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; }
     .tile-cover img { width: 100%; height: 100%; object-fit: cover; }
     .tile-cover-icon { font-size: 3rem; opacity: 0.55; }
-    .tile-body { padding: 18px 20px 20px; }
-    .tile-title { font-family: var(--font-heading); font-weight: 600; font-size: 1.08rem; margin-bottom: 8px; line-height: 1.3; }
-    .tile-level-badge { display: inline-block; background: var(--cream-light); border: 1px solid var(--border); color: var(--navy); font-size: 0.74rem; font-weight: 700; padding: 4px 10px; border-radius: var(--radius-pill); margin-bottom: 10px; }
-    .tile-meta { display: flex; justify-content: space-between; align-items: center; font-size: 0.84rem; color: var(--text-muted); }
-    .tile-author { font-weight: 700; color: var(--lila); }
-    .tile-date { font-size: 0.78rem; color: var(--text-muted); }
+    .tile-body { display: flex; flex-direction: column; flex: 1; padding: 16px 20px 18px; }
+    .tile-title { font-family: var(--font-heading); font-weight: 600; font-size: 1.08rem; margin-bottom: 10px; line-height: 1.3; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; min-height: 2.6em; }
+    .tile-level-badge { background: var(--cream-light); border: 1px solid var(--border); color: var(--navy); font-size: 0.74rem; font-weight: 700; padding: 4px 10px; border-radius: var(--radius-pill); }
+    .tile-meta { margin-top: auto; display: flex; justify-content: space-between; align-items: center; gap: 8px; font-size: 0.84rem; color: var(--text-muted); }
+    .tile-author { display: flex; align-items: center; gap: 8px; min-width: 0; font-weight: 700; }
+    .tile-author-avatar { width: 28px; height: 28px; border-radius: 50%; object-fit: cover; flex-shrink: 0; background: var(--cream-light); }
+    .tile-author-fallback { width: 28px; height: 28px; border-radius: 50%; flex-shrink: 0; display: flex; align-items: center; justify-content: center; color: #fff; font-size: 0.8rem; font-weight: 700; }
+    .tile-author-name { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    .tile-date { flex-shrink: 0; font-size: 0.78rem; color: var(--text-muted); }
+
+    /* Merk-Herz */
+    .tile-fav { position: absolute; top: 10px; right: 10px; z-index: 2; width: 38px; height: 38px; border-radius: 50%; border: none; background: rgba(255,255,255,0.92); display: flex; align-items: center; justify-content: center; cursor: pointer; box-shadow: 0 2px 8px rgba(43,49,64,0.18); transition: transform 0.15s, background 0.15s; }
+    .tile-fav:hover { transform: scale(1.12); background: #fff; }
+    .tile-fav svg { width: 20px; height: 20px; fill: none; stroke: var(--navy); stroke-width: 2; transition: fill 0.15s, stroke 0.15s, transform 0.15s; }
+    .tile-fav.saved svg { fill: var(--coral); stroke: var(--coral); }
+    .tile-fav.saved { animation: fav-pop 0.3s cubic-bezier(0.34,1.56,0.64,1); }
+    @keyframes fav-pop { 0% { transform: scale(1); } 50% { transform: scale(1.25); } 100% { transform: scale(1); } }
 
     .demo-loading { text-align: center; padding: 40px 20px; font-style: italic; color: var(--text-muted); }
     .demo-empty { grid-column: 1 / -1; text-align: center; padding: 40px 20px; color: var(--text-muted); }
@@ -533,6 +546,22 @@
 
     function esc(s) { return String(s == null ? '' : s).replace(/[&<>"]/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c])); }
 
+    /* ---- Merken (Herz) — Zustand lokal speichern ---- */
+    const FAV_KEY = 'lk_demo_favs';
+    function loadFavs() { try { return new Set(JSON.parse(localStorage.getItem(FAV_KEY) || '[]')); } catch (e) { return new Set(); } }
+    function saveFavs() { try { localStorage.setItem(FAV_KEY, JSON.stringify([...favs])); } catch (e) { /* ignore */ } }
+    const favs = loadFavs();
+    bookGrid.addEventListener('click', (e) => {
+      const fav = e.target.closest('.tile-fav');
+      if (!fav) return;
+      e.preventDefault(); e.stopPropagation();
+      const path = fav.dataset.path;
+      if (favs.has(path)) { favs.delete(path); fav.classList.remove('saved'); }
+      else { favs.add(path); fav.classList.add('saved'); }
+      fav.setAttribute('aria-pressed', favs.has(path) ? 'true' : 'false');
+      saveFavs();
+    });
+
     /* ============================================================
        Filter-Leiste + Dropdowns aufbauen
        ============================================================ */
@@ -806,18 +835,31 @@
         const thumbUrl = isComic ? 'comics/' + slug + '-1.png' : 'bilder/thumbs/' + slug + '-1.webp';
         const icon = isComic ? '🎨' : '📖';
         const levelDisplay = s.readingLevel ? (s.readingLevel.split(',')[0].trim() + ' · ' + getLevelLabel(s.readingLevel)) : '';
+        const saved = favs.has(s.path);
+        const avatar = authorBios[s.author] && authorBios[s.author].avatar;
+        const authorMark = s.author
+          ? (avatar
+              ? '<img class="tile-author-avatar" src="' + avatar + '" alt="" loading="lazy">'
+              : '<span class="tile-author-fallback" style="background:' + color + '">' + esc(s.author.trim().charAt(0)) + '</span>')
+            + '<span class="tile-author-name">' + esc(s.author) + '</span>'
+          : '';
         return '' +
           '<article class="story-tile' + (isComic ? ' tile-comic' : '') + '">' +
+            '<button type="button" class="tile-fav' + (saved ? ' saved' : '') + '" data-path="' + esc(s.path) + '" aria-pressed="' + (saved ? 'true' : 'false') + '" aria-label="Geschichte merken" title="Merken">' +
+              '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>' +
+            '</button>' +
             '<a href="' + s.path + '">' +
               '<div class="tile-cover" style="background: linear-gradient(135deg, ' + color + '22 0%, ' + color + '44 100%);">' +
                 '<img src="' + thumbUrl + '" alt="" loading="lazy" onerror="var p=this.parentElement;this.remove();p.innerHTML=\'<span class=tile-cover-icon>' + icon + '</span>\';">' +
               '</div>' +
               '<div class="tile-body">' +
                 '<div class="tile-title">' + (s.displayTitle || formatName(s.name)) + '</div>' +
-                (isComic ? '<span class="tile-comic-badge">🎨 Comic</span>' : '') +
-                (levelDisplay ? '<span class="tile-level-badge">' + levelDisplay + '</span>' : '') +
-                '<div class="tile-meta" style="margin-top:8px;">' +
-                  '<span class="tile-author" style="color:' + color + ';">' + (s.author || '') + '</span>' +
+                '<div class="tile-badges">' +
+                  (isComic ? '<span class="tile-comic-badge">🎨 Comic</span>' : '') +
+                  (levelDisplay ? '<span class="tile-level-badge">' + levelDisplay + '</span>' : '') +
+                '</div>' +
+                '<div class="tile-meta">' +
+                  '<span class="tile-author" style="color:' + color + ';">' + authorMark + '</span>' +
                   '<span class="tile-date">' + (s.dateString || '') + '</span>' +
                 '</div>' +
               '</div>' +
