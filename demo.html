@@ -172,7 +172,7 @@
     .filter-dd-trigger .caret { font-size: 0.65rem; opacity: 0.55; transition: transform 0.2s; }
     .filter-dd-trigger[aria-expanded="true"] { border-color: var(--navy); box-shadow: 0 0 0 3px rgba(47,184,166,0.22); }
     .filter-dd-trigger[aria-expanded="true"] .caret { transform: rotate(180deg); }
-    .filter-dd-trigger.active { background: rgba(47,184,166,0.16); border-color: var(--mint); color: #259e8e; }
+    .filter-dd-trigger.active { background: rgba(47,184,166,0.16); border-color: var(--mint); color: #136B61; }
     .filter-dd-trigger .dd-val { font-weight: 700; }
 
     .filter-dd-panel {
@@ -191,7 +191,7 @@
     }
     .filter-dd-option:hover { background: var(--cream-light); }
     .filter-dd-option .opt-check { margin-left: auto; color: var(--mint); font-weight: 700; opacity: 0; }
-    .filter-dd-option.selected { color: #259e8e; }
+    .filter-dd-option.selected { color: #136B61; }
     .filter-dd-option.selected .opt-check { opacity: 1; }
     .filter-dd-option .opt-avatar { width: 30px; height: 30px; border-radius: 50%; object-fit: cover; flex-shrink: 0; background: var(--cream-light); }
     .filter-dd-divider { height: 1px; background: var(--border); margin: 6px 8px; }
@@ -209,7 +209,7 @@
     /* Katalog-Toolbar: Ergebnis-Zähler + Reset + Sortierung */
     .catalog-toolbar { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin-bottom: 22px; }
     .result-count { font-family: var(--font-heading); font-weight: 700; font-size: 1.05rem; color: var(--navy); }
-    .result-count span { color: var(--mint); }
+    .result-count span { color: #0F766E; } /* dunkleres Mint: 5.1:1 auf Creme (WCAG AA) */
     .toolbar-right { display: flex; align-items: center; gap: 14px; }
     .reset-link { background: none; border: none; color: var(--text-muted); font-family: var(--font-body); font-weight: 700; font-size: 0.85rem; cursor: pointer; text-decoration: underline; padding: 6px 2px; white-space: nowrap; }
     .reset-link:hover { color: var(--navy); }
@@ -336,7 +336,7 @@
     .modern-footer { background: var(--navy); color: var(--cream); padding: 56px 24px 28px; margin-top: 80px; position: relative; overflow: hidden; }
     .modern-footer .footer-grid { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr; gap: 40px; }
     @media (min-width: 768px) { .modern-footer .footer-grid { grid-template-columns: 1.6fr 1fr 1fr; gap: 56px; } }
-    .modern-footer h4 { font-family: var(--font-heading); font-size: 0.92rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--yellow, var(--primary-yellow, #FFD95A)); margin-bottom: 18px; }
+    .modern-footer h2 { font-family: var(--font-heading); font-size: 0.92rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--yellow, var(--primary-yellow, #FFD95A)); margin-bottom: 18px; }
     .modern-footer .footer-brand-block { max-width: 360px; }
     .modern-footer .footer-brand-row { display: flex; align-items: center; gap: 12px; font-family: var(--font-heading); font-weight: 700; font-size: 1.4rem; color: var(--cream); margin-bottom: 14px; }
     .modern-footer .footer-brand-row img { height: 44px; width: auto; }
@@ -504,7 +504,7 @@
       </div>
 
       <div>
-        <h4>Entdecken</h4>
+        <h2>Entdecken</h2>
         <ul>
           <li><a href="demo.html">Demo-Texte</a></li>
           <li><a href="preise.html">Preise</a></li>
@@ -514,7 +514,7 @@
       </div>
 
       <div>
-        <h4>Rechtliches</h4>
+        <h2>Rechtliches</h2>
         <ul>
           <li><a href="impressum.html">Impressum</a></li>
           <li><a href="datenschutz.html">Datenschutz</a></li>
@@ -591,16 +591,17 @@
     const LEVEL_LABELS = { lesestarter: 'Lesestarter', 'wort-entdecker': 'Wort-Entdecker', 'lese-profis': 'Lese-Profis' };
     const FORMAT_LABELS = { text: '📖 Text', comic: '🎨 Comic' };
 
+    // Autorenfarben fuer Text/Avatar-Fallback: alle >=4.5:1 auf Weiss (WCAG AA 1.4.3)
     const authorColors = {
-      'Pip Punkt': '#6B5B9E',
-      'Mia Mitte': '#D67171',
-      'Peter Past': '#5B9BD5',
-      'Stella Stimmenreich': '#E8950A',
-      'Finja Feder': '#7E57C2',
-      'Samira Wissensfreund': '#E07B39',
-      'Holzi Pixelkopf': '#4CAF50',
-      'Deniz Traumfänger': '#7E57C2',
-      'Jonas Entdecker': '#FF8A65'
+      'Pip Punkt': '#5D4E8C',
+      'Mia Mitte': '#B84A4A',
+      'Peter Past': '#2E6DA4',
+      'Stella Stimmenreich': '#8C6000',
+      'Finja Feder': '#6A45B0',
+      'Samira Wissensfreund': '#A85A1E',
+      'Holzi Pixelkopf': '#2E7D32',
+      'Deniz Traumfänger': '#6A45B0',
+      'Jonas Entdecker': '#C0512E'
     };
 
     const authorBios = {
@@ -730,7 +731,7 @@
        Filter-Leiste + Dropdowns aufbauen
        ============================================================ */
     function ddOptionHtml(facetKey, opt, selectedVal) {
-      if (opt.divider) return '<div class="filter-dd-divider" role="separator"></div>';
+      if (opt.divider) return '<div class="filter-dd-divider" role="presentation" aria-hidden="true"></div>';
       const on = opt.v === selectedVal;
       const avatar = opt.avatar ? '<img class="opt-avatar" src="' + opt.avatar + '" alt="">' : '';
       return '<button type="button" class="filter-dd-option' + (on ? ' selected' : '') + '" role="option" aria-selected="' + (on ? 'true' : 'false') +
