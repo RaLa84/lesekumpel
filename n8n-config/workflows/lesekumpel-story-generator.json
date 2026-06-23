@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-06-23T07:56:33.025Z",
+  "updatedAt": "2026-06-23T09:15:48.834Z",
   "createdAt": "2026-03-19T13:18:27.527Z",
   "id": "eHfC95UaMbJMcLTb",
   "name": "Lesekumpel – Neuroinclusive Story Generator",
@@ -1872,6 +1872,86 @@
         },
         "options": {}
       }
+    },
+    {
+      "id": "95d7d7b8-7cdc-4f8e-986d-8ee8f1d8ff17",
+      "name": "Bild-Retry: Gemini",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 4.2,
+      "position": [
+        4880,
+        1060
+      ],
+      "parameters": {
+        "method": "POST",
+        "url": "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-image:generateContent",
+        "sendHeaders": true,
+        "sendBody": true,
+        "specifyBody": "json",
+        "jsonBody": "={\n  \"contents\": [{\n    \"parts\": [\n      { \"text\": {{ JSON.stringify($('Szenen parsen').all()[$('Bild-Loop').context.currentRunIndex]?.json?.imagePrompt || '') }} }\n    ]\n  }]\n}",
+        "options": {
+          "timeout": 120000
+        },
+        "authentication": "predefinedCredentialType",
+        "nodeCredentialType": "googlePalmApi"
+      },
+      "credentials": {
+        "googlePalmApi": {
+          "id": "6COxa9BJR4aj2W2w",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      },
+      "retryOnFail": true,
+      "maxTries": 2,
+      "waitBetweenTries": 3000,
+      "onError": "continueRegularOutput"
+    },
+    {
+      "id": "e2b5e8e7-89e3-4c9f-a86c-f58e54ea532e",
+      "name": "Bild-Retry: extrahieren",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [
+        5060,
+        1060
+      ],
+      "parameters": {
+        "jsCode": "// Knoten: \"Bild-Daten extrahieren (Gemini)\" — v2 (2026-06-11)\n// Parst die Gemini-multimodal-Response: extrahiert die base64-Bild-Daten aus\n// candidates[0].content.parts[*].inlineData.data und setzt sie als $json.data.\n// Wirft NICHT mehr bei fehlendem Bild — gibt data:'' zurück, der IF-Knoten\n// \"Bilddaten vorhanden?\" überspringt dann den Upload (Story wird trotzdem committed).\nconst inputJson = $input.first().json;\nconst parts = inputJson?.candidates?.[0]?.content?.parts || [];\nconst imagePart = parts.find(p => p && p.inlineData && p.inlineData.data);\nconst data = imagePart ? imagePart.inlineData.data : '';\nif (!imagePart) {\n  console.warn('Bild-Daten extrahieren (Gemini): kein inlineData in der Response — Bild wird übersprungen');\n}\nreturn { json: { ...inputJson, data } };\n"
+      }
+    },
+    {
+      "id": "83c667ac-c1d6-4444-8804-4e9e460d7661",
+      "name": "Bild-Retry: Bilddaten?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2,
+      "position": [
+        5280,
+        1060
+      ],
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": true,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "40584e53-ac76-4762-96fc-f1e2ef7c0fe7",
+              "leftValue": "={{ $json.data || '' }}",
+              "rightValue": "",
+              "operator": {
+                "type": "string",
+                "operation": "notEmpty",
+                "singleValue": true
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      }
     }
   ],
   "connections": {
@@ -2807,6 +2887,46 @@
         ],
         [
           {
+            "node": "Bild-Retry: Gemini",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Bild-Retry: Gemini": {
+      "main": [
+        [
+          {
+            "node": "Bild-Retry: extrahieren",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Bild-Retry: extrahieren": {
+      "main": [
+        [
+          {
+            "node": "Bild-Retry: Bilddaten?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Bild-Retry: Bilddaten?": {
+      "main": [
+        [
+          {
+            "node": "GitHub: Bild hochladen",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
             "node": "Bild-Loop",
             "type": "main",
             "index": 0
@@ -2854,9 +2974,9 @@
       }
     ]
   },
-  "versionId": "f2782132-239d-48a3-85ec-420e5abc3f38",
-  "activeVersionId": "f2782132-239d-48a3-85ec-420e5abc3f38",
-  "versionCounter": 616,
+  "versionId": "d314e02b-125e-4cf3-81c3-bed52e6e2ae6",
+  "activeVersionId": "d314e02b-125e-4cf3-81c3-bed52e6e2ae6",
+  "versionCounter": 618,
   "triggerCount": 1,
   "shared": [
     {
@@ -2910,9 +3030,9 @@
   ],
   "tags": [],
   "activeVersion": {
-    "updatedAt": "2026-06-23T07:56:33.031Z",
-    "createdAt": "2026-06-23T07:56:33.031Z",
-    "versionId": "f2782132-239d-48a3-85ec-420e5abc3f38",
+    "updatedAt": "2026-06-23T09:15:48.851Z",
+    "createdAt": "2026-06-23T09:15:48.851Z",
+    "versionId": "d314e02b-125e-4cf3-81c3-bed52e6e2ae6",
     "workflowId": "eHfC95UaMbJMcLTb",
     "nodes": [
       {
@@ -4780,6 +4900,86 @@
           },
           "options": {}
         }
+      },
+      {
+        "id": "95d7d7b8-7cdc-4f8e-986d-8ee8f1d8ff17",
+        "name": "Bild-Retry: Gemini",
+        "type": "n8n-nodes-base.httpRequest",
+        "typeVersion": 4.2,
+        "position": [
+          4880,
+          1060
+        ],
+        "parameters": {
+          "method": "POST",
+          "url": "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-image:generateContent",
+          "sendHeaders": true,
+          "sendBody": true,
+          "specifyBody": "json",
+          "jsonBody": "={\n  \"contents\": [{\n    \"parts\": [\n      { \"text\": {{ JSON.stringify($('Szenen parsen').all()[$('Bild-Loop').context.currentRunIndex]?.json?.imagePrompt || '') }} }\n    ]\n  }]\n}",
+          "options": {
+            "timeout": 120000
+          },
+          "authentication": "predefinedCredentialType",
+          "nodeCredentialType": "googlePalmApi"
+        },
+        "credentials": {
+          "googlePalmApi": {
+            "id": "6COxa9BJR4aj2W2w",
+            "name": "Google Gemini(PaLM) Api account"
+          }
+        },
+        "retryOnFail": true,
+        "maxTries": 2,
+        "waitBetweenTries": 3000,
+        "onError": "continueRegularOutput"
+      },
+      {
+        "id": "e2b5e8e7-89e3-4c9f-a86c-f58e54ea532e",
+        "name": "Bild-Retry: extrahieren",
+        "type": "n8n-nodes-base.code",
+        "typeVersion": 2,
+        "position": [
+          5060,
+          1060
+        ],
+        "parameters": {
+          "jsCode": "// Knoten: \"Bild-Daten extrahieren (Gemini)\" — v2 (2026-06-11)\n// Parst die Gemini-multimodal-Response: extrahiert die base64-Bild-Daten aus\n// candidates[0].content.parts[*].inlineData.data und setzt sie als $json.data.\n// Wirft NICHT mehr bei fehlendem Bild — gibt data:'' zurück, der IF-Knoten\n// \"Bilddaten vorhanden?\" überspringt dann den Upload (Story wird trotzdem committed).\nconst inputJson = $input.first().json;\nconst parts = inputJson?.candidates?.[0]?.content?.parts || [];\nconst imagePart = parts.find(p => p && p.inlineData && p.inlineData.data);\nconst data = imagePart ? imagePart.inlineData.data : '';\nif (!imagePart) {\n  console.warn('Bild-Daten extrahieren (Gemini): kein inlineData in der Response — Bild wird übersprungen');\n}\nreturn { json: { ...inputJson, data } };\n"
+        }
+      },
+      {
+        "id": "83c667ac-c1d6-4444-8804-4e9e460d7661",
+        "name": "Bild-Retry: Bilddaten?",
+        "type": "n8n-nodes-base.if",
+        "typeVersion": 2,
+        "position": [
+          5280,
+          1060
+        ],
+        "parameters": {
+          "conditions": {
+            "options": {
+              "caseSensitive": true,
+              "leftValue": "",
+              "typeValidation": "loose",
+              "version": 2
+            },
+            "conditions": [
+              {
+                "id": "40584e53-ac76-4762-96fc-f1e2ef7c0fe7",
+                "leftValue": "={{ $json.data || '' }}",
+                "rightValue": "",
+                "operator": {
+                  "type": "string",
+                  "operation": "notEmpty",
+                  "singleValue": true
+                }
+              }
+            ],
+            "combinator": "and"
+          },
+          "options": {}
+        }
       }
     ],
     "connections": {
@@ -5705,6 +5905,46 @@
         ]
       },
       "Bilddaten vorhanden?": {
+        "main": [
+          [
+            {
+              "node": "GitHub: Bild hochladen",
+              "type": "main",
+              "index": 0
+            }
+          ],
+          [
+            {
+              "node": "Bild-Retry: Gemini",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Bild-Retry: Gemini": {
+        "main": [
+          [
+            {
+              "node": "Bild-Retry: extrahieren",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Bild-Retry: extrahieren": {
+        "main": [
+          [
+            {
+              "node": "Bild-Retry: Bilddaten?",
+              "type": "main",
+              "index": 0
+            }
+          ]
+        ]
+      },
+      "Bild-Retry: Bilddaten?": {
         "main": [
           [
             {
