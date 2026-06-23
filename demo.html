@@ -117,6 +117,21 @@
       .nav-left { gap: 15px; }
     }
 
+    /* ===== A11y-Tool (Barrierefreiheit) — page-side, nicht propagiert ===== */
+    .a11y-wrap { position: relative; }
+    .a11y-popover { position: absolute; top: calc(100% + 8px); right: 0; z-index: 1200; background: #fff; border: 1px solid var(--border); border-radius: 16px; box-shadow: 0 16px 40px rgba(43,49,64,0.16); padding: 6px; min-width: 210px; display: flex; flex-direction: column; gap: 4px; }
+    .a11y-popover[hidden] { display: none; }
+    .a11y-opt { display: flex; align-items: center; gap: 10px; background: none; border: none; border-radius: 10px; padding: 10px 12px; min-height: 44px; font-family: var(--font-body); font-weight: 600; font-size: 0.92rem; color: var(--navy); cursor: pointer; text-align: left; transition: background 0.15s; }
+    .a11y-opt:hover { background: var(--cream-light); }
+    .a11y-opt.on { background: rgba(47,184,166,0.16); color: #259e8e; }
+    .a11y-opt.on::after { content: '✓'; margin-left: auto; color: var(--mint); font-weight: 700; }
+
+    /* Lesefreundliche Schrift + Hoher Kontrast (gleiche Klassen wie Leseseiten) */
+    body.dyslexia-mode { --font-body: 'Atkinson Hyperlegible', system-ui, sans-serif; letter-spacing: 0.03em; word-spacing: 0.12em; }
+    body.dyslexia-mode p, body.dyslexia-mode .tile-title, body.dyslexia-mode .bio-desc { line-height: 1.75; }
+    body.high-contrast { --cream: #ffffff; --cream-light: #ffffff; --navy: #000000; --text-muted: #1a1d24; --border: #2B3140; }
+    body.high-contrast .story-tile, body.high-contrast .filter-dd-trigger, body.high-contrast .search-wrapper input { border-color: #2B3140; }
+
     /* ===== Buttons ===== */
     .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; font-family: var(--font-body); font-weight: 600; font-size: 1rem; text-decoration: none; cursor: pointer; border: none; border-radius: var(--radius-pill); padding: 16px 32px; transition: all 0.3s cubic-bezier(0.34,1.56,0.64,1); line-height: 1.2; }
     .btn-primary { background: var(--mint); color: var(--navy); box-shadow: 0 4px 14px rgba(47,184,166,0.28); }
@@ -376,6 +391,13 @@
       <a href="landingpage.html" class="brand-name">Lesekumpel</a>
     </div>
     <div class="nav-right">
+      <div class="a11y-wrap">
+        <button type="button" class="nav-icon-btn" id="nav-a11y" aria-label="Barrierefreiheit" aria-haspopup="true" aria-expanded="false"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="1"/><path d="m9 20 3-6 3 6"/><path d="m6 8 6 2 6-2"/><path d="M12 10v4"/></svg></button>
+        <div class="a11y-popover" id="a11y-popover" hidden role="menu" aria-label="Barrierefreiheit">
+          <button type="button" class="a11y-opt" data-a11y="dyslexia" role="menuitemcheckbox" aria-checked="false"><span aria-hidden="true">&#128068;</span> Leichter lesen</button>
+          <button type="button" class="a11y-opt" data-a11y="contrast" role="menuitemcheckbox" aria-checked="false"><span aria-hidden="true">&#9680;</span> Mehr Kontrast</button>
+        </div>
+      </div>
       <a href="anmelden.html" class="nav-icon-btn" aria-label="Mein Konto"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></a>
     </div>
   </nav>
@@ -489,6 +511,48 @@
         });
       }, { threshold: 0.12 });
       els.forEach(function (el) { io.observe(el); });
+    })();
+
+    /* ============================================================
+       A11y-Tool: Leichter lesen + Mehr Kontrast (localStorage)
+       Gleiche Body-Klassen/Keys wie die Leseseiten -> konsistent.
+       ============================================================ */
+    (function initA11y() {
+      var KEY = { dyslexia: 'lesekumpel-lesefreundlich', contrast: 'lesekumpel-kontrast' };
+      var btn = document.getElementById('nav-a11y');
+      var pop = document.getElementById('a11y-popover');
+      function get(k) { try { return localStorage.getItem(KEY[k]) === 'true'; } catch (e) { return false; } }
+      function set(k, v) { try { localStorage.setItem(KEY[k], v ? 'true' : 'false'); } catch (e) {} }
+      function apply() {
+        document.body.classList.toggle('dyslexia-mode', get('dyslexia'));
+        document.body.classList.toggle('high-contrast', get('contrast'));
+        if (pop) pop.querySelectorAll('[data-a11y]').forEach(function (o) {
+          var on = get(o.getAttribute('data-a11y'));
+          o.classList.toggle('on', on);
+          o.setAttribute('aria-checked', on ? 'true' : 'false');
+        });
+      }
+      apply();
+      if (!btn || !pop) return;
+      btn.addEventListener('click', function (e) {
+        e.stopPropagation();
+        var open = !pop.hidden;
+        pop.hidden = open;
+        btn.setAttribute('aria-expanded', open ? 'false' : 'true');
+      });
+      pop.addEventListener('click', function (e) {
+        var o = e.target.closest('[data-a11y]');
+        if (!o) return;
+        var k = o.getAttribute('data-a11y');
+        set(k, !get(k));
+        apply();
+      });
+      document.addEventListener('click', function (e) {
+        if (!e.target.closest('.a11y-wrap')) { pop.hidden = true; btn.setAttribute('aria-expanded', 'false'); }
+      });
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') { pop.hidden = true; btn.setAttribute('aria-expanded', 'false'); }
+      });
     })();
 
     /* ============================================================
