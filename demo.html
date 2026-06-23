@@ -243,6 +243,13 @@
     .tile-cover-icon { font-size: 3rem; opacity: 0.55; }
     .tile-body { display: flex; flex-direction: column; flex: 1; padding: 16px 20px 18px; }
     .tile-title { font-family: var(--font-heading); font-weight: 600; font-size: 1.08rem; margin-bottom: 10px; line-height: 1.3; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; min-height: 2.6em; }
+    .tile-titlerow { display: flex; align-items: flex-start; gap: 8px; margin-bottom: 10px; }
+    .tile-titlerow .tile-title { margin-bottom: 0; flex: 1; min-width: 0; }
+    .tile-speak { flex-shrink: 0; width: 32px; height: 32px; margin-top: 1px; border-radius: 50%; border: none; background: var(--cream-light); display: inline-flex; align-items: center; justify-content: center; cursor: pointer; transition: background 0.15s, transform 0.15s; -webkit-tap-highlight-color: transparent; }
+    .tile-speak:hover { background: rgba(47,184,166,0.16); transform: scale(1.08); }
+    .tile-speak:active { transform: scale(0.92); }
+    .tile-speak svg { width: 18px; height: 18px; fill: none; stroke: var(--mint); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+    .tile-speak.speaking svg { stroke: var(--coral); }
     .tile-level-badge { background: var(--cream-light); border: 1px solid var(--border); color: var(--navy); font-size: 0.74rem; font-weight: 700; padding: 4px 10px; border-radius: var(--radius-pill); }
     .tile-meta { margin-top: auto; display: flex; justify-content: space-between; align-items: center; gap: 8px; font-size: 0.84rem; color: var(--text-muted); }
     .tile-author { display: flex; align-items: center; gap: 8px; min-width: 0; font-weight: 700; }
@@ -645,7 +652,31 @@
     function loadFavs() { try { return new Set(JSON.parse(localStorage.getItem(FAV_KEY) || '[]')); } catch (e) { return new Set(); } }
     function saveFavs() { try { localStorage.setItem(FAV_KEY, JSON.stringify([...favs])); } catch (e) { /* ignore */ } }
     const favs = loadFavs();
+    function speakText(text, btn) {
+      if (!text || !('speechSynthesis' in window)) return;
+      try {
+        var synth = window.speechSynthesis;
+        synth.cancel();
+        var u = new SpeechSynthesisUtterance(text);
+        u.lang = 'de-DE';
+        var de = (synth.getVoices() || []).find(function (v) { return /^de/i.test(v.lang); });
+        if (de) u.voice = de;
+        if (btn) {
+          document.querySelectorAll('.tile-speak.speaking').forEach(function (x) { x.classList.remove('speaking'); });
+          btn.classList.add('speaking');
+          u.onend = u.onerror = function () { btn.classList.remove('speaking'); };
+        }
+        synth.speak(u);
+      } catch (e) { /* TTS nicht verfuegbar */ }
+    }
+
     bookGrid.addEventListener('click', (e) => {
+      const spk = e.target.closest('.tile-speak');
+      if (spk) {
+        e.preventDefault(); e.stopPropagation();
+        speakText(spk.dataset.text || '', spk);
+        return;
+      }
       const fav = e.target.closest('.tile-fav');
       if (!fav) return;
       e.preventDefault(); e.stopPropagation();
@@ -936,6 +967,7 @@
         const thumbUrl = isComic ? 'comics/' + slug + '-1.png' : 'bilder/thumbs/' + slug + '-1.webp';
         const icon = isComic ? '🎨' : '📖';
         const levelDisplay = s.readingLevel ? (s.readingLevel.split(',')[0].trim() + ' · ' + getLevelLabel(s.readingLevel)) : '';
+        const title = s.displayTitle || formatName(s.name);
         const saved = favs.has(s.path);
         const avatar = authorBios[s.author] && authorBios[s.author].avatar;
         const authorMark = s.author
@@ -954,7 +986,10 @@
                 '<img src="' + thumbUrl + '" alt="" loading="lazy" onerror="var p=this.parentElement;this.remove();p.innerHTML=\'<span class=tile-cover-icon>' + icon + '</span>\';">' +
               '</div>' +
               '<div class="tile-body">' +
-                '<div class="tile-title">' + (s.displayTitle || formatName(s.name)) + '</div>' +
+                '<div class="tile-titlerow">' +
+                  '<div class="tile-title">' + title + '</div>' +
+                  '<button type="button" class="tile-speak" data-text="' + esc(title) + '" aria-label="Titel vorlesen" title="Titel vorlesen"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11 4.7a.7.7 0 0 0-1.2-.5L6.4 7.6A1.4 1.4 0 0 1 5.4 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.4a1.4 1.4 0 0 1 1 .4l3.4 3.4a.7.7 0 0 0 1.2-.5z"/><path d="M16 9a5 5 0 0 1 0 6"/><path d="M19.4 5.6a9 9 0 0 1 0 12.7"/></svg></button>' +
+                '</div>' +
                 '<div class="tile-badges">' +
                   (isComic ? '<span class="tile-comic-badge">🎨 Comic</span>' : '') +
                   (levelDisplay ? '<span class="tile-level-badge">' + levelDisplay + '</span>' : '') +

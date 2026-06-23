@@ -25,7 +25,7 @@ from pathlib import Path
 
 REPO = Path(__file__).resolve().parent.parent
 SOURCE = REPO / "partials" / "a11y.html"
-PUBLIC_PAGES = ("demo.html", "neue-autorengeschichte.html")
+PUBLIC_PAGES = ("demo.html", "neue-autorengeschichte.html", "neue-geschichte.html")
 TAFEL_MARKER = "/* === TAFEL-ANSICHT v2:"
 
 CSS_START, CSS_END = "/* === LK-A11Y:CSS START === */", "/* === LK-A11Y:CSS END === */"
@@ -45,8 +45,9 @@ def load_source():
     src = SOURCE.read_text(encoding="utf-8")
     css = _between(src, CSS_START, CSS_END)
     modal = _between(src, MODAL_START, MODAL_END)
-    js_inner = _between(src, JS_START, JS_END)
-    js = "<script>\n" + js_inner + "\n</script>"
+    # JS-Block MIT Markern, aber OHNE <script>-Tags: Beim Ersetzen liegen die
+    # Marker bereits in einem <script> -> Tags hier wuerden doppelt verschachteln.
+    js = _between(src, JS_START, JS_END)
     return css, modal, js
 
 
@@ -73,6 +74,19 @@ def apply_block(text, start, end, block, label):
     return text[:pos].rstrip() + "\n\n  " + block + "\n\n" + text[pos:], label + ":vor </body>"
 
 
+def apply_js(text, js):
+    """JS-Block ersetzen (Marker liegen bereits in einem <script>) bzw. beim
+    Erstinsert in ein frisches <script> packen. Idempotent: kein Doppel-Tag."""
+    pat = re.compile(re.escape(JS_START) + r".*?" + re.escape(JS_END), re.DOTALL)
+    if pat.search(text):
+        return pat.sub(lambda m: js, text, count=1), "js:ersetzt"
+    pos = text.rfind("</body>")
+    if pos == -1:
+        return text, "js:KEIN </body>"
+    block = "<script>\n" + js + "\n</script>"
+    return text[:pos].rstrip() + "\n\n  " + block + "\n\n" + text[pos:], "js:vor </body>"
+
+
 def main():
     dry = "--dry" in sys.argv
     css, modal, js = load_source()
@@ -87,7 +101,7 @@ def main():
         text = p.read_text(encoding="utf-8")
         new, m1 = apply_css(text, css)
         new, m2 = apply_block(new, MODAL_START, MODAL_END, modal, "modal")
-        new, m3 = apply_block(new, JS_START, JS_END, js, "js")
+        new, m3 = apply_js(new, js)
         if new != text:
             changed += 1
             if not dry:
