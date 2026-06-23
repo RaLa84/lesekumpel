@@ -127,28 +127,30 @@
         .form-section.hidden { display: none; }
         .form-section.reveal { animation: fadeIn 0.35s ease; }
 
-        .section-title { font-family: var(--font-heading); color: var(--accent-coral); font-size: 1.3rem; margin-bottom: 6px; }
+        .section-title { font-family: var(--font-heading); color: var(--navy); font-size: 1.3rem; margin-bottom: 6px; }
         .section-sub { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 16px; }
         .section-divider { border: none; border-top: 2px solid rgba(255,213,79,0.3); margin: 28px 0; }
 
         /* --- INPUTS --- */
         .text-input, .textarea-input {
-            width: 100%; padding: 14px 18px; border: 2px solid var(--accent-coral-light);
+            width: 100%; padding: 14px 18px; border: 2px solid var(--border);
             border-radius: 14px; font-family: var(--font-body); font-size: 1rem;
             color: var(--text-dark); background: #fff; transition: border-color 0.2s, box-shadow 0.2s;
         }
-        .text-input:focus, .textarea-input:focus { border-color: var(--accent-coral); box-shadow: 0 0 0 3px rgba(214,113,113,0.15); outline: none; }
+        .text-input:focus, .textarea-input:focus { border-color: var(--navy); box-shadow: 0 0 0 3px rgba(47,184,166,0.22); outline: none; }
         .textarea-input { min-height: 80px; resize: vertical; }
 
         /* --- TOGGLE BUTTONS (Kategorie) --- */
         .toggle-group { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
         .toggle-btn {
-            padding: 10px 18px; border: 2px solid #eee; border-radius: 20px; background: #fff;
+            display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+            padding: 10px 18px; border: 2px solid var(--border); border-radius: 999px; background: #fff;
             font-family: var(--font-body); font-weight: 600; font-size: 0.9rem; cursor: pointer;
             transition: all 0.2s; color: var(--text-dark);
         }
-        .toggle-btn:hover { border-color: var(--accent-coral); color: var(--accent-coral); }
-        .toggle-btn.active { background: var(--primary-yellow); border-color: var(--primary-yellow); color: var(--text-dark); box-shadow: 0 3px 8px rgba(255,213,79,0.3); }
+        .toggle-btn svg { width: 18px; height: 18px; flex-shrink: 0; }
+        .toggle-btn:hover { border-color: var(--mint); color: #259e8e; }
+        .toggle-btn.active { background: rgba(47,184,166,0.16); border-color: var(--mint); color: #259e8e; box-shadow: none; }
 
         /* --- PHASE CARDS --- */
         .phase-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 12px; }
@@ -186,19 +188,19 @@
             text-align: center; cursor: pointer; transition: all 0.25s; position: relative;
             display: flex; flex-direction: column; align-items: center;
         }
-        .persona-card:hover:not(.disabled) { border-color: var(--accent-coral); transform: translateY(-3px); box-shadow: 0 6px 16px rgba(0,0,0,0.06); }
-        .persona-card.active { border-color: var(--accent-coral); background: var(--accent-coral-light); }
+        .persona-card:hover:not(.disabled) { border-color: var(--mint); transform: translateY(-3px); box-shadow: 0 6px 16px rgba(0,0,0,0.06); }
+        .persona-card.active { border-color: var(--mint); background: rgba(47,184,166,0.08); }
         .persona-card.disabled { opacity: 0.3; cursor: not-allowed; filter: grayscale(0.6); }
         .persona-card.disabled:hover { transform: none; box-shadow: none; border-color: #eee; }
         .persona-avatar { width: 65px; height: 65px; border-radius: 50%; border: 3px solid var(--primary-yellow); margin: 0 auto 8px; display: block; object-fit: cover; }
-        .persona-name { font-family: var(--font-heading); font-size: 0.9rem; color: var(--accent-coral); }
+        .persona-name { font-family: var(--font-heading); font-size: 0.9rem; color: var(--navy); }
         .persona-type { font-size: 0.7rem; color: var(--text-muted); margin-top: 2px; margin-bottom: 10px; }
         .persona-words {
-            margin-top: auto; padding: 4px 10px; align-self: center;
-            background: rgba(255, 213, 79, 0.25); color: var(--text-dark);
-            font-size: 0.7rem; font-weight: 600; border-radius: 10px;
+            margin-top: auto; padding: 4px 12px; align-self: center;
+            background: var(--cream-light); color: var(--navy); border: 1px solid var(--border);
+            font-size: 0.72rem; font-weight: 700; border-radius: 999px;
         }
-        .persona-card.active .persona-words { background: rgba(255, 213, 79, 0.55); }
+        .persona-card.active .persona-words { background: rgba(47,184,166,0.16); border-color: var(--mint); color: #259e8e; }
         .persona-tooltip {
             display: none; position: absolute; bottom: calc(100% + 8px); left: 50%; transform: translateX(-50%);
             background: var(--text-dark); color: #fff; padding: 8px 12px; border-radius: 10px;
@@ -228,8 +230,8 @@
             cursor: pointer; transition: border-color 0.2s, transform 0.25s, box-shadow 0.25s;
             box-shadow: 0 2px 6px rgba(0,0,0,0.06);
         }
-        .stil-card:hover { border-color: var(--accent-coral); transform: translateY(-3px); box-shadow: 0 6px 16px rgba(0,0,0,0.12); }
-        .stil-card.active { border-color: var(--accent-coral); box-shadow: 0 0 0 3px rgba(214,113,113,0.35), 0 6px 16px rgba(0,0,0,0.12); }
+        .stil-card:hover { border-color: var(--mint); transform: translateY(-3px); box-shadow: 0 6px 16px rgba(0,0,0,0.12); }
+        .stil-card.active { border-color: var(--mint); box-shadow: 0 0 0 3px rgba(47,184,166,0.35), 0 6px 16px rgba(0,0,0,0.12); }
         .stil-card .stil-label {
             position: absolute; left: 0; right: 0; bottom: 0;
             padding: 8px 10px;
@@ -238,7 +240,7 @@
             font-size: 0.95rem; text-align: center; line-height: 1.2;
             text-shadow: 0 1px 2px rgba(0,0,0,0.5);
         }
-        .stil-card.active .stil-label { background: linear-gradient(to top, rgba(214,113,113,0.92) 0%, rgba(214,113,113,0.7) 60%, rgba(214,113,113,0) 100%); }
+        .stil-card.active .stil-label { background: linear-gradient(to top, rgba(47,184,166,0.92) 0%, rgba(47,184,166,0.7) 60%, rgba(47,184,166,0) 100%); }
         /* Placeholder-Look wenn Bild fehlt (Fallback via CSS) */
         .stil-card[data-stil="Aquarell"]  { background-image: url('bilder/bildstil-vorschau/aquarell.webp'); }
         .stil-card[data-stil="Cartoon"]   { background-image: url('bilder/bildstil-vorschau/cartoon.webp'); }
@@ -252,20 +254,20 @@
         /* --- NAV BUTTONS --- */
         .step-nav { display: flex; justify-content: space-between; align-items: center; margin-top: 28px; }
         .btn-next, .btn-submit {
-            background: var(--accent-coral); color: #fff; border: none; border-radius: 28px;
+            background: var(--mint); color: var(--navy); border: none; border-radius: 28px;
             padding: 14px 36px; font-family: var(--font-body); font-weight: 700; font-size: 1rem;
             cursor: pointer; transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-            box-shadow: 0 4px 14px rgba(214,113,113,0.3);
+            box-shadow: 0 4px 14px rgba(47,184,166,0.3);
         }
         .btn-next { margin-left: auto; }
-        .btn-next:hover:not(:disabled), .btn-submit:hover:not(:disabled) { background: var(--accent-coral-dark); transform: translateY(-2px) scale(1.02); }
+        .btn-next:hover:not(:disabled), .btn-submit:hover:not(:disabled) { background: var(--navy); color: #fff; transform: translateY(-2px) scale(1.02); }
         .btn-next:disabled, .btn-submit:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
         .btn-submit { width: 100%; padding: 18px 52px; font-size: 1.1rem; }
         .btn-back {
             background: none; border: none; color: var(--text-muted); font-family: var(--font-body);
             font-weight: 600; font-size: 0.95rem; cursor: pointer; padding: 10px 0;
         }
-        .btn-back:hover { color: var(--accent-coral); }
+        .btn-back:hover { color: var(--navy); }
 
         /* --- LOADING OVERLAY --- */
         .loading-overlay {
@@ -274,14 +276,14 @@
         }
         .loading-overlay.visible { display: flex; }
         .loading-card { background: #fff; border: 4px solid var(--primary-yellow); border-radius: 24px; padding: 40px; text-align: center; max-width: 400px; width: 90%; position: relative; }
-        .loading-title { font-family: var(--font-heading); font-size: 1.5rem; color: var(--accent-coral); margin-bottom: 10px; }
+        .loading-title { font-family: var(--font-heading); font-size: 1.5rem; color: var(--navy); margin-bottom: 10px; }
         .loading-bar-bg { width: 100%; height: 16px; background: #f0f0f0; border-radius: 10px; margin: 20px 0; overflow: hidden; }
-        .loading-bar { height: 100%; background: linear-gradient(90deg, var(--accent-coral), var(--primary-yellow)); width: 0%; transition: width 1s linear; border-radius: 10px; }
+        .loading-bar { height: 100%; background: linear-gradient(90deg, var(--mint), var(--primary-yellow)); width: 0%; transition: width 1s linear; border-radius: 10px; }
         .loading-status { color: var(--text-muted); font-size: 0.95rem; }
         .loading-close { display: none; position: absolute; top: 8px; right: 14px; background: none; border: 0; font-size: 1.8rem; line-height: 1; color: var(--text-muted); cursor: pointer; padding: 4px 8px; }
-        .loading-close:hover { color: var(--accent-coral); }
+        .loading-close:hover { color: var(--navy); }
         .loading-overlay.dismissable .loading-close { display: block; }
-        .story-ready-btn { display: inline-block; margin-top: 12px; background: var(--accent-coral); color: #fff; padding: 12px 24px; border-radius: 12px; font-weight: 700; text-decoration: none; }
+        .story-ready-btn { display: inline-block; margin-top: 12px; background: var(--mint); color: var(--navy); padding: 12px 24px; border-radius: 12px; font-weight: 700; text-decoration: none; }
         .story-ready-btn:hover { filter: brightness(1.05); }
         @keyframes wackel { 0%{transform:rotate(0)} 25%{transform:rotate(-10deg)} 75%{transform:rotate(10deg)} 100%{transform:rotate(0)} }
         .wackel { display: inline-block; animation: wackel 2s infinite; font-size: 3rem; margin-bottom: 15px; }
@@ -333,14 +335,14 @@
             font-size: 0.95rem; cursor: pointer; border: none; transition: all 0.2s;
         }
         .precheck-btn-primary {
-            background: var(--accent-coral); color: #fff;
-            box-shadow: 0 4px 12px rgba(214,113,113,0.3);
+            background: var(--mint); color: var(--navy);
+            box-shadow: 0 4px 12px rgba(47,184,166,0.3);
         }
-        .precheck-btn-primary:hover { background: var(--accent-coral-dark); transform: translateY(-1px); }
+        .precheck-btn-primary:hover { background: var(--navy); color: #fff; transform: translateY(-1px); }
         .precheck-btn-secondary {
-            background: #fff; color: var(--text-dark); border: 2px solid #ddd;
+            background: #fff; color: var(--text-dark); border: 2px solid var(--border);
         }
-        .precheck-btn-secondary:hover { border-color: var(--accent-coral); color: var(--accent-coral); }
+        .precheck-btn-secondary:hover { border-color: var(--mint); color: #259e8e; }
         @media (max-width: 480px) {
             .precheck-actions { flex-direction: column-reverse; }
             .precheck-btn { width: 100%; }
@@ -509,8 +511,8 @@
             <div class="section-title">Bilder?</div>
             <div class="section-sub">Bilder machen die Geschichte lebendig, brauchen aber etwas länger.</div>
             <div class="toggle-group" id="bilder-toggle">
-                <button class="toggle-btn active" data-bilder="true" onclick="selectBilder(true)">🖼️ Mit Bildern</button>
-                <button class="toggle-btn" data-bilder="false" onclick="selectBilder(false)">📝 Nur Text</button>
+                <button type="button" class="toggle-btn active" data-bilder="true" onclick="selectBilder(true)"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg><span>Mit Bildern</span></button>
+                <button type="button" class="toggle-btn" data-bilder="false" onclick="selectBilder(false)"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M16 13H8"/><path d="M16 17H8"/><path d="M10 9H8"/></svg><span>Nur Text</span></button>
             </div>
         </div>
 
@@ -1133,7 +1135,7 @@ async function enterAsyncMode(payload) {
     document.getElementById('loading-bar').style.width = '100%';
     document.getElementById('loading-title').textContent = 'Deine Geschichte wird im Hintergrund erstellt';
     document.getElementById('loading-status').textContent = 'Sie erscheint gleich in der Bibliothek...';
-    document.getElementById('loading-hint').innerHTML = 'Das dauert ca. 1–2 Minuten. <a href="demo.html" style="color:var(--accent-coral);font-weight:600;">Zur Bibliothek →</a>';
+    document.getElementById('loading-hint').innerHTML = 'Das dauert ca. 1–2 Minuten. <a href="demo.html" style="color:#259e8e;font-weight:600;">Zur Bibliothek →</a>';
     overlay.classList.add('dismissable');
 
     const snapshot = await fetchStoryFileSet();
@@ -1226,6 +1228,7 @@ renderPersonaCards();
 <!-- === LK-A11Y:MODAL END === -->
 
   <script>
+<script>
 // === LK-A11Y:JS START ===
 (function () {
   'use strict';
@@ -1283,6 +1286,7 @@ renderPersonaCards();
   });
 })();
 // === LK-A11Y:JS END ===
+</script>
 </script>
 
 </body>
