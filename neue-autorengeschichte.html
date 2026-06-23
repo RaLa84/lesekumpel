@@ -182,7 +182,7 @@
             margin: 16px 0 10px; padding-left: 4px;
         }
         .persona-group-title:first-of-type { margin-top: 0; }
-        .persona-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 12px; }
+        .persona-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(155px, 1fr)); gap: 12px; }
         .persona-card {
             background: #fff; border: 2px solid #eee; border-radius: 18px; padding: 18px 10px;
             text-align: center; cursor: pointer; transition: all 0.25s; position: relative;
@@ -198,7 +198,7 @@
         .persona-words {
             margin-top: auto; padding: 4px 12px; align-self: center;
             background: var(--cream-light); color: var(--navy); border: 1px solid var(--border);
-            font-size: 0.72rem; font-weight: 700; border-radius: 999px;
+            font-size: 0.72rem; font-weight: 700; border-radius: 999px; white-space: nowrap;
         }
         .persona-card.active .persona-words { background: rgba(47,184,166,0.16); border-color: var(--mint); color: #259e8e; }
         .persona-tooltip {
@@ -689,16 +689,17 @@ document.addEventListener('click', function (e) {
 // DATA
 // ============================================================
 // ── Skill-Personas (Leseniveaus) ──
+// color = Autor-Farbe (identisch zu authorColors in demo.html) — für den Avatar-Ring
 const PERSONAS = {
-    pip:    { name: 'Pip Punkt',             type: 'skill', label: 'Kurze, klare Sätze für Leseanfänger',         woerter: '20–50',   avatar: 'avatars/pip-punkt.webp' },
-    mia:    { name: 'Mia Mitte',             type: 'skill', label: 'Erste richtige Geschichten mit Spannung',     woerter: '50–100',  avatar: 'avatars/mia-mitte.webp' },
-    peter:  { name: 'Peter Past',            type: 'skill', label: 'Spannend erzählt in der Vergangenheit',       woerter: '100–150', avatar: 'avatars/peter-past.webp' },
-    stella: { name: 'Stella Stimmenreich',   type: 'skill', label: 'Lebendige Dialoge mit verschiedenen Stimmen', woerter: '150–250', avatar: 'avatars/stella-stimmenreich.webp' },
-    finja:  { name: 'Finja Feder',           type: 'skill', label: 'Anspruchsvolle Geschichten wie im Kinderbuch',woerter: '250–400', avatar: 'avatars/finja-feder.webp' },
-    samira: { name: 'Samira Wissensfreund',  type: 'bonus', label: 'Spannende Fakten zum Staunen',                woerter: '120–250', avatar: 'avatars/samira-wissensfreund.webp' },
-    holzi:  { name: 'Holzi Pixelkopf',       type: 'bonus', label: 'Gaming-Chaos mit maximalem Spaß',             woerter: '120–250', avatar: 'avatars/holzi-pixelkopf.webp' },
-    deniz:  { name: 'Deniz Traumfänger',     type: 'bonus', label: 'Magische Traumreisen zum Eintauchen',         woerter: '150–300', avatar: 'avatars/deniz-traumfaenger.webp' },
-    jonas:  { name: 'Jonas Entdecker',       type: 'bonus', label: 'Ehrliche Alltagsabenteuer zum Mitfühlen',     woerter: '100–200', avatar: 'avatars/jonas-entdecker.webp' }
+    pip:    { name: 'Pip Punkt',             type: 'skill', label: 'Kurze, klare Sätze für Leseanfänger',         woerter: '20–50',   color: '#6B5B9E', avatar: 'avatars/pip-punkt.webp' },
+    mia:    { name: 'Mia Mitte',             type: 'skill', label: 'Erste richtige Geschichten mit Spannung',     woerter: '50–100',  color: '#D67171', avatar: 'avatars/mia-mitte.webp' },
+    peter:  { name: 'Peter Past',            type: 'skill', label: 'Spannend erzählt in der Vergangenheit',       woerter: '100–150', color: '#5B9BD5', avatar: 'avatars/peter-past.webp' },
+    stella: { name: 'Stella Stimmenreich',   type: 'skill', label: 'Lebendige Dialoge mit verschiedenen Stimmen', woerter: '150–250', color: '#E8950A', avatar: 'avatars/stella-stimmenreich.webp' },
+    finja:  { name: 'Finja Feder',           type: 'skill', label: 'Anspruchsvolle Geschichten wie im Kinderbuch',woerter: '250–400', color: '#7E57C2', avatar: 'avatars/finja-feder.webp' },
+    samira: { name: 'Samira Wissensfreund',  type: 'bonus', label: 'Spannende Fakten zum Staunen',                woerter: '120–250', color: '#E07B39', avatar: 'avatars/samira-wissensfreund.webp' },
+    holzi:  { name: 'Holzi Pixelkopf',       type: 'bonus', label: 'Gaming-Chaos mit maximalem Spaß',             woerter: '120–250', color: '#4CAF50', avatar: 'avatars/holzi-pixelkopf.webp' },
+    deniz:  { name: 'Deniz Traumfänger',     type: 'bonus', label: 'Magische Traumreisen zum Eintauchen',         woerter: '150–300', color: '#3FB9CF', avatar: 'avatars/deniz-traumfaenger.webp' },
+    jonas:  { name: 'Jonas Entdecker',       type: 'bonus', label: 'Ehrliche Alltagsabenteuer zum Mitfühlen',     woerter: '100–200', color: '#FF8A65', avatar: 'avatars/jonas-entdecker.webp' }
 };
 
 // Neurotypen (nur für Skill-Personas)
@@ -752,7 +753,7 @@ function renderPersonaCards() {
         card.dataset.persona = pid;
         card.onclick = () => selectPersona(pid);
         card.innerHTML = `
-            <img src="${p.avatar}" alt="${p.name}" class="persona-avatar">
+            <img src="${p.avatar}" alt="${p.name}" class="persona-avatar" style="border-color:${p.color};">
             <div class="persona-name">${p.name}</div>
             <div class="persona-type">${p.label}</div>
             <div class="persona-words">ca. ${p.woerter} Wörter</div>
@@ -1228,7 +1229,6 @@ renderPersonaCards();
 <!-- === LK-A11Y:MODAL END === -->
 
   <script>
-<script>
 // === LK-A11Y:JS START ===
 (function () {
   'use strict';
@@ -1286,7 +1286,6 @@ renderPersonaCards();
   });
 })();
 // === LK-A11Y:JS END ===
-</script>
 </script>
 
 </body>
