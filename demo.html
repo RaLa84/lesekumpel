@@ -549,6 +549,16 @@
         if (btn) btn.setAttribute('aria-expanded', 'false');
       }
     });
+    /* Escape schließt das Menü und gibt den Fokus zurück */
+    document.addEventListener('keydown', function (e) {
+      if (e.key !== 'Escape') return;
+      var menu = document.getElementById('mobile-menu');
+      if (menu && menu.classList.contains('open')) {
+        menu.classList.remove('open');
+        var btn = document.querySelector('.burger-icon');
+        if (btn) { btn.setAttribute('aria-expanded', 'false'); btn.focus(); }
+      }
+    });
 
     (function initReveal() {
       document.body.classList.add('js-on');
@@ -768,24 +778,59 @@
         if (p) p.hidden = true;
       });
     }
+    let _ddSeq = 0;
     function wireDropdowns() {
       document.querySelectorAll('.filter-dd').forEach(dd => {
         const trigger = dd.querySelector('.filter-dd-trigger');
         const panel = dd.querySelector('.filter-dd-panel');
+        // aria-controls verknuepfen (Trigger <-> Listbox)
+        if (!panel.id) panel.id = 'dd-panel-' + (++_ddSeq);
+        trigger.setAttribute('aria-controls', panel.id);
+        function openPanel() {
+          closeAllDropdowns(dd);
+          trigger.setAttribute('aria-expanded', 'true');
+          panel.hidden = false;
+        }
+        function closePanel(focusTrigger) {
+          trigger.setAttribute('aria-expanded', 'false');
+          panel.hidden = true;
+          if (focusTrigger) trigger.focus();
+        }
+        function options() { return Array.prototype.slice.call(panel.querySelectorAll('.filter-dd-option')); }
+        function focusOption(i) {
+          const o = options();
+          if (!o.length) return;
+          const idx = (i + o.length) % o.length;
+          o[idx].focus();
+        }
         trigger.addEventListener('click', (e) => {
           e.stopPropagation();
-          const open = trigger.getAttribute('aria-expanded') === 'true';
-          closeAllDropdowns(dd);
-          trigger.setAttribute('aria-expanded', open ? 'false' : 'true');
-          panel.hidden = open;
+          if (trigger.getAttribute('aria-expanded') === 'true') closePanel(false);
+          else openPanel();
+        });
+        // Tastatur am Trigger: Pfeil/Enter/Space oeffnet und fokussiert erste Option
+        trigger.addEventListener('keydown', (e) => {
+          if (e.key === 'ArrowDown' || e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault(); openPanel();
+            const sel = panel.querySelector('.filter-dd-option.selected');
+            sel ? sel.focus() : focusOption(0);
+          }
         });
         panel.addEventListener('click', (e) => {
           const opt = e.target.closest('.filter-dd-option');
           if (!opt) return;
           pickOption(opt.dataset.facet, opt.dataset.val);
-          trigger.setAttribute('aria-expanded', 'false');
-          panel.hidden = true;
-          trigger.focus();
+          closePanel(true);
+        });
+        // Tastatur in der Listbox: Pfeile/Home/End/Escape
+        panel.addEventListener('keydown', (e) => {
+          const o = options();
+          const cur = o.indexOf(document.activeElement);
+          if (e.key === 'ArrowDown') { e.preventDefault(); focusOption(cur + 1); }
+          else if (e.key === 'ArrowUp') { e.preventDefault(); focusOption(cur - 1); }
+          else if (e.key === 'Home') { e.preventDefault(); focusOption(0); }
+          else if (e.key === 'End') { e.preventDefault(); focusOption(o.length - 1); }
+          else if (e.key === 'Escape') { e.preventDefault(); closePanel(true); }
         });
       });
     }
