@@ -18,6 +18,7 @@ on:
       - 'impressum.html'
       - 'datenschutz.html'
       - 'scripts/generate-sitemap.mjs'
+      - 'scripts/generate-stories-index.mjs'
   workflow_dispatch:
 
 jobs:
@@ -36,18 +37,20 @@ jobs:
         with:
           node-version: '20'
 
-      - name: Generate sitemap.xml
-        run: node scripts/generate-sitemap.mjs
+      - name: Generate sitemap.xml + stories-index.json
+        run: |
+          node scripts/generate-sitemap.mjs
+          node scripts/generate-stories-index.mjs
 
-      - name: Commit sitemap
+      - name: Commit sitemap + index
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add sitemap.xml
+          git add sitemap.xml stories-index.json
           if git diff --cached --quiet; then
-            echo "Keine Änderungen an sitemap.xml"
+            echo "Keine Änderungen an sitemap.xml / stories-index.json"
           else
-            git commit -m "Auto: sitemap.xml regeneriert"
+            git commit -m "Auto: sitemap.xml + stories-index.json regeneriert"
             git pull --rebase
             git push
           fi

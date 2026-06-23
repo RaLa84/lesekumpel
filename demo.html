@@ -226,6 +226,11 @@
 
     /* Stories Grid */
     .stories-wrap { max-width: 1200px; margin: 40px auto 0; padding: 0 24px 0; }
+    .load-more-wrap { display: flex; justify-content: center; margin: 32px 0 8px; }
+    .load-more-wrap .load-more-btn[hidden] { display: none; }
+    .load-more-btn { background: var(--white); color: var(--navy); border: 2px solid var(--mint); border-radius: var(--radius-pill); padding: 14px 32px; font-family: var(--font-body); font-weight: 700; font-size: 0.98rem; cursor: pointer; transition: all 0.2s cubic-bezier(0.34,1.56,0.64,1); }
+    .load-more-btn:hover { background: var(--mint); transform: translateY(-2px); }
+    .load-more-btn:active { transform: translateY(0) scale(0.98); }
     .stories-grid { display: grid; grid-template-columns: 1fr; gap: 24px; }
     @media (min-width: 600px) { .stories-grid { grid-template-columns: repeat(2, 1fr); } }
     @media (min-width: 980px) { .stories-grid { grid-template-columns: repeat(3, 1fr); } }
@@ -465,6 +470,7 @@
       </div>
       <div class="demo-loading" id="loadingMsg">Lade Geschichten &hellip;</div>
       <div class="stories-grid" id="bookGrid"></div>
+      <div class="load-more-wrap"><button type="button" class="load-more-btn" id="loadMore" hidden></button></div>
     </section>
 
   </main>
@@ -601,6 +607,9 @@
     let stories = [];
     let loading = true;
     let sortMode = 'newest';
+    let visibleCount = 24;            /* Paging: wie viele Karten gerendert werden */
+    const PAGE_SIZE = 24;
+    let lastFiltered = [];            /* zuletzt gefilterte Liste (fuer „Mehr laden") */
     const state = { author: 'all', level: 'all', neuro: 'all', format: 'all' };
 
     /* ---- Facetten-Konfiguration für die Filter-Leiste ---- */
@@ -726,7 +735,7 @@
           '<input type="text" id="searchInput" placeholder="Geschichte suchen …" aria-label="Geschichte suchen">' +
         '</div>';
       searchEl = document.getElementById('searchInput');
-      searchEl.addEventListener('input', () => { render(); updateTriggers(); });
+      searchEl.addEventListener('input', () => { visibleCount = PAGE_SIZE; render(); updateTriggers(); });
 
       sortDd.innerHTML =
         '<button type="button" class="filter-dd-trigger" aria-haspopup="listbox" aria-expanded="false">' +
@@ -784,6 +793,7 @@
     function pickOption(facet, val) {
       if (facet === 'sort') { sortMode = val; }
       else { state[facet] = val; if (facet === 'author') applyAuthorBio(val); }
+      visibleCount = PAGE_SIZE; /* Filter/Sort wechseln -> Paging zuruecksetzen */
       updateTriggers();
       render();
     }
@@ -844,6 +854,7 @@
     resetLink.addEventListener('click', () => {
       state.author = state.level = state.neuro = state.format = 'all';
       if (searchEl) searchEl.value = '';
+      visibleCount = PAGE_SIZE;
       applyAuthorBio('all');
       updateTriggers();
       render();
@@ -854,46 +865,80 @@
     }
 
     /* ============================================================
-       Daten laden (3 Ordner) + Metadaten gestaffelt + progressiv rendern
+       Daten laden: zuerst der vorgefertigte Index (1 Fetch), sonst Fallback
+       (GitHub-API + Einzel-Fetches). Schnell + robust.
        ============================================================ */
-    Promise.all(FOLDERS.map(cfg =>
-      fetch('https://api.github.com/repos/' + GH_USER + '/' + GH_REPO + '/contents/' + cfg.folder)
-        .then(r => r.ok ? r.json() : [])
-        .then(data => (Array.isArray(data) ? data : [])
-          .filter(f => f.name.endsWith('.html'))
-          .map(f => ({
-            name: f.name,
-            type: cfg.type,
-            path: cfg.folder + '/' + f.name,
-            date: new Date(0),
-            dateString: '',
-            author: '',
-            readingLevel: '',
-            neurotype: '',
-            displayTitle: '',
-            isValid: false
-          })))
-        .catch(() => [])
-    ))
-      .then(lists => {
-        loadEl.style.display = 'none';
-        stories = lists.flat();
-        if (stories.length === 0) {
+    function fromIndex(s) {
+      const d = new Date(s.date);
+      return {
+        name: s.path.split('/').pop(),
+        type: s.type,
+        path: s.path,
+        date: d,
+        dateString: d.getTime() > 0 ? d.toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit', year: 'numeric' }) : '',
+        author: s.author || '',
+        readingLevel: s.readingLevel || '',
+        neurotype: s.neurotype || '',
+        displayTitle: s.title || '',
+        isValid: true
+      };
+    }
+
+    fetch('stories-index.json', { cache: 'no-cache' })
+      .then(r => r.ok ? r.json() : null)
+      .then(data => {
+        if (data && Array.isArray(data.stories) && data.stories.length) {
+          stories = data.stories.map(fromIndex);
+          loading = false;
+          loadEl.style.display = 'none';
+          render();
+        } else {
+          loadFromFolders();
+        }
+      })
+      .catch(() => loadFromFolders());
+
+    /* Fallback: Ordner-Listing + Metadaten gestaffelt nachladen (langsam) */
+    function loadFromFolders() {
+      Promise.all(FOLDERS.map(cfg =>
+        fetch('https://api.github.com/repos/' + GH_USER + '/' + GH_REPO + '/contents/' + cfg.folder)
+          .then(r => r.ok ? r.json() : [])
+          .then(data => (Array.isArray(data) ? data : [])
+            .filter(f => f.name.endsWith('.html'))
+            .map(f => ({
+              name: f.name,
+              type: cfg.type,
+              path: cfg.folder + '/' + f.name,
+              date: new Date(0),
+              dateString: '',
+              author: '',
+              readingLevel: '',
+              neurotype: '',
+              displayTitle: '',
+              isValid: false
+            })))
+          .catch(() => [])
+      ))
+        .then(lists => {
+          loadEl.style.display = 'none';
+          stories = lists.flat();
+          if (stories.length === 0) {
+            loading = false;
+            loadEl.style.display = '';
+            loadEl.className = 'demo-loading demo-error';
+            loadEl.textContent = 'Keine Geschichten gefunden — bitte später erneut versuchen.';
+            updateCount(0);
+            return;
+          }
+          loadMeta();
+        })
+        .catch(err => {
           loading = false;
           loadEl.style.display = '';
           loadEl.className = 'demo-loading demo-error';
-          loadEl.textContent = 'Keine Geschichten gefunden — bitte später erneut versuchen.';
-          updateCount(0);
-          return;
-        }
-        loadMeta();
-      })
-      .catch(err => {
-        loading = false;
-        loadEl.style.display = '';
-        loadEl.className = 'demo-loading demo-error';
-        loadEl.textContent = 'Fehler beim Laden: ' + err.message;
-      });
+          loadEl.textContent = 'Fehler beim Laden: ' + err.message;
+        });
+    }
 
     async function loadMeta() {
       const BATCH = 16;
@@ -953,9 +998,29 @@
       if (sortMode === 'newest') f.sort((a, b) => b.date - a.date);
       else if (sortMode === 'oldest') f.sort((a, b) => a.date - b.date);
       else if (sortMode === 'title') f.sort((a, b) => (a.displayTitle || formatName(a.name)).localeCompare(b.displayTitle || formatName(b.name), 'de'));
-      renderGrid(f);
+      lastFiltered = f;
+      renderGrid(f.slice(0, visibleCount));
       updateCount(f.length);
+      updateLoadMore(f.length);
     }
+
+    function updateLoadMore(total) {
+      const btn = document.getElementById('loadMore');
+      if (!btn) return;
+      const remaining = total - visibleCount;
+      if (remaining > 0) {
+        btn.hidden = false;
+        btn.textContent = 'Mehr Geschichten laden (' + remaining + ')';
+      } else {
+        btn.hidden = true;
+      }
+    }
+
+    document.getElementById('loadMore').addEventListener('click', () => {
+      visibleCount += PAGE_SIZE;
+      renderGrid(lastFiltered.slice(0, visibleCount));
+      updateLoadMore(lastFiltered.length);
+    });
 
     function renderGrid(list) {
       if (list.length === 0) {
