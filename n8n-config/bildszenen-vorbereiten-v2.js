@@ -194,6 +194,20 @@ EXAMPLE C (3-paragraph story, 1 scene):
 
 VERIFY before output: each scene's momentSummary must describe content from its chosen paragraph. If they don't match, fix paragraphIndex.
 
+NARRATIVE & EMOTIONAL FIDELITY (CRITICAL — the image must match what literally happens and how the character feels AT that paragraph):
+
+A) MOOD PER BEAT: "mood" MUST reflect the character's emotional state IN the chosen paragraph at that point in the story — NOT the overall arc, NOT an earlier or later beat. If the chosen paragraph is hopeful, mood is hopeful; if it is a setback, mood is the setback emotion. Do not carry a later feeling backwards or an earlier feeling forwards.
+
+B) OPENING SCENE: the FIRST scene establishes the story's opening situation and its tone (usually hopeful, neutral, curious or excited). It MUST NOT jump ahead to a setback, low point or the story's emotional dip — those belong to middle scenes. A children's story should not open on a sad/defeated image.
+
+C) OUTCOME FIDELITY (image models cannot depict negations or inner nuance — you must make outcomes explicit and visual):
+   - NEVER depict an outcome the text does not state. The image shows only what the paragraph factually says happens.
+   - Competitions / races / contests / games: show victory, first place, a podium, a trophy, a winner's pose, or "crossing the line first/alone" ONLY if the text explicitly says the character WINS or is first.
+   - If the text says the character does NOT win / is NOT first / loses / comes last / is overtaken, the scene MUST make that visible: other competitors ahead of or alongside the character, no winner's pose, no solo-triumph framing — even when the character feels happy or proud inside.
+   - Translate inner nuance into concrete, paintable facts in "momentSummary", "action" and "setting_focus". Image models ignore phrases like "despite not being first" — instead write what is actually visible, e.g. "two other soapbox cars cross the finish line just ahead while he rolls over the line smiling".
+
+D) SELF-CHECK before output: for every scene, confirm that (1) "mood" matches the chosen paragraph's emotion, (2) the depicted action/outcome is literally supported by that paragraph and adds no unstated victory or failure, and (3) scene 1 shows the opening tone. If any check fails, rewrite momentSummary / action / setting_focus / mood before emitting.
+
 MULTI-AXIS DIVERSITY (CRITICAL — three orthogonal axes that create visually distinct images):
 
 Each scene MUST pick exactly one value per axis from the pools below.
@@ -216,7 +230,7 @@ TASK: Output ONLY a JSON array with exactly ${imageCount} objects. Pick ${imageC
 Each object has this shape (no other keys):
 {
   "scene": <1-based number>,
-  "momentSummary": "<one English sentence naming the single story moment this scene depicts>",
+  "momentSummary": "<one English sentence naming the single story moment this scene depicts; state the literal visible facts of THIS paragraph, including the real outcome (who is ahead/behind, wins/loses) — never an outcome the text does not state; see NARRATIVE & EMOTIONAL FIDELITY>",
   "paragraphIndex": <integer — see PARAGRAPH-INDEX RULES above, must be >= 1, distinct, strictly increasing>,
   "action": "<the action verb, e.g. 'reaching for', 'running across', 'kneeling beside'>",
   "pose": "<short English describing body pose, e.g. 'feet slightly apart, arms outstretched'>",
@@ -225,10 +239,10 @@ Each object has this shape (no other keys):
   "composition": "<EXACTLY one value from COMPOSITION pool; unique across scenes>",
   "characters_present": ["<name>", "<name>"],
   "props_shown": [ { "name": "<prop name from VISUAL LOCK>", "hand": "left | right | both | none" } ],
-  "setting_focus": "<short English noting which part of the SETTING ANCHOR is in frame, e.g. 'foreground waves, distant horizon'>",
+  "setting_focus": "<short English noting which part of the SETTING ANCHOR is in frame, e.g. 'foreground waves, distant horizon'; include outcome-relevant elements when needed, e.g. 'two other cars crossing the line ahead' so the image shows the real result>",
   "medium": "<exactly one of: real-scene | on-screen-game | dream | imagination | memory — default real-scene; pick another ONLY when the chosen paragraph clearly happens inside a video game, on a screen, in a dream, in imagination, or in a recalled memory>",
   "sceneSetting": "<short English naming WHERE / in which world this single moment happens; may differ from the global SETTING ANCHOR when the moment is in a game, on a screen, in a dream, or at a different location>",
-  "mood": "<one adjective, e.g. 'curious' or 'triumphant'>",
+  "mood": "<one adjective matching the chosen paragraph's emotion AT this point in the story — not the overall arc; see NARRATIVE & EMOTIONAL FIDELITY (A)>",
   "framingType": "<exactly one of: overview | detail | interaction | habitat | establishing | reaction — must be UNIQUE across all ${imageCount} scenes>",
   "invariantCheck": "<one English sentence asserting this scene respects every SCENE INVARIANT above>",
   "compositionCheck": "<one English sentence asserting this scene is a full-bleed square 1:1 image with painted scene reaching all four corners, no white margin, no inner matte, no frame>"
