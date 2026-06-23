@@ -398,6 +398,16 @@ document.addEventListener('click', function (e) {
         if (btn) btn.setAttribute('aria-expanded', 'false');
     }
 });
+/* Escape schließt das Menü und gibt den Fokus zurück */
+document.addEventListener('keydown', function (e) {
+    if (e.key !== 'Escape') return;
+    const menu = document.getElementById('mobile-menu');
+    if (menu && menu.classList.contains('open')) {
+        menu.classList.remove('open');
+        const btn = document.querySelector('.burger-icon');
+        if (btn) { btn.setAttribute('aria-expanded', 'false'); btn.focus(); }
+    }
+});
 </script>
 
   <!-- === LK-A11Y:MODAL START === -->
