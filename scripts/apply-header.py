@@ -35,7 +35,7 @@ NAV_END = "<!-- === LK-HEADER:NAV END === -->"
 READING_SIGNATURE = ('class="nav-center"', "nav-avatar-btn")
 
 # Root-Seiten mit PUBLIC-Navbar (gleiche Variante wie demo.html)
-PUBLIC_PAGES = ("demo.html", "neue-autorengeschichte.html", "neue-geschichte.html", "anmelden.html")
+PUBLIC_PAGES = ("demo.html", "neue-autorengeschichte.html", "neue-geschichte.html", "anmelden.html", "profilauswahl.html")
 
 
 def _between(text: str, start: str, end: str) -> str:

@@ -25,7 +25,7 @@ from pathlib import Path
 
 REPO = Path(__file__).resolve().parent.parent
 SOURCE = REPO / "partials" / "a11y.html"
-PUBLIC_PAGES = ("demo.html", "neue-autorengeschichte.html", "neue-geschichte.html", "anmelden.html")
+PUBLIC_PAGES = ("demo.html", "neue-autorengeschichte.html", "neue-geschichte.html", "anmelden.html", "profilauswahl.html")
 TAFEL_MARKER = "/* === TAFEL-ANSICHT v2:"
 
 CSS_START, CSS_END = "/* === LK-A11Y:CSS START === */", "/* === LK-A11Y:CSS END === */"
