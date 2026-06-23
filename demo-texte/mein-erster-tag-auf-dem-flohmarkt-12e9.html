@@ -1828,7 +1828,8 @@
         }
 
         /* Hero-Cover ausblenden — Bild wandert in Sticky-Stage, Titel in .tafel-title */
-        body.view-tafel .story-hero-cover { display: none; }
+        /* Cover visuell ausblenden, aber h1 im A11y-Baum lassen (sr-only statt display:none) */
+        body.view-tafel .story-hero-cover { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
 
         /* Story-Spalte (rechts) — Indikator absolut oben, Sektionen zentriert in der Spalte */
         body.view-tafel .tafel-story-col {
@@ -1977,7 +1978,7 @@
         .tafel-cover-meta .cm-author-text { display: flex; flex-direction: column; gap: 3px; }
         .tafel-cover-meta .cm-author-name { font-family: var(--font-heading); font-weight: 700; font-size: 1.25rem; color: var(--navy); }
         .tafel-cover-meta .cm-author-desc { font-size: 1rem; color: #5a6368; line-height: 1.45; max-width: 46ch; }
-        .tafel-cover-meta .cm-hint { margin-top: 10px; color: var(--accent-coral); font-weight: 600; font-size: 1.15rem; }
+        .tafel-cover-meta .cm-hint { margin-top: 10px; color: #BE3F22; font-weight: 600; font-size: 1.15rem; } /* AA: 5.35:1 auf Weiss (war --accent-coral #F97352 = 2.76) */
 
         /* Titel + Autor + Neurotype-Hinweis in der Story-Spalte sind im Tafel-Modus NIE sichtbar —
            sie werden nur als Cover-Overlay über Bild 1 gezeigt; ab Page 2 reicht der Abschnitts-Indikator */
@@ -4150,6 +4151,16 @@
             if (viewMode === 'linien') toggleLeselinien();
             else if (viewMode === 'fahrplan') toggleFahrplan();
             else if (viewMode === 'haeppchen') toggleViewMode();
+
+            // A11y: aria-pressed an den Toggle-Buttons synchron zur .active-Klasse
+            // halten (WCAG 4.1.2). MutationObserver statt jede toggle-Funktion anzufassen.
+            ['btn-dyslexia','btn-contrast','btn-summary','btn-syllables','btn-emojis','btn-leselinien','btn-fahrplan','btn-fokus'].forEach(function(id){
+                var b = document.getElementById(id);
+                if (!b) return;
+                var sync = function(){ b.setAttribute('aria-pressed', b.classList.contains('active') ? 'true' : 'false'); };
+                sync();
+                new MutationObserver(sync).observe(b, { attributes: true, attributeFilter: ['class'] });
+            });
         });
 
         // --- INHALTE-MELDEN MODAL ---
@@ -4446,6 +4457,10 @@
             if (!storyCol) {
                 storyCol = document.createElement('div');
                 storyCol.className = 'tafel-story-col';
+                // Scrollbarer Bereich per Tastatur erreichbar (WCAG 2.1.1)
+                storyCol.tabIndex = 0;
+                storyCol.setAttribute('role', 'region');
+                storyCol.setAttribute('aria-label', 'Geschichtentext');
                 // Marker, um beim Exit die Elemente an Original-Stelle zurückzulegen
                 const anchor = document.querySelector('.author-line');
                 if (anchor) {
