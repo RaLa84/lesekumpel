@@ -12,10 +12,13 @@ data.imageModel = ($('Probe auswerten').first()?.json?.imageModel) || 'unknown';
 
 // DEFENSIV: nur Szenen referenzieren, deren Bild TATSAECHLICH hochgeladen wurde.
 // Sonst entstehen leere Platzhalter, wenn einzelne Bildgenerierungen scheitern
-// (z.B. leere gpt-image-2-Antwort). Quelle: Output des Upload-Nodes (content.path).
+// (z.B. leere gpt-image-2-Antwort).
+// WICHTIG: $('GitHub: Bild hochladen').all() liefert im SplitInBatches-Loop nur die
+// LETZTE Iteration. Stattdessen den done-Output von 'Bild-Loop' nehmen — der enthaelt
+// alle durchlaufenen Szenen-Items; erfolgreich hochgeladene tragen content.path.
 let uploadedScenes = new Set();
 try {
-  for (const it of $('GitHub: Bild hochladen').all()) {
+  for (const it of $('Bild-Loop').all()) {
     const m = String(it.json?.content?.path || '').match(/-(\d+)\.png$/);
     if (m) uploadedScenes.add(parseInt(m[1], 10));
   }
