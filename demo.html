@@ -117,21 +117,6 @@
       .nav-left { gap: 15px; }
     }
 
-    /* ===== A11y-Tool (Barrierefreiheit) — page-side, nicht propagiert ===== */
-    .a11y-wrap { position: relative; }
-    .a11y-popover { position: absolute; top: calc(100% + 8px); right: 0; z-index: 1200; background: #fff; border: 1px solid var(--border); border-radius: 16px; box-shadow: 0 16px 40px rgba(43,49,64,0.16); padding: 6px; min-width: 210px; display: flex; flex-direction: column; gap: 4px; }
-    .a11y-popover[hidden] { display: none; }
-    .a11y-opt { display: flex; align-items: center; gap: 10px; background: none; border: none; border-radius: 10px; padding: 10px 12px; min-height: 44px; font-family: var(--font-body); font-weight: 600; font-size: 0.92rem; color: var(--navy); cursor: pointer; text-align: left; transition: background 0.15s; }
-    .a11y-opt:hover { background: var(--cream-light); }
-    .a11y-opt.on { background: rgba(47,184,166,0.16); color: #259e8e; }
-    .a11y-opt.on::after { content: '✓'; margin-left: auto; color: var(--mint); font-weight: 700; }
-
-    /* Lesefreundliche Schrift + Hoher Kontrast (gleiche Klassen wie Leseseiten) */
-    body.dyslexia-mode { --font-body: 'Atkinson Hyperlegible', system-ui, sans-serif; letter-spacing: 0.03em; word-spacing: 0.12em; }
-    body.dyslexia-mode p, body.dyslexia-mode .tile-title, body.dyslexia-mode .bio-desc { line-height: 1.75; }
-    body.high-contrast { --cream: #ffffff; --cream-light: #ffffff; --navy: #000000; --text-muted: #1a1d24; --border: #2B3140; }
-    body.high-contrast .story-tile, body.high-contrast .filter-dd-trigger, body.high-contrast .search-wrapper input { border-color: #2B3140; }
-
     /* ===== Buttons ===== */
     .btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; font-family: var(--font-body); font-weight: 600; font-size: 1rem; text-decoration: none; cursor: pointer; border: none; border-radius: var(--radius-pill); padding: 16px 32px; transition: all 0.3s cubic-bezier(0.34,1.56,0.64,1); line-height: 1.2; }
     .btn-primary { background: var(--mint); color: var(--navy); box-shadow: 0 4px 14px rgba(47,184,166,0.28); }
@@ -352,6 +337,53 @@
     .modern-footer .footer-bottom a { color: rgba(255,246,239,0.65); text-decoration: none; margin: 0 6px; }
     .modern-footer .footer-bottom a:hover { color: var(--yellow, var(--primary-yellow, #FFD95A)); }
 /* === LK-FOOTER:CSS END === */
+
+        /* === LK-A11Y:CSS START === */
+    .settings-overlay { position: fixed; inset: 0; z-index: 5000; display: flex; align-items: center; justify-content: center; background: rgba(43,49,64,0.45); -webkit-backdrop-filter: blur(3px); backdrop-filter: blur(3px); padding: 20px; animation: settingsFade 0.18s ease-out; }
+    .settings-overlay[hidden] { display: none; }
+    @keyframes settingsFade { from { opacity: 0; } to { opacity: 1; } }
+    .settings-panel { background: var(--bg-card, #ffffff); border-radius: 24px; width: min(440px, 100%); max-height: 85vh; overflow-y: auto; box-shadow: 0 16px 48px rgba(43,49,64,0.25); border: 2px solid var(--mint, #2FB8A6); animation: settingsPop 0.22s cubic-bezier(0.34, 1.56, 0.64, 1); }
+    @keyframes settingsPop { 0% { transform: scale(0.92); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+    .settings-header { display: flex; align-items: center; justify-content: space-between; padding: 18px 20px 12px; }
+    .settings-title { font-family: var(--font-heading, 'Fredoka', sans-serif); color: var(--navy, #2B3140); font-size: 1.3rem; margin: 0; }
+    .settings-close { width: 36px; height: 36px; border-radius: 50%; flex-shrink: 0; background: rgba(47,184,166,0.15); border: none; color: var(--navy, #2B3140); font-size: 1.4rem; line-height: 1; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; transition: background 0.15s ease; }
+    .settings-close:hover { background: rgba(47,184,166,0.3); }
+    .settings-close:focus-visible { outline: 3px solid var(--lila, #7D6AE6); outline-offset: 2px; }
+    .settings-body { display: flex; flex-direction: column; gap: 10px; padding: 0 16px 18px; }
+    .settings-body .toolbar-group-buttons { display: grid; grid-template-columns: repeat(auto-fit, minmax(80px, 1fr)); gap: 8px; }
+    .settings-body .tool-btn { flex-direction: column; gap: 6px; width: 100%; min-width: 0; min-height: 64px; padding: 10px 6px; }
+    .settings-body .tool-btn .btn-label { font-size: 0.8rem; }
+    .settings-body .tool-btn .btn-icon svg, .settings-body .font-size-control .tool-btn svg { width: 22px; height: 22px; }
+    .settings-body .tool-btn svg, .settings-body .btn-icon { pointer-events: none; }
+    .settings-body .font-size-control { grid-column: 1 / -1; display: flex; width: 100%; }
+    .settings-body .font-size-control .tool-btn { flex: 1; flex-direction: row; min-height: 46px; }
+    @media (max-width: 767px) { .settings-panel { width: 100%; max-height: 88vh; } }
+
+    /* Basis-Klassen (auf Katalogseiten sonst nicht vorhanden) */
+    .toolbar-group { border-radius: 20px; padding: 14px 16px 12px; }
+    .toolbar-group.group-view { background: #E7F6F3; }
+    .toolbar-group.group-extra { background: #FFF4D6; }
+    .toolbar-group-label { font-family: var(--font-heading, 'Fredoka', sans-serif); font-size: 0.78rem; font-weight: 600; color: #6b635a; margin-bottom: 10px; padding-left: 2px; }
+    .toolbar-group-buttons { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+    .tool-btn { background: rgba(255,255,255,0.9); border: 1.5px solid rgba(0,0,0,0.05); border-radius: 14px; padding: 10px 16px; min-height: 46px; min-width: 100px; font-family: var(--font-heading, 'Fredoka', sans-serif); font-weight: 500; color: #3B4252; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 7px; transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1); font-size: 0.85em; line-height: 1; box-shadow: 0 1px 3px rgba(0,0,0,0.03); -webkit-tap-highlight-color: transparent; }
+    .tool-btn:hover { background: #fff; border-color: rgba(0,0,0,0.09); color: #333; transform: translateY(-1px); box-shadow: 0 3px 10px rgba(0,0,0,0.06); }
+    .tool-btn:focus-visible { outline: 3px solid var(--lila, #7D6AE6); outline-offset: 2px; }
+    .tool-btn:active { transform: scale(0.95); box-shadow: none; transition-duration: 0.06s; }
+    .group-view .tool-btn.active { background: var(--mint, #2FB8A6); color: var(--navy, #2B3140); border-color: #28a392; box-shadow: inset 0 2px 4px rgba(0,0,0,0.12), 0 1px 4px rgba(47,184,166,0.3); }
+    .group-extra .tool-btn.active { background: var(--primary-yellow, #FFD95A); color: var(--navy, #2B3140); border-color: #ecc63e; box-shadow: inset 0 2px 4px rgba(0,0,0,0.12), 0 1px 4px rgba(255,217,90,0.4); }
+    .tool-btn.active:hover { filter: brightness(1.05); }
+    .tool-btn .btn-icon { font-size: 1.1em; line-height: 1; flex-shrink: 0; }
+    .font-size-control { display: inline-flex; border-radius: 14px; overflow: hidden; border: 1.5px solid rgba(0,0,0,0.05); background: rgba(255,255,255,0.9); box-shadow: 0 1px 3px rgba(0,0,0,0.03); min-height: 46px; }
+    .font-size-control .tool-btn { border: none; border-radius: 0; box-shadow: none; min-width: 48px; min-height: 46px; justify-content: center; font-family: var(--font-heading, 'Fredoka', sans-serif); font-size: 0.95em; font-weight: 700; background: transparent; color: #5a5550; padding: 10px 12px; }
+    .font-size-control .tool-btn:first-child { border-right: 1px solid rgba(0,0,0,0.06); }
+    .font-size-control .tool-btn:hover { background: rgba(0,0,0,0.03); }
+
+    /* Lesefreundliche Schrift + Hoher Kontrast (gleiche Body-Klassen wie Leseseiten) */
+    body.dyslexia-mode { --font-body: 'Atkinson Hyperlegible', system-ui, sans-serif; letter-spacing: 0.03em; word-spacing: 0.12em; }
+    body.dyslexia-mode p, body.dyslexia-mode .tile-title, body.dyslexia-mode .bio-desc { line-height: 1.75; }
+    body.high-contrast { --cream: #ffffff; --cream-light: #ffffff; --navy: #000000; --text-muted: #1a1d24; --border: #2B3140; }
+    body.high-contrast .story-tile, body.high-contrast .filter-dd-trigger, body.high-contrast .search-wrapper input { border-color: #2B3140; }
+/* === LK-A11Y:CSS END === */
     </style>
 </head>
 <body data-page="demo">
@@ -391,13 +423,7 @@
       <a href="landingpage.html" class="brand-name">Lesekumpel</a>
     </div>
     <div class="nav-right">
-      <div class="a11y-wrap">
-        <button type="button" class="nav-icon-btn" id="nav-a11y" aria-label="Barrierefreiheit" aria-haspopup="true" aria-expanded="false"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="1"/><path d="m9 20 3-6 3 6"/><path d="m6 8 6 2 6-2"/><path d="M12 10v4"/></svg></button>
-        <div class="a11y-popover" id="a11y-popover" hidden role="menu" aria-label="Barrierefreiheit">
-          <button type="button" class="a11y-opt" data-a11y="dyslexia" role="menuitemcheckbox" aria-checked="false"><span aria-hidden="true">&#128068;</span> Leichter lesen</button>
-          <button type="button" class="a11y-opt" data-a11y="contrast" role="menuitemcheckbox" aria-checked="false"><span aria-hidden="true">&#9680;</span> Mehr Kontrast</button>
-        </div>
-      </div>
+      <button type="button" class="nav-icon-btn" id="nav-settings" onclick="openSettings()" aria-label="Barrierefreiheit"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="1"/><path d="m9 20 3-6 3 6"/><path d="m6 8 6 2 6-2"/><path d="M12 10v4"/></svg></button>
       <a href="anmelden.html" class="nav-icon-btn" aria-label="Mein Konto"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></a>
     </div>
   </nav>
@@ -511,48 +537,6 @@
         });
       }, { threshold: 0.12 });
       els.forEach(function (el) { io.observe(el); });
-    })();
-
-    /* ============================================================
-       A11y-Tool: Leichter lesen + Mehr Kontrast (localStorage)
-       Gleiche Body-Klassen/Keys wie die Leseseiten -> konsistent.
-       ============================================================ */
-    (function initA11y() {
-      var KEY = { dyslexia: 'lesekumpel-lesefreundlich', contrast: 'lesekumpel-kontrast' };
-      var btn = document.getElementById('nav-a11y');
-      var pop = document.getElementById('a11y-popover');
-      function get(k) { try { return localStorage.getItem(KEY[k]) === 'true'; } catch (e) { return false; } }
-      function set(k, v) { try { localStorage.setItem(KEY[k], v ? 'true' : 'false'); } catch (e) {} }
-      function apply() {
-        document.body.classList.toggle('dyslexia-mode', get('dyslexia'));
-        document.body.classList.toggle('high-contrast', get('contrast'));
-        if (pop) pop.querySelectorAll('[data-a11y]').forEach(function (o) {
-          var on = get(o.getAttribute('data-a11y'));
-          o.classList.toggle('on', on);
-          o.setAttribute('aria-checked', on ? 'true' : 'false');
-        });
-      }
-      apply();
-      if (!btn || !pop) return;
-      btn.addEventListener('click', function (e) {
-        e.stopPropagation();
-        var open = !pop.hidden;
-        pop.hidden = open;
-        btn.setAttribute('aria-expanded', open ? 'false' : 'true');
-      });
-      pop.addEventListener('click', function (e) {
-        var o = e.target.closest('[data-a11y]');
-        if (!o) return;
-        var k = o.getAttribute('data-a11y');
-        set(k, !get(k));
-        apply();
-      });
-      document.addEventListener('click', function (e) {
-        if (!e.target.closest('.a11y-wrap')) { pop.hidden = true; btn.setAttribute('aria-expanded', 'false'); }
-      });
-      document.addEventListener('keydown', function (e) {
-        if (e.key === 'Escape') { pop.hidden = true; btn.setAttribute('aria-expanded', 'false'); }
-      });
     })();
 
     /* ============================================================
@@ -996,6 +980,95 @@
     /* ---- Start ---- */
     buildFilterBar();
   </script>
+
+  <!-- === LK-A11Y:MODAL START === -->
+  <div class="settings-overlay" id="settings-overlay" hidden onclick="if(event.target===this)closeSettings()">
+    <div class="settings-panel" id="settings-panel" role="dialog" aria-modal="true" aria-labelledby="settings-title">
+      <div class="settings-header">
+        <h2 class="settings-title" id="settings-title">Barrierefreiheit</h2>
+        <button type="button" class="settings-close" onclick="closeSettings()" aria-label="Einstellungen schlie&szlig;en">&times;</button>
+      </div>
+      <div class="settings-body">
+        <div class="toolbar-group group-view">
+          <div class="toolbar-group-label">Schriftgr&ouml;&szlig;e</div>
+          <div class="toolbar-group-buttons">
+            <div class="font-size-control">
+              <button class="tool-btn" onclick="changeFontSize(-2)" aria-label="Schrift kleiner">A&minus;</button>
+              <button class="tool-btn" onclick="changeFontSize(2)" aria-label="Schrift gr&ouml;&szlig;er">A+</button>
+            </div>
+          </div>
+        </div>
+        <div class="toolbar-group group-extra">
+          <div class="toolbar-group-label">Darstellung</div>
+          <div class="toolbar-group-buttons">
+            <button type="button" class="tool-btn" onclick="toggleDyslexia(this)" id="btn-dyslexia" aria-label="Lesefreundliche Schrift"><span class="btn-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v16"/><path d="M4 7V5a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v2"/><path d="M9 20h6"/></svg></span> <span class="btn-label">Lesefreundlich</span></button>
+            <button type="button" class="tool-btn" onclick="toggleContrast(this)" id="btn-contrast" aria-label="Hoher Kontrast"><span class="btn-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 18a6 6 0 0 0 0-12v12z"/></svg></span> <span class="btn-label">Kontrast</span></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+<!-- === LK-A11Y:MODAL END === -->
+
+  <script>
+// === LK-A11Y:JS START ===
+(function () {
+  'use strict';
+  var K_DYS = 'lesekumpel-lesefreundlich';
+  var K_CON = 'lesekumpel-kontrast';
+  var K_FS = 'lesekumpel-schriftgroesse';
+  function ls(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
+  function lsSet(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
+
+  window.openSettings = function () {
+    var ov = document.getElementById('settings-overlay');
+    if (ov) ov.hidden = false;
+    var m = document.getElementById('mobile-menu');
+    if (m) m.classList.remove('open');
+  };
+  window.closeSettings = function () {
+    var ov = document.getElementById('settings-overlay');
+    if (ov) ov.hidden = true;
+  };
+  window.changeFontSize = function (d) {
+    var s = parseFloat(window.getComputedStyle(document.body).fontSize) || 16;
+    var n = Math.max(12, Math.min(40, s + d));
+    document.body.style.fontSize = n + 'px';
+    lsSet(K_FS, String(n));
+  };
+  window.toggleDyslexia = function (btn) {
+    var active = document.body.classList.toggle('dyslexia-mode');
+    var b = btn || document.getElementById('btn-dyslexia');
+    if (b) b.classList.toggle('active', active);
+    lsSet(K_DYS, active ? 'true' : 'false');
+  };
+  window.toggleContrast = function (btn) {
+    var active = document.body.classList.toggle('high-contrast');
+    var b = btn || document.getElementById('btn-contrast');
+    if (b) b.classList.toggle('active', active);
+    lsSet(K_CON, active ? 'true' : 'false');
+  };
+
+  // Init: gespeicherte Einstellungen anwenden (idempotent, kein Toggle)
+  if (ls(K_DYS) === 'true') {
+    document.body.classList.add('dyslexia-mode');
+    var bd = document.getElementById('btn-dyslexia'); if (bd) bd.classList.add('active');
+  }
+  if (ls(K_CON) === 'true') {
+    document.body.classList.add('high-contrast');
+    var bc = document.getElementById('btn-contrast'); if (bc) bc.classList.add('active');
+  }
+  var fs = parseFloat(ls(K_FS));
+  if (fs >= 12 && fs <= 40) document.body.style.fontSize = fs + 'px';
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key !== 'Escape') return;
+    var ov = document.getElementById('settings-overlay');
+    if (ov && !ov.hidden) window.closeSettings();
+  });
+})();
+// === LK-A11Y:JS END ===
+</script>
 
 </body>
 </html>
