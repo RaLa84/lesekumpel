@@ -10,6 +10,17 @@ const data = {
 // Image-Modell aus Probe-Auswertung (Scout-Pattern): gpt-image-2 oder gemini-2.5-flash-image
 data.imageModel = ($('Probe auswerten').first()?.json?.imageModel) || 'unknown';
 
+// Bild-zu-Absatz-Mapping aus Szenen parsen (paragraphIndex je scene)
+let imagePositions = [];
+try {
+  const sceneItems = $('Szenen parsen').all();
+  imagePositions = sceneItems.map(it => ({
+    scene: it.json.sceneIndex,
+    paragraphIndex: typeof it.json.paragraphIndex === 'number' ? it.json.paragraphIndex : null
+  })).filter(p => typeof p.scene === 'number');
+} catch (e) { imagePositions = []; }
+data.imagePositions = imagePositions;
+
 let template = $input.item.json.data;
 
 // Generate image tags

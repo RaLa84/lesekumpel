@@ -135,7 +135,7 @@ const effWoerter = `${effMin}–${effMax}`;
 
 // Bildanzahl: 0 wenn "Nur Text" gewählt, sonst nach Wortanzahl
 const mitBildern = input['mitBildern'] !== false && input['mitBildern'] !== 'false';
-const imageCount = mitBildern ? (basisMax <= 50 ? 1 : basisMax <= 150 ? 3 : 4) : 0;
+const imageCount = mitBildern ? (basisMax <= 50 ? 1 : basisMax <= 150 ? 3 : basisMax <= 300 ? 4 : 5) : 0;
 
 // Kein Emoji-Hinweis im Prompt — Emojis werden nachträglich per Emoji-Tagger hinzugefügt
 const emojiHinweis = '';
