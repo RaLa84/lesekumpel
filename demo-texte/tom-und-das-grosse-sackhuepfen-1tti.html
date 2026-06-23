@@ -1079,7 +1079,7 @@
            laufen ungestoert weiter. Liegt unter Header (z1000) und Aktionsleiste (z4400). */
         #reading-ruler {
             position: fixed; left: 0; right: 0; top: 50%;
-            height: clamp(76px, 19vh, 150px);
+            height: clamp(38px, 9.5vh, 75px);
             transform: translateY(-50%);
             pointer-events: none;
             box-shadow: 0 0 0 100vmax rgba(20, 30, 48, 0.55);
@@ -3546,8 +3546,8 @@
             if (storyDone) return;
             storyDone = true;
             try {
-                if (sessionStorage.getItem('lesekumpel-fertig-tom-und-das-grosse-sackhuepfen-1tti')) return;
-                sessionStorage.setItem('lesekumpel-fertig-tom-und-das-grosse-sackhuepfen-1tti', '1');
+                if (sessionStorage.getItem('lesekumpel-fertig-mein-erster-tag-auf-dem-flohmarkt-12e9')) return;
+                sessionStorage.setItem('lesekumpel-fertig-mein-erster-tag-auf-dem-flohmarkt-12e9', '1');
             } catch(e) {}
             showConfetti();
             const card = document.getElementById('done-card');
@@ -3746,7 +3746,7 @@
 
         function finishReadAloud() {
             stopReadAloud(true);
-            try { sessionStorage.setItem('lesekumpel-selbst-gelesen-tom-und-das-grosse-sackhuepfen-1tti', '1'); } catch(e) {}
+            try { sessionStorage.setItem('lesekumpel-selbst-gelesen-mein-erster-tag-auf-dem-flohmarkt-12e9', '1'); } catch(e) {}
             showConfetti();
             const card = document.getElementById('done-card');
             const badge = document.getElementById('done-self-badge');
@@ -3854,6 +3854,16 @@
             else { removeParagraphNumbers(); }
             try { localStorage.setItem('lesekumpel-fahrplan-default', active ? 'true' : 'false'); } catch(e) {}
         }
+        // Fokus-Zeile folgt dem Mauszeiger (vertikal), damit man sie frei platzieren kann.
+        let fokusMoveHandler = null;
+        function positionFokusRuler(clientY) {
+            const el = document.getElementById('reading-ruler');
+            if (!el || el.hasAttribute('hidden')) return;
+            const h = el.offsetHeight;
+            const top = Math.max(0, Math.min(clientY - h / 2, window.innerHeight - h));
+            el.style.top = top + 'px';
+            el.style.transform = 'none';
+        }
         function toggleFokus() {
             const el = document.getElementById('reading-ruler');
             const btn = document.getElementById('btn-fokus');
@@ -3862,6 +3872,20 @@
             if (on) el.removeAttribute('hidden'); else el.setAttribute('hidden', '');
             if (btn) { btn.classList.toggle('active', on); btn.setAttribute('aria-pressed', on ? 'true' : 'false'); }
             try { localStorage.setItem('lesekumpel-fokus', on ? 'true' : 'false'); } catch(e) {}
+            if (on) {
+                if (!fokusMoveHandler) {
+                    let raf = null;
+                    fokusMoveHandler = (e) => {
+                        const y = e.clientY;
+                        if (raf) return;
+                        raf = requestAnimationFrame(() => { raf = null; positionFokusRuler(y); });
+                    };
+                }
+                document.addEventListener('mousemove', fokusMoveHandler);
+            } else if (fokusMoveHandler) {
+                document.removeEventListener('mousemove', fokusMoveHandler);
+                el.style.top = ''; el.style.transform = '';   // zurück zur CSS-Mitte
+            }
         }
         let swipeInitialized = false;
         function setupSwipeIfNeeded() {
@@ -4179,7 +4203,7 @@
             // Alle Auslöser (Hero-Herz + Bild-Lesezeichen im Tafel-Modus) teilen sich denselben
             // Zustand. Event-Delegation, damit auch später eingefügte .js-like-btn mitwirken.
             const toast = document.getElementById('hero-like-toast');
-            const likeKey = 'lesekumpel-liked-tom-und-das-grosse-sackhuepfen-1tti';
+            const likeKey = 'lesekumpel-liked-mein-erster-tag-auf-dem-flohmarkt-12e9';
             let liked = false;
             try { liked = localStorage.getItem(likeKey) === 'true'; } catch(e) {}
 

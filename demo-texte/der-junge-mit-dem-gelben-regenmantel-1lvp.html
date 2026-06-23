@@ -484,9 +484,6 @@
         .hero-like-heart svg, .like-heart svg { width: 26px; height: 26px; fill: none; stroke: #2B3140; stroke-width: 2; }
         .tafel-bookmark .like-heart svg { width: 30px; height: 30px; }
         .is-liked .hero-like-heart svg, .is-liked .like-heart svg { fill: #F97352; stroke: #F97352; }
-        .hero-like-heart svg, .like-heart svg { width: 26px; height: 26px; fill: none; stroke: #2B3140; stroke-width: 2; }
-        .tafel-bookmark .like-heart svg { width: 30px; height: 30px; }
-        .is-liked .hero-like-heart svg, .is-liked .like-heart svg { fill: #F97352; stroke: #F97352; }
         .hero-like-btn:hover { transform: scale(1.08); background: rgba(255,255,255,0.95); }
         .hero-like-btn:hover .hero-like-heart { animation: heroLikeHover 0.9s ease-in-out infinite; }
         .hero-like-btn:active { transform: scale(0.95); }
@@ -1082,7 +1079,7 @@
            laufen ungestoert weiter. Liegt unter Header (z1000) und Aktionsleiste (z4400). */
         #reading-ruler {
             position: fixed; left: 0; right: 0; top: 50%;
-            height: clamp(76px, 19vh, 150px);
+            height: clamp(38px, 9.5vh, 75px);
             transform: translateY(-50%);
             pointer-events: none;
             box-shadow: 0 0 0 100vmax rgba(20, 30, 48, 0.55);
@@ -3859,6 +3856,16 @@
             else { removeParagraphNumbers(); }
             try { localStorage.setItem('lesekumpel-fahrplan-default', active ? 'true' : 'false'); } catch(e) {}
         }
+        // Fokus-Zeile folgt dem Mauszeiger (vertikal), damit man sie frei platzieren kann.
+        let fokusMoveHandler = null;
+        function positionFokusRuler(clientY) {
+            const el = document.getElementById('reading-ruler');
+            if (!el || el.hasAttribute('hidden')) return;
+            const h = el.offsetHeight;
+            const top = Math.max(0, Math.min(clientY - h / 2, window.innerHeight - h));
+            el.style.top = top + 'px';
+            el.style.transform = 'none';
+        }
         function toggleFokus() {
             const el = document.getElementById('reading-ruler');
             const btn = document.getElementById('btn-fokus');
@@ -3867,6 +3874,20 @@
             if (on) el.removeAttribute('hidden'); else el.setAttribute('hidden', '');
             if (btn) { btn.classList.toggle('active', on); btn.setAttribute('aria-pressed', on ? 'true' : 'false'); }
             try { localStorage.setItem('lesekumpel-fokus', on ? 'true' : 'false'); } catch(e) {}
+            if (on) {
+                if (!fokusMoveHandler) {
+                    let raf = null;
+                    fokusMoveHandler = (e) => {
+                        const y = e.clientY;
+                        if (raf) return;
+                        raf = requestAnimationFrame(() => { raf = null; positionFokusRuler(y); });
+                    };
+                }
+                document.addEventListener('mousemove', fokusMoveHandler);
+            } else if (fokusMoveHandler) {
+                document.removeEventListener('mousemove', fokusMoveHandler);
+                el.style.top = ''; el.style.transform = '';   // zurück zur CSS-Mitte
+            }
         }
         let swipeInitialized = false;
         function setupSwipeIfNeeded() {
