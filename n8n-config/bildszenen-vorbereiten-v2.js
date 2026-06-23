@@ -62,7 +62,7 @@ const STORY_ARC_TEMPLATES = {
 
 // Pool-Filter aus Story-Setting (location, timeOfDay, weather).
 // Konservativ: lieber etwas mehr erlauben als zu eng zu filtern.
-function buildAllowedLighting(setting) {
+function buildAllowedLighting(setting, minCount) {
   const loc = String(setting?.location || '').toLowerCase();
   const tod = String(setting?.timeOfDay || '').toLowerCase();
   const weather = String(setting?.weather || '').toLowerCase();
@@ -100,19 +100,21 @@ function buildAllowedLighting(setting) {
     if (lighting.length === 0) lighting = ['misty'];
   }
 
-  // Mindest-Pool-Größe: bei 4-Bild-Stories brauchen wir mindestens 4 unique Werte.
-  if (lighting.length < 4) {
-    const fallback = ['morning', 'afternoon', 'golden-hour', 'misty'];
+  // Mindest-Pool-Größe: pro Bild ein unique lighting-Wert. Bei N-Bild-Stories
+  // brauchen wir mindestens N unique Werte (mind. 4).
+  const target = Math.max(4, minCount || 4);
+  if (lighting.length < target) {
+    const fallback = ['morning', 'afternoon', 'golden-hour', 'misty', 'dawn', 'dusk', 'night', 'bright-indoor', 'midday'];
     for (const f of fallback) {
       if (!lighting.includes(f)) lighting.push(f);
-      if (lighting.length >= 4) break;
+      if (lighting.length >= target) break;
     }
   }
   return lighting;
 }
 
 const storyElements = prev.storyElements || {};
-const allowedLighting = buildAllowedLighting(storyElements.setting || {});
+const allowedLighting = buildAllowedLighting(storyElements.setting || {}, imageCount);
 const arcTemplate = STORY_ARC_TEMPLATES[imageCount] || null;
 
 // ════════════════════════════════════════════════════════════════════════════════

@@ -10,23 +10,36 @@ const data = {
 // Image-Modell aus Probe-Auswertung (Scout-Pattern): gpt-image-2 oder gemini-2.5-flash-image
 data.imageModel = ($('Probe auswerten').first()?.json?.imageModel) || 'unknown';
 
-// Bild-zu-Absatz-Mapping aus Szenen parsen (paragraphIndex je scene)
+// DEFENSIV: nur Szenen referenzieren, deren Bild TATSAECHLICH hochgeladen wurde.
+// Sonst entstehen leere Platzhalter, wenn einzelne Bildgenerierungen scheitern
+// (z.B. leere gpt-image-2-Antwort). Quelle: Output des Upload-Nodes (content.path).
+let uploadedScenes = new Set();
+try {
+  for (const it of $('GitHub: Bild hochladen').all()) {
+    const m = String(it.json?.content?.path || '').match(/-(\d+)\.png$/);
+    if (m) uploadedScenes.add(parseInt(m[1], 10));
+  }
+} catch (e) { uploadedScenes = new Set(); }
+const presentScenes = [...uploadedScenes].sort((a, b) => a - b);
+
+// Bild-zu-Absatz-Mapping aus Szenen parsen (paragraphIndex je scene) — auf real
+// hochgeladene Szenen gefiltert.
 let imagePositions = [];
 try {
   const sceneItems = $('Szenen parsen').all();
   imagePositions = sceneItems.map(it => ({
     scene: it.json.sceneIndex,
     paragraphIndex: typeof it.json.paragraphIndex === 'number' ? it.json.paragraphIndex : null
-  })).filter(p => typeof p.scene === 'number');
+  })).filter(p => typeof p.scene === 'number' && uploadedScenes.has(p.scene));
 } catch (e) { imagePositions = []; }
 data.imagePositions = imagePositions;
 
 let template = $input.item.json.data;
 
-// Generate image tags
-const imageCount = data.imageCount || 0;
+// Generate image tags — nur fuer real hochgeladene Szenen (echte Szenen-Nummern,
+// Luecken wie -1,-2,-4 bleiben korrekt erhalten).
 let imagesHtml = '';
-for (let i = 1; i <= imageCount; i++) {
+for (const i of presentScenes) {
   const imgUrl = `https://rala84.github.io/lesekumpel/bilder/${data.slug}-${i}.png`;
   imagesHtml += `<img src="${imgUrl}" alt="${data.title}" class="hero-image" onerror="this.style.display='none'">\n        `;
 }
@@ -71,7 +84,7 @@ template = template
   .replace(/\{\{NEUROTYP\}\}/g, htmlEscape(data.neurotyp))
   .replace(/\{\{GENRE\}\}/g, htmlEscape(data.genre))
   .replace(/\{\{STORY_IMAGES_HTML\}\}/g, imagesHtml.trim())
-  .replace(/\{\{HERO_IMAGE_URL\}\}/g, `https://rala84.github.io/lesekumpel/bilder/${data.slug}-1.png`)
+  .replace(/\{\{HERO_IMAGE_URL\}\}/g, `https://rala84.github.io/lesekumpel/bilder/${data.slug}-${presentScenes[0] || 1}.png`)
   .replace(/\{\{RAW_STORY_TEXT\}\}/g, JSON.stringify(data.storyText || ''))
   .replace(/\{\{EMOJI_STORY_TEXT\}\}/g, JSON.stringify(data.emojiStoryText || ''))
   .replace(/\{\{RAW_SUMMARY_TEXT\}\}/g, JSON.stringify(data.summaryText || ''))
