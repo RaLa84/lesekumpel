@@ -9,39 +9,161 @@
     <link rel="icon" href="bilder/lesekumpel_logo_v2.png">
     <link rel="stylesheet" href="fonts/fonts.css">
     <link rel="stylesheet" href="konto.css">
+    <style>
+        /* Kompatibilitaet: moderner Footer ueberschreibt konto.css footer{} */
+        footer.modern-footer { border-top: 0; }
+
+        /* === LK-HEADER:CSS START === */
+    .main-navbar { background: rgba(255,255,255,0.92); -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px); padding: 12px 24px; border-bottom: 3px solid var(--mint); display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; position: sticky; top: 0; z-index: 1000; }
+    .nav-left { display: flex; align-items: center; gap: 10px; justify-self: start; position: relative; }
+    .nav-center { justify-self: center; display: flex; align-items: center; gap: 10px; }
+    .nav-right { display: flex; align-items: center; gap: 10px; justify-self: end; }
+    .nav-logo-box { width: 48px; height: 48px; overflow: hidden; border-radius: 12px; flex-shrink: 0; text-decoration: none; }
+    .nav-logo { height: 100%; width: 100%; object-fit: contain; transform: scale(1.8); transform-origin: center; }
+    .brand-name { font-family: var(--font-heading); font-size: 1.2rem; color: var(--navy); font-weight: 700; text-decoration: none; }
+    .nav-btn { text-decoration: none; color: var(--navy); font-weight: 600; font-size: 1rem; display: flex; align-items: center; gap: 5px; }
+    .nav-btn:hover { color: var(--lila); }
+    .burger-icon { width: 44px; height: 44px; box-sizing: border-box; padding: 0; display: inline-flex; align-items: center; justify-content: center; font-size: 1.6rem; line-height: 1; cursor: pointer; color: var(--navy); background: #fff; border: 1px solid var(--border, var(--border-soft, #D9D4CC)); border-radius: 12px; transition: background 0.15s ease; }
+    .burger-icon:hover { background: var(--cream-light); }
+    .nav-icon-btn { width: 44px; height: 44px; box-sizing: border-box; flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center; background: #fff; border: 1px solid var(--border, var(--border-soft, #D9D4CC)); border-radius: 12px; color: var(--navy); cursor: pointer; text-decoration: none; transition: background 0.15s ease; }
+    .nav-icon-btn:hover { background: var(--cream-light); }
+    .nav-icon-btn svg { width: 22px; height: 22px; }
+    .nav-login-btn { margin-left: 6px; }
+    .nav-login-label { display: none; font-family: var(--font-heading); font-weight: 600; font-size: 0.95rem; }
+    .nav-avatar-btn { width: 44px; height: 44px; box-sizing: border-box; border-radius: 50%; flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center; background: var(--cream-light); border: 2px solid var(--primary-yellow, var(--yellow, #FFD95A)); font-size: 1.5rem; line-height: 1; text-decoration: none; box-shadow: 0 2px 8px rgba(43,49,64,0.08); transition: transform 0.15s ease, box-shadow 0.15s ease; }
+    .nav-avatar-btn:hover { transform: scale(1.06); box-shadow: 0 4px 12px rgba(43,49,64,0.14); }
+    .nav-avatar-btn:active { transform: scale(0.96); }
+    .nav-avatar-emoji { pointer-events: none; }
+    .mobile-menu { display: none; background: #fff; padding: 12px; position: absolute; top: calc(100% + 8px); left: 0; right: auto; width: min(320px, calc(100vw - 24px)); border: 1px solid var(--border, var(--border-soft, #D9D4CC)); border-radius: 20px; box-shadow: 0 16px 40px rgba(43,49,64,0.16); flex-direction: column; gap: 6px; z-index: 999; }
+    .mobile-menu.open { display: flex; animation: bubblePop 0.25s cubic-bezier(0.34,1.56,0.64,1); }
+    .mobile-menu .nav-btn { display: flex; align-items: center; gap: 12px; padding: 11px 12px; min-height: 44px; border-radius: 10px; background: transparent; color: var(--navy); font-weight: 600; font-size: 0.98rem; transition: background 0.15s ease; }
+    .mobile-menu .nav-btn:hover { background: var(--cream-light); color: var(--navy); }
+    .mobile-menu .nav-btn svg { width: 18px; height: 18px; color: #8a8f98; flex-shrink: 0; transition: color 0.15s ease; }
+    .mobile-menu .nav-btn:hover svg { color: var(--navy); }
+    .menu-divider { height: 1px; background: var(--border, var(--border-soft, #D9D4CC)); margin: 6px 6px; }
+    .mobile-menu .menu-cta { background: var(--mint); color: var(--navy); justify-content: center; font-family: var(--font-heading); font-weight: 700; margin-top: 4px; box-shadow: 0 3px 10px rgba(47,184,166,0.3); }
+    .mobile-menu .menu-cta:hover { background: var(--navy); color: #fff; }
+    @keyframes bubblePop { from { opacity: 0; transform: translateY(8px) scale(0.9); } to { opacity: 1; transform: none; } }
+    @media (max-width: 767px) { .brand-name { display: none; } }
+    @media (min-width: 768px) {
+      .nav-logo-box { width: 64px; height: 64px; }
+      .nav-logo { transform: scale(2); }
+      .brand-name { font-size: 1.6rem; display: block; }
+      .nav-left { gap: 15px; }
+      .nav-login-btn { width: auto; gap: 8px; padding: 0 16px; margin-left: 10px; }
+      .nav-login-label { display: inline; }
+    }
+/* === LK-HEADER:CSS END === */
+
+        /* === LK-FOOTER:CSS START === */
+    .modern-footer { background: var(--navy); color: var(--cream); padding: 56px 24px 28px; margin-top: 80px; position: relative; overflow: hidden; }
+    .modern-footer .footer-grid { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr; gap: 40px; }
+    @media (min-width: 768px) { .modern-footer .footer-grid { grid-template-columns: 1.6fr 1fr 1fr; gap: 56px; } }
+    .modern-footer h2 { font-family: var(--font-heading); font-size: 0.92rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--yellow, var(--primary-yellow, #FFD95A)); margin-bottom: 18px; }
+    .modern-footer .footer-brand-block { max-width: 360px; }
+    .modern-footer .footer-brand-row { display: flex; align-items: center; gap: 12px; font-family: var(--font-heading); font-weight: 700; font-size: 1.4rem; color: var(--cream); margin-bottom: 14px; }
+    .modern-footer .footer-brand-row img { height: 44px; width: auto; }
+    .modern-footer .footer-brand-row .brand-yellow { color: var(--yellow, var(--primary-yellow, #FFD95A)); }
+    .modern-footer .footer-tagline { color: rgba(255,246,239,0.78); font-size: 0.95rem; line-height: 1.6; margin-bottom: 18px; }
+    .modern-footer ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 10px; }
+    .modern-footer ul a { color: rgba(255,246,239,0.85); text-decoration: none; font-weight: 500; font-size: 0.95rem; transition: color 0.2s; }
+    .modern-footer ul a:hover { color: var(--yellow, var(--primary-yellow, #FFD95A)); }
+    .modern-footer .footer-social { display: flex; gap: 12px; margin-top: 20px; }
+    .modern-footer .footer-social a { width: 42px; height: 42px; border-radius: 50%; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,246,239,0.2); display: inline-flex; align-items: center; justify-content: center; color: var(--cream); text-decoration: none; transition: all 0.2s; }
+    .modern-footer .footer-social a:hover { background: var(--yellow, var(--primary-yellow, #FFD95A)); color: var(--navy); transform: translateY(-2px); }
+    .modern-footer .footer-bottom { max-width: 1200px; margin: 40px auto 0; padding-top: 24px; border-top: 1px solid rgba(255,246,239,0.15); display: flex; flex-direction: column; gap: 12px; justify-content: space-between; align-items: center; text-align: center; font-size: 0.85rem; color: rgba(255,246,239,0.65); }
+    @media (min-width: 768px) { .modern-footer .footer-bottom { flex-direction: row; text-align: left; } }
+    .modern-footer .footer-bottom a { color: rgba(255,246,239,0.65); text-decoration: none; margin: 0 6px; }
+    .modern-footer .footer-bottom a:hover { color: var(--yellow, var(--primary-yellow, #FFD95A)); }
+/* === LK-FOOTER:CSS END === */
+
+        /* === LK-A11Y:CSS START === */
+    .settings-overlay { position: fixed; inset: 0; z-index: 5000; display: flex; align-items: center; justify-content: center; background: rgba(43,49,64,0.45); -webkit-backdrop-filter: blur(3px); backdrop-filter: blur(3px); padding: 20px; animation: settingsFade 0.18s ease-out; }
+    .settings-overlay[hidden] { display: none; }
+    @keyframes settingsFade { from { opacity: 0; } to { opacity: 1; } }
+    .settings-panel { background: var(--bg-card, #ffffff); border-radius: 24px; width: min(440px, 100%); max-height: 85vh; overflow-y: auto; box-shadow: 0 16px 48px rgba(43,49,64,0.25); border: 2px solid var(--mint, #2FB8A6); animation: settingsPop 0.22s cubic-bezier(0.34, 1.56, 0.64, 1); }
+    @keyframes settingsPop { 0% { transform: scale(0.92); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+    .settings-header { display: flex; align-items: center; justify-content: space-between; padding: 18px 20px 12px; }
+    .settings-title { font-family: var(--font-heading, 'Fredoka', sans-serif); color: var(--navy, #2B3140); font-size: 1.3rem; margin: 0; }
+    .settings-close { width: 36px; height: 36px; border-radius: 50%; flex-shrink: 0; background: rgba(47,184,166,0.15); border: none; color: var(--navy, #2B3140); font-size: 1.4rem; line-height: 1; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; transition: background 0.15s ease; }
+    .settings-close:hover { background: rgba(47,184,166,0.3); }
+    .settings-close:focus-visible { outline: 3px solid var(--lila, #7D6AE6); outline-offset: 2px; }
+    .settings-body { display: flex; flex-direction: column; gap: 10px; padding: 0 16px 18px; }
+    .settings-body .toolbar-group-buttons { display: grid; grid-template-columns: repeat(auto-fit, minmax(80px, 1fr)); gap: 8px; }
+    .settings-body .tool-btn { flex-direction: column; gap: 6px; width: 100%; min-width: 0; min-height: 64px; padding: 10px 6px; }
+    .settings-body .tool-btn .btn-label { font-size: 0.8rem; }
+    .settings-body .tool-btn .btn-icon svg, .settings-body .font-size-control .tool-btn svg { width: 22px; height: 22px; }
+    .settings-body .tool-btn svg, .settings-body .btn-icon { pointer-events: none; }
+    .settings-body .font-size-control { grid-column: 1 / -1; display: flex; width: 100%; }
+    .settings-body .font-size-control .tool-btn { flex: 1; flex-direction: row; min-height: 46px; }
+    @media (max-width: 767px) { .settings-panel { width: 100%; max-height: 88vh; } }
+
+    /* Basis-Klassen (auf Katalogseiten sonst nicht vorhanden) */
+    .toolbar-group { border-radius: 20px; padding: 14px 16px 12px; }
+    .toolbar-group.group-view { background: #E7F6F3; }
+    .toolbar-group.group-extra { background: #FFF4D6; }
+    .toolbar-group-label { font-family: var(--font-heading, 'Fredoka', sans-serif); font-size: 0.78rem; font-weight: 600; color: #6b635a; margin-bottom: 10px; padding-left: 2px; }
+    .toolbar-group-buttons { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+    .tool-btn { background: rgba(255,255,255,0.9); border: 1.5px solid rgba(0,0,0,0.05); border-radius: 14px; padding: 10px 16px; min-height: 46px; min-width: 100px; font-family: var(--font-heading, 'Fredoka', sans-serif); font-weight: 500; color: #3B4252; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 7px; transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1); font-size: 0.85em; line-height: 1; box-shadow: 0 1px 3px rgba(0,0,0,0.03); -webkit-tap-highlight-color: transparent; }
+    .tool-btn:hover { background: #fff; border-color: rgba(0,0,0,0.09); color: #333; transform: translateY(-1px); box-shadow: 0 3px 10px rgba(0,0,0,0.06); }
+    .tool-btn:focus-visible { outline: 3px solid var(--lila, #7D6AE6); outline-offset: 2px; }
+    .tool-btn:active { transform: scale(0.95); box-shadow: none; transition-duration: 0.06s; }
+    .group-view .tool-btn.active { background: var(--mint, #2FB8A6); color: var(--navy, #2B3140); border-color: #28a392; box-shadow: inset 0 2px 4px rgba(0,0,0,0.12), 0 1px 4px rgba(47,184,166,0.3); }
+    .group-extra .tool-btn.active { background: var(--primary-yellow, #FFD95A); color: var(--navy, #2B3140); border-color: #ecc63e; box-shadow: inset 0 2px 4px rgba(0,0,0,0.12), 0 1px 4px rgba(255,217,90,0.4); }
+    .tool-btn.active:hover { filter: brightness(1.05); }
+    .tool-btn .btn-icon { font-size: 1.1em; line-height: 1; flex-shrink: 0; }
+    .font-size-control { display: inline-flex; border-radius: 14px; overflow: hidden; border: 1.5px solid rgba(0,0,0,0.05); background: rgba(255,255,255,0.9); box-shadow: 0 1px 3px rgba(0,0,0,0.03); min-height: 46px; }
+    .font-size-control .tool-btn { border: none; border-radius: 0; box-shadow: none; min-width: 48px; min-height: 46px; justify-content: center; font-family: var(--font-heading, 'Fredoka', sans-serif); font-size: 0.95em; font-weight: 700; background: transparent; color: #5a5550; padding: 10px 12px; }
+    .font-size-control .tool-btn:first-child { border-right: 1px solid rgba(0,0,0,0.06); }
+    .font-size-control .tool-btn:hover { background: rgba(0,0,0,0.03); }
+
+    /* Lesefreundliche Schrift + Hoher Kontrast (gleiche Body-Klassen wie Leseseiten) */
+    body.dyslexia-mode { --font-body: 'Atkinson Hyperlegible', system-ui, sans-serif; letter-spacing: 0.03em; word-spacing: 0.12em; }
+    body.dyslexia-mode p, body.dyslexia-mode .tile-title, body.dyslexia-mode .bio-desc { line-height: 1.75; }
+    body.high-contrast { --cream: #ffffff; --cream-light: #ffffff; --navy: #000000; --text-muted: #1a1d24; --border: #2B3140; background: #ffffff; }
+    body.high-contrast .story-tile, body.high-contrast .filter-dd-trigger, body.high-contrast .filter-dd-panel,
+    body.high-contrast .search-wrapper input, body.high-contrast .tool-btn, body.high-contrast .font-size-control,
+    body.high-contrast .toolbar-group { border-color: #2B3140 !important; }
+    /* Text/Links durchgaengig auf maximalen Kontrast */
+    body.high-contrast a, body.high-contrast .tile-title, body.high-contrast .nav-btn { color: #000000; }
+    /* Links als solche erkennbar machen (nicht nur ueber Farbe) */
+    body.high-contrast main a, body.high-contrast footer a, body.high-contrast .modern-footer a { text-decoration: underline; }
+    /* Dekorative Hintergruende ruhigstellen, damit Text klar bleibt */
+    body.high-contrast .deco-star, body.high-contrast .deco-circle, body.high-contrast .deco-sparkle,
+    body.high-contrast .deco-blob, body.high-contrast .bg-blob, body.high-contrast .floating-deco { display: none !important; }
+/* === LK-A11Y:CSS END === */
+    </style>
 </head>
 <body>
     <a class="skip-link" href="#main-content">Zum Inhalt springen</a>
 
     <!-- NAVBAR -->
-    <nav class="main-navbar" aria-label="Hauptnavigation">
-        <div class="nav-left">
-            <span class="nav-logo-box"><img src="bilder/lesekumpel_logo_v2.png" alt="Lesekumpel Logo" class="nav-logo"></span>
-            <a href="landingpage.html" class="brand-name">Lesekumpel</a>
-            <div class="nav-links-desktop">
-                <a href="index.html" class="nav-btn">Bibliothek</a>
-                <a href="demo.html" class="nav-btn">Demo-Texte</a>
-                <a href="ueber-uns.html" class="nav-btn">&Uuml;ber uns</a>
-                <a href="preise.html" class="nav-btn">Preise</a>
-            </div>
-        </div>
-        <div class="nav-right">
-            <a href="onboarding.html" class="btn-cta-nav">Neu hier?</a>
-            <button type="button" class="burger-icon" aria-label="Navigationsmen&uuml; &ouml;ffnen" aria-expanded="false" aria-controls="mobile-menu" onclick="toggleMenu()">&#9776;</button>
-        </div>
-        <div id="mobile-menu" class="mobile-menu">
-            <a href="index.html" class="nav-btn" onclick="toggleMenu()">Bibliothek</a>
-            <a href="demo.html" class="nav-btn" onclick="toggleMenu()">Demo-Texte</a>
-            <a href="ueber-uns.html" class="nav-btn" onclick="toggleMenu()">&Uuml;ber uns</a>
-            <a href="preise.html" class="nav-btn" onclick="toggleMenu()">Preise</a>
-            <a href="onboarding.html" class="nav-btn" onclick="toggleMenu()">Neu hier?</a>
-        </div>
-    </nav>
-
-    <div class="a11y-bar">
-        <button type="button" class="a11y-btn" data-a11y="dyslexia">&#128068; Leichter lesen</button>
-        <button type="button" class="a11y-btn" data-a11y="contrast">&#9680; Mehr Kontrast</button>
+    <!-- === LK-HEADER:NAV START === -->
+  <nav class="main-navbar" aria-label="Hauptnavigation">
+    <div class="nav-left">
+      <button type="button" class="burger-icon" aria-label="Men&uuml; &ouml;ffnen" aria-expanded="false" aria-controls="mobile-menu" onclick="toggleMenu()">&#9776;</button>
+      <div id="mobile-menu" class="mobile-menu">
+        <a href="landingpage.html#mission" class="nav-btn" onclick="toggleMenu()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 9.5a5.5 5.5 0 0 1 9.591-3.676.56.56 0 0 0 .818 0A5.49 5.49 0 0 1 22 9.5c0 2.29-1.5 4-3 5.5l-5.492 5.313a2 2 0 0 1-3 .019L5 15c-1.5-1.5-3-3.2-3-5.5"/></svg><span>F&uuml;r euch</span></a>
+        <a href="landingpage.html#how-it-works" class="nav-btn" onclick="toggleMenu()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg><span>So funktioniert&rsquo;s</span></a>
+        <a href="ueber-uns.html" class="nav-btn" onclick="toggleMenu()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><path d="M16 3.128a4 4 0 0 1 0 7.744"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><circle cx="9" cy="7" r="4"/></svg><span>&Uuml;ber uns</span></a>
+        <a href="demo.html" class="nav-btn" onclick="toggleMenu()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 7v14"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/></svg><span>Demo-Texte</span></a>
+        <a href="preise.html" class="nav-btn" onclick="toggleMenu()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z"/><circle cx="7.5" cy="7.5" r=".5" fill="currentColor"/></svg><span>Preise</span></a>
+        <a href="neue-geschichte.html" class="nav-btn" onclick="toggleMenu()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"/><path d="M20 2v4"/><path d="M22 4h-4"/><circle cx="4" cy="20" r="2"/></svg><span>Geschichte erstellen</span></a>
+        <div class="menu-divider"></div>
+        <a href="anmelden.html" class="nav-btn" onclick="toggleMenu()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>Mein Konto</span></a>
+        <a href="anmelden.html" class="nav-btn menu-cta" onclick="toggleMenu()">Jetzt registrieren &rarr;</a>
+      </div>
     </div>
+    <div class="nav-center">
+      <a href="landingpage.html" class="nav-logo-box" aria-label="Lesekumpel Startseite"><img src="Konzept_Rebranding/logo-lesekumpel-512.webp" alt="Lesekumpel" class="nav-logo"></a>
+      <a href="landingpage.html" class="brand-name">Lesekumpel</a>
+    </div>
+    <div class="nav-right">
+      <button type="button" class="nav-icon-btn" id="nav-settings" onclick="openSettings()" aria-label="Barrierefreiheit"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="1"/><path d="m9 20 3-6 3 6"/><path d="m6 8 6 2 6-2"/><path d="M12 10v4"/></svg></button>
+      <a href="anmelden.html" class="nav-icon-btn nav-login-btn" aria-label="Anmelden"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span class="nav-login-label">Anmelden</span></a>
+    </div>
+  </nav>
+  <!-- === LK-HEADER:NAV END === -->
 
     <main id="main-content">
         <div class="auth-wrap" style="position:relative;">
@@ -83,17 +205,50 @@
         </div>
     </main>
 
-    <footer>
-        <div class="footer-social">
-            <a href="https://www.instagram.com/lesekumpel.de/" target="_blank" rel="noopener" aria-label="Lesekumpel auf Instagram">
-                <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none"/></svg>
-            </a>
-            <a href="https://discord.gg/sAr6KEsg" target="_blank" rel="noopener" aria-label="Lesekumpel Discord Community">
-                <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.095 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.095 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg>
-            </a>
+    <!-- === LK-FOOTER:FOOTER START === -->
+  <footer class="modern-footer">
+    <div class="footer-grid">
+      <div class="footer-brand-block">
+        <div class="footer-brand-row">
+          <img src="Konzept_Rebranding/logo-lesekumpel-512.webp" alt="Lesekumpel Logo">
+          <span>Lese<span class="brand-yellow">kumpel</span></span>
         </div>
-        <div class="footer-links"><a href="impressum.html">Impressum</a> &bull; <a href="datenschutz.html">Datenschutz</a> &bull; <a href="ueber-uns.html">&Uuml;ber uns</a></div>
-    </footer>
+        <p class="footer-tagline">Die inklusive Lese-App, die jedes Kind lieben lernt. Neurodivers gestaltet.</p>
+        <div class="footer-social">
+          <a href="https://www.instagram.com/lesekumpel.de/" target="_blank" rel="noopener" aria-label="Lesekumpel auf Instagram">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none"/></svg>
+          </a>
+          <a href="https://discord.gg/sAr6KEsg" target="_blank" rel="noopener" aria-label="Lesekumpel Discord Community">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.095 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.095 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <div>
+        <h2>Entdecken</h2>
+        <ul>
+          <li><a href="demo.html">Demo-Texte</a></li>
+          <li><a href="preise.html">Preise</a></li>
+          <li><a href="neue-geschichte.html">Geschichte erstellen</a></li>
+          <li><a href="ueber-uns.html">&Uuml;ber uns</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h2>Rechtliches</h2>
+        <ul>
+          <li><a href="impressum.html">Impressum</a></li>
+          <li><a href="datenschutz.html">Datenschutz</a></li>
+          <li><a href="knowledge-base/snacks/index.html">Wissen</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <span>&copy; 2026 Lesekumpel &middot; Inklusive Lese-App f&uuml;r jedes Gehirn</span>
+    </div>
+  </footer>
+  <!-- === LK-FOOTER:FOOTER END === -->
 
     <script src="konto-state.js"></script>
     <script src="konto-fx.js"></script>
@@ -107,16 +262,6 @@
             btn.setAttribute('aria-expanded', open);
             btn.setAttribute('aria-label', open ? 'Menü schließen' : 'Menü öffnen');
         };
-
-        // A11y-Schalter
-        Konto.applyA11y();
-        document.querySelectorAll('[data-a11y]').forEach(function (btn) {
-            var key = btn.getAttribute('data-a11y');
-            if (Konto.getA11y()[key]) btn.classList.add('on');
-            btn.addEventListener('click', function () {
-                btn.classList.toggle('on', Konto.toggleA11y(key));
-            });
-        });
 
         // Mock-Login: sorgt für ein Eltern-Profil & geht zur Profilauswahl
         document.getElementById('btn-login').addEventListener('click', function () {
@@ -134,5 +279,121 @@
             window.location.href = 'onboarding.html';
         });
     </script>
+
+  <!-- === LK-A11Y:MODAL START === -->
+  <div class="settings-overlay" id="settings-overlay" hidden onclick="if(event.target===this)closeSettings()">
+    <div class="settings-panel" id="settings-panel" role="dialog" aria-modal="true" aria-labelledby="settings-title">
+      <div class="settings-header">
+        <h2 class="settings-title" id="settings-title">Barrierefreiheit</h2>
+        <button type="button" class="settings-close" onclick="closeSettings()" aria-label="Einstellungen schlie&szlig;en">&times;</button>
+      </div>
+      <div class="settings-body">
+        <div class="toolbar-group group-view">
+          <div class="toolbar-group-label">Schriftgr&ouml;&szlig;e</div>
+          <div class="toolbar-group-buttons">
+            <div class="font-size-control">
+              <button class="tool-btn" onclick="changeFontSize(-2)" aria-label="Schrift kleiner">A&minus;</button>
+              <button class="tool-btn" onclick="changeFontSize(2)" aria-label="Schrift gr&ouml;&szlig;er">A+</button>
+            </div>
+          </div>
+        </div>
+        <div class="toolbar-group group-extra">
+          <div class="toolbar-group-label">Darstellung</div>
+          <div class="toolbar-group-buttons">
+            <button type="button" class="tool-btn" onclick="toggleDyslexia(this)" id="btn-dyslexia" aria-pressed="false" aria-label="Lesefreundliche Schrift"><span class="btn-icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v16"/><path d="M4 7V5a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v2"/><path d="M9 20h6"/></svg></span> <span class="btn-label">Lesefreundlich</span></button>
+            <button type="button" class="tool-btn" onclick="toggleContrast(this)" id="btn-contrast" aria-pressed="false" aria-label="Hoher Kontrast"><span class="btn-icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 18a6 6 0 0 0 0-12v12z"/></svg></span> <span class="btn-label">Kontrast</span></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+<!-- === LK-A11Y:MODAL END === -->
+
+  <script>
+// === LK-A11Y:JS START ===
+(function () {
+  'use strict';
+  var K_DYS = 'lesekumpel-lesefreundlich';
+  var K_CON = 'lesekumpel-kontrast';
+  var K_FS = 'lesekumpel-schriftgroesse';
+  function ls(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
+  function lsSet(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
+
+  var lastTrigger = null; // Element, das das Modal geoeffnet hat (Fokus-Rueckgabe)
+  var FOCUSABLE = 'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
+  function focusables(root) {
+    return Array.prototype.filter.call(
+      root.querySelectorAll(FOCUSABLE),
+      function (el) { return el.offsetParent !== null && !el.disabled; }
+    );
+  }
+
+  window.openSettings = function () {
+    var ov = document.getElementById('settings-overlay');
+    if (!ov) return;
+    lastTrigger = document.activeElement;
+    ov.hidden = false;
+    var m = document.getElementById('mobile-menu');
+    if (m) m.classList.remove('open');
+    var f = focusables(ov);
+    if (f.length) f[0].focus(); // Fokus ins Modal
+  };
+  window.closeSettings = function () {
+    var ov = document.getElementById('settings-overlay');
+    if (ov) ov.hidden = true;
+    if (lastTrigger && typeof lastTrigger.focus === 'function') lastTrigger.focus();
+    lastTrigger = null;
+  };
+  window.changeFontSize = function (d) {
+    // Auf <html> wirken, nicht auf <body>: Der Katalogtext ist in rem
+    // dimensioniert (relativ zur Wurzel). Body-fontSize ignoriert rem komplett.
+    var root = document.documentElement;
+    var s = parseFloat(ls(K_FS)) || parseFloat(window.getComputedStyle(root).fontSize) || 16;
+    var n = Math.max(12, Math.min(40, s + d));
+    root.style.fontSize = n + 'px';
+    lsSet(K_FS, String(n));
+  };
+  function setPressed(b, active) { if (b) b.setAttribute('aria-pressed', active ? 'true' : 'false'); }
+  window.toggleDyslexia = function (btn) {
+    var active = document.body.classList.toggle('dyslexia-mode');
+    var b = btn || document.getElementById('btn-dyslexia');
+    if (b) { b.classList.toggle('active', active); setPressed(b, active); }
+    lsSet(K_DYS, active ? 'true' : 'false');
+  };
+  window.toggleContrast = function (btn) {
+    var active = document.body.classList.toggle('high-contrast');
+    var b = btn || document.getElementById('btn-contrast');
+    if (b) { b.classList.toggle('active', active); setPressed(b, active); }
+    lsSet(K_CON, active ? 'true' : 'false');
+  };
+
+  // Init: gespeicherte Einstellungen anwenden (idempotent, kein Toggle)
+  if (ls(K_DYS) === 'true') {
+    document.body.classList.add('dyslexia-mode');
+    var bd = document.getElementById('btn-dyslexia'); if (bd) { bd.classList.add('active'); setPressed(bd, true); }
+  }
+  if (ls(K_CON) === 'true') {
+    document.body.classList.add('high-contrast');
+    var bc = document.getElementById('btn-contrast'); if (bc) { bc.classList.add('active'); setPressed(bc, true); }
+  }
+  var fs = parseFloat(ls(K_FS));
+  if (fs >= 12 && fs <= 40) document.documentElement.style.fontSize = fs + 'px';
+
+  document.addEventListener('keydown', function (e) {
+    var ov = document.getElementById('settings-overlay');
+    if (!ov || ov.hidden) return;
+    if (e.key === 'Escape') { window.closeSettings(); return; }
+    if (e.key !== 'Tab') return;
+    // Focus-Trap: Tab/Shift+Tab innerhalb des Modals halten
+    var f = focusables(ov);
+    if (!f.length) return;
+    var first = f[0], last = f[f.length - 1];
+    if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+    else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+  });
+})();
+// === LK-A11Y:JS END ===
+</script>
+
 </body>
 </html>
