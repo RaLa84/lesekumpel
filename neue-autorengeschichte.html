@@ -15,44 +15,104 @@
             --accent-coral-light: #FDE7E0; --accent-coral-dark: #D9542F;
             --text-dark: #2B3140; --text-muted: #5a6368;
             --success-green: #2FB8A6;
+            /* Aliase fuer aus demo.html uebernommenes A11y-/Deko-CSS */
+            --yellow: #FFD95A; --border: #D9D4CC;
             --font-heading: 'Fredoka', system-ui, sans-serif;
             --font-body: 'Lexend', system-ui, sans-serif;
         }
         * { box-sizing: border-box; margin: 0; padding: 0; }
         html { background: var(--cream); }
-        body { font-family: var(--font-body); background: transparent; color: var(--text-dark); line-height: 1.7; }
-        body::before, body::after { content:''; position: fixed; z-index:-1; border-radius:50%; filter: blur(70px); opacity:.55; pointer-events:none; }
-        body::before { width:420px; height:420px; background:#FFE9B3; top:-130px; left:-150px; }
-        body::after  { width:380px; height:380px; background:#C5EBE4; bottom:-130px; right:-130px; }
-        @media (prefers-reduced-motion: reduce) { body::before, body::after { display:none; } }
+        body { font-family: var(--font-body); background: transparent; color: var(--text-dark); line-height: 1.7; overflow-x: hidden; }
 
-        /* --- NAVBAR --- */
-        .main-navbar {
-            background: rgba(255, 255, 255, 0.78); backdrop-filter: blur(14px); -webkit-backdrop-filter: blur(14px);
-            padding: 12px 24px; border-bottom: 3px solid var(--mint);
-            display: flex; justify-content: space-between; align-items: center;
-            position: sticky; top: 0; z-index: 1000;
+        /* ===== Hintergrund-Deko (Blobs & Sterne) — analog demo.html ===== */
+        body::before, body::after {
+          content: ''; position: fixed; z-index: -2; border-radius: 50%;
+          filter: blur(70px); opacity: 0.55; pointer-events: none;
         }
-        .nav-left { display: flex; align-items: center; gap: 10px; }
-        .nav-logo { height: 40px; width: auto; border-radius: 50%; }
-        .brand-name { font-family: var(--font-heading); font-size: 1.2rem; color: var(--navy); font-weight: 700; text-decoration: none; }
-        .nav-links-desktop { display: none; gap: 20px; align-items: center; margin-left: 16px; }
-        .nav-btn { text-decoration: none; color: var(--text-dark); font-weight: 600; font-size: 0.95rem; display: flex; align-items: center; gap: 5px; transition: color 0.2s; }
-        .nav-btn:hover { color: var(--accent-coral); }
-        .btn-cta-nav {
-            display: none; background: var(--accent-coral); color: #fff; padding: 11px 26px;
-            border-radius: 28px; font-weight: 600; transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-            text-decoration: none; font-family: var(--font-body); font-size: 0.9rem;
-            border: none; box-shadow: 0 4px 14px rgba(214,113,113,0.3);
+        body::before { width: 460px; height: 460px; background: #FFE9B3; top: -150px; left: -160px; }
+        body::after  { width: 420px; height: 420px; background: #C5EBE4; bottom: -160px; right: -150px; }
+        .bg-blob { position: fixed; z-index: -2; border-radius: 50%; filter: blur(80px); pointer-events: none; opacity: 0.5; }
+        .bg-blob-lila { width: 360px; height: 360px; background: rgba(125,106,230,0.35); top: 38%; right: -130px; }
+        .bg-blob-mint { width: 300px; height: 300px; background: rgba(47,184,166,0.30); top: 55%; left: -120px; }
+        .page-deco { position: fixed; inset: 0; z-index: -1; pointer-events: none; overflow: hidden; }
+        .page-deco .deco-circle { animation: float-slow 9s ease-in-out infinite; }
+
+        /* ===== Skip Link ===== */
+        .skip-link {
+          position: absolute; left: -9999px;
+          background: var(--navy); color: #fff;
+          padding: 10px 18px; border-radius: 0 0 10px 10px;
+          font-weight: 600; font-size: 0.9rem; z-index: 10000; text-decoration: none;
         }
-        .btn-cta-nav:hover { background: var(--accent-coral-dark); transform: translateY(-2px) scaleX(1.04) scaleY(0.97); }
-        .btn-cta-nav:active { transform: translateY(0) scaleX(0.97) scaleY(1.03); transition-duration: 0.1s; }
-        .nav-right { display: flex; align-items: center; gap: 15px; }
-        .burger-icon { font-size: 1.8rem; cursor: pointer; display: block; color: var(--text-dark); background: none; border: none; padding: 0; }
-        .mobile-menu { display: none; position: absolute; top: 100%; left: 0; width: 100%; background: #fff; padding: 15px 24px; border-bottom: 2px solid var(--primary-yellow); box-shadow: 0 4px 12px rgba(0,0,0,0.08); flex-direction: column; gap: 12px; z-index: 999; }
-        .mobile-menu.open { display: flex; }
-        @media (min-width: 768px) { .nav-logo { height: 50px; } .brand-name { font-size: 1.5rem; } .nav-left { gap: 15px; } }
-        @media (min-width: 1024px) { .burger-icon { display: none; } .nav-links-desktop { display: flex; } .btn-cta-nav { display: inline-block; } }
+        .skip-link:focus { position: fixed; left: 50%; top: 0; transform: translateX(-50%); }
+        :focus-visible { outline: 2px solid var(--lila); outline-offset: 3px; border-radius: 4px; }
+        .modern-footer :focus-visible { outline-color: var(--yellow); }
+
+        /* ===== Floating Decorations ===== */
+        .deco-star, .deco-circle, .deco-sparkle, .deco-blob { position: absolute; pointer-events: none; z-index: 0; }
+        .deco-star { animation: float 7s ease-in-out infinite; }
+        .deco-sparkle { animation: sparkle-blink 4s ease-in-out infinite; }
+        @keyframes float { 0%,100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-18px) rotate(6deg); } }
+        @keyframes float-slow { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-12px) rotate(-3deg); } }
+        @keyframes sparkle-blink { 0%,100% { opacity: 0.3; transform: scale(0.85); } 50% { opacity: 1; transform: scale(1.15); } }
+        @media (max-width: 767px) { .deco-hide-mobile { display: none; } }
+
+        /* ===== A11y-Tool (Barrierefreiheit) — page-side, nicht propagiert ===== */
+        .a11y-wrap { position: relative; }
+        .a11y-popover { position: absolute; top: calc(100% + 8px); right: 0; z-index: 1200; background: #fff; border: 1px solid var(--border); border-radius: 16px; box-shadow: 0 16px 40px rgba(43,49,64,0.16); padding: 6px; min-width: 210px; display: flex; flex-direction: column; gap: 4px; }
+        .a11y-popover[hidden] { display: none; }
+        .a11y-opt { display: flex; align-items: center; gap: 10px; background: none; border: none; border-radius: 10px; padding: 10px 12px; min-height: 44px; font-family: var(--font-body); font-weight: 600; font-size: 0.92rem; color: var(--navy); cursor: pointer; text-align: left; transition: background 0.15s; }
+        .a11y-opt:hover { background: var(--cream-light); }
+        .a11y-opt.on { background: rgba(47,184,166,0.16); color: #259e8e; }
+        .a11y-opt.on::after { content: '✓'; margin-left: auto; color: var(--mint); font-weight: 700; }
+
+        /* Lesefreundliche Schrift + Hoher Kontrast (gleiche Klassen wie Leseseiten) */
+        body.dyslexia-mode { --font-body: 'Atkinson Hyperlegible', system-ui, sans-serif; letter-spacing: 0.03em; word-spacing: 0.12em; }
+        body.dyslexia-mode p, body.dyslexia-mode .section-sub, body.dyslexia-mode .persona-type { line-height: 1.75; }
+        body.high-contrast { --cream: #ffffff; --cream-light: #ffffff; --navy: #000000; --text-dark: #000000; --text-muted: #1a1d24; --border: #2B3140; --border-soft: #2B3140; }
+
+        @media (prefers-reduced-motion: reduce) {
+          body::before, body::after, .bg-blob { display: none; }
+          .deco-star, .deco-circle, .deco-sparkle, .deco-blob { animation: none !important; }
+        }
+
+        /* === LK-HEADER:CSS START === */
+    .main-navbar { background: rgba(255,255,255,0.92); -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px); padding: 12px 24px; border-bottom: 3px solid var(--mint); display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; position: sticky; top: 0; z-index: 1000; }
+    .nav-left { display: flex; align-items: center; gap: 10px; justify-self: start; position: relative; }
+    .nav-center { justify-self: center; display: flex; align-items: center; gap: 10px; }
+    .nav-right { display: flex; align-items: center; gap: 10px; justify-self: end; }
+    .nav-logo-box { width: 48px; height: 48px; overflow: hidden; border-radius: 12px; flex-shrink: 0; text-decoration: none; }
+    .nav-logo { height: 100%; width: 100%; object-fit: contain; transform: scale(1.8); transform-origin: center; }
+    .brand-name { font-family: var(--font-heading); font-size: 1.2rem; color: var(--navy); font-weight: 700; text-decoration: none; }
+    .nav-btn { text-decoration: none; color: var(--navy); font-weight: 600; font-size: 1rem; display: flex; align-items: center; gap: 5px; }
+    .nav-btn:hover { color: var(--lila); }
+    .burger-icon { width: 44px; height: 44px; box-sizing: border-box; padding: 0; display: inline-flex; align-items: center; justify-content: center; font-size: 1.6rem; line-height: 1; cursor: pointer; color: var(--navy); background: #fff; border: 1px solid var(--border, var(--border-soft, #D9D4CC)); border-radius: 12px; transition: background 0.15s ease; }
+    .burger-icon:hover { background: var(--cream-light); }
+    .nav-icon-btn { width: 44px; height: 44px; box-sizing: border-box; flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center; background: #fff; border: 1px solid var(--border, var(--border-soft, #D9D4CC)); border-radius: 12px; color: var(--navy); cursor: pointer; text-decoration: none; transition: background 0.15s ease; }
+    .nav-icon-btn:hover { background: var(--cream-light); }
+    .nav-icon-btn svg { width: 22px; height: 22px; }
+    .nav-avatar-btn { width: 44px; height: 44px; box-sizing: border-box; border-radius: 50%; flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center; background: var(--cream-light); border: 2px solid var(--primary-yellow, var(--yellow, #FFD95A)); font-size: 1.5rem; line-height: 1; text-decoration: none; box-shadow: 0 2px 8px rgba(43,49,64,0.08); transition: transform 0.15s ease, box-shadow 0.15s ease; }
+    .nav-avatar-btn:hover { transform: scale(1.06); box-shadow: 0 4px 12px rgba(43,49,64,0.14); }
+    .nav-avatar-btn:active { transform: scale(0.96); }
+    .nav-avatar-emoji { pointer-events: none; }
+    .mobile-menu { display: none; background: #fff; padding: 12px; position: absolute; top: calc(100% + 8px); left: 0; right: auto; width: min(320px, calc(100vw - 24px)); border: 1px solid var(--border, var(--border-soft, #D9D4CC)); border-radius: 20px; box-shadow: 0 16px 40px rgba(43,49,64,0.16); flex-direction: column; gap: 6px; z-index: 999; }
+    .mobile-menu.open { display: flex; animation: bubblePop 0.25s cubic-bezier(0.34,1.56,0.64,1); }
+    .mobile-menu .nav-btn { display: flex; align-items: center; gap: 12px; padding: 11px 12px; min-height: 44px; border-radius: 10px; background: transparent; color: var(--navy); font-weight: 600; font-size: 0.98rem; transition: background 0.15s ease; }
+    .mobile-menu .nav-btn:hover { background: var(--cream-light); color: var(--navy); }
+    .mobile-menu .nav-btn svg { width: 18px; height: 18px; color: #8a8f98; flex-shrink: 0; transition: color 0.15s ease; }
+    .mobile-menu .nav-btn:hover svg { color: var(--navy); }
+    .menu-divider { height: 1px; background: var(--border, var(--border-soft, #D9D4CC)); margin: 6px 6px; }
+    .mobile-menu .menu-cta { background: var(--mint); color: var(--navy); justify-content: center; font-family: var(--font-heading); font-weight: 700; margin-top: 4px; box-shadow: 0 3px 10px rgba(47,184,166,0.3); }
+    .mobile-menu .menu-cta:hover { background: var(--navy); color: #fff; }
+    @keyframes bubblePop { from { opacity: 0; transform: translateY(8px) scale(0.9); } to { opacity: 1; transform: none; } }
+    @media (max-width: 767px) { .brand-name { display: none; } }
+    @media (min-width: 768px) {
+      .nav-logo-box { width: 64px; height: 64px; }
+      .nav-logo { transform: scale(2); }
+      .brand-name { font-size: 1.6rem; display: block; }
+      .nav-left { gap: 15px; }
+    }
+/* === LK-HEADER:CSS END === */
 
         /* --- MAIN --- */
         .main-container { max-width: 700px; margin: 0 auto; padding: 30px 20px 60px; }
@@ -311,37 +371,54 @@
 </head>
 <body>
 
-<nav class="main-navbar" aria-label="Hauptnavigation">
+  <!-- Hintergrund-Deko: weiche Blobs + schwebende Sterne -->
+  <div class="bg-blob bg-blob-lila" aria-hidden="true"></div>
+  <div class="bg-blob bg-blob-mint" aria-hidden="true"></div>
+  <div class="page-deco" aria-hidden="true">
+    <svg class="deco-star deco-hide-mobile" style="top:14%;left:6%;width:30px;color:var(--yellow);" viewBox="0 0 32 32"><polygon points="16,2 20,12 30,12 22,19 25,30 16,23 7,30 10,19 2,12 12,12" fill="currentColor" opacity="0.7"/></svg>
+    <svg class="deco-sparkle" style="top:22%;right:7%;width:24px;color:var(--accent-coral);animation-delay:-1s;" viewBox="0 0 24 24"><path d="M12 2L13.5 9 21 12L13.5 14.5L12 22L10.5 14.5L3 12L10.5 9Z" fill="currentColor" opacity="0.7"/></svg>
+    <div class="deco-circle deco-hide-mobile" style="top:48%;left:4%;width:18px;height:18px;background:rgba(125,106,230,0.4);animation-delay:-2s;"></div>
+    <svg class="deco-star" style="top:62%;right:6%;width:24px;color:var(--mint);animation-delay:-3s;" viewBox="0 0 32 32"><polygon points="16,2 20,12 30,12 22,19 25,30 16,23 7,30 10,19 2,12 12,12" fill="currentColor" opacity="0.55"/></svg>
+    <svg class="deco-sparkle deco-hide-mobile" style="bottom:14%;left:8%;width:20px;color:var(--yellow);animation-delay:-2.5s;" viewBox="0 0 24 24"><path d="M12 2L13.5 9 21 12L13.5 14.5L12 22L10.5 14.5L3 12L10.5 9Z" fill="currentColor" opacity="0.65"/></svg>
+    <div class="deco-circle" style="bottom:20%;right:9%;width:14px;height:14px;background:rgba(47,184,166,0.45);animation-delay:-1.5s;"></div>
+  </div>
+
+  <a href="#main" class="skip-link">Zum Inhalt springen</a>
+
+<!-- === LK-HEADER:NAV START === -->
+  <nav class="main-navbar" aria-label="Hauptnavigation">
     <div class="nav-left">
-        <img src="bilder/marketing/logo1.png" alt="Lesekumpel Logo" class="nav-logo">
-        <a href="landingpage.html" class="brand-name">Lesekumpel</a>
-        <div class="nav-links-desktop">
-            <a href="landingpage.html#mission" class="nav-btn">F&uuml;r euch</a>
-            <a href="landingpage.html#how-it-works" class="nav-btn">So funktioniert&rsquo;s</a>
-            <a href="ueber-uns.html" class="nav-btn">&Uuml;ber uns</a>
-            <a href="demo.html" class="nav-btn">Demo-Texte</a>
-            <a href="neue-geschichte.html" class="nav-btn">Neue Geschichte</a>
-            <a href="preise.html" class="nav-btn">Preise</a>
-            <a href="anmelden.html" class="nav-btn">Mein Konto</a>
-        </div>
+      <button type="button" class="burger-icon" aria-label="Men&uuml; &ouml;ffnen" aria-expanded="false" aria-controls="mobile-menu" onclick="toggleMenu()">&#9776;</button>
+      <div id="mobile-menu" class="mobile-menu">
+        <a href="landingpage.html#mission" class="nav-btn" onclick="toggleMenu()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 9.5a5.5 5.5 0 0 1 9.591-3.676.56.56 0 0 0 .818 0A5.49 5.49 0 0 1 22 9.5c0 2.29-1.5 4-3 5.5l-5.492 5.313a2 2 0 0 1-3 .019L5 15c-1.5-1.5-3-3.2-3-5.5"/></svg><span>F&uuml;r euch</span></a>
+        <a href="landingpage.html#how-it-works" class="nav-btn" onclick="toggleMenu()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg><span>So funktioniert&rsquo;s</span></a>
+        <a href="ueber-uns.html" class="nav-btn" onclick="toggleMenu()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><path d="M16 3.128a4 4 0 0 1 0 7.744"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><circle cx="9" cy="7" r="4"/></svg><span>&Uuml;ber uns</span></a>
+        <a href="demo.html" class="nav-btn" onclick="toggleMenu()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 7v14"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/></svg><span>Demo-Texte</span></a>
+        <a href="preise.html" class="nav-btn" onclick="toggleMenu()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z"/><circle cx="7.5" cy="7.5" r=".5" fill="currentColor"/></svg><span>Preise</span></a>
+        <a href="neue-geschichte.html" class="nav-btn" onclick="toggleMenu()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"/><path d="M20 2v4"/><path d="M22 4h-4"/><circle cx="4" cy="20" r="2"/></svg><span>Geschichte erstellen</span></a>
+        <div class="menu-divider"></div>
+        <a href="anmelden.html" class="nav-btn" onclick="toggleMenu()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>Mein Konto</span></a>
+        <a href="anmelden.html" class="nav-btn menu-cta" onclick="toggleMenu()">Jetzt registrieren &rarr;</a>
+      </div>
+    </div>
+    <div class="nav-center">
+      <a href="landingpage.html" class="nav-logo-box" aria-label="Lesekumpel Startseite"><img src="Konzept_Rebranding/logo-lesekumpel-512.webp" alt="Lesekumpel" class="nav-logo"></a>
+      <a href="landingpage.html" class="brand-name">Lesekumpel</a>
     </div>
     <div class="nav-right">
-        <a href="landingpage.html#registrieren" class="btn-cta-nav">Jetzt registrieren</a>
-        <button type="button" class="burger-icon" aria-label="Navigationsmenü öffnen" aria-expanded="false" aria-controls="mobile-menu" onclick="toggleMenu()">&#9776;</button>
+      <div class="a11y-wrap">
+        <button type="button" class="nav-icon-btn" id="nav-a11y" aria-label="Barrierefreiheit" aria-haspopup="true" aria-expanded="false"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="1"/><path d="m9 20 3-6 3 6"/><path d="m6 8 6 2 6-2"/><path d="M12 10v4"/></svg></button>
+        <div class="a11y-popover" id="a11y-popover" hidden role="menu" aria-label="Barrierefreiheit">
+          <button type="button" class="a11y-opt" data-a11y="dyslexia" role="menuitemcheckbox" aria-checked="false"><span aria-hidden="true">&#128068;</span> Leichter lesen</button>
+          <button type="button" class="a11y-opt" data-a11y="contrast" role="menuitemcheckbox" aria-checked="false"><span aria-hidden="true">&#9680;</span> Mehr Kontrast</button>
+        </div>
+      </div>
+      <a href="anmelden.html" class="nav-icon-btn" aria-label="Mein Konto"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></a>
     </div>
-    <div id="mobile-menu" class="mobile-menu">
-        <a href="landingpage.html#mission" class="nav-btn" onclick="toggleMenu()">F&uuml;r euch</a>
-        <a href="landingpage.html#how-it-works" class="nav-btn" onclick="toggleMenu()">So funktioniert&rsquo;s</a>
-        <a href="ueber-uns.html" class="nav-btn" onclick="toggleMenu()">&Uuml;ber uns</a>
-        <a href="demo.html" class="nav-btn" onclick="toggleMenu()">Demo-Texte</a>
-        <a href="neue-geschichte.html" class="nav-btn" onclick="toggleMenu()">Neue Geschichte</a>
-        <a href="preise.html" class="nav-btn" onclick="toggleMenu()">Preise</a>
-        <a href="anmelden.html" class="nav-btn" onclick="toggleMenu()">Mein Konto</a>
-        <a href="landingpage.html#registrieren" class="nav-btn" onclick="toggleMenu()">Jetzt registrieren</a>
-    </div>
-</nav>
+  </nav>
+  <!-- === LK-HEADER:NAV END === -->
 
-<main class="main-container">
+<main class="main-container" id="main">
 
     <!-- ==================== PAGE 1: Auswahl ==================== -->
     <div class="page active" id="page-1">
@@ -509,10 +586,61 @@
 function toggleMenu() {
     const menu = document.getElementById('mobile-menu');
     const btn = document.querySelector('.burger-icon');
-    menu.classList.toggle('open');
-    const isOpen = menu.classList.contains('open');
-    btn.setAttribute('aria-expanded', isOpen);
+    const open = menu.classList.toggle('open');
+    if (btn) btn.setAttribute('aria-expanded', open ? 'true' : 'false');
 }
+/* Klick außerhalb schließt das Menü */
+document.addEventListener('click', function (e) {
+    const nav = document.querySelector('.nav-left');
+    const menu = document.getElementById('mobile-menu');
+    if (menu && menu.classList.contains('open') && nav && !nav.contains(e.target)) {
+        menu.classList.remove('open');
+        const btn = document.querySelector('.burger-icon');
+        if (btn) btn.setAttribute('aria-expanded', 'false');
+    }
+});
+
+/* ============================================================
+   A11y-Tool: Leichter lesen + Mehr Kontrast (localStorage)
+   Gleiche Body-Klassen/Keys wie die Leseseiten -> konsistent.
+   ============================================================ */
+(function initA11y() {
+    const KEY = { dyslexia: 'lesekumpel-lesefreundlich', contrast: 'lesekumpel-kontrast' };
+    const btn = document.getElementById('nav-a11y');
+    const pop = document.getElementById('a11y-popover');
+    function get(k) { try { return localStorage.getItem(KEY[k]) === 'true'; } catch (e) { return false; } }
+    function set(k, v) { try { localStorage.setItem(KEY[k], v ? 'true' : 'false'); } catch (e) {} }
+    function apply() {
+        document.body.classList.toggle('dyslexia-mode', get('dyslexia'));
+        document.body.classList.toggle('high-contrast', get('contrast'));
+        if (pop) pop.querySelectorAll('[data-a11y]').forEach(function (o) {
+            const on = get(o.getAttribute('data-a11y'));
+            o.classList.toggle('on', on);
+            o.setAttribute('aria-checked', on ? 'true' : 'false');
+        });
+    }
+    apply();
+    if (!btn || !pop) return;
+    btn.addEventListener('click', function (e) {
+        e.stopPropagation();
+        const open = !pop.hidden;
+        pop.hidden = open;
+        btn.setAttribute('aria-expanded', open ? 'false' : 'true');
+    });
+    pop.addEventListener('click', function (e) {
+        const o = e.target.closest('[data-a11y]');
+        if (!o) return;
+        const k = o.getAttribute('data-a11y');
+        set(k, !get(k));
+        apply();
+    });
+    document.addEventListener('click', function (e) {
+        if (!e.target.closest('.a11y-wrap')) { pop.hidden = true; btn.setAttribute('aria-expanded', 'false'); }
+    });
+    document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') { pop.hidden = true; btn.setAttribute('aria-expanded', 'false'); }
+    });
+})();
 
 // ============================================================
 // DATA

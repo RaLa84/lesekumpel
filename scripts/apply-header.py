@@ -34,6 +34,9 @@ NAV_END = "<!-- === LK-HEADER:NAV END === -->"
 
 READING_SIGNATURE = ('class="nav-center"', "nav-avatar-btn")
 
+# Root-Seiten mit PUBLIC-Navbar (gleiche Variante wie demo.html)
+PUBLIC_PAGES = ("demo.html", "neue-autorengeschichte.html")
+
 
 def _between(text: str, start: str, end: str) -> str:
     i = text.find(start)
@@ -92,9 +95,10 @@ def collect_targets():
     css, public, reading = load_source()
     targets = []  # (path, variant, nav_markup)
 
-    demo = REPO / "demo.html"
-    if demo.exists():
-        targets.append((demo, "public", public))
+    for name in PUBLIC_PAGES:
+        p = REPO / name
+        if p.exists():
+            targets.append((p, "public", public))
 
     for d in ("demo-texte", "texte"):
         for p in sorted((REPO / d).glob("*.html")):
