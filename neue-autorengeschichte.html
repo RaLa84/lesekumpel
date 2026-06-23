@@ -1253,9 +1253,12 @@ renderPersonaCards();
     if (ov) ov.hidden = true;
   };
   window.changeFontSize = function (d) {
-    var s = parseFloat(window.getComputedStyle(document.body).fontSize) || 16;
+    // Auf <html> wirken, nicht auf <body>: Der Katalogtext ist in rem
+    // dimensioniert (relativ zur Wurzel). Body-fontSize ignoriert rem komplett.
+    var root = document.documentElement;
+    var s = parseFloat(ls(K_FS)) || parseFloat(window.getComputedStyle(root).fontSize) || 16;
     var n = Math.max(12, Math.min(40, s + d));
-    document.body.style.fontSize = n + 'px';
+    root.style.fontSize = n + 'px';
     lsSet(K_FS, String(n));
   };
   window.toggleDyslexia = function (btn) {
@@ -1281,7 +1284,7 @@ renderPersonaCards();
     var bc = document.getElementById('btn-contrast'); if (bc) bc.classList.add('active');
   }
   var fs = parseFloat(ls(K_FS));
-  if (fs >= 12 && fs <= 40) document.body.style.fontSize = fs + 'px';
+  if (fs >= 12 && fs <= 40) document.documentElement.style.fontSize = fs + 'px';
 
   document.addEventListener('keydown', function (e) {
     if (e.key !== 'Escape') return;
