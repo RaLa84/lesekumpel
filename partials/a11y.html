@@ -63,8 +63,17 @@
     /* Lesefreundliche Schrift + Hoher Kontrast (gleiche Body-Klassen wie Leseseiten) */
     body.dyslexia-mode { --font-body: 'Atkinson Hyperlegible', system-ui, sans-serif; letter-spacing: 0.03em; word-spacing: 0.12em; }
     body.dyslexia-mode p, body.dyslexia-mode .tile-title, body.dyslexia-mode .bio-desc { line-height: 1.75; }
-    body.high-contrast { --cream: #ffffff; --cream-light: #ffffff; --navy: #000000; --text-muted: #1a1d24; --border: #2B3140; }
-    body.high-contrast .story-tile, body.high-contrast .filter-dd-trigger, body.high-contrast .search-wrapper input { border-color: #2B3140; }
+    body.high-contrast { --cream: #ffffff; --cream-light: #ffffff; --navy: #000000; --text-muted: #1a1d24; --border: #2B3140; background: #ffffff; }
+    body.high-contrast .story-tile, body.high-contrast .filter-dd-trigger, body.high-contrast .filter-dd-panel,
+    body.high-contrast .search-wrapper input, body.high-contrast .tool-btn, body.high-contrast .font-size-control,
+    body.high-contrast .toolbar-group { border-color: #2B3140 !important; }
+    /* Text/Links durchgaengig auf maximalen Kontrast */
+    body.high-contrast a, body.high-contrast .tile-title, body.high-contrast .nav-btn { color: #000000; }
+    /* Links als solche erkennbar machen (nicht nur ueber Farbe) */
+    body.high-contrast main a, body.high-contrast footer a, body.high-contrast .modern-footer a { text-decoration: underline; }
+    /* Dekorative Hintergruende ruhigstellen, damit Text klar bleibt */
+    body.high-contrast .deco-star, body.high-contrast .deco-circle, body.high-contrast .deco-sparkle,
+    body.high-contrast .deco-blob, body.high-contrast .bg-blob, body.high-contrast .floating-deco { display: none !important; }
 /* === LK-A11Y:CSS END === */
 </style>
 
@@ -88,8 +97,8 @@
         <div class="toolbar-group group-extra">
           <div class="toolbar-group-label">Darstellung</div>
           <div class="toolbar-group-buttons">
-            <button type="button" class="tool-btn" onclick="toggleDyslexia(this)" id="btn-dyslexia" aria-label="Lesefreundliche Schrift"><span class="btn-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v16"/><path d="M4 7V5a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v2"/><path d="M9 20h6"/></svg></span> <span class="btn-label">Lesefreundlich</span></button>
-            <button type="button" class="tool-btn" onclick="toggleContrast(this)" id="btn-contrast" aria-label="Hoher Kontrast"><span class="btn-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 18a6 6 0 0 0 0-12v12z"/></svg></span> <span class="btn-label">Kontrast</span></button>
+            <button type="button" class="tool-btn" onclick="toggleDyslexia(this)" id="btn-dyslexia" aria-pressed="false" aria-label="Lesefreundliche Schrift"><span class="btn-icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v16"/><path d="M4 7V5a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v2"/><path d="M9 20h6"/></svg></span> <span class="btn-label">Lesefreundlich</span></button>
+            <button type="button" class="tool-btn" onclick="toggleContrast(this)" id="btn-contrast" aria-pressed="false" aria-label="Hoher Kontrast"><span class="btn-icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 18a6 6 0 0 0 0-12v12z"/></svg></span> <span class="btn-label">Kontrast</span></button>
           </div>
         </div>
       </div>
@@ -107,15 +116,30 @@
   function ls(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
   function lsSet(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
 
+  var lastTrigger = null; // Element, das das Modal geoeffnet hat (Fokus-Rueckgabe)
+  var FOCUSABLE = 'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
+  function focusables(root) {
+    return Array.prototype.filter.call(
+      root.querySelectorAll(FOCUSABLE),
+      function (el) { return el.offsetParent !== null && !el.disabled; }
+    );
+  }
+
   window.openSettings = function () {
     var ov = document.getElementById('settings-overlay');
-    if (ov) ov.hidden = false;
+    if (!ov) return;
+    lastTrigger = document.activeElement;
+    ov.hidden = false;
     var m = document.getElementById('mobile-menu');
     if (m) m.classList.remove('open');
+    var f = focusables(ov);
+    if (f.length) f[0].focus(); // Fokus ins Modal
   };
   window.closeSettings = function () {
     var ov = document.getElementById('settings-overlay');
     if (ov) ov.hidden = true;
+    if (lastTrigger && typeof lastTrigger.focus === 'function') lastTrigger.focus();
+    lastTrigger = null;
   };
   window.changeFontSize = function (d) {
     // Auf <html> wirken, nicht auf <body>: Der Katalogtext ist in rem
@@ -126,35 +150,43 @@
     root.style.fontSize = n + 'px';
     lsSet(K_FS, String(n));
   };
+  function setPressed(b, active) { if (b) b.setAttribute('aria-pressed', active ? 'true' : 'false'); }
   window.toggleDyslexia = function (btn) {
     var active = document.body.classList.toggle('dyslexia-mode');
     var b = btn || document.getElementById('btn-dyslexia');
-    if (b) b.classList.toggle('active', active);
+    if (b) { b.classList.toggle('active', active); setPressed(b, active); }
     lsSet(K_DYS, active ? 'true' : 'false');
   };
   window.toggleContrast = function (btn) {
     var active = document.body.classList.toggle('high-contrast');
     var b = btn || document.getElementById('btn-contrast');
-    if (b) b.classList.toggle('active', active);
+    if (b) { b.classList.toggle('active', active); setPressed(b, active); }
     lsSet(K_CON, active ? 'true' : 'false');
   };
 
   // Init: gespeicherte Einstellungen anwenden (idempotent, kein Toggle)
   if (ls(K_DYS) === 'true') {
     document.body.classList.add('dyslexia-mode');
-    var bd = document.getElementById('btn-dyslexia'); if (bd) bd.classList.add('active');
+    var bd = document.getElementById('btn-dyslexia'); if (bd) { bd.classList.add('active'); setPressed(bd, true); }
   }
   if (ls(K_CON) === 'true') {
     document.body.classList.add('high-contrast');
-    var bc = document.getElementById('btn-contrast'); if (bc) bc.classList.add('active');
+    var bc = document.getElementById('btn-contrast'); if (bc) { bc.classList.add('active'); setPressed(bc, true); }
   }
   var fs = parseFloat(ls(K_FS));
   if (fs >= 12 && fs <= 40) document.documentElement.style.fontSize = fs + 'px';
 
   document.addEventListener('keydown', function (e) {
-    if (e.key !== 'Escape') return;
     var ov = document.getElementById('settings-overlay');
-    if (ov && !ov.hidden) window.closeSettings();
+    if (!ov || ov.hidden) return;
+    if (e.key === 'Escape') { window.closeSettings(); return; }
+    if (e.key !== 'Tab') return;
+    // Focus-Trap: Tab/Shift+Tab innerhalb des Modals halten
+    var f = focusables(ov);
+    if (!f.length) return;
+    var first = f[0], last = f[f.length - 1];
+    if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+    else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
   });
 })();
 // === LK-A11Y:JS END ===
