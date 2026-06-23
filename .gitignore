@@ -10,6 +10,9 @@ tmp/
 # Playwright MCP (logs, screenshots, artifacts)
 .playwright-mcp/
 
+# QA-Lauf-Artefakte (/qa) — lokal, nicht committen
+qa-reports/
+
 # OS files
 .DS_Store
 Thumbs.db
