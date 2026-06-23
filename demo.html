@@ -36,16 +36,31 @@
 
     /* ===== Reset & Base ===== */
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    html { scroll-behavior: smooth; }
+    html { scroll-behavior: smooth; background: var(--cream); }
     body {
       font-family: var(--font-body);
-      background: var(--cream);
+      background: transparent;
       color: var(--navy);
       font-weight: 400;
       line-height: 1.65;
       -webkit-font-smoothing: antialiased;
       overflow-x: hidden;
     }
+
+    /* ===== Hintergrund-Deko (Blobs & Sterne) ===== */
+    /* Weiche Farb-Blobs in den Ecken (html traegt die Grundfarbe, body ist transparent) */
+    body::before, body::after {
+      content: ''; position: fixed; z-index: -2; border-radius: 50%;
+      filter: blur(70px); opacity: 0.55; pointer-events: none;
+    }
+    body::before { width: 460px; height: 460px; background: #FFE9B3; top: -150px; left: -160px; }
+    body::after  { width: 420px; height: 420px; background: #C5EBE4; bottom: -160px; right: -150px; }
+    .bg-blob { position: fixed; z-index: -2; border-radius: 50%; filter: blur(80px); pointer-events: none; opacity: 0.5; }
+    .bg-blob-lila { width: 360px; height: 360px; background: rgba(125,106,230,0.35); top: 38%; right: -130px; }
+    .bg-blob-mint { width: 300px; height: 300px; background: rgba(47,184,166,0.30); top: 55%; left: -120px; }
+    /* Fixierte Buehne fuer schwebende Sterne — nutzt die vorhandenen .deco-* Animationen */
+    .page-deco { position: fixed; inset: 0; z-index: -1; pointer-events: none; overflow: hidden; }
+    .page-deco .deco-circle { animation: float-slow 9s ease-in-out infinite; }
     h1, h2, h3, h4 {
       font-family: var(--font-heading);
       font-weight: 600;
@@ -325,6 +340,18 @@
     </style>
 </head>
 <body data-page="demo">
+
+  <!-- Hintergrund-Deko: weiche Blobs + schwebende Sterne -->
+  <div class="bg-blob bg-blob-lila" aria-hidden="true"></div>
+  <div class="bg-blob bg-blob-mint" aria-hidden="true"></div>
+  <div class="page-deco" aria-hidden="true">
+    <svg class="deco-star deco-hide-mobile" style="top:14%;left:6%;width:30px;color:var(--yellow);" viewBox="0 0 32 32"><polygon points="16,2 20,12 30,12 22,19 25,30 16,23 7,30 10,19 2,12 12,12" fill="currentColor" opacity="0.7"/></svg>
+    <svg class="deco-sparkle" style="top:22%;right:7%;width:24px;color:var(--coral);animation-delay:-1s;" viewBox="0 0 24 24"><path d="M12 2L13.5 9 21 12L13.5 14.5L12 22L10.5 14.5L3 12L10.5 9Z" fill="currentColor" opacity="0.7"/></svg>
+    <div class="deco-circle deco-hide-mobile" style="top:48%;left:4%;width:18px;height:18px;background:rgba(125,106,230,0.4);animation-delay:-2s;"></div>
+    <svg class="deco-star" style="top:62%;right:6%;width:24px;color:var(--mint);animation-delay:-3s;" viewBox="0 0 32 32"><polygon points="16,2 20,12 30,12 22,19 25,30 16,23 7,30 10,19 2,12 12,12" fill="currentColor" opacity="0.55"/></svg>
+    <svg class="deco-sparkle deco-hide-mobile" style="bottom:14%;left:8%;width:20px;color:var(--yellow);animation-delay:-2.5s;" viewBox="0 0 24 24"><path d="M12 2L13.5 9 21 12L13.5 14.5L12 22L10.5 14.5L3 12L10.5 9Z" fill="currentColor" opacity="0.65"/></svg>
+    <div class="deco-circle" style="bottom:20%;right:9%;width:14px;height:14px;background:rgba(47,184,166,0.45);animation-delay:-1.5s;"></div>
+  </div>
 
   <a href="#main" class="skip-link">Zum Inhalt springen</a>
 
