@@ -289,12 +289,51 @@
       .story-tile:hover, .btn-primary:hover { transform: none !important; }
       .js-on .reveal { opacity: 1; transform: none; }
     }
-  </style>
+
+        /* === LK-HEADER:CSS START === */
+    .main-navbar { background: rgba(255,255,255,0.92); -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px); padding: 12px 24px; border-bottom: 3px solid var(--mint); display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; position: sticky; top: 0; z-index: 1000; }
+    .nav-left { display: flex; align-items: center; gap: 10px; justify-self: start; position: relative; }
+    .nav-center { justify-self: center; display: flex; align-items: center; gap: 10px; }
+    .nav-right { display: flex; align-items: center; gap: 10px; justify-self: end; }
+    .nav-logo-box { width: 48px; height: 48px; overflow: hidden; border-radius: 12px; flex-shrink: 0; text-decoration: none; }
+    .nav-logo { height: 100%; width: 100%; object-fit: contain; transform: scale(1.8); transform-origin: center; }
+    .brand-name { font-family: var(--font-heading); font-size: 1.2rem; color: var(--navy); font-weight: 700; text-decoration: none; }
+    .nav-btn { text-decoration: none; color: var(--navy); font-weight: 600; font-size: 1rem; display: flex; align-items: center; gap: 5px; }
+    .nav-btn:hover { color: var(--lila); }
+    .burger-icon { width: 44px; height: 44px; box-sizing: border-box; padding: 0; display: inline-flex; align-items: center; justify-content: center; font-size: 1.6rem; line-height: 1; cursor: pointer; color: var(--navy); background: #fff; border: 1px solid var(--border, var(--border-soft, #D9D4CC)); border-radius: 12px; transition: background 0.15s ease; }
+    .burger-icon:hover { background: var(--cream-light); }
+    .nav-icon-btn { width: 44px; height: 44px; box-sizing: border-box; flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center; background: #fff; border: 1px solid var(--border, var(--border-soft, #D9D4CC)); border-radius: 12px; color: var(--navy); cursor: pointer; text-decoration: none; transition: background 0.15s ease; }
+    .nav-icon-btn:hover { background: var(--cream-light); }
+    .nav-icon-btn svg { width: 22px; height: 22px; }
+    .nav-avatar-btn { width: 44px; height: 44px; box-sizing: border-box; border-radius: 50%; flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center; background: var(--cream-light); border: 2px solid var(--primary-yellow, var(--yellow, #FFD95A)); font-size: 1.5rem; line-height: 1; text-decoration: none; box-shadow: 0 2px 8px rgba(43,49,64,0.08); transition: transform 0.15s ease, box-shadow 0.15s ease; }
+    .nav-avatar-btn:hover { transform: scale(1.06); box-shadow: 0 4px 12px rgba(43,49,64,0.14); }
+    .nav-avatar-btn:active { transform: scale(0.96); }
+    .nav-avatar-emoji { pointer-events: none; }
+    .mobile-menu { display: none; background: #fff; padding: 12px; position: absolute; top: calc(100% + 8px); left: 0; right: auto; width: min(320px, calc(100vw - 24px)); border: 1px solid var(--border, var(--border-soft, #D9D4CC)); border-radius: 20px; box-shadow: 0 16px 40px rgba(43,49,64,0.16); flex-direction: column; gap: 6px; z-index: 999; }
+    .mobile-menu.open { display: flex; animation: bubblePop 0.25s cubic-bezier(0.34,1.56,0.64,1); }
+    .mobile-menu .nav-btn { display: flex; align-items: center; gap: 12px; padding: 11px 12px; min-height: 44px; border-radius: 10px; background: transparent; color: var(--navy); font-weight: 600; font-size: 0.98rem; transition: background 0.15s ease; }
+    .mobile-menu .nav-btn:hover { background: var(--cream-light); color: var(--navy); }
+    .mobile-menu .nav-btn svg { width: 18px; height: 18px; color: #8a8f98; flex-shrink: 0; transition: color 0.15s ease; }
+    .mobile-menu .nav-btn:hover svg { color: var(--navy); }
+    .menu-divider { height: 1px; background: var(--border, var(--border-soft, #D9D4CC)); margin: 6px 6px; }
+    .mobile-menu .menu-cta { background: var(--mint); color: var(--navy); justify-content: center; font-family: var(--font-heading); font-weight: 700; margin-top: 4px; box-shadow: 0 3px 10px rgba(47,184,166,0.3); }
+    .mobile-menu .menu-cta:hover { background: var(--navy); color: #fff; }
+    @keyframes bubblePop { from { opacity: 0; transform: translateY(8px) scale(0.9); } to { opacity: 1; transform: none; } }
+    @media (max-width: 767px) { .brand-name { display: none; } }
+    @media (min-width: 768px) {
+      .nav-logo-box { width: 64px; height: 64px; }
+      .nav-logo { transform: scale(2); }
+      .brand-name { font-size: 1.6rem; display: block; }
+      .nav-left { gap: 15px; }
+    }
+/* === LK-HEADER:CSS END === */
+    </style>
 </head>
 <body data-page="demo">
 
   <a href="#main" class="skip-link">Zum Inhalt springen</a>
 
+  <!-- === LK-HEADER:NAV START === -->
   <nav class="main-navbar" aria-label="Hauptnavigation">
     <div class="nav-left">
       <button type="button" class="burger-icon" aria-label="Men&uuml; &ouml;ffnen" aria-expanded="false" aria-controls="mobile-menu" onclick="toggleMenu()">&#9776;</button>
@@ -318,6 +357,7 @@
       <a href="anmelden.html" class="nav-icon-btn" aria-label="Mein Konto"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg></a>
     </div>
   </nav>
+  <!-- === LK-HEADER:NAV END === -->
 
   <main id="main">
 
