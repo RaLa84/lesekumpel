@@ -3386,11 +3386,18 @@
         // Ganztext-Wortliste des aktuellen Containers (full-text bzw. aktueller Chunk)
         function buildWords() {
             const chunkMode = !document.getElementById('chunk-view').classList.contains('hidden');
-            const container = chunkMode ? document.getElementById('chunk-display') : document.getElementById('full-text-view');
+            // Tafel: nur die AKTUELLE Lese-Seite vorlesen (am Seitenende pausieren),
+            // nicht den ganzen paginierten Text aus #full-text-view.
+            const tafelPage = !chunkMode && document.body.classList.contains('view-tafel') && !!document.querySelector('.tafel-section');
+            let container;
+            if (chunkMode) container = document.getElementById('chunk-display');
+            else if (tafelPage) container = document.querySelector('.tafel-section.is-current'); // null auf Cover/Abschluss
+            else container = document.getElementById('full-text-view');
             const words = [];
             if (container) container.querySelectorAll('.word-interactive').forEach(span => words.push({ text: span.innerText, el: span }));
             player.words = words;
             player.chunkMode = chunkMode;
+            player.tafelPage = tafelPage;
             return words;
         }
 
@@ -3455,11 +3462,14 @@
             function speakWordAt(i) {
                 if (gen !== player.gen || !player.active || player.paused) return;
                 if (i >= words.length) {
-                    // Text-/Häppchen-Ende erreicht
+                    // Seiten-/Häppchen-/Text-Ende erreicht
                     const reachedEnd = player.progressed;
                     const wasChunk = player.chunkMode;
+                    const wasTafelPage = player.tafelPage;
                     stopPlayer();
-                    if (reachedEnd && (!wasChunk || state.chunkIndex === state.chunks.length - 1)) storyFinished();
+                    // Tafel: am Seitenende NUR pausieren — das Kind blättert selbst weiter und startet neu.
+                    // ("Geschafft!" entsteht durch Navigieren zur Abschluss-Seite, nicht durchs Vorlesen.)
+                    if (reachedEnd && !wasTafelPage && (!wasChunk || state.chunkIndex === state.chunks.length - 1)) storyFinished();
                     return;
                 }
                 const u = new SpeechSynthesisUtterance(words[i].text);
@@ -3503,12 +3513,11 @@
         }
 
         function togglePlayer() {
-            if (player.active && !player.paused) { playerPauseResume(); return; } // Pause
-            // Start bzw. Fortsetzen
-            if (!player.words.length) buildWords();
+            if (player.active) { playerPauseResume(); return; } // läuft -> Pause bzw. Resume (gleiche Seite)
+            // Frischer Start: Wortliste für die AKTUELLE Seite neu aufbauen (Tafel: nur diese Seite)
+            buildWords();
             if (!player.words.length) return;
-            const idx = (player.idx >= 0) ? player.idx : topVisibleWordIndex();
-            playFrom(idx);
+            playFrom(topVisibleWordIndex());
         }
 
         function playerPauseResume() {
@@ -4667,6 +4676,8 @@
             const sections = getTafelSections();
             if (!sections.length) return;
             idx = Math.max(0, Math.min(sections.length - 1, idx));
+            // Seitenwechsel stoppt das Vorlesen -> nach dem Blättern startet das Kind neu
+            if (idx !== tafelCurrentIdx && typeof player !== 'undefined' && player.active) stopPlayer();
             tafelCurrentIdx = idx;
             sections.forEach((s, i) => s.classList.toggle('is-current', i === idx));
             const currentSec = sections[idx];
