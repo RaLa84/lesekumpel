@@ -780,11 +780,12 @@ const PERSONAS = {
 };
 
 // Neurotypen (nur für Skill-Personas)
+// label = kindgerechte Anzeige; klinisch = Fachbegriff nur im Tooltip (für Eltern/Fachkräfte)
 const NEUROTYPEN = [
-    { id: 'Standard',  emoji: '🧒', label: 'Standard', info: 'Ausgewogener Erzählstil mit natürlichem Lesefluss' },
-    { id: 'ADHS',      emoji: '⚡', label: 'ADHS', info: 'Kurze Absätze, sofort Action, Mini-Cliffhanger' },
-    { id: 'Autismus',  emoji: '🔍', label: 'Autismus-Spektrum', info: 'Keine Metaphern, klare Sprache, Gefühle werden erklärt' },
-    { id: 'LRS',       emoji: '🎵', label: 'LRS / Legasthenie', info: 'Rhythmische Sätze, kurze Wörter, klarer Takt' }
+    { id: 'Standard',  emoji: '🧒', label: 'Ausgewogen', klinisch: '', info: 'Ausgewogener Erzählstil mit natürlichem Lesefluss' },
+    { id: 'ADHS',      emoji: '⚡', label: 'Viel Action', klinisch: 'ADHS', info: 'Kurze Absätze, sofort Action, Mini-Cliffhanger' },
+    { id: 'Autismus',  emoji: '🔍', label: 'Klar & deutlich', klinisch: 'Autismus-Spektrum', info: 'Keine Metaphern, klare Sprache, Gefühle werden erklärt' },
+    { id: 'LRS',       emoji: '🎵', label: 'Einfach & im Takt', klinisch: 'LRS / Legasthenie', info: 'Rhythmische Sätze, kurze Wörter, klarer Takt' }
 ];
 
 const PERSONA_LABELS = { pip: 'Pip Punkt', mia: 'Mia Mitte', peter: 'Peter Past', stella: 'Stella Stimmenreich', finja: 'Finja Feder', samira: 'Samira Wissensfreund', holzi: 'Holzi Pixelkopf', deniz: 'Deniz Traumfänger', jonas: 'Jonas Entdecker' };
@@ -879,12 +880,16 @@ function renderNeurotypen() {
     const grid = document.getElementById('neurotyp-grid');
     grid.setAttribute('role', 'group');
     grid.setAttribute('aria-label', 'Lesemodus wählen');
-    grid.innerHTML = NEUROTYPEN.map(n =>
-        `<button type="button" class="toggle-btn" data-neurotyp="${n.id}" aria-pressed="false" aria-label="${n.label}: ${n.info}" onclick="selectNeurotyp('${n.id}')" style="flex-direction:column;padding:14px 18px;min-width:140px;">
-            <span aria-hidden="true">${n.emoji} ${n.label}</span>
+    grid.innerHTML = NEUROTYPEN.map(n => {
+        const ariaKlinisch = n.klinisch ? ` (Fachbegriff: ${n.klinisch})` : '';
+        const infoIcon = n.klinisch
+            ? ` <span aria-hidden="true" title="Fachbegriff: ${n.klinisch}" style="cursor:help;color:var(--text-muted);font-size:0.85em;">ⓘ</span>`
+            : '';
+        return `<button type="button" class="toggle-btn" data-neurotyp="${n.id}" aria-pressed="false" aria-label="${n.label}: ${n.info}${ariaKlinisch}" onclick="selectNeurotyp('${n.id}')" style="flex-direction:column;padding:14px 18px;min-width:140px;">
+            <span aria-hidden="true">${n.emoji} ${n.label}${infoIcon}</span>
             <span aria-hidden="true" style="font-size:0.75rem;font-weight:400;color:var(--text-muted);margin-top:4px;">${n.info}</span>
-        </button>`
-    ).join('');
+        </button>`;
+    }).join('');
 }
 
 function selectNeurotyp(neurotyp) {

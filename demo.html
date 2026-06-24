@@ -461,7 +461,7 @@
     </header>
 
     <section class="filter-wrap">
-      <!-- Filter-Leiste: per JS aus FACETS gebaut (Autor:in / Stufe / Neurotyp / Format + Suche) -->
+      <!-- Filter-Leiste: per JS aus FACETS gebaut (Autor:in / Stufe / Lesemodus / Format + Suche) -->
       <div class="filter-bar" id="filterBar"></div>
       <!-- Bio-Streifen: erscheint bei gewählter Persona -->
       <div class="bio-banner" id="bioBanner" hidden>
@@ -518,6 +518,7 @@
         <ul>
           <li><a href="impressum.html">Impressum</a></li>
           <li><a href="datenschutz.html">Datenschutz</a></li>
+          <li><a href="eltern-lesemodi.html">Lesemodi erklärt</a></li>
           <li><a href="knowledge-base/snacks/index.html">Wissen</a></li>
         </ul>
       </div>
@@ -675,12 +676,12 @@
       },
       { key: 'level', label: 'Stufe', options: [{ v: 'all', label: 'Alle Stufen' }].concat(
         LEVELS.map(l => ({ v: l.key, label: l.label }))) },
-      { key: 'neuro', label: 'Neurotyp', options: [
+      { key: 'neuro', label: 'Lesemodus', options: [
         { v: 'all', label: 'Alle' },
-        { v: 'Standard', label: 'Standard' },
-        { v: 'ADHS', label: 'ADHS' },
-        { v: 'Autismus', label: 'Autismus' },
-        { v: 'LRS', label: 'LRS' }
+        { v: 'Standard', label: 'Ausgewogen' },
+        { v: 'ADHS', label: 'Viel Action' },
+        { v: 'Autismus', label: 'Klar & deutlich' },
+        { v: 'LRS', label: 'Einfach & im Takt' }
       ] },
       { key: 'format', label: 'Format', options: [
         { v: 'all', label: 'Alle' },
@@ -1073,7 +1074,11 @@
           if (!s.levelKey || s.levelKey !== state.level) return false;
         }
         if (state.neuro !== 'all') {
-          if (!s.neurotype || !s.neurotype.toLowerCase().includes(state.neuro.toLowerCase())) return false;
+          if (!s.neurotype) return false;
+          const nt = s.neurotype.toLowerCase();
+          // „Einfach & im Takt" (LRS) deckt auch Altwerte Dyslexie/Legasthenie ab
+          const matchLRS = state.neuro === 'LRS' && /lrs|legasthenie|dyslex/.test(nt);
+          if (!matchLRS && !nt.includes(state.neuro.toLowerCase())) return false;
         }
         return true;
       });
