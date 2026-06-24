@@ -152,4 +152,108 @@ height: 56px;
 - Hoher Kontrast-Modus verfügbar
 - Schriftgrößen-Anpassung
 - Coral-Farbe nur für dekorative/große Elemente, nie für kleinen Fließtext
-- Fokus-Ringe: `box-shadow: 0 0 0 3px rgba(214,113,113,0.4)`
+- Fokus-Ringe: `box-shadow: 0 0 0 3px rgba(214,113,113,0.4)` (Marketing) bzw. `outline: 3px solid var(--lila)` (App-Seiten)
+
+---
+
+## App-Palette (Redesign – kanonisch für App-Seiten)
+
+> **Zwei Kontexte:** Die obige Coral/Quicksand-Palette stammt aus den **Marketing-Seiten**. Die **App-Seiten** (`demo.html`, `anmelden.html`, `profilauswahl.html`, `neue-autorengeschichte.html`) nutzen die folgende, neuere Token-Palette — inkl. **Lexend** als Fließtext-Font. Neue App-Seiten verwenden diese Tokens.
+
+```css
+:root {
+  --mint: #2FB8A6;        /* Primärakzent App (aktive Zustände, Header-Linie) */
+  --navy: #2B3140;        /* Marken-/Textdunkel, Footer-Hintergrund */
+  --cream: #FFF6EF;       /* Seitenhintergrund (html) */
+  --cream-light: #FEFBF6; /* Icon-Box-/Badge-Hintergrund */
+  --coral: #F97352;       /* dekorativer Zweitakzent */
+  --lila: #7D6AE6;        /* Fokus-Ring, Deko */
+  --yellow: #FFD95A;      /* Akzent, Deko-Sterne */
+  --border: #D9D4CC;      /* Karten-/Input-Border */
+  --text-muted: #555B6A;
+  --font-heading: 'Fredoka', system-ui, sans-serif;
+  --font-body: 'Lexend', system-ui, sans-serif;
+  --shadow-card: 0 2px 12px rgba(43,49,64,0.05);
+  --shadow-card-hover: 0 8px 24px rgba(43,49,64,0.08);
+  --radius-card: 20px; --radius-inner: 16px; --radius-input: 14px; --radius-pill: 999px;
+}
+```
+
+Aktiv-Zustand (Auswahl-Karten/Toggles): Border `var(--mint)` + Hintergrund `rgba(47,184,166,0.08)`, Icon-Box-Tint `rgba(47,184,166,0.18)`.
+
+---
+
+## Kanonischer Header & Footer
+
+Wiederverwendbare Komponente, einheitlich auf allen App-Seiten. Im Markup mit Kommentar-Markern abgegrenzt: `=== LK-HEADER:NAV START/END ===` und `=== LK-FOOTER:FOOTER START/END ===` — beim Anlegen neuer Seiten **diesen Block 1:1 aus einer App-Seite (z. B. `demo.html`) übernehmen**, nicht neu bauen.
+
+> **Legacy-Hinweis:** `impressum.html`, `datenschutz.html` und `eltern-lesemodi.html` nutzen noch den älteren Marketing-Header (`flex`, Coral-Brand, einfacher Text-Footer). Diese sollten bei Gelegenheit auf die kanonische Komponente migriert werden.
+
+### Header (`.main-navbar`)
+3-Spalten-Grid (links Burger/Mobile-Menü · Mitte Logo + Wortmarke · rechts A11y- + Login-Icon-Button):
+```css
+.main-navbar {
+  background: rgba(255,255,255,0.92); backdrop-filter: blur(14px);
+  padding: 12px 24px; border-bottom: 3px solid var(--mint);
+  display: grid; grid-template-columns: 1fr auto 1fr; align-items: center;
+  position: sticky; top: 0; z-index: 1000;
+}
+```
+- `nav-left`: `.burger-icon` (≥1024px ausgeblendet) + `#mobile-menu`
+- `nav-center`: `.nav-logo-box` (Logo) + `.brand-name`
+- `nav-right`: `.nav-icon-btn` für Barrierefreiheit/Einstellungen + Anmelden
+
+### Footer (`.modern-footer`)
+Dunkler Navy-Footer mit Spalten-Grid:
+```css
+.modern-footer { background: var(--navy); color: var(--cream); padding: 56px 24px 28px; margin-top: 80px; }
+.modern-footer .footer-grid { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr; gap: 40px; }
+@media (min-width: 768px) { .modern-footer .footer-grid { grid-template-columns: 1.6fr 1fr 1fr; gap: 56px; } }
+```
+Aufbau: `footer-brand-block` (Logo + Tagline + `.footer-social`) · Link-Spalten (Entdecken / Rechtliches …) · `.footer-bottom` (Copyright).
+
+---
+
+## Hintergrundgestaltung
+
+Warmer Pastell-Hintergrund mit weichen Farb-Blobs und dezent schwebenden Deko-Elementen. Alle Deko ist rein dekorativ (`aria-hidden="true"`, `pointer-events:none`, negativer `z-index`).
+
+```css
+html { background: var(--cream); }
+body { background: transparent; overflow-x: hidden; }
+
+/* Weiche Eck-Blobs */
+body::before, body::after { content:''; position: fixed; z-index:-2; border-radius:50%; filter: blur(70px); opacity:.55; pointer-events:none; }
+body::before { width:460px; height:460px; background:#FFE9B3; top:-150px; left:-160px; }
+body::after  { width:420px; height:420px; background:#C5EBE4; bottom:-160px; right:-150px; }
+
+/* Zusätzliche Farb-Blobs (lila/mint) */
+.bg-blob { position:fixed; z-index:-2; border-radius:50%; filter: blur(80px); opacity:.5; pointer-events:none; }
+
+/* Bühne für schwebende Sterne/Sparkles */
+.page-deco { position: fixed; inset:0; z-index:-1; pointer-events:none; overflow:hidden; }
+.deco-star    { animation: float 7s ease-in-out infinite; }
+.deco-sparkle { animation: sparkle-blink 4s ease-in-out infinite; }
+@keyframes float { 0%,100%{transform:translateY(0) rotate(0)} 50%{transform:translateY(-18px) rotate(6deg)} }
+@keyframes sparkle-blink { 0%,100%{opacity:.3;transform:scale(.85)} 50%{opacity:1;transform:scale(1.15)} }
+```
+- Deko-SVGs (Stern/Sparkle/Kreis) per Inline-Style positioniert; auf Mobil via `.deco-hide-mobile` ausblenden.
+- `@media (prefers-reduced-motion: reduce)` → Float/Blink-Animationen abschalten.
+
+---
+
+## Lucide-Icons (Inline-SVG)
+
+Icons werden **als Inline-SVG mit Lucide-Pfaddaten** eingesetzt — **keine** Lucide-JS-Library, kein `data-lucide`. So bleiben Icons ohne Build-Step/JS sofort sichtbar und per CSS färb-/skalierbar.
+
+**Standard-Attribute** (Lucide-Outline-Stil):
+```html
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none"
+     stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+  <!-- Lucide-Pfade -->
+</svg>
+```
+- **Farbe** über `currentColor` (erbt von `color`) — für Kontrast/A11y i. d. R. `var(--text-dark)`/`var(--navy)`, nicht gedämpfte Akzentfarben.
+- **Größe** per CSS am SVG (`.xxx svg { width:21px; height:21px }`), nicht über `width`/`height`-Attribute (außer bei Social-Icons).
+- In Icon-Boxen (`var(--cream-light)`-Hintergrund, `border-radius:12px`, 40×40px) zentriert.
+- Bei dynamisch generierten Icons (JS) Helfer nutzen: `const svg = (paths) => \`<svg …>${paths}</svg>\`` und Icons in einer Map halten.
