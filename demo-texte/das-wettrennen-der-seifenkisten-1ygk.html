@@ -2471,8 +2471,16 @@
                         <div class="toolbar-group-buttons">
                             <div class="font-size-control" role="group" aria-label="Vorlese-Tempo">
                                 <button type="button" class="tool-btn" id="btn-tempo-slow" onclick="setSpeechRate(0.7)" aria-label="Langsam vorlesen"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 10 2 4v3a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1v-3a8 8 0 1 0-16 0v3a1 1 0 0 0 1 1h2a1 1 0 0 0 1-1v-3l2-4h4Z"/><path d="M4.82 7.9 8 10"/><path d="M15.18 7.9 12 10"/><path d="M16.93 10H20a2 2 0 0 1 0 4H2"/></svg></button>
-                                <button type="button" class="tool-btn" id="btn-tempo-fast" onclick="setSpeechRate(0.95)" aria-label="Normal schnell vorlesen"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 16a3 3 0 0 1 2.24 5"/><path d="M18 12h.01"/><path d="M18 21h-8a4 4 0 0 1-4-4 7 7 0 0 1 7-7h.2L9.6 6.4a1 1 0 1 1 2.8-2.8L15.8 7h.2c3.3 0 6 2.7 6 6v1a2 2 0 0 1-2 2h-1a3 3 0 0 0-3 3"/><path d="M20 8.54V4a2 2 0 1 0-4 0v3"/><path d="M7.612 12.524a3 3 0 1 0-1.6 4.3"/></svg></button>
+                                <button type="button" class="tool-btn" id="btn-tempo-normal" onclick="setSpeechRate(0.85)" aria-label="Normal vorlesen"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 14 4-4"/><path d="M3.34 19a10 10 0 1 1 17.32 0"/></svg></button>
+                                <button type="button" class="tool-btn" id="btn-tempo-fast" onclick="setSpeechRate(1.0)" aria-label="Schnell vorlesen"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 16a3 3 0 0 1 2.24 5"/><path d="M18 12h.01"/><path d="M18 21h-8a4 4 0 0 1-4-4 7 7 0 0 1 7-7h.2L9.6 6.4a1 1 0 1 1 2.8-2.8L15.8 7h.2c3.3 0 6 2.7 6 6v1a2 2 0 0 1-2 2h-1a3 3 0 0 0-3 3"/><path d="M20 8.54V4a2 2 0 1 0-4 0v3"/><path d="M7.612 12.524a3 3 0 1 0-1.6 4.3"/></svg></button>
                             </div>
+                        </div>
+                    </div>
+                    <div class="toolbar-group group-extra">
+                        <div class="toolbar-group-label">Vorlese-Art</div>
+                        <div class="toolbar-group-buttons" role="group" aria-label="Vorlese-Art">
+                            <button type="button" class="tool-btn" id="btn-read-karaoke" onclick="setReadMode('karaoke')" aria-label="Karaoke: Wort für Wort markiert" aria-pressed="true"><span class="btn-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 11-6 6v3h9l3-3"/><path d="m22 12-4.6 4.6a2 2 0 0 1-2.8 0l-5.2-5.2a2 2 0 0 1 0-2.8L14 4"/></svg></span> <span class="btn-label">Karaoke</span></button>
+                            <button type="button" class="tool-btn" id="btn-read-fluent" onclick="setReadMode('fluent')" aria-label="Fließend am Stück vorlesen" aria-pressed="false"><span class="btn-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 10v3"/><path d="M6 6v11"/><path d="M10 3v18"/><path d="M14 8v7"/><path d="M18 5v13"/><path d="M22 10v3"/></svg></span> <span class="btn-label">Fließend</span></button>
                         </div>
                     </div>
                 </div>
@@ -2738,12 +2746,47 @@
             SPEECH_RATE = r;
             try { localStorage.setItem('lesekumpel-tts-rate', String(r)); } catch(e) {}
             updateTempoButtons();
-            speak(r < 0.85 ? 'Ich lese jetzt ganz langsam vor.' : 'Ich lese jetzt normal schnell vor.');
+            speak(r < 0.78 ? 'Ich lese jetzt ganz langsam vor.' : r < 0.93 ? 'Ich lese jetzt normal vor.' : 'Ich lese jetzt schnell vor.');
         }
+        // Drei Tempostufen; aktiver Button = nächstgelegener Wert (toleriert Alt-Werte wie 0.95)
+        const TEMPO_STEPS = [
+            { id: 'btn-tempo-slow',   rate: 0.7 },
+            { id: 'btn-tempo-normal', rate: 0.85 },
+            { id: 'btn-tempo-fast',   rate: 1.0 }
+        ];
         function updateTempoButtons() {
-            const slow = document.getElementById('btn-tempo-slow'), fast = document.getElementById('btn-tempo-fast');
-            if (slow) slow.classList.toggle('active', SPEECH_RATE < 0.85);
-            if (fast) fast.classList.toggle('active', SPEECH_RATE >= 0.85);
+            let best = TEMPO_STEPS[0];
+            for (const s of TEMPO_STEPS) {
+                if (Math.abs(s.rate - SPEECH_RATE) < Math.abs(best.rate - SPEECH_RATE)) best = s;
+            }
+            for (const s of TEMPO_STEPS) {
+                const b = document.getElementById(s.id);
+                if (!b) continue;
+                const on = (s.id === best.id);
+                b.classList.toggle('active', on);
+                b.setAttribute('aria-pressed', on ? 'true' : 'false');
+            }
+        }
+
+        /* ── Vorlese-Modus: Karaoke (Wort für Wort markiert) vs. Fließend (am Stück, ohne Highlight) ── */
+        function fluentMode() { return state.readMode === 'fluent'; }
+        function updateReadModeButtons() {
+            const k = document.getElementById('btn-read-karaoke'), f = document.getElementById('btn-read-fluent');
+            const fluent = fluentMode();
+            if (k) { k.classList.toggle('active', !fluent); k.setAttribute('aria-pressed', fluent ? 'false' : 'true'); }
+            if (f) { f.classList.toggle('active', fluent);  f.setAttribute('aria-pressed', fluent ? 'true' : 'false'); }
+        }
+        function setReadMode(mode) {
+            if (mode !== 'karaoke' && mode !== 'fluent') return;
+            // Laufendes Vorlesen sauber stoppen, gemerkte Stelle behalten
+            const wasPlaying = player.active && !player.paused;
+            const at = player.idx;
+            if (player.active) stopPlayer();
+            state.readMode = mode;
+            try { localStorage.setItem('lesekumpel-read-mode', mode); } catch(e) {}
+            updateReadModeButtons();
+            if (wasPlaying) { buildWords(); playFrom(Math.max(0, at)); }
+            else speak(mode === 'fluent' ? 'Ich lese jetzt am Stück vor.' : 'Ich lese jetzt Wort für Wort.');
         }
 
         // Spricht den data-say-Text eines Buttons (für Quiz, Spiele, Wortschatz)
@@ -2807,7 +2850,7 @@
         const isAutismus = ntClass === 'nt-autismus';
         const isLRS = ntClass === 'nt-lrs';
         const isADHS = ntClass === 'nt-adhs';
-        let state = { syllables: isLRS, emojis: isAutismus, summary: false, chunkIndex: 0, chunks: [], chunkImages: [], chunkHeadings: [], wordReader: false };
+        let state = { syllables: isLRS, emojis: isAutismus, summary: false, chunkIndex: 0, chunks: [], chunkImages: [], chunkHeadings: [], wordReader: false, readMode: 'karaoke' };
         let inlineImages = [];
 
         // Bilder einsammeln: Alle .hero-image werden zu Inline-Bildern. Der Hero-Cover
@@ -3391,7 +3434,7 @@
            speechSynthesis.pause() ist auf Chrome/Android notorisch kaputt) —
            Resume startet am gemerkten Wortanfang. */
         // idx = -1 bedeutet „noch keine Stelle"; bleibt über Pause erhalten (Resume dort)
-        let player = { active: false, paused: false, words: [], idx: -1, chunkMode: false };
+        let player = { active: false, paused: false, words: [], idx: -1, chunkMode: false, segments: [], segIdx: 0 };
 
         // Ganztext-Wortliste des aktuellen Containers (full-text bzw. aktueller Chunk)
         function buildWords() {
@@ -3504,6 +3547,92 @@
             speakWordAt(startIdx);
         }
 
+        /* Fließend-Modus: Satz-/Absatz-Segmente aus der aktuellen Wortliste bauen.
+           Grenze = Wort mit Satzende-Zeichen; Hard-Cap gegen Mega-Utterances. */
+        function buildSegments() {
+            const words = player.words;
+            const segs = [];
+            const CAP = 20;
+            let start = 0;
+            for (let i = 0; i < words.length; i++) {
+                const t = (words[i].text || '').trim();
+                const endsSentence = /[.!?…:]$/.test(t);
+                const tooLong = (i - start + 1) >= CAP;
+                if (endsSentence || tooLong || i === words.length - 1) {
+                    segs.push({
+                        text: words.slice(start, i + 1).map(w => w.text).join(' '),
+                        startWord: start,
+                        endWord: i
+                    });
+                    start = i + 1;
+                }
+            }
+            player.segments = segs;
+            return segs;
+        }
+
+        /* Fließend-Wiedergabe ab startWordIdx: eine Utterance pro Segment (natürlicher
+           Klang), KEIN Wort-Highlight — nur dezenter Auto-Scroll zur Orientierung.
+           player.idx bleibt Wort-Index, damit Pause/Resume (playFrom(player.idx)) greift. */
+        function playerSpeakFluentFrom(startWordIdx) {
+            const words = player.words;
+            if (!words.length) return;
+            startWordIdx = Math.max(0, Math.min(words.length - 1, startWordIdx));
+            const segs = buildSegments();
+            if (!segs.length) return;
+            let s0 = segs.findIndex(sg => startWordIdx >= sg.startWord && startWordIdx <= sg.endWord);
+            if (s0 < 0) s0 = 0;
+            player.idx = segs[s0].startWord;
+            player.progressed = false;
+            player.gen = (player.gen || 0) + 1;
+            const gen = player.gen;
+            const voice = pickGermanVoice();
+
+            function scrollToWord(idx) {
+                const w = words[idx];
+                if (!w) return;
+                const r = w.el.getBoundingClientRect();
+                if (r.top < 90 || r.bottom > window.innerHeight - 180) {
+                    w.el.scrollIntoView({ behavior: REDUCED_MOTION ? 'auto' : 'smooth', block: 'center' });
+                }
+            }
+            function speakSegmentAt(s) {
+                if (gen !== player.gen || !player.active || player.paused) return;
+                if (s >= segs.length) {
+                    const reachedEnd = player.progressed;
+                    const wasChunk = player.chunkMode;
+                    const wasTafelPage = player.tafelPage;
+                    stopPlayer();
+                    if (reachedEnd && !wasTafelPage && (!wasChunk || state.chunkIndex === state.chunks.length - 1)) storyFinished();
+                    return;
+                }
+                const seg = segs[s];
+                const u = new SpeechSynthesisUtterance(seg.text);
+                u.lang = 'de-DE';
+                if (voice) u.voice = voice;
+                u.rate = SPEECH_RATE;
+                player._utter = u;   // GC-Schutz
+                u.onstart = () => {
+                    if (gen !== player.gen) return;
+                    player.idx = seg.startWord;
+                    player.segIdx = s;
+                    player.progressed = true;
+                    clearHighlights();          // kein Karaoke-Rest sichtbar lassen
+                    scrollToWord(seg.startWord);
+                };
+                u.onend = () => {
+                    if (gen !== player.gen || !player.active || player.paused) return;
+                    player.idx = seg.endWord;
+                    speakSegmentAt(s + 1);
+                };
+                try { window.speechSynthesis.resume(); } catch (e) {}
+                window.speechSynthesis.speak(u);
+            }
+            clearHighlights();
+            scrollToWord(segs[s0].startWord);
+            speakSegmentAt(s0);
+        }
+
         // Ab Wort-Index idx fließend vorlesen (Start/Sprung)
         function playFrom(idx) {
             if (typeof readAloud !== 'undefined' && readAloud.active) stopReadAloud(); // Mikro + TTS nie gleichzeitig
@@ -3519,7 +3648,7 @@
                     if (window.speechSynthesis.paused) window.speechSynthesis.resume();
                 } catch (e) {}
             }, 5000);
-            playerSpeakFrom(idx);
+            if (fluentMode()) playerSpeakFluentFrom(idx); else playerSpeakFrom(idx);
         }
 
         function togglePlayer() {
@@ -4103,6 +4232,9 @@
         document.addEventListener('DOMContentLoaded', function() {
             renderText(); renderQuiz(); renderWeitererzaehlen(); renderSchatzsuche(); renderWortschatz(); initActivityTabs();
             updateTempoButtons();
+            // Vorlese-Modus (Karaoke/Fließend) aus localStorage wiederherstellen
+            try { const rm = localStorage.getItem('lesekumpel-read-mode'); if (rm === 'fluent' || rm === 'karaoke') state.readMode = rm; } catch(e) {}
+            updateReadModeButtons();
             // Mikro-Consent-Dialog verkabeln
             const mc = document.getElementById('mic-consent');
             if (mc) {
