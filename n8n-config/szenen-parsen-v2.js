@@ -120,7 +120,59 @@ if (!Array.isArray(scenes) || scenes.length === 0) {
 function clean(s) { return (s == null ? '' : String(s)).trim(); }
 function has(s) { return clean(s).length > 0; }
 
-return scenes.map(s => {
+// ════════════════════════════════════════════════════════════════════════════
+// paragraphIndex robust bestimmen — wird NIE null.
+// Bisheriger Bug: dieser Node ließ den vom Szenen-LLM gelieferten paragraphIndex
+// fallen → assemble-html bekam undefined → null → falsche Bildplatzierung.
+// Jetzt: LLM-Wert übernehmen (0-basiert, in-range), sonst per Token-Overlap zum
+// passenden Absatz matchen; danach Constraints erzwingen (steigend, distinct, <P).
+// ════════════════════════════════════════════════════════════════════════════
+const STOP = new Set('der die das und ein eine einen einem einer dem den des ist war sind sich auf aus von zu mit im in es er sie wir ihr nicht aber wie als dann noch nur auch schon sehr ganz mehr was wer wann dass weil denn doch mal beim zum zur vom uber unter vor nach bei ohne um an am hat hatte wird wurde sein ihre seine'.split(/\s+/));
+function tokenize(s) {
+  return clean(s).toLowerCase()
+    .replace(/­/g, '').replace(/-/g, '')
+    .replace(/[^a-zäöüß0-9\s]/g, ' ')
+    .split(/\s+/)
+    .filter(w => w.length >= 3 && !STOP.has(w))
+    .map(w => w.replace(/(en|er|es|em|st|e|n|s)$/, ''));
+}
+function assignParagraphIndices(sceneList, storyText) {
+  const paras = String(storyText || '').split(/\n\n+/);
+  const P = paras.length;
+  const n = sceneList.length;
+  if (P <= 1) return sceneList.map(() => 0);
+  // Mehr Szenen als Absätze: gleichmäßig, Duplikate am Ende erlaubt
+  if (n >= P) return sceneList.map((_, i) => Math.min(P - 1, Math.round(i * (P - 1) / Math.max(1, n - 1))));
+  const paraTokens = paras.map(p => new Set(tokenize(p)));
+  // Kandidat je Szene: gültiger LLM-Wert bevorzugt, sonst bester Token-Overlap
+  const cand = sceneList.map(s => {
+    const v = s.paragraphIndex;
+    if (typeof v === 'number' && isFinite(v) && v >= 0 && v < P) return Math.floor(v);
+    const sceneText = [s.momentSummary, s.action, s.setting_focus, s.sceneSetting,
+      Array.isArray(s.characters_present) ? s.characters_present.join(' ') : '',
+      Array.isArray(s.props_shown) ? s.props_shown.map(p => p && p.name).join(' ') : ''].join(' ');
+    const st = tokenize(sceneText);
+    let best = 0, bestScore = -1;
+    for (let i = 0; i < P; i++) {
+      let sc = 0; for (const t of st) if (paraTokens[i].has(t)) sc++;
+      if (sc > bestScore) { bestScore = sc; best = i; }
+    }
+    return best;
+  });
+  // Constraints: 0-basiert, strikt steigend, distinct, < P (Platz für Folge-Szenen lassen)
+  const idx = []; let prevIdx = -1;
+  for (let i = 0; i < n; i++) {
+    let v = Math.max(cand[i], prevIdx + 1);
+    const maxAllowed = P - 1 - (n - 1 - i);
+    if (v > maxAllowed) v = maxAllowed;
+    if (v < 0) v = 0;
+    idx.push(v); prevIdx = v;
+  }
+  return idx;
+}
+const _paraIdx = assignParagraphIndices(scenes, prev.storyText);
+
+return scenes.map((s, _sceneArrIdx) => {
   const sceneNo     = (typeof s.scene === 'number' && s.scene > 0) ? s.scene : 1;
   const summary     = clean(s.momentSummary) || 'A moment from the story';
   const action      = clean(s.action) || 'standing';
@@ -186,6 +238,7 @@ return scenes.map(s => {
     json: {
       ...prev,
       sceneIndex: sceneNo,
+      paragraphIndex: _paraIdx[_sceneArrIdx],
       imagePrompt: finalPrompt,
       imageFilename: prev.slug + '-' + sceneNo + '.png',
       imageGithubPath: 'bilder/' + prev.slug + '-' + sceneNo + '.png',
