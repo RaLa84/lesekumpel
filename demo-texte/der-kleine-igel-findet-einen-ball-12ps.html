@@ -1723,6 +1723,8 @@
         body.view-tafel .tafel-cover-meta { gap: 26px; }
         body.view-tafel .tafel-cover-meta .cm-title { font-size: 4.6rem; }
         body.view-tafel .tafel-cover-meta .cm-chip { font-size: 1.3rem; padding: 12px 22px; }
+        body.view-tafel .tafel-cover-meta .cm-chip .cm-chip-icon svg { width: 24px; height: 24px; }
+        body.view-tafel .tafel-cover-meta .cm-chip .cm-tip svg { width: 20px; height: 20px; }
         body.view-tafel .tafel-cover-meta .cm-author img { width: 88px; height: 88px; }
         body.view-tafel .tafel-cover-meta .cm-author-name { font-size: 1.7rem; }
         body.view-tafel .tafel-cover-meta .cm-author-desc { font-size: 1.25rem; max-width: 54ch; }
@@ -1965,11 +1967,15 @@
         }
         .tafel-cover-meta .cm-chips { display: flex; flex-wrap: wrap; gap: 10px; }
         .tafel-cover-meta .cm-chip {
-            display: inline-flex; align-items: center; gap: 6px;
+            display: inline-flex; align-items: center; gap: 7px;
             background: var(--cream-light, #fff7e6); border: 1px solid var(--border-soft, #eadfca);
             color: var(--navy); font-weight: 600; font-size: 1.05rem;
             padding: 8px 16px; border-radius: 999px;
         }
+        .tafel-cover-meta .cm-chip .cm-chip-icon { display: inline-flex; flex-shrink: 0; }
+        .tafel-cover-meta .cm-chip .cm-chip-icon svg { width: 18px; height: 18px; }
+        .tafel-cover-meta .cm-chip .cm-tip { display: inline-flex; margin-left: 1px; color: #8a8f94; cursor: help; }
+        .tafel-cover-meta .cm-chip .cm-tip svg { width: 15px; height: 15px; }
         .tafel-cover-meta .cm-author { display: flex; align-items: center; gap: 16px; margin-top: 4px; }
         .tafel-cover-meta .cm-author img {
             width: 64px; height: 64px; border-radius: 50%; object-fit: cover;
@@ -4826,15 +4832,32 @@
                 stufe = Math.max(1, stufe - 1);
             }
             const stufeLabel = stufe ? LEVEL_LABELS[stufe] : '';
-            // Lesemodus — kindgerechte Namen wie eltern-lesemodi.html
-            const MODES = { 'Standard': ['🧒', 'Ausgewogen'], 'ADHS': ['⚡', 'Viel Action'],
-                'Autismus': ['🔍', 'Klar & deutlich'], 'LRS': ['🎵', 'Einfach & im Takt'] };
-            const mode = MODES[neurotype];
-            const chip = (icon, txt) => txt ? `<span class="cm-chip">${icon} ${txt}</span>` : '';
+            // Icons als Lucide-Inline-SVG (kein Emoji) — Stil wie das Formular (neue-autorengeschichte.html)
+            const svgIcon = (paths) => `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">${paths}</svg>`;
+            const ICON_STUFE = svgIcon('<path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z"/>');
+            const ICON_GENRE = svgIcon('<path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z"/><circle cx="7.5" cy="7.5" r=".5" fill="currentColor"/>');
+            const ICON_TIP = svgIcon('<circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/>');
+            // Lesemodus — kindgerechte Namen + Lucide-Icons wie im Formular; Fachbegriff nur im Tooltip
+            const MODE_ICONS = {
+                'Standard': svgIcon('<path d="m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="m2 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="M7 21h10"/><path d="M12 3v18"/><path d="M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2"/>'),
+                'ADHS':     svgIcon('<polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>'),
+                'Autismus': svgIcon('<path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/>'),
+                'LRS':      svgIcon('<path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/>')
+            };
+            const MODE_LABELS = { 'Standard': 'Ausgewogen', 'ADHS': 'Viel Action', 'Autismus': 'Klar & deutlich', 'LRS': 'Einfach & im Takt' };
+            const MODE_KLINISCH = { 'ADHS': 'ADHS', 'Autismus': 'Autismus-Spektrum', 'LRS': 'LRS / Legasthenie' };
+            const chip = (icon, txt, klinisch) => {
+                if (!txt) return '';
+                const tip = klinisch
+                    ? `<span class="cm-tip" title="Schreibstil ist optimiert für ${klinisch}" aria-label="Schreibstil ist optimiert für ${klinisch}">${ICON_TIP}</span>`
+                    : '';
+                return `<span class="cm-chip"><span class="cm-chip-icon">${icon}</span><span class="cm-chip-text">${txt}</span>${tip}</span>`;
+            };
+            const modeLabel = MODE_LABELS[neurotype];
             const chips = [
-                chip('📚', stufeLabel),
-                mode ? chip(mode[0], mode[1]) : '',
-                chip('🏷️', genre)
+                chip(ICON_STUFE, stufeLabel),
+                modeLabel ? chip(MODE_ICONS[neurotype], modeLabel, MODE_KLINISCH[neurotype]) : '',
+                chip(ICON_GENRE, genre)
             ].join('');
             const meta = document.createElement('div');
             meta.className = 'tafel-cover-meta';
