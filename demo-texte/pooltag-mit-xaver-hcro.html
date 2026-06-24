@@ -1816,7 +1816,8 @@
         }
 
         /* Hero-Cover ausblenden — Bild wandert in Sticky-Stage, Titel in .tafel-title */
-        body.view-tafel .story-hero-cover { display: none; }
+        /* Cover visuell ausblenden, aber h1 im A11y-Baum lassen (sr-only statt display:none) */
+        body.view-tafel .story-hero-cover { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
 
         /* Story-Spalte (rechts) — Indikator absolut oben, Sektionen zentriert in der Spalte */
         body.view-tafel .tafel-story-col {
@@ -1965,7 +1966,7 @@
         .tafel-cover-meta .cm-author-text { display: flex; flex-direction: column; gap: 3px; }
         .tafel-cover-meta .cm-author-name { font-family: var(--font-heading); font-weight: 700; font-size: 1.25rem; color: var(--navy); }
         .tafel-cover-meta .cm-author-desc { font-size: 1rem; color: #5a6368; line-height: 1.45; max-width: 46ch; }
-        .tafel-cover-meta .cm-hint { margin-top: 10px; color: var(--accent-coral); font-weight: 600; font-size: 1.15rem; }
+        .tafel-cover-meta .cm-hint { margin-top: 10px; color: #BE3F22; font-weight: 600; font-size: 1.15rem; } /* AA: 5.35:1 auf Weiss (war --accent-coral #F97352 = 2.76) */
 
         /* Titel + Autor + Neurotype-Hinweis in der Story-Spalte sind im Tafel-Modus NIE sichtbar —
            sie werden nur als Cover-Overlay über Bild 1 gezeigt; ab Page 2 reicht der Abschnitts-Indikator */
@@ -4134,6 +4135,16 @@
             if (viewMode === 'linien') toggleLeselinien();
             else if (viewMode === 'fahrplan') toggleFahrplan();
             else if (viewMode === 'haeppchen') toggleViewMode();
+
+            // A11y: aria-pressed an den Toggle-Buttons synchron zur .active-Klasse
+            // halten (WCAG 4.1.2). MutationObserver statt jede toggle-Funktion anzufassen.
+            ['btn-dyslexia','btn-contrast','btn-summary','btn-syllables','btn-emojis','btn-leselinien','btn-fahrplan','btn-fokus'].forEach(function(id){
+                var b = document.getElementById(id);
+                if (!b) return;
+                var sync = function(){ b.setAttribute('aria-pressed', b.classList.contains('active') ? 'true' : 'false'); };
+                sync();
+                new MutationObserver(sync).observe(b, { attributes: true, attributeFilter: ['class'] });
+            });
         });
 
         // --- INHALTE-MELDEN MODAL ---
@@ -4430,6 +4441,10 @@
             if (!storyCol) {
                 storyCol = document.createElement('div');
                 storyCol.className = 'tafel-story-col';
+                // Scrollbarer Bereich per Tastatur erreichbar (WCAG 2.1.1)
+                storyCol.tabIndex = 0;
+                storyCol.setAttribute('role', 'region');
+                storyCol.setAttribute('aria-label', 'Geschichtentext');
                 // Marker, um beim Exit die Elemente an Original-Stelle zurückzulegen
                 const anchor = document.querySelector('.author-line');
                 if (anchor) {
@@ -4775,18 +4790,39 @@
             const m = sel => document.querySelector(`meta[name="${sel}"]`)?.content?.trim() || '';
             const title = (document.querySelector('.story-hero-cover #main-title')?.textContent || '').trim();
             const author = m('author');
-            const wordLevel = (m('reading-level').split(',')[0] || '').trim();   // z.B. "100–200 Wörter"
             const genre = m('genre');
-            let age = '', desc = '', ldAvatar = '';
+            const neurotype = m('neurotype');
+            let desc = '', ldAvatar = '';
             try {
                 const ld = JSON.parse(document.querySelector('script[type="application/ld+json"]').textContent);
-                age = (ld?.audience?.audienceType || '').replace(/^Kinder\s*/, '');
                 desc = ld?.author?.description || '';
                 ldAvatar = ld?.author?.image || '';
             } catch (e) {}
             const avatarSrc = document.querySelector('.author-line .author-avatar')?.src || ldAvatar || '';
+            // Lesestufe aus Persona × Neurotyp ableiten — identische Logik wie demo.html (Bibliothek)
+            const LEVEL_LABELS = { 1: 'Leseanfänger', 2: 'Erstleser', 3: 'Geübte Leser', 4: 'Sichere Leser', 5: 'Lese-Profis' };
+            const PERSONA_HOME_LEVEL = { 'Pip Punkt': 1, 'Mia Mitte': 2, 'Peter Past': 3, 'Stella Stimmenreich': 4, 'Finja Feder': 5,
+                'Jonas Entdecker': 3, 'Samira Wissensfreund': 4, 'Deniz Traumfänger': 4, 'Holzi Pixelkopf': 5 };
+            const SKILL_PERSONAS = new Set(['Pip Punkt', 'Mia Mitte', 'Peter Past', 'Stella Stimmenreich', 'Finja Feder']);
+            let stufe = PERSONA_HOME_LEVEL[author];
+            if (stufe == null) {
+                const num = (m('reading-level').match(/\d+/) || [])[0];
+                const n = num ? parseInt(num, 10) : NaN;
+                stufe = isNaN(n) ? null : (n < 50 ? 1 : n < 100 ? 2 : n < 150 ? 3 : n < 250 ? 4 : 5);
+            } else if (SKILL_PERSONAS.has(author) && /LRS|Legasthenie|Dyslex/i.test(neurotype)) {
+                stufe = Math.max(1, stufe - 1);
+            }
+            const stufeLabel = stufe ? LEVEL_LABELS[stufe] : '';
+            // Lesemodus — kindgerechte Namen wie eltern-lesemodi.html
+            const MODES = { 'Standard': ['🧒', 'Ausgewogen'], 'ADHS': ['⚡', 'Viel Action'],
+                'Autismus': ['🔍', 'Klar & deutlich'], 'LRS': ['🎵', 'Einfach & im Takt'] };
+            const mode = MODES[neurotype];
             const chip = (icon, txt) => txt ? `<span class="cm-chip">${icon} ${txt}</span>` : '';
-            const chips = [chip('📖', wordLevel), chip('🧒', age), chip('🏷️', genre)].join('');
+            const chips = [
+                chip('📚', stufeLabel),
+                mode ? chip(mode[0], mode[1]) : '',
+                chip('🏷️', genre)
+            ].join('');
             const meta = document.createElement('div');
             meta.className = 'tafel-cover-meta';
             meta.innerHTML = `

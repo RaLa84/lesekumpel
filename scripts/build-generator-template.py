@@ -99,7 +99,9 @@ def main() -> int:
     out = build()
 
     # Sanity-Checks
-    leaks = [t for t in ("flohmarkt", "12e9", "Jonas Entdecker") if t in out]
+    # Sentinel doppelt-quotiert: faengt den Donor-Autor in Meta-/JSON-LD-Slots,
+    # ohne die einfach-quotierten Persona-Konstanten in der Shell-JS (PERSONA_HOME_LEVEL) zu treffen.
+    leaks = [t for t in ("flohmarkt", "12e9", '"Jonas Entdecker"') if t in out]
     placeholders = sorted(set(re.findall(r"\{\{[A-Z_]+\}\}", out)))
     new_shell = 'class="nav-center"' in out
     lucide_heart = "M2 9.5a5.5 5.5 0 0 1 9.591-3.676" in out
