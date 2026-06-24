@@ -35,7 +35,7 @@
   }
 
   /* ---------- FÖRDERBEDARF → LESEHILFEN ----------
-     Mapping nach leseapp_konzeption.md ("Spezielle Zielgruppen").
+     Mapping nach docs/leseapp_konzeption.md ("Spezielle Zielgruppen").
      Liefert IMMER ein vollständiges readingHelp-Objekt mit allen Flags,
      damit die Config-Sektion verlässlich rendern kann. */
   function blankReadingHelp() {

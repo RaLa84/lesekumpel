@@ -216,7 +216,7 @@
 
 ## Visuelle Leitlinien
 
-- **Farbpalette:** Hintergrund Cremegelb `#FFF9E5`, Akzent Coral `#D67171`, Sekundär­gelb `#FFD54F`, Text dunkel `#2D3436`. (siehe `design-system.md`)
+- **Farbpalette:** Hintergrund Cremegelb `#FFF9E5`, Akzent Coral `#D67171`, Sekundär­gelb `#FFD54F`, Text dunkel `#2D3436`. (siehe `docs/design-system.md`)
 - **Schriften:** Headlines Fredoka, Body Atkinson Hyperlegible — passend zur Plattform und ein subtiles Statement zur Inklusions­haltung.
 - **Bildsprache:** echte Screenshots der Plattform > generische Stockfotos. Keine Kinder-Stockfotos mit kommerzieller Anmutung.
 - **Animation:** sparsam. Kein Folien-Übergangs-Spektakel. Lieber langsam und klar.

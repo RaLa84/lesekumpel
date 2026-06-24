@@ -8,7 +8,7 @@ Bei jeder UI/UX-Aufgabe gehst du so vor:
 
 ### 1. Analyse
 - Lies zuerst die betroffenen HTML/CSS-Dateien
-- Prüfe die bestehende UX auf Konsistenz mit dem Design System (`design-system.md`)
+- Prüfe die bestehende UX auf Konsistenz mit dem Design System (`docs/design-system.md`)
 - Identifiziere UX-Probleme (Accessibility, Touch-Targets, visuelle Hierarchie)
 
 ### 2. Design-Prinzipien (immer anwenden)

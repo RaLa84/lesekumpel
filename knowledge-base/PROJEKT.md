@@ -160,7 +160,7 @@ Antwort an Nutzer
 | **Chroma** | Open Source, Python-nativ | Hosting nötig |
 | **Qdrant** | Open Source, performant | Hosting nötig |
 
-**Empfehlung:** Supabase pgvector — passt zur geplanten Lesekumpel-Architektur (siehe `leseapp_konzeption.md`).
+**Empfehlung:** Supabase pgvector — passt zur geplanten Lesekumpel-Architektur (siehe `docs/leseapp_konzeption.md`).
 
 ### Retrieval-Strategie
 

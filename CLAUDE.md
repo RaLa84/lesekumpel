@@ -6,7 +6,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 **Lesekumpel** (Reading Buddy) is a German-language children's story library web app targeting ages 5-10. It serves AI-generated stories and comic stories as a static site hosted on GitHub Pages at `https://rala84.github.io/lesekumpel/`.
 
-Die vollständige Projektvision, Zielgruppe, geplante Features (Spracherkennung, Wort-Tracking, Motivationssystem, PWA) und technische Architektur-Planung sind in `leseapp_konzeption.md` dokumentiert.
+Die vollständige Projektvision, Zielgruppe, geplante Features (Spracherkennung, Wort-Tracking, Motivationssystem, PWA) und technische Architektur-Planung sind in `docs/leseapp_konzeption.md` dokumentiert.
 
 ## Architecture
 
@@ -35,7 +35,7 @@ This is a **static site with no build step** — pure vanilla HTML, CSS, and Jav
 - `n8n-config/` — Workflow-JSON, Daten-vorbereiten-Code, API-Config
 - `n8n-config/daten-vorbereiten-v4.js` — Aktuelle Version der Prompt-Builder-Node
 - `tests/` — Textqualitäts-Tests: Prompts, Ergebnisse pro Modell, Vergleichsanalysen
-- `leseapp_konzeption.md` — Full project vision document (German)
+- `docs/leseapp_konzeption.md` — Full project vision document (German)
 
 ### Data Flow
 
@@ -85,7 +85,7 @@ Neun Personas in zwei Kategorien. Systemprompts in `prompts/`. Avatare in `avata
 
 ## Design System
 
-Das vollständige Design System ist in `design-system.md` dokumentiert.
+Das vollständige Design System ist in `docs/design-system.md` dokumentiert.
 
 Kurzübersicht:
 - Primary coral: `#D67171`, Secondary yellow: `#FFD54F`, Background: `#FFF9E5`
