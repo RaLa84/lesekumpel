@@ -1,6 +1,6 @@
 # Seitenübersicht — URL-Pfade & Seitentypen
 
-> **Stand:** 2026-06-23
+> **Stand:** 2026-06-24
 > Übersicht aller URL-Pfade des statischen Lesekumpel-Sites (gehostet auf GitHub Pages unter `https://rala84.github.io/lesekumpel/`).
 > Die Story-Listen in `index.html`/`demo.html` werden **dynamisch zur Laufzeit per GitHub-API** geladen — die einzelnen Story-HTML-Dateien sind also Inhalte, keine eigenständig gepflegten App-Seiten.
 > Spalte „Sitemap" = in [`sitemap.xml`](../sitemap.xml) als SEO-relevant deklariert.
@@ -15,6 +15,7 @@
 | [preise.html](../preise.html) | Tarife & Funktionen | ✅ 0.7 |
 | [ueber-uns.html](../ueber-uns.html) | Über uns / Team | ✅ 0.6 |
 | [blog-warum-lesekumpel.html](../blog-warum-lesekumpel.html) | Blog/SEO-Artikel „Warum Lesekumpel?" | ✅ 0.6 |
+| [eltern-lesemodi.html](../eltern-lesemodi.html) | Info-Seite „Lesemodi erklärt" für Eltern & Fachkräfte | ✅ 0.6 |
 | [impressum.html](../impressum.html) | Rechtliches | ✅ 0.3 |
 | [datenschutz.html](../datenschutz.html) | Rechtliches | ✅ 0.3 |
 
@@ -70,4 +71,4 @@
 ## Kurzfazit
 
 ~24 funktionale Root-Seiten (Marketing, Konto, 8 Generatoren) + 3 dynamische Story-Verzeichnisse (231 Story-Seiten gesamt).
-Im Sitemap als SEO-relevant: 10 statische Seiten + alle `texte/`, `comicgeschichten/`, `demo-texte/`.
+Im Sitemap als SEO-relevant: 11 statische Seiten + alle `texte/`, `comicgeschichten/`, `demo-texte/`.

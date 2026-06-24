@@ -17,6 +17,7 @@ const STATIC_PAGES = [
   { path: 'preise.html', priority: '0.7', changefreq: 'monthly' },
   { path: 'ueber-uns.html', priority: '0.6', changefreq: 'monthly' },
   { path: 'blog-warum-lesekumpel.html', priority: '0.6', changefreq: 'monthly' },
+  { path: 'eltern-lesemodi.html', priority: '0.6', changefreq: 'monthly' },
   { path: 'neue-geschichte.html', priority: '0.5', changefreq: 'monthly' },
   { path: 'starter.html', priority: '0.5', changefreq: 'monthly' },
   { path: 'impressum.html', priority: '0.3', changefreq: 'yearly' },
