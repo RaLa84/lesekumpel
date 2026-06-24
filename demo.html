@@ -588,7 +588,20 @@
       { folder: 'comicgeschichten', type: 'comic' }
     ];
 
-    const LEVEL_LABELS = { lesestarter: 'Lesestarter', 'wort-entdecker': 'Wort-Entdecker', 'lese-profis': 'Lese-Profis' };
+    /* ---- Lese-Stufen: Schwierigkeit aus Persona × Neurotyp ---- */
+    const LEVELS = [
+      { key: 'stufe-1', label: 'Lesestarter' },
+      { key: 'stufe-2', label: 'Leseflitzer' },
+      { key: 'stufe-3', label: 'Wort-Entdecker' },
+      { key: 'stufe-4', label: 'Lese-Profi' },
+      { key: 'stufe-5', label: 'Lese-Meister' }
+    ];
+    /* Home-Stufe pro Persona (gilt für Standard/ADHS/Autismus); LRS = Home − 1 (nur Skill-Personas) */
+    const PERSONA_HOME_LEVEL = {
+      'Pip Punkt': 1, 'Mia Mitte': 2, 'Peter Past': 3, 'Stella Stimmenreich': 4, 'Finja Feder': 5,
+      'Jonas Entdecker': 3, 'Samira Wissensfreund': 4, 'Deniz Traumfänger': 4, 'Holzi Pixelkopf': 5
+    };
+    const SKILL_PERSONAS = new Set(['Pip Punkt', 'Mia Mitte', 'Peter Past', 'Stella Stimmenreich', 'Finja Feder']);
     const FORMAT_LABELS = { text: '📖 Text', comic: '🎨 Comic' };
 
     // Autorenfarben fuer Text/Avatar-Fallback: alle >=4.5:1 auf Weiss (WCAG AA 1.4.3)
@@ -616,11 +629,29 @@
       'Jonas Entdecker': { neurotype: 'Abenteuer / Alltag', desc: 'Authentische Alltagsgeschichten aus der Ich-Perspektive. Ehrlich, lustig und immer zum Mitfühlen.', avatar: 'avatars/jonas-entdecker.webp' }
     };
 
-    function getLevelLabel(level) {
-      const n = parseFloat(level.replace(/[^0-9.]/g, ''));
-      if (n <= 2) return 'Lesestarter';
-      if (n <= 4) return 'Wort-Entdecker';
-      return 'Lese-Profis';
+    /* Stufe einer Story aus Persona × Neurotyp ableiten. Fallback: untere Wortgrenze. */
+    function getStoryLevelKey(author, neurotype, readingLevel) {
+      let base = PERSONA_HOME_LEVEL[author];
+      if (base) {
+        if (SKILL_PERSONAS.has(author) && neurotype && /LRS|Legasthenie|Dyslex/i.test(neurotype)) {
+          base = Math.max(1, base - 1);
+        }
+        return 'stufe-' + base;
+      }
+      /* Fallback für unbekannte Autoren: erste Zahl = untere Wortgrenze (NUR erste Zahl!) */
+      const m = readingLevel && readingLevel.match(/\d+/);
+      if (!m) return null; /* z. B. „Bildgeschichte" / leer */
+      const n = parseInt(m[0], 10);
+      if (n < 50) return 'stufe-1';
+      if (n < 100) return 'stufe-2';
+      if (n < 150) return 'stufe-3';
+      if (n < 250) return 'stufe-4';
+      return 'stufe-5';
+    }
+
+    function getLevelLabel(key) {
+      const lvl = LEVELS.find(l => l.key === key);
+      return lvl ? lvl.label : '';
     }
 
     /* ---- State ---- */
@@ -642,12 +673,8 @@
             ? { divider: true }
             : { v: p, label: p, avatar: authorBios[p] && authorBios[p].avatar }))
       },
-      { key: 'level', label: 'Stufe', options: [
-        { v: 'all', label: 'Alle Stufen' },
-        { v: 'lesestarter', label: 'Lesestarter' },
-        { v: 'wort-entdecker', label: 'Wort-Entdecker' },
-        { v: 'lese-profis', label: 'Lese-Profis' }
-      ] },
+      { key: 'level', label: 'Stufe', options: [{ v: 'all', label: 'Alle Stufen' }].concat(
+        LEVELS.map(l => ({ v: l.key, label: l.label }))) },
       { key: 'neuro', label: 'Neurotyp', options: [
         { v: 'all', label: 'Alle' },
         { v: 'Standard', label: 'Standard' },
@@ -925,15 +952,19 @@
        ============================================================ */
     function fromIndex(s) {
       const d = new Date(s.date);
+      const author = s.author || '';
+      const readingLevel = s.readingLevel || '';
+      const neurotype = s.neurotype || '';
       return {
         name: s.path.split('/').pop(),
         type: s.type,
         path: s.path,
         date: d,
         dateString: d.getTime() > 0 ? d.toLocaleDateString('de-DE', { day: '2-digit', month: '2-digit', year: 'numeric' }) : '',
-        author: s.author || '',
-        readingLevel: s.readingLevel || '',
-        neurotype: s.neurotype || '',
+        author: author,
+        readingLevel: readingLevel,
+        neurotype: neurotype,
+        levelKey: getStoryLevelKey(author, neurotype, readingLevel),
         displayTitle: s.title || '',
         isValid: true
       };
@@ -1013,6 +1044,7 @@
             if (ml && ml[1]) s.readingLevel = ml[1];
             const mn = txt.match(/<meta\s+name=["']neurotype["']\s+content=["']([^"']+)["']/i);
             if (mn && mn[1]) s.neurotype = mn[1];
+            s.levelKey = getStoryLevelKey(s.author, s.neurotype, s.readingLevel);
             const mt = txt.match(/<title>([^<]+)<\/title>/i);
             if (mt && mt[1]) {
               s.displayTitle = mt[1]
@@ -1038,11 +1070,7 @@
         if (state.format !== 'all' && s.type !== state.format) return false;
         if (state.author !== 'all' && (!s.author || s.author.toLowerCase() !== state.author.toLowerCase())) return false;
         if (state.level !== 'all') {
-          if (!s.readingLevel) return false;
-          const n = parseFloat(s.readingLevel.replace(/[^0-9.]/g, ''));
-          if (state.level === 'lesestarter' && n > 2) return false;
-          if (state.level === 'wort-entdecker' && (n <= 2 || n > 4)) return false;
-          if (state.level === 'lese-profis' && n <= 4) return false;
+          if (!s.levelKey || s.levelKey !== state.level) return false;
         }
         if (state.neuro !== 'all') {
           if (!s.neurotype || !s.neurotype.toLowerCase().includes(state.neuro.toLowerCase())) return false;
@@ -1090,7 +1118,9 @@
         const slug = s.name.replace(/\.html$/, '');
         const thumbUrl = isComic ? 'comics/' + slug + '-1.png' : 'bilder/thumbs/' + slug + '-1.webp';
         const icon = isComic ? '🎨' : '📖';
-        const levelDisplay = s.readingLevel ? (s.readingLevel.split(',')[0].trim() + ' · ' + getLevelLabel(s.readingLevel)) : '';
+        const wordsPart = s.readingLevel ? s.readingLevel.split(',')[0].trim() : '';
+        const levelLabel = getLevelLabel(s.levelKey);
+        const levelDisplay = levelLabel ? (wordsPart ? wordsPart + ' · ' + levelLabel : levelLabel) : wordsPart;
         const title = s.displayTitle || formatName(s.name);
         const saved = favs.has(s.path);
         const avatar = authorBios[s.author] && authorBios[s.author].avatar;
