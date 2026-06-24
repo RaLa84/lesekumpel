@@ -28,7 +28,7 @@ REPO = Path(__file__).resolve().parent.parent
 DEMO = REPO / "demo-texte"
 
 RAWSTORY_RX = re.compile(r'let rawStory = "((?:[^"\\]|\\.)*)";')
-IMGPOS_RX = re.compile(r'const imagePositions = (\[[^\]]*\]);')
+IMGPOS_RX = re.compile(r'const imagePositions = (\[.*?\]);')
 
 
 def get_raw_story(html: str) -> str:
@@ -96,6 +96,7 @@ def set_indices(path: Path, mapping_str: str, dry: bool):
             continue
         scene_s, idx_s = part.split(":")
         mapping[int(scene_s)] = int(idx_s)
+    # Original-Objekte vollständig erhalten (z.B. caption-Feld!), nur paragraphIndex setzen
     new = [dict(p) for p in pos]
     for p in new:
         if p["scene"] in mapping:
@@ -108,10 +109,7 @@ def set_indices(path: Path, mapping_str: str, dry: bool):
         if v is not None and not (0 <= v < P):
             print(f"  [FEHLER] {path.name}: paragraphIndex {v} außerhalb 0..{P-1}")
             return False
-    new_json = "[" + ",".join(
-        '{"scene":%d,"paragraphIndex":%s}' % (p["scene"], "null" if p["paragraphIndex"] is None else int(p["paragraphIndex"]))
-        for p in new
-    ) + "]"
+    new_json = json.dumps(new, ensure_ascii=False, separators=(",", ":"))
     old_json = m.group(1)
     if old_json == new_json:
         print(f"  [unverändert] {path.name}")
