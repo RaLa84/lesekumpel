@@ -2866,6 +2866,70 @@
             });
         })();
 
+        // Übersetzt einen \n\n-Sektionsindex (= paragraphIndex der Pipeline, 0-basiert)
+        // in den Index der ersten zugehörigen allGroups-Gruppe.
+        function mapSectionToGroup(allGroups, sectionIndex) {
+            let idx = allGroups.findIndex(g => g.sectionIndex === sectionIndex);
+            if (idx < 0) idx = allGroups.findIndex(g => g.sectionIndex >= sectionIndex);
+            if (idx < 0) idx = allGroups.length - 1;
+            return idx;
+        }
+
+        /* EINE gemeinsame Bild-Platzierung für ALLE Ansichten (Fließtext, Häppchen, Tafel).
+           Konvention 0-basiert: paragraphIndex i => Bild gehört zu Gruppe der Sektion i;
+           paragraphIndex 0 => Cover/Hero (nicht inline). Honoriert imagePositions, wenn alle
+           paragraphIndex numerisch sind; sonst EIN deterministischer Gleichverteilungs-Fallback
+           (identisch in allen Ansichten). Liefert:
+             byGroup[i]    = src des Inline-Bilds für Gruppe i (oder undefined)
+             sceneByGroup[i] = aktive Szene-Nummer für Gruppe i (Tafel-Sticky)
+             coverScene    = Szene fürs Tafel-Cover */
+        function computeScenePlacement(allGroups) {
+            const groupCount = allGroups.length;
+            const imgs = inlineImages.filter(im => im.scene != null);
+            const srcByScene = {};
+            imgs.forEach(im => { srcByScene[im.scene] = im.src; });
+
+            const validMapping = Array.isArray(imagePositions) && imagePositions.length > 0
+                && imagePositions.every(p => typeof p.paragraphIndex === 'number');
+
+            let placed = []; // { scene, src, groupIdx, cover }
+            if (validMapping) {
+                imagePositions
+                    .filter(p => srcByScene[p.scene] != null)
+                    .slice().sort((a, b) => a.paragraphIndex - b.paragraphIndex)
+                    .forEach(p => {
+                        if (p.paragraphIndex <= 0) {
+                            placed.push({ scene: p.scene, src: srcByScene[p.scene], groupIdx: 0, cover: true });
+                        } else {
+                            placed.push({ scene: p.scene, src: srcByScene[p.scene], groupIdx: mapSectionToGroup(allGroups, p.paragraphIndex) });
+                        }
+                    });
+            } else {
+                // EINZIGER Fallback (gleich in allen Ansichten): gleichmäßig über die Gruppen
+                const n = imgs.length;
+                imgs.forEach((im, i) => {
+                    let g = Math.round((i + 1) * groupCount / (n + 1));
+                    g = Math.min(groupCount - 1, Math.max(0, g));
+                    placed.push({ scene: im.scene, src: im.src, groupIdx: g });
+                });
+            }
+
+            // Inline-Bild je Gruppe (letzte Platzierung gewinnt bei Szenen>Absätzen; Cover nicht inline)
+            const byGroup = {};
+            placed.forEach(pl => { if (!pl.cover) byGroup[pl.groupIdx] = pl.src; });
+
+            // Aktive Szene je Gruppe: letzte Platzierung (inkl. Cover) mit groupIdx <= i; sonst erste Szene
+            const ordered = placed.slice().sort((a, b) => a.groupIdx - b.groupIdx);
+            const firstScene = ordered.length ? ordered[0].scene : 0;
+            const sceneByGroup = [];
+            for (let i = 0; i < groupCount; i++) {
+                let s = firstScene;
+                for (const pl of ordered) { if (pl.groupIdx <= i) s = pl.scene; else break; }
+                sceneByGroup[i] = s;
+            }
+            return { byGroup, sceneByGroup, coverScene: firstScene || 1 };
+        }
+
         function renderText() {
             // Emoji-Toggle: pro Modus (Story / Summary) jeweils Emoji- oder Plain-Version
             let activeStory = state.emojis ? emojiStory : rawStory;
@@ -2918,40 +2982,14 @@
             // Fallback: kein parsbarer Inhalt
             if (allGroups.length === 0) allGroups.push({ heading: null, text: raw, sectionIndex: 0 });
 
-            // Bilder positionieren: bevorzugt via paragraphIndex aus imagePositions
-            // (Mapping aus der Pipeline), Fallback auf gleichmäßige Verteilung.
+            // Bilder positionieren: EINE gemeinsame Logik für Fließtext, Häppchen und Tafel.
+            // sceneByGroup wird zusätzlich als data-scene an jedes <p> geschrieben (Tafel-Quelle).
+            const scenePlacement = computeScenePlacement(allGroups);
+            window._tafelCoverScene = scenePlacement.coverScene;
             let imgPositions = {};
             if (inlineImages.length > 0 && !state.summary) {
-                const mappingActive = Array.isArray(imagePositions)
-                    && imagePositions.length > 0
-                    && imagePositions.every(p => typeof p.paragraphIndex === 'number');
-
-                if (mappingActive) {
-                    inlineImages.forEach(img => {
-                        const map = imagePositions.find(p => p.scene === img.scene);
-                        if (!map) return;
-                        // Hard rule: Geschichten beginnen immer mit Text — paragraphIndex 0
-                        // würde das Bild über dem ersten Absatz platzieren und sich mit
-                        // dem Hero-Banner doppeln.
-                        const targetSection = Math.max(1, map.paragraphIndex);
-                        const groupIdx = allGroups.findIndex(g => g.sectionIndex >= targetSection);
-                        if (groupIdx < 0) return; // keine passende Position — Bild wird übersprungen
-                        imgPositions[groupIdx] = img.src;
-                    });
-                } else if (document.body.classList.contains('haeppchen-active')) {
-                    let interval = Math.max(1, Math.floor(allGroups.length / inlineImages.length));
-                    inlineImages.forEach((img, i) => {
-                        let pos = interval * i;
-                        if (pos >= allGroups.length) pos = allGroups.length - 1;
-                        imgPositions[pos] = img.src;
-                    });
-                } else {
-                    let interval = Math.max(1, Math.floor(allGroups.length / (inlineImages.length + 1)));
-                    inlineImages.forEach((img, i) => {
-                        let pos = interval * (i + 1);
-                        if (pos >= allGroups.length) pos = allGroups.length - 1;
-                        imgPositions[pos] = img.src;
-                    });
+                for (let i = 0; i < allGroups.length; i++) {
+                    if (scenePlacement.byGroup[i]) imgPositions[i] = scenePlacement.byGroup[i];
                 }
             }
 
@@ -2966,7 +3004,7 @@
                 let textHtml = '';
                 if (group.text) {
                     let processed = group.text.split(/\s+/).map(w => processWord(w)).join(' ');
-                    textHtml = `<p style="margin:0 0 0.8em 0;">${processed}</p>`;
+                    textHtml = `<p style="margin:0 0 0.8em 0;" data-scene="${scenePlacement.sceneByGroup[i]}">${processed}</p>`;
                 }
                 return imgTag + headingHtml + textHtml;
             }).join('');
@@ -4748,44 +4786,26 @@
             const view = document.getElementById('full-text-view');
             if (!view || view.querySelector('.tafel-section')) return;
             const paragraphs = Array.from(view.querySelectorAll(':scope > p'));
-            const positions = (window.imagePositions || []).slice().sort((a, b) => a.paragraphIndex - b.paragraphIndex);
             if (!paragraphs.length) return;
 
+            // Szene-Zuordnung kommt aus data-scene der <p> (von renderText/computeScenePlacement
+            // gesetzt) — identisch zu Fließtext und Häppchen.
+            const coverScene = (typeof window._tafelCoverScene === 'number')
+                ? window._tafelCoverScene
+                : (Number(paragraphs[0].dataset.scene) || 1);
+
             // Erste Slide: Cover (kein Text, nur Bild + Titel/Autor-Overlay)
-            const coverScene = positions[0]?.scene || 1;
             const cover = document.createElement('section');
             cover.className = 'tafel-section is-cover-slide';
             cover.dataset.scene = String(coverScene);
             cover.dataset.cover = 'true';
             view.appendChild(cover);
 
-            // Bild-Mapping: welcher Absatz gehört zu welcher Szene?
-            // Wenn imagePositions early-dense (Pipeline-Daten zu früh gehäuft):
-            // verteile Bilder gleichmäßig über die Absätze.
-            const maxPosIdx = positions[positions.length - 1]?.paragraphIndex || 0;
-            const earlyDense = positions.length > 0 && maxPosIdx < paragraphs.length * 0.6;
-
-            function sceneForParagraph(pIdx) {
-                if (!positions.length) return 1;
-                if (earlyDense) {
-                    // gleichmäßig: pIdx auf positions.length-Bereiche mappen
-                    const bucket = Math.floor((pIdx * positions.length) / paragraphs.length);
-                    return positions[Math.min(bucket, positions.length - 1)].scene;
-                }
-                // Pipeline-Daten: letzte position mit paragraphIndex <= pIdx+1
-                let best = positions[0].scene;
-                for (const pos of positions) {
-                    if (pos.paragraphIndex <= pIdx + 1) best = pos.scene;
-                    else break;
-                }
-                return best;
-            }
-
-            // Pro Absatz eine Slide
-            paragraphs.forEach((p, i) => {
+            // Pro Absatz eine Slide — Szene aus dem data-scene des <p>
+            paragraphs.forEach((p) => {
                 const section = document.createElement('section');
                 section.className = 'tafel-section';
-                section.dataset.scene = String(sceneForParagraph(i));
+                section.dataset.scene = p.dataset.scene || String(coverScene);
                 section.appendChild(p);
                 view.appendChild(section);
             });
@@ -5241,7 +5261,6 @@
             if (tafelObserver) { tafelObserver.disconnect(); tafelObserver = null; }
             const paragraphs = Array.from(document.querySelectorAll('#full-text-view p'));
             const stageImgs = Array.from(stage.querySelectorAll('.tafel-stage-img'));
-            const positions = (window.imagePositions || []).slice().sort((a, b) => a.paragraphIndex - b.paragraphIndex);
             if (!paragraphs.length || !stageImgs.length) return;
 
             function activateScene(scene) {
@@ -5250,24 +5269,14 @@
                 });
             }
 
-            function sceneForParagraph(pIdx) {
-                let bestScene = 0; // Hero
-                for (const pos of positions) {
-                    // paragraphIndex ist 1-basiert in den Daten; pIdx ist 0-basierter Array-Index
-                    if (pos.paragraphIndex <= pIdx + 1) bestScene = pos.scene;
-                    else break;
-                }
-                return bestScene;
-            }
-
             tafelObserver = new IntersectionObserver((entries) => {
                 const inFocus = entries
                     .filter(e => e.isIntersecting)
                     .sort((a, b) => b.intersectionRatio - a.intersectionRatio)[0];
                 if (!inFocus) return;
-                const idx = paragraphs.indexOf(inFocus.target);
-                if (idx < 0) return;
-                activateScene(sceneForParagraph(idx));
+                // Szene aus dem data-scene des sichtbaren <p> (von renderText gesetzt)
+                const scene = Number(inFocus.target.dataset.scene);
+                if (!isNaN(scene)) activateScene(scene);
             }, { threshold: [0.3, 0.6, 0.9], rootMargin: '-20% 0% -40% 0%' });
 
             paragraphs.forEach(p => tafelObserver.observe(p));
