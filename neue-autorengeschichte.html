@@ -158,6 +158,32 @@
         .toggle-btn:hover { border-color: var(--mint); color: #136B61; }
         .toggle-btn.active { background: rgba(47,184,166,0.16); border-color: var(--mint); color: #136B61; box-shadow: none; }
 
+        /* --- LESEMODUS-KARTEN (Grid) --- */
+        .neuro-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .neuro-card {
+            background: #fff; border: 2px solid var(--border); border-radius: 16px;
+            padding: 16px 18px; cursor: pointer; transition: all 0.25s;
+            display: flex; flex-direction: column; gap: 8px; text-align: left;
+            font-family: var(--font-body); color: var(--text-dark);
+        }
+        .neuro-card:hover { border-color: var(--mint); transform: translateY(-3px); box-shadow: 0 6px 16px rgba(0,0,0,0.06); }
+        .neuro-card.active { border-color: var(--mint); background: rgba(47,184,166,0.08); }
+        .neuro-card:focus-visible { outline: 3px solid var(--lila, #7D6AE6); outline-offset: 2px; }
+        .neuro-head { display: flex; align-items: center; gap: 10px; }
+        .neuro-icon {
+            display: inline-flex; align-items: center; justify-content: center;
+            width: 40px; height: 40px; border-radius: 12px; flex-shrink: 0;
+            background: var(--cream-light); color: #136B61;
+        }
+        .neuro-card.active .neuro-icon { background: rgba(47,184,166,0.18); }
+        .neuro-icon svg { width: 21px; height: 21px; }
+        .neuro-name { font-family: var(--font-heading); font-size: 1rem; font-weight: 600; color: var(--navy); }
+        .neuro-tip { margin-left: auto; display: inline-flex; align-items: center; color: var(--text-muted); cursor: help; }
+        .neuro-tip svg { width: 16px; height: 16px; }
+        .neuro-desc { font-size: 0.8rem; color: var(--text-muted); line-height: 1.45; }
+        @media (max-width: 560px) { .neuro-grid { grid-template-columns: 1fr; } }
+        @media (prefers-reduced-motion: reduce) { .neuro-card, .neuro-card:hover { transition: none; transform: none; } }
+
         /* --- PHASE CARDS --- */
         .phase-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 12px; }
         .phase-card {
@@ -522,7 +548,7 @@
         <div class="form-section hidden" id="section-neurotyp">
             <h2 class="section-title">Lesemodus</h2>
             <div class="section-sub">Für welchen Lesetyp soll die Geschichte angepasst werden?</div>
-            <div class="toggle-group" id="neurotyp-grid"></div>
+            <div class="neuro-grid" id="neurotyp-grid"></div>
         </div>
 
         <!-- Weiter-Button -->
@@ -880,22 +906,33 @@ function renderNeurotypen() {
     const grid = document.getElementById('neurotyp-grid');
     grid.setAttribute('role', 'group');
     grid.setAttribute('aria-label', 'Lesemodus wählen');
+    const svg = (paths) => `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${paths}</svg>`;
+    const NEURO_ICONS = {
+        Standard: svg('<path d="m16 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="m2 16 3-8 3 8c-.87.65-1.92 1-3 1s-2.13-.35-3-1Z"/><path d="M7 21h10"/><path d="M12 3v18"/><path d="M3 7h2c2 0 5-1 7-2 2 1 5 2 7 2h2"/>'),
+        ADHS:     svg('<polygon points="13 2 3 14 12 14 11 22 21 10 12 10 13 2"/>'),
+        Autismus: svg('<path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/><circle cx="12" cy="12" r="3"/>'),
+        LRS:      svg('<path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/>')
+    };
+    const tipIcon = svg('<circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/>');
     grid.innerHTML = NEUROTYPEN.map(n => {
-        const ariaKlinisch = n.klinisch ? ` (Fachbegriff: ${n.klinisch})` : '';
-        const infoIcon = n.klinisch
-            ? ` <span aria-hidden="true" title="Fachbegriff: ${n.klinisch}" style="cursor:help;color:var(--text-muted);font-size:0.85em;">ⓘ</span>`
-            : '';
-        return `<button type="button" class="toggle-btn" data-neurotyp="${n.id}" aria-pressed="false" aria-label="${n.label}: ${n.info}${ariaKlinisch}" onclick="selectNeurotyp('${n.id}')" style="flex-direction:column;padding:14px 18px;min-width:140px;">
-            <span aria-hidden="true">${n.emoji} ${n.label}${infoIcon}</span>
-            <span aria-hidden="true" style="font-size:0.75rem;font-weight:400;color:var(--text-muted);margin-top:4px;">${n.info}</span>
+        const opt = n.klinisch ? `Schreibstil ist optimiert für ${n.klinisch}` : '';
+        const tip = n.klinisch ? `<span class="neuro-tip" title="${opt}">${tipIcon}</span>` : '';
+        const ariaOpt = n.klinisch ? ` – ${opt}` : '';
+        return `<button type="button" class="neuro-card" data-neurotyp="${n.id}" aria-pressed="false" aria-label="${n.label}: ${n.info}${ariaOpt}" onclick="selectNeurotyp('${n.id}')">
+            <span class="neuro-head" aria-hidden="true">
+                <span class="neuro-icon">${NEURO_ICONS[n.id] || ''}</span>
+                <span class="neuro-name">${n.label}</span>
+                ${tip}
+            </span>
+            <span class="neuro-desc" aria-hidden="true">${n.info}</span>
         </button>`;
     }).join('');
 }
 
 function selectNeurotyp(neurotyp) {
     state.neurotyp = neurotyp;
-    document.querySelectorAll('#neurotyp-grid .toggle-btn').forEach(b => { b.classList.remove('active'); b.setAttribute('aria-pressed', 'false'); });
-    const sel = document.querySelector(`#neurotyp-grid .toggle-btn[data-neurotyp="${neurotyp}"]`);
+    document.querySelectorAll('#neurotyp-grid .neuro-card').forEach(b => { b.classList.remove('active'); b.setAttribute('aria-pressed', 'false'); });
+    const sel = document.querySelector(`#neurotyp-grid .neuro-card[data-neurotyp="${neurotyp}"]`);
     sel.classList.add('active'); sel.setAttribute('aria-pressed', 'true');
     updateNextButton();
 }
