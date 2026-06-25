@@ -419,7 +419,9 @@
         --border: #3A4456; --border-soft: #3A4456; --border-card: #3A4456;
         --mint: #4FD3C0; --accent-teal: #4FD3C0; --coral: #FF8C6B; --accent-coral: #FF8C6B; --salmon: #FF8C6B;
         --primary-yellow: #FFE082; --yellow: #FFE082; --lila: #A99BF0;
-        background: #1C2230;
+        /* transparent statt opak: der dunkle Canvas kommt von html:has() oben,
+           so bleiben die z-index:-1-Deko (Sterne/Blobs) sichtbar (wie Anmeldung) */
+        background: transparent;
     }
     /* Modal-Chrome + Buttons (hartkodierte Helligkeit aufhellen) */
     body.dark-mode .settings-panel { background: var(--bg-card); }
