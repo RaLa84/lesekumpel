@@ -197,10 +197,52 @@
     body.high-contrast .story-tile, body.high-contrast .filter-dd-trigger, body.high-contrast .filter-dd-panel,
     body.high-contrast .search-wrapper input, body.high-contrast .tool-btn, body.high-contrast .font-size-control,
     body.high-contrast .toolbar-group { border-color: #2B3140 !important; }
+    /* Text/Links durchgaengig auf maximalen Kontrast */
     body.high-contrast a, body.high-contrast .tile-title, body.high-contrast .nav-btn { color: #000000; }
+    /* Links als solche erkennbar machen (nicht nur ueber Farbe) */
     body.high-contrast main a, body.high-contrast footer a, body.high-contrast .modern-footer a { text-decoration: underline; }
+    /* Dekorative Hintergruende ruhigstellen, damit Text klar bleibt */
     body.high-contrast .deco-star, body.high-contrast .deco-circle, body.high-contrast .deco-sparkle,
     body.high-contrast .deco-blob, body.high-contrast .bg-blob, body.high-contrast .floating-deco { display: none !important; }
+
+    /* ===== THEMA „DUNKEL" (Dark Mode) — opt-in via body.dark-mode, Default bleibt Hell.
+       Warm-anthrazit statt Reinschwarz; Bulk via Token-Override, dazu gezielte Fixes
+       für hartkodierte helle Flächen (Modal-Buttons + Katalog/Seiten-Surfaces). ===== */
+    html:has(body.dark-mode) { background-color: #1C2230; }
+    body.dark-mode {
+        --cream: #1C2230; --cream-light: #232A3A; --bg-body: #1C2230; --bg-card: #2A3242;
+        --navy: #ECEFF4; --text-dark: #ECEFF4; --text-muted: #A9B2C2; --muted: #A9B2C2;
+        --border: #3A4456; --border-soft: #3A4456; --border-card: #3A4456;
+        --mint: #4FD3C0; --accent-teal: #4FD3C0; --coral: #FF8C6B; --accent-coral: #FF8C6B; --salmon: #FF8C6B;
+        --primary-yellow: #FFE082; --yellow: #FFE082; --lila: #A99BF0;
+        background: #1C2230;
+    }
+    /* Modal-Chrome + Buttons (hartkodierte Helligkeit aufhellen) */
+    body.dark-mode .settings-panel { background: var(--bg-card); }
+    body.dark-mode .tool-btn,
+    body.dark-mode .font-size-control { background: rgba(42,50,66,0.9); color: var(--text-dark); }
+    body.dark-mode .font-size-control .tool-btn { background: transparent; color: var(--text-dark); }
+    body.dark-mode .tool-btn:hover { background: var(--cream-light); color: var(--text-dark); border-color: var(--border-soft); }
+    body.dark-mode .tool-btn.active { color: #1C2230; }
+    body.dark-mode .toolbar-group-label { color: var(--muted); }
+    body.dark-mode .toolbar-group.group-view { background: #22332F; }
+    body.dark-mode .toolbar-group.group-extra { background: #332E20; }
+    /* Generische Seiten-Surfaces (Katalog-Tiles, Filter, Suche, Legal, Footer) — analog
+       zur high-contrast-Liste, aber mit dunklem BG statt nur Border */
+    body.dark-mode .story-tile, body.dark-mode .filter-dd-trigger, body.dark-mode .filter-dd-panel,
+    body.dark-mode .search-wrapper input { background: var(--bg-card); color: var(--text-dark); border-color: var(--border-soft); }
+    /* Zentraler Header (hartkodierte weiße Navbar-Flächen aus partials/header.html) */
+    body.dark-mode .main-navbar { background: rgba(28,34,48,0.92); }
+    body.dark-mode .burger-icon,
+    body.dark-mode .nav-icon-btn { background: #2A3242; }
+    body.dark-mode .mobile-menu { background: #2A3242; }
+    /* Gemeinsamer Footer + weitere hartkodierte helle Flächen pro Seitentyp
+       (Selektoren ohne Treffer auf einer Seite sind harmlos) */
+    body.dark-mode .modern-footer { background: var(--cream-light); color: var(--text-muted); }
+    body.dark-mode .tile-fav, body.dark-mode .tile-speak,
+    body.dark-mode .load-more-btn, body.dark-mode .format-pill,
+    body.dark-mode .placeholder { background: var(--bg-card); color: var(--text-dark); border-color: var(--border-soft); }
+    body.dark-mode .skip-link { background: #3A4456; color: #fff; }
 /* === LK-A11Y:CSS END === */
 
     /* ===== Reduzierte Bewegung ===== */
@@ -411,10 +453,17 @@
           </div>
         </div>
         <div class="toolbar-group group-extra">
+          <div class="toolbar-group-label">Thema</div>
+          <div class="toolbar-group-buttons" role="radiogroup" aria-label="Thema">
+            <button type="button" class="tool-btn" id="btn-theme-light" role="radio" aria-checked="true" onclick="setTheme('light')" aria-label="Helles Thema"><span class="btn-icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg></span> <span class="btn-label">Hell</span></button>
+            <button type="button" class="tool-btn" id="btn-theme-dark" role="radio" aria-checked="false" onclick="setTheme('dark')" aria-label="Dunkles Thema"><span class="btn-icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg></span> <span class="btn-label">Dunkel</span></button>
+            <button type="button" class="tool-btn" id="btn-theme-contrast" role="radio" aria-checked="false" onclick="setTheme('contrast')" aria-label="Hoher Kontrast"><span class="btn-icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 18a6 6 0 0 0 0-12v12z"/></svg></span> <span class="btn-label">Kontrast</span></button>
+          </div>
+        </div>
+        <div class="toolbar-group group-extra">
           <div class="toolbar-group-label">Darstellung</div>
           <div class="toolbar-group-buttons">
             <button type="button" class="tool-btn" onclick="toggleDyslexia(this)" id="btn-dyslexia" aria-pressed="false" aria-label="Lesefreundliche Schrift"><span class="btn-icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v16"/><path d="M4 7V5a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v2"/><path d="M9 20h6"/></svg></span> <span class="btn-label">Lesefreundlich</span></button>
-            <button type="button" class="tool-btn" onclick="toggleContrast(this)" id="btn-contrast" aria-pressed="false" aria-label="Hoher Kontrast"><span class="btn-icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 18a6 6 0 0 0 0-12v12z"/></svg></span> <span class="btn-label">Kontrast</span></button>
           </div>
         </div>
       </div>
@@ -459,7 +508,8 @@
 (function () {
   'use strict';
   var K_DYS = 'lesekumpel-lesefreundlich';
-  var K_CON = 'lesekumpel-kontrast';
+  var K_CON = 'lesekumpel-kontrast';   // Legacy (Migration)
+  var K_THEME = 'lesekumpel-theme';     // 'light' | 'dark' | 'contrast'
   var K_FS = 'lesekumpel-schriftgroesse';
   function ls(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
   function lsSet(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
@@ -505,11 +555,16 @@
     if (b) { b.classList.toggle('active', active); setPressed(b, active); }
     lsSet(K_DYS, active ? 'true' : 'false');
   };
-  window.toggleContrast = function (btn) {
-    var active = document.body.classList.toggle('high-contrast');
-    var b = btn || document.getElementById('btn-contrast');
-    if (b) { b.classList.toggle('active', active); setPressed(b, active); }
-    lsSet(K_CON, active ? 'true' : 'false');
+  // Thema (gegenseitig ausschließend): 'light' | 'dark' | 'contrast'.
+  window.setTheme = function (name) {
+    var b = document.body;
+    b.classList.toggle('dark-mode', name === 'dark');
+    b.classList.toggle('high-contrast', name === 'contrast');
+    ['light', 'dark', 'contrast'].forEach(function (t) {
+      var el = document.getElementById('btn-theme-' + t);
+      if (el) { el.classList.toggle('active', t === name); el.setAttribute('aria-checked', t === name ? 'true' : 'false'); }
+    });
+    lsSet(K_THEME, name);
   };
 
   // Init: gespeicherte Einstellungen anwenden (idempotent, kein Toggle)
@@ -517,10 +572,10 @@
     document.body.classList.add('dyslexia-mode');
     var bd = document.getElementById('btn-dyslexia'); if (bd) { bd.classList.add('active'); setPressed(bd, true); }
   }
-  if (ls(K_CON) === 'true') {
-    document.body.classList.add('high-contrast');
-    var bc = document.getElementById('btn-contrast'); if (bc) { bc.classList.add('active'); setPressed(bc, true); }
-  }
+  // Thema wiederherstellen (Migration: alter K_CON='true' → 'contrast')
+  var theme = ls(K_THEME);
+  if (!theme && ls(K_CON) === 'true') theme = 'contrast';
+  window.setTheme(theme || 'light');
   var fs = parseFloat(ls(K_FS));
   if (fs >= 12 && fs <= 40) document.documentElement.style.fontSize = fs + 'px';
 
