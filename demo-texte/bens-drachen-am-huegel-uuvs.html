@@ -131,6 +131,110 @@
         body.high-contrast .toolbar-group { background: #fff; border: 1px solid var(--navy); }
         body.high-contrast .quiz-card { background: #fff; border-color: var(--navy); }
 
+        /* ===== THEMA „DUNKEL" (Dark Mode) — opt-in via body.dark-mode, Default bleibt Hell.
+           Warm-anthrazit statt Reinschwarz (Marke: warm/kindlich). Akzente angehoben für
+           WCAG-AA-Lesetext. Hoher Kontrast bleibt ein eigener, separater Modus (oben).
+           Bulk läuft über Token-Override; nur hartkodierte Flächen brauchen Extra-Regeln. */
+        html:has(body.dark-mode) { background-color: #1C2230; }
+        body.dark-mode {
+            --cream: #1C2230; --cream-light: #232A3A; --bg-body: #1C2230; --bg-card: #2A3242;
+            --navy: #ECEFF4; --text-dark: #ECEFF4;
+            --border-soft: #3A4456; --border-card: #3A4456;
+            --mint: #4FD3C0; --accent-teal: #4FD3C0; --accent-coral: #FF8C6B;
+            --primary-yellow: #FFE082; --lila: #A99BF0;
+            --syl-blue: #9DB4FF; --syl-red: #FF9E7A;
+            --muted: #A9B2C2;
+        }
+        /* Deko-Blobs dezent abdunkeln, sonst leuchten sie auf dunklem Grund */
+        body.dark-mode::before { background: #2E3A4D; opacity: 0.40; }
+        body.dark-mode::after  { background: #243A38; opacity: 0.40; }
+        /* Hartkodierte weiße/helle Flächen → Karten-Dunkel */
+        body.dark-mode .main-navbar,
+        body.dark-mode .burger-icon,
+        body.dark-mode .nav-icon-btn,
+        body.dark-mode .mobile-menu,
+        body.dark-mode .tafel-bookmark,
+        body.dark-mode .toolbar-container,
+        body.dark-mode .comment,
+        body.dark-mode .comment-block,
+        body.dark-mode .author-card,
+        body.dark-mode .composer-input,
+        body.dark-mode .player-bar,
+        body.dark-mode .mic-bar,
+        body.dark-mode .reading-action-bar,
+        body.dark-mode .tafel-nav button,
+        body.dark-mode .tafel-nav button:disabled,
+        body.dark-mode .quiz-option,
+        body.dark-mode .abschluss-tab,
+        body.dark-mode .emoji-picker-panel,
+        body.dark-mode .composer-emoji-toggle { background: var(--bg-card); }
+        /* Halbtransparente Weiß-Flächen (Navbar/Buttons mit Blur) */
+        body.dark-mode .main-navbar { background: rgba(28,34,48,0.92); }
+        body.dark-mode .tool-btn,
+        body.dark-mode .hero-like-btn { background: rgba(42,50,66,0.9); }
+        body.dark-mode .tool-btn:hover,
+        body.dark-mode .rab-btn:hover,
+        body.dark-mode .tafel-bookmark:hover,
+        body.dark-mode .speak-btn:hover { background: var(--cream-light); color: var(--text-dark); border-color: var(--border-soft); }
+        /* Button-Labels/Icons & Gruppen-Titel sind hartkodiert dunkel → im Dark aufhellen */
+        body.dark-mode .tool-btn { color: var(--text-dark); }
+        body.dark-mode .toolbar-group-label { color: var(--muted); }
+        /* Aktive Buttons haben hellen Akzent-BG → dunklen Text erzwingen (sonst hell-auf-hell) */
+        body.dark-mode .tool-btn.active { color: #1C2230; }
+        /* Invertierte Chips (dunkler BG + weißer Text per --navy) bleiben dunkel */
+        body.dark-mode .skip-link,
+        body.dark-mode .hero-like-toast { background: #3A4456; color: #fff; }
+        /* Gedämpfte Pastell-Gruppen der Lesehilfen-Panels */
+        body.dark-mode .toolbar-group.group-text { background: #33262A; }
+        body.dark-mode .toolbar-group.group-view { background: #22332F; }
+        body.dark-mode .toolbar-group.group-extra { background: #332E20; }
+        body.dark-mode .toolbar-group.group-buddy { background: #2B2740; }
+        /* Gelbliche Highlight-Tints abdunkeln */
+        body.dark-mode .word-interactive:hover,
+        body.dark-mode .speak-btn { background: rgba(255,224,130,0.12); }
+        body.dark-mode .highlight-active { background-color: #6E5A1E !important; color: #FFE082; box-shadow: 0 0 5px rgba(255,224,130,0.4); }
+        /* Graue Flächen/Borders */
+        body.dark-mode .picker-close,
+        body.dark-mode .quiz-option.try-again { background: #2A3242; border-color: #3A4456; }
+        /* Sekundär-/Grautext heller */
+        body.dark-mode .author-line .author-credit,
+        body.dark-mode .neurotype-hint,
+        body.dark-mode .comment-time,
+        body.dark-mode footer,
+        body.dark-mode .footer-links a,
+        body.dark-mode .footer-report,
+        body.dark-mode .schatz-complete-text,
+        body.dark-mode .tafel-cover-meta .cm-author-desc { color: var(--muted); }
+        /* „Gelesen"-Grün heller, sonst zu dunkel auf Anthrazit */
+        body.dark-mode .word-interactive.read-correct,
+        body.dark-mode .done-self-badge,
+        body.dark-mode .report-success h2 { color: #5FE3C8; }
+        /* Coral-Titel: weißer Outline würde glühen → dunkler Outline */
+        body.dark-mode h1#main-title {
+            text-shadow: -1.5px -1.5px 0 rgba(0,0,0,0.5), 1.5px -1.5px 0 rgba(0,0,0,0.5), -1.5px 1.5px 0 rgba(0,0,0,0.5), 1.5px 1.5px 0 rgba(0,0,0,0.5);
+        }
+        /* Bilder bleiben hell, werden aber eingefasst/leicht abgedunkelt (kein Blenden) */
+        body.dark-mode .hero-image,
+        body.dark-mode .story-inline-img,
+        body.dark-mode .tafel-stage-img {
+            filter: brightness(0.88) contrast(1.02);
+            box-shadow: 0 5px 18px rgba(0,0,0,0.5);
+            border: 1px solid rgba(255,255,255,0.08);
+        }
+        body.dark-mode .story-hero-cover { background: #1C2230; }
+        body.dark-mode .story-hero-cover .hero-overlay {
+            background: radial-gradient(ellipse at center, rgba(0,0,0,0.35) 0%, rgba(0,0,0,0.62) 100%);
+        }
+        body.dark-mode .tafel-image-stage {
+            background: linear-gradient(135deg, #232A3A 0%, #1C2230 100%);
+            box-shadow: inset 0 0 0 1px rgba(255,255,255,0.06), 0 12px 40px rgba(0,0,0,0.5);
+        }
+        body.dark-mode .tafel-image-stage::after {
+            content: ''; position: absolute; inset: 0; pointer-events: none; border-radius: inherit;
+            box-shadow: inset 0 0 80px rgba(0,0,0,0.45);
+        }
+        /* === ENDE DARK MODE === */
+
         .highlight-active {
             background-color: #ffeb3b !important; border-radius: 4px;
             box-shadow: 0 0 5px rgba(255, 235, 59, 0.8); transition: background-color 0.1s;
@@ -2435,10 +2539,17 @@
                         </div>
                     </div>
                     <div class="toolbar-group group-extra">
+                        <div class="toolbar-group-label">Thema</div>
+                        <div class="toolbar-group-buttons" role="radiogroup" aria-label="Thema">
+                            <button type="button" class="tool-btn" id="btn-theme-light" role="radio" aria-checked="true" onclick="setTheme('light')" aria-label="Helles Thema"><span class="btn-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg></span> <span class="btn-label">Hell</span></button>
+                            <button type="button" class="tool-btn" id="btn-theme-dark" role="radio" aria-checked="false" onclick="setTheme('dark')" aria-label="Dunkles Thema"><span class="btn-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg></span> <span class="btn-label">Dunkel</span></button>
+                            <button type="button" class="tool-btn" id="btn-theme-contrast" role="radio" aria-checked="false" onclick="setTheme('contrast')" aria-label="Hoher Kontrast"><span class="btn-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 18a6 6 0 0 0 0-12v12z"/></svg></span> <span class="btn-label">Kontrast</span></button>
+                        </div>
+                    </div>
+                    <div class="toolbar-group group-extra">
                         <div class="toolbar-group-label">Darstellung</div>
                         <div class="toolbar-group-buttons">
                             <button type="button" class="tool-btn" onclick="toggleDyslexia(this)" id="btn-dyslexia" aria-label="Lesefreundliche Schrift"><span class="btn-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v16"/><path d="M4 7V5a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v2"/><path d="M9 20h6"/></svg></span> <span class="btn-label">Lesefreundlich</span></button>
-                            <button type="button" class="tool-btn" onclick="toggleContrast(this)" id="btn-contrast" aria-label="Hoher Kontrast"><span class="btn-icon"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 18a6 6 0 0 0 0-12v12z"/></svg></span> <span class="btn-label">Kontrast</span></button>
                         </div>
                     </div>
                 </div>
@@ -4025,11 +4136,17 @@
             if (b) b.classList.toggle('active', active);
             try { localStorage.setItem('lesekumpel-lesefreundlich', active ? 'true' : 'false'); } catch(e) {}
         }
-        function toggleContrast(btn) {
-            const active = document.body.classList.toggle('high-contrast');
-            const b = btn || document.getElementById('btn-contrast');
-            if (b) b.classList.toggle('active', active);
-            try { localStorage.setItem('lesekumpel-kontrast', active ? 'true' : 'false'); } catch(e) {}
+        // Thema (gegenseitig ausschließend): 'light' | 'dark' | 'contrast'.
+        // 'dark' = body.dark-mode, 'contrast' = body.high-contrast (bestehende Regeln), 'light' = keine Klasse.
+        function setTheme(name) {
+            const b = document.body;
+            b.classList.toggle('dark-mode', name === 'dark');
+            b.classList.toggle('high-contrast', name === 'contrast');
+            ['light','dark','contrast'].forEach(function(t){
+                const el = document.getElementById('btn-theme-' + t);
+                if (el) { el.classList.toggle('active', t === name); el.setAttribute('aria-checked', t === name ? 'true' : 'false'); }
+            });
+            try { localStorage.setItem('lesekumpel-theme', name); } catch(e) {}
         }
         function toggleFahrplan() {
             let btn = document.getElementById('btn-fahrplan');
@@ -4295,7 +4412,10 @@
             // Lesefreundlich-/Kontrast-Einstellungen wiederherstellen
             try {
                 if (localStorage.getItem('lesekumpel-lesefreundlich') === 'true') toggleDyslexia();
-                if (localStorage.getItem('lesekumpel-kontrast') === 'true') toggleContrast();
+                // Thema wiederherstellen (Migration: alter 'lesekumpel-kontrast' → 'contrast')
+                let theme = localStorage.getItem('lesekumpel-theme');
+                if (!theme && localStorage.getItem('lesekumpel-kontrast') === 'true') theme = 'contrast';
+                setTheme(theme || 'light');
                 if (localStorage.getItem('lesekumpel-fokus') === 'true') toggleFokus();
             } catch(e) {}
 
@@ -4320,7 +4440,7 @@
 
             // A11y: aria-pressed an den Toggle-Buttons synchron zur .active-Klasse
             // halten (WCAG 4.1.2). MutationObserver statt jede toggle-Funktion anzufassen.
-            ['btn-dyslexia','btn-contrast','btn-summary','btn-syllables','btn-emojis','btn-leselinien','btn-fahrplan','btn-fokus'].forEach(function(id){
+            ['btn-dyslexia','btn-summary','btn-syllables','btn-emojis','btn-leselinien','btn-fahrplan','btn-fokus'].forEach(function(id){
                 var b = document.getElementById(id);
                 if (!b) return;
                 var sync = function(){ b.setAttribute('aria-pressed', b.classList.contains('active') ? 'true' : 'false'); };
