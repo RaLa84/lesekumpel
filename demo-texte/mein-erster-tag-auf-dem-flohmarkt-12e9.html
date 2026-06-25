@@ -188,6 +188,9 @@
         body.dark-mode .rab-btn:hover,
         body.dark-mode .tafel-bookmark:hover,
         body.dark-mode .speak-btn:hover { background: var(--cream-light); color: var(--text-dark); border-color: var(--border-soft); }
+        /* Button-Labels/Icons & Gruppen-Titel sind hartkodiert dunkel → im Dark aufhellen */
+        body.dark-mode .tool-btn { color: var(--text-dark); }
+        body.dark-mode .toolbar-group-label { color: var(--muted); }
         /* Aktive Buttons haben hellen Akzent-BG → dunklen Text erzwingen (sonst hell-auf-hell) */
         body.dark-mode .tool-btn.active { color: #1C2230; }
         /* Invertierte Chips (dunkler BG + weißer Text per --navy) bleiben dunkel */
