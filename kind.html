@@ -679,14 +679,16 @@
         // ================= SZENE / METER / HEADER =================
         var MASCOT_DEFAULT = 'bilder/lesekumpel_logo_v2.png';
         var MASCOT_SPORT = 'bilder/lesekumpel_maskotchen/lesekumpel_sport.png';
+        var MASCOT_LOW = 'bilder/lesekumpel_maskotchen/lesekumpel_low_demand.png';
         function renderScene() {
             document.getElementById('scene-bubble').innerHTML = 'Hallo <span class="handwrite">' + esc(child.name) + '</span>!';
-            // Bei voller Energie zeigt der Lesekumpel sich sportlich-munter
-            var hoch = child.energy.current === 'hoch';
+            // Maskottchen spiegelt die Energie: voll = sportlich, müde = ruhig, sonst Standard
+            var lvl = child.energy.current;
             var img = document.getElementById('scene-mascot-img');
-            var src = hoch ? MASCOT_SPORT : MASCOT_DEFAULT;
+            var src = lvl === 'hoch' ? MASCOT_SPORT : (lvl === 'niedrig' ? MASCOT_LOW : MASCOT_DEFAULT);
             if (img.getAttribute('src') !== src) img.setAttribute('src', src);
-            img.classList.toggle('is-sport', hoch);
+            img.classList.toggle('is-sport', lvl === 'hoch');
+            img.classList.toggle('is-low', lvl === 'niedrig');
         }
         function renderMeter() {
             var lvl = child.energy.current || 'mittel';
