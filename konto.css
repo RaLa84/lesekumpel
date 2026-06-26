@@ -701,6 +701,20 @@ body.dark-mode .shelf { background: linear-gradient(180deg, #2A3242, #232A3A); b
 body.high-contrast .kid-scene { background: #fff; border: 2px solid var(--border-soft); box-shadow: none; }
 body.high-contrast .scene-hill, body.high-contrast .scene-sun, body.high-contrast .shelf-plant { display: none; }
 
+/* Sport-Maskottchen (volle Energie) etwas größer/lebendiger */
+.scene-mascot img.is-sport { width: 122px; height: 122px; }
+
+/* Ruhige Hintergrund-Deko (Blobs + Sterne) hinter dem gesamten Inhalt */
+.kid-bg-deco { position: fixed; inset: 0; z-index: -1; overflow: hidden; pointer-events: none; }
+.kid-bg-deco .bd-blob { position: absolute; border-radius: 50%; filter: blur(64px); opacity: 0.4; }
+.kid-bg-deco .bd-b1 { width: 300px; height: 300px; background: #E7DBFF; top: 16%; left: -100px; }
+.kid-bg-deco .bd-b2 { width: 260px; height: 260px; background: #FFDCCB; top: 58%; right: -90px; }
+.kid-bg-deco .bd-star { position: absolute; opacity: 0.5; animation: lk-float 8s ease-in-out infinite; }
+.kid-bg-deco .bd-sparkle { position: absolute; opacity: 0.5; animation: lk-twinkle 5s ease-in-out infinite; }
+body.dark-mode .kid-bg-deco .bd-blob { opacity: 0.22; }
+body.dark-mode .kid-bg-deco .bd-star, body.dark-mode .kid-bg-deco .bd-sparkle { opacity: 0.3; }
+body.high-contrast .kid-bg-deco { display: none; }
+
 @media (prefers-reduced-motion: reduce) {
   .energy-meter-track > i, .scene-mascot img, .energy-sheet, .sheet-backdrop { transition: none !important; }
 }

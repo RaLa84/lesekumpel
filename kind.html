@@ -8,7 +8,7 @@
     <meta name="robots" content="noindex">
     <link rel="icon" href="bilder/lesekumpel_logo_v2.png">
     <link rel="stylesheet" href="fonts/fonts.css">
-    <link rel="stylesheet" href="konto.css?v=20260626b">
+    <link rel="stylesheet" href="konto.css?v=20260626c">
 
     <!-- ===== A11y-Modal CSS (1:1 aus partials/a11y.html · Single Source) ===== -->
     <style>
@@ -114,6 +114,17 @@
 <body class="kid-body">
     <a class="skip-link" href="#main-content">Zum Inhalt springen</a>
 
+    <!-- Ruhige Hintergrund-Deko (Blobs + Sterne) hinter dem Inhalt -->
+    <div class="kid-bg-deco" aria-hidden="true">
+        <span class="bd-blob bd-b1"></span>
+        <span class="bd-blob bd-b2"></span>
+        <svg class="bd-star" style="top:13%;left:7%;width:26px;color:var(--yellow);" viewBox="0 0 32 32"><polygon points="16,2 20,12 30,12 22,19 25,30 16,23 7,30 10,19 2,12 12,12" fill="currentColor"/></svg>
+        <svg class="bd-sparkle" style="top:24%;right:9%;width:20px;color:var(--lila);animation-delay:-1.2s;" viewBox="0 0 24 24"><path d="M12 2L13.5 9 21 12L13.5 14.5L12 22L10.5 14.5L3 12L10.5 9Z" fill="currentColor"/></svg>
+        <svg class="bd-star" style="top:52%;left:5%;width:18px;color:var(--mint);animation-delay:-2.4s;" viewBox="0 0 32 32"><polygon points="16,2 20,12 30,12 22,19 25,30 16,23 7,30 10,19 2,12 12,12" fill="currentColor"/></svg>
+        <svg class="bd-sparkle" style="top:68%;right:7%;width:22px;color:var(--salmon);animation-delay:-3.1s;" viewBox="0 0 24 24"><path d="M12 2L13.5 9 21 12L13.5 14.5L12 22L10.5 14.5L3 12L10.5 9Z" fill="currentColor"/></svg>
+        <svg class="bd-star" style="bottom:14%;left:12%;width:20px;color:var(--yellow);animation-delay:-1.8s;" viewBox="0 0 32 32"><polygon points="16,2 20,12 30,12 22,19 25,30 16,23 7,30 10,19 2,12 12,12" fill="currentColor"/></svg>
+    </div>
+
     <!-- ============================================================
          KID-SAFE HEADER — bespoke, BEWUSST NICHT Teil von
          scripts/apply-header.py. Gleiche Brand-Optik (.main-navbar)
@@ -163,7 +174,7 @@
                 </button>
 
                 <!-- C) TAGESAUFGABEN -->
-                <h2 class="kid-section-title" id="home-title">Heute
+                <h2 class="kid-section-title" id="home-title">Deine Mission
                     <button type="button" class="read-aloud-btn" id="home-read" aria-label="Vorlesen">&#128266;</button>
                 </h2>
                 <p class="kid-sub" id="tasks-note" style="margin-bottom:14px;">Nur wenn du magst.</p>
@@ -443,10 +454,10 @@
     })();
     </script>
 
-    <script src="formkit.js?v=20260626b"></script>
-    <script src="konto-state.js?v=20260626b"></script>
-    <script src="konto-fx.js?v=20260626b"></script>
-    <script src="lautlese.js?v=20260626b"></script>
+    <script src="formkit.js?v=20260626c"></script>
+    <script src="konto-state.js?v=20260626c"></script>
+    <script src="konto-fx.js?v=20260626c"></script>
+    <script src="lautlese.js?v=20260626c"></script>
     <script>
     (function () {
         'use strict';
@@ -666,8 +677,16 @@
         }
 
         // ================= SZENE / METER / HEADER =================
+        var MASCOT_DEFAULT = 'bilder/lesekumpel_logo_v2.png';
+        var MASCOT_SPORT = 'bilder/lesekumpel_maskotchen/lesekumpel_sport.png';
         function renderScene() {
             document.getElementById('scene-bubble').innerHTML = 'Hallo <span class="handwrite">' + esc(child.name) + '</span>!';
+            // Bei voller Energie zeigt der Lesekumpel sich sportlich-munter
+            var hoch = child.energy.current === 'hoch';
+            var img = document.getElementById('scene-mascot-img');
+            var src = hoch ? MASCOT_SPORT : MASCOT_DEFAULT;
+            if (img.getAttribute('src') !== src) img.setAttribute('src', src);
+            img.classList.toggle('is-sport', hoch);
         }
         function renderMeter() {
             var lvl = child.energy.current || 'mittel';
@@ -891,7 +910,7 @@
             if (ks) ks.remove();
         }
         FormKit.attachReadAloud(document.getElementById('home-read'), function () {
-            return 'Heute. Deine Aufgaben — nur wenn du magst.';
+            return 'Deine Mission — nur wenn du magst.';
         });
 
         // ---- Maskottchen in der Szene: warme Ermutigung ----
