@@ -245,6 +245,9 @@
     body.dark-mode .load-more-btn, body.dark-mode .format-pill,
     body.dark-mode .placeholder { background: var(--bg-card); color: var(--text-dark); border-color: var(--border-soft); }
     body.dark-mode .skip-link { background: #3A4456; color: #fff; }
+    /* Glow-Blobs im Dark Mode aus — nur die ruhigen Sterne bleiben (wie Anmeldung) */
+    body.dark-mode .bg-blob { display: none; }
+    body.dark-mode::before, body.dark-mode::after { display: none; }
 /* === LK-A11Y:CSS END === */
 
     /* ============================================================
