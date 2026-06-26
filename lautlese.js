@@ -389,10 +389,20 @@
     if (document.getElementById('ll-styles')) return;
     var css =
       '.ll-graf{color:var(--accent-coral,#D67171);font-weight:800;}' +
-      '#panel-lautlese .ll-intro-row{display:flex;align-items:flex-start;gap:10px;justify-content:center;max-width:580px;margin:0 auto 20px;}' +
-      '#panel-lautlese .ll-intro{font-family:var(--font-heading,Fredoka),sans-serif;font-size:1.3rem;line-height:1.45;margin:0;color:var(--navy,#2B3140);text-align:left;}' +
-      '#panel-lautlese .ll-intro b{color:var(--accent-coral,#D67171);}' +
-      '.ll-intro-read{width:46px;height:46px;}' +
+      '#panel-lautlese{max-width:600px;margin:0 auto;}' +
+      '.ll-head{display:flex;align-items:center;gap:16px;background:linear-gradient(135deg,var(--accent-coral-light,#FDEAEA) 0%,#fff 72%);border:2px solid var(--border,#F0E3C0);border-radius:24px;padding:16px 18px;margin-bottom:14px;}' +
+      '.ll-head-chip{flex-shrink:0;min-width:60px;height:60px;padding:0 14px;border-radius:18px;background:var(--accent-coral,#D67171);color:#fff;font-family:var(--font-heading,Fredoka),sans-serif;font-size:1.9rem;font-weight:600;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 14px rgba(214,113,113,.32);}' +
+      '.ll-head-text{flex:1;min-width:0;}' +
+      '.ll-head-text h3{font-family:var(--font-heading,Fredoka),sans-serif;font-size:1.3rem;font-weight:600;margin:0 0 2px;color:var(--navy,#2B3140);}' +
+      '.ll-head-text p{margin:0;font-size:1rem;color:var(--text-muted,#5a6368);}' +
+      '.ll-head-text p b{color:var(--accent-coral,#D67171);font-weight:700;}' +
+      '.ll-read-btn{flex-shrink:0;display:inline-flex;align-items:center;gap:7px;border:2px solid var(--mint,#2FB8A6);background:#fff;color:var(--navy,#2B3140);font-family:var(--font-heading,Fredoka),sans-serif;font-weight:600;font-size:.95rem;border-radius:24px;padding:9px 15px;cursor:pointer;transition:transform .12s,box-shadow .15s;}' +
+      '.ll-read-btn svg{width:20px;height:20px;color:var(--mint,#2FB8A6);}' +
+      '.ll-read-btn:hover{box-shadow:0 4px 12px rgba(47,184,166,.2);}' +
+      '.ll-read-btn:active{transform:scale(.96);}' +
+      '.ll-read-btn:focus-visible{outline:3px solid rgba(47,184,166,.45);outline-offset:2px;}' +
+      '.ll-progress-track{height:8px;border-radius:6px;background:rgba(43,49,64,.08);overflow:hidden;margin:0 2px 18px;}' +
+      '.ll-progress-track i{display:block;height:100%;width:0;background:var(--mint,#2FB8A6);border-radius:6px;transition:width .45s cubic-bezier(.34,1.56,.64,1);}' +
       '.ll-list{display:flex;flex-direction:column;gap:12px;max-width:580px;margin:0 auto;}' +
       '.ll-row{display:flex;align-items:center;gap:14px;background:var(--bg-card,#fff);border:2px solid var(--border,#D9D4CC);border-radius:22px;padding:16px 20px;transition:border-color .18s,background .18s,box-shadow .18s;}' +
       '.ll-row .ll-main{flex:1;min-width:0;text-align:left;}' +
@@ -406,19 +416,23 @@
       '.ll-row.is-success .ll-status{display:flex;color:#1A8676;}' +
       '.ll-row.is-almost{border-color:var(--primary-yellow,#FFD54F);background:rgba(255,213,79,.16);}' +
       '.ll-row.is-almost .ll-status{display:flex;color:#9a7400;}' +
-      '.ll-iconbtn{width:52px;height:52px;border-radius:50%;border:2px solid var(--border,#D9D4CC);background:#fff;color:var(--navy,#2B3140);cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;}' +
+      '.ll-iconbtn{width:52px;height:52px;border-radius:50%;border:2px solid var(--border,#D9D4CC);background:#fff;color:var(--navy,#2B3140);cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:transform .12s,background .15s,border-color .15s,color .15s;}' +
       '.ll-iconbtn svg{width:24px;height:24px;}' +
       '.ll-iconbtn.ll-hear{color:var(--mint,#2FB8A6);border-color:rgba(47,184,166,.5);}' +
       '.ll-iconbtn.ll-say{color:var(--accent-coral,#D67171);border-color:rgba(214,113,113,.5);}' +
-      '.ll-iconbtn.listening{animation:llPulse 1s ease-in-out infinite;background:var(--accent-coral,#D67171);color:#fff;}' +
+      '.ll-iconbtn.listening{animation:llPulse 1s ease-in-out infinite;background:var(--accent-coral,#D67171);color:#fff;border-color:var(--accent-coral,#D67171);}' +
+      '.ll-iconbtn:active{transform:scale(.92);}' +
+      '.ll-iconbtn:focus-visible{outline:3px solid rgba(47,184,166,.45);outline-offset:2px;}' +
       '.ll-iconbtn:disabled{opacity:.4;cursor:default;}' +
-      '.ll-stars{display:inline-flex;gap:3px;min-width:44px;justify-content:flex-end;color:#dcd7cd;}' +
+      '.ll-stars{display:inline-flex;gap:4px;min-width:50px;justify-content:flex-end;color:#dcd7cd;}' +
       '.ll-stars .on{color:var(--primary-yellow,#FFD54F);}' +
-      '.ll-stars svg{width:18px;height:18px;fill:currentColor;stroke:none;}' +
-      '@media(max-width:480px){.ll-row .ll-word{font-size:1.65rem;}.ll-iconbtn{width:46px;height:46px;}#panel-lautlese .ll-intro{font-size:1.15rem;}}' +
+      '.ll-stars .on.pop{animation:llStar .5s cubic-bezier(.34,1.56,.64,1);}' +
+      '.ll-stars svg{width:21px;height:21px;fill:currentColor;stroke:none;}' +
+      '@keyframes llStar{0%{transform:scale(.4);}60%{transform:scale(1.28);}100%{transform:scale(1);}}' +
+      '@media(max-width:480px){.ll-row .ll-word{font-size:1.65rem;}.ll-iconbtn{width:46px;height:46px;}.ll-head{gap:12px;padding:14px;}.ll-head-chip{min-width:52px;height:52px;font-size:1.6rem;}.ll-head-text h3{font-size:1.15rem;}.ll-read-btn .ll-read-label{display:none;}.ll-read-btn{padding:11px;gap:0;}}' +
       '.ll-done-banner{margin-top:18px;padding:16px;border-radius:18px;background:rgba(47,184,166,.12);color:var(--navy,#2B3140);text-align:center;font-weight:600;max-width:580px;margin:18px auto 0;}' +
       '@keyframes llPulse{0%,100%{transform:scale(1);}50%{transform:scale(1.12);}}' +
-      '@media(prefers-reduced-motion:reduce){.ll-iconbtn.listening{animation:none;}}' +
+      '@media(prefers-reduced-motion:reduce){.ll-iconbtn.listening{animation:none;}.ll-stars .on.pop{animation:none;}.ll-progress-track i{transition:none;}.ll-read-btn:active,.ll-iconbtn:active{transform:none;}}' +
       /* Modal */
       '.ll-modal{position:fixed;inset:0;background:rgba(43,49,64,.55);display:flex;align-items:center;justify-content:center;z-index:9999;padding:20px;}' +
       '.ll-modal-card{background:#fff;border-radius:24px;max-width:380px;padding:26px 24px;text-align:center;box-shadow:0 18px 50px rgba(0,0,0,.25);}' +
@@ -447,9 +461,6 @@
   }
 
   /* ---------- STORY-ÜBUNG (Panel-Inhalt rendern) ---------- */
-  function inlineIcon(name) {
-    return icon(name).replace('aria-hidden="true"', 'aria-hidden="true" style="width:1em;height:1em;vertical-align:-2px"');
-  }
   function starsHtml(n) {
     var s = '<span class="ll-stars" aria-hidden="true">';
     for (var i = 0; i < 2; i++) s += '<span class="' + (i < n ? 'on' : '') + '">' + icon('star') + '</span>';
@@ -462,12 +473,18 @@
     var total = words.length;
     var doneStars = {};
 
-    var introText = 'Wir üben den ' + g.label + '-Laut! Tippe auf den Lautsprecher und hör zu. Sprich das Wort dann nach.';
-    var head = '<div class="ll-intro-row">' +
-      '<p class="ll-intro">Wir üben den <b>' + escapeHtml(g.label) + '</b>-Laut!<br>' +
-      'Tippe auf ' + inlineIcon('volume') + ' und hör zu. Sprich das Wort dann nach.</p>' +
-      '<button type="button" class="ll-iconbtn ll-hear ll-intro-read" aria-label="Aufgabe vorlesen">' + icon('volume') + '</button>' +
-      '</div>';
+    var introText = 'Wir üben den ' + g.label + '-Laut. Hör dir jedes Wort an und sprich es nach.';
+    var head =
+      '<div class="ll-head">' +
+        '<div class="ll-head-chip" aria-hidden="true">' + escapeHtml(g.label) + '</div>' +
+        '<div class="ll-head-text">' +
+          '<h3>Hör zu und sprich nach</h3>' +
+          '<p>Wir üben den <b>' + escapeHtml(g.label) + '</b>-Laut.</p>' +
+        '</div>' +
+        '<button type="button" class="ll-read-btn ll-intro-read" aria-label="Aufgabe vorlesen">' +
+          icon('volume') + '<span class="ll-read-label">Vorlesen</span></button>' +
+      '</div>' +
+      '<div class="ll-progress-track" aria-hidden="true"><i id="ll-progress-fill"></i></div>';
     var rows = '<div class="ll-list">';
     words.forEach(function (w, i) {
       rows += '<div class="ll-row" data-i="' + i + '">' +
@@ -494,6 +511,13 @@
     function setStars(row, n) {
       var holder = row.querySelector('.ll-stars');
       if (holder) holder.outerHTML = starsHtml(n);
+      // den zuletzt verdienten Stern „aufpoppen" lassen
+      var ons = row.querySelectorAll('.ll-stars .on');
+      if (ons.length) ons[ons.length - 1].classList.add('pop');
+    }
+    function updateProgress() {
+      var fill = panel.querySelector('#ll-progress-fill');
+      if (fill) fill.style.width = Math.round(Object.keys(doneStars).length / total * 100) + '%';
     }
     function setStatus(row, kind) {
       var st = row.querySelector('.ll-status');
@@ -509,6 +533,7 @@
       setStars(rowEls[i], stars);
       setStatus(rowEls[i], recognized ? 'success' : 'almost');
       recordAttempt(graphemeId, words[i].wort, recognized);
+      updateProgress();
       if (Object.keys(doneStars).length >= total) {
         var b = panel.querySelector('#ll-done');
         if (b) { b.hidden = false; b.innerHTML = icon('star') + ' Stark! Du hast alle ' + escapeHtml(g.label) + '-Wörter geübt.'; }
