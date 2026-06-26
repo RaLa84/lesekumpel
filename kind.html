@@ -678,15 +678,17 @@
         }
 
         // ================= SZENE / METER / HEADER =================
-        var MASCOT_DEFAULT = 'bilder/lesekumpel_logo_v2.png';
-        var MASCOT_SPORT = 'bilder/lesekumpel_maskotchen/lesekumpel_sport.png';
-        var MASCOT_LOW = 'bilder/lesekumpel_maskotchen/lesekumpel_low_demand.png';
+        // Energieabhängiges Hero-Bild, das die ganze Szene füllt:
+        // Voll Power = sport, Halb voll = calm, Fast leer = sleepy.
+        var MASCOT_HERO = {
+            hoch: 'bilder/lesekumpel_maskotchen/lesekumpel_sport.png',
+            mittel: 'bilder/lesekumpel_maskotchen/lesekumpel_calm.png',
+            niedrig: 'bilder/lesekumpel_maskotchen/lesekumpel_sleepy.png'
+        };
         function renderScene() {
             document.getElementById('scene-bubble').innerHTML = 'Hallo <span class="handwrite">' + esc(child.name) + '</span>!';
-            // Energieabhängiges Hero-Bild füllt die Szene: voll = sportlich, müde (Calm) = ruhig.
-            // Mittlere Energie: illustrierte Wiese mit kleinem Standard-Maskottchen.
             var lvl = child.energy.current;
-            var heroSrc = lvl === 'hoch' ? MASCOT_SPORT : (lvl === 'niedrig' ? MASCOT_LOW : null);
+            var heroSrc = MASCOT_HERO[lvl] || MASCOT_HERO.mittel;
             var scene = document.getElementById('kid-scene');
             var hero = document.getElementById('scene-hero');
             var mascot = document.getElementById('scene-mascot');
