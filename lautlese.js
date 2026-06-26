@@ -372,22 +372,30 @@
       '.ll-graf{color:var(--accent-coral,#D67171);font-weight:800;}' +
       '#panel-lautlese .ll-intro{font-size:1.05rem;margin:0 0 18px;color:var(--navy,#2B3140);}' +
       '#panel-lautlese .ll-intro b{color:var(--accent-coral,#D67171);}' +
-      '.ll-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:14px;}' +
-      '.ll-card{background:var(--bg-card,#fff);border:2px solid var(--border,#D9D4CC);border-radius:20px;padding:16px 14px;text-align:center;display:flex;flex-direction:column;align-items:center;gap:10px;transition:border-color .15s,box-shadow .15s;}' +
-      '.ll-card.is-done{border-color:var(--mint,#2FB8A6);box-shadow:0 4px 14px rgba(47,184,166,.18);}' +
-      '.ll-card .ll-word{font-family:var(--font-heading,Fredoka),sans-serif;font-size:1.7rem;line-height:1.1;color:var(--navy,#2B3140);}' +
-      '.ll-card .ll-syl{font-size:.95rem;color:var(--text-muted,#7a7468);letter-spacing:.02em;}' +
-      '.ll-card .ll-actions{display:flex;gap:8px;margin-top:2px;}' +
-      '.ll-iconbtn{width:46px;height:46px;border-radius:50%;border:2px solid var(--border,#D9D4CC);background:#fff;color:var(--navy,#2B3140);cursor:pointer;display:flex;align-items:center;justify-content:center;}' +
+      '.ll-list{display:flex;flex-direction:column;gap:12px;max-width:580px;margin:0 auto;}' +
+      '.ll-row{display:flex;align-items:center;gap:14px;background:var(--bg-card,#fff);border:2px solid var(--border,#D9D4CC);border-radius:20px;padding:13px 18px;transition:border-color .18s,background .18s,box-shadow .18s;}' +
+      '.ll-row .ll-main{flex:1;min-width:0;text-align:left;}' +
+      '.ll-row .ll-word{font-family:var(--font-heading,Fredoka),sans-serif;font-size:1.65rem;line-height:1.15;color:var(--navy,#2B3140);}' +
+      '.ll-row .ll-syl{font-size:.92rem;color:var(--text-muted,#7a7468);letter-spacing:.02em;margin-top:1px;}' +
+      '.ll-row .ll-status{font-size:.9rem;font-weight:700;margin-top:5px;display:none;align-items:center;gap:5px;}' +
+      '.ll-row .ll-status svg{width:16px;height:16px;}' +
+      '.ll-row .ll-side{display:flex;align-items:center;gap:12px;flex-shrink:0;}' +
+      '.ll-row .ll-actions{display:flex;gap:8px;}' +
+      '.ll-row.is-success{border-color:var(--mint,#2FB8A6);background:rgba(47,184,166,.09);}' +
+      '.ll-row.is-success .ll-status{display:flex;color:#1A8676;}' +
+      '.ll-row.is-almost{border-color:var(--primary-yellow,#FFD54F);background:rgba(255,213,79,.16);}' +
+      '.ll-row.is-almost .ll-status{display:flex;color:#9a7400;}' +
+      '.ll-iconbtn{width:46px;height:46px;border-radius:50%;border:2px solid var(--border,#D9D4CC);background:#fff;color:var(--navy,#2B3140);cursor:pointer;display:flex;align-items:center;justify-content:center;flex-shrink:0;}' +
       '.ll-iconbtn svg{width:22px;height:22px;}' +
       '.ll-iconbtn.ll-hear{color:var(--mint,#2FB8A6);border-color:rgba(47,184,166,.5);}' +
       '.ll-iconbtn.ll-say{color:var(--accent-coral,#D67171);border-color:rgba(214,113,113,.5);}' +
       '.ll-iconbtn.listening{animation:llPulse 1s ease-in-out infinite;background:var(--accent-coral,#D67171);color:#fff;}' +
       '.ll-iconbtn:disabled{opacity:.4;cursor:default;}' +
-      '.ll-card .ll-stars{display:flex;gap:3px;min-height:20px;color:#d9d4cc;}' +
-      '.ll-card .ll-stars .on{color:var(--primary-yellow,#FFD54F);}' +
-      '.ll-card .ll-stars svg{width:18px;height:18px;fill:currentColor;stroke:none;}' +
-      '.ll-done-banner{margin-top:18px;padding:16px;border-radius:18px;background:rgba(47,184,166,.12);color:var(--navy,#2B3140);text-align:center;font-weight:600;}' +
+      '.ll-stars{display:inline-flex;gap:3px;min-width:44px;justify-content:flex-end;color:#dcd7cd;}' +
+      '.ll-stars .on{color:var(--primary-yellow,#FFD54F);}' +
+      '.ll-stars svg{width:18px;height:18px;fill:currentColor;stroke:none;}' +
+      '@media(max-width:480px){.ll-row .ll-word{font-size:1.4rem;}.ll-iconbtn{width:42px;height:42px;}}' +
+      '.ll-done-banner{margin-top:18px;padding:16px;border-radius:18px;background:rgba(47,184,166,.12);color:var(--navy,#2B3140);text-align:center;font-weight:600;max-width:580px;margin:18px auto 0;}' +
       '@keyframes llPulse{0%,100%{transform:scale(1);}50%{transform:scale(1.12);}}' +
       '@media(prefers-reduced-motion:reduce){.ll-iconbtn.listening{animation:none;}}' +
       /* Modal */
@@ -418,8 +426,11 @@
   }
 
   /* ---------- STORY-ÜBUNG (Panel-Inhalt rendern) ---------- */
+  function inlineIcon(name) {
+    return icon(name).replace('aria-hidden="true"', 'aria-hidden="true" style="width:1em;height:1em;vertical-align:-2px"');
+  }
   function starsHtml(n) {
-    var s = '<span class="ll-stars">';
+    var s = '<span class="ll-stars" aria-hidden="true">';
     for (var i = 0; i < 2; i++) s += '<span class="' + (i < n ? 'on' : '') + '">' + icon('star') + '</span>';
     return s + '</span>';
   }
@@ -428,60 +439,69 @@
     var g = BY_ID[graphemeId];
     injectStyles();
     var total = words.length;
-    var doneSet = {};
+    var doneStars = {};
 
     var head = '<p class="ll-intro">In dieser Geschichte üben wir den <b>' + escapeHtml(g.label) +
-      '</b>-Laut! Tippe auf ' + icon('volume').replace('aria-hidden="true"', 'aria-hidden="true" style="width:1em;height:1em;vertical-align:-2px"') +
-      ' zum Hören und auf ' + icon('mic').replace('aria-hidden="true"', 'aria-hidden="true" style="width:1em;height:1em;vertical-align:-2px"') +
-      ' zum Nachsprechen.</p>';
-    var cards = '<div class="ll-cards">';
+      '</b>-Laut! Tippe auf ' + inlineIcon('volume') +
+      ' zum Hören und auf ' + inlineIcon('mic') + ' zum Nachsprechen.</p>';
+    var rows = '<div class="ll-list">';
     words.forEach(function (w, i) {
-      cards += '<div class="ll-card" data-i="' + i + '">' +
-        '<div class="ll-word">' + w.html + '</div>' +
-        '<div class="ll-syl">' + escapeHtml(w.silben) + '</div>' +
-        '<div class="ll-actions">' +
-        '<button type="button" class="ll-iconbtn ll-hear" aria-label="Wort anhören">' + icon('volume') + '</button>' +
-        '<button type="button" class="ll-iconbtn ll-say" aria-label="Wort nachsprechen"' + (micSupported() ? '' : ' disabled title="Mikro auf diesem Gerät nicht verfügbar"') + '>' + icon('mic') + '</button>' +
-        '</div>' + starsHtml(0) +
-        '</div>';
+      rows += '<div class="ll-row" data-i="' + i + '">' +
+        '<div class="ll-main">' +
+          '<div class="ll-word">' + w.html + '</div>' +
+          '<div class="ll-syl">' + escapeHtml(w.silben) + '</div>' +
+          '<div class="ll-status"></div>' +
+        '</div>' +
+        '<div class="ll-side">' +
+          '<div class="ll-actions">' +
+            '<button type="button" class="ll-iconbtn ll-hear" aria-label="Wort anhören">' + icon('volume') + '</button>' +
+            '<button type="button" class="ll-iconbtn ll-say" aria-label="Wort nachsprechen"' + (micSupported() ? '' : ' disabled title="Mikro auf diesem Gerät nicht verfügbar"') + '>' + icon('mic') + '</button>' +
+          '</div>' + starsHtml(0) +
+        '</div>' +
+      '</div>';
     });
-    cards += '</div><div class="ll-done-banner" id="ll-done" hidden></div>';
-    panel.innerHTML = head + cards;
+    rows += '</div><div class="ll-done-banner" id="ll-done" hidden></div>';
+    panel.innerHTML = head + rows;
 
-    var cardEls = panel.querySelectorAll('.ll-card');
-    function setStars(card, n) {
-      var holder = card.querySelector('.ll-stars');
+    var rowEls = panel.querySelectorAll('.ll-row');
+    function setStars(row, n) {
+      var holder = row.querySelector('.ll-stars');
       if (holder) holder.outerHTML = starsHtml(n);
     }
-    function markDone(i, recognized) {
-      var card = cardEls[i];
-      var stars = (doneSet[i] || 0);
-      stars = Math.min(2, Math.max(stars, recognized ? 2 : 1));
-      doneSet[i] = stars;
-      card.classList.add('is-done');
-      setStars(card, stars);
+    function setStatus(row, kind) {
+      var st = row.querySelector('.ll-status');
+      st.style.display = ''; st.style.color = '';
+      row.classList.remove('is-success', 'is-almost');
+      if (kind === 'listening') { st.style.display = 'flex'; st.style.color = 'var(--accent-coral,#D67171)'; st.innerHTML = icon('mic') + ' Ich höre zu …'; }
+      else if (kind === 'success') { row.classList.add('is-success'); st.innerHTML = icon('check') + ' Super, genau!'; }
+      else if (kind === 'almost') { row.classList.add('is-almost'); st.innerHTML = icon('mic') + ' Fast! Sprich es noch einmal.'; }
+    }
+    function record(i, recognized) {
+      var stars = Math.min(2, Math.max(doneStars[i] || 0, recognized ? 2 : 1));
+      doneStars[i] = stars;
+      setStars(rowEls[i], stars);
+      setStatus(rowEls[i], recognized ? 'success' : 'almost');
       recordAttempt(graphemeId, words[i].wort, recognized);
-      var n = Object.keys(doneSet).length;
-      if (n >= total) {
+      if (Object.keys(doneStars).length >= total) {
         var b = panel.querySelector('#ll-done');
-        if (b) { b.hidden = false; b.innerHTML = icon('check') + ' Stark! Du hast alle ' + g.label + '-Wörter geübt.'; }
-        try { if (window.Konto) {} } catch (e) {}
+        if (b) { b.hidden = false; b.innerHTML = icon('star') + ' Stark! Du hast alle ' + escapeHtml(g.label) + '-Wörter geübt.'; }
         celebrate(panel);
       }
     }
 
-    cardEls.forEach(function (card, i) {
-      card.querySelector('.ll-hear').addEventListener('click', function () { speakWord(words[i].wort); });
-      var sayBtn = card.querySelector('.ll-say');
+    rowEls.forEach(function (row, i) {
+      row.querySelector('.ll-hear').addEventListener('click', function () { speakWord(words[i].wort); });
+      var sayBtn = row.querySelector('.ll-say');
       if (!micSupported()) return;
       sayBtn.addEventListener('click', function () {
         askConsent(function () {
           try { window.speechSynthesis.cancel(); } catch (e) {}
+          setStatus(row, 'listening');
           listenOnce(words[i].wort, function (state) {
             sayBtn.classList.toggle('listening', state === 'listening');
           }, function (recognized) {
             // Mikro ist reine Ermutigung: Versuch zählt IMMER.
-            markDone(i, recognized);
+            record(i, recognized);
           });
         });
       });
