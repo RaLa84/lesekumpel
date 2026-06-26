@@ -8,7 +8,7 @@
     <meta name="robots" content="noindex">
     <link rel="icon" href="bilder/lesekumpel_logo_v2.png">
     <link rel="stylesheet" href="fonts/fonts.css">
-    <link rel="stylesheet" href="konto.css?v=20260626d">
+    <link rel="stylesheet" href="konto.css?v=20260626e">
 
     <!-- ===== A11y-Modal CSS (1:1 aus partials/a11y.html · Single Source) ===== -->
     <style>
@@ -162,7 +162,6 @@
                     <span class="scene-hill scene-hill-front" aria-hidden="true"></span>
                     <div class="scene-mascot" id="scene-mascot"><img src="bilder/lesekumpel_logo_v2.png" alt="" id="scene-mascot-img"></div>
                     <img class="scene-hero" id="scene-hero" alt="" hidden>
-                    <button type="button" class="scene-bubble" id="scene-bubble">Hallo!</button>
                 </div>
 
                 <!-- B) ENERGIE-METER -->
@@ -455,10 +454,10 @@
     })();
     </script>
 
-    <script src="formkit.js?v=20260626d"></script>
-    <script src="konto-state.js?v=20260626d"></script>
-    <script src="konto-fx.js?v=20260626d"></script>
-    <script src="lautlese.js?v=20260626d"></script>
+    <script src="formkit.js?v=20260626e"></script>
+    <script src="konto-state.js?v=20260626e"></script>
+    <script src="konto-fx.js?v=20260626e"></script>
+    <script src="lautlese.js?v=20260626e"></script>
     <script>
     (function () {
         'use strict';
@@ -540,7 +539,6 @@
         document.getElementById('akku-later').addEventListener('click', dismissGateSoft);
         backdrop.addEventListener('click', dismissGateSoft);
         document.getElementById('energy-meter').addEventListener('click', showGate);
-        document.getElementById('scene-bubble').addEventListener('click', showGate);
 
         // ================= TAGESAUFGABEN =================
         // Story-Index lazy laden; Callbacks werden bis zum Fetch-Ende gepuffert
@@ -686,7 +684,6 @@
             niedrig: 'bilder/lesekumpel_maskotchen/lesekumpel_sleepy.webp'
         };
         function renderScene() {
-            document.getElementById('scene-bubble').innerHTML = 'Hallo <span class="handwrite">' + esc(child.name) + '</span>!';
             var lvl = child.energy.current;
             var heroSrc = MASCOT_HERO[lvl] || MASCOT_HERO.mittel;
             var scene = document.getElementById('kid-scene');

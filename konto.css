@@ -635,8 +635,9 @@ body.lk-contrast .stat-number, body.lk-contrast .counter-number, body.lk-contras
 .scene-bubble { position: absolute; top: 18px; left: 50%; transform: translateX(-50%); max-width: 82%; background: #fff; border: none; border-radius: 999px; padding: 9px 22px; font-family: var(--font-heading); font-weight: 700; font-size: 1.2rem; color: var(--navy); box-shadow: 0 4px 14px rgba(43,49,64,0.14); cursor: pointer; z-index: 3; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 
 /* --- Energie-Meter (statt Fortschrittsbalken) --- */
-.energy-meter { display: flex; align-items: center; gap: 14px; width: 100%; margin-top: 16px; padding: 13px 18px; background: var(--bg-card); border: 1px solid var(--border-soft); border-radius: 20px; box-shadow: var(--shadow-card); cursor: pointer; font-family: var(--font-body); text-align: left; }
-.energy-meter:hover { border-color: var(--mint); }
+/* schwebt als HUD auf der unteren Hero-Kante, seitlich eingerückt */
+.energy-meter { position: relative; z-index: 4; display: flex; align-items: center; gap: 13px; width: auto; margin: -26px 16px 6px; padding: 11px 18px; background: rgba(255,255,255,0.94); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); border: 1px solid rgba(255,255,255,0.6); border-radius: 18px; box-shadow: 0 10px 26px rgba(43,49,64,0.18); cursor: pointer; font-family: var(--font-body); text-align: left; transition: transform 0.2s, box-shadow 0.2s; }
+.energy-meter:hover { transform: translateY(-2px); box-shadow: 0 14px 30px rgba(43,49,64,0.22); }
 .energy-meter:active { transform: scale(0.99); }
 .energy-meter-emoji { font-size: 1.9rem; line-height: 1; flex-shrink: 0; }
 .energy-meter-body { flex: 1; min-width: 0; display: flex; flex-direction: column; gap: 7px; }
