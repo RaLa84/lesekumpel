@@ -13,7 +13,7 @@ Jede Stufe definiert Wortanzahl, Tempus und einen linguistischen Fokus.
 - **TEMPUS:** Präsens
 - **SYNTAX:** Hauptsätze, natürliche Wortstellung
 - **WORTSCHATZ:** Mindestens 75 % der Wörter im Text sollen aus der folgenden Top-100-Liste stammen. Weitere einfache Wörter sind erlaubt, solange sie zum Thema passen und altersgerecht sind. Titel-/Themen-Wörter sind immer erlaubt.
-- **WORTANZAHL:** 20–40 Wörter
+- **WORTANZAHL:** 10–20 Wörter (allererste Lese-Stufe, bewusst sehr kurz — unterhalb von Pips Normalbereich)
 
 ### Top-100-Grundwortschatz
 
