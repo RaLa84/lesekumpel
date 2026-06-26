@@ -70,6 +70,7 @@
                 <button type="button" class="sub-tab active" data-kidsec="start">&#127968; Start</button>
                 <button type="button" class="sub-tab" data-kidsec="bibliothek">&#128218; Meine B&uuml;cher</button>
                 <button type="button" class="sub-tab" data-kidsec="empfehlungen">&#10024; F&uuml;r dich</button>
+                <button type="button" class="sub-tab" data-kidsec="laute">&#128483; Meine Laute</button>
             </nav>
 
             <!-- START -->
@@ -98,6 +99,16 @@
                 <div id="rec-list" class="reveal-stagger"></div>
             </section>
 
+            <!-- MEINE LAUTE (Lernpfad-Sammlung) -->
+            <section data-kidsec-panel="laute" hidden>
+                <h2 class="kid-section-title">Meine Laute
+                    <button type="button" class="read-aloud-btn" data-read="Hier sammelst du Laute. Tippe einen Laut an, den du üben möchtest." aria-label="Vorlesen">&#128266;</button>
+                </h2>
+                <p class="kid-sub" style="margin-bottom:14px;">Such dir einen Laut aus, den du &uuml;ben m&ouml;chtest. Du sammelst Sterne, wenn du W&ouml;rter laut nachsprichst.</p>
+                <div id="laute-grid" class="laute-grid"></div>
+                <div id="laute-vorschlag" style="margin-top:24px;"></div>
+            </section>
+
             <!-- weiche Eltern-Tür -->
             <div style="text-align:center;margin-top:40px;display:flex;gap:18px;justify-content:center;flex-wrap:wrap;">
                 <a href="profilauswahl.html" class="btn-text" style="opacity:0.7;">&#128100; Profil wechseln</a>
@@ -124,6 +135,7 @@
     <script src="formkit.js"></script>
     <script src="konto-state.js"></script>
     <script src="konto-fx.js"></script>
+    <script src="lautlese.js"></script>
     <script>
     (function () {
         'use strict';
@@ -261,6 +273,7 @@
             // MITTEL / HOCH
             grid.appendChild(homeTile({ emoji: '📚', label: 'Meine Bücher', sub: 'weiterlesen', acc: 'acc-mint', onClick: function () { showSection('bibliothek'); } }));
             grid.appendChild(homeTile({ emoji: '✨', label: 'Für dich', sub: 'neue Geschichten', acc: 'acc-salmon', onClick: function () { showSection('empfehlungen'); } }));
+            grid.appendChild(homeTile({ emoji: '🗣️', label: 'Meine Laute', sub: 'Laute üben', acc: 'acc-lila', onClick: function () { showSection('laute'); } }));
             if (child.rights === 'erstellen') {
                 grid.appendChild(homeTile({ emoji: '✍️', label: 'Selbst machen', sub: 'eigene Geschichte', acc: 'acc-yellow', href: 'neue-geschichte.html' }));
             }
@@ -345,7 +358,109 @@
             });
         }
 
-        function renderAll() { renderHeader(); renderHome(); renderLibrary(); renderRecs(); }
+        // ================= MEINE LAUTE (Lernpfad) =================
+        var _storyIndex = null, _storyIndexTried = false;
+        function loadStoryIndex(cb) {
+            if (_storyIndex || _storyIndexTried) { cb(_storyIndex); return; }
+            _storyIndexTried = true;
+            try {
+                fetch('stories-index.json').then(function (r) { return r.json(); })
+                    .then(function (d) { _storyIndex = d; cb(d); })
+                    .catch(function () { cb(null); });
+            } catch (e) { cb(null); }
+        }
+
+        function nextRecommended(inv, fortschritt) {
+            for (var i = 0; i < inv.length; i++) {
+                var s = fortschritt[inv[i].id];
+                if (!s || !s.mastered) return inv[i].id;
+            }
+            return null;
+        }
+
+        function renderLaute() {
+            var grid = document.getElementById('laute-grid');
+            if (!grid || !window.Lautlese) return;
+            Lautlese.injectStyles();
+            var laute = Konto.getActiveLaute();
+            var inv = Lautlese.LAUT_INVENTORY;
+            var fokus = laute.fokus || null;
+            var naechster = nextRecommended(inv, laute.fortschritt);
+            var thresh = Lautlese.MASTER_THRESHOLD || 12;
+
+            grid.innerHTML = inv.map(function (g) {
+                var s = laute.fortschritt[g.id] || { practiced: 0, mastered: false };
+                var pct = Math.min(100, Math.round((s.practiced / thresh) * 100));
+                var cls = 'laut-chip';
+                if (g.id === fokus) cls += ' is-focus';
+                if (s.mastered) cls += ' is-master';
+                if (g.id === naechster && g.id !== fokus) cls += ' is-next';
+                return '<button type="button" class="' + cls + '" data-laut="' + g.id + '">' +
+                    '<span class="lc-label">' + g.label + '</span>' +
+                    '<span class="lc-bsp">wie ' + esc(g.beispiel) + '</span>' +
+                    '<span class="lc-bar"><i style="width:' + pct + '%"></i></span>' +
+                    '</button>';
+            }).join('');
+
+            grid.querySelectorAll('.laut-chip').forEach(function (el) {
+                el.addEventListener('click', function () {
+                    var id = el.getAttribute('data-laut');
+                    Lautlese.setFocus(id);
+                    child = Konto.getActiveChild();
+                    var g = Lautlese.byId(id);
+                    toast('Du übst jetzt den ' + (g ? g.label : id) + '-Laut! 🎯');
+                    renderLaute();
+                });
+            });
+
+            renderLautVorschlag(fokus || naechster);
+        }
+
+        function renderLautVorschlag(lautId) {
+            var box = document.getElementById('laute-vorschlag');
+            if (!box) return;
+            if (!lautId) { box.innerHTML = ''; return; }
+            var g = Lautlese.byId(lautId);
+            var phase = (child.level && child.level.phase) || 2;
+            box.innerHTML = '<h3 class="card-h3" style="margin-bottom:10px;">Geschichten zum Üben von „' +
+                esc(g ? g.label : lautId) + '"</h3><div class="info-card">Ich suche passende Geschichten… 🔎</div>';
+
+            loadStoryIndex(function (idx) {
+                var listHtml;
+                if (!idx || !idx.stories) {
+                    box.querySelector('.info-card').textContent = 'Vorschläge gibt es online auf der Webseite. 🌐';
+                    return;
+                }
+                var min = (Lautlese.MIN_WORDS || 2);
+                var hits = idx.stories.filter(function (st) {
+                    return st.lautProfil && (st.lautProfil[lautId] || 0) >= min;
+                });
+                // nach Niveau-Nähe sortieren, dann nach Laut-Häufigkeit
+                hits.sort(function (a, b) {
+                    var da = a.niveau ? Math.abs(a.niveau - phase) : 9;
+                    var db = b.niveau ? Math.abs(b.niveau - phase) : 9;
+                    if (da !== db) return da - db;
+                    return (b.lautProfil[lautId] || 0) - (a.lautProfil[lautId] || 0);
+                });
+                hits = hits.slice(0, 5);
+                if (!hits.length) {
+                    box.querySelector('.info-card').textContent = 'Für diesen Laut habe ich gerade keine passende Geschichte — probier einen anderen! 🙂';
+                    return;
+                }
+                listHtml = hits.map(function (st) {
+                    var n = st.lautProfil[lautId] || 0;
+                    return '<a class="kid-book" href="' + esc(st.path) + '">' +
+                        '<span class="kid-book-emoji" aria-hidden="true">📖</span>' +
+                        '<span class="kid-book-info"><span class="kid-book-title">' + esc(st.title) + '</span>' +
+                        '<span class="kid-book-reason">' + n + ' Wörter mit „' + esc(g ? g.label : lautId) + '"</span></span>' +
+                        '</a>';
+                }).join('');
+                box.innerHTML = '<h3 class="card-h3" style="margin-bottom:10px;">Geschichten zum Üben von „' +
+                    esc(g ? g.label : lautId) + '"</h3><div>' + listHtml + '</div>';
+            });
+        }
+
+        function renderAll() { renderHeader(); renderHome(); renderLibrary(); renderRecs(); renderLaute(); }
 
         // ---- Section-Nav ----
         function showSection(name) {

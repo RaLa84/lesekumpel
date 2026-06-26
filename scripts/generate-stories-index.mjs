@@ -23,6 +23,67 @@ function isoDate(d) {
   return new Date(d).toISOString().slice(0, 10);
 }
 
+// ── Laut-Profil ───────────────────────────────────────────────────────────
+// Gespiegelt aus lautlese.js (LAUT_INVENTORY / matchesGrapheme / profileStory).
+// Bei Änderungen dort bitte hier mitpflegen — eine Quelle der Wahrheit ist
+// lautlese.js (Browser), diese Kopie hält den Build-Index synchron.
+const LAUT_INVENTORY = [
+  { id: 'ei' }, { id: 'au' }, { id: 'ie' }, { id: 'sch' }, { id: 'ch' },
+  { id: 'st', initialOnly: true }, { id: 'sp', initialOnly: true },
+  { id: 'ck' }, { id: 'pf' }, { id: 'ng' }, { id: 'eu' }, { id: 'äu' }, { id: 'qu' },
+];
+
+function cleanWordLL(raw) {
+  return (raw || '')
+    .replace(/\*\*/g, '').replace(/\*/g, '')
+    .replace(/­/g, '')
+    .replace(/[.,!?:;„“"»«‚'()\[\]…]/g, '')
+    .replace(/[–—]/g, '')
+    .trim();
+}
+function tokenizeLL(text) {
+  return String(text || '').split(/\s+/).map(cleanWordLL).filter(Boolean);
+}
+function matchesGrapheme(word, g) {
+  const lw = word.toLowerCase();
+  if (g.initialOnly) return lw.indexOf(g.id) === 0;
+  if (g.id === 'ch') return /(^|[^s])ch/.test(lw);
+  return lw.indexOf(g.id) !== -1;
+}
+function profileStory(rawStory) {
+  const words = tokenizeLL(rawStory);
+  const profile = {};
+  for (const g of LAUT_INVENTORY) {
+    const seen = new Set();
+    let n = 0;
+    for (const w of words) {
+      if (w.length < 2) continue;
+      const key = w.toLowerCase();
+      if (seen.has(key)) continue;
+      if (matchesGrapheme(w, g)) { seen.add(key); n++; }
+    }
+    if (n > 0) profile[g.id] = n;
+  }
+  return profile;
+}
+
+// rawStory-Stringliteral aus dem HTML ziehen und entschärfen
+function extractRawStory(html) {
+  const m = html.match(/let\s+rawStory\s*=\s*"((?:[^"\\]|\\.)*)"/);
+  if (!m) return '';
+  try { return JSON.parse('"' + m[1] + '"'); } catch { return ''; }
+}
+
+// Skill-Persona → Niveau-Phase (1–5) für laut-/niveau-passende Vorschläge
+const PERSONA_PHASE = [
+  [/pip\s*punkt/i, 1], [/mia\s*mitte/i, 2], [/peter\s*past/i, 3],
+  [/stella/i, 4], [/finja/i, 5],
+];
+function niveauPhase(readingLevel) {
+  for (const [re, p] of PERSONA_PHASE) if (re.test(readingLevel || '')) return p;
+  return null;
+}
+
 function formatName(filename) {
   return filename
     .replace(/\.html$/, '')
@@ -70,14 +131,19 @@ async function buildStories() {
       let date;
       try { date = isoDate(dateRaw); } catch { continue; }
 
+      const readingLevel = match1(html, /<meta\s+name=["']reading-level["']\s+content=["']([^"']+)["']/i);
+      const lautProfil = profileStory(extractRawStory(html));
+
       stories.push({
         path: `${cfg.dir}/${name}`,
         type: cfg.type,
         title: cleanTitle(match1(html, /<title>([^<]+)<\/title>/i), name),
         author: match1(html, /<meta\s+name=["']author["']\s+content=["']([^"']+)["']/i),
         date,
-        readingLevel: match1(html, /<meta\s+name=["']reading-level["']\s+content=["']([^"']+)["']/i),
+        readingLevel,
         neurotype: match1(html, /<meta\s+name=["']neurotype["']\s+content=["']([^"']+)["']/i),
+        niveau: niveauPhase(readingLevel),
+        lautProfil,
       });
     }
   }

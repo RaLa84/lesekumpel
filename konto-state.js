@@ -124,6 +124,18 @@
   function isOnboarded() { return read('onboardingDone', false) === true; }
   function setOnboarded(v) { write('onboardingDone', v === true); }
 
+  /* ---------- LAUT-LERNPFAD (Lese-/Fibel-Laute) ----------
+     Schreibender Zugriff läuft über lautlese.js (window.Lautlese) — eine Quelle
+     der Wahrheit. Hier nur ein Lese-Helfer fürs Dashboard, der die Struktur
+     { fokus, fortschritt:{ id:{practiced,words[],recognized,mastered} } } liefert. */
+  function getActiveLaute() {
+    var c = getActiveChild();
+    if (!c) return { fokus: null, fortschritt: {} };
+    if (!c.laute) c.laute = { fokus: null, fortschritt: {} };
+    if (!c.laute.fortschritt) c.laute.fortschritt = {};
+    return c.laute;
+  }
+
   /* ---------- RESET (Dev/Prototyp) ---------- */
   function reset() {
     ['parent', 'children', 'activeChildId', 'onboardingDone'].forEach(remove);
@@ -169,6 +181,11 @@
         readingHelp: deriveReadingHelp(['lrs']),
         energy: { current: 'mittel', checkedInAt: '' },
         motivation: { wantsToLearn: 'ja', focus: 'selbst', difficulty: 'mittel' },
+        laute: { fokus: 'sch', fortschritt: {
+          ei: { practiced: 12, words: ['eis', 'klein', 'reise'], recognized: 9, mastered: true },
+          au: { practiced: 5, words: ['baum', 'laut'], recognized: 3, mastered: false },
+          sch: { practiced: 3, words: ['schule', 'schon'], recognized: 2, mastered: false }
+        } },
         noDemandMode: true,
         rights: 'erstellen',
         storiesRead: 24, quizzesSolved: 12, storiesRated: 8,
@@ -198,6 +215,9 @@
         readingHelp: deriveReadingHelp(['adhs']),
         energy: { current: 'hoch', checkedInAt: '' },
         motivation: { wantsToLearn: 'unsicher', focus: 'gemischt', difficulty: 'leicht' },
+        laute: { fokus: 'ei', fortschritt: {
+          ei: { practiced: 4, words: ['eis', 'mein'], recognized: 2, mastered: false }
+        } },
         noDemandMode: true,
         rights: 'nur-lesen',
         storiesRead: 8, quizzesSolved: 3, storiesRated: 2,
@@ -254,6 +274,8 @@
     getActiveChildId: getActiveChildId, setActiveChild: setActiveChild, getActiveChild: getActiveChild,
     // Onboarding
     isOnboarded: isOnboarded, setOnboarded: setOnboarded,
+    // Laut-Lernpfad
+    getActiveLaute: getActiveLaute,
     // Lesehilfen
     deriveReadingHelp: deriveReadingHelp, blankReadingHelp: blankReadingHelp,
     // Lifecycle
