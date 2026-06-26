@@ -111,6 +111,9 @@
     /* Gemeinsamer Footer + weitere hartkodierte helle Flächen pro Seitentyp
        (Selektoren ohne Treffer auf einer Seite sind harmlos) */
     body.dark-mode .modern-footer { background: var(--cream-light); color: var(--text-muted); }
+    /* Wortmarke "Lese" + Social-Icons nutzen --cream (im Dark dunkel) -> aufhellen, sonst dunkel auf dunkel. */
+    body.dark-mode .modern-footer .footer-brand-row,
+    body.dark-mode .modern-footer .footer-social a { color: var(--text-dark); }
     body.dark-mode .tile-fav, body.dark-mode .tile-speak,
     body.dark-mode .load-more-btn, body.dark-mode .format-pill,
     body.dark-mode .placeholder { background: var(--bg-card); color: var(--text-dark); border-color: var(--border-soft); }
