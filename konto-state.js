@@ -154,8 +154,59 @@
      Damit mein-konto.html & kind.html auch ohne durchlaufenes
      Onboarding sinnvoll rendern. Wird übersprungen, sobald echte
      Daten vorhanden sind. */
+  function cloneArr(a) { return (a || []).map(function (x) { return Object.assign({}, x); }); }
+
+  /* Demo-Inhalte (Bücher + Empfehlungen) — verweisen auf ECHTE Geschichten in
+     demo-texte/ mit Titelbild (bilder/<slug>-1.png). Auch von der Migration genutzt. */
+  var DEMO_CONTENT = {
+    1: {
+      library: [
+        { id: 'l1', title: 'Der kleine Weltraum-Wal', icon: '🐋', status: 'gelesen', phase: 1, path: 'demo-texte/der-kleine-weltraum-wal-1h5q.html' },
+        { id: 'l2', title: 'Die Schatzkarte im Garten', icon: '🗺️', status: 'neu', phase: 3, path: 'demo-texte/die-schatzkarte-im-garten-1ub9.html' },
+        { id: 'l3', title: 'Das Wettrennen der Seifenkisten', icon: '🏎️', status: 'gelesen', phase: 3, path: 'demo-texte/das-wettrennen-der-seifenkisten-1ygk.html' },
+        { id: 'l4', title: 'Die Reise zum Mond', icon: '🌙', status: 'gelesen', phase: 5, path: 'demo-texte/die-reise-zum-mond-1y60.html' }
+      ],
+      recommendations: [
+        { id: 'r1', title: 'Der kleine Igel findet einen Ball', icon: '🦔', reason: 'Weil du Tiere magst', phase: 1, kind: 'selbst', path: 'demo-texte/der-kleine-igel-findet-einen-ball-12ps.html' },
+        { id: 'r2', title: 'Die singenden Weltraumwale', icon: '🚀', reason: 'Weil du den Weltraum magst', phase: 5, kind: 'selbst', path: 'demo-texte/die-singenden-weltraumwale-1bvz.html' },
+        { id: 'r3', title: 'Auf einer Lichtung im Mondschein', icon: '🌙', reason: 'Ganz ruhig zum Vorlesen', phase: 2, kind: 'vorlesen', path: 'demo-texte/auf-einer-lichtung-im-mondschein-n8w1.html' },
+        { id: 'r4', title: 'Vier Freunde im Wald', icon: '🐻', reason: 'Über Freundschaft', phase: 4, kind: 'vorlesen', path: 'demo-texte/vier-freunde-im-wald-1s73.html' }
+      ]
+    },
+    2: {
+      library: [
+        { id: 'l5', title: 'Das Fußballstadion', icon: '⚽', status: 'gelesen', phase: 1, path: 'demo-texte/das-fussballstadion-1gsw.html' },
+        { id: 'l6', title: 'Das Rennen auf der Gokartbahn', icon: '🏎️', status: 'neu', phase: 2, path: 'demo-texte/das-rennen-auf-der-gokartbahn-1061.html' }
+      ],
+      recommendations: [
+        { id: 'r5', title: 'Tom und das große Sackhüpfen', icon: '🏃', reason: 'Weil du Bewegung magst', phase: 3, kind: 'selbst', path: 'demo-texte/tom-und-das-grosse-sackhuepfen-1tti.html' },
+        { id: 'r6', title: '24h-Rennen Nürburgring', icon: '🏎️', reason: 'Weil du Fahrzeuge magst', phase: 3, kind: 'selbst', path: 'demo-texte/24h-rennen-nuerburgring-266o.html' },
+        { id: 'r7', title: 'Der kleine Igel findet einen Ball', icon: '🦔', reason: 'Ruhig zum Vorlesen', phase: 1, kind: 'vorlesen', path: 'demo-texte/der-kleine-igel-findet-einen-ball-12ps.html' }
+      ]
+    }
+  };
+
+  /* Aktualisiert Demo-Kinder (id 1/2), deren Bücher noch im ALTEN Format ohne
+     `path` liegen (Bestands-localStorage), auf die echten Geschichten mit Bild.
+     Greift nur bei vorhandenen Alt-Items — leere/echte Bibliotheken bleiben unberührt. */
+  function migrateDemoContent() {
+    var kids = getChildren(), changed = false;
+    kids.forEach(function (c) {
+      var demo = DEMO_CONTENT[c.id];
+      if (!demo) return;
+      var oldFormat = (c.library || []).some(function (b) { return b && !b.path; });
+      if (oldFormat) {
+        c.library = cloneArr(demo.library);
+        c.recommendations = cloneArr(demo.recommendations);
+        c.dailyTasks = null; // neu generieren -> Aufgaben nutzen die echten Story-Bilder
+        changed = true;
+      }
+    });
+    if (changed) setChildren(kids);
+  }
+
   function seedIfEmpty() {
-    if (getParent() && getChildren().length) return;
+    if (getParent() && getChildren().length) { migrateDemoContent(); return; }
 
     setParent({
       name: 'Maria Musterfrau',
@@ -192,18 +243,8 @@
         weekActivity: [3, 1, 2, 0, 4, 2, 1],
         energyHistory: ['hoch', 'mittel', 'mittel', 'niedrig', 'hoch', 'mittel', 'hoch'],
         lastActive: '19. März 2026',
-        library: [
-          { id: 'l1', title: 'Der kleine Weltraum-Wal', icon: '🐋', status: 'gelesen', phase: 1, path: 'demo-texte/der-kleine-weltraum-wal-1h5q.html' },
-          { id: 'l2', title: 'Die Schatzkarte im Garten', icon: '🗺️', status: 'neu', phase: 3, path: 'demo-texte/die-schatzkarte-im-garten-1ub9.html' },
-          { id: 'l3', title: 'Das Wettrennen der Seifenkisten', icon: '🏎️', status: 'gelesen', phase: 3, path: 'demo-texte/das-wettrennen-der-seifenkisten-1ygk.html' },
-          { id: 'l4', title: 'Die Reise zum Mond', icon: '🌙', status: 'gelesen', phase: 5, path: 'demo-texte/die-reise-zum-mond-1y60.html' }
-        ],
-        recommendations: [
-          { id: 'r1', title: 'Der kleine Igel findet einen Ball', icon: '🦔', reason: 'Weil du Tiere magst', phase: 1, kind: 'selbst', path: 'demo-texte/der-kleine-igel-findet-einen-ball-12ps.html' },
-          { id: 'r2', title: 'Die singenden Weltraumwale', icon: '🚀', reason: 'Weil du den Weltraum magst', phase: 5, kind: 'selbst', path: 'demo-texte/die-singenden-weltraumwale-1bvz.html' },
-          { id: 'r3', title: 'Auf einer Lichtung im Mondschein', icon: '🌙', reason: 'Ganz ruhig zum Vorlesen', phase: 2, kind: 'vorlesen', path: 'demo-texte/auf-einer-lichtung-im-mondschein-n8w1.html' },
-          { id: 'r4', title: 'Vier Freunde im Wald', icon: '🐻', reason: 'Über Freundschaft', phase: 4, kind: 'vorlesen', path: 'demo-texte/vier-freunde-im-wald-1s73.html' }
-        ],
+        library: cloneArr(DEMO_CONTENT[1].library),
+        recommendations: cloneArr(DEMO_CONTENT[1].recommendations),
         friends: ['Max', 'Sophie', 'Tim']
       },
       {
@@ -224,15 +265,8 @@
         weekActivity: [1, 0, 1, 1, 0, 2, 0],
         energyHistory: ['hoch', 'hoch', 'mittel', 'hoch', 'niedrig', 'mittel', 'hoch'],
         lastActive: '18. März 2026',
-        library: [
-          { id: 'l5', title: 'Das Fußballstadion', icon: '⚽', status: 'gelesen', phase: 1, path: 'demo-texte/das-fussballstadion-1gsw.html' },
-          { id: 'l6', title: 'Das Rennen auf der Gokartbahn', icon: '🏎️', status: 'neu', phase: 2, path: 'demo-texte/das-rennen-auf-der-gokartbahn-1061.html' }
-        ],
-        recommendations: [
-          { id: 'r5', title: 'Tom und das große Sackhüpfen', icon: '🏃', reason: 'Weil du Bewegung magst', phase: 3, kind: 'selbst', path: 'demo-texte/tom-und-das-grosse-sackhuepfen-1tti.html' },
-          { id: 'r6', title: '24h-Rennen Nürburgring', icon: '🏎️', reason: 'Weil du Fahrzeuge magst', phase: 3, kind: 'selbst', path: 'demo-texte/24h-rennen-nuerburgring-266o.html' },
-          { id: 'r7', title: 'Der kleine Igel findet einen Ball', icon: '🦔', reason: 'Ruhig zum Vorlesen', phase: 1, kind: 'vorlesen', path: 'demo-texte/der-kleine-igel-findet-einen-ball-12ps.html' }
-        ],
+        library: cloneArr(DEMO_CONTENT[2].library),
+        recommendations: cloneArr(DEMO_CONTENT[2].recommendations),
         friends: ['Tim']
       }
     ]);
