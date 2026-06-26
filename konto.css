@@ -672,15 +672,17 @@ body.lk-contrast .stat-number, body.lk-contrast .counter-number, body.lk-contras
 .task-card.is-done .task-reward { opacity: 0.5; }
 .task-card.is-done .task-check { background: var(--mint); border-color: var(--mint); color: #fff; box-shadow: 0 5px 14px rgba(47,184,166,0.38); }
 
-/* --- Bottom-Navigation: schwebende Creme-Pille; die Buttons SIND die
-       .tool-btn-Komponente der Leseseiten (gleiche Optik). Hier nur Geometrie
-       (quadratisch, icon-only) + Outline-Aktivzustand als scoped Overrides. --- */
-.kid-bottomnav { position: fixed; left: 50%; transform: translateX(-50%); bottom: max(12px, env(safe-area-inset-bottom)); max-width: calc(100% - 20px); z-index: 1000; display: flex; gap: 8px; justify-content: center; background: #FBF5EA; border: 1.5px solid rgba(0,0,0,0.04); border-radius: 24px; padding: 9px 11px; box-shadow: 0 8px 26px rgba(43,49,64,0.12); }
-.kid-bottomnav .kbn-item { flex: 0 0 auto; width: 56px; height: 56px; min-width: 0; min-height: 0; padding: 0; display: inline-flex; align-items: center; justify-content: center; border-radius: 14px; }
+/* --- Bottom-Navigation: schwebende Creme-Pille mit cremefarbenen, gepolsterten
+       Icon-Buttons (optisch wie die Leseseiten-Toolbar). Aktiv = dezenter
+       Mint-Akzent (Icon + zarte Tönung), kein Ring. --- */
+.kid-bottomnav { position: fixed; left: 50%; transform: translateX(-50%); bottom: max(12px, env(safe-area-inset-bottom)); max-width: calc(100% - 20px); z-index: 1000; display: flex; gap: 9px; justify-content: center; background: #F6F0E2; border: 1px solid rgba(60,50,30,0.06); border-radius: 28px; padding: 11px 13px; box-shadow: 0 8px 26px rgba(43,49,64,0.12); }
+.kid-bottomnav .kbn-item { flex: 0 0 auto; width: 58px; height: 58px; min-width: 0; min-height: 0; padding: 0; display: inline-flex; align-items: center; justify-content: center; background: #FCF8F0; border: 1.5px solid rgba(60,50,30,0.10); border-radius: 16px; color: var(--navy); box-shadow: 0 1px 2px rgba(0,0,0,0.04); transition: background 0.15s, border-color 0.15s, color 0.15s, transform 0.1s; }
 .kid-bottomnav .kbn-item svg { width: 24px; height: 24px; }
 .kid-bottomnav .kbn-item span { display: none; }
-.kid-bottomnav .kbn-item.active { background: #fff; border-color: var(--mint); color: var(--mint-dark); box-shadow: inset 0 0 0 1.5px var(--mint), 0 1px 3px rgba(0,0,0,0.05); }
-.kid-bottomnav .kbn-item.active:hover { background: #fff; border-color: var(--mint); }
+.kid-bottomnav .kbn-item:hover { background: #fff; border-color: rgba(60,50,30,0.16); transform: translateY(-1px); }
+.kid-bottomnav .kbn-item:active { transform: scale(0.94); }
+.kid-bottomnav .kbn-item.active { background: var(--accent-soft); border-color: rgba(47,184,166,0.30); color: var(--mint-dark); }
+.kid-bottomnav .kbn-item.active:hover { background: var(--accent-soft); border-color: rgba(47,184,166,0.4); }
 
 /* --- Energie-Bottom-Sheet (ersetzt Fullscreen-Gate) --- */
 .sheet-backdrop { position: fixed; inset: 0; z-index: 8999; background: rgba(43,49,64,0.45); -webkit-backdrop-filter: blur(2px); backdrop-filter: blur(2px); opacity: 0; transition: opacity 0.3s ease; }
@@ -709,7 +711,8 @@ body.dark-mode .energy-meter-track { background: #1C2230; border-color: var(--bo
 body.dark-mode .task-check { background: #2A3242; }
 body.dark-mode .task-emoji, body.dark-mode .book-badge.badge-gelesen { border-color: var(--bg-card); }
 body.dark-mode .kid-bottomnav { background: var(--cream-light); border-color: var(--border-soft); }
-body.dark-mode .kid-bottomnav .kbn-item.active { background: rgba(255,255,255,0.08); border-color: var(--mint); color: var(--mint); box-shadow: inset 0 0 0 1.5px var(--mint); }
+body.dark-mode .kid-bottomnav .kbn-item { background: rgba(255,255,255,0.05); border-color: var(--border-soft); color: var(--text-dark); }
+body.dark-mode .kid-bottomnav .kbn-item.active { background: rgba(79,211,192,0.18); border-color: rgba(79,211,192,0.4); color: var(--mint); }
 body.dark-mode .shelf { background: linear-gradient(180deg, #2A3242, #232A3A); border-color: var(--border-soft); }
 body.high-contrast .kid-scene { background: #fff; border: 2px solid var(--border-soft); box-shadow: none; }
 body.high-contrast .scene-hill, body.high-contrast .scene-sun, body.high-contrast .shelf-plant { display: none; }
