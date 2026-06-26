@@ -8,7 +8,7 @@
     <meta name="robots" content="noindex">
     <link rel="icon" href="bilder/lesekumpel_logo_v2.png">
     <link rel="stylesheet" href="fonts/fonts.css">
-    <link rel="stylesheet" href="konto.css?v=20260626m">
+    <link rel="stylesheet" href="konto.css?v=20260626n">
 
     <!-- ===== A11y-Modal CSS (1:1 aus partials/a11y.html · Single Source) ===== -->
     <style>
@@ -263,11 +263,6 @@
                 <div id="laute-vorschlag" style="margin-top:24px;"></div>
             </section>
 
-            <!-- weiche Eltern-Tür -->
-            <div style="text-align:center;margin-top:40px;display:flex;gap:18px;justify-content:center;flex-wrap:wrap;">
-                <a href="profilauswahl.html" class="btn-text" style="opacity:0.7;">&#128100; Profil wechseln</a>
-                <button type="button" class="btn-text" id="parent-door" style="opacity:0.7;">&#128274; F&uuml;r Eltern</button>
-            </div>
         </div>
     </main>
 
@@ -360,21 +355,6 @@
             <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"/><path d="m15 5 4 4"/></svg>
         </button>
     </nav>
-
-    <!-- ELTERN-TÜR (Modal mit kleiner Rechenaufgabe) -->
-    <div class="lk-modal" id="parent-modal" role="dialog" aria-modal="true" aria-labelledby="pm-title">
-        <div class="lk-modal-card">
-            <div aria-hidden="true" style="font-size:2.2rem;">&#128274;</div>
-            <h2 id="pm-title">Nur f&uuml;r Erwachsene</h2>
-            <p class="step-hint" id="pm-q">L&ouml;se die Aufgabe, um in den Eltern-Bereich zu gelangen.</p>
-            <input type="number" id="pm-input" class="form-input" inputmode="numeric" aria-labelledby="pm-q" style="text-align:center;font-size:1.2rem;">
-            <div class="lk-modal-error" id="pm-err" role="alert" aria-live="assertive"></div>
-            <div class="lk-modal-actions">
-                <button type="button" class="btn-secondary" id="pm-cancel">Zur&uuml;ck</button>
-                <button type="button" class="btn-primary" id="pm-ok">Weiter</button>
-            </div>
-        </div>
-    </div>
 
     <!-- ===== A11y-Modal (1:1 aus partials/a11y.html · Single Source) ===== -->
     <div class="settings-overlay" id="settings-overlay" hidden onclick="if(event.target===this)closeSettings()">
@@ -494,10 +474,10 @@
     })();
     </script>
 
-    <script src="formkit.js?v=20260626m"></script>
-    <script src="konto-state.js?v=20260626m"></script>
-    <script src="konto-fx.js?v=20260626m"></script>
-    <script src="lautlese.js?v=20260626m"></script>
+    <script src="formkit.js?v=20260626n"></script>
+    <script src="konto-state.js?v=20260626n"></script>
+    <script src="konto-fx.js?v=20260626n"></script>
+    <script src="lautlese.js?v=20260626n"></script>
     <script>
     (function () {
         'use strict';
@@ -1076,37 +1056,6 @@
         }
         document.getElementById('scene-mascot-img').addEventListener('click', buddyTip);
         document.getElementById('scene-hero').addEventListener('click', buddyTip);
-
-        // ---- weiche Eltern-Tür (fokus-gefangenes Modal) ----
-        var pModal = document.getElementById('parent-modal');
-        var pRelease = null, pAnswer = 0;
-        function openParentGate() {
-            var a = 2 + (child.id % 7), b = 3 + ((child.id + 4) % 6);
-            pAnswer = a + b;
-            document.getElementById('pm-q').textContent = 'Was ist ' + a + ' + ' + b + '?';
-            document.getElementById('pm-input').value = '';
-            document.getElementById('pm-err').textContent = '';
-            pModal.classList.add('show');
-            pRelease = KontoFX.trapFocus(pModal, { initial: '#pm-input', onEscape: closeParentGate });
-        }
-        function closeParentGate() {
-            pModal.classList.remove('show');
-            if (pRelease) { pRelease(); pRelease = null; }
-        }
-        function submitParentGate() {
-            var val = parseInt(document.getElementById('pm-input').value, 10);
-            if (val === pAnswer) { window.location.href = 'mein-konto.html'; }
-            else {
-                document.getElementById('pm-err').textContent = 'Das stimmt noch nicht. Versuch es nochmal. 🙂';
-                var inp = document.getElementById('pm-input'); inp.value = ''; inp.focus();
-            }
-        }
-        document.getElementById('parent-door').addEventListener('click', openParentGate);
-        document.getElementById('pm-ok').addEventListener('click', submitParentGate);
-        document.getElementById('pm-cancel').addEventListener('click', closeParentGate);
-        document.getElementById('pm-input').addEventListener('keydown', function (e) {
-            if (e.key === 'Enter') { e.preventDefault(); submitParentGate(); }
-        });
 
         // ---- Standard-Header: Burger-Menü (global, via inline onclick) ----
         window.toggleMenu = function () {
