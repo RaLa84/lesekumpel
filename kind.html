@@ -8,7 +8,7 @@
     <meta name="robots" content="noindex">
     <link rel="icon" href="bilder/lesekumpel_logo_v2.png">
     <link rel="stylesheet" href="fonts/fonts.css">
-    <link rel="stylesheet" href="konto.css?v=20260626h">
+    <link rel="stylesheet" href="konto.css?v=20260626i">
 
     <!-- ===== A11y-Modal CSS (1:1 aus partials/a11y.html · Single Source) ===== -->
     <style>
@@ -162,6 +162,18 @@
                     <span class="scene-hill scene-hill-front" aria-hidden="true"></span>
                     <div class="scene-mascot" id="scene-mascot"><img src="bilder/lesekumpel_logo_v2.png" alt="" id="scene-mascot-img"></div>
                     <img class="scene-hero" id="scene-hero" alt="" hidden>
+                    <!-- dezentes Drei-Punkte-Menü oben rechts -->
+                    <div class="scene-menu-wrap">
+                        <button type="button" class="scene-menu-btn" id="scene-menu-btn" aria-label="Men&uuml;" aria-haspopup="true" aria-expanded="false">
+                            <svg aria-hidden="true" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="5" r="2"/><circle cx="12" cy="12" r="2"/><circle cx="12" cy="19" r="2"/></svg>
+                        </button>
+                        <div class="scene-menu" id="scene-menu" role="menu" aria-labelledby="scene-menu-btn" hidden>
+                            <button type="button" class="scene-menu-item" id="menu-energy" role="menuitem">
+                                <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="16" height="10" rx="2"/><path d="M22 11v2"/><path d="M6 11v2"/></svg>
+                                Akku einstellen
+                            </button>
+                        </div>
+                    </div>
                 </div>
 
                 <!-- TAGESAUFGABEN -->
@@ -434,10 +446,10 @@
     })();
     </script>
 
-    <script src="formkit.js?v=20260626h"></script>
-    <script src="konto-state.js?v=20260626h"></script>
-    <script src="konto-fx.js?v=20260626h"></script>
-    <script src="lautlese.js?v=20260626h"></script>
+    <script src="formkit.js?v=20260626i"></script>
+    <script src="konto-state.js?v=20260626i"></script>
+    <script src="konto-fx.js?v=20260626i"></script>
+    <script src="lautlese.js?v=20260626i"></script>
     <script>
     (function () {
         'use strict';
@@ -518,6 +530,22 @@
         });
         document.getElementById('akku-later').addEventListener('click', dismissGateSoft);
         backdrop.addEventListener('click', dismissGateSoft);
+
+        // ---- Dezentes Hero-Menü (Energie einstellen) ----
+        var sceneMenuBtn = document.getElementById('scene-menu-btn');
+        var sceneMenu = document.getElementById('scene-menu');
+        function closeSceneMenu() { sceneMenu.hidden = true; sceneMenuBtn.setAttribute('aria-expanded', 'false'); }
+        sceneMenuBtn.addEventListener('click', function (e) {
+            e.stopPropagation();
+            var willOpen = sceneMenu.hidden;
+            sceneMenu.hidden = !willOpen;
+            sceneMenuBtn.setAttribute('aria-expanded', willOpen ? 'true' : 'false');
+        });
+        document.getElementById('menu-energy').addEventListener('click', function () { closeSceneMenu(); showGate(); });
+        document.addEventListener('click', function (e) {
+            if (!sceneMenu.hidden && !sceneMenu.contains(e.target) && !sceneMenuBtn.contains(e.target)) closeSceneMenu();
+        });
+        document.addEventListener('keydown', function (e) { if (e.key === 'Escape' && !sceneMenu.hidden) closeSceneMenu(); });
 
         // ================= TAGESAUFGABEN =================
         // Story-Index lazy laden; Callbacks werden bis zum Fetch-Ende gepuffert
