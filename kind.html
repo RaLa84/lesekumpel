@@ -566,12 +566,12 @@
             var vor = recs.filter(function (r) { return r.kind === 'vorlesen'; })[0] || (c.library || [])[0];
             var tasks = [];
             tasks.push({
-                id: 'read', type: 'read', stars: 5, done: false, doneAt: null, storyPath: null, lautId: null, stat: 'storiesRead',
+                id: 'read', type: 'read', stars: 5, done: false, doneAt: null, storyPath: (selbst && selbst.path) || null, lautId: null, stat: 'storiesRead',
                 title: selbst ? ('Lies: ' + selbst.title) : 'Lies eine Geschichte', emoji: (selbst && selbst.icon) || '📖'
             });
             if (vor) {
                 tasks.push({
-                    id: 'listen', type: 'listen', stars: 3, done: false, doneAt: null, storyPath: null, lautId: null, stat: null,
+                    id: 'listen', type: 'listen', stars: 3, done: false, doneAt: null, storyPath: vor.path || null, lautId: null, stat: null,
                     title: 'Hör dir an: ' + vor.title, emoji: '🗣️'
                 });
             }
@@ -647,8 +647,9 @@
             }
             list.innerHTML = tasks.map(function (t, i) {
                 var acc = TASK_ACC[i % TASK_ACC.length];
+                var thumb = t.storyPath ? '<img src="' + esc(storyThumb(t.storyPath)) + '" alt="" onerror="this.remove()">' : '';
                 return '<div class="task-card ' + acc + (t.done ? ' is-done' : '') + '" data-task-id="' + esc(t.id) + '">' +
-                    '<span class="task-emoji" aria-hidden="true">' + t.emoji + '</span>' +
+                    '<span class="task-emoji" aria-hidden="true">' + t.emoji + thumb + '</span>' +
                     '<span class="task-body"><span class="task-title">' + esc(t.title) + '</span>' +
                     '<span class="task-reward">' + t.stars + ' &#11088;</span></span>' +
                     '<button type="button" class="task-check" aria-label="' + (t.done ? 'Erledigt' : 'Als erledigt abhaken') + '">&#10003;</button>' +
@@ -687,13 +688,22 @@
             for (var i = 0; i < s.length; i++) { h = (h * 31 + s.charCodeAt(i)) >>> 0; }
             return 'cover-c' + (h % 6);
         }
+        function storySlug(path) { return String(path || '').split('/').pop().replace(/\.html$/, ''); }
+        function storyThumb(path) { return path ? 'bilder/' + storySlug(path) + '-1.png' : ''; }
         function bookCoverHtml(opts) {
-            var tag = opts.href ? 'a' : 'button';
-            var attrs = opts.href ? ' href="' + esc(opts.href) + '"' : ' type="button"';
+            var href = opts.href || opts.path || null;
+            var tag = href ? 'a' : 'button';
+            var attrs = href ? ' href="' + esc(href) + '"' : ' type="button"';
             var badge = opts.badge ? '<span class="book-badge ' + opts.badge.cls + '">' + opts.badge.label + '</span>' : '';
             var byline = opts.byline ? '<span class="book-byline">' + esc(opts.byline) + '</span>' : '';
+            // Echtes Story-Thumbnail (deckt Verlauf+Emoji); fehlt es, entfernt onerror das Bild -> Fallback
+            var thumb = '', scrim = '';
+            if (opts.path) {
+                thumb = '<img class="book-thumb" src="' + esc(storyThumb(opts.path)) + '" alt="" aria-hidden="true" onerror="this.remove()">';
+                scrim = '<span class="book-scrim" aria-hidden="true"></span>';
+            }
             return '<' + tag + attrs + ' class="book-cover ' + coverClass(opts.title) + '">' +
-                badge +
+                thumb + scrim + badge +
                 '<span class="book-art" aria-hidden="true">' + (opts.icon || '📖') + '</span>' +
                 '<span class="book-cover-title">' + esc(opts.title) + '</span>' +
                 byline +
@@ -720,10 +730,17 @@
                 return;
             }
             box.innerHTML = shelfWrap(books.map(function (b) {
-                return bookCoverHtml({ title: b.title, icon: b.icon || '📖', badge: libBadge(b) });
+                return bookCoverHtml({ title: b.title, icon: b.icon || '📖', badge: libBadge(b), path: b.path });
             }).join(''));
-            box.querySelectorAll('.book-cover').forEach(function (el, i) {
-                el.addEventListener('click', function () { toast('Viel Spaß mit: ' + books[i].title + ' 📖'); });
+            wireCoverFallback(box, books);
+        }
+
+        // Cover ohne echten Pfad (kein Link) bekommen einen sanften Toast,
+        // echte Story-Cover sind Links und navigieren von selbst.
+        function wireCoverFallback(container, items) {
+            container.querySelectorAll('.book-cover').forEach(function (el, i) {
+                if (el.tagName === 'A') return;
+                el.addEventListener('click', function () { toast('Viel Spaß mit: ' + items[i].title + ' 📖'); });
             });
         }
 
@@ -735,11 +752,9 @@
                 return;
             }
             list.innerHTML = shelfWrap(books.map(function (b) {
-                return bookCoverHtml({ title: b.title, icon: b.icon || '📖', badge: libBadge(b) });
+                return bookCoverHtml({ title: b.title, icon: b.icon || '📖', badge: libBadge(b), path: b.path });
             }).join(''));
-            list.querySelectorAll('.book-cover').forEach(function (el, i) {
-                el.addEventListener('click', function () { toast('Viel Spaß mit: ' + books[i].title + ' 📖'); });
-            });
+            wireCoverFallback(list, books);
         }
 
         function renderRecs() {
@@ -762,14 +777,9 @@
                 var badge = r.kind === 'vorlesen'
                     ? { cls: 'badge-vorlesen', label: '🗣️ Vorlesen' }
                     : { cls: 'badge-selbst', label: '📖 Selbst' };
-                return bookCoverHtml({ title: r.title, icon: r.icon || '📖', badge: badge, byline: r.reason || '' });
+                return bookCoverHtml({ title: r.title, icon: r.icon || '📖', badge: badge, byline: r.reason || '', path: r.path });
             }).join(''));
-            list.querySelectorAll('.book-cover').forEach(function (el, i) {
-                el.addEventListener('click', function () {
-                    var r = recs[i];
-                    toast(r.kind === 'vorlesen' ? 'Ich lese dir vor: ' + r.title + ' 💛' : 'Viel Spaß mit: ' + r.title + ' 📖');
-                });
-            });
+            wireCoverFallback(list, recs);
         }
 
         // ================= MEINE LAUTE (Lernpfad) =================

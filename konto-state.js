@@ -193,16 +193,16 @@
         energyHistory: ['hoch', 'mittel', 'mittel', 'niedrig', 'hoch', 'mittel', 'hoch'],
         lastActive: '19. März 2026',
         library: [
-          { id: 'l1', title: 'Der Elefant im Pool', icon: '🐘', status: 'gelesen', phase: 3 },
-          { id: 'l2', title: 'Die Schatzkarte', icon: '🗺️', status: 'neu', phase: 3 },
-          { id: 'l3', title: 'Reise zum Mond', icon: '🌙', status: 'gelesen', phase: 2 },
-          { id: 'l4', title: 'Amelie und der Regenbogen', icon: '🌈', status: 'gelesen', phase: 3 }
+          { id: 'l1', title: 'Der kleine Weltraum-Wal', icon: '🐋', status: 'gelesen', phase: 1, path: 'demo-texte/der-kleine-weltraum-wal-1h5q.html' },
+          { id: 'l2', title: 'Die Schatzkarte im Garten', icon: '🗺️', status: 'neu', phase: 3, path: 'demo-texte/die-schatzkarte-im-garten-1ub9.html' },
+          { id: 'l3', title: 'Das Wettrennen der Seifenkisten', icon: '🏎️', status: 'gelesen', phase: 3, path: 'demo-texte/das-wettrennen-der-seifenkisten-1ygk.html' },
+          { id: 'l4', title: 'Die Reise zum Mond', icon: '🌙', status: 'gelesen', phase: 5, path: 'demo-texte/die-reise-zum-mond-1y60.html' }
         ],
         recommendations: [
-          { id: 'r1', title: 'Der kleine Drache lernt fliegen', icon: '🐉', reason: 'Weil du Tiere magst', phase: 3, kind: 'selbst' },
-          { id: 'r2', title: 'Sternenstaub & Raketen', icon: '🚀', reason: 'Weil du den Weltraum magst', phase: 3, kind: 'selbst' },
-          { id: 'r3', title: 'Gute-Nacht-Reise zum Mond', icon: '🌙', reason: 'Ganz ruhig zum Vorlesen', phase: 2, kind: 'vorlesen' },
-          { id: 'r4', title: 'Der Müde-Bär schläft ein', icon: '🐻', reason: 'Kurz & kuschelig', phase: 2, kind: 'vorlesen' }
+          { id: 'r1', title: 'Der kleine Igel findet einen Ball', icon: '🦔', reason: 'Weil du Tiere magst', phase: 1, kind: 'selbst', path: 'demo-texte/der-kleine-igel-findet-einen-ball-12ps.html' },
+          { id: 'r2', title: 'Die singenden Weltraumwale', icon: '🚀', reason: 'Weil du den Weltraum magst', phase: 5, kind: 'selbst', path: 'demo-texte/die-singenden-weltraumwale-1bvz.html' },
+          { id: 'r3', title: 'Auf einer Lichtung im Mondschein', icon: '🌙', reason: 'Ganz ruhig zum Vorlesen', phase: 2, kind: 'vorlesen', path: 'demo-texte/auf-einer-lichtung-im-mondschein-n8w1.html' },
+          { id: 'r4', title: 'Vier Freunde im Wald', icon: '🐻', reason: 'Über Freundschaft', phase: 4, kind: 'vorlesen', path: 'demo-texte/vier-freunde-im-wald-1s73.html' }
         ],
         friends: ['Max', 'Sophie', 'Tim']
       },
@@ -225,13 +225,13 @@
         energyHistory: ['hoch', 'hoch', 'mittel', 'hoch', 'niedrig', 'mittel', 'hoch'],
         lastActive: '18. März 2026',
         library: [
-          { id: 'l5', title: 'Die Döner-Diebe', icon: '🌯', status: 'gelesen', phase: 1 },
-          { id: 'l6', title: 'Piraten-Abenteuer', icon: '🏴‍☠️', status: 'neu', phase: 1 }
+          { id: 'l5', title: 'Das Fußballstadion', icon: '⚽', status: 'gelesen', phase: 1, path: 'demo-texte/das-fussballstadion-1gsw.html' },
+          { id: 'l6', title: 'Das Rennen auf der Gokartbahn', icon: '🏎️', status: 'neu', phase: 2, path: 'demo-texte/das-rennen-auf-der-gokartbahn-1061.html' }
         ],
         recommendations: [
-          { id: 'r5', title: 'Tor! Das große Spiel', icon: '⚽', reason: 'Weil du Fußball magst', phase: 1, kind: 'selbst' },
-          { id: 'r6', title: 'Der schnelle Bagger', icon: '🚧', reason: 'Weil du Fahrzeuge magst', phase: 1, kind: 'selbst' },
-          { id: 'r7', title: 'Dino sagt Gute Nacht', icon: '🦖', reason: 'Ruhig zum Vorlesen', phase: 1, kind: 'vorlesen' }
+          { id: 'r5', title: 'Tom und das große Sackhüpfen', icon: '🏃', reason: 'Weil du Bewegung magst', phase: 3, kind: 'selbst', path: 'demo-texte/tom-und-das-grosse-sackhuepfen-1tti.html' },
+          { id: 'r6', title: '24h-Rennen Nürburgring', icon: '🏎️', reason: 'Weil du Fahrzeuge magst', phase: 3, kind: 'selbst', path: 'demo-texte/24h-rennen-nuerburgring-266o.html' },
+          { id: 'r7', title: 'Der kleine Igel findet einen Ball', icon: '🦔', reason: 'Ruhig zum Vorlesen', phase: 1, kind: 'vorlesen', path: 'demo-texte/der-kleine-igel-findet-einen-ball-12ps.html' }
         ],
         friends: ['Tim']
       }
