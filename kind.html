@@ -625,16 +625,40 @@
             renderHeader(); renderTasks();
         }
 
+        // Lieblings-/Fokusgeschichte für die Wiederholung im Calm-Modus
+        function favoriteStory() {
+            var lib = child.library || [];
+            return lib.filter(function (b) { return b.status === 'gelesen'; })[0] || lib[0]
+                || (child.recommendations || []).filter(function (r) { return r.kind === 'vorlesen'; })[0]
+                || (child.recommendations || [])[0] || null;
+        }
+        // Calm-Modus: genau EINE Aufgabe — die Lieblingsgeschichte zur Wiederholung
+        // (lesen oder hören). Wird in dailyTasks persistiert (Abhaken bleibt erhalten).
+        function ensureCalmTask() {
+            var dt = child.dailyTasks; if (!dt) return;
+            if (dt.tasks.some(function (t) { return t.id === 'calm-fav'; })) return;
+            var fav = favoriteStory(); if (!fav) return;
+            dt.tasks.push({
+                id: 'calm-fav', type: fav.path ? 'read' : 'listen',
+                title: 'Lies oder hör nochmal: ' + fav.title, emoji: fav.icon || '📖',
+                stars: 3, done: false, doneAt: null, storyPath: fav.path || null, lautId: null, stat: null
+            });
+            child = Konto.updateChild(child.id, { dailyTasks: dt });
+        }
+
         var TASK_ACC = ['acc-mint', 'acc-salmon', 'acc-lila', 'acc-yellow'];
         function renderTasks() {
             var ruhe = child.energy.current === 'niedrig';
-            document.getElementById('tasks-note').textContent = ruhe ? 'Heute ganz ruhig — nur wenn du magst. 🌙' : 'Nur wenn du magst.';
+            document.getElementById('tasks-note').textContent = ruhe
+                ? 'Heute ganz ruhig — nur deine Lieblingsgeschichte. 🌙'
+                : 'Nur wenn du magst.';
             var list = document.getElementById('task-list');
-            var tasks = ((child.dailyTasks && child.dailyTasks.tasks) || []).slice();
-            // Ruhe-Modus: nur sanfte Aufgaben (Zuhören)
+            // Normal: die regulären Tagesaufgaben (ohne die Calm-Lieblingsaufgabe)
+            var tasks = ((child.dailyTasks && child.dailyTasks.tasks) || []).filter(function (t) { return t.id !== 'calm-fav'; });
+            // Calm-Modus: nur die eine Lieblingsgeschichte zur Wiederholung
             if (ruhe) {
-                var soft = tasks.filter(function (t) { return t.type === 'listen'; });
-                tasks = soft.length ? soft : tasks.slice(0, 1);
+                ensureCalmTask();
+                tasks = ((child.dailyTasks && child.dailyTasks.tasks) || []).filter(function (t) { return t.id === 'calm-fav'; });
             }
             if (!tasks.length) {
                 list.innerHTML = '<div class="info-card">Heute keine Aufgaben — stöber einfach bei <strong>F&uuml;r dich</strong>! &#10024;</div>';
@@ -869,7 +893,23 @@
             });
         }
 
+        // Akku leer (niedrig) -> ruhiger Dunkelmodus. Transient (überschreibt Hell,
+        // ohne die manuelle Theme-Wahl zu speichern); Kontrast-Wahl bleibt unangetastet.
+        function applyEnergyTheme() {
+            var low = child.energy.current === 'niedrig';
+            var stored = 'light';
+            try { stored = localStorage.getItem('lesekumpel-theme') || 'light'; } catch (e) {}
+            if (low) {
+                if (stored === 'contrast') return;
+                document.body.classList.add('dark-mode');
+                document.body.classList.remove('high-contrast');
+            } else if (window.setTheme) {
+                setTheme(stored);
+            }
+        }
+
         function renderAll() {
+            applyEnergyTheme();
             renderHeader(); renderScene(); renderTasks(); renderHomeShelf();
             renderLibrary(); renderRecs(); renderLaute();
         }
