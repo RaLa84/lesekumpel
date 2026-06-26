@@ -10,34 +10,297 @@
     <link rel="stylesheet" href="fonts/fonts.css">
     <link rel="stylesheet" href="konto.css">
     <link rel="stylesheet" href="formkit.css">
+    <style>
+        /* Kompatibilitaet: moderner Footer ueberschreibt konto.css footer{} */
+        footer.modern-footer { border-top: 0; }
+
+        /* ===================================================================
+           ONBOARDING · Finch-orientiertes Redesign (ueberschreibt formkit.css)
+           Single-Column, gestapelte Auswahlkarten (Icon links), segmentierte
+           Fortschrittsleiste, Kategorie-Label, Maskottchen mit ?-Denkblase,
+           volle Weiter-Taste. Alle Farben ueber Tokens -> Dark/Kontrast-treu.
+           =================================================================== */
+        .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0,0,0,0); white-space: nowrap; border: 0; }
+
+        .wizard { max-width: 600px; padding: 8px 18px 56px; }
+
+        /* Kategorie-Label (uppercase, ruhig) */
+        .step-category { text-align: center; font-family: var(--font-heading); font-weight: 700; font-size: 0.8rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-muted, #5a6368); margin: 16px 0 12px; min-height: 1em; }
+
+        /* Segmentierte Fortschrittsleiste */
+        .wizard-progress { gap: 7px; margin: 0 auto 6px; max-width: 440px; flex-wrap: nowrap; }
+        .wizard-dot { width: auto; flex: 1 1 0; min-width: 0; height: 9px; border-radius: 999px; background: var(--border-soft, #D9D4CC); border: none; transition: background 0.3s ease, transform 0.3s ease; }
+        .wizard-dot.active, .wizard-dot.done { background: var(--accent); border: none; opacity: 1; transform: none; }
+        .wizard-remain { display: none; }
+
+        /* Kopf: Maskottchen mit ?-Denkblase */
+        .wizard-head { margin-bottom: 14px; }
+        .buddy-stage { position: relative; display: inline-block; }
+        .wizard-buddy { width: 92px; height: 92px; margin: 0; }
+        @media (min-width: 768px) { .wizard-buddy { width: 104px; height: 104px; } }
+        .buddy-bubble { position: absolute; top: -4px; right: -16px; width: 36px; height: 36px; border-radius: 50% 50% 50% 4px; background: var(--bg-card, #fff); border: 2px solid var(--border, var(--border-soft, #D9D4CC)); display: inline-flex; align-items: center; justify-content: center; color: var(--accent); box-shadow: var(--shadow-card, 0 3px 14px rgba(43,49,64,0.08)); }
+        .buddy-bubble svg { width: 20px; height: 20px; }
+
+        /* Schritt-Karte aufloesen -> die Optionen sind die Karten (Finch) */
+        .step-card { background: transparent; border: none; border-left: none; box-shadow: none; padding: 0; }
+        .step-q { position: relative; justify-content: center; align-items: center; margin-bottom: 8px; padding: 0 44px; }
+        .step-q h2 { flex: 0 1 auto; text-align: center; font-size: 1.55rem; line-height: 1.25; }
+        @media (min-width: 768px) { .step-q h2 { font-size: 1.8rem; } }
+        .step-q .icon-btn { position: absolute; top: 50%; right: 0; transform: translateY(-50%); }
+        .step-hint { text-align: center; color: var(--text-muted, #5a6368); margin: 0 auto 22px; max-width: 460px; }
+        .form-label { display: block; }
+        .field { max-width: 480px; margin-left: auto; margin-right: auto; }
+
+        .icon-btn { background: var(--cream-light); border-color: var(--border, var(--border-soft, #D9D4CC)); color: var(--navy); }
+        .icon-btn svg { width: 20px; height: 20px; }
+
+        /* Eingabefelder Dark/Kontrast-treu */
+        .text-input, .textarea-input { background: var(--bg-card, #fff); border-color: var(--border, var(--border-soft, #D9D4CC)); color: var(--navy); }
+        .text-input.input-invalid { border-color: var(--salmon, #F97352); box-shadow: 0 0 0 3px rgba(249,115,82,0.16); }
+
+        /* Auswahl-Kacheln Dark/Kontrast-treu (formkit setzt #fff hart) */
+        .choice-tile { background: var(--bg-card, #fff); border-color: var(--border, var(--border-soft, #D9D4CC)); color: var(--navy); }
+        .choice-tile.active { background: var(--accent-soft); border-color: var(--accent); }
+        .choice-tile.active::after { content: '\2713'; font-weight: 700; }
+
+        /* Gestapelte Auswahlkarten (Icon links, Text rechts) */
+        .choice-list { display: flex; flex-direction: column; gap: 12px; max-width: 480px; margin: 0 auto; }
+        .choice-list .choice-tile { flex-direction: row; justify-content: flex-start; align-items: center; text-align: left; width: 100%; min-height: 66px; padding: 14px 46px 14px 16px; gap: 15px; border-radius: 18px; }
+        .choice-list .choice-tile.xl { min-height: 66px; }
+        .choice-list .choice-tile.active::after { top: 50%; right: 16px; transform: translateY(-50%); }
+        .choice-ic { flex: 0 0 auto; width: 44px; height: 44px; border-radius: 13px; background: var(--accent-soft); display: inline-flex; align-items: center; justify-content: center; color: var(--accent); }
+        .choice-ic svg { width: 24px; height: 24px; }
+        .choice-list .choice-emoji { font-size: 2rem; flex: 0 0 auto; line-height: 1; }
+        .choice-text { display: flex; flex-direction: column; gap: 2px; flex: 1; min-width: 0; }
+        .choice-list .choice-label { font-size: 1.05rem; font-weight: 700; }
+        .choice-sub { display: block; font-size: 0.85rem; color: var(--text-muted, #5a6368); font-weight: 500; }
+
+        /* Mini-Test bleibt Grid, aber mit Lucide */
+        #minitest .choice-ic { width: 40px; height: 40px; }
+
+        /* Hinweistexte / Sub durchgaengig themebar (formkit hat #5a6368 hart) */
+        .step-hint, .wizard-sub, .wizard-remain, .choice-sub { color: var(--text-muted, #5a6368); }
+
+        .btn-text { background: none; border: none; color: var(--accent); font-family: var(--font-body); font-weight: 600; font-size: 0.95rem; cursor: pointer; text-decoration: underline; padding: 6px 2px; }
+
+        /* Volle Weiter-Taste unten, Zurueck dezent darunter (Finch) */
+        .wizard-nav { flex-direction: column; gap: 4px; margin-top: 26px; max-width: 480px; margin-left: auto; margin-right: auto; }
+        .wizard-nav .btn-primary { order: 1; width: 100%; margin-left: 0; padding: 16px; border-radius: 16px; }
+        .wizard-nav .btn-skip { order: 2; align-self: center; }
+        .wizard-nav .btn-ghost { order: 3; align-self: center; }
+
+        /* === LK-HEADER:CSS START === */
+    .main-navbar { background: rgba(255,255,255,0.92); -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px); padding: 12px 24px; border-bottom: 3px solid var(--mint); display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; position: sticky; top: 0; z-index: 1000; }
+    .nav-left { display: flex; align-items: center; gap: 10px; justify-self: start; position: relative; }
+    .nav-center { justify-self: center; display: flex; align-items: center; gap: 10px; }
+    .nav-right { display: flex; align-items: center; gap: 10px; justify-self: end; }
+    .nav-logo-box { width: 48px; height: 48px; overflow: hidden; border-radius: 12px; flex-shrink: 0; text-decoration: none; }
+    .nav-logo { height: 100%; width: 100%; object-fit: contain; transform: scale(1.8); transform-origin: center; }
+    .brand-name { font-family: var(--font-heading); font-size: 1.2rem; color: var(--navy); font-weight: 700; text-decoration: none; }
+    .nav-btn { text-decoration: none; color: var(--navy); font-weight: 600; font-size: 1rem; display: flex; align-items: center; gap: 5px; }
+    .nav-btn:hover { color: var(--lila); }
+    .burger-icon { width: 44px; height: 44px; box-sizing: border-box; padding: 0; display: inline-flex; align-items: center; justify-content: center; font-size: 1.6rem; line-height: 1; cursor: pointer; color: var(--navy); background: #fff; border: 1px solid var(--border, var(--border-soft, #D9D4CC)); border-radius: 12px; transition: background 0.15s ease; }
+    .burger-icon:hover { background: var(--cream-light); }
+    .nav-icon-btn { width: 44px; height: 44px; box-sizing: border-box; flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center; background: #fff; border: 1px solid var(--border, var(--border-soft, #D9D4CC)); border-radius: 12px; color: var(--navy); cursor: pointer; text-decoration: none; transition: background 0.15s ease; }
+    .nav-icon-btn:hover { background: var(--cream-light); }
+    .nav-icon-btn svg { width: 22px; height: 22px; }
+    .nav-login-btn { margin-left: 6px; }
+    .nav-login-label { display: none; font-family: var(--font-heading); font-weight: 600; font-size: 0.95rem; }
+    .nav-avatar-btn { width: 44px; height: 44px; box-sizing: border-box; border-radius: 50%; flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center; background: var(--cream-light); border: 2px solid var(--primary-yellow, var(--yellow, #FFD95A)); font-size: 1.5rem; line-height: 1; text-decoration: none; box-shadow: 0 2px 8px rgba(43,49,64,0.08); transition: transform 0.15s ease, box-shadow 0.15s ease; }
+    .nav-avatar-btn:hover { transform: scale(1.06); box-shadow: 0 4px 12px rgba(43,49,64,0.14); }
+    .nav-avatar-btn:active { transform: scale(0.96); }
+    .nav-avatar-emoji { pointer-events: none; }
+    .mobile-menu { display: none; background: #fff; padding: 12px; position: absolute; top: calc(100% + 8px); left: 0; right: auto; width: min(320px, calc(100vw - 24px)); border: 1px solid var(--border, var(--border-soft, #D9D4CC)); border-radius: 20px; box-shadow: 0 16px 40px rgba(43,49,64,0.16); flex-direction: column; gap: 6px; z-index: 999; }
+    .mobile-menu.open { display: flex; animation: bubblePop 0.25s cubic-bezier(0.34,1.56,0.64,1); }
+    .mobile-menu .nav-btn { display: flex; align-items: center; gap: 12px; padding: 11px 12px; min-height: 44px; border-radius: 10px; background: transparent; color: var(--navy); font-weight: 600; font-size: 0.98rem; transition: background 0.15s ease; }
+    .mobile-menu .nav-btn:hover { background: var(--cream-light); color: var(--navy); }
+    .mobile-menu .nav-btn svg { width: 18px; height: 18px; color: #8a8f98; flex-shrink: 0; transition: color 0.15s ease; }
+    .mobile-menu .nav-btn:hover svg { color: var(--navy); }
+    .menu-divider { height: 1px; background: var(--border, var(--border-soft, #D9D4CC)); margin: 6px 6px; }
+    .mobile-menu .menu-cta { background: var(--mint); color: var(--navy); justify-content: center; font-family: var(--font-heading); font-weight: 700; margin-top: 4px; box-shadow: 0 3px 10px rgba(47,184,166,0.3); }
+    .mobile-menu .menu-cta:hover { background: var(--navy); color: #fff; }
+    @keyframes bubblePop { from { opacity: 0; transform: translateY(8px) scale(0.9); } to { opacity: 1; transform: none; } }
+    @media (max-width: 767px) { .brand-name { display: none; } }
+    @media (min-width: 768px) {
+      .nav-logo-box { width: 64px; height: 64px; }
+      .nav-logo { transform: scale(2); }
+      .brand-name { font-size: 1.6rem; display: block; }
+      .nav-left { gap: 15px; }
+      .nav-login-btn { width: auto; gap: 8px; padding: 0 16px; margin-left: 10px; }
+      .nav-login-label { display: inline; }
+    }
+/* === LK-HEADER:CSS END === */
+
+        /* === LK-FOOTER:CSS START === */
+    .modern-footer { background: var(--navy); color: var(--cream); padding: 56px 24px 28px; margin-top: 80px; position: relative; overflow: hidden; }
+    .modern-footer .footer-grid { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr; gap: 40px; }
+    @media (min-width: 768px) { .modern-footer .footer-grid { grid-template-columns: 1.6fr 1fr 1fr; gap: 56px; } }
+    .modern-footer h2 { font-family: var(--font-heading); font-size: 0.92rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--yellow, var(--primary-yellow, #FFD95A)); margin-bottom: 18px; }
+    .modern-footer .footer-brand-block { max-width: 360px; }
+    .modern-footer .footer-brand-row { display: flex; align-items: center; gap: 12px; font-family: var(--font-heading); font-weight: 700; font-size: 1.4rem; color: var(--cream); margin-bottom: 14px; }
+    .modern-footer .footer-brand-row img { height: 44px; width: auto; }
+    .modern-footer .footer-brand-row .brand-yellow { color: var(--yellow, var(--primary-yellow, #FFD95A)); }
+    .modern-footer .footer-tagline { color: rgba(255,246,239,0.78); font-size: 0.95rem; line-height: 1.6; margin-bottom: 18px; }
+    .modern-footer ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 10px; }
+    .modern-footer ul a { color: rgba(255,246,239,0.85); text-decoration: none; font-weight: 500; font-size: 0.95rem; transition: color 0.2s; }
+    .modern-footer ul a:hover { color: var(--yellow, var(--primary-yellow, #FFD95A)); }
+    .modern-footer .footer-social { display: flex; gap: 12px; margin-top: 20px; }
+    .modern-footer .footer-social a { width: 42px; height: 42px; border-radius: 50%; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,246,239,0.2); display: inline-flex; align-items: center; justify-content: center; color: var(--cream); text-decoration: none; transition: all 0.2s; }
+    .modern-footer .footer-social a:hover { background: var(--yellow, var(--primary-yellow, #FFD95A)); color: var(--navy); transform: translateY(-2px); }
+    .modern-footer .footer-bottom { max-width: 1200px; margin: 40px auto 0; padding-top: 24px; border-top: 1px solid rgba(255,246,239,0.15); display: flex; flex-direction: column; gap: 12px; justify-content: space-between; align-items: center; text-align: center; font-size: 0.85rem; color: rgba(255,246,239,0.65); }
+    @media (min-width: 768px) { .modern-footer .footer-bottom { flex-direction: row; text-align: left; } }
+    .modern-footer .footer-bottom a { color: rgba(255,246,239,0.65); text-decoration: none; margin: 0 6px; }
+    .modern-footer .footer-bottom a:hover { color: var(--yellow, var(--primary-yellow, #FFD95A)); }
+/* === LK-FOOTER:CSS END === */
+
+        /* === LK-A11Y:CSS START === */
+    .settings-overlay { position: fixed; inset: 0; z-index: 5000; display: flex; align-items: center; justify-content: center; background: rgba(43,49,64,0.45); -webkit-backdrop-filter: blur(3px); backdrop-filter: blur(3px); padding: 20px; animation: settingsFade 0.18s ease-out; }
+    .settings-overlay[hidden] { display: none; }
+    @keyframes settingsFade { from { opacity: 0; } to { opacity: 1; } }
+    .settings-panel { background: var(--bg-card, #ffffff); border-radius: 24px; width: min(440px, 100%); max-height: 85vh; overflow-y: auto; box-shadow: 0 16px 48px rgba(43,49,64,0.25); border: 2px solid var(--mint, #2FB8A6); animation: settingsPop 0.22s cubic-bezier(0.34, 1.56, 0.64, 1); }
+    @keyframes settingsPop { 0% { transform: scale(0.92); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+    .settings-header { display: flex; align-items: center; justify-content: space-between; padding: 18px 20px 12px; }
+    .settings-title { font-family: var(--font-heading, 'Fredoka', sans-serif); color: var(--navy, #2B3140); font-size: 1.3rem; margin: 0; }
+    .settings-close { width: 36px; height: 36px; border-radius: 50%; flex-shrink: 0; background: rgba(47,184,166,0.15); border: none; color: var(--navy, #2B3140); font-size: 1.4rem; line-height: 1; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; transition: background 0.15s ease; }
+    .settings-close:hover { background: rgba(47,184,166,0.3); }
+    .settings-close:focus-visible { outline: 3px solid var(--lila, #7D6AE6); outline-offset: 2px; }
+    .settings-body { display: flex; flex-direction: column; gap: 10px; padding: 0 16px 18px; }
+    .settings-body .toolbar-group-buttons { display: grid; grid-template-columns: repeat(auto-fit, minmax(80px, 1fr)); gap: 8px; }
+    .settings-body .tool-btn { flex-direction: column; gap: 6px; width: 100%; min-width: 0; min-height: 64px; padding: 10px 6px; }
+    .settings-body .tool-btn .btn-label { font-size: 0.8rem; }
+    .settings-body .tool-btn .btn-icon svg, .settings-body .font-size-control .tool-btn svg { width: 22px; height: 22px; }
+    .settings-body .tool-btn svg, .settings-body .btn-icon { pointer-events: none; }
+    .settings-body .font-size-control { grid-column: 1 / -1; display: flex; width: 100%; }
+    .settings-body .font-size-control .tool-btn { flex: 1; flex-direction: row; min-height: 46px; }
+    @media (max-width: 767px) { .settings-panel { width: 100%; max-height: 88vh; } }
+
+    /* Basis-Klassen (auf Katalogseiten sonst nicht vorhanden) */
+    .toolbar-group { border-radius: 20px; padding: 14px 16px 12px; }
+    .toolbar-group.group-view { background: #E7F6F3; }
+    .toolbar-group.group-extra { background: #FFF4D6; }
+    .toolbar-group-label { font-family: var(--font-heading, 'Fredoka', sans-serif); font-size: 0.78rem; font-weight: 600; color: #6b635a; margin-bottom: 10px; padding-left: 2px; }
+    .toolbar-group-buttons { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+    .tool-btn { background: rgba(255,255,255,0.9); border: 1.5px solid rgba(0,0,0,0.05); border-radius: 14px; padding: 10px 16px; min-height: 46px; min-width: 100px; font-family: var(--font-heading, 'Fredoka', sans-serif); font-weight: 500; color: #3B4252; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 7px; transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1); font-size: 0.85em; line-height: 1; box-shadow: 0 1px 3px rgba(0,0,0,0.03); -webkit-tap-highlight-color: transparent; }
+    .tool-btn:hover { background: #fff; border-color: rgba(0,0,0,0.09); color: #333; transform: translateY(-1px); box-shadow: 0 3px 10px rgba(0,0,0,0.06); }
+    .tool-btn:focus-visible { outline: 3px solid var(--lila, #7D6AE6); outline-offset: 2px; }
+    .tool-btn:active { transform: scale(0.95); box-shadow: none; transition-duration: 0.06s; }
+    .group-view .tool-btn.active { background: var(--mint, #2FB8A6); color: var(--navy, #2B3140); border-color: #28a392; box-shadow: inset 0 2px 4px rgba(0,0,0,0.12), 0 1px 4px rgba(47,184,166,0.3); }
+    .group-extra .tool-btn.active { background: var(--primary-yellow, #FFD95A); color: var(--navy, #2B3140); border-color: #ecc63e; box-shadow: inset 0 2px 4px rgba(0,0,0,0.12), 0 1px 4px rgba(255,217,90,0.4); }
+    .tool-btn.active:hover { filter: brightness(1.05); }
+    .tool-btn .btn-icon { font-size: 1.1em; line-height: 1; flex-shrink: 0; }
+    .font-size-control { display: inline-flex; border-radius: 14px; overflow: hidden; border: 1.5px solid rgba(0,0,0,0.05); background: rgba(255,255,255,0.9); box-shadow: 0 1px 3px rgba(0,0,0,0.03); min-height: 46px; }
+    .font-size-control .tool-btn { border: none; border-radius: 0; box-shadow: none; min-width: 48px; min-height: 46px; justify-content: center; font-family: var(--font-heading, 'Fredoka', sans-serif); font-size: 0.95em; font-weight: 700; background: transparent; color: #5a5550; padding: 10px 12px; }
+    .font-size-control .tool-btn:first-child { border-right: 1px solid rgba(0,0,0,0.06); }
+    .font-size-control .tool-btn:hover { background: rgba(0,0,0,0.03); }
+
+    /* Lesefreundliche Schrift + Hoher Kontrast (gleiche Body-Klassen wie Leseseiten) */
+    body.dyslexia-mode { --font-body: 'Atkinson Hyperlegible', system-ui, sans-serif; letter-spacing: 0.03em; word-spacing: 0.12em; }
+    body.dyslexia-mode p, body.dyslexia-mode .tile-title, body.dyslexia-mode .bio-desc { line-height: 1.75; }
+    body.high-contrast { --cream: #ffffff; --cream-light: #ffffff; --navy: #000000; --text-muted: #1a1d24; --border: #2B3140; background: #ffffff; }
+    body.high-contrast .story-tile, body.high-contrast .filter-dd-trigger, body.high-contrast .filter-dd-panel,
+    body.high-contrast .search-wrapper input, body.high-contrast .tool-btn, body.high-contrast .font-size-control,
+    body.high-contrast .toolbar-group { border-color: #2B3140 !important; }
+    /* Text/Links durchgaengig auf maximalen Kontrast */
+    body.high-contrast a, body.high-contrast .tile-title, body.high-contrast .nav-btn { color: #000000; }
+    /* Links als solche erkennbar machen (nicht nur ueber Farbe) */
+    body.high-contrast main a, body.high-contrast footer a, body.high-contrast .modern-footer a { text-decoration: underline; }
+    /* Dekorative Hintergruende ruhigstellen, damit Text klar bleibt */
+    body.high-contrast .deco-star, body.high-contrast .deco-circle, body.high-contrast .deco-sparkle,
+    body.high-contrast .deco-blob, body.high-contrast .bg-blob, body.high-contrast .floating-deco { display: none !important; }
+
+    /* ===== THEMA „DUNKEL" (Dark Mode) — opt-in via body.dark-mode, Default bleibt Hell.
+       Warm-anthrazit statt Reinschwarz; Bulk via Token-Override, dazu gezielte Fixes
+       für hartkodierte helle Flächen (Modal-Buttons + Katalog/Seiten-Surfaces). ===== */
+    html:has(body.dark-mode) { background-color: #1C2230; }
+    body.dark-mode {
+        --cream: #1C2230; --cream-light: #232A3A; --bg-body: #1C2230; --bg-card: #2A3242;
+        --navy: #ECEFF4; --text-dark: #ECEFF4; --text-muted: #A9B2C2; --muted: #A9B2C2;
+        --border: #3A4456; --border-soft: #3A4456; --border-card: #3A4456;
+        --mint: #4FD3C0; --accent-teal: #4FD3C0; --coral: #FF8C6B; --accent-coral: #FF8C6B; --salmon: #FF8C6B;
+        --primary-yellow: #FFE082; --yellow: #FFE082; --lila: #A99BF0;
+        /* transparent statt opak: der dunkle Canvas kommt von html:has() oben,
+           so bleiben die z-index:-1-Deko (Sterne/Blobs) sichtbar (wie Anmeldung) */
+        background: transparent;
+    }
+    /* Modal-Chrome + Buttons (hartkodierte Helligkeit aufhellen) */
+    body.dark-mode .settings-panel { background: var(--bg-card); }
+    body.dark-mode .tool-btn,
+    body.dark-mode .font-size-control { background: rgba(42,50,66,0.9); color: var(--text-dark); }
+    body.dark-mode .font-size-control .tool-btn { background: transparent; color: var(--text-dark); }
+    body.dark-mode .tool-btn:hover { background: var(--cream-light); color: var(--text-dark); border-color: var(--border-soft); }
+    body.dark-mode .tool-btn.active { color: #1C2230; }
+    body.dark-mode .toolbar-group-label { color: var(--muted); }
+    body.dark-mode .toolbar-group.group-view { background: #22332F; }
+    body.dark-mode .toolbar-group.group-extra { background: #332E20; }
+    /* Generische Seiten-Surfaces (Katalog-Tiles, Filter, Suche, Legal, Footer) — analog
+       zur high-contrast-Liste, aber mit dunklem BG statt nur Border */
+    body.dark-mode .story-tile, body.dark-mode .filter-dd-trigger, body.dark-mode .filter-dd-panel,
+    body.dark-mode .search-wrapper input { background: var(--bg-card); color: var(--text-dark); border-color: var(--border-soft); }
+    /* Zentraler Header (hartkodierte weiße Navbar-Flächen aus partials/header.html) */
+    body.dark-mode .main-navbar { background: rgba(28,34,48,0.92); }
+    body.dark-mode .burger-icon,
+    body.dark-mode .nav-icon-btn { background: #2A3242; }
+    body.dark-mode .mobile-menu { background: #2A3242; }
+    /* Gemeinsamer Footer + weitere hartkodierte helle Flächen pro Seitentyp
+       (Selektoren ohne Treffer auf einer Seite sind harmlos) */
+    body.dark-mode .modern-footer { background: var(--cream-light); color: var(--text-muted); }
+    body.dark-mode .tile-fav, body.dark-mode .tile-speak,
+    body.dark-mode .load-more-btn, body.dark-mode .format-pill,
+    body.dark-mode .placeholder { background: var(--bg-card); color: var(--text-dark); border-color: var(--border-soft); }
+    body.dark-mode .skip-link { background: #3A4456; color: #fff; }
+    /* Glow-Blobs im Dark Mode aus — nur die ruhigen Sterne bleiben (wie Anmeldung) */
+    body.dark-mode .bg-blob { display: none; }
+    body.dark-mode::before, body.dark-mode::after { display: none; }
+/* === LK-A11Y:CSS END === */
+    </style>
 </head>
 <body>
     <a class="skip-link" href="#main-content">Zum Inhalt springen</a>
 
-    <nav class="main-navbar" aria-label="Hauptnavigation">
-        <div class="nav-left">
-            <span class="nav-logo-box"><img src="bilder/lesekumpel_logo_v2.png" alt="Lesekumpel Logo" class="nav-logo"></span>
-            <a href="landingpage.html" class="brand-name">Lesekumpel</a>
-        </div>
-        <div class="nav-right">
-            <a href="anmelden.html" class="nav-btn">Abbrechen</a>
-        </div>
-    </nav>
-
-    <div class="a11y-bar">
-        <button type="button" class="a11y-btn" data-a11y="dyslexia">&#128068; Leichter lesen</button>
-        <button type="button" class="a11y-btn" data-a11y="contrast">&#9680; Mehr Kontrast</button>
+    <!-- NAVBAR -->
+    <!-- === LK-HEADER:NAV START === -->
+  <nav class="main-navbar" aria-label="Hauptnavigation">
+    <div class="nav-left">
+      <button type="button" class="burger-icon" aria-label="Men&uuml; &ouml;ffnen" aria-expanded="false" aria-controls="mobile-menu" onclick="toggleMenu()">&#9776;</button>
+      <div id="mobile-menu" class="mobile-menu">
+        <a href="landingpage.html#mission" class="nav-btn" onclick="toggleMenu()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 9.5a5.5 5.5 0 0 1 9.591-3.676.56.56 0 0 0 .818 0A5.49 5.49 0 0 1 22 9.5c0 2.29-1.5 4-3 5.5l-5.492 5.313a2 2 0 0 1-3 .019L5 15c-1.5-1.5-3-3.2-3-5.5"/></svg><span>F&uuml;r euch</span></a>
+        <a href="landingpage.html#how-it-works" class="nav-btn" onclick="toggleMenu()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg><span>So funktioniert&rsquo;s</span></a>
+        <a href="ueber-uns.html" class="nav-btn" onclick="toggleMenu()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><path d="M16 3.128a4 4 0 0 1 0 7.744"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><circle cx="9" cy="7" r="4"/></svg><span>&Uuml;ber uns</span></a>
+        <a href="demo.html" class="nav-btn" onclick="toggleMenu()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 7v14"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/></svg><span>Demo-Texte</span></a>
+        <a href="preise.html" class="nav-btn" onclick="toggleMenu()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z"/><circle cx="7.5" cy="7.5" r=".5" fill="currentColor"/></svg><span>Preise</span></a>
+        <a href="neue-geschichte.html" class="nav-btn" onclick="toggleMenu()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"/><path d="M20 2v4"/><path d="M22 4h-4"/><circle cx="4" cy="20" r="2"/></svg><span>Geschichte erstellen</span></a>
+        <div class="menu-divider"></div>
+        <a href="anmelden.html" class="nav-btn" onclick="toggleMenu()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>Mein Konto</span></a>
+        <a href="anmelden.html" class="nav-btn menu-cta" onclick="toggleMenu()">Jetzt registrieren &rarr;</a>
+      </div>
     </div>
+    <div class="nav-center">
+      <a href="landingpage.html" class="nav-logo-box" aria-label="Lesekumpel Startseite"><img src="Konzept_Rebranding/logo-lesekumpel-512.webp" alt="Lesekumpel" class="nav-logo"></a>
+      <a href="landingpage.html" class="brand-name">Lesekumpel</a>
+    </div>
+    <div class="nav-right">
+      <button type="button" class="nav-icon-btn" id="nav-settings" onclick="openSettings()" aria-label="Barrierefreiheit"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="1"/><path d="m9 20 3-6 3 6"/><path d="m6 8 6 2 6-2"/><path d="M12 10v4"/></svg></button>
+      <a href="anmelden.html" class="nav-icon-btn nav-login-btn" aria-label="Anmelden"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span class="nav-login-label">Anmelden</span></a>
+    </div>
+  </nav>
+  <!-- === LK-HEADER:NAV END === -->
 
     <main id="main-content">
+        <h1 class="sr-only">Lesekumpel-Profil einrichten</h1>
         <div class="wizard" id="wiz" style="position:relative;">
             <svg aria-hidden="true" class="floating-deco deco-star" style="top:-6px;left:4%;width:26px;color:var(--yellow);" viewBox="0 0 32 32"><polygon points="16,2 20,12 30,12 22,19 25,30 16,23 7,30 10,19 2,12 12,12" fill="currentColor" opacity="0.7"/></svg>
             <svg aria-hidden="true" class="floating-deco deco-sparkle" style="top:30px;right:5%;width:20px;color:var(--salmon);animation-delay:-1.5s;" viewBox="0 0 24 24"><path d="M12 2L13.5 9 21 12L13.5 14.5L12 22L10.5 14.5L3 12L10.5 9Z" fill="currentColor" opacity="0.7"/></svg>
             <div aria-hidden="true" class="floating-deco deco-circle" style="top:8px;right:18%;width:13px;height:13px;background:rgba(125,106,230,0.35);animation-delay:-2.5s;"></div>
+
+            <p class="step-category" id="step-category" aria-hidden="true"></p>
+            <div class="wizard-progress" data-fk-progress aria-hidden="true"></div>
+            <div class="wizard-remain" data-fk-remain aria-live="polite"></div>
+
             <div class="wizard-head">
-                <img class="wizard-buddy" src="bilder/lesekumpel_logo_v2.png" alt="">
-                <h1 class="wizard-title">Wir richten deinen <span class="handwrite">Lesekumpel</span> ein</h1>
-                <p class="wizard-sub">Damit wir Geschichten finden, die genau passen. Du kannst alles sp&auml;ter &auml;ndern.</p>
+                <span class="buddy-stage">
+                    <span class="buddy-bubble" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg></span>
+                    <img class="wizard-buddy" src="bilder/lesekumpel_logo_v2.png" alt="">
+                </span>
             </div>
 
             <div class="resume-banner" id="resume-banner">
@@ -46,46 +309,35 @@
                 <button type="button" class="resume-no">Neu starten</button>
             </div>
 
-            <div class="wizard-progress" data-fk-progress aria-hidden="true"></div>
-            <div class="wizard-remain" data-fk-remain aria-live="polite"></div>
-
             <!-- 1 · DATEN -->
-            <section class="wizard-step" data-question="Wie hei&szlig;t dein Kind und wie alt ist es?" data-next-label="Avatar gestalten">
+            <section class="wizard-step" data-category="&Uuml;ber dich" data-question="Wie hei&szlig;t dein Kind und wie alt ist es?" data-next-label="Avatar gestalten">
                 <div class="step-card">
                     <div class="step-q">
                         <h2>Wer liest mit uns?</h2>
-                        <button type="button" class="icon-btn" data-fk-read aria-label="Frage vorlesen">&#128266;</button>
+                        <button type="button" class="icon-btn" data-fk-read aria-label="Frage vorlesen"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4.702a.705.705 0 0 0-1.203-.498L6.413 7.587A1.4 1.4 0 0 1 5.416 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.416a1.4 1.4 0 0 1 .997.413l3.384 3.384A.705.705 0 0 0 11 19.298z"/><path d="M16 9a5 5 0 0 1 0 6"/><path d="M19.364 18.364a9 9 0 0 0 0-12.728"/></svg></button>
                     </div>
                     <p class="step-hint">Sag uns den Namen und das Alter deines Kindes.</p>
                     <div class="field">
                         <label class="form-label" for="o-name">Name des Kindes</label>
                         <div class="field-row">
                             <input type="text" id="o-name" class="text-input" placeholder="z.B. Lena" autocomplete="off" maxlength="24">
-                            <button type="button" class="icon-btn" id="o-name-mic" aria-label="Namen sprechen statt tippen">&#127908;</button>
+                            <button type="button" class="icon-btn" id="o-name-mic" aria-label="Namen sprechen statt tippen"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3Z"/><path d="M19 10v2a7 7 0 0 1-14 0v-2"/><line x1="12" x2="12" y1="19" y2="22"/></svg></button>
                         </div>
                     </div>
                     <div class="field">
-                        <label class="form-label">Alter</label>
-                        <div class="choice-grid" role="group" aria-label="Alter w&auml;hlen">
-                            <button type="button" class="choice-tile" data-pick="single" data-field="age" data-type="num" data-value="4"><span class="choice-label">4</span></button>
-                            <button type="button" class="choice-tile" data-pick="single" data-field="age" data-type="num" data-value="5"><span class="choice-label">5</span></button>
-                            <button type="button" class="choice-tile" data-pick="single" data-field="age" data-type="num" data-value="6"><span class="choice-label">6</span></button>
-                            <button type="button" class="choice-tile" data-pick="single" data-field="age" data-type="num" data-value="7"><span class="choice-label">7</span></button>
-                            <button type="button" class="choice-tile" data-pick="single" data-field="age" data-type="num" data-value="8"><span class="choice-label">8</span></button>
-                            <button type="button" class="choice-tile" data-pick="single" data-field="age" data-type="num" data-value="9"><span class="choice-label">9</span></button>
-                            <button type="button" class="choice-tile" data-pick="single" data-field="age" data-type="num" data-value="10"><span class="choice-label">10</span></button>
-                        </div>
+                        <label class="form-label" for="o-age">Alter</label>
+                        <input type="text" id="o-age" class="text-input" inputmode="numeric" pattern="[0-9]*" maxlength="2" autocomplete="off" placeholder="z.B. 7" aria-describedby="nudge-1">
                     </div>
-                    <div class="field-nudge" id="nudge-1">Bitte Namen eintragen und ein Alter w&auml;hlen. &#128522;</div>
+                    <div class="field-nudge" id="nudge-1">Bitte Namen eintragen und ein Alter eingeben. &#128522;</div>
                 </div>
             </section>
 
             <!-- 2 · AVATAR GESTALTEN -->
-            <section class="wizard-step" data-question="Bau dir deinen eigenen Avatar!" data-next-label="Interessen">
+            <section class="wizard-step" data-category="Avatar" data-question="Bau dir deinen eigenen Avatar!" data-next-label="Interessen">
                 <div class="step-card">
                     <div class="step-q">
                         <h2>Bau deinen Avatar</h2>
-                        <button type="button" class="icon-btn" data-fk-read aria-label="Frage vorlesen">&#128266;</button>
+                        <button type="button" class="icon-btn" data-fk-read aria-label="Frage vorlesen"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4.702a.705.705 0 0 0-1.203-.498L6.413 7.587A1.4 1.4 0 0 1 5.416 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.416a1.4 1.4 0 0 1 .997.413l3.384 3.384A.705.705 0 0 0 11 19.298z"/><path d="M16 9a5 5 0 0 1 0 6"/><path d="M19.364 18.364a9 9 0 0 0 0-12.728"/></svg></button>
                     </div>
                     <div class="buddy-guide"><img src="bilder/lesekumpel_logo_v2.png" alt=""> Such dir ein Tier, eine Farbe und etwas Cooles aus!</div>
 
@@ -129,11 +381,11 @@
             </section>
 
             <!-- 3 · INTERESSEN -->
-            <section class="wizard-step" data-question="Was magst du am liebsten?" data-next-label="Leseniveau">
+            <section class="wizard-step" data-category="Lesen" data-question="Was magst du am liebsten?" data-next-label="Leseniveau">
                 <div class="step-card">
                     <div class="step-q">
                         <h2>Was magst du gern?</h2>
-                        <button type="button" class="icon-btn" data-fk-read aria-label="Frage vorlesen">&#128266;</button>
+                        <button type="button" class="icon-btn" data-fk-read aria-label="Frage vorlesen"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4.702a.705.705 0 0 0-1.203-.498L6.413 7.587A1.4 1.4 0 0 1 5.416 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.416a1.4 1.4 0 0 1 .997.413l3.384 3.384A.705.705 0 0 0 11 19.298z"/><path d="M16 9a5 5 0 0 1 0 6"/><path d="M19.364 18.364a9 9 0 0 0 0-12.728"/></svg></button>
                     </div>
                     <p class="step-hint">Tippe alles an, was dir gef&auml;llt. Such dir ruhig mehrere aus!</p>
                     <div class="choice-grid big" id="interest-grid" role="group" aria-label="Interessen w&auml;hlen"></div>
@@ -142,28 +394,28 @@
             </section>
 
             <!-- 4 · LESENIVEAU -->
-            <section class="wizard-step" data-question="Wie gut kannst du schon lesen?" data-next-label="F&ouml;rderbedarfe">
+            <section class="wizard-step" data-category="Lesen" data-question="Wie gut kannst du schon lesen?" data-next-label="F&ouml;rderbedarfe">
                 <div class="step-card">
                     <div class="step-q">
                         <h2>Wie gut liest du schon?</h2>
-                        <button type="button" class="icon-btn" data-fk-read aria-label="Frage vorlesen">&#128266;</button>
+                        <button type="button" class="icon-btn" data-fk-read aria-label="Frage vorlesen"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4.702a.705.705 0 0 0-1.203-.498L6.413 7.587A1.4 1.4 0 0 1 5.416 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.416a1.4 1.4 0 0 1 .997.413l3.384 3.384A.705.705 0 0 0 11 19.298z"/><path d="M16 9a5 5 0 0 1 0 6"/><path d="M19.364 18.364a9 9 0 0 0 0-12.728"/></svg></button>
                     </div>
                     <p class="step-hint">Ganz ehrlich &mdash; es gibt kein richtig oder falsch. Wir passen die Geschichten an.</p>
-                    <div class="choice-grid" role="group" aria-label="Leseniveau w&auml;hlen">
-                        <button type="button" class="choice-tile xl" data-pick="single" data-field="selfAssessed" data-value="anfaenger"><span class="choice-emoji">&#127793;</span><span class="choice-label">Ich fange an</span><span class="choice-sub">erste W&ouml;rter</span></button>
-                        <button type="button" class="choice-tile xl" data-pick="single" data-field="selfAssessed" data-value="fortgeschritten"><span class="choice-emoji">&#127794;</span><span class="choice-label">Geht schon gut</span><span class="choice-sub">kurze S&auml;tze</span></button>
-                        <button type="button" class="choice-tile xl" data-pick="single" data-field="selfAssessed" data-value="geuebt"><span class="choice-emoji">&#127795;</span><span class="choice-label">Ich bin ge&uuml;bt</span><span class="choice-sub">ganze Geschichten</span></button>
+                    <div class="choice-list" role="group" aria-label="Leseniveau w&auml;hlen">
+                        <button type="button" class="choice-tile xl" data-pick="single" data-field="selfAssessed" data-value="anfaenger"><span class="choice-ic"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M7 20h10"/><path d="M10 20c5.5-2.5.8-6.4 3-10"/><path d="M9.5 9.4c1.1.8 1.8 2.2 2.3 3.7-2 .4-3.5.4-4.8-.3-1.2-.6-2.3-1.9-3-4.2 2.8-.5 4.4 0 5.5.8z"/><path d="M14.1 6a7 7 0 0 0-1.1 4c1.9-.1 3.3-.6 4.3-1.4 1-1 1.6-2.3 1.7-4.6-2.7.1-4 1-4.9 2z"/></svg></span><span class="choice-text"><span class="choice-label">Ich fange an</span><span class="choice-sub">erste W&ouml;rter</span></span></button>
+                        <button type="button" class="choice-tile xl" data-pick="single" data-field="selfAssessed" data-value="fortgeschritten"><span class="choice-ic"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 20A7 7 0 0 1 9.8 6.1C15.5 5 17 4.48 19 2c1 2 2 4.18 2 8 0 5.5-4.78 10-10 10Z"/><path d="M2 21c0-3 1.85-5.36 5.08-6"/></svg></span><span class="choice-text"><span class="choice-label">Geht schon gut</span><span class="choice-sub">kurze S&auml;tze</span></span></button>
+                        <button type="button" class="choice-tile xl" data-pick="single" data-field="selfAssessed" data-value="geuebt"><span class="choice-ic"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 19a4 4 0 0 1-2.24-7.32A3.5 3.5 0 0 1 9 6.03V6a3 3 0 1 1 6 0v.03a3.5 3.5 0 0 1 3.24 5.65A4 4 0 0 1 16 19Z"/><path d="M12 19v3"/></svg></span><span class="choice-text"><span class="choice-label">Ich bin ge&uuml;bt</span><span class="choice-sub">ganze Geschichten</span></span></button>
                     </div>
 
-                    <button type="button" class="btn-text" id="minitest-toggle" style="margin-top:16px;">&#129488; Lieber kurz ausprobieren?</button>
-                    <div id="minitest" style="display:none;margin-top:12px;background:var(--bg-warm-light);border-radius:16px;padding:18px 20px;">
+                    <button type="button" class="btn-text" id="minitest-toggle" style="margin-top:16px;">Lieber kurz ausprobieren?</button>
+                    <div id="minitest" style="display:none;margin-top:12px;background:var(--cream-light);border:1px solid var(--border, var(--border-soft));border-radius:16px;padding:18px 20px;">
                         <p style="font-weight:700;margin-bottom:6px;">Lies diesen Satz laut vor:</p>
                         <p id="minitest-sentence" style="font-size:1.3rem;font-family:var(--font-heading);margin-bottom:14px;">Der Fuchs springt &uuml;ber den kleinen Bach.</p>
-                        <p class="step-hint" style="margin-bottom:10px;">Wie war das f&uuml;r dich?</p>
+                        <p class="step-hint" style="margin-bottom:10px;text-align:left;">Wie war das f&uuml;r dich?</p>
                         <div class="choice-grid">
-                            <button type="button" class="choice-tile" data-pick="single" data-field="selfAssessed" data-value="anfaenger"><span class="choice-emoji">&#128556;</span><span class="choice-label">Schwer</span></button>
-                            <button type="button" class="choice-tile" data-pick="single" data-field="selfAssessed" data-value="fortgeschritten"><span class="choice-emoji">&#128578;</span><span class="choice-label">Geht so</span></button>
-                            <button type="button" class="choice-tile" data-pick="single" data-field="selfAssessed" data-value="geuebt"><span class="choice-emoji">&#128513;</span><span class="choice-label">Leicht!</span></button>
+                            <button type="button" class="choice-tile" data-pick="single" data-field="selfAssessed" data-value="anfaenger"><span class="choice-ic"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M16 16s-1.5-2-4-2-4 2-4 2"/><line x1="9" x2="9.01" y1="9" y2="9"/><line x1="15" x2="15.01" y1="9" y2="9"/></svg></span><span class="choice-label">Schwer</span></button>
+                            <button type="button" class="choice-tile" data-pick="single" data-field="selfAssessed" data-value="fortgeschritten"><span class="choice-ic"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="8" x2="16" y1="15" y2="15"/><line x1="9" x2="9.01" y1="9" y2="9"/><line x1="15" x2="15.01" y1="9" y2="9"/></svg></span><span class="choice-label">Geht so</span></button>
+                            <button type="button" class="choice-tile" data-pick="single" data-field="selfAssessed" data-value="geuebt"><span class="choice-ic"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" x2="9.01" y1="9" y2="9"/><line x1="15" x2="15.01" y1="9" y2="9"/></svg></span><span class="choice-label">Leicht!</span></button>
                         </div>
                     </div>
                     <div class="field-nudge" id="nudge-4">W&auml;hl, wie gut du schon liest. &#128522;</div>
@@ -171,101 +423,101 @@
             </section>
 
             <!-- 5 · FÖRDERBEDARFE -->
-            <section class="wizard-step" data-question="Gibt es etwas, das deinem Kind beim Lesen hilft?" data-next-label="Energieniveau">
+            <section class="wizard-step" data-category="Unterst&uuml;tzung" data-question="Gibt es etwas, das deinem Kind beim Lesen hilft?" data-next-label="Energieniveau">
                 <div class="step-card">
                     <div class="step-q">
                         <h2>Besondere Unterst&uuml;tzung?</h2>
-                        <button type="button" class="icon-btn" data-fk-read aria-label="Frage vorlesen">&#128266;</button>
+                        <button type="button" class="icon-btn" data-fk-read aria-label="Frage vorlesen"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4.702a.705.705 0 0 0-1.203-.498L6.413 7.587A1.4 1.4 0 0 1 5.416 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.416a1.4 1.4 0 0 1 .997.413l3.384 3.384A.705.705 0 0 0 11 19.298z"/><path d="M16 9a5 5 0 0 1 0 6"/><path d="M19.364 18.364a9 9 0 0 0 0-12.728"/></svg></button>
                     </div>
                     <p class="step-hint"><strong>F&uuml;r die Eltern:</strong> W&auml;hlt aus, was zutrifft &mdash; wir stellen passende Lesehilfen automatisch voreingestellt ein. Mehrfachauswahl m&ouml;glich. Nichts auszuw&auml;hlen ist auch v&ouml;llig in Ordnung.</p>
-                    <div class="choice-grid big" role="group" aria-label="F&ouml;rderbedarfe w&auml;hlen">
-                        <button type="button" class="choice-tile" data-pick="multi" data-field="needs" data-value="lrs"><span class="choice-emoji">&#128214;</span><span class="choice-label">LRS / Legasthenie</span></button>
-                        <button type="button" class="choice-tile" data-pick="multi" data-field="needs" data-value="adhs"><span class="choice-emoji">&#9889;</span><span class="choice-label">ADHS</span></button>
-                        <button type="button" class="choice-tile" data-pick="multi" data-field="needs" data-value="autismus"><span class="choice-emoji">&#129504;</span><span class="choice-label">Autismus-Spektrum</span></button>
-                        <button type="button" class="choice-tile" data-pick="multi" data-field="needs" data-value="daz"><span class="choice-emoji">&#127757;</span><span class="choice-label">Deutsch als Zweitsprache</span></button>
-                        <button type="button" class="choice-tile" data-pick="multi" data-field="needs" data-value="sehen"><span class="choice-emoji">&#128065;&#65039;</span><span class="choice-label">Sehen</span></button>
-                        <button type="button" class="choice-tile" data-pick="multi" data-field="needs" data-value="hoeren"><span class="choice-emoji">&#128066;</span><span class="choice-label">H&ouml;ren</span></button>
+                    <div class="choice-list" role="group" aria-label="F&ouml;rderbedarfe w&auml;hlen">
+                        <button type="button" class="choice-tile" data-pick="multi" data-field="needs" data-value="lrs"><span class="choice-ic"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 7v14"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/></svg></span><span class="choice-text"><span class="choice-label">LRS / Legasthenie</span></span></button>
+                        <button type="button" class="choice-tile" data-pick="multi" data-field="needs" data-value="adhs"><span class="choice-ic"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></svg></span><span class="choice-text"><span class="choice-label">ADHS</span></span></button>
+                        <button type="button" class="choice-tile" data-pick="multi" data-field="needs" data-value="autismus"><span class="choice-ic"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M19.439 7.85c-.049.322.059.648.289.878l1.568 1.568c.47.47.706 1.087.706 1.704s-.235 1.233-.706 1.704l-1.611 1.611a.98.98 0 0 1-.837.276c-.47-.07-.802-.48-.968-.925a2.501 2.501 0 1 0-3.214 3.214c.446.166.855.497.925.968a.979.979 0 0 1-.276.837l-1.61 1.61a2.404 2.404 0 0 1-1.705.707 2.402 2.402 0 0 1-1.704-.706l-1.568-1.568a1.026 1.026 0 0 0-.877-.29c-.493.074-.84.504-1.02.968a2.5 2.5 0 1 1-3.237-3.237c.464-.18.894-.527.967-1.02a1.026 1.026 0 0 0-.289-.877l-1.568-1.568A2.402 2.402 0 0 1 1.998 12c0-.617.236-1.234.706-1.704L4.23 8.77c.24-.24.581-.353.917-.303.515.077.877.528 1.073 1.01a2.5 2.5 0 1 0 3.259-3.259c-.482-.196-.933-.558-1.01-1.073-.05-.336.062-.676.303-.917l1.525-1.525A2.402 2.402 0 0 1 12 1.998c.617 0 1.234.236 1.704.706l1.568 1.568c.23.23.556.338.877.29.493-.074.84-.504 1.02-.968a2.5 2.5 0 1 1 3.237 3.237c-.464.18-.894.527-.967 1.02z"/></svg></span><span class="choice-text"><span class="choice-label">Autismus-Spektrum</span></span></button>
+                        <button type="button" class="choice-tile" data-pick="multi" data-field="needs" data-value="daz"><span class="choice-ic"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg></span><span class="choice-text"><span class="choice-label">Deutsch als Zweitsprache</span></span></button>
+                        <button type="button" class="choice-tile" data-pick="multi" data-field="needs" data-value="sehen"><span class="choice-ic"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/></svg></span><span class="choice-text"><span class="choice-label">Sehen</span></span></button>
+                        <button type="button" class="choice-tile" data-pick="multi" data-field="needs" data-value="hoeren"><span class="choice-ic"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8.5a6.5 6.5 0 1 1 13 0c0 6-6 6-6 10a3.5 3.5 0 1 1-7 0"/><path d="M15 8.5a2.5 2.5 0 0 0-5 0v1a2 2 0 1 1 0 4"/></svg></span><span class="choice-text"><span class="choice-label">H&ouml;ren</span></span></button>
                     </div>
                     <div id="help-preview" style="margin-top:18px;"></div>
                 </div>
             </section>
 
             <!-- 6 · ENERGIENIVEAU -->
-            <section class="wizard-step" data-question="Wie ist dein Akku gerade?" data-next-label="Motivation">
+            <section class="wizard-step" data-category="Energie" data-question="Wie ist dein Akku gerade?" data-next-label="Motivation">
                 <div class="step-card">
                     <div class="step-q">
                         <h2>Wie voll ist dein Akku?</h2>
-                        <button type="button" class="icon-btn" data-fk-read aria-label="Frage vorlesen">&#128266;</button>
+                        <button type="button" class="icon-btn" data-fk-read aria-label="Frage vorlesen"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4.702a.705.705 0 0 0-1.203-.498L6.413 7.587A1.4 1.4 0 0 1 5.416 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.416a1.4 1.4 0 0 1 .997.413l3.384 3.384A.705.705 0 0 0 11 19.298z"/><path d="M16 9a5 5 0 0 1 0 6"/><path d="M19.364 18.364a9 9 0 0 0 0-12.728"/></svg></button>
                     </div>
                     <p class="step-hint">Das hilft uns, dir heute das Richtige vorzuschlagen. Es darf sich jeden Tag &auml;ndern.</p>
-                    <div class="choice-grid" role="group" aria-label="Energie w&auml;hlen">
-                        <button type="button" class="choice-tile xl" data-pick="single" data-field="energy" data-value="hoch"><span class="choice-emoji">&#128267;</span><span class="choice-label">Voll Power</span></button>
-                        <button type="button" class="choice-tile xl" data-pick="single" data-field="energy" data-value="mittel"><span class="choice-emoji">&#128578;</span><span class="choice-label">Geht so</span></button>
-                        <button type="button" class="choice-tile xl" data-pick="single" data-field="energy" data-value="niedrig"><span class="choice-emoji">&#128564;</span><span class="choice-label">Bin m&uuml;de</span></button>
+                    <div class="choice-list" role="group" aria-label="Energie w&auml;hlen">
+                        <button type="button" class="choice-tile xl" data-pick="single" data-field="energy" data-value="hoch"><span class="choice-ic"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="16" height="10" x="2" y="7" rx="2" ry="2"/><line x1="22" x2="22" y1="11" y2="13"/><line x1="6" x2="6" y1="10" y2="14"/><line x1="10" x2="10" y1="10" y2="14"/><line x1="14" x2="14" y1="10" y2="14"/></svg></span><span class="choice-text"><span class="choice-label">Voll Power</span></span></button>
+                        <button type="button" class="choice-tile xl" data-pick="single" data-field="energy" data-value="mittel"><span class="choice-ic"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="16" height="10" x="2" y="7" rx="2" ry="2"/><line x1="22" x2="22" y1="11" y2="13"/><line x1="6" x2="6" y1="10" y2="14"/><line x1="10" x2="10" y1="10" y2="14"/></svg></span><span class="choice-text"><span class="choice-label">Geht so</span></span></button>
+                        <button type="button" class="choice-tile xl" data-pick="single" data-field="energy" data-value="niedrig"><span class="choice-ic"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="16" height="10" x="2" y="7" rx="2" ry="2"/><line x1="22" x2="22" y1="11" y2="13"/><line x1="6" x2="6" y1="10" y2="14"/></svg></span><span class="choice-text"><span class="choice-label">Bin m&uuml;de</span></span></button>
                     </div>
                     <div class="field-nudge" id="nudge-6">W&auml;hl, wie dein Akku gerade ist. &#128522;</div>
                 </div>
             </section>
 
             <!-- 7 · MOTIVATION -->
-            <section class="wizard-step" data-question="Was passt am besten?" data-next-label="Pausen-Versprechen">
+            <section class="wizard-step" data-category="Motivation" data-question="Was passt am besten?" data-next-label="Pausen-Versprechen">
                 <div class="step-card">
                     <div class="step-q">
                         <h2>Was passt am besten?</h2>
-                        <button type="button" class="icon-btn" data-fk-read aria-label="Frage vorlesen">&#128266;</button>
+                        <button type="button" class="icon-btn" data-fk-read aria-label="Frage vorlesen"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4.702a.705.705 0 0 0-1.203-.498L6.413 7.587A1.4 1.4 0 0 1 5.416 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.416a1.4 1.4 0 0 1 .997.413l3.384 3.384A.705.705 0 0 0 11 19.298z"/><path d="M16 9a5 5 0 0 1 0 6"/><path d="M19.364 18.364a9 9 0 0 0 0-12.728"/></svg></button>
                     </div>
                     <p class="step-hint"><strong>F&uuml;r die Eltern:</strong> So treffen wir Ton und Schwierigkeit besser.</p>
 
-                    <label class="form-label">Mag dein Kind Lesen lernen?</label>
-                    <div class="choice-grid" style="margin-bottom:18px;" role="group" aria-label="Motivation">
-                        <button type="button" class="choice-tile" data-pick="single" data-field="motivation.wantsToLearn" data-value="ja"><span class="choice-emoji">&#128522;</span><span class="choice-label">Ja, gerne</span></button>
-                        <button type="button" class="choice-tile" data-pick="single" data-field="motivation.wantsToLearn" data-value="unsicher"><span class="choice-emoji">&#129300;</span><span class="choice-label">Mal so, mal so</span></button>
-                        <button type="button" class="choice-tile" data-pick="single" data-field="motivation.wantsToLearn" data-value="nein"><span class="choice-emoji">&#128533;</span><span class="choice-label">Noch nicht</span></button>
+                    <label class="form-label" style="max-width:480px;margin:0 auto 8px;">Mag dein Kind Lesen lernen?</label>
+                    <div class="choice-list" style="margin-bottom:18px;" role="group" aria-label="Motivation">
+                        <button type="button" class="choice-tile" data-pick="single" data-field="motivation.wantsToLearn" data-value="ja"><span class="choice-ic"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M8 14s1.5 2 4 2 4-2 4-2"/><line x1="9" x2="9.01" y1="9" y2="9"/><line x1="15" x2="15.01" y1="9" y2="9"/></svg></span><span class="choice-text"><span class="choice-label">Ja, gerne</span></span></button>
+                        <button type="button" class="choice-tile" data-pick="single" data-field="motivation.wantsToLearn" data-value="unsicher"><span class="choice-ic"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="8" x2="16" y1="15" y2="15"/><line x1="9" x2="9.01" y1="9" y2="9"/><line x1="15" x2="15.01" y1="9" y2="9"/></svg></span><span class="choice-text"><span class="choice-label">Mal so, mal so</span></span></button>
+                        <button type="button" class="choice-tile" data-pick="single" data-field="motivation.wantsToLearn" data-value="nein"><span class="choice-ic"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M16 16s-1.5-2-4-2-4 2-4 2"/><line x1="9" x2="9.01" y1="9" y2="9"/><line x1="15" x2="15.01" y1="9" y2="9"/></svg></span><span class="choice-text"><span class="choice-label">Noch nicht</span></span></button>
                     </div>
 
-                    <label class="form-label">Wie soll gelesen werden?</label>
-                    <div class="choice-grid" style="margin-bottom:18px;" role="group" aria-label="Lesefokus">
-                        <button type="button" class="choice-tile" data-pick="single" data-field="motivation.focus" data-value="vorlesen"><span class="choice-emoji">&#128483;&#65039;</span><span class="choice-label">Vorlesen</span></button>
-                        <button type="button" class="choice-tile" data-pick="single" data-field="motivation.focus" data-value="gemischt"><span class="choice-emoji">&#129309;</span><span class="choice-label">Zusammen</span></button>
-                        <button type="button" class="choice-tile" data-pick="single" data-field="motivation.focus" data-value="selbst"><span class="choice-emoji">&#128104;&#8205;&#127979;</span><span class="choice-label">Selbst lesen</span></button>
+                    <label class="form-label" style="max-width:480px;margin:0 auto 8px;">Wie soll gelesen werden?</label>
+                    <div class="choice-list" style="margin-bottom:18px;" role="group" aria-label="Lesefokus">
+                        <button type="button" class="choice-tile" data-pick="single" data-field="motivation.focus" data-value="vorlesen"><span class="choice-ic"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4.702a.705.705 0 0 0-1.203-.498L6.413 7.587A1.4 1.4 0 0 1 5.416 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.416a1.4 1.4 0 0 1 .997.413l3.384 3.384A.705.705 0 0 0 11 19.298z"/><path d="M16 9a5 5 0 0 1 0 6"/></svg></span><span class="choice-text"><span class="choice-label">Vorlesen</span></span></button>
+                        <button type="button" class="choice-tile" data-pick="single" data-field="motivation.focus" data-value="gemischt"><span class="choice-ic"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg></span><span class="choice-text"><span class="choice-label">Zusammen</span></span></button>
+                        <button type="button" class="choice-tile" data-pick="single" data-field="motivation.focus" data-value="selbst"><span class="choice-ic"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 7v14"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/></svg></span><span class="choice-text"><span class="choice-label">Selbst lesen</span></span></button>
                     </div>
 
-                    <label class="form-label">Schwierigkeit (optional)</label>
-                    <div class="choice-grid" role="group" aria-label="Schwierigkeit">
-                        <button type="button" class="choice-tile" data-pick="single" data-field="motivation.difficulty" data-value="leicht"><span class="choice-label">Lieber leicht</span></button>
-                        <button type="button" class="choice-tile" data-pick="single" data-field="motivation.difficulty" data-value="mittel"><span class="choice-label">Mittel</span></button>
-                        <button type="button" class="choice-tile" data-pick="single" data-field="motivation.difficulty" data-value="herausfordernd"><span class="choice-label">Ruhig fordernd</span></button>
+                    <label class="form-label" style="max-width:480px;margin:0 auto 8px;">Schwierigkeit (optional)</label>
+                    <div class="choice-list" role="group" aria-label="Schwierigkeit">
+                        <button type="button" class="choice-tile" data-pick="single" data-field="motivation.difficulty" data-value="leicht"><span class="choice-ic"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.67 19a2 2 0 0 0 1.416-.588l6.154-6.172a6 6 0 0 0-8.49-8.49L5.586 9.914A2 2 0 0 0 5 11.328V18a1 1 0 0 0 1 1z"/><path d="M16 8 2 22"/><path d="M17.5 15H9"/></svg></span><span class="choice-text"><span class="choice-label">Lieber leicht</span></span></button>
+                        <button type="button" class="choice-tile" data-pick="single" data-field="motivation.difficulty" data-value="mittel"><span class="choice-ic"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 14 4-4"/><path d="M3.34 19a10 10 0 1 1 17.32 0"/></svg></span><span class="choice-text"><span class="choice-label">Mittel</span></span></button>
+                        <button type="button" class="choice-tile" data-pick="single" data-field="motivation.difficulty" data-value="herausfordernd"><span class="choice-ic"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8.5 14.5A2.5 2.5 0 0 0 11 12c0-1.38-.5-2-1-3-1.072-2.143-.224-4.054 2-6 .5 2.5 2 4.9 4 6.5 2 1.6 3 3.5 3 5.5a7 7 0 1 1-14 0c0-1.153.433-2.294 1-3a2.5 2.5 0 0 0 2.5 2.5z"/></svg></span><span class="choice-text"><span class="choice-label">Ruhig fordernd</span></span></button>
                     </div>
                     <div class="field-nudge" id="nudge-7">Bitte die ersten beiden Fragen beantworten. &#128522;</div>
                 </div>
             </section>
 
             <!-- 8 · ERLAUBNIS ZUM PAUSE MACHEN -->
-            <section class="wizard-step" data-question="Pause machen ist immer erlaubt." data-next-label="Rechte">
+            <section class="wizard-step" data-category="Versprechen" data-question="Pause machen ist immer erlaubt." data-next-label="Rechte">
                 <div class="step-card">
                     <div class="step-q">
                         <h2>Pausen sind okay</h2>
-                        <button type="button" class="icon-btn" data-fk-read aria-label="Frage vorlesen">&#128266;</button>
+                        <button type="button" class="icon-btn" data-fk-read aria-label="Frage vorlesen"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4.702a.705.705 0 0 0-1.203-.498L6.413 7.587A1.4 1.4 0 0 1 5.416 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.416a1.4 1.4 0 0 1 .997.413l3.384 3.384A.705.705 0 0 0 11 19.298z"/><path d="M16 9a5 5 0 0 1 0 6"/><path d="M19.364 18.364a9 9 0 0 0 0-12.728"/></svg></button>
                     </div>
                     <div class="buddy-guide"><img src="bilder/lesekumpel_logo_v2.png" alt=""> Bei uns gilt der <strong>&bdquo;Kein-Druck-Modus&ldquo;</strong>: Aufh&ouml;ren ist nie schlimm &mdash; im Gegenteil.</div>
                     <p class="step-hint">Wenn der Akku leer ist, darf dein Kind jederzeit Pause machen oder sich nur vorlesen lassen. Wir nehmen Druck raus statt ihn zu machen. Versprochen?</p>
-                    <div class="choice-grid" role="group" aria-label="Pausen-Versprechen">
-                        <button type="button" class="choice-tile xl" data-pick="single" data-field="noDemandMode" data-type="bool" data-value="true"><span class="choice-emoji">&#129309;</span><span class="choice-label">Ja, Pausen sind okay</span></button>
+                    <div class="choice-list" role="group" aria-label="Pausen-Versprechen">
+                        <button type="button" class="choice-tile xl" data-pick="single" data-field="noDemandMode" data-type="bool" data-value="true"><span class="choice-ic"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z"/></svg></span><span class="choice-text"><span class="choice-label">Ja, Pausen sind okay</span></span></button>
                     </div>
                 </div>
             </section>
 
             <!-- 9 · RECHTE -->
-            <section class="wizard-step" data-question="Was darf dein Kind in der App tun?" data-next-label="Fertig">
+            <section class="wizard-step" data-category="Eltern" data-question="Was darf dein Kind in der App tun?" data-next-label="Fertig">
                 <div class="step-card">
                     <div class="step-q">
                         <h2>Was darf dein Kind tun?</h2>
-                        <button type="button" class="icon-btn" data-fk-read aria-label="Frage vorlesen">&#128266;</button>
+                        <button type="button" class="icon-btn" data-fk-read aria-label="Frage vorlesen"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4.702a.705.705 0 0 0-1.203-.498L6.413 7.587A1.4 1.4 0 0 1 5.416 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.416a1.4 1.4 0 0 1 .997.413l3.384 3.384A.705.705 0 0 0 11 19.298z"/><path d="M16 9a5 5 0 0 1 0 6"/><path d="M19.364 18.364a9 9 0 0 0 0-12.728"/></svg></button>
                     </div>
                     <p class="step-hint"><strong>F&uuml;r die Eltern:</strong> Du legst fest, ob dein Kind nur lesen oder auch eigene Geschichten erstellen darf. Auch sp&auml;ter &auml;nderbar.</p>
-                    <div class="choice-grid" role="group" aria-label="Rechte w&auml;hlen">
-                        <button type="button" class="choice-tile xl" data-pick="single" data-field="rights" data-value="nur-lesen"><span class="choice-emoji">&#128214;</span><span class="choice-label">Nur lesen</span><span class="choice-sub">Geschichten entdecken</span></button>
-                        <button type="button" class="choice-tile xl" data-pick="single" data-field="rights" data-value="erstellen"><span class="choice-emoji">&#9997;&#65039;</span><span class="choice-label">Lesen &amp; erstellen</span><span class="choice-sub">eigene Geschichten machen</span></button>
+                    <div class="choice-list" role="group" aria-label="Rechte w&auml;hlen">
+                        <button type="button" class="choice-tile xl" data-pick="single" data-field="rights" data-value="nur-lesen"><span class="choice-ic"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 7v14"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/></svg></span><span class="choice-text"><span class="choice-label">Nur lesen</span><span class="choice-sub">Geschichten entdecken</span></span></button>
+                        <button type="button" class="choice-tile xl" data-pick="single" data-field="rights" data-value="erstellen"><span class="choice-ic"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20h9"/><path d="M16.376 3.622a1 1 0 0 1 3.002 3.002L7.368 18.635a2 2 0 0 1-.855.506l-2.872.838a.5.5 0 0 1-.62-.62l.838-2.872a2 2 0 0 1 .506-.854z"/></svg></span><span class="choice-text"><span class="choice-label">Lesen &amp; erstellen</span><span class="choice-sub">eigene Geschichten machen</span></span></button>
                     </div>
                     <div class="field-nudge" id="nudge-9">W&auml;hl, was dein Kind tun darf. &#128522;</div>
                 </div>
@@ -275,19 +527,81 @@
         </div>
     </main>
 
+    <!-- === LK-FOOTER:FOOTER START === -->
+  <footer class="modern-footer">
+    <div class="footer-grid">
+      <div class="footer-brand-block">
+        <div class="footer-brand-row">
+          <img src="Konzept_Rebranding/logo-lesekumpel-512.webp" alt="Lesekumpel Logo">
+          <span>Lese<span class="brand-yellow">kumpel</span></span>
+        </div>
+        <p class="footer-tagline">Die inklusive Lese-App, die jedes Kind lieben lernt. Neurodivers gestaltet.</p>
+        <div class="footer-social">
+          <a href="https://www.instagram.com/lesekumpel.de/" target="_blank" rel="noopener" aria-label="Lesekumpel auf Instagram">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none"/></svg>
+          </a>
+          <a href="https://discord.gg/sAr6KEsg" target="_blank" rel="noopener" aria-label="Lesekumpel Discord Community">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.095 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.095 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <div>
+        <h2>Entdecken</h2>
+        <ul>
+          <li><a href="demo.html">Demo-Texte</a></li>
+          <li><a href="preise.html">Preise</a></li>
+          <li><a href="neue-geschichte.html">Geschichte erstellen</a></li>
+          <li><a href="ueber-uns.html">&Uuml;ber uns</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h2>Rechtliches</h2>
+        <ul>
+          <li><a href="impressum.html">Impressum</a></li>
+          <li><a href="datenschutz.html">Datenschutz</a></li>
+          <li><a href="knowledge-base/snacks/index.html">Wissen</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <span>&copy; 2026 Lesekumpel &middot; Inklusive Lese-App f&uuml;r jedes Gehirn</span>
+    </div>
+  </footer>
+  <!-- === LK-FOOTER:FOOTER END === -->
+
     <script src="formkit.js"></script>
     <script src="konto-state.js"></script>
     <script src="konto-fx.js"></script>
     <script>
+        // Mobile-Menue (Header)
+        window.toggleMenu = function () {
+            var menu = document.getElementById('mobile-menu');
+            var btn = document.querySelector('.burger-icon');
+            if (!menu) return;
+            menu.classList.toggle('open');
+            var open = menu.classList.contains('open');
+            if (btn) {
+                btn.setAttribute('aria-expanded', open);
+                btn.setAttribute('aria-label', open ? 'Menü schließen' : 'Menü öffnen');
+            }
+        };
+        // Menue schliesst bei Klick ausserhalb / Escape
+        document.addEventListener('click', function (e) {
+            var nav = document.querySelector('.nav-left');
+            var menu = document.getElementById('mobile-menu');
+            if (menu && menu.classList.contains('open') && nav && !nav.contains(e.target)) {
+                menu.classList.remove('open');
+                var btn = document.querySelector('.burger-icon');
+                if (btn) btn.setAttribute('aria-expanded', 'false');
+            }
+        });
+    </script>
+    <script>
     (function () {
         'use strict';
-        // ---- A11y-Schalter ----
-        Konto.applyA11y();
-        document.querySelectorAll('[data-a11y]').forEach(function (btn) {
-            var key = btn.getAttribute('data-a11y');
-            if (Konto.getA11y()[key]) btn.classList.add('on');
-            btn.addEventListener('click', function () { btn.classList.toggle('on', Konto.toggleA11y(key)); });
-        });
 
         // ---- Datenmodell ----
         function defaultData() {
@@ -383,6 +697,8 @@
             });
             var ni = document.getElementById('o-name');
             if (ni && ni.value !== (D.name || '')) ni.value = D.name || '';
+            var ai = document.getElementById('o-age');
+            if (ai && document.activeElement !== ai) ai.value = (D.age != null ? String(D.age) : '');
             paintAvatar();
             updateHelpPreview();
         }
@@ -410,12 +726,25 @@
         nameInput.addEventListener('input', function () { D.name = nameInput.value; if (window._wiz) window._wiz.refresh(); });
         FormKit.attachDictation(nameInput, document.getElementById('o-name-mic'));
 
+        // ---- Alter (Freitext -> Ganzzahl 1–99) ----
+        var ageInput = document.getElementById('o-age');
+        var AGE_MIN = 1, AGE_MAX = 99;
+        ageInput.addEventListener('input', function () {
+            var clean = ageInput.value.replace(/[^0-9]/g, '').slice(0, 2);
+            if (clean !== ageInput.value) ageInput.value = clean;
+            var n = parseInt(clean, 10);
+            D.age = (Number.isInteger(n) && n >= AGE_MIN && n <= AGE_MAX) ? n : null;
+            ageInput.classList.toggle('input-invalid', clean !== '' && D.age == null);
+            hideNudges();
+            if (window._wiz) window._wiz.refresh();
+        });
+
         // ---- Mini-Test ----
         document.getElementById('minitest-toggle').addEventListener('click', function () {
             var m = document.getElementById('minitest');
             var open = m.style.display !== 'none';
             m.style.display = open ? 'none' : 'block';
-            this.innerHTML = open ? '🧐 Lieber kurz ausprobieren?' : '🔼 Test ausblenden';
+            this.textContent = open ? 'Lieber kurz ausprobieren?' : 'Test ausblenden';
         });
 
         // ---- Niveau-Mapping ----
@@ -512,6 +841,17 @@
         });
         window._wiz = wiz;
 
+        // ---- Kategorie-Label aus aktivem Schritt synchronisieren ----
+        var catLabel = document.getElementById('step-category');
+        function syncCategory() {
+            var el = document.querySelector('.wizard-step.active');
+            if (el && catLabel) catLabel.textContent = el.getAttribute('data-category') || '';
+        }
+        document.querySelectorAll('.wizard-step').forEach(function (s) {
+            new MutationObserver(syncCategory).observe(s, { attributes: true, attributeFilter: ['class'] });
+        });
+        syncCategory();
+
         // Nudges bei ungültigem „Weiter" — Capture-Phase, damit der Index VOR
         // dem formkit-Advance gelesen wird.
         document.querySelector('[data-fk-next]').addEventListener('click', function () {
@@ -531,5 +871,134 @@
         paint();
     })();
     </script>
+
+  <!-- === LK-A11Y:MODAL START === -->
+  <div class="settings-overlay" id="settings-overlay" hidden onclick="if(event.target===this)closeSettings()">
+    <div class="settings-panel" id="settings-panel" role="dialog" aria-modal="true" aria-labelledby="settings-title">
+      <div class="settings-header">
+        <h2 class="settings-title" id="settings-title">Barrierefreiheit</h2>
+        <button type="button" class="settings-close" onclick="closeSettings()" aria-label="Einstellungen schlie&szlig;en">&times;</button>
+      </div>
+      <div class="settings-body">
+        <div class="toolbar-group group-view">
+          <div class="toolbar-group-label">Schriftgr&ouml;&szlig;e</div>
+          <div class="toolbar-group-buttons">
+            <div class="font-size-control">
+              <button class="tool-btn" onclick="changeFontSize(-2)" aria-label="Schrift kleiner">A&minus;</button>
+              <button class="tool-btn" onclick="changeFontSize(2)" aria-label="Schrift gr&ouml;&szlig;er">A+</button>
+            </div>
+          </div>
+        </div>
+        <div class="toolbar-group group-extra">
+          <div class="toolbar-group-label">Thema</div>
+          <div class="toolbar-group-buttons" role="radiogroup" aria-label="Thema">
+            <button type="button" class="tool-btn" id="btn-theme-light" role="radio" aria-checked="true" onclick="setTheme('light')" aria-label="Helles Thema"><span class="btn-icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg></span> <span class="btn-label">Hell</span></button>
+            <button type="button" class="tool-btn" id="btn-theme-dark" role="radio" aria-checked="false" onclick="setTheme('dark')" aria-label="Dunkles Thema"><span class="btn-icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg></span> <span class="btn-label">Dunkel</span></button>
+            <button type="button" class="tool-btn" id="btn-theme-contrast" role="radio" aria-checked="false" onclick="setTheme('contrast')" aria-label="Hoher Kontrast"><span class="btn-icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 18a6 6 0 0 0 0-12v12z"/></svg></span> <span class="btn-label">Kontrast</span></button>
+          </div>
+        </div>
+        <div class="toolbar-group group-extra">
+          <div class="toolbar-group-label">Darstellung</div>
+          <div class="toolbar-group-buttons">
+            <button type="button" class="tool-btn" onclick="toggleDyslexia(this)" id="btn-dyslexia" aria-pressed="false" aria-label="Lesefreundliche Schrift"><span class="btn-icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v16"/><path d="M4 7V5a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v2"/><path d="M9 20h6"/></svg></span> <span class="btn-label">Lesefreundlich</span></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+<!-- === LK-A11Y:MODAL END === -->
+
+  <script>
+// === LK-A11Y:JS START ===
+(function () {
+  'use strict';
+  var K_DYS = 'lesekumpel-lesefreundlich';
+  var K_CON = 'lesekumpel-kontrast';   // Legacy (Migration)
+  var K_THEME = 'lesekumpel-theme';     // 'light' | 'dark' | 'contrast'
+  var K_FS = 'lesekumpel-schriftgroesse';
+  function ls(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
+  function lsSet(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
+
+  var lastTrigger = null; // Element, das das Modal geoeffnet hat (Fokus-Rueckgabe)
+  var FOCUSABLE = 'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
+  function focusables(root) {
+    return Array.prototype.filter.call(
+      root.querySelectorAll(FOCUSABLE),
+      function (el) { return el.offsetParent !== null && !el.disabled; }
+    );
+  }
+
+  window.openSettings = function () {
+    var ov = document.getElementById('settings-overlay');
+    if (!ov) return;
+    lastTrigger = document.activeElement;
+    ov.hidden = false;
+    var m = document.getElementById('mobile-menu');
+    if (m) m.classList.remove('open');
+    var f = focusables(ov);
+    if (f.length) f[0].focus(); // Fokus ins Modal
+  };
+  window.closeSettings = function () {
+    var ov = document.getElementById('settings-overlay');
+    if (ov) ov.hidden = true;
+    if (lastTrigger && typeof lastTrigger.focus === 'function') lastTrigger.focus();
+    lastTrigger = null;
+  };
+  window.changeFontSize = function (d) {
+    // Auf <html> wirken, nicht auf <body>: Der Katalogtext ist in rem
+    // dimensioniert (relativ zur Wurzel). Body-fontSize ignoriert rem komplett.
+    var root = document.documentElement;
+    var s = parseFloat(ls(K_FS)) || parseFloat(window.getComputedStyle(root).fontSize) || 16;
+    var n = Math.max(12, Math.min(40, s + d));
+    root.style.fontSize = n + 'px';
+    lsSet(K_FS, String(n));
+  };
+  function setPressed(b, active) { if (b) b.setAttribute('aria-pressed', active ? 'true' : 'false'); }
+  window.toggleDyslexia = function (btn) {
+    var active = document.body.classList.toggle('dyslexia-mode');
+    var b = btn || document.getElementById('btn-dyslexia');
+    if (b) { b.classList.toggle('active', active); setPressed(b, active); }
+    lsSet(K_DYS, active ? 'true' : 'false');
+  };
+  // Thema (gegenseitig ausschließend): 'light' | 'dark' | 'contrast'.
+  window.setTheme = function (name) {
+    var b = document.body;
+    b.classList.toggle('dark-mode', name === 'dark');
+    b.classList.toggle('high-contrast', name === 'contrast');
+    ['light', 'dark', 'contrast'].forEach(function (t) {
+      var el = document.getElementById('btn-theme-' + t);
+      if (el) { el.classList.toggle('active', t === name); el.setAttribute('aria-checked', t === name ? 'true' : 'false'); }
+    });
+    lsSet(K_THEME, name);
+  };
+
+  // Init: gespeicherte Einstellungen anwenden (idempotent, kein Toggle)
+  if (ls(K_DYS) === 'true') {
+    document.body.classList.add('dyslexia-mode');
+    var bd = document.getElementById('btn-dyslexia'); if (bd) { bd.classList.add('active'); setPressed(bd, true); }
+  }
+  // Thema wiederherstellen (Migration: alter K_CON='true' → 'contrast')
+  var theme = ls(K_THEME);
+  if (!theme && ls(K_CON) === 'true') theme = 'contrast';
+  window.setTheme(theme || 'light');
+  var fs = parseFloat(ls(K_FS));
+  if (fs >= 12 && fs <= 40) document.documentElement.style.fontSize = fs + 'px';
+
+  document.addEventListener('keydown', function (e) {
+    var ov = document.getElementById('settings-overlay');
+    if (!ov || ov.hidden) return;
+    if (e.key === 'Escape') { window.closeSettings(); return; }
+    if (e.key !== 'Tab') return;
+    // Focus-Trap: Tab/Shift+Tab innerhalb des Modals halten
+    var f = focusables(ov);
+    if (!f.length) return;
+    var first = f[0], last = f[f.length - 1];
+    if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+    else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+  });
+})();
+// === LK-A11Y:JS END ===
+</script>
+
 </body>
 </html>

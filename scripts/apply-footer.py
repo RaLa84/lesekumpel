@@ -90,7 +90,7 @@ def collect_targets():
     css, public, reading = load_source()
     targets = []  # (path, variant, footer_markup)
 
-    for name in ("demo.html", "neue-autorengeschichte.html", "neue-geschichte.html", "anmelden.html", "profilauswahl.html"):
+    for name in ("demo.html", "neue-autorengeschichte.html", "neue-geschichte.html", "anmelden.html", "profilauswahl.html", "onboarding.html"):
         p = REPO / name
         if p.exists():
             targets.append((p, "public", public))
