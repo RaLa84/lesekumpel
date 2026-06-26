@@ -325,7 +325,7 @@ footer { text-align: center; color: var(--text-muted); font-size: 0.88rem; paddi
 /* ============================================================
    KIND-BEREICH (kind.html)
    ============================================================ */
-.kid-body { padding-bottom: calc(64px + env(safe-area-inset-bottom)); }
+.kid-body { padding-bottom: calc(92px + env(safe-area-inset-bottom)); }
 .kid-wrap { max-width: 760px; margin: 0 auto; padding: 18px 18px calc(28px + env(safe-area-inset-bottom)); }
 .kid-header { display: flex; align-items: center; gap: 16px; background: var(--bg-card); border: 1px solid var(--border-soft); border-radius: 26px; box-shadow: var(--shadow-card); padding: 18px 22px; margin-bottom: 8px; }
 .kid-mascot { width: 64px; height: 64px; border-radius: 20px; display: flex; align-items: center; justify-content: center; font-size: 2.4rem; flex-shrink: 0; border: 2px solid #fff; box-shadow: 0 3px 8px rgba(43,49,64,0.12); transform: rotate(-3deg); animation: lk-mascot-idle 5s ease-in-out infinite; }
@@ -664,14 +664,15 @@ body.lk-contrast .stat-number, body.lk-contrast .counter-number, body.lk-contras
 .task-card.is-done .task-title { text-decoration: line-through; }
 .task-card.is-done .task-check { background: var(--mint); border-color: var(--mint); color: #fff; }
 
-/* --- Bottom-Navigation (App-Leiste) --- */
-.kid-bottomnav { position: fixed; left: 0; right: 0; bottom: 0; z-index: 1000; display: flex; justify-content: space-around; gap: 4px; background: rgba(255,255,255,0.96); -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px); border-top: 1px solid var(--border-soft); padding: 8px 6px calc(8px + env(safe-area-inset-bottom)); box-shadow: 0 -4px 18px rgba(43,49,64,0.06); }
-.kbn-item { position: relative; flex: 1 1 0; min-width: 0; min-height: 54px; display: flex; flex-direction: column; align-items: center; gap: 3px; padding: 5px 2px; background: none; border: none; cursor: pointer; font-family: var(--font-body); font-weight: 700; font-size: 0.7rem; color: var(--text-muted); transition: color 0.15s, transform 0.1s; }
-.kbn-item svg { width: 23px; height: 23px; }
+/* --- Bottom-Navigation: schwebende Creme-Pille mit umrandeten Icon-Buttons
+       (optisch angelehnt an das Lesehilfen-Tool der Leseseiten) --- */
+.kid-bottomnav { position: fixed; left: 10px; right: 10px; bottom: max(12px, env(safe-area-inset-bottom)); margin: 0 auto; max-width: 720px; z-index: 1000; display: flex; gap: 6px; justify-content: center; background: var(--cream); -webkit-backdrop-filter: blur(8px); backdrop-filter: blur(8px); border: 1.5px solid var(--border-soft); border-radius: 24px; padding: 8px 10px; box-shadow: 0 8px 26px rgba(43,49,64,0.14); }
+.kbn-item { flex: 1 1 0; min-width: 0; min-height: 52px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 3px; padding: 6px 4px; background: rgba(255,255,255,0.9); border: 1.5px solid rgba(43,49,64,0.06); border-radius: 14px; cursor: pointer; font-family: var(--font-body); font-weight: 700; font-size: 0.66rem; color: var(--text-muted); transition: background 0.15s, border-color 0.15s, color 0.15s, transform 0.1s; }
+.kbn-item svg { width: 22px; height: 22px; }
 .kbn-item span { max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.kbn-item.active { color: var(--mint); }
-.kbn-item.active::before { content: ''; position: absolute; top: -8px; width: 26px; height: 4px; border-radius: 999px; background: var(--mint); }
-.kbn-item:active { transform: scale(0.9); }
+.kbn-item:hover { background: #fff; border-color: rgba(43,49,64,0.12); transform: translateY(-1px); }
+.kbn-item.active { background: var(--mint); border-color: var(--mint); color: #fff; }
+.kbn-item:active { transform: scale(0.95); }
 
 /* --- Energie-Bottom-Sheet (ersetzt Fullscreen-Gate) --- */
 .sheet-backdrop { position: fixed; inset: 0; z-index: 8999; background: rgba(43,49,64,0.45); -webkit-backdrop-filter: blur(2px); backdrop-filter: blur(2px); opacity: 0; transition: opacity 0.3s ease; }
@@ -697,7 +698,9 @@ body.dark-mode .energy-meter, body.dark-mode .task-card, body.dark-mode .energy-
 body.dark-mode .energy-meter-track { background: #1C2230; border-color: var(--border-soft); }
 body.dark-mode .task-check { background: #2A3242; }
 body.dark-mode .task-emoji, body.dark-mode .book-badge.badge-gelesen { border-color: var(--bg-card); }
-body.dark-mode .kid-bottomnav { background: rgba(42,50,66,0.96); border-color: var(--border-soft); }
+body.dark-mode .kid-bottomnav { background: var(--cream-light); border-color: var(--border-soft); }
+body.dark-mode .kbn-item { background: rgba(255,255,255,0.06); border-color: var(--border-soft); }
+body.dark-mode .kbn-item.active { background: var(--mint); border-color: var(--mint); color: #1C2230; }
 body.dark-mode .shelf { background: linear-gradient(180deg, #2A3242, #232A3A); border-color: var(--border-soft); }
 body.high-contrast .kid-scene { background: #fff; border: 2px solid var(--border-soft); box-shadow: none; }
 body.high-contrast .scene-hill, body.high-contrast .scene-sun, body.high-contrast .shelf-plant { display: none; }

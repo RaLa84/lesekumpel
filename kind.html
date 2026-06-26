@@ -8,7 +8,7 @@
     <meta name="robots" content="noindex">
     <link rel="icon" href="bilder/lesekumpel_logo_v2.png">
     <link rel="stylesheet" href="fonts/fonts.css">
-    <link rel="stylesheet" href="konto.css?v=20260626e">
+    <link rel="stylesheet" href="konto.css?v=20260626f">
 
     <!-- ===== A11y-Modal CSS (1:1 aus partials/a11y.html · Single Source) ===== -->
     <style>
@@ -164,16 +164,7 @@
                     <img class="scene-hero" id="scene-hero" alt="" hidden>
                 </div>
 
-                <!-- B) ENERGIE-METER -->
-                <button type="button" class="energy-meter" id="energy-meter" aria-label="Energie deines Lesekumpels – antippen zum neu wählen">
-                    <span class="energy-meter-emoji" id="meter-emoji">&#128578;</span>
-                    <span class="energy-meter-body">
-                        <span class="energy-meter-label" id="meter-label">Akku</span>
-                        <span class="energy-meter-track"><i id="meter-fill"></i></span>
-                    </span>
-                </button>
-
-                <!-- C) TAGESAUFGABEN -->
+                <!-- TAGESAUFGABEN -->
                 <h2 class="kid-section-title" id="home-title">Deine Mission
                     <button type="button" class="read-aloud-btn" id="home-read" aria-label="Vorlesen">&#128266;</button>
                 </h2>
@@ -454,10 +445,10 @@
     })();
     </script>
 
-    <script src="formkit.js?v=20260626e"></script>
-    <script src="konto-state.js?v=20260626e"></script>
-    <script src="konto-fx.js?v=20260626e"></script>
-    <script src="lautlese.js?v=20260626e"></script>
+    <script src="formkit.js?v=20260626f"></script>
+    <script src="konto-state.js?v=20260626f"></script>
+    <script src="konto-fx.js?v=20260626f"></script>
+    <script src="lautlese.js?v=20260626f"></script>
     <script>
     (function () {
         'use strict';
@@ -538,7 +529,6 @@
         });
         document.getElementById('akku-later').addEventListener('click', dismissGateSoft);
         backdrop.addEventListener('click', dismissGateSoft);
-        document.getElementById('energy-meter').addEventListener('click', showGate);
 
         // ================= TAGESAUFGABEN =================
         // Story-Index lazy laden; Callbacks werden bis zum Fetch-Ende gepuffert
@@ -697,15 +687,6 @@
                 hero.hidden = true; mascot.hidden = false;
                 scene.classList.remove('has-hero');
             }
-        }
-        function renderMeter() {
-            var lvl = child.energy.current || 'mittel';
-            var em = ENERGY[lvl] || ENERGY.mittel;
-            var meter = document.getElementById('energy-meter');
-            meter.className = 'energy-meter lvl-' + lvl;
-            document.getElementById('meter-emoji').textContent = em.emoji;
-            document.getElementById('meter-label').textContent = 'Lesekumpel: ' + em.label;
-            document.getElementById('meter-fill').style.width = energyPercent(child) + '%';
         }
         function renderHeader() {
             document.getElementById('star-count').textContent = computeStars(child);
@@ -894,7 +875,7 @@
         }
 
         function renderAll() {
-            renderHeader(); renderScene(); renderMeter(); renderTasks(); renderHomeShelf();
+            renderHeader(); renderScene(); renderTasks(); renderHomeShelf();
             renderLibrary(); renderRecs(); renderLaute();
         }
 
