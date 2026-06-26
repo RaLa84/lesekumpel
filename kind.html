@@ -8,7 +8,7 @@
     <meta name="robots" content="noindex">
     <link rel="icon" href="bilder/lesekumpel_logo_v2.png">
     <link rel="stylesheet" href="fonts/fonts.css">
-    <link rel="stylesheet" href="konto.css?v=20260626g">
+    <link rel="stylesheet" href="konto.css?v=20260626h">
 
     <!-- ===== A11y-Modal CSS (1:1 aus partials/a11y.html · Single Source) ===== -->
     <style>
@@ -440,10 +440,10 @@
     })();
     </script>
 
-    <script src="formkit.js?v=20260626g"></script>
-    <script src="konto-state.js?v=20260626g"></script>
-    <script src="konto-fx.js?v=20260626g"></script>
-    <script src="lautlese.js?v=20260626g"></script>
+    <script src="formkit.js?v=20260626h"></script>
+    <script src="konto-state.js?v=20260626h"></script>
+    <script src="konto-fx.js?v=20260626h"></script>
+    <script src="lautlese.js?v=20260626h"></script>
     <script>
     (function () {
         'use strict';
@@ -646,7 +646,7 @@
                 return '<div class="task-card ' + acc + (t.done ? ' is-done' : '') + '" data-task-id="' + esc(t.id) + '">' +
                     '<span class="task-emoji" aria-hidden="true">' + t.emoji + thumb + '</span>' +
                     '<span class="task-body"><span class="task-title">' + esc(t.title) + '</span>' +
-                    '<span class="task-reward">' + t.stars + ' &#11088;</span></span>' +
+                    '<span class="task-reward"><svg class="tr-star" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.5l2.95 5.98 6.6.96-4.78 4.66 1.13 6.57L12 18.6l-5.9 3.07 1.13-6.57L2.45 9.44l6.6-.96z"/></svg>' + t.stars + '</span></span>' +
                     '<button type="button" class="task-check" aria-label="' + (t.done ? 'Erledigt' : 'Als erledigt abhaken') + '">&#10003;</button>' +
                     '</div>';
             }).join('');
