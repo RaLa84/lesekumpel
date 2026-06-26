@@ -672,6 +672,20 @@ body.lk-contrast .stat-number, body.lk-contrast .counter-number, body.lk-contras
 .task-card.is-done .task-reward { opacity: 0.5; }
 .task-card.is-done .task-check { background: var(--mint); border-color: var(--mint); color: #fff; box-shadow: 0 5px 14px rgba(47,184,166,0.38); }
 
+/* --- No-Demand (Akku leer): „Alles ist gut" + Zudecken-Button --- */
+#home-nodemand { text-align: center; padding: 22px 8px 8px; }
+.nd-title { font-family: var(--font-heading); font-size: 1.8rem; color: var(--navy); margin-bottom: 8px; }
+.nd-sub { color: var(--text-muted); font-size: 1.02rem; line-height: 1.5; max-width: 420px; margin: 0 auto 24px; }
+.nd-btn { display: inline-flex; align-items: center; gap: 10px; padding: 15px 30px; border: none; border-radius: 999px; background: var(--mint); color: #fff; font-family: var(--font-heading); font-weight: 700; font-size: 1.1rem; cursor: pointer; box-shadow: 0 6px 18px rgba(47,184,166,0.35); transition: transform 0.2s cubic-bezier(0.34,1.56,0.64,1), box-shadow 0.2s; }
+.nd-btn svg { width: 22px; height: 22px; }
+.nd-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 24px rgba(47,184,166,0.42); }
+.nd-btn:active { transform: scale(0.96); }
+
+/* --- Low-Demand (Akku halb): reizarmer honiggelber Hintergrund --- */
+body.low-demand { background: #FBEAC2; }
+body.low-demand .kid-bg-deco { display: none; }
+body.low-demand::before, body.low-demand::after { display: none; }
+
 /* --- Bottom-Navigation: schwebende Creme-Pille mit cremefarbenen, gepolsterten
        Icon-Buttons (optisch wie die Leseseiten-Toolbar). Aktiv = dezenter
        Mint-Akzent (Icon + zarte Tönung), kein Ring. --- */

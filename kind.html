@@ -8,7 +8,7 @@
     <meta name="robots" content="noindex">
     <link rel="icon" href="bilder/lesekumpel_logo_v2.png">
     <link rel="stylesheet" href="fonts/fonts.css">
-    <link rel="stylesheet" href="konto.css?v=20260626l">
+    <link rel="stylesheet" href="konto.css?v=20260626m">
 
     <!-- ===== A11y-Modal CSS (1:1 aus partials/a11y.html · Single Source) ===== -->
     <style>
@@ -227,6 +227,9 @@
                 </h2>
                 <p class="kid-sub" id="tasks-note" style="margin-bottom:14px;">Nur wenn du magst.</p>
                 <div class="task-list reveal-stagger" id="task-list"></div>
+
+                <!-- NO-DEMAND (Akku leer): nur Botschaft + Zudecken-Button (Sichtbarkeit via renderStart) -->
+                <div id="home-nodemand" style="display:none;"></div>
 
                 <!-- D) REGAL (kleine Auswahl) -->
                 <h3 class="card-h3" id="shelf-head" style="margin-top:28px;">Deine B&uuml;cher</h3>
@@ -491,10 +494,10 @@
     })();
     </script>
 
-    <script src="formkit.js?v=20260626l"></script>
-    <script src="konto-state.js?v=20260626l"></script>
-    <script src="konto-fx.js?v=20260626l"></script>
-    <script src="lautlese.js?v=20260626l"></script>
+    <script src="formkit.js?v=20260626m"></script>
+    <script src="konto-state.js?v=20260626m"></script>
+    <script src="konto-fx.js?v=20260626m"></script>
+    <script src="lautlese.js?v=20260626m"></script>
     <script>
     (function () {
         'use strict';
@@ -699,33 +702,45 @@
                 || (child.recommendations || []).filter(function (r) { return r.kind === 'vorlesen'; })[0]
                 || (child.recommendations || [])[0] || null;
         }
-        // Calm-Modus: genau EINE Aufgabe — die Lieblingsgeschichte zur Wiederholung
-        // (lesen oder hören). Wird in dailyTasks persistiert (Abhaken bleibt erhalten).
-        function ensureCalmTask() {
+        // Low-Demand (Akku halb): zwei tagesgebundene Aufgaben auf die Lieblingsgeschichte —
+        // einmal lesen, einmal anhören. Persistiert in dailyTasks (Abhaken bleibt erhalten).
+        function ensureFavTasks() {
             var dt = child.dailyTasks; if (!dt) return;
-            if (dt.tasks.some(function (t) { return t.id === 'calm-fav'; })) return;
+            if (dt.tasks.some(function (t) { return t.id === 'fav-read'; })) return;
             var fav = favoriteStory(); if (!fav) return;
             dt.tasks.push({
-                id: 'calm-fav', type: fav.path ? 'read' : 'listen',
-                title: 'Lies oder hör nochmal: ' + fav.title, emoji: fav.icon || '📖',
+                id: 'fav-read', type: 'read', title: 'Lies: ' + fav.title, emoji: fav.icon || '📖',
+                stars: 3, done: false, doneAt: null, storyPath: fav.path || null, lautId: null, stat: null
+            });
+            dt.tasks.push({
+                id: 'fav-listen', type: 'listen', title: 'Hör: ' + fav.title, emoji: '🗣️',
                 stars: 3, done: false, doneAt: null, storyPath: fav.path || null, lautId: null, stat: null
             });
             child = Konto.updateChild(child.id, { dailyTasks: dt });
         }
 
+        var FAV_IDS = { 'fav-read': 1, 'fav-listen': 1, 'calm-fav': 1 };
+        function setHomeTitle(txt) {
+            var h = document.getElementById('home-title');
+            if (h && h.childNodes[0]) h.childNodes[0].nodeValue = txt + ' ';
+        }
         var TASK_ACC = ['acc-mint', 'acc-salmon', 'acc-lila', 'acc-yellow'];
         function renderTasks() {
-            var ruhe = child.energy.current === 'niedrig';
-            document.getElementById('tasks-note').textContent = ruhe
-                ? 'Heute ganz ruhig — nur deine Lieblingsgeschichte. 🌙'
-                : 'Nur wenn du magst.';
+            var lowDemand = child.energy.current === 'mittel';
+            var note = document.getElementById('tasks-note');
             var list = document.getElementById('task-list');
-            // Normal: die regulären Tagesaufgaben (ohne die Calm-Lieblingsaufgabe)
-            var tasks = ((child.dailyTasks && child.dailyTasks.tasks) || []).filter(function (t) { return t.id !== 'calm-fav'; });
-            // Calm-Modus: nur die eine Lieblingsgeschichte zur Wiederholung
-            if (ruhe) {
-                ensureCalmTask();
-                tasks = ((child.dailyTasks && child.dailyTasks.tasks) || []).filter(function (t) { return t.id === 'calm-fav'; });
+            var tasks;
+            if (lowDemand) {
+                // Low-Demand: nur die Lieblingsgeschichte — lesen & anhören
+                ensureFavTasks();
+                tasks = ((child.dailyTasks && child.dailyTasks.tasks) || []).filter(function (t) { return t.id === 'fav-read' || t.id === 'fav-listen'; });
+                setHomeTitle('Heute ganz ruhig');
+                note.textContent = 'Nur deine Lieblingsgeschichte — lesen oder hören. 💛';
+            } else {
+                // Normal: reguläre Tagesaufgaben (ohne die Favoriten-Aufgaben)
+                tasks = ((child.dailyTasks && child.dailyTasks.tasks) || []).filter(function (t) { return !FAV_IDS[t.id]; });
+                setHomeTitle('Deine Mission');
+                note.textContent = 'Nur wenn du magst.';
             }
             if (!tasks.length) {
                 list.innerHTML = '<div class="info-card">Heute keine Aufgaben — stöber einfach bei <strong>F&uuml;r dich</strong>! &#10024;</div>';
@@ -976,9 +991,46 @@
             }
         }
 
+        // No-Demand (Akku leer): nur „Alles ist gut" + Zudecken-Button
+        function renderNoDemand() {
+            var nd = document.getElementById('home-nodemand');
+            nd.innerHTML =
+                '<h2 class="nd-title">Alles ist gut, <span class="handwrite">' + esc(child.name) + '</span>.</h2>' +
+                '<p class="nd-sub">Dein Gehirn hat heute schon viel geschafft. Ruh dich gut aus. 🌙</p>' +
+                '<button type="button" class="nd-btn" id="tuck-btn">' +
+                '<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 4v16"/><path d="M2 8h18a2 2 0 0 1 2 2v10"/><path d="M2 17h20"/><path d="M6 8v9"/></svg>' +
+                'Zusammen zudecken</button>';
+            document.getElementById('tuck-btn').addEventListener('click', function () {
+                KontoFX.sparkleBurst(this);
+                toast('Gute Nacht. Bis morgen schlafen wir. 🌙');
+                nd.innerHTML = '<h2 class="nd-title">Schlaf gut. 🌙</h2><p class="nd-sub">Bis morgen.</p>';
+            });
+        }
+
+        // Start-Ansicht je nach Akku: voll = Dashboard, halb = Low-Demand, leer = No-Demand
+        // (style.display statt [hidden], da Elemente teils display:flex haben)
+        function show(el, on) { if (el) el.style.display = on ? '' : 'none'; }
+        function renderStart() {
+            var lvl = child.energy.current;
+            var isNoDemand = (lvl === 'niedrig');
+            show(document.getElementById('shelf-head'), lvl === 'hoch');
+            show(document.getElementById('home-shelf'), lvl === 'hoch');
+            show(document.getElementById('home-title'), !isNoDemand);
+            show(document.getElementById('tasks-note'), !isNoDemand);
+            show(document.getElementById('task-list'), !isNoDemand);
+            show(document.getElementById('home-nodemand'), isNoDemand);
+            if (isNoDemand) {
+                renderNoDemand();
+            } else {
+                renderTasks();
+                if (lvl === 'hoch') renderHomeShelf();
+            }
+            document.body.classList.toggle('low-demand', lvl === 'mittel');
+        }
+
         function renderAll() {
             applyEnergyTheme();
-            renderHeader(); renderScene(); renderTasks(); renderHomeShelf();
+            renderHeader(); renderScene(); renderStart();
             renderLibrary(); renderRecs(); renderLaute();
         }
 
