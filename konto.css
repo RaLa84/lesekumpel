@@ -701,8 +701,10 @@ body.dark-mode .shelf { background: linear-gradient(180deg, #2A3242, #232A3A); b
 body.high-contrast .kid-scene { background: #fff; border: 2px solid var(--border-soft); box-shadow: none; }
 body.high-contrast .scene-hill, body.high-contrast .scene-sun, body.high-contrast .shelf-plant { display: none; }
 
-/* Sport-Maskottchen (volle Energie) etwas größer/lebendiger */
-.scene-mascot img.is-sport { width: 122px; height: 122px; }
+/* Energieabhängiges Hero-Bild füllt die ganze Szene (hoch/niedrig) */
+.kid-scene.has-hero { aspect-ratio: 2 / 1; min-height: 190px; }
+.scene-hero { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; object-position: center; z-index: 1; border: 0; cursor: pointer; }
+.kid-scene.has-hero .scene-sun, .kid-scene.has-hero .scene-hill { display: none; }
 
 /* Ruhige Hintergrund-Deko (Blobs + Sterne) hinter dem gesamten Inhalt */
 .kid-bg-deco { position: fixed; inset: 0; z-index: -1; overflow: hidden; pointer-events: none; }

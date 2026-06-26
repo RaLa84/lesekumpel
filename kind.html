@@ -8,7 +8,7 @@
     <meta name="robots" content="noindex">
     <link rel="icon" href="bilder/lesekumpel_logo_v2.png">
     <link rel="stylesheet" href="fonts/fonts.css">
-    <link rel="stylesheet" href="konto.css?v=20260626c">
+    <link rel="stylesheet" href="konto.css?v=20260626d">
 
     <!-- ===== A11y-Modal CSS (1:1 aus partials/a11y.html · Single Source) ===== -->
     <style>
@@ -155,12 +155,13 @@
             <!-- START (Dashboard) -->
             <section data-kidsec-panel="start">
                 <!-- A) MASKOTTCHEN-SZENE -->
-                <div class="kid-scene">
+                <div class="kid-scene" id="kid-scene">
                     <svg aria-hidden="true" class="scene-sun floating-deco" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="6"/></svg>
                     <svg aria-hidden="true" class="floating-deco deco-sparkle" style="top:30px;left:8%;width:18px;color:#fff;opacity:.8;animation-delay:-1.5s;" viewBox="0 0 24 24"><path d="M12 2L13.5 9 21 12L13.5 14.5L12 22L10.5 14.5L3 12L10.5 9Z" fill="currentColor"/></svg>
                     <span class="scene-hill scene-hill-back" aria-hidden="true"></span>
                     <span class="scene-hill scene-hill-front" aria-hidden="true"></span>
-                    <div class="scene-mascot"><img src="bilder/lesekumpel_logo_v2.png" alt="" id="scene-mascot-img"></div>
+                    <div class="scene-mascot" id="scene-mascot"><img src="bilder/lesekumpel_logo_v2.png" alt="" id="scene-mascot-img"></div>
+                    <img class="scene-hero" id="scene-hero" alt="" hidden>
                     <button type="button" class="scene-bubble" id="scene-bubble">Hallo!</button>
                 </div>
 
@@ -454,10 +455,10 @@
     })();
     </script>
 
-    <script src="formkit.js?v=20260626c"></script>
-    <script src="konto-state.js?v=20260626c"></script>
-    <script src="konto-fx.js?v=20260626c"></script>
-    <script src="lautlese.js?v=20260626c"></script>
+    <script src="formkit.js?v=20260626d"></script>
+    <script src="konto-state.js?v=20260626d"></script>
+    <script src="konto-fx.js?v=20260626d"></script>
+    <script src="lautlese.js?v=20260626d"></script>
     <script>
     (function () {
         'use strict';
@@ -682,13 +683,21 @@
         var MASCOT_LOW = 'bilder/lesekumpel_maskotchen/lesekumpel_low_demand.png';
         function renderScene() {
             document.getElementById('scene-bubble').innerHTML = 'Hallo <span class="handwrite">' + esc(child.name) + '</span>!';
-            // Maskottchen spiegelt die Energie: voll = sportlich, müde = ruhig, sonst Standard
+            // Energieabhängiges Hero-Bild füllt die Szene: voll = sportlich, müde (Calm) = ruhig.
+            // Mittlere Energie: illustrierte Wiese mit kleinem Standard-Maskottchen.
             var lvl = child.energy.current;
-            var img = document.getElementById('scene-mascot-img');
-            var src = lvl === 'hoch' ? MASCOT_SPORT : (lvl === 'niedrig' ? MASCOT_LOW : MASCOT_DEFAULT);
-            if (img.getAttribute('src') !== src) img.setAttribute('src', src);
-            img.classList.toggle('is-sport', lvl === 'hoch');
-            img.classList.toggle('is-low', lvl === 'niedrig');
+            var heroSrc = lvl === 'hoch' ? MASCOT_SPORT : (lvl === 'niedrig' ? MASCOT_LOW : null);
+            var scene = document.getElementById('kid-scene');
+            var hero = document.getElementById('scene-hero');
+            var mascot = document.getElementById('scene-mascot');
+            if (heroSrc) {
+                if (hero.getAttribute('src') !== heroSrc) hero.setAttribute('src', heroSrc);
+                hero.hidden = false; mascot.hidden = true;
+                scene.classList.add('has-hero');
+            } else {
+                hero.hidden = true; mascot.hidden = false;
+                scene.classList.remove('has-hero');
+            }
         }
         function renderMeter() {
             var lvl = child.energy.current || 'mittel';
@@ -924,12 +933,14 @@
             'Magst du mir gleich eine Geschichte vorlesen? 🦊'
         ];
         var buddyIdx = 0;
-        document.getElementById('scene-mascot-img').addEventListener('click', function (e) {
+        function buddyTip(e) {
             var msg = BUDDY_TIPS[buddyIdx % BUDDY_TIPS.length];
             buddyIdx++;
             toast(msg);
             KontoFX.sparkleBurst(e.currentTarget);
-        });
+        }
+        document.getElementById('scene-mascot-img').addEventListener('click', buddyTip);
+        document.getElementById('scene-hero').addEventListener('click', buddyTip);
 
         // ---- Sterne-Pille: kleine Freude beim Antippen ----
         document.getElementById('star-pill').addEventListener('click', function () {
