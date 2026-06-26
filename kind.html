@@ -9,83 +9,169 @@
     <link rel="icon" href="bilder/lesekumpel_logo_v2.png">
     <link rel="stylesheet" href="fonts/fonts.css">
     <link rel="stylesheet" href="konto.css">
+
+    <!-- ===== A11y-Modal CSS (1:1 aus partials/a11y.html · Single Source) ===== -->
+    <style>
+    .settings-overlay { position: fixed; inset: 0; z-index: 5000; display: flex; align-items: center; justify-content: center; background: rgba(43,49,64,0.45); -webkit-backdrop-filter: blur(3px); backdrop-filter: blur(3px); padding: 20px; animation: settingsFade 0.18s ease-out; }
+    .settings-overlay[hidden] { display: none; }
+    @keyframes settingsFade { from { opacity: 0; } to { opacity: 1; } }
+    .settings-panel { background: var(--bg-card, #ffffff); border-radius: 24px; width: min(440px, 100%); max-height: 85vh; overflow-y: auto; box-shadow: 0 16px 48px rgba(43,49,64,0.25); border: 2px solid var(--mint, #2FB8A6); animation: settingsPop 0.22s cubic-bezier(0.34, 1.56, 0.64, 1); }
+    @keyframes settingsPop { 0% { transform: scale(0.92); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+    .settings-header { display: flex; align-items: center; justify-content: space-between; padding: 18px 20px 12px; }
+    .settings-title { font-family: var(--font-heading, 'Fredoka', sans-serif); color: var(--navy, #2B3140); font-size: 1.3rem; margin: 0; }
+    .settings-close { width: 36px; height: 36px; border-radius: 50%; flex-shrink: 0; background: rgba(47,184,166,0.15); border: none; color: var(--navy, #2B3140); font-size: 1.4rem; line-height: 1; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; transition: background 0.15s ease; }
+    .settings-close:hover { background: rgba(47,184,166,0.3); }
+    .settings-close:focus-visible { outline: 3px solid var(--lila, #7D6AE6); outline-offset: 2px; }
+    .settings-body { display: flex; flex-direction: column; gap: 10px; padding: 0 16px 18px; }
+    .settings-body .toolbar-group-buttons { display: grid; grid-template-columns: repeat(auto-fit, minmax(80px, 1fr)); gap: 8px; }
+    .settings-body .tool-btn { flex-direction: column; gap: 6px; width: 100%; min-width: 0; min-height: 64px; padding: 10px 6px; }
+    .settings-body .tool-btn .btn-label { font-size: 0.8rem; }
+    .settings-body .tool-btn .btn-icon svg, .settings-body .font-size-control .tool-btn svg { width: 22px; height: 22px; }
+    .settings-body .tool-btn svg, .settings-body .btn-icon { pointer-events: none; }
+    .settings-body .font-size-control { grid-column: 1 / -1; display: flex; width: 100%; }
+    .settings-body .font-size-control .tool-btn { flex: 1; flex-direction: row; min-height: 46px; }
+    @media (max-width: 767px) { .settings-panel { width: 100%; max-height: 88vh; } }
+
+    .toolbar-group { border-radius: 20px; padding: 14px 16px 12px; }
+    .toolbar-group.group-view { background: #E7F6F3; }
+    .toolbar-group.group-extra { background: #FFF4D6; }
+    .toolbar-group-label { font-family: var(--font-heading, 'Fredoka', sans-serif); font-size: 0.78rem; font-weight: 600; color: #6b635a; margin-bottom: 10px; padding-left: 2px; }
+    .toolbar-group-buttons { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+    .tool-btn { background: rgba(255,255,255,0.9); border: 1.5px solid rgba(0,0,0,0.05); border-radius: 14px; padding: 10px 16px; min-height: 46px; min-width: 100px; font-family: var(--font-heading, 'Fredoka', sans-serif); font-weight: 500; color: #3B4252; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 7px; transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1); font-size: 0.85em; line-height: 1; box-shadow: 0 1px 3px rgba(0,0,0,0.03); -webkit-tap-highlight-color: transparent; }
+    .tool-btn:hover { background: #fff; border-color: rgba(0,0,0,0.09); color: #333; transform: translateY(-1px); box-shadow: 0 3px 10px rgba(0,0,0,0.06); }
+    .tool-btn:focus-visible { outline: 3px solid var(--lila, #7D6AE6); outline-offset: 2px; }
+    .tool-btn:active { transform: scale(0.95); box-shadow: none; transition-duration: 0.06s; }
+    .group-view .tool-btn.active { background: var(--mint, #2FB8A6); color: var(--navy, #2B3140); border-color: #28a392; box-shadow: inset 0 2px 4px rgba(0,0,0,0.12), 0 1px 4px rgba(47,184,166,0.3); }
+    .group-extra .tool-btn.active { background: var(--primary-yellow, #FFD95A); color: var(--navy, #2B3140); border-color: #ecc63e; box-shadow: inset 0 2px 4px rgba(0,0,0,0.12), 0 1px 4px rgba(255,217,90,0.4); }
+    .tool-btn.active:hover { filter: brightness(1.05); }
+    .tool-btn .btn-icon { font-size: 1.1em; line-height: 1; flex-shrink: 0; }
+    .font-size-control { display: inline-flex; border-radius: 14px; overflow: hidden; border: 1.5px solid rgba(0,0,0,0.05); background: rgba(255,255,255,0.9); box-shadow: 0 1px 3px rgba(0,0,0,0.03); min-height: 46px; }
+    .font-size-control .tool-btn { border: none; border-radius: 0; box-shadow: none; min-width: 48px; min-height: 46px; justify-content: center; font-family: var(--font-heading, 'Fredoka', sans-serif); font-size: 0.95em; font-weight: 700; background: transparent; color: #5a5550; padding: 10px 12px; }
+    .font-size-control .tool-btn:first-child { border-right: 1px solid rgba(0,0,0,0.06); }
+    .font-size-control .tool-btn:hover { background: rgba(0,0,0,0.03); }
+
+    body.dyslexia-mode { --font-body: 'Atkinson Hyperlegible', system-ui, sans-serif; letter-spacing: 0.03em; word-spacing: 0.12em; }
+    body.dyslexia-mode p, body.dyslexia-mode .tile-title, body.dyslexia-mode .bio-desc { line-height: 1.75; }
+    body.high-contrast { --cream: #ffffff; --cream-light: #ffffff; --navy: #000000; --text-muted: #1a1d24; --border: #2B3140; background: #ffffff; }
+    body.high-contrast .story-tile, body.high-contrast .filter-dd-trigger, body.high-contrast .filter-dd-panel,
+    body.high-contrast .search-wrapper input, body.high-contrast .tool-btn, body.high-contrast .font-size-control,
+    body.high-contrast .toolbar-group { border-color: #2B3140 !important; }
+    body.high-contrast a, body.high-contrast .tile-title, body.high-contrast .nav-btn { color: #000000; }
+    body.high-contrast main a, body.high-contrast footer a, body.high-contrast .modern-footer a { text-decoration: underline; }
+    body.high-contrast .deco-star, body.high-contrast .deco-circle, body.high-contrast .deco-sparkle,
+    body.high-contrast .deco-blob, body.high-contrast .bg-blob, body.high-contrast .floating-deco { display: none !important; }
+
+    html:has(body.dark-mode) { background-color: #1C2230; }
+    body.dark-mode {
+        --cream: #1C2230; --cream-light: #232A3A; --bg-body: #1C2230; --bg-card: #2A3242;
+        --navy: #ECEFF4; --text-dark: #ECEFF4; --text-muted: #A9B2C2; --muted: #A9B2C2;
+        --border: #3A4456; --border-soft: #3A4456; --border-card: #3A4456;
+        --mint: #4FD3C0; --accent-teal: #4FD3C0; --coral: #FF8C6B; --accent-coral: #FF8C6B; --salmon: #FF8C6B;
+        --primary-yellow: #FFE082; --yellow: #FFE082; --lila: #A99BF0;
+        background: transparent;
+    }
+    body.dark-mode .settings-panel { background: var(--bg-card); }
+    body.dark-mode .tool-btn,
+    body.dark-mode .font-size-control { background: rgba(42,50,66,0.9); color: var(--text-dark); }
+    body.dark-mode .font-size-control .tool-btn { background: transparent; color: var(--text-dark); }
+    body.dark-mode .tool-btn:hover { background: var(--cream-light); color: var(--text-dark); border-color: var(--border-soft); }
+    body.dark-mode .tool-btn.active { color: #1C2230; }
+    body.dark-mode .toolbar-group-label { color: var(--muted); }
+    body.dark-mode .toolbar-group.group-view { background: #22332F; }
+    body.dark-mode .toolbar-group.group-extra { background: #332E20; }
+    body.dark-mode .main-navbar { background: rgba(28,34,48,0.92); }
+    body.dark-mode .modern-footer { background: var(--cream-light); color: var(--text-muted); }
+    body.dark-mode .skip-link { background: #3A4456; color: #fff; }
+    body.dark-mode .bg-blob { display: none; }
+    body.dark-mode::before, body.dark-mode::after { display: none; }
+    </style>
+
+    <!-- ===== Footer-CSS (1:1 aus partials/footer.html · Single Source) ===== -->
+    <style>
+    .modern-footer { background: var(--navy); color: var(--cream); padding: 56px 24px 28px; margin-top: 80px; position: relative; overflow: hidden; }
+    .modern-footer .footer-grid { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr; gap: 40px; }
+    @media (min-width: 768px) { .modern-footer .footer-grid { grid-template-columns: 1.6fr 1fr 1fr; gap: 56px; } }
+    .modern-footer h2 { font-family: var(--font-heading); font-size: 0.92rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--yellow, var(--primary-yellow, #FFD95A)); margin-bottom: 18px; }
+    .modern-footer .footer-brand-block { max-width: 360px; }
+    .modern-footer .footer-brand-row { display: flex; align-items: center; gap: 12px; font-family: var(--font-heading); font-weight: 700; font-size: 1.4rem; color: var(--cream); margin-bottom: 14px; }
+    .modern-footer .footer-brand-row img { height: 44px; width: auto; }
+    .modern-footer .footer-brand-row .brand-yellow { color: var(--yellow, var(--primary-yellow, #FFD95A)); }
+    .modern-footer .footer-tagline { color: rgba(255,246,239,0.78); font-size: 0.95rem; line-height: 1.6; margin-bottom: 18px; }
+    .modern-footer ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 10px; }
+    .modern-footer ul a { color: rgba(255,246,239,0.85); text-decoration: none; font-weight: 500; font-size: 0.95rem; transition: color 0.2s; }
+    .modern-footer ul a:hover { color: var(--yellow, var(--primary-yellow, #FFD95A)); }
+    .modern-footer .footer-social { display: flex; gap: 12px; margin-top: 20px; }
+    .modern-footer .footer-social a { width: 42px; height: 42px; border-radius: 50%; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,246,239,0.2); display: inline-flex; align-items: center; justify-content: center; color: var(--cream); text-decoration: none; transition: all 0.2s; }
+    .modern-footer .footer-social a:hover { background: var(--yellow, var(--primary-yellow, #FFD95A)); color: var(--navy); transform: translateY(-2px); }
+    .modern-footer .footer-bottom { max-width: 1200px; margin: 40px auto 0; padding-top: 24px; border-top: 1px solid rgba(255,246,239,0.15); display: flex; flex-direction: column; gap: 12px; justify-content: space-between; align-items: center; text-align: center; font-size: 0.85rem; color: rgba(255,246,239,0.65); }
+    @media (min-width: 768px) { .modern-footer .footer-bottom { flex-direction: row; text-align: left; } }
+    .modern-footer .footer-bottom a { color: rgba(255,246,239,0.65); text-decoration: none; margin: 0 6px; }
+    .modern-footer .footer-bottom a:hover { color: var(--yellow, var(--primary-yellow, #FFD95A)); }
+    /* Footer-Abstand zur fixen Bottom-Nav */
+    .kid-body .modern-footer { margin-bottom: 8px; }
+    </style>
 </head>
 <body class="kid-body">
     <a class="skip-link" href="#main-content">Zum Inhalt springen</a>
 
-    <!-- AKKU-CHECKIN-GATE -->
-    <div class="akku-gate" id="akku-gate" role="dialog" aria-modal="true" aria-labelledby="akku-title">
-        <svg aria-hidden="true" class="floating-deco deco-star" style="top:14%;left:14%;width:30px;color:var(--yellow);" viewBox="0 0 32 32"><polygon points="16,2 20,12 30,12 22,19 25,30 16,23 7,30 10,19 2,12 12,12" fill="currentColor" opacity="0.7"/></svg>
-        <svg aria-hidden="true" class="floating-deco deco-sparkle" style="top:22%;right:16%;width:24px;color:var(--salmon);animation-delay:-1.5s;" viewBox="0 0 24 24"><path d="M12 2L13.5 9 21 12L13.5 14.5L12 22L10.5 14.5L3 12L10.5 9Z" fill="currentColor" opacity="0.7"/></svg>
-        <div aria-hidden="true" class="floating-deco deco-circle" style="bottom:18%;left:20%;width:18px;height:18px;background:rgba(125,106,230,0.4);animation-delay:-2.5s;"></div>
-        <div class="mascot" aria-hidden="true"><span class="mascot-glow"></span><img class="mascot-img" src="bilder/lesekumpel_logo_v2.png" alt=""></div>
-        <div class="mascot-bubble" id="akku-bubble">Schön, dass du da bist! 🌟</div>
-        <h1 class="akku-title" id="akku-title">Wie ist dein Akku?
-            <button type="button" class="read-aloud-btn" data-read="Wie ist dein Akku heute? Voll, halb oder leer?" aria-label="Vorlesen">&#128266;</button>
-        </h1>
-        <p class="akku-q">Sag mir, wie du dich heute f&uuml;hlst.</p>
-        <div class="akku-options">
-            <button type="button" class="akku-tile acc-mint pop-in" style="animation-delay:.05s;" data-energy="hoch">
-                <span class="akku-emoji" aria-hidden="true">&#128267;</span>
-                <span>Voll Power</span>
-                <span class="akku-sub">Ich hab viel Energie!</span>
+    <!-- ============================================================
+         KID-SAFE HEADER — bespoke, BEWUSST NICHT Teil von
+         scripts/apply-header.py. Gleiche Brand-Optik (.main-navbar)
+         wie partials/header.html, ABER nur Logo (kein Link) + Sterne +
+         Lesehilfe. Kein Burger, kein Konto/Marketing. Die Eltern-Tür
+         (Rechenaufgabe) bleibt der einzige Ausgang.
+         ============================================================ -->
+    <nav class="main-navbar kid-navbar" aria-label="Lesekumpel">
+        <div class="nav-left"></div>
+        <div class="nav-center">
+            <span class="nav-logo-box" aria-hidden="true"><img src="bilder/lesekumpel_logo_v2.png" class="nav-logo" alt=""></span>
+            <span class="brand-name">Lesekumpel</span>
+        </div>
+        <div class="nav-right">
+            <button type="button" class="kid-star-pill" id="star-pill" aria-label="Deine gesammelten Sterne">
+                <svg class="star-ico" aria-hidden="true" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.5l2.95 5.98 6.6.96-4.78 4.66 1.13 6.57L12 18.6l-5.9 3.07 1.13-6.57L2.45 9.44l6.6-.96z"/></svg>
+                <span id="star-count">0</span>
             </button>
-            <button type="button" class="akku-tile acc-yellow pop-in" style="animation-delay:.15s;" data-energy="mittel">
-                <span class="akku-emoji" aria-hidden="true">&#128578;</span>
-                <span>Halb voll</span>
-                <span class="akku-sub">Geht so.</span>
-            </button>
-            <button type="button" class="akku-tile acc-lila pop-in" style="animation-delay:.25s;" data-energy="niedrig">
-                <span class="akku-emoji" aria-hidden="true">&#128564;</span>
-                <span>Fast leer</span>
-                <span class="akku-sub">Ich bin m&uuml;de.</span>
+            <button type="button" class="nav-icon-btn" id="nav-settings" onclick="openSettings()" aria-label="Lesehilfe &amp; Einstellungen">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="1"/><path d="m9 20 3-6 3 6"/><path d="m6 8 6 2 6-2"/><path d="M12 10v4"/></svg>
             </button>
         </div>
-        <button type="button" class="btn-text akku-later" id="akku-later">Sp&auml;ter &mdash; jetzt nicht</button>
-    </div>
+    </nav>
 
     <main id="main-content">
         <div class="kid-wrap" style="position:relative;">
-            <svg aria-hidden="true" class="floating-deco deco-star" style="top:120px;right:6%;width:24px;color:var(--yellow);" viewBox="0 0 32 32"><polygon points="16,2 20,12 30,12 22,19 25,30 16,23 7,30 10,19 2,12 12,12" fill="currentColor" opacity="0.6"/></svg>
-            <svg aria-hidden="true" class="floating-deco deco-sparkle" style="top:240px;left:2%;width:20px;color:var(--lila);animation-delay:-2s;" viewBox="0 0 24 24"><path d="M12 2L13.5 9 21 12L13.5 14.5L12 22L10.5 14.5L3 12L10.5 9Z" fill="currentColor" opacity="0.6"/></svg>
-            <div class="a11y-bar" style="padding-left:0;padding-right:0;">
-                <button type="button" class="a11y-btn" data-a11y="dyslexia">&#128068; Leichter lesen</button>
-                <button type="button" class="a11y-btn" data-a11y="contrast">&#9680; Mehr Kontrast</button>
-            </div>
 
-            <!-- HEADER -->
-            <header class="kid-header">
-                <div class="kid-mascot" id="kid-mascot" aria-hidden="true">&#129418;</div>
-                <div>
-                    <div class="kid-hello" id="kid-hello">Hallo!</div>
-                    <div class="kid-sub" id="kid-sub"></div>
-                </div>
-                <div class="kid-header-right">
-                    <button type="button" class="kid-star-pill" id="star-pill" aria-label="Deine gesammelten Sterne">
-                        <svg class="star-ico" aria-hidden="true" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.5l2.95 5.98 6.6.96-4.78 4.66 1.13 6.57L12 18.6l-5.9 3.07 1.13-6.57L2.45 9.44l6.6-.96z"/></svg>
-                        <span id="star-count">0</span>
-                    </button>
-                    <button type="button" class="kid-energy-pill" id="energy-pill" aria-label="Akku neu w&auml;hlen">
-                        <span id="energy-pill-emoji">&#128578;</span> <span id="energy-pill-label">Akku</span>
-                    </button>
-                </div>
-            </header>
-
-            <!-- SECTION-NAV -->
-            <nav class="sub-tabs" style="margin-top:18px;" aria-label="Bereiche">
-                <button type="button" class="sub-tab active" data-kidsec="start">&#127968; Start</button>
-                <button type="button" class="sub-tab" data-kidsec="bibliothek">&#128218; Meine B&uuml;cher</button>
-                <button type="button" class="sub-tab" data-kidsec="empfehlungen">&#10024; F&uuml;r dich</button>
-                <button type="button" class="sub-tab" data-kidsec="laute">&#128483; Meine Laute</button>
-            </nav>
-
-            <!-- START -->
+            <!-- START (Dashboard) -->
             <section data-kidsec-panel="start">
-                <h2 class="kid-section-title" id="home-title">Was m&ouml;chtest du tun?
+                <!-- A) MASKOTTCHEN-SZENE -->
+                <div class="kid-scene">
+                    <svg aria-hidden="true" class="scene-sun floating-deco" viewBox="0 0 24 24" fill="currentColor"><circle cx="12" cy="12" r="6"/></svg>
+                    <svg aria-hidden="true" class="floating-deco deco-sparkle" style="top:30px;left:8%;width:18px;color:#fff;opacity:.8;animation-delay:-1.5s;" viewBox="0 0 24 24"><path d="M12 2L13.5 9 21 12L13.5 14.5L12 22L10.5 14.5L3 12L10.5 9Z" fill="currentColor"/></svg>
+                    <span class="scene-hill scene-hill-back" aria-hidden="true"></span>
+                    <span class="scene-hill scene-hill-front" aria-hidden="true"></span>
+                    <div class="scene-mascot"><img src="bilder/lesekumpel_logo_v2.png" alt="" id="scene-mascot-img"></div>
+                    <button type="button" class="scene-bubble" id="scene-bubble">Hallo!</button>
+                </div>
+
+                <!-- B) ENERGIE-METER -->
+                <button type="button" class="energy-meter" id="energy-meter" aria-label="Energie deines Lesekumpels – antippen zum neu wählen">
+                    <span class="energy-meter-emoji" id="meter-emoji">&#128578;</span>
+                    <span class="energy-meter-body">
+                        <span class="energy-meter-label" id="meter-label">Akku</span>
+                        <span class="energy-meter-track"><i id="meter-fill"></i></span>
+                    </span>
+                </button>
+
+                <!-- C) TAGESAUFGABEN -->
+                <h2 class="kid-section-title" id="home-title">Heute
                     <button type="button" class="read-aloud-btn" id="home-read" aria-label="Vorlesen">&#128266;</button>
                 </h2>
-                <div id="home-extra"></div>
-                <div class="kid-tiles reveal-stagger" id="home-tiles"></div>
+                <p class="kid-sub" id="tasks-note" style="margin-bottom:14px;">Nur wenn du magst.</p>
+                <div class="task-list reveal-stagger" id="task-list"></div>
+
+                <!-- D) REGAL (kleine Auswahl) -->
+                <h3 class="card-h3" id="shelf-head" style="margin-top:28px;">Deine B&uuml;cher</h3>
+                <div id="home-shelf"></div>
             </section>
 
             <!-- BIBLIOTHEK -->
@@ -129,10 +215,100 @@
         </div>
     </main>
 
-    <!-- Begleiter-Maskottchen -->
-    <button type="button" class="kid-buddy" id="kid-buddy" aria-label="Kleiner Tipp vom Lesekumpel">
-        <img src="bilder/lesekumpel_logo_v2.png" alt="" aria-hidden="true">
-    </button>
+    <!-- ===== Kanonischer Footer (PUBLIC, 1:1 aus partials/footer.html) ===== -->
+    <footer class="modern-footer">
+      <div class="footer-grid">
+        <div class="footer-brand-block">
+          <div class="footer-brand-row">
+            <img src="Konzept_Rebranding/logo-lesekumpel-512.webp" alt="Lesekumpel Logo">
+            <span>Lese<span class="brand-yellow">kumpel</span></span>
+          </div>
+          <p class="footer-tagline">Die inklusive Lese-App, die jedes Kind lieben lernt. Neurodivers gestaltet.</p>
+          <div class="footer-social">
+            <a href="https://www.instagram.com/lesekumpel.de/" target="_blank" rel="noopener" aria-label="Lesekumpel auf Instagram">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none"/></svg>
+            </a>
+            <a href="https://discord.gg/sAr6KEsg" target="_blank" rel="noopener" aria-label="Lesekumpel Discord Community">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.095 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.095 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg>
+            </a>
+          </div>
+        </div>
+
+        <div>
+          <h2>Entdecken</h2>
+          <ul>
+            <li><a href="demo.html">Demo-Texte</a></li>
+            <li><a href="preise.html">Preise</a></li>
+            <li><a href="neue-geschichte.html">Geschichte erstellen</a></li>
+            <li><a href="ueber-uns.html">&Uuml;ber uns</a></li>
+          </ul>
+        </div>
+
+        <div>
+          <h2>Rechtliches</h2>
+          <ul>
+            <li><a href="impressum.html">Impressum</a></li>
+            <li><a href="datenschutz.html">Datenschutz</a></li>
+            <li><a href="knowledge-base/snacks/index.html">Wissen</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <span>&copy; 2026 Lesekumpel &middot; Inklusive Lese-App f&uuml;r jedes Gehirn</span>
+      </div>
+    </footer>
+
+    <!-- ===== ENERGIE-BOTTOM-SHEET (ersetzt Fullscreen-Akku-Gate) ===== -->
+    <div class="sheet-backdrop" id="energy-backdrop" hidden></div>
+    <div class="energy-sheet" id="energy-sheet" role="dialog" aria-modal="true" aria-labelledby="es-title" hidden>
+        <div class="sheet-handle" aria-hidden="true"></div>
+        <h2 class="es-title" id="es-title">Wie ist dein Akku?
+            <button type="button" class="read-aloud-btn" data-read="Wie ist dein Akku heute? Voll, halb oder leer?" aria-label="Vorlesen">&#128266;</button>
+        </h2>
+        <div class="akku-options">
+            <button type="button" class="akku-tile acc-mint pop-in" style="animation-delay:.05s;" data-energy="hoch">
+                <span class="akku-emoji" aria-hidden="true">&#128267;</span>
+                <span>Voll Power</span>
+                <span class="akku-sub">Viel Energie!</span>
+            </button>
+            <button type="button" class="akku-tile acc-yellow pop-in" style="animation-delay:.12s;" data-energy="mittel">
+                <span class="akku-emoji" aria-hidden="true">&#128578;</span>
+                <span>Halb voll</span>
+                <span class="akku-sub">Geht so.</span>
+            </button>
+            <button type="button" class="akku-tile acc-lila pop-in" style="animation-delay:.19s;" data-energy="niedrig">
+                <span class="akku-emoji" aria-hidden="true">&#128564;</span>
+                <span>Fast leer</span>
+                <span class="akku-sub">Ich bin m&uuml;de.</span>
+            </button>
+        </div>
+        <button type="button" class="btn-text akku-later" id="akku-later">Sp&auml;ter &mdash; jetzt nicht</button>
+    </div>
+
+    <!-- ===== BOTTOM-NAVIGATION ===== -->
+    <nav class="kid-bottomnav" aria-label="Bereiche">
+        <button type="button" class="kbn-item active" data-kidsec="start" aria-current="true">
+            <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 22V12h6v10"/></svg>
+            <span>Start</span>
+        </button>
+        <button type="button" class="kbn-item" data-kidsec="bibliothek">
+            <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 7v14"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/></svg>
+            <span>Meine B&uuml;cher</span>
+        </button>
+        <button type="button" class="kbn-item" data-kidsec="empfehlungen">
+            <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .962 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.962 0z"/></svg>
+            <span>F&uuml;r dich</span>
+        </button>
+        <button type="button" class="kbn-item" data-kidsec="laute">
+            <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4.702a.705.705 0 0 0-1.203-.498L6.413 7.587A1.4 1.4 0 0 1 5.416 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.416a1.4 1.4 0 0 1 .997.413l3.383 3.384A.705.705 0 0 0 11 19.298z"/><path d="M16 9a5 5 0 0 1 0 6"/><path d="M19.364 18.364a9 9 0 0 0 0-12.728"/></svg>
+            <span>Meine Laute</span>
+        </button>
+        <button type="button" class="kbn-item" data-kidsec="selbst" id="kbn-selbst">
+            <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"/><path d="m15 5 4 4"/></svg>
+            <span>Selbst machen</span>
+        </button>
+    </nav>
 
     <!-- ELTERN-TÜR (Modal mit kleiner Rechenaufgabe) -->
     <div class="lk-modal" id="parent-modal" role="dialog" aria-modal="true" aria-labelledby="pm-title">
@@ -149,6 +325,124 @@
         </div>
     </div>
 
+    <!-- ===== A11y-Modal (1:1 aus partials/a11y.html · Single Source) ===== -->
+    <div class="settings-overlay" id="settings-overlay" hidden onclick="if(event.target===this)closeSettings()">
+      <div class="settings-panel" id="settings-panel" role="dialog" aria-modal="true" aria-labelledby="settings-title">
+        <div class="settings-header">
+          <h2 class="settings-title" id="settings-title">Lesehilfe</h2>
+          <button type="button" class="settings-close" onclick="closeSettings()" aria-label="Einstellungen schlie&szlig;en">&times;</button>
+        </div>
+        <div class="settings-body">
+          <div class="toolbar-group group-view">
+            <div class="toolbar-group-label">Schriftgr&ouml;&szlig;e</div>
+            <div class="toolbar-group-buttons">
+              <div class="font-size-control">
+                <button class="tool-btn" onclick="changeFontSize(-2)" aria-label="Schrift kleiner">A&minus;</button>
+                <button class="tool-btn" onclick="changeFontSize(2)" aria-label="Schrift gr&ouml;&szlig;er">A+</button>
+              </div>
+            </div>
+          </div>
+          <div class="toolbar-group group-extra">
+            <div class="toolbar-group-label">Thema</div>
+            <div class="toolbar-group-buttons" role="radiogroup" aria-label="Thema">
+              <button type="button" class="tool-btn" id="btn-theme-light" role="radio" aria-checked="true" onclick="setTheme('light')" aria-label="Helles Thema"><span class="btn-icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg></span> <span class="btn-label">Hell</span></button>
+              <button type="button" class="tool-btn" id="btn-theme-dark" role="radio" aria-checked="false" onclick="setTheme('dark')" aria-label="Dunkles Thema"><span class="btn-icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg></span> <span class="btn-label">Dunkel</span></button>
+              <button type="button" class="tool-btn" id="btn-theme-contrast" role="radio" aria-checked="false" onclick="setTheme('contrast')" aria-label="Hoher Kontrast"><span class="btn-icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 18a6 6 0 0 0 0-12z"/></svg></span> <span class="btn-label">Kontrast</span></button>
+            </div>
+          </div>
+          <div class="toolbar-group group-extra">
+            <div class="toolbar-group-label">Darstellung</div>
+            <div class="toolbar-group-buttons">
+              <button type="button" class="tool-btn" onclick="toggleDyslexia(this)" id="btn-dyslexia" aria-pressed="false" aria-label="Lesefreundliche Schrift"><span class="btn-icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v16"/><path d="M4 7V5a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v2"/><path d="M9 20h6"/></svg></span> <span class="btn-label">Lesefreundlich</span></button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+    // === A11y-Modal-JS (1:1 aus partials/a11y.html · Single Source) ===
+    (function () {
+      'use strict';
+      var K_DYS = 'lesekumpel-lesefreundlich';
+      var K_CON = 'lesekumpel-kontrast';
+      var K_THEME = 'lesekumpel-theme';
+      var K_FS = 'lesekumpel-schriftgroesse';
+      function ls(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
+      function lsSet(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
+
+      var lastTrigger = null;
+      var FOCUSABLE = 'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
+      function focusables(root) {
+        return Array.prototype.filter.call(
+          root.querySelectorAll(FOCUSABLE),
+          function (el) { return el.offsetParent !== null && !el.disabled; }
+        );
+      }
+
+      window.openSettings = function () {
+        var ov = document.getElementById('settings-overlay');
+        if (!ov) return;
+        lastTrigger = document.activeElement;
+        ov.hidden = false;
+        var f = focusables(ov);
+        if (f.length) f[0].focus();
+      };
+      window.closeSettings = function () {
+        var ov = document.getElementById('settings-overlay');
+        if (ov) ov.hidden = true;
+        if (lastTrigger && typeof lastTrigger.focus === 'function') lastTrigger.focus();
+        lastTrigger = null;
+      };
+      window.changeFontSize = function (d) {
+        var root = document.documentElement;
+        var s = parseFloat(ls(K_FS)) || parseFloat(window.getComputedStyle(root).fontSize) || 16;
+        var n = Math.max(12, Math.min(40, s + d));
+        root.style.fontSize = n + 'px';
+        lsSet(K_FS, String(n));
+      };
+      function setPressed(b, active) { if (b) b.setAttribute('aria-pressed', active ? 'true' : 'false'); }
+      window.toggleDyslexia = function (btn) {
+        var active = document.body.classList.toggle('dyslexia-mode');
+        var b = btn || document.getElementById('btn-dyslexia');
+        if (b) { b.classList.toggle('active', active); setPressed(b, active); }
+        lsSet(K_DYS, active ? 'true' : 'false');
+      };
+      window.setTheme = function (name) {
+        var b = document.body;
+        b.classList.toggle('dark-mode', name === 'dark');
+        b.classList.toggle('high-contrast', name === 'contrast');
+        ['light', 'dark', 'contrast'].forEach(function (t) {
+          var el = document.getElementById('btn-theme-' + t);
+          if (el) { el.classList.toggle('active', t === name); el.setAttribute('aria-checked', t === name ? 'true' : 'false'); }
+        });
+        lsSet(K_THEME, name);
+      };
+
+      if (ls(K_DYS) === 'true') {
+        document.body.classList.add('dyslexia-mode');
+        var bd = document.getElementById('btn-dyslexia'); if (bd) { bd.classList.add('active'); setPressed(bd, true); }
+      }
+      var theme = ls(K_THEME);
+      if (!theme && ls(K_CON) === 'true') theme = 'contrast';
+      window.setTheme(theme || 'light');
+      var fs = parseFloat(ls(K_FS));
+      if (fs >= 12 && fs <= 40) document.documentElement.style.fontSize = fs + 'px';
+
+      document.addEventListener('keydown', function (e) {
+        var ov = document.getElementById('settings-overlay');
+        if (!ov || ov.hidden) return;
+        if (e.key === 'Escape') { window.closeSettings(); return; }
+        if (e.key !== 'Tab') return;
+        var f = focusables(ov);
+        if (!f.length) return;
+        var first = f[0], last = f[f.length - 1];
+        if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+        else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+      });
+    })();
+    </script>
+
     <script src="formkit.js"></script>
     <script src="konto-state.js"></script>
     <script src="konto-fx.js"></script>
@@ -156,14 +450,6 @@
     <script>
     (function () {
         'use strict';
-
-        // ---- A11y ----
-        Konto.applyA11y();
-        document.querySelectorAll('[data-a11y]').forEach(function (btn) {
-            var key = btn.getAttribute('data-a11y');
-            if (Konto.getA11y()[key]) btn.classList.add('on');
-            btn.addEventListener('click', function () { btn.classList.toggle('on', Konto.toggleA11y(key)); });
-        });
 
         // ---- Vorlese-Knöpfe (statische) ----
         document.querySelectorAll('[data-read]').forEach(function (b) {
@@ -175,27 +461,34 @@
         var child = Konto.getActiveChild();
 
         var ENERGY = {
-            hoch: { emoji: '🔋', label: 'Voll Power', hello: 'Los geht\'s' },
-            mittel: { emoji: '🙂', label: 'Gut drauf', hello: 'Schön, dass du da bist' },
-            niedrig: { emoji: '😴', label: 'Müde-Modus', hello: 'Ganz entspannt' }
+            hoch: { emoji: '🔋', label: 'Voll Power', hello: 'Los geht\'s', pct: 100 },
+            mittel: { emoji: '🙂', label: 'Gut drauf', hello: 'Schön, dass du da bist', pct: 60 },
+            niedrig: { emoji: '😴', label: 'Müde-Modus', hello: 'Ganz entspannt', pct: 25 }
         };
+        function energyPercent(c) { return (ENERGY[c.energy.current] || ENERGY.mittel).pct; }
 
         function toast(msg) { KontoFX.toast(msg, { speak: true }); }
+        function esc(s) { return FormKit.escapeHtml(String(s == null ? '' : s)); }
+        function computeStars(c) {
+            return (c.storiesRead || 0) * 5 + (c.quizzesSolved || 0) * 3 + (c.storiesRated || 0) * 2;
+        }
 
-        // ================= AKKU-GATE =================
-        var gate = document.getElementById('akku-gate');
-        var gateRelease = null;
+        // ================= ENERGIE-BOTTOM-SHEET =================
+        var sheet = document.getElementById('energy-sheet');
+        var backdrop = document.getElementById('energy-backdrop');
+        var gateRelease = null, gateHideTimer = null;
         function showGate() {
-            gate.classList.add('show');
-            KontoFX.mascotBubble(document.getElementById('akku-bubble'), null, { delay: 500 });
-            gateRelease = KontoFX.trapFocus(gate, { initial: '.akku-tile', onEscape: dismissGateSoft });
+            if (gateHideTimer) { clearTimeout(gateHideTimer); gateHideTimer = null; }
+            sheet.hidden = false; backdrop.hidden = false;
+            requestAnimationFrame(function () { backdrop.classList.add('show'); sheet.classList.add('show'); });
+            gateRelease = KontoFX.trapFocus(sheet, { initial: '.akku-tile', onEscape: dismissGateSoft });
         }
         function hideGate() {
-            gate.classList.remove('show');
-            document.getElementById('akku-bubble').classList.remove('show');
+            sheet.classList.remove('show'); backdrop.classList.remove('show');
             if (gateRelease) { gateRelease(); gateRelease = null; }
+            gateHideTimer = setTimeout(function () { sheet.hidden = true; backdrop.hidden = true; }, 360);
         }
-        // „Später" / Escape: kein Druck — heute als erledigt markieren, Energie unverändert
+        // „Später" / Escape / Backdrop: kein Druck — heute als erledigt markieren, Energie unverändert
         function dismissGateSoft() {
             child = Konto.updateChild(child.id, {
                 energy: { current: child.energy.current || 'mittel', checkedInAt: Konto.todayStr() }
@@ -217,7 +510,6 @@
                 energyHistory: hist
             });
             if (fromGate) {
-                // 🎉 Feier am Übergang (Origin-Position vor dem Schließen erfassen)
                 KontoFX.confetti(originEl || null, { colors: ENERGY_CONFETTI[level] || null, count: level === 'niedrig' ? 60 : 110 });
                 KontoFX.sparkleBurst(originEl);
             }
@@ -234,95 +526,159 @@
             t.addEventListener('click', function () { setEnergy(t.getAttribute('data-energy'), true, t); });
         });
         document.getElementById('akku-later').addEventListener('click', dismissGateSoft);
-        document.getElementById('energy-pill').addEventListener('click', showGate);
+        backdrop.addEventListener('click', dismissGateSoft);
+        document.getElementById('energy-meter').addEventListener('click', showGate);
+        document.getElementById('scene-bubble').addEventListener('click', showGate);
 
-        // ================= RENDER =================
-        function esc(s) { return FormKit.escapeHtml(String(s == null ? '' : s)); }
-
-        function computeStars(c) {
-            return (c.storiesRead || 0) * 5 + (c.quizzesSolved || 0) * 3 + (c.storiesRated || 0) * 2;
+        // ================= TAGESAUFGABEN =================
+        // Story-Index lazy laden; Callbacks werden bis zum Fetch-Ende gepuffert
+        // (0=idle, 1=lädt, 2=fertig) — sonst bekäme ein zweiter Aufrufer fälschlich null.
+        var _storyIndex = null, _storyIndexState = 0, _storyIndexCbs = [];
+        function loadStoryIndex(cb) {
+            if (_storyIndexState === 2) { cb(_storyIndex); return; }
+            _storyIndexCbs.push(cb);
+            if (_storyIndexState === 1) return;
+            _storyIndexState = 1;
+            function done(d) {
+                _storyIndex = d; _storyIndexState = 2;
+                var cbs = _storyIndexCbs; _storyIndexCbs = [];
+                cbs.forEach(function (f) { f(d); });
+            }
+            try {
+                fetch('stories-index.json').then(function (r) { return r.json(); })
+                    .then(done).catch(function () { done(null); });
+            } catch (e) { done(null); }
         }
 
-        function renderHeader() {
-            var em = ENERGY[child.energy.current] || ENERGY.mittel;
-            document.getElementById('kid-mascot').textContent = (child.avatar && child.avatar.base) || '🦊';
-            document.getElementById('kid-mascot').style.background = (child.avatar && child.avatar.bgColor) || 'var(--accent-coral-light)';
-            document.getElementById('kid-hello').innerHTML = 'Hallo <span class="handwrite">' + esc(child.name) + '</span>!';
-            document.getElementById('kid-sub').textContent = em.hello;
-            document.getElementById('energy-pill-emoji').textContent = em.emoji;
-            document.getElementById('energy-pill-label').textContent = em.label;
-            document.getElementById('star-count').textContent = computeStars(child);
+        function nextRecommended(inv, fortschritt) {
+            for (var i = 0; i < inv.length; i++) {
+                var s = (fortschritt || {})[inv[i].id];
+                if (!s || !s.mastered) return inv[i].id;
+            }
+            return null;
         }
 
-        function homeTile(opts) {
-            var b = document.createElement(opts.href ? 'a' : 'button');
-            b.className = 'kid-tile ' + (opts.acc || 'acc-mint') + (opts.accent ? ' accent' : '');
-            if (opts.href) { b.href = opts.href; } else { b.type = 'button'; }
-            b.innerHTML = '<span class="kid-tile-emoji" aria-hidden="true">' + opts.emoji + '</span>' +
-                '<span class="kid-tile-label">' + esc(opts.label) + '</span>' +
-                (opts.sub ? '<span class="kid-tile-sub">' + esc(opts.sub) + '</span>' : '');
-            if (opts.onClick) b.addEventListener('click', opts.onClick);
-            return b;
+        // Tagesaufgaben generieren (tagesgebunden); Completion bleibt über den Tag erhalten.
+        function ensureDailyTasks(c) {
+            if (c.dailyTasks && c.dailyTasks.date === Konto.todayStr()) return;
+            var recs = c.recommendations || [];
+            var selbst = recs.filter(function (r) { return r.kind === 'selbst'; })[0];
+            var vor = recs.filter(function (r) { return r.kind === 'vorlesen'; })[0] || (c.library || [])[0];
+            var tasks = [];
+            tasks.push({
+                id: 'read', type: 'read', stars: 5, done: false, doneAt: null, storyPath: null, lautId: null, stat: 'storiesRead',
+                title: selbst ? ('Lies: ' + selbst.title) : 'Lies eine Geschichte', emoji: (selbst && selbst.icon) || '📖'
+            });
+            if (vor) {
+                tasks.push({
+                    id: 'listen', type: 'listen', stars: 3, done: false, doneAt: null, storyPath: null, lautId: null, stat: null,
+                    title: 'Hör dir an: ' + vor.title, emoji: '🗣️'
+                });
+            }
+            var laute = c.laute || {};
+            var fokus = laute.fokus || (window.Lautlese ? nextRecommended(Lautlese.LAUT_INVENTORY, laute.fortschritt) : null);
+            if (fokus && window.Lautlese) {
+                var g = Lautlese.byId(fokus);
+                tasks.push({
+                    id: 'laut', type: 'laut', stars: 4, done: false, doneAt: null, storyPath: null, lautId: fokus, stat: 'quizzesSolved',
+                    title: 'Übe den ' + (g ? g.label : fokus) + '-Laut', emoji: '👄'
+                });
+            }
+            c.dailyTasks = { date: Konto.todayStr(), tasks: tasks };
+            child = Konto.updateChild(c.id, { dailyTasks: c.dailyTasks });
         }
 
-        function firstVorlesen() {
-            return (child.recommendations || []).filter(function (r) { return r.kind === 'vorlesen'; })[0]
-                || (child.recommendations || [])[0];
+        // Echte Story-Pfade nachladen (macht Lesen/Zuhören anklickbar). Offline-Fallback: Section.
+        function resolveStoryTasks() {
+            var tasks = (child.dailyTasks && child.dailyTasks.tasks) || [];
+            var need = tasks.filter(function (t) { return (t.type === 'read' || t.type === 'listen') && !t.storyPath; });
+            if (!need.length) return;
+            loadStoryIndex(function (idx) {
+                if (!idx || !idx.stories || !idx.stories.length) return;
+                var niveau = (child.level && child.level.phase) || 3;
+                var pool = idx.stories.slice().sort(function (a, b) {
+                    return Math.abs((a.niveau || 3) - niveau) - Math.abs((b.niveau || 3) - niveau);
+                }).slice(0, 14);
+                if (!pool.length) return;
+                var seed = parseInt(Konto.todayStr().replace(/-/g, ''), 10) || 0;
+                var k = seed % pool.length, changed = false;
+                need.forEach(function (t) {
+                    var st = pool[k % pool.length]; k++;
+                    if (st) { t.storyPath = st.path; t.title = (t.type === 'listen' ? 'Hör dir an: ' : 'Lies: ') + st.title; changed = true; }
+                });
+                if (changed) { child = Konto.updateChild(child.id, { dailyTasks: child.dailyTasks }); renderTasks(); }
+            });
         }
 
-        function renderHome() {
+        function openTask(t) {
+            if (!t) return;
+            if (t.type === 'laut') { if (t.lautId && window.Lautlese) Lautlese.setFocus(t.lautId); showSection('laute'); return; }
+            if (t.storyPath) { window.location.href = t.storyPath; return; }
+            showSection('empfehlungen');
+        }
+
+        function completeTask(t, originEl) {
+            if (!t || t.done) return;
+            t.done = true; t.doneAt = new Date().toISOString();
+            var patch = { dailyTasks: child.dailyTasks };
+            if (t.stat) patch[t.stat] = (child[t.stat] || 0) + 1;
+            child = Konto.updateChild(child.id, patch);
             var ruhe = child.energy.current === 'niedrig';
-            var extra = document.getElementById('home-extra');
-            var grid = document.getElementById('home-tiles');
-            grid.innerHTML = '';
-            extra.innerHTML = '';
-            document.getElementById('home-title').childNodes[0].nodeValue =
-                ruhe ? 'Mach es dir gemütlich ' : 'Was möchtest du tun? ';
+            if (!ruhe) KontoFX.confetti(originEl, { count: 70 });
+            KontoFX.sparkleBurst(originEl);
+            toast(ruhe ? 'Schön, dass du das gemacht hast. 💛' : 'Stark! +' + t.stars + ' Sterne ⭐');
+            renderHeader(); renderTasks();
+        }
 
+        var TASK_ACC = ['acc-mint', 'acc-salmon', 'acc-lila', 'acc-yellow'];
+        function renderTasks() {
+            var ruhe = child.energy.current === 'niedrig';
+            document.getElementById('tasks-note').textContent = ruhe ? 'Heute ganz ruhig — nur wenn du magst. 🌙' : 'Nur wenn du magst.';
+            var list = document.getElementById('task-list');
+            var tasks = ((child.dailyTasks && child.dailyTasks.tasks) || []).slice();
+            // Ruhe-Modus: nur sanfte Aufgaben (Zuhören)
             if (ruhe) {
-                // RUHE-MODUS: kein Druck, Vorlesen + Pause
-                extra.innerHTML = '<div class="info-card" style="margin-bottom:18px;">Dein Akku ist fast leer &mdash; das ist v&ouml;llig okay. ' +
-                    'Heute musst du gar nichts. Lass dir etwas vorlesen oder mach einfach Pause. &#127769;</div>';
-                var v = firstVorlesen();
-                grid.appendChild(homeTile({
-                    emoji: '🗣️', label: 'Vorlesen lassen', sub: v ? v.title : 'ganz entspannt', accent: true, acc: 'acc-salmon',
-                    onClick: function () { toast('Ich lese dir vor: ' + (v ? v.title : 'eine Geschichte') + ' 💛'); }
-                }));
-                grid.appendChild(pauseTile());
+                var soft = tasks.filter(function (t) { return t.type === 'listen'; });
+                tasks = soft.length ? soft : tasks.slice(0, 1);
+            }
+            if (!tasks.length) {
+                list.innerHTML = '<div class="info-card">Heute keine Aufgaben — stöber einfach bei <strong>F&uuml;r dich</strong>! &#10024;</div>';
                 return;
             }
-
-            // MITTEL / HOCH
-            grid.appendChild(homeTile({ emoji: '📚', label: 'Meine Bücher', sub: 'weiterlesen', acc: 'acc-mint', onClick: function () { showSection('bibliothek'); } }));
-            grid.appendChild(homeTile({ emoji: '✨', label: 'Für dich', sub: 'neue Geschichten', acc: 'acc-salmon', onClick: function () { showSection('empfehlungen'); } }));
-            grid.appendChild(homeTile({ emoji: '🗣️', label: 'Meine Laute', sub: 'Laute üben', acc: 'acc-lila', onClick: function () { showSection('laute'); } }));
-            if (child.rights === 'erstellen') {
-                grid.appendChild(homeTile({ emoji: '✍️', label: 'Selbst machen', sub: 'eigene Geschichte', acc: 'acc-yellow', href: 'neue-geschichte.html' }));
-            }
-            grid.appendChild(pauseTile());
-
-            if (child.energy.current === 'hoch') {
-                extra.innerHTML = '<div class="info-card" style="margin-bottom:18px;">&#11088; <strong>Lust auf eine Mini-Mission?</strong> ' +
-                    'Lies heute eine Geschichte zu Ende &mdash; nur wenn du magst! Kein Muss.</div>';
-            }
+            list.innerHTML = tasks.map(function (t, i) {
+                var acc = TASK_ACC[i % TASK_ACC.length];
+                return '<div class="task-card ' + acc + (t.done ? ' is-done' : '') + '" data-task-id="' + esc(t.id) + '">' +
+                    '<span class="task-emoji" aria-hidden="true">' + t.emoji + '</span>' +
+                    '<span class="task-body"><span class="task-title">' + esc(t.title) + '</span>' +
+                    '<span class="task-reward">' + t.stars + ' &#11088;</span></span>' +
+                    '<button type="button" class="task-check" aria-label="' + (t.done ? 'Erledigt' : 'Als erledigt abhaken') + '">&#10003;</button>' +
+                    '</div>';
+            }).join('');
+            list.querySelectorAll('.task-card').forEach(function (el) {
+                var id = el.getAttribute('data-task-id');
+                var t = tasks.filter(function (x) { return x.id === id; })[0];
+                el.addEventListener('click', function () { openTask(t); });
+                el.querySelector('.task-check').addEventListener('click', function (e) {
+                    e.stopPropagation(); completeTask(t, el);
+                });
+            });
         }
 
-        function pauseTile() {
-            return homeTile({
-                emoji: '🌙', label: 'Pause machen', sub: 'ist immer okay', acc: 'acc-lila',
-                onClick: function () {
-                    var grid = document.getElementById('home-tiles');
-                    var extra = document.getElementById('home-extra');
-                    extra.innerHTML = '';
-                    grid.innerHTML = '<div class="dashboard-card" style="grid-column:1/-1;text-align:center;">' +
-                        '<div style="font-size:3rem;">🌙</div>' +
-                        '<h3 class="card-h3" style="margin-top:8px;">Auch Pause machen ist super!</h3>' +
-                        '<p class="step-hint">Du hast heute genug getan. Bis bald, ich freu mich auf dich! 💛</p>' +
-                        '<button type="button" class="btn-secondary" id="back-home" style="margin-top:8px;">Zur&uuml;ck</button></div>';
-                    FormKit.speak('Auch Pause machen ist super! Bis bald.');
-                    document.getElementById('back-home').addEventListener('click', renderHome);
-                }
-            });
+        // ================= SZENE / METER / HEADER =================
+        function renderScene() {
+            document.getElementById('scene-bubble').innerHTML = 'Hallo <span class="handwrite">' + esc(child.name) + '</span>!';
+        }
+        function renderMeter() {
+            var lvl = child.energy.current || 'mittel';
+            var em = ENERGY[lvl] || ENERGY.mittel;
+            var meter = document.getElementById('energy-meter');
+            meter.className = 'energy-meter lvl-' + lvl;
+            document.getElementById('meter-emoji').textContent = em.emoji;
+            document.getElementById('meter-label').textContent = 'Lesekumpel: ' + em.label;
+            document.getElementById('meter-fill').style.width = energyPercent(child) + '%';
+        }
+        function renderHeader() {
+            document.getElementById('star-count').textContent = computeStars(child);
         }
 
         // ---- Buch-Cover (Verlaufs-Karte mit Emoji als Illustration) ----
@@ -331,14 +687,11 @@
             for (var i = 0; i < s.length; i++) { h = (h * 31 + s.charCodeAt(i)) >>> 0; }
             return 'cover-c' + (h % 6);
         }
-        // opts: title, icon, badge {cls,label}, byline, href
         function bookCoverHtml(opts) {
             var tag = opts.href ? 'a' : 'button';
             var attrs = opts.href ? ' href="' + esc(opts.href) + '"' : ' type="button"';
-            var badge = opts.badge
-                ? '<span class="book-badge ' + opts.badge.cls + '">' + opts.badge.label + '</span>' : '';
-            var byline = opts.byline
-                ? '<span class="book-byline">' + esc(opts.byline) + '</span>' : '';
+            var badge = opts.badge ? '<span class="book-badge ' + opts.badge.cls + '">' + opts.badge.label + '</span>' : '';
+            var byline = opts.byline ? '<span class="book-byline">' + esc(opts.byline) + '</span>' : '';
             return '<' + tag + attrs + ' class="book-cover ' + coverClass(opts.title) + '">' +
                 badge +
                 '<span class="book-art" aria-hidden="true">' + (opts.icon || '📖') + '</span>' +
@@ -355,6 +708,25 @@
             return '<div class="shelf"><div class="shelf-grid">' + inner + '</div>' + SHELF_PLANT + '</div>';
         }
 
+        function libBadge(b) {
+            return b.status === 'neu' ? { cls: 'badge-neu', label: '★ Neu' } : { cls: 'badge-gelesen', label: '✓ Gelesen' };
+        }
+
+        function renderHomeShelf() {
+            var box = document.getElementById('home-shelf');
+            var books = (child.library || []).slice(0, 4);
+            if (!books.length) {
+                box.innerHTML = '<div class="info-card">Hier w&auml;chst deine B&uuml;cher-Sammlung. Schau mal bei <strong>F&uuml;r dich</strong> vorbei! &#10024;</div>';
+                return;
+            }
+            box.innerHTML = shelfWrap(books.map(function (b) {
+                return bookCoverHtml({ title: b.title, icon: b.icon || '📖', badge: libBadge(b) });
+            }).join(''));
+            box.querySelectorAll('.book-cover').forEach(function (el, i) {
+                el.addEventListener('click', function () { toast('Viel Spaß mit: ' + books[i].title + ' 📖'); });
+            });
+        }
+
         function renderLibrary() {
             var list = document.getElementById('library-list');
             var books = child.library || [];
@@ -362,13 +734,9 @@
                 list.innerHTML = '<div class="info-card">Hier sammeln sich deine B&uuml;cher, sobald du losliest. Schau mal bei <strong>F&uuml;r dich</strong> vorbei! &#10024;</div>';
                 return;
             }
-            var covers = books.map(function (b) {
-                var badge = b.status === 'neu'
-                    ? { cls: 'badge-neu', label: '★ Neu' }
-                    : { cls: 'badge-gelesen', label: '✓ Gelesen' };
-                return bookCoverHtml({ title: b.title, icon: b.icon || '📖', badge: badge });
-            }).join('');
-            list.innerHTML = shelfWrap(covers);
+            list.innerHTML = shelfWrap(books.map(function (b) {
+                return bookCoverHtml({ title: b.title, icon: b.icon || '📖', badge: libBadge(b) });
+            }).join(''));
             list.querySelectorAll('.book-cover').forEach(function (el, i) {
                 el.addEventListener('click', function () { toast('Viel Spaß mit: ' + books[i].title + ' 📖'); });
             });
@@ -377,9 +745,7 @@
         function renderRecs() {
             var ruhe = child.energy.current === 'niedrig';
             var recs = (child.recommendations || []).slice();
-            // Ruhe-Modus: nur Vorlesen-Geschichten
             if (ruhe) recs = recs.filter(function (r) { return r.kind === 'vorlesen'; });
-            // nach Phase (zum Niveau passend) sortieren
             var phase = child.level && child.level.phase || 2;
             recs.sort(function (a, b) { return Math.abs((a.phase || 2) - phase) - Math.abs((b.phase || 2) - phase); });
 
@@ -392,13 +758,12 @@
                 list.innerHTML = '<div class="info-card">Gerade keine Vorschl&auml;ge &mdash; aber morgen wieder! &#128522;</div>';
                 return;
             }
-            var covers = recs.map(function (r) {
+            list.innerHTML = shelfWrap(recs.map(function (r) {
                 var badge = r.kind === 'vorlesen'
                     ? { cls: 'badge-vorlesen', label: '🗣️ Vorlesen' }
                     : { cls: 'badge-selbst', label: '📖 Selbst' };
                 return bookCoverHtml({ title: r.title, icon: r.icon || '📖', badge: badge, byline: r.reason || '' });
-            }).join('');
-            list.innerHTML = shelfWrap(covers);
+            }).join(''));
             list.querySelectorAll('.book-cover').forEach(function (el, i) {
                 el.addEventListener('click', function () {
                     var r = recs[i];
@@ -408,25 +773,6 @@
         }
 
         // ================= MEINE LAUTE (Lernpfad) =================
-        var _storyIndex = null, _storyIndexTried = false;
-        function loadStoryIndex(cb) {
-            if (_storyIndex || _storyIndexTried) { cb(_storyIndex); return; }
-            _storyIndexTried = true;
-            try {
-                fetch('stories-index.json').then(function (r) { return r.json(); })
-                    .then(function (d) { _storyIndex = d; cb(d); })
-                    .catch(function () { cb(null); });
-            } catch (e) { cb(null); }
-        }
-
-        function nextRecommended(inv, fortschritt) {
-            for (var i = 0; i < inv.length; i++) {
-                var s = fortschritt[inv[i].id];
-                if (!s || !s.mastered) return inv[i].id;
-            }
-            return null;
-        }
-
         function renderLaute() {
             var grid = document.getElementById('laute-grid');
             if (!grid || !window.Lautlese) return;
@@ -484,7 +830,6 @@
                 var hits = idx.stories.filter(function (st) {
                     return st.lautProfil && (st.lautProfil[lautId] || 0) >= min;
                 });
-                // nach Niveau-Nähe sortieren, dann nach Laut-Häufigkeit
                 hits.sort(function (a, b) {
                     var da = a.niveau ? Math.abs(a.niveau - phase) : 9;
                     var db = b.niveau ? Math.abs(b.niveau - phase) : 9;
@@ -509,25 +854,55 @@
             });
         }
 
-        function renderAll() { renderHeader(); renderHome(); renderLibrary(); renderRecs(); renderLaute(); }
+        function renderAll() {
+            renderHeader(); renderScene(); renderMeter(); renderTasks(); renderHomeShelf();
+            renderLibrary(); renderRecs(); renderLaute();
+        }
 
-        // ---- Section-Nav ----
+        // ---- Bottom-Nav / Section-Nav ----
         function showSection(name) {
+            if (name === 'selbst') { window.location.href = 'neue-geschichte.html'; return; }
             document.querySelectorAll('[data-kidsec-panel]').forEach(function (p) {
                 p.hidden = p.getAttribute('data-kidsec-panel') !== name;
             });
-            document.querySelectorAll('.sub-tab[data-kidsec]').forEach(function (t) {
+            document.querySelectorAll('.kbn-item[data-kidsec]').forEach(function (t) {
                 var on = t.getAttribute('data-kidsec') === name;
                 t.classList.toggle('active', on);
                 if (on) t.setAttribute('aria-current', 'true'); else t.removeAttribute('aria-current');
             });
             window.scrollTo({ top: 0, behavior: FormKit.reducedMotion() ? 'auto' : 'smooth' });
         }
-        document.querySelectorAll('.sub-tab[data-kidsec]').forEach(function (t) {
+        document.querySelectorAll('.kbn-item[data-kidsec]').forEach(function (t) {
             t.addEventListener('click', function () { showSection(t.getAttribute('data-kidsec')); });
         });
+        // „Selbst machen" nur für Kinder mit Erstellen-Recht
+        if (child.rights !== 'erstellen') {
+            var ks = document.getElementById('kbn-selbst');
+            if (ks) ks.remove();
+        }
         FormKit.attachReadAloud(document.getElementById('home-read'), function () {
-            return document.getElementById('home-title').childNodes[0].nodeValue;
+            return 'Heute. Deine Aufgaben — nur wenn du magst.';
+        });
+
+        // ---- Maskottchen in der Szene: warme Ermutigung ----
+        var BUDDY_TIPS = [
+            'Lies in deinem Tempo — ich bin bei dir. 💛',
+            'Jede Seite macht dich stärker! 📖',
+            'Du machst das toll. Such dir ein Buch aus! 🌟',
+            'Pause ist auch okay. Hör auf dein Bauchgefühl. 🌙',
+            'Magst du mir gleich eine Geschichte vorlesen? 🦊'
+        ];
+        var buddyIdx = 0;
+        document.getElementById('scene-mascot-img').addEventListener('click', function (e) {
+            var msg = BUDDY_TIPS[buddyIdx % BUDDY_TIPS.length];
+            buddyIdx++;
+            toast(msg);
+            KontoFX.sparkleBurst(e.currentTarget);
+        });
+
+        // ---- Sterne-Pille: kleine Freude beim Antippen ----
+        document.getElementById('star-pill').addEventListener('click', function () {
+            toast('Du hast schon ' + computeStars(child) + ' Sterne gesammelt! ⭐');
         });
 
         // ---- weiche Eltern-Tür (fokus-gefangenes Modal) ----
@@ -561,29 +936,10 @@
             if (e.key === 'Enter') { e.preventDefault(); submitParentGate(); }
         });
 
-        // ---- Sterne-Pille: kleine Freude beim Antippen ----
-        document.getElementById('star-pill').addEventListener('click', function () {
-            toast('Du hast schon ' + computeStars(child) + ' Sterne gesammelt! ⭐');
-        });
-
-        // ---- Begleiter-Maskottchen: warme Ermutigung ----
-        var BUDDY_TIPS = [
-            'Lies in deinem Tempo — ich bin bei dir. 💛',
-            'Jede Seite macht dich stärker! 📖',
-            'Du machst das toll. Such dir ein Buch aus! 🌟',
-            'Pause ist auch okay. Hör auf dein Bauchgefühl. 🌙',
-            'Magst du mir gleich eine Geschichte vorlesen? 🦊'
-        ];
-        var buddyIdx = 0;
-        document.getElementById('kid-buddy').addEventListener('click', function () {
-            var msg = BUDDY_TIPS[buddyIdx % BUDDY_TIPS.length];
-            buddyIdx++;
-            toast(msg);
-            KontoFX.sparkleBurst(document.getElementById('kid-buddy'));
-        });
-
         // ================= INIT =================
+        ensureDailyTasks(child);
         renderAll();
+        resolveStoryTasks();
         if (child.energy.checkedInAt !== Konto.todayStr()) showGate();
     })();
     </script>
