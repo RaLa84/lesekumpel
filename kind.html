@@ -60,9 +60,15 @@
                     <div class="kid-hello" id="kid-hello">Hallo!</div>
                     <div class="kid-sub" id="kid-sub"></div>
                 </div>
-                <button type="button" class="kid-energy-pill" id="energy-pill" aria-label="Akku neu w&auml;hlen">
-                    <span id="energy-pill-emoji">&#128578;</span> <span id="energy-pill-label">Akku</span>
-                </button>
+                <div class="kid-header-right">
+                    <button type="button" class="kid-star-pill" id="star-pill" aria-label="Deine gesammelten Sterne">
+                        <svg class="star-ico" aria-hidden="true" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.5l2.95 5.98 6.6.96-4.78 4.66 1.13 6.57L12 18.6l-5.9 3.07 1.13-6.57L2.45 9.44l6.6-.96z"/></svg>
+                        <span id="star-count">0</span>
+                    </button>
+                    <button type="button" class="kid-energy-pill" id="energy-pill" aria-label="Akku neu w&auml;hlen">
+                        <span id="energy-pill-emoji">&#128578;</span> <span id="energy-pill-label">Akku</span>
+                    </button>
+                </div>
             </header>
 
             <!-- SECTION-NAV -->
@@ -109,6 +115,12 @@
                 <div id="laute-vorschlag" style="margin-top:24px;"></div>
             </section>
 
+            <!-- Ermutigungs-Banner -->
+            <div class="shelf-banner">
+                <svg aria-hidden="true" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.5l2.95 5.98 6.6.96-4.78 4.66 1.13 6.57L12 18.6l-5.9 3.07 1.13-6.57L2.45 9.44l6.6-.96z"/></svg>
+                Jede Geschichte ist ein Abenteuer. Du bist dran!
+            </div>
+
             <!-- weiche Eltern-Tür -->
             <div style="text-align:center;margin-top:40px;display:flex;gap:18px;justify-content:center;flex-wrap:wrap;">
                 <a href="profilauswahl.html" class="btn-text" style="opacity:0.7;">&#128100; Profil wechseln</a>
@@ -116,6 +128,11 @@
             </div>
         </div>
     </main>
+
+    <!-- Begleiter-Maskottchen -->
+    <button type="button" class="kid-buddy" id="kid-buddy" aria-label="Kleiner Tipp vom Lesekumpel">
+        <img src="bilder/lesekumpel_logo_v2.png" alt="" aria-hidden="true">
+    </button>
 
     <!-- ELTERN-TÜR (Modal mit kleiner Rechenaufgabe) -->
     <div class="lk-modal" id="parent-modal" role="dialog" aria-modal="true" aria-labelledby="pm-title">
@@ -222,6 +239,10 @@
         // ================= RENDER =================
         function esc(s) { return FormKit.escapeHtml(String(s == null ? '' : s)); }
 
+        function computeStars(c) {
+            return (c.storiesRead || 0) * 5 + (c.quizzesSolved || 0) * 3 + (c.storiesRated || 0) * 2;
+        }
+
         function renderHeader() {
             var em = ENERGY[child.energy.current] || ENERGY.mittel;
             document.getElementById('kid-mascot').textContent = (child.avatar && child.avatar.base) || '🦊';
@@ -230,6 +251,7 @@
             document.getElementById('kid-sub').textContent = em.hello;
             document.getElementById('energy-pill-emoji').textContent = em.emoji;
             document.getElementById('energy-pill-label').textContent = em.label;
+            document.getElementById('star-count').textContent = computeStars(child);
         }
 
         function homeTile(opts) {
@@ -303,6 +325,36 @@
             });
         }
 
+        // ---- Buch-Cover (Verlaufs-Karte mit Emoji als Illustration) ----
+        function coverClass(seed) {
+            var s = String(seed || ''), h = 0;
+            for (var i = 0; i < s.length; i++) { h = (h * 31 + s.charCodeAt(i)) >>> 0; }
+            return 'cover-c' + (h % 6);
+        }
+        // opts: title, icon, badge {cls,label}, byline, href
+        function bookCoverHtml(opts) {
+            var tag = opts.href ? 'a' : 'button';
+            var attrs = opts.href ? ' href="' + esc(opts.href) + '"' : ' type="button"';
+            var badge = opts.badge
+                ? '<span class="book-badge ' + opts.badge.cls + '">' + opts.badge.label + '</span>' : '';
+            var byline = opts.byline
+                ? '<span class="book-byline">' + esc(opts.byline) + '</span>' : '';
+            return '<' + tag + attrs + ' class="book-cover ' + coverClass(opts.title) + '">' +
+                badge +
+                '<span class="book-art" aria-hidden="true">' + (opts.icon || '📖') + '</span>' +
+                '<span class="book-cover-title">' + esc(opts.title) + '</span>' +
+                byline +
+                '</' + tag + '>';
+        }
+        var SHELF_PLANT = '<svg class="shelf-plant" aria-hidden="true" viewBox="0 0 48 44">' +
+            '<path d="M24 44c-1-9-1-15 0-20" stroke="#7a5a2e" stroke-width="2.4" fill="none" stroke-linecap="round"/>' +
+            '<path d="M24 26c-7 1-12-3-13-10 7-1 12 3 13 10zM24 24c6 1 11-3 12-9-6-1-11 3-12 9z" fill="#5BA85C"/>' +
+            '<path d="M24 30c-5 1-8-2-9-7 5-1 8 2 9 7z" fill="#7BC47B"/>' +
+            '<path d="M16 44h16l-2.5-9h-11z" fill="#D98A4E"/></svg>';
+        function shelfWrap(inner) {
+            return '<div class="shelf"><div class="shelf-grid">' + inner + '</div>' + SHELF_PLANT + '</div>';
+        }
+
         function renderLibrary() {
             var list = document.getElementById('library-list');
             var books = child.library || [];
@@ -310,14 +362,14 @@
                 list.innerHTML = '<div class="info-card">Hier sammeln sich deine B&uuml;cher, sobald du losliest. Schau mal bei <strong>F&uuml;r dich</strong> vorbei! &#10024;</div>';
                 return;
             }
-            list.innerHTML = books.map(function (b) {
-                var status = b.status === 'neu' ? '<span class="status-pill status-neu">Neu</span>' : '<span class="status-pill status-gelesen">Gelesen</span>';
-                return '<button type="button" class="kid-book">' +
-                    '<span class="kid-book-emoji" aria-hidden="true">' + (b.icon || '📖') + '</span>' +
-                    '<span class="kid-book-info"><span class="kid-book-title">' + esc(b.title) + '</span></span>' +
-                    status + '</button>';
+            var covers = books.map(function (b) {
+                var badge = b.status === 'neu'
+                    ? { cls: 'badge-neu', label: '★ Neu' }
+                    : { cls: 'badge-gelesen', label: '✓ Gelesen' };
+                return bookCoverHtml({ title: b.title, icon: b.icon || '📖', badge: badge });
             }).join('');
-            list.querySelectorAll('.kid-book').forEach(function (el, i) {
+            list.innerHTML = shelfWrap(covers);
+            list.querySelectorAll('.book-cover').forEach(function (el, i) {
                 el.addEventListener('click', function () { toast('Viel Spaß mit: ' + books[i].title + ' 📖'); });
             });
         }
@@ -340,17 +392,14 @@
                 list.innerHTML = '<div class="info-card">Gerade keine Vorschl&auml;ge &mdash; aber morgen wieder! &#128522;</div>';
                 return;
             }
-            list.innerHTML = recs.map(function (r) {
-                var flag = r.kind === 'vorlesen'
-                    ? '<span class="status-pill status-vorlesen">🗣️ Vorlesen</span>'
-                    : '<span class="status-pill status-selbst">📖 Selbst lesen</span>';
-                return '<button type="button" class="kid-book">' +
-                    '<span class="kid-book-emoji" aria-hidden="true">' + (r.icon || '📖') + '</span>' +
-                    '<span class="kid-book-info"><span class="kid-book-title">' + esc(r.title) + '</span>' +
-                    '<span class="kid-book-reason">' + esc(r.reason || '') + '</span></span>' +
-                    flag + '</button>';
+            var covers = recs.map(function (r) {
+                var badge = r.kind === 'vorlesen'
+                    ? { cls: 'badge-vorlesen', label: '🗣️ Vorlesen' }
+                    : { cls: 'badge-selbst', label: '📖 Selbst' };
+                return bookCoverHtml({ title: r.title, icon: r.icon || '📖', badge: badge, byline: r.reason || '' });
             }).join('');
-            list.querySelectorAll('.kid-book').forEach(function (el, i) {
+            list.innerHTML = shelfWrap(covers);
+            list.querySelectorAll('.book-cover').forEach(function (el, i) {
                 el.addEventListener('click', function () {
                     var r = recs[i];
                     toast(r.kind === 'vorlesen' ? 'Ich lese dir vor: ' + r.title + ' 💛' : 'Viel Spaß mit: ' + r.title + ' 📖');
@@ -510,6 +559,27 @@
         document.getElementById('pm-cancel').addEventListener('click', closeParentGate);
         document.getElementById('pm-input').addEventListener('keydown', function (e) {
             if (e.key === 'Enter') { e.preventDefault(); submitParentGate(); }
+        });
+
+        // ---- Sterne-Pille: kleine Freude beim Antippen ----
+        document.getElementById('star-pill').addEventListener('click', function () {
+            toast('Du hast schon ' + computeStars(child) + ' Sterne gesammelt! ⭐');
+        });
+
+        // ---- Begleiter-Maskottchen: warme Ermutigung ----
+        var BUDDY_TIPS = [
+            'Lies in deinem Tempo — ich bin bei dir. 💛',
+            'Jede Seite macht dich stärker! 📖',
+            'Du machst das toll. Such dir ein Buch aus! 🌟',
+            'Pause ist auch okay. Hör auf dein Bauchgefühl. 🌙',
+            'Magst du mir gleich eine Geschichte vorlesen? 🦊'
+        ];
+        var buddyIdx = 0;
+        document.getElementById('kid-buddy').addEventListener('click', function () {
+            var msg = BUDDY_TIPS[buddyIdx % BUDDY_TIPS.length];
+            buddyIdx++;
+            toast(msg);
+            KontoFX.sparkleBurst(document.getElementById('kid-buddy'));
         });
 
         // ================= INIT =================
