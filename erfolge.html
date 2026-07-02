@@ -3,12 +3,12 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Elternbereich – Lesekumpel</title>
-    <meta name="description" content="Elternbereich: Überblick über Energie und Leseaktivität deiner Kinder, Empfehlungen, Aufgaben und geplante Geschichten.">
+    <title>Meine Erfolge &middot; Lesekumpel</title>
+    <meta name="description" content="Deine Plaketten: Alles, was du beim Lesenlernen schon geschafft hast.">
     <meta name="robots" content="noindex">
     <link rel="icon" href="bilder/lesekumpel_logo_v2.png">
     <link rel="stylesheet" href="fonts/fonts.css">
-    <link rel="stylesheet" href="konto.css?v=20260626n">
+    <link rel="stylesheet" href="konto.css?v=20260702a">
 
     <!-- ===== A11y-Modal CSS (1:1 aus partials/a11y.html · Single Source) ===== -->
     <style>
@@ -107,8 +107,6 @@
     @media (min-width: 768px) { .modern-footer .footer-bottom { flex-direction: row; text-align: left; } }
     .modern-footer .footer-bottom a { color: rgba(255,246,239,0.65); text-decoration: none; margin: 0 6px; }
     .modern-footer .footer-bottom a:hover { color: var(--yellow, var(--primary-yellow, #FFD95A)); }
-    /* Footer-Abstand zur fixen Bottom-Nav */
-    .kid-body .modern-footer { margin-bottom: 8px; }
     </style>
 
     <!-- ===== Kanonischer Header-CSS (1:1 aus partials/header.html · Single Source) ===== -->
@@ -153,112 +151,6 @@
     body.dark-mode .mobile-menu { background: #2A3242; }
     body.dark-mode .nav-avatar-btn { background: #2A3242; }
     </style>
-
-    <!-- ===== Elternbereich-spezifische Styles ===== -->
-    <style>
-    /* Bottom-Nav mit Text-Labels (Eltern-Variante der Kind-Nav) */
-    .elt-bottomnav .kbn-item { width: auto; height: auto; min-width: 56px; flex-direction: column; gap: 4px; padding: 8px 10px; }
-    .elt-bottomnav .kbn-item svg { width: 22px; height: 22px; }
-    .elt-bottomnav .kbn-item span { display: block; font-family: var(--font-heading); font-size: 0.6rem; font-weight: 700; line-height: 1; letter-spacing: 0.01em; }
-    @media (max-width: 360px) { .elt-bottomnav .kbn-item { padding: 8px 7px; } .elt-bottomnav .kbn-item span { font-size: 0.55rem; } }
-
-    /* Extra Abstand, damit die fixe Bottom-Nav nichts verdeckt */
-    .elt-wrap { padding-bottom: calc(96px + env(safe-area-inset-bottom)); }
-
-    /* Wochentag-Picker (Planen) */
-    .weekday-picker { display: flex; gap: 6px; flex-wrap: wrap; margin: 4px 0 6px; }
-    .wd-btn { min-width: 44px; min-height: 44px; padding: 8px 6px; border-radius: 14px; border: 1.5px solid var(--border-soft); background: #fff; color: var(--text-muted); font-family: var(--font-heading); font-weight: 700; font-size: 0.85rem; cursor: pointer; transition: all 0.15s; }
-    .wd-btn:hover { border-color: var(--mint); color: var(--mint); }
-    .wd-btn.is-on { background: var(--mint); border-color: var(--mint); color: #fff; }
-    .wd-btn:focus-visible { outline: 3px solid var(--lila); outline-offset: 2px; }
-    body.dark-mode .wd-btn { background: #2A3242; }
-
-    /* Wochenplan-Raster (Übersicht) */
-    .weekplan-grid { display: grid; grid-template-columns: repeat(7, minmax(120px, 1fr)); gap: 10px; overflow-x: auto; padding-bottom: 6px; -webkit-overflow-scrolling: touch; }
-    .weekplan-col { background: var(--bg-card); border: 1px solid var(--border-soft); border-radius: 16px; padding: 10px 8px; min-height: 120px; }
-    .weekplan-day { font-family: var(--font-heading); font-weight: 700; font-size: 0.85rem; color: var(--navy); text-align: center; padding-bottom: 8px; margin-bottom: 8px; border-bottom: 1px solid var(--border-soft); }
-    .weekplan-chip { display: block; background: var(--accent-soft); border: 1px solid rgba(47,184,166,0.3); border-radius: 12px; padding: 8px 10px; margin-bottom: 8px; font-size: 0.78rem; line-height: 1.35; color: var(--navy); }
-    .weekplan-chip .wp-persona { font-weight: 700; display: block; }
-    .weekplan-chip.is-off { opacity: 0.4; }
-    .weekplan-empty { color: var(--text-muted); font-size: 0.75rem; text-align: center; padding: 6px 0; }
-
-    /* Aufgaben-Formular Typ-Chips */
-    .type-chips { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 6px; }
-    .type-chip { display: inline-flex; align-items: center; gap: 7px; padding: 10px 16px; border-radius: 999px; border: 1.5px solid var(--border-soft); background: #fff; color: var(--text-muted); font-weight: 700; font-size: 0.9rem; cursor: pointer; transition: all 0.15s; }
-    .type-chip.is-on { background: var(--mint); border-color: var(--mint); color: #fff; }
-    .type-chip:focus-visible { outline: 3px solid var(--lila); outline-offset: 2px; }
-    body.dark-mode .type-chip { background: #2A3242; }
-
-    /* Zugewiesene / geplante Listen-Items mit Aktionen */
-    .elt-item { display: flex; align-items: center; gap: 12px; padding: 14px; border: 1px solid var(--border-soft); border-radius: 16px; background: var(--bg-card); margin-bottom: 10px; }
-    .elt-item .elt-item-emoji { font-size: 1.6rem; flex-shrink: 0; line-height: 1; }
-    .elt-item .elt-item-body { flex: 1; min-width: 0; }
-    .elt-item .elt-item-title { font-weight: 700; color: var(--navy); }
-    .elt-item .elt-item-meta { font-size: 0.8rem; color: var(--text-muted); margin-top: 2px; }
-    .elt-item.is-done { opacity: 0.6; }
-    .elt-item.is-done .elt-item-title { text-decoration: line-through; }
-    .icon-btn-sm { width: 38px; height: 38px; flex-shrink: 0; border-radius: 12px; border: 1.5px solid var(--border-soft); background: #fff; color: var(--text-muted); cursor: pointer; display: inline-flex; align-items: center; justify-content: center; transition: all 0.15s; }
-    .icon-btn-sm:hover { border-color: var(--salmon); color: var(--salmon); }
-    .icon-btn-sm svg { width: 18px; height: 18px; }
-    body.dark-mode .icon-btn-sm { background: #2A3242; }
-
-    /* Kleiner sekundärer Button + Assign-Button */
-    .btn-assign { border: 1.5px solid var(--mint); background: var(--accent-soft); color: var(--mint-dark, var(--mint)); border-radius: 999px; padding: 8px 16px; font-weight: 700; font-size: 0.82rem; cursor: pointer; white-space: nowrap; transition: all 0.15s; }
-    .btn-assign:hover { background: var(--mint); color: #fff; }
-
-    /* Formular-Layout */
-    .elt-form-row { margin-bottom: 14px; }
-    .elt-form-row label { display: block; font-weight: 700; font-size: 0.85rem; color: var(--text-muted); margin-bottom: 6px; }
-    .elt-form textarea.text-input { min-height: 84px; resize: vertical; font-family: var(--font-body); }
-
-    /* Per-Kind-Einstellungen (details) */
-    .child-details { margin-top: 12px; border-top: 1px solid var(--border-soft); padding-top: 10px; }
-    .child-details > summary { cursor: pointer; font-weight: 700; font-size: 0.9rem; color: var(--mint-dark, var(--mint)); list-style: none; padding: 6px 0; display: flex; align-items: center; gap: 6px; }
-    .child-details > summary::-webkit-details-marker { display: none; }
-    .child-details > summary::before { content: '＋'; font-weight: 700; }
-    .child-details[open] > summary::before { content: '－'; }
-    .child-energy-row { display: flex; align-items: center; gap: 10px; margin: 10px 0; }
-    .child-energy-row .cer-cells { display: flex; gap: 5px; }
-    .cer-cell { width: 26px; height: 26px; border-radius: 8px; display: inline-flex; align-items: center; justify-content: center; font-size: 0.9rem; }
-    .cer-cell.energy-hoch { background: rgba(47,184,166,0.2); }
-    .cer-cell.energy-mittel { background: rgba(255,217,90,0.28); }
-    .cer-cell.energy-niedrig { background: rgba(125,106,230,0.2); }
-    .child-statline { display: flex; gap: 16px; flex-wrap: wrap; font-size: 0.85rem; color: var(--text-muted); margin-top: 8px; }
-    .child-statline strong { color: var(--navy); }
-
-    /* --- Übersicht: „Einblicke für …" (pro Kind) --- */
-    /* Kind-Auswahl als Avatar-Tabs (Segment-Leiste) */
-    .child-tabs { display: flex; gap: 8px; overflow-x: auto; padding: 2px 0 8px; margin-bottom: 6px; scrollbar-width: none; }
-    .child-tabs::-webkit-scrollbar { display: none; }
-    .child-tab { flex: 0 0 auto; display: inline-flex; align-items: center; gap: 9px; min-height: 44px; padding: 6px 16px 6px 6px; border-radius: 999px; border: 1.5px solid var(--border-soft); background: #fff; color: var(--text-muted); font-family: var(--font-heading); font-weight: 700; font-size: 0.95rem; cursor: pointer; transition: all 0.15s; }
-    .child-tab:hover { border-color: var(--mint); color: var(--navy); }
-    .child-tab.is-active { background: var(--accent-soft); border-color: var(--mint); color: var(--navy); }
-    .child-tab:focus-visible { outline: 3px solid var(--lila); outline-offset: 2px; }
-    .ct-avatar { width: 32px; height: 32px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 1.15rem; border: 2px solid #fff; box-shadow: 0 2px 5px rgba(43,49,64,0.12); flex-shrink: 0; }
-    body.dark-mode .child-tab { background: #2A3242; }
-
-    /* Kopfbereich */
-    .insight-head { display: flex; align-items: center; gap: 14px; margin: 6px 0 20px; }
-    .insight-title { font-family: var(--font-heading); font-size: 1.5rem; color: var(--navy); margin: 0; line-height: 1.15; }
-    .insight-sub { color: var(--text-muted); font-size: 0.95rem; line-height: 1.5; margin: 4px 0 0; }
-
-    /* Energie-Grafik (Tages-Icons) */
-    .insight-energy { display: flex; gap: 8px; flex-wrap: wrap; align-items: flex-end; padding: 4px 0 2px; }
-    .insight-energy .ie-day { display: flex; flex-direction: column; align-items: center; gap: 6px; flex: 1 0 auto; min-width: 40px; }
-    .insight-energy .cer-cell { width: 40px; height: 40px; border-radius: 12px; display: inline-flex; align-items: center; justify-content: center; font-size: 1.3rem; }
-    .energy-note { margin: 14px 0 0; color: var(--text-muted); font-size: 0.92rem; line-height: 1.55; }
-    .energy-note strong { color: var(--navy); }
-
-    /* Empfehlungs-Regal (Cover) */
-    .rec-shelf { display: flex; gap: 14px; overflow-x: auto; padding: 4px 2px 10px; scrollbar-width: thin; }
-    .rec-shelf::-webkit-scrollbar { height: 6px; }
-    .rec-shelf::-webkit-scrollbar-thumb { background: var(--border-soft); border-radius: 999px; }
-    .rc-cover { flex: 0 0 auto; width: 112px; display: flex; flex-direction: column; gap: 8px; }
-    .rc-thumb { position: relative; width: 112px; height: 142px; border-radius: 14px; overflow: hidden; background: var(--accent-soft); display: flex; align-items: center; justify-content: center; box-shadow: 0 3px 10px rgba(43,49,64,0.12); }
-    .rc-emoji { font-size: 2.6rem; }
-    .rc-img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
-    .rc-title { font-size: 0.8rem; font-weight: 700; color: var(--navy); line-height: 1.3; }
-    </style>
 </head>
 <body class="kid-body">
     <a class="skip-link" href="#main-content">Zum Inhalt springen</a>
@@ -270,6 +162,7 @@
         <svg class="bd-star" style="top:13%;left:7%;width:26px;color:var(--yellow);" viewBox="0 0 32 32"><polygon points="16,2 20,12 30,12 22,19 25,30 16,23 7,30 10,19 2,12 12,12" fill="currentColor"/></svg>
         <svg class="bd-sparkle" style="top:24%;right:9%;width:20px;color:var(--lila);animation-delay:-1.2s;" viewBox="0 0 24 24"><path d="M12 2L13.5 9 21 12L13.5 14.5L12 22L10.5 14.5L3 12L10.5 9Z" fill="currentColor"/></svg>
         <svg class="bd-star" style="top:52%;left:5%;width:18px;color:var(--mint);animation-delay:-2.4s;" viewBox="0 0 32 32"><polygon points="16,2 20,12 30,12 22,19 25,30 16,23 7,30 10,19 2,12 12,12" fill="currentColor"/></svg>
+        <svg class="bd-sparkle" style="top:68%;right:7%;width:22px;color:var(--salmon);animation-delay:-3.1s;" viewBox="0 0 24 24"><path d="M12 2L13.5 9 21 12L13.5 14.5L12 22L10.5 14.5L3 12L10.5 9Z" fill="currentColor"/></svg>
     </div>
 
     <!-- ===== Standard-Header (kanonisch, PUBLIC) ===== -->
@@ -277,12 +170,15 @@
       <div class="nav-left">
         <button type="button" class="burger-icon" aria-label="Men&uuml; &ouml;ffnen" aria-expanded="false" aria-controls="mobile-menu" onclick="toggleMenu()">&#9776;</button>
         <div id="mobile-menu" class="mobile-menu">
-          <a href="kind.html" class="nav-btn" onclick="toggleMenu()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 22V12h6v10"/></svg><span>Kinder-Ansicht</span></a>
-          <a href="index.html" class="nav-btn" onclick="toggleMenu()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 7v14"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/></svg><span>Bibliothek</span></a>
-          <a href="neue-geschichte.html" class="nav-btn" onclick="toggleMenu()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"/></svg><span>Geschichte erstellen</span></a>
+          <a href="landingpage.html#mission" class="nav-btn" onclick="toggleMenu()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 9.5a5.5 5.5 0 0 1 9.591-3.676.56.56 0 0 0 .818 0A5.49 5.49 0 0 1 22 9.5c0 2.29-1.5 4-3 5.5l-5.492 5.313a2 2 0 0 1-3 .019L5 15c-1.5-1.5-3-3.2-3-5.5"/></svg><span>F&uuml;r euch</span></a>
+          <a href="landingpage.html#how-it-works" class="nav-btn" onclick="toggleMenu()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg><span>So funktioniert&rsquo;s</span></a>
           <a href="ueber-uns.html" class="nav-btn" onclick="toggleMenu()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><path d="M16 3.128a4 4 0 0 1 0 7.744"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><circle cx="9" cy="7" r="4"/></svg><span>&Uuml;ber uns</span></a>
+          <a href="demo.html" class="nav-btn" onclick="toggleMenu()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 7v14"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/></svg><span>Demo-Texte</span></a>
+          <a href="preise.html" class="nav-btn" onclick="toggleMenu()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z"/><circle cx="7.5" cy="7.5" r=".5" fill="currentColor"/></svg><span>Preise</span></a>
+          <a href="neue-geschichte.html" class="nav-btn" onclick="toggleMenu()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"/><path d="M20 2v4"/><path d="M22 4h-4"/><circle cx="4" cy="20" r="2"/></svg><span>Geschichte erstellen</span></a>
           <div class="menu-divider"></div>
-          <a href="anmelden.html" class="nav-btn" onclick="toggleMenu()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg><span>Abmelden</span></a>
+          <a href="anmelden.html" class="nav-btn" onclick="toggleMenu()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>Mein Konto</span></a>
+          <a href="anmelden.html" class="nav-btn menu-cta" onclick="toggleMenu()">Jetzt registrieren &rarr;</a>
         </div>
       </div>
       <div class="nav-center">
@@ -291,45 +187,36 @@
       </div>
       <div class="nav-right">
         <button type="button" class="nav-icon-btn" id="nav-settings" onclick="openSettings()" aria-label="Barrierefreiheit"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="1"/><path d="m9 20 3-6 3 6"/><path d="m6 8 6 2 6-2"/><path d="M12 10v4"/></svg></button>
-        <a href="kind.html" class="nav-icon-btn" id="nav-kind" aria-label="Zur Kinder-Ansicht"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 22V12h6v10"/></svg></a>
+        <a href="kind.html" class="nav-avatar-btn" id="nav-avatar" aria-label="Mein Bereich"><span class="nav-avatar-emoji" id="nav-avatar-emoji">&#129418;</span></a>
       </div>
     </nav>
 
     <main id="main-content">
-        <div class="kid-wrap elt-wrap" style="position:relative;">
-            <!-- ÜBERSICHT / DASHBOARD -->
-            <section data-eltsec-panel="start">
-                <h1 class="kid-section-title" style="margin-bottom:14px;">Elternbereich</h1>
-                <div id="elt-start-content"></div>
-            </section>
+        <div class="kid-wrap" style="position:relative;">
 
-            <!-- EMPFEHLUNGEN -->
-            <section data-eltsec-panel="empfehlungen" hidden>
-                <h1 class="kid-section-title">Empfehlungen</h1>
-                <p class="section-lead" style="color:var(--text-muted);margin:-6px 0 18px;">Passende Geschichten — direkt als Aufgabe zuweisbar.</p>
-                <div id="elt-empf-content"></div>
-            </section>
+            <button type="button" class="lp-back" onclick="window.location.href='kind.html'">
+                <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
+                Zur&uuml;ck zu deiner Seite
+            </button>
 
-            <!-- AUFGABEN -->
-            <section data-eltsec-panel="aufgaben" hidden>
-                <h1 class="kid-section-title">Aufgaben</h1>
-                <p class="section-lead" style="color:var(--text-muted);margin:-6px 0 18px;">Lies-, Hör- und Laut-Aufgaben für dein Kind erstellen.</p>
-                <div id="elt-aufg-content"></div>
-            </section>
+            <h2 class="kid-section-title">Meine Erfolge
+                <button type="button" class="read-aloud-btn" data-read="Meine Erfolge. Hier siehst du alle Plaketten, die du beim Lesenlernen sammeln kannst." aria-label="Vorlesen">&#128266;</button>
+            </h2>
+            <p class="kid-sub" style="margin-bottom:14px;">F&uuml;r jede geschaffte Lektion gibt es eine Plakette. Sammel sie alle!</p>
 
-            <!-- PLANEN -->
-            <section data-eltsec-panel="planen" hidden>
-                <h1 class="kid-section-title">Geschichten planen</h1>
-                <p class="section-lead" style="color:var(--text-muted);margin:-6px 0 18px;">Neue Geschichten vorbereiten und Wochentage festlegen.</p>
-                <div id="elt-plan-content"></div>
-            </section>
+            <!-- Mockup-Hinweis + Ansichts-Umschalter (Doku für die spätere App) -->
+            <div class="info-card" style="margin-bottom:14px;">
+                <strong>Mockup-Hinweis:</strong> Diese Seite zeigt <em>alle</em> Plaketten &mdash; auch die noch nicht verdienten (ausgegraut).
+                In der echten App sehen Kinder nur ihre verdienten Plaketten: keine leeren Felder, kein Druck.
+            </div>
+            <div class="erf-toggle-row">
+                <button type="button" class="erf-toggle" id="erf-toggle" aria-pressed="false"></button>
+            </div>
 
-            <!-- WOCHENPLAN / ÜBERSICHT -->
-            <section data-eltsec-panel="uebersicht" hidden>
-                <h1 class="kid-section-title">Wochenplan</h1>
-                <p class="section-lead" style="color:var(--text-muted);margin:-6px 0 18px;">Alle geplanten Geschichten nach Wochentag — plus Lern-Statistik.</p>
-                <div id="elt-ueber-content"></div>
-            </section>
+            <div class="erf-stats" id="erf-stats"></div>
+
+            <div id="badge-sections"></div>
+
         </div>
     </main>
 
@@ -342,15 +229,8 @@
             <span>Lese<span class="brand-yellow">kumpel</span></span>
           </div>
           <p class="footer-tagline">Die inklusive Lese-App, die jedes Kind lieben lernt. Neurodivers gestaltet.</p>
-          <div class="footer-social">
-            <a href="https://www.instagram.com/lesekumpel.de/" target="_blank" rel="noopener" aria-label="Lesekumpel auf Instagram">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none"/></svg>
-            </a>
-            <a href="https://discord.gg/sAr6KEsg" target="_blank" rel="noopener" aria-label="Lesekumpel Discord Community">
-              <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.095 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.095 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg>
-            </a>
-          </div>
         </div>
+
         <div>
           <h2>Entdecken</h2>
           <ul>
@@ -360,6 +240,7 @@
             <li><a href="ueber-uns.html">&Uuml;ber uns</a></li>
           </ul>
         </div>
+
         <div>
           <h2>Rechtliches</h2>
           <ul>
@@ -369,34 +250,11 @@
           </ul>
         </div>
       </div>
+
       <div class="footer-bottom">
         <span>&copy; 2026 Lesekumpel &middot; Inklusive Lese-App f&uuml;r jedes Gehirn</span>
       </div>
     </footer>
-
-    <!-- ===== BOTTOM-NAVIGATION (Eltern-Variante mit Labels) ===== -->
-    <nav class="kid-bottomnav elt-bottomnav" aria-label="Bereiche">
-        <button type="button" class="kbn-item active" data-eltsec="start" aria-current="true" aria-label="Übersicht">
-            <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 9 9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><path d="M9 22V12h6v10"/></svg>
-            <span>Übersicht</span>
-        </button>
-        <button type="button" class="kbn-item" data-eltsec="empfehlungen" aria-label="Empfehlungen">
-            <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .962 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.962 0z"/></svg>
-            <span>Empfehlung</span>
-        </button>
-        <button type="button" class="kbn-item" data-eltsec="aufgaben" aria-label="Aufgaben">
-            <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m3 17 2 2 4-4"/><path d="m3 7 2 2 4-4"/><path d="M13 6h8"/><path d="M13 12h8"/><path d="M13 18h8"/></svg>
-            <span>Aufgaben</span>
-        </button>
-        <button type="button" class="kbn-item" data-eltsec="planen" aria-label="Planen">
-            <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/><path d="M12 14v4"/><path d="M10 16h4"/></svg>
-            <span>Planen</span>
-        </button>
-        <button type="button" class="kbn-item" data-eltsec="uebersicht" aria-label="Wochenplan">
-            <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/></svg>
-            <span>Wochenplan</span>
-        </button>
-    </nav>
 
     <!-- ===== A11y-Modal (1:1 aus partials/a11y.html · Single Source) ===== -->
     <div class="settings-overlay" id="settings-overlay" hidden onclick="if(event.target===this)closeSettings()">
@@ -520,6 +378,108 @@
     <script src="konto-state.js?v=20260626n"></script>
     <script src="konto-fx.js?v=20260626n"></script>
     <script src="lautlese.js?v=20260702a"></script>
-    <script src="eltern.js?v=20260702"></script>
+    <script src="erfolge-data.js?v=20260702a"></script>
+    <script>
+    (function () {
+        'use strict';
+
+        // ---- Vorlese-Knöpfe (statische) ----
+        document.querySelectorAll('[data-read]').forEach(function (b) {
+            FormKit.attachReadAloud(b, b.getAttribute('data-read'));
+        });
+
+        // ---- Kind laden ----
+        Konto.seedIfEmpty();
+        var child = Konto.getActiveChild();
+        function esc(s) { return FormKit.escapeHtml(String(s == null ? '' : s)); }
+
+        var av = document.getElementById('nav-avatar-emoji');
+        if (av && child) av.textContent = (child.avatar && child.avatar.base) || '🦊';
+
+        // ---- Ansichts-Umschalter: Mockup (alle) vs. Kinderansicht (nur verdiente) ----
+        var kidView = false;
+        var toggleBtn = document.getElementById('erf-toggle');
+        function renderToggle() {
+            toggleBtn.setAttribute('aria-pressed', kidView ? 'true' : 'false');
+            toggleBtn.innerHTML = kidView
+                ? Erfolge.icon('eye-off') + ' Kinderansicht: nur verdiente Plaketten'
+                : Erfolge.icon('eye') + ' Mockup-Ansicht: alle Plaketten';
+        }
+        toggleBtn.addEventListener('click', function () {
+            kidView = !kidView;
+            renderToggle();
+            renderBadges();
+        });
+
+        // ---- Statistik-Zeile ----
+        function renderStats() {
+            var m = Erfolge.metrics(child);
+            var earned = Erfolge.earnedList(child).length;
+            document.getElementById('erf-stats').innerHTML =
+                '<div class="erf-stat"><b>' + earned + '/' + Erfolge.BADGES.length + '</b><span>Plaketten</span></div>' +
+                '<div class="erf-stat"><b>' + m.storiesRead + '</b><span>Geschichten gelesen</span></div>' +
+                '<div class="erf-stat"><b>' + m.lauteMastered + '</b><span>Laute gemeistert</span></div>';
+        }
+
+        // ---- Plaketten-Grid, gruppiert nach Phase ----
+        function badgeCard(b, earned) {
+            var cls = 'badge-card' + (earned ? '' : ' is-locked') + (b.gold ? ' is-gold' : '');
+            var lockBadge = earned ? '' :
+                '<span class="lpn-badge lpn-badge-lock">' + Erfolge.icon('lock') + '</span>';
+            return '<div class="' + cls + '">' +
+                '<div class="badge-icon" style="position:relative;">' + Erfolge.icon(b.icon) + lockBadge + '</div>' +
+                '<h4>' + esc(b.title) + '</h4>' +
+                '<p>' + esc(b.description) + '</p>' +
+                '</div>';
+        }
+        function renderBadges() {
+            var m = Erfolge.metrics(child);
+            var box = document.getElementById('badge-sections');
+            box.innerHTML = [0, 1, 2, 3, 4, 5].map(function (p) {
+                var badges = Erfolge.BADGES.filter(function (b) { return b.phase === p; });
+                if (kidView) badges = badges.filter(function (b) { return Erfolge.isEarned(b, m); });
+                if (!badges.length) return '';
+                var col = Erfolge.PHASE_COLORS[p] || {};
+                var head = (p === 0 ? '' : 'Phase ' + p + ' &middot; ') + esc(Erfolge.PHASE_NAMES[p]);
+                return '<div style="--lp-c:' + col.c + ';--lp-cs:' + col.cs + ';">' +
+                    '<h3 class="erf-phase-head"><span class="eph-dot" aria-hidden="true"></span>' + head + '</h3>' +
+                    '<div class="badge-grid">' +
+                    badges.map(function (b) { return badgeCard(b, Erfolge.isEarned(b, m)); }).join('') +
+                    '</div></div>';
+            }).join('');
+            if (kidView && !Erfolge.earnedList(child).length) {
+                box.innerHTML = '<div class="info-card">Noch keine Plakette &mdash; aber die erste wartet schon auf dich!</div>';
+            }
+        }
+
+        // ---- Standard-Header: Burger-Menü (global, via inline onclick) ----
+        window.toggleMenu = function () {
+            var menu = document.getElementById('mobile-menu');
+            if (!menu) return;
+            var btn = document.querySelector('.burger-icon');
+            var open = menu.classList.toggle('open');
+            if (btn) btn.setAttribute('aria-expanded', open ? 'true' : 'false');
+        };
+        function closeBurger() {
+            var menu = document.getElementById('mobile-menu');
+            if (menu && menu.classList.contains('open')) {
+                menu.classList.remove('open');
+                var btn = document.querySelector('.burger-icon');
+                if (btn) btn.setAttribute('aria-expanded', 'false');
+            }
+        }
+        document.addEventListener('click', function (e) {
+            var nav = document.querySelector('.nav-left');
+            var menu = document.getElementById('mobile-menu');
+            if (menu && menu.classList.contains('open') && nav && !nav.contains(e.target)) closeBurger();
+        });
+        document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeBurger(); });
+
+        // ================= INIT =================
+        renderToggle();
+        renderStats();
+        renderBadges();
+    })();
+    </script>
 </body>
 </html>

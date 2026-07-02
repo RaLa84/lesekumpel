@@ -8,7 +8,7 @@
     <meta name="robots" content="noindex">
     <link rel="icon" href="bilder/lesekumpel_logo_v2.png">
     <link rel="stylesheet" href="fonts/fonts.css">
-    <link rel="stylesheet" href="konto.css?v=20260626n">
+    <link rel="stylesheet" href="konto.css?v=20260702a">
 
     <!-- ===== A11y-Modal CSS (1:1 aus partials/a11y.html · Single Source) ===== -->
     <style>
@@ -231,6 +231,13 @@
                 <!-- NO-DEMAND (Akku leer): nur Botschaft + Zudecken-Button (Sichtbarkeit via renderStart) -->
                 <div id="home-nodemand" style="display:none;"></div>
 
+                <!-- ERFOLGE-KACHEL (Plaketten; Sichtbarkeit via renderStart) -->
+                <a class="home-erfolge" id="home-erfolge" href="erfolge.html">
+                    <span class="he-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m15.477 12.89 1.515 8.526a.5.5 0 0 1-.81.47l-3.58-2.687a1 1 0 0 0-1.197 0l-3.586 2.686a.5.5 0 0 1-.81-.469l1.514-8.526"/><circle cx="12" cy="8" r="6"/></svg></span>
+                    <span class="he-text"><span class="he-title">Meine Erfolge</span><span class="he-sub" id="he-sub"></span></span>
+                    <span class="he-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></span>
+                </a>
+
                 <!-- D) REGAL (kleine Auswahl) -->
                 <h3 class="card-h3" id="shelf-head" style="margin-top:28px;">Deine B&uuml;cher</h3>
                 <div id="home-shelf"></div>
@@ -253,14 +260,28 @@
                 <div id="rec-list" class="reveal-stagger"></div>
             </section>
 
-            <!-- MEINE LAUTE (Lernpfad-Sammlung) -->
+            <!-- LERNPFAD (Pfad-View + Laute-Sub-View; Section-Name bleibt "laute",
+                 damit openTask/Eltern-Laut-Aufgaben weiter funktionieren) -->
             <section data-kidsec-panel="laute" hidden>
-                <h2 class="kid-section-title">Meine Laute
-                    <button type="button" class="read-aloud-btn" data-read="Hier sammelst du Laute. Tippe einen Laut an, den du üben möchtest." aria-label="Vorlesen">&#128266;</button>
-                </h2>
-                <p class="kid-sub" style="margin-bottom:14px;">Such dir einen Laut aus, den du &uuml;ben m&ouml;chtest. Du sammelst Sterne, wenn du W&ouml;rter laut nachsprichst.</p>
-                <div id="laute-grid" class="laute-grid"></div>
-                <div id="laute-vorschlag" style="margin-top:24px;"></div>
+                <div id="lp-path-view">
+                    <h2 class="kid-section-title">Dein Lernpfad
+                        <button type="button" class="read-aloud-btn" data-read="Dein Lernpfad. Hier siehst du alle Lektionen auf deinem Weg zum Lesen. Tippe eine Lektion an." aria-label="Vorlesen">&#128266;</button>
+                    </h2>
+                    <p class="kid-sub" style="margin-bottom:14px;">Dein Weg zum Lese-Profi &mdash; Schritt f&uuml;r Schritt. Tippe eine Lektion an!</p>
+                    <div id="lernpfad-map"></div>
+                </div>
+                <div id="lp-laute-view" hidden>
+                    <button type="button" class="lp-back" id="lp-back">
+                        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
+                        Zum Pfad
+                    </button>
+                    <h2 class="kid-section-title">Meine Laute
+                        <button type="button" class="read-aloud-btn" data-read="Hier sammelst du Laute. Tippe einen Laut an, den du üben möchtest." aria-label="Vorlesen">&#128266;</button>
+                    </h2>
+                    <p class="kid-sub" style="margin-bottom:14px;">Such dir einen Laut aus, den du &uuml;ben m&ouml;chtest. Du sammelst Sterne, wenn du W&ouml;rter laut nachsprichst.</p>
+                    <div id="laute-grid" class="laute-grid"></div>
+                    <div id="laute-vorschlag" style="margin-top:24px;"></div>
+                </div>
             </section>
 
         </div>
@@ -337,6 +358,18 @@
         <button type="button" class="btn-text akku-later" id="akku-later">Sp&auml;ter &mdash; jetzt nicht</button>
     </div>
 
+    <!-- ===== LEKTIONS-SHEET (Lernpfad: Vorschau / "Kommt bald") ===== -->
+    <div class="sheet-backdrop" id="lesson-backdrop" hidden></div>
+    <div class="lesson-sheet" id="lesson-sheet" role="dialog" aria-modal="true" aria-labelledby="ls-title" hidden>
+        <div class="sheet-handle" aria-hidden="true"></div>
+        <div class="ls-icon" id="ls-icon" aria-hidden="true"></div>
+        <h2 class="ls-title" id="ls-title"></h2>
+        <p class="ls-text" id="ls-text"></p>
+        <div class="ls-words" id="ls-words"></div>
+        <div id="ls-soon"></div>
+        <button type="button" class="ls-btn" id="ls-close">Alles klar</button>
+    </div>
+
     <!-- ===== BOTTOM-NAVIGATION ===== -->
     <nav class="kid-bottomnav" aria-label="Bereiche">
         <button type="button" class="kbn-item active" data-kidsec="start" aria-current="true" aria-label="Start">
@@ -348,8 +381,8 @@
         <button type="button" class="kbn-item" data-kidsec="empfehlungen" aria-label="F&uuml;r dich">
             <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .962 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.962 0z"/></svg>
         </button>
-        <button type="button" class="kbn-item" data-kidsec="laute" aria-label="Meine Laute">
-            <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4.702a.705.705 0 0 0-1.203-.498L6.413 7.587A1.4 1.4 0 0 1 5.416 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.416a1.4 1.4 0 0 1 .997.413l3.383 3.384A.705.705 0 0 0 11 19.298z"/><path d="M16 9a5 5 0 0 1 0 6"/><path d="M19.364 18.364a9 9 0 0 0 0-12.728"/></svg>
+        <button type="button" class="kbn-item" data-kidsec="laute" aria-label="Lernpfad">
+            <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.106 5.553a2 2 0 0 0 1.788 0l3.659-1.83A1 1 0 0 1 21 4.619v12.764a1 1 0 0 1-.553.894l-4.553 2.277a2 2 0 0 1-1.788 0l-4.212-2.106a2 2 0 0 0-1.788 0l-3.659 1.83A1 1 0 0 1 3 19.381V6.618a1 1 0 0 1 .553-.894l4.553-2.277a2 2 0 0 1 1.788 0z"/><path d="M15 5.764v15"/><path d="M9 3.236v15"/></svg>
         </button>
         <button type="button" class="kbn-item" data-kidsec="selbst" id="kbn-selbst" aria-label="Selbst machen">
             <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"/><path d="m15 5 4 4"/></svg>
@@ -477,7 +510,9 @@
     <script src="formkit.js?v=20260626n"></script>
     <script src="konto-state.js?v=20260626n"></script>
     <script src="konto-fx.js?v=20260626n"></script>
-    <script src="lautlese.js?v=20260626n"></script>
+    <script src="lautlese.js?v=20260702a"></script>
+    <script src="lernpfad-data.js?v=20260702a"></script>
+    <script src="erfolge-data.js?v=20260702a"></script>
     <script>
     (function () {
         'use strict';
@@ -657,7 +692,13 @@
 
         function openTask(t) {
             if (!t) return;
-            if (t.type === 'laut') { if (t.lautId && window.Lautlese) Lautlese.setFocus(t.lautId); showSection('laute'); return; }
+            if (t.type === 'laut') {
+                // Laut-Aufgabe: Fokus setzen und direkt ins Laut-Grid (Laute-Sub-View)
+                if (t.lautId && window.Lautlese) { Lautlese.setFocus(t.lautId); child = Konto.getActiveChild(); renderLaute(); }
+                showSection('laute');
+                showLernpfadView('laute');
+                return;
+            }
             if (t.storyPath) { window.location.href = t.storyPath; return; }
             showSection('empfehlungen');
         }
@@ -970,6 +1011,101 @@
             });
         }
 
+        // ================= LERNPFAD (Pfad-View + Lektions-Sheet) =================
+        // Zwei Sub-Views im selben Panel: 'path' (Phasen-Karte) und 'laute'
+        // (bestehendes Laut-Grid). Kein Routing — nur hidden-Toggles.
+        function showLernpfadView(name) {
+            var pv = document.getElementById('lp-path-view');
+            var lv = document.getElementById('lp-laute-view');
+            if (pv) pv.hidden = name !== 'path';
+            if (lv) lv.hidden = name !== 'laute';
+        }
+
+        function renderLernpfad() {
+            var map = document.getElementById('lernpfad-map');
+            if (!map || !window.Lernpfad) return;
+            map.innerHTML = Lernpfad.PHASES.map(function (ph) {
+                var prog = Lernpfad.phaseProgress(ph, child);
+                var C = 2 * Math.PI * 18;
+                var ring =
+                    '<span class="lp-ring" aria-label="' + Math.round(prog * 100) + ' Prozent geschafft"><svg viewBox="0 0 44 44" aria-hidden="true">' +
+                    '<circle class="lpr-track" cx="22" cy="22" r="18"/>' +
+                    '<circle class="lpr-fill" cx="22" cy="22" r="18" stroke-dasharray="' + C.toFixed(1) + '" stroke-dashoffset="' + (C * (1 - prog)).toFixed(1) + '"/>' +
+                    '<text class="lpr-label" x="22" y="22" dy="3" text-anchor="middle">' + Math.round(prog * 100) + '%</text>' +
+                    '</svg></span>';
+                var nodes = ph.lessons.map(function (l) {
+                    var st = Lernpfad.lessonStatus(l, child);
+                    var badge = '', meta = '';
+                    if (st.state === 'done') { badge = '<span class="lpn-badge">' + Lernpfad.icon('check') + '</span>'; meta = Lernpfad.icon('check') + ' Geschafft'; }
+                    else if (st.state === 'active') { meta = 'Du bist hier'; }
+                    else if (st.state === 'live') { meta = st.mastered + '/' + st.total + ' Laute'; }
+                    else { badge = '<span class="lpn-badge lpn-badge-lock">' + Lernpfad.icon('lock') + '</span>'; }
+                    return '<button type="button" class="lp-node is-' + st.state + '" data-lesson="' + l.id + '" data-phase="' + ph.id + '">' +
+                        '<span class="lpn-icon">' + Lernpfad.icon(l.icon) + badge + '</span>' +
+                        '<span class="lpn-text"><span class="lpn-title">' + esc(l.title) + '</span>' +
+                        (l.subtitle ? '<span class="lpn-sub">' + esc(l.subtitle) + '</span>' : '') + '</span>' +
+                        (meta ? '<span class="lpn-meta">' + meta + '</span>' : '') +
+                        '</button>';
+                }).join('');
+                return '<div class="lp-phase" style="--lp-c:' + ph.farbe + ';--lp-cs:' + ph.farbeSoft + ';">' +
+                    '<div class="lp-phase-head"><span class="lp-phase-num" aria-hidden="true">' + ph.id + '</span>' +
+                    '<span class="lp-phase-titles"><h3>' + esc(ph.title) + '</h3><p>' + esc(ph.motto) + '</p></span>' + ring + '</div>' +
+                    '<div class="lp-lessons">' + nodes + '</div></div>';
+            }).join('');
+            map.querySelectorAll('.lp-node').forEach(function (el) {
+                el.addEventListener('click', function () {
+                    var ph = Lernpfad.PHASES.filter(function (p) { return String(p.id) === el.getAttribute('data-phase'); })[0];
+                    var lesson = ph && ph.lessons.filter(function (l) { return l.id === el.getAttribute('data-lesson'); })[0];
+                    if (!lesson) return;
+                    if (lesson.kind === 'laute') {
+                        // Übergang in die Live-Lektion — hier darf es funkeln
+                        KontoFX.sparkleBurst(el);
+                        showLernpfadView('laute');
+                        return;
+                    }
+                    openLessonSheet(lesson, ph);
+                });
+            });
+        }
+
+        // ---- "Kommt bald"-Sheet (Muster: showGate/hideGate) ----
+        var lsSheet = document.getElementById('lesson-sheet');
+        var lsBackdrop = document.getElementById('lesson-backdrop');
+        var lsRelease = null, lsHideTimer = null;
+        function openLessonSheet(lesson, phase) {
+            lsSheet.style.setProperty('--lp-c', phase.farbe);
+            lsSheet.style.setProperty('--lp-cs', phase.farbeSoft);
+            document.getElementById('ls-icon').innerHTML = Lernpfad.icon(lesson.icon);
+            document.getElementById('ls-title').textContent = lesson.title;
+            document.getElementById('ls-text').textContent = lesson.preview || '';
+            document.getElementById('ls-soon').innerHTML =
+                '<span class="ls-soon-pill">' + Lernpfad.icon('sprout') + ' Kommt bald</span>';
+            var words = document.getElementById('ls-words');
+            words.innerHTML = '';
+            if (lesson.kind === 'top100') {
+                Lernpfad.loadTop100(function (data) {
+                    if (!data || lsSheet.hidden) return; // offline-Fallback: nur Beschreibung
+                    words.innerHTML = data.klassen.map(function (k) {
+                        return '<div class="ls-word-group"><h4>' + esc(k.name) + '</h4><div class="ls-word-chips">' +
+                            k.words.slice(0, 4).map(function (w) { return '<span class="ls-chip">' + esc(w.wort) + '</span>'; }).join('') +
+                            '</div></div>';
+                    }).join('');
+                });
+            }
+            if (lsHideTimer) { clearTimeout(lsHideTimer); lsHideTimer = null; }
+            lsSheet.hidden = false; lsBackdrop.hidden = false;
+            requestAnimationFrame(function () { lsBackdrop.classList.add('show'); lsSheet.classList.add('show'); });
+            lsRelease = KontoFX.trapFocus(lsSheet, { initial: '#ls-close', onEscape: closeLessonSheet });
+        }
+        function closeLessonSheet() {
+            lsSheet.classList.remove('show'); lsBackdrop.classList.remove('show');
+            if (lsRelease) { lsRelease(); lsRelease = null; }
+            lsHideTimer = setTimeout(function () { lsSheet.hidden = true; lsBackdrop.hidden = true; }, 360);
+        }
+        document.getElementById('ls-close').addEventListener('click', closeLessonSheet);
+        lsBackdrop.addEventListener('click', closeLessonSheet);
+        document.getElementById('lp-back').addEventListener('click', function () { showLernpfadView('path'); });
+
         // Akku leer (niedrig) -> ruhiger Dunkelmodus. Transient (überschreibt Hell,
         // ohne die manuelle Theme-Wahl zu speichern); Kontrast-Wahl bleibt unangetastet.
         function applyEnergyTheme() {
@@ -1013,6 +1149,13 @@
             show(document.getElementById('tasks-note'), !isNoDemand);
             show(document.getElementById('task-list'), !isNoDemand);
             show(document.getElementById('home-nodemand'), isNoDemand);
+            // Erfolge-Kachel: nicht im No-Demand-Modus (kein Leistungs-Reiz bei leerem Akku)
+            var he = document.getElementById('home-erfolge');
+            show(he, !isNoDemand);
+            if (!isNoDemand && he && window.Erfolge) {
+                document.getElementById('he-sub').textContent =
+                    Erfolge.earnedList(child).length + ' von ' + Erfolge.BADGES.length + ' Plaketten gesammelt';
+            }
             if (isNoDemand) {
                 renderNoDemand();
             } else {
@@ -1025,7 +1168,7 @@
         function renderAll() {
             applyEnergyTheme();
             renderHeader(); renderScene(); renderStart();
-            renderLibrary(); renderRecs(); renderLaute();
+            renderLibrary(); renderRecs(); renderLaute(); renderLernpfad();
         }
 
         // ---- Bottom-Nav / Section-Nav ----
@@ -1034,6 +1177,9 @@
             document.querySelectorAll('[data-kidsec-panel]').forEach(function (p) {
                 p.hidden = p.getAttribute('data-kidsec-panel') !== name;
             });
+            // Lernpfad öffnet standardmäßig mit der Pfad-Übersicht
+            // (openTask schaltet danach gezielt auf die Laute-Sub-View um)
+            if (name === 'laute') showLernpfadView('path');
             document.querySelectorAll('.kbn-item[data-kidsec]').forEach(function (t) {
                 var on = t.getAttribute('data-kidsec') === name;
                 t.classList.toggle('active', on);

@@ -764,3 +764,236 @@ body.high-contrast .kid-bg-deco { display: none; }
 @media (prefers-reduced-motion: reduce) {
   .energy-meter-track > i, .scene-mascot img, .energy-sheet, .sheet-backdrop { transition: none !important; }
 }
+
+/* ============================================================
+   LERNPFAD (kind.html) + ERFOLGE (erfolge.html)
+   ============================================================ */
+
+/* ---- Pfad-View: Phasen-Karten ---- */
+.lp-phase {
+  --lp-c: var(--mint); --lp-cs: rgba(47,184,166,0.14);
+  background: var(--bg-card); border: 1px solid var(--border-soft);
+  border-top: 6px solid var(--lp-c);
+  border-radius: var(--radius-card); box-shadow: var(--shadow-card);
+  padding: 16px 18px 12px; margin-bottom: 18px;
+}
+.lp-phase-head { display: flex; align-items: center; gap: 12px; margin-bottom: 8px; }
+.lp-phase-num {
+  flex-shrink: 0; width: 34px; height: 34px; border-radius: 50%;
+  background: var(--lp-cs); color: var(--navy);
+  font-family: var(--font-heading); font-weight: 700; font-size: 1.05rem;
+  display: inline-flex; align-items: center; justify-content: center;
+}
+.lp-phase-titles { flex: 1; min-width: 0; }
+.lp-phase-titles h3 { font-family: var(--font-heading); font-size: 1.15rem; color: var(--navy); margin: 0; line-height: 1.2; }
+.lp-phase-titles p { margin: 0; font-size: 0.85rem; color: var(--text-muted); }
+.lp-ring { flex-shrink: 0; width: 44px; height: 44px; }
+.lp-ring svg { width: 100%; height: 100%; transform: rotate(-90deg); }
+.lp-ring .lpr-track { fill: none; stroke: rgba(43,49,64,0.1); stroke-width: 4; }
+.lp-ring .lpr-fill { fill: none; stroke: var(--lp-c); stroke-width: 4; stroke-linecap: round; transition: stroke-dashoffset .5s ease; }
+.lp-ring .lpr-label { font-family: var(--font-heading); font-size: 0.62rem; font-weight: 700; fill: var(--navy); transform: rotate(90deg); transform-origin: center; }
+
+/* ---- Lektions-Nodes mit gepunkteter Verbindungslinie ---- */
+.lp-lessons { display: flex; flex-direction: column; }
+.lp-node {
+  position: relative; display: flex; align-items: center; gap: 14px;
+  width: 100%; padding: 10px 6px; border: none; background: none;
+  border-radius: 18px; cursor: pointer; text-align: left;
+  font-family: var(--font-body); color: var(--navy);
+  transition: background .15s ease;
+}
+.lp-node:hover { background: var(--cream-light); }
+.lp-node:not(:last-child)::after {
+  content: ''; position: absolute; left: 31px; top: calc(50% + 30px);
+  height: calc(100% - 52px); border-left: 3px dotted var(--border-soft);
+}
+.lpn-icon {
+  position: relative; flex-shrink: 0; width: 52px; height: 52px; border-radius: 50%;
+  background: var(--lp-cs); color: var(--lp-c);
+  display: inline-flex; align-items: center; justify-content: center;
+}
+.lpn-icon svg { width: 24px; height: 24px; }
+.lpn-badge {
+  position: absolute; right: -4px; bottom: -4px; width: 20px; height: 20px;
+  border-radius: 50%; background: var(--mint); color: #fff;
+  border: 2px solid var(--bg-card);
+  display: inline-flex; align-items: center; justify-content: center;
+}
+.lpn-badge svg { width: 11px; height: 11px; }
+.lpn-text { flex: 1; min-width: 0; }
+.lpn-title { display: block; font-family: var(--font-heading); font-weight: 600; font-size: 1.02rem; line-height: 1.25; }
+.lpn-sub { display: block; font-size: 0.82rem; color: var(--text-muted); }
+.lpn-meta {
+  flex-shrink: 0; font-family: var(--font-heading); font-weight: 600; font-size: 0.8rem;
+  color: var(--text-muted); display: inline-flex; align-items: center; gap: 5px;
+}
+.lpn-meta svg { width: 15px; height: 15px; }
+
+.lp-node.is-done .lpn-icon { background: rgba(47,184,166,0.16); color: var(--mint); }
+.lp-node.is-done .lpn-meta { color: var(--mint); }
+.lp-node.is-active .lpn-icon { box-shadow: 0 0 0 3px var(--yellow); }
+.lp-node.is-active .lpn-meta { color: var(--yellow-ink); }
+.lp-node.is-live .lpn-icon { box-shadow: 0 0 0 3px rgba(47,184,166,0.45); }
+.lp-node.is-live .lpn-meta { color: var(--mint); }
+.lp-node.is-locked .lpn-icon,
+.lp-node.is-locked .lpn-text { opacity: 0.55; }
+.lp-node.is-locked .lpn-icon { background: rgba(43,49,64,0.07); color: var(--text-muted); }
+.lpn-badge.lpn-badge-lock { background: #b9b3a9; }
+
+/* ---- Zurück-zum-Pfad-Button (Laute-Sub-View) ---- */
+.lp-back {
+  display: inline-flex; align-items: center; gap: 8px;
+  margin: 20px 0 0; padding: 9px 16px;
+  border: 2px solid var(--mint); border-radius: 24px; background: var(--bg-card);
+  color: var(--navy); font-family: var(--font-heading); font-weight: 600; font-size: 0.95rem;
+  cursor: pointer; transition: box-shadow .15s, transform .12s;
+}
+.lp-back svg { width: 18px; height: 18px; color: var(--mint); }
+.lp-back:hover { box-shadow: 0 4px 12px rgba(47,184,166,0.2); }
+.lp-back:active { transform: scale(0.96); }
+
+/* ---- "Kommt bald"-Lesson-Sheet (nutzt .sheet-backdrop) ---- */
+.lesson-sheet {
+  position: fixed; left: 0; right: 0; bottom: 0; z-index: 9000;
+  max-width: 560px; margin: 0 auto; background: var(--bg-card);
+  border-radius: 28px 28px 0 0;
+  padding: 12px 24px calc(26px + env(safe-area-inset-bottom));
+  box-shadow: 0 -10px 40px rgba(43,49,64,0.22);
+  transform: translateY(110%); transition: transform 0.34s cubic-bezier(0.34,1.56,0.64,1);
+  text-align: center; max-height: 80vh; overflow-y: auto;
+}
+.lesson-sheet.show { transform: translateY(0); }
+.ls-icon {
+  width: 64px; height: 64px; border-radius: 50%; margin: 10px auto 10px;
+  background: var(--lp-cs, rgba(47,184,166,0.14)); color: var(--lp-c, var(--mint));
+  display: flex; align-items: center; justify-content: center;
+}
+.ls-icon svg { width: 30px; height: 30px; }
+.ls-title { font-family: var(--font-heading); font-size: 1.3rem; color: var(--navy); margin: 0 0 6px; }
+.ls-text { color: var(--text-muted); font-size: 0.98rem; line-height: 1.6; margin: 0 auto 14px; max-width: 420px; }
+.ls-words { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-bottom: 6px; }
+.ls-word-group { width: 100%; margin-bottom: 8px; }
+.ls-word-group h4 { font-family: var(--font-heading); font-size: 0.82rem; font-weight: 600; color: var(--text-muted); margin: 0 0 6px; }
+.ls-word-chips { display: flex; flex-wrap: wrap; gap: 7px; justify-content: center; }
+.ls-chip {
+  display: inline-block; padding: 5px 12px; border-radius: 999px;
+  background: var(--cream-light); border: 1px solid var(--border-soft);
+  font-family: var(--font-heading); font-weight: 500; font-size: 0.92rem; color: var(--navy);
+}
+.ls-soon-pill {
+  display: inline-flex; align-items: center; gap: 7px; margin: 6px 0 14px;
+  padding: 6px 14px; border-radius: 999px;
+  background: rgba(255,217,90,0.25); color: var(--yellow-ink);
+  font-family: var(--font-heading); font-weight: 600; font-size: 0.85rem;
+}
+.ls-soon-pill svg { width: 15px; height: 15px; }
+.ls-btn {
+  display: block; width: 100%; max-width: 300px; margin: 0 auto;
+  padding: 13px 20px; border: none; border-radius: var(--radius-button);
+  background: var(--mint); color: #fff;
+  font-family: var(--font-heading); font-weight: 600; font-size: 1rem; cursor: pointer;
+  transition: transform .12s, box-shadow .15s;
+}
+.ls-btn:hover { box-shadow: 0 6px 16px rgba(47,184,166,0.35); }
+.ls-btn:active { transform: scale(0.97); }
+
+/* ---- Erfolge-Kachel im Start-Panel ---- */
+.home-erfolge {
+  display: flex; align-items: center; gap: 14px; width: 100%;
+  margin-top: 22px; padding: 15px 18px; text-decoration: none;
+  background: var(--bg-card); border: 1px solid var(--border-soft);
+  border-radius: var(--radius-card); box-shadow: var(--shadow-card);
+  color: var(--navy); transition: transform .12s, box-shadow .15s;
+}
+.home-erfolge:hover { transform: translateY(-2px); box-shadow: var(--shadow-card-hover); }
+.he-icon {
+  flex-shrink: 0; width: 46px; height: 46px; border-radius: 14px;
+  background: rgba(255,217,90,0.3); color: var(--yellow-ink);
+  display: inline-flex; align-items: center; justify-content: center;
+}
+.he-icon svg { width: 24px; height: 24px; }
+.he-text { flex: 1; min-width: 0; }
+.he-title { display: block; font-family: var(--font-heading); font-weight: 600; font-size: 1.02rem; }
+.he-sub { display: block; font-size: 0.83rem; color: var(--text-muted); }
+.he-arrow { flex-shrink: 0; color: var(--text-muted); }
+.he-arrow svg { width: 18px; height: 18px; }
+
+/* ---- erfolge.html: Stats + Plaketten-Grid ---- */
+.erf-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin: 18px 0 8px; }
+.erf-stat {
+  background: var(--bg-card); border: 1px solid var(--border-soft);
+  border-radius: 18px; box-shadow: var(--shadow-card);
+  padding: 14px 10px; text-align: center;
+}
+.erf-stat b { display: block; font-family: var(--font-heading); font-size: 1.5rem; font-weight: 700; color: var(--navy); line-height: 1.2; }
+.erf-stat span { font-size: 0.78rem; color: var(--text-muted); }
+.erf-phase-head {
+  display: flex; align-items: center; gap: 10px;
+  font-family: var(--font-heading); font-size: 1.05rem; color: var(--navy);
+  margin: 26px 0 12px;
+}
+.erf-phase-head .eph-dot { width: 12px; height: 12px; border-radius: 50%; background: var(--lp-c, var(--mint)); flex-shrink: 0; }
+.badge-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 12px; }
+.badge-card {
+  background: var(--bg-card); border: 1px solid var(--border-soft);
+  border-radius: 20px; box-shadow: var(--shadow-card);
+  padding: 16px 12px; text-align: center;
+}
+.badge-icon {
+  width: 54px; height: 54px; border-radius: 50%; margin: 0 auto 10px;
+  background: var(--lp-cs, rgba(47,184,166,0.14)); color: var(--lp-c, var(--mint));
+  display: flex; align-items: center; justify-content: center;
+}
+.badge-icon svg { width: 26px; height: 26px; }
+.badge-card h4 { font-family: var(--font-heading); font-size: 0.96rem; font-weight: 600; color: var(--navy); margin: 0 0 4px; }
+.badge-card p { font-size: 0.79rem; color: var(--text-muted); line-height: 1.45; margin: 0; }
+.badge-card.is-locked { opacity: 0.55; }
+.badge-card.is-locked .badge-icon { background: rgba(43,49,64,0.07); color: var(--text-muted); }
+.badge-card.is-gold { border-color: var(--yellow); box-shadow: 0 3px 18px rgba(255,217,90,0.4); }
+.badge-card.is-gold .badge-icon { background: rgba(255,217,90,0.35); color: var(--yellow-ink); }
+.erf-toggle-row { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; margin: 4px 0 6px; }
+.erf-toggle {
+  display: inline-flex; align-items: center; gap: 8px;
+  padding: 9px 16px; border: 2px solid var(--border-soft); border-radius: 24px;
+  background: var(--bg-card); color: var(--navy);
+  font-family: var(--font-heading); font-weight: 600; font-size: 0.88rem; cursor: pointer;
+  transition: border-color .15s, box-shadow .15s;
+}
+.erf-toggle svg { width: 17px; height: 17px; color: var(--mint); }
+.erf-toggle[aria-pressed="true"] { border-color: var(--mint); box-shadow: 0 0 0 3px rgba(47,184,166,0.15); }
+
+/* ---- Dark-Mode ---- */
+body.dark-mode .lp-phase,
+body.dark-mode .lesson-sheet,
+body.dark-mode .home-erfolge,
+body.dark-mode .erf-stat,
+body.dark-mode .badge-card { background: var(--bg-card); border-color: var(--border-soft); }
+body.dark-mode .lp-node:hover { background: rgba(255,255,255,0.05); }
+body.dark-mode .lp-ring .lpr-track { stroke: rgba(255,255,255,0.12); }
+body.dark-mode .lp-ring .lpr-label { fill: var(--text-dark); }
+body.dark-mode .lp-node.is-locked .lpn-icon { background: rgba(255,255,255,0.07); }
+body.dark-mode .lp-back,
+body.dark-mode .erf-toggle { background: var(--bg-card); }
+body.dark-mode .ls-chip { background: rgba(255,255,255,0.06); }
+body.dark-mode .lpn-badge { border-color: var(--bg-card); }
+body.dark-mode .ls-soon-pill { background: rgba(255,224,130,0.16); color: var(--yellow); }
+body.dark-mode .ls-btn { color: #1C2230; }
+body.dark-mode .he-icon { background: rgba(255,224,130,0.16); color: var(--yellow); }
+body.dark-mode .badge-card.is-gold { box-shadow: 0 3px 18px rgba(255,224,130,0.18); }
+
+/* ---- Responsive / Motion ---- */
+@media (max-width: 480px) {
+  .lp-phase { padding: 14px 12px 10px; }
+  .lpn-icon { width: 46px; height: 46px; }
+  .lpn-icon svg { width: 21px; height: 21px; }
+  .lp-node:not(:last-child)::after { left: 28px; }
+  .lpn-sub { font-size: 0.78rem; }
+  .erf-stats { gap: 8px; }
+  .badge-grid { grid-template-columns: repeat(auto-fill, minmax(128px, 1fr)); gap: 9px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .lesson-sheet { transition: none !important; }
+  .lp-ring .lpr-fill { transition: none !important; }
+  .lp-back:active, .ls-btn:active { transform: none; }
+  .home-erfolge:hover { transform: none; }
+}
