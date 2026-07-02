@@ -165,17 +165,25 @@
     /* Extra Abstand, damit die fixe Bottom-Nav nichts verdeckt */
     .elt-wrap { padding-bottom: calc(96px + env(safe-area-inset-bottom)); }
 
-    /* Wochentag-Picker (Planen) */
-    .weekday-picker { display: flex; gap: 6px; flex-wrap: wrap; margin: 4px 0 6px; }
-    .wd-btn { min-width: 44px; min-height: 44px; padding: 8px 6px; border-radius: 14px; border: 1.5px solid var(--border-soft); background: #fff; color: var(--text-muted); font-family: var(--font-heading); font-weight: 700; font-size: 0.85rem; cursor: pointer; transition: all 0.15s; }
+    /* Text-Inputs (konto.css hat nur .form-select; .text-input lebt sonst in formkit.css) */
+    .text-input { width: 100%; padding: 13px 15px; border: 1.5px solid var(--border-soft); border-radius: 14px; font-family: var(--font-body); font-size: 1rem; color: var(--navy); background: #fff; transition: border-color 0.2s, box-shadow 0.2s; }
+    .text-input:focus { border-color: var(--mint); box-shadow: 0 0 0 3px var(--accent-soft); outline: none; }
+    .text-input::placeholder { color: var(--text-muted); opacity: 0.7; }
+    body.dark-mode .text-input { background: #2A3242; color: var(--text-dark); }
+
+    /* Wochentag-Picker (Planen) — 7 Spalten, passt immer in eine Reihe */
+    .weekday-picker { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; margin: 4px 0 6px; }
+    .wd-btn { min-width: 0; min-height: 44px; padding: 8px 2px; border-radius: 14px; border: 1.5px solid var(--border-soft); background: #fff; color: var(--text-muted); font-family: var(--font-heading); font-weight: 700; font-size: 0.85rem; cursor: pointer; transition: all 0.15s; }
     .wd-btn:hover { border-color: var(--mint); color: var(--mint); }
     .wd-btn.is-on { background: var(--mint); border-color: var(--mint); color: #fff; }
     .wd-btn:focus-visible { outline: 3px solid var(--lila); outline-offset: 2px; }
     body.dark-mode .wd-btn { background: #2A3242; }
 
     /* Wochenplan-Raster (Übersicht) */
-    .weekplan-grid { display: grid; grid-template-columns: repeat(7, minmax(120px, 1fr)); gap: 10px; overflow-x: auto; padding-bottom: 6px; -webkit-overflow-scrolling: touch; }
+    .weekplan-grid { display: grid; grid-template-columns: repeat(7, minmax(120px, 1fr)); gap: 10px; overflow-x: auto; padding-bottom: 6px; -webkit-overflow-scrolling: touch; scroll-behavior: smooth; }
     .weekplan-col { background: var(--bg-card); border: 1px solid var(--border-soft); border-radius: 16px; padding: 10px 8px; min-height: 120px; }
+    .weekplan-col.is-today { border: 2px solid var(--mint); box-shadow: 0 0 0 3px var(--accent-soft); }
+    .weekplan-col.is-today .weekplan-day { color: var(--mint-dark, var(--mint)); }
     .weekplan-day { font-family: var(--font-heading); font-weight: 700; font-size: 0.85rem; color: var(--navy); text-align: center; padding-bottom: 8px; margin-bottom: 8px; border-bottom: 1px solid var(--border-soft); }
     .weekplan-chip { display: block; background: var(--accent-soft); border: 1px solid rgba(47,184,166,0.3); border-radius: 12px; padding: 8px 10px; margin-bottom: 8px; font-size: 0.78rem; line-height: 1.35; color: var(--navy); }
     .weekplan-chip .wp-persona { font-weight: 700; display: block; }
@@ -185,6 +193,7 @@
     /* Aufgaben-Formular Typ-Chips */
     .type-chips { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 6px; }
     .type-chip { display: inline-flex; align-items: center; gap: 7px; padding: 10px 16px; border-radius: 999px; border: 1.5px solid var(--border-soft); background: #fff; color: var(--text-muted); font-weight: 700; font-size: 0.9rem; cursor: pointer; transition: all 0.15s; }
+    .type-chip svg { width: 16px; height: 16px; flex-shrink: 0; }
     .type-chip.is-on { background: var(--mint); border-color: var(--mint); color: #fff; }
     .type-chip:focus-visible { outline: 3px solid var(--lila); outline-offset: 2px; }
     body.dark-mode .type-chip { background: #2A3242; }
@@ -192,6 +201,12 @@
     /* Zugewiesene / geplante Listen-Items mit Aktionen */
     .elt-item { display: flex; align-items: center; gap: 12px; padding: 14px; border: 1px solid var(--border-soft); border-radius: 16px; background: var(--bg-card); margin-bottom: 10px; }
     .elt-item .elt-item-emoji { font-size: 1.6rem; flex-shrink: 0; line-height: 1; }
+    /* Icon-Box (Lucide-SVG) für Listen-Items ohne Cover */
+    .elt-item-icon { width: 46px; height: 46px; border-radius: 12px; flex-shrink: 0; background: var(--accent-soft); color: var(--mint-dark, var(--mint)); display: inline-flex; align-items: center; justify-content: center; }
+    .elt-item-icon svg { width: 22px; height: 22px; }
+    /* Mini-Cover für Story-Items (mit Emoji-Fallback) */
+    .elt-thumb { position: relative; width: 46px; height: 58px; border-radius: 10px; overflow: hidden; flex-shrink: 0; background: var(--accent-soft); display: inline-flex; align-items: center; justify-content: center; font-size: 1.4rem; box-shadow: 0 2px 6px rgba(43,49,64,0.10); }
+    .elt-thumb img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
     .elt-item .elt-item-body { flex: 1; min-width: 0; }
     .elt-item .elt-item-title { font-weight: 700; color: var(--navy); }
     .elt-item .elt-item-meta { font-size: 0.8rem; color: var(--text-muted); margin-top: 2px; }
@@ -205,6 +220,10 @@
     /* Kleiner sekundärer Button + Assign-Button */
     .btn-assign { border: 1.5px solid var(--mint); background: var(--accent-soft); color: var(--mint-dark, var(--mint)); border-radius: 999px; padding: 8px 16px; font-weight: 700; font-size: 0.82rem; cursor: pointer; white-space: nowrap; transition: all 0.15s; }
     .btn-assign:hover { background: var(--mint); color: #fff; }
+    .btn-assign:focus-visible { outline: 3px solid var(--lila); outline-offset: 2px; }
+    /* Bereits zugewiesen: ruhiger Bestätigungs-Chip statt Button */
+    .pill-done { display: inline-flex; align-items: center; gap: 5px; border-radius: 999px; padding: 8px 14px; font-weight: 700; font-size: 0.82rem; white-space: nowrap; background: var(--accent-soft); color: var(--mint-dark, var(--mint)); }
+    .pill-done svg { width: 14px; height: 14px; }
 
     /* Formular-Layout */
     .elt-form-row { margin-bottom: 14px; }
@@ -217,14 +236,15 @@
     .child-details > summary::-webkit-details-marker { display: none; }
     .child-details > summary::before { content: '＋'; font-weight: 700; }
     .child-details[open] > summary::before { content: '－'; }
-    .child-energy-row { display: flex; align-items: center; gap: 10px; margin: 10px 0; }
-    .child-energy-row .cer-cells { display: flex; gap: 5px; }
-    .cer-cell { width: 26px; height: 26px; border-radius: 8px; display: inline-flex; align-items: center; justify-content: center; font-size: 0.9rem; }
+    .cer-cell { border-radius: 8px; display: inline-flex; align-items: center; justify-content: center; }
     .cer-cell.energy-hoch { background: rgba(47,184,166,0.2); }
     .cer-cell.energy-mittel { background: rgba(255,217,90,0.28); }
     .cer-cell.energy-niedrig { background: rgba(125,106,230,0.2); }
-    .child-statline { display: flex; gap: 16px; flex-wrap: wrap; font-size: 0.85rem; color: var(--text-muted); margin-top: 8px; }
-    .child-statline strong { color: var(--navy); }
+
+    /* Kompakte Statistik-Kacheln (Wochenplan): auch mobil 3 Spalten */
+    .elt-wrap .stats-grid { grid-template-columns: repeat(3, 1fr); gap: 10px; }
+    .elt-wrap .stat-card { padding: 18px 10px; }
+    .elt-wrap .stat-number { font-size: 1.6rem; }
 
     /* --- Übersicht: „Einblicke für …" (pro Kind) --- */
     /* Kind-Auswahl als Avatar-Tabs (Segment-Leiste) */
@@ -242,11 +262,12 @@
     .insight-title { font-family: var(--font-heading); font-size: 1.5rem; color: var(--navy); margin: 0; line-height: 1.15; }
     .insight-sub { color: var(--text-muted); font-size: 0.95rem; line-height: 1.5; margin: 4px 0 0; }
 
-    /* Energie-Grafik (Tages-Icons) */
-    .insight-energy { display: flex; gap: 8px; flex-wrap: wrap; align-items: flex-end; padding: 4px 0 2px; }
-    .insight-energy .ie-day { display: flex; flex-direction: column; align-items: center; gap: 6px; flex: 1 0 auto; min-width: 40px; }
-    .insight-energy .cer-cell { width: 40px; height: 40px; border-radius: 12px; display: inline-flex; align-items: center; justify-content: center; font-size: 1.3rem; }
-    .energy-note { margin: 14px 0 0; color: var(--text-muted); font-size: 0.92rem; line-height: 1.55; }
+    /* Energie-Grafik (Tages-Icons) — 7 Spalten, passt immer in eine Reihe */
+    .insight-energy { display: grid; grid-template-columns: repeat(7, 1fr); gap: 6px; padding: 4px 0 2px; }
+    .insight-energy .ie-day { display: flex; flex-direction: column; align-items: center; gap: 6px; min-width: 0; }
+    .insight-energy .cer-cell { width: 100%; max-width: 46px; aspect-ratio: 1 / 1; height: auto; border-radius: 12px; display: inline-flex; align-items: center; justify-content: center; font-size: 1.25rem; }
+    .insight-energy .ie-day.is-today .chart-day { color: var(--mint-dark, var(--mint)); font-weight: 700; }
+    .energy-note { margin: 14px 0 0; padding: 10px 14px; border-radius: 12px; background: var(--accent-soft); border-left: 3px solid var(--mint); color: var(--navy); font-size: 0.92rem; line-height: 1.55; }
     .energy-note strong { color: var(--navy); }
 
     /* Empfehlungs-Regal (Cover) */
