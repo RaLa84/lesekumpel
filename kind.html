@@ -665,9 +665,17 @@
         function completeTask(t, originEl) {
             if (!t || t.done) return;
             t.done = true; t.doneAt = new Date().toISOString();
-            var patch = { dailyTasks: child.dailyTasks };
-            if (t.stat) patch[t.stat] = (child[t.stat] || 0) + 1;
-            child = Konto.updateChild(child.id, patch);
+            var isElt = typeof t.id === 'string' && t.id.indexOf('at-') === 0;
+            if (isElt) {
+                // Eltern-Aufgabe: im assignedTasks-Array persistieren; Lesen zählt als gelesen.
+                Konto.updateTask(child.id, t.id, { done: true, doneAt: t.doneAt });
+                if (t.type === 'read') Konto.updateChild(child.id, { storiesRead: (child.storiesRead || 0) + 1 });
+                child = Konto.getActiveChild();
+            } else {
+                var patch = { dailyTasks: child.dailyTasks };
+                if (t.stat) patch[t.stat] = (child[t.stat] || 0) + 1;
+                child = Konto.updateChild(child.id, patch);
+            }
             var ruhe = child.energy.current === 'niedrig';
             if (!ruhe) KontoFX.confetti(originEl, { count: 70 });
             KontoFX.sparkleBurst(originEl);
@@ -719,6 +727,10 @@
             } else {
                 // Normal: reguläre Tagesaufgaben (ohne die Favoriten-Aufgaben)
                 tasks = ((child.dailyTasks && child.dailyTasks.tasks) || []).filter(function (t) { return !FAV_IDS[t.id]; });
+                // Von Eltern zugewiesene Aufgaben voranstellen. Nur im vollen Modus —
+                // bei niedriger/mittlerer Energie bleibt es beim Kein-Druck-Prinzip.
+                var elt = (child.assignedTasks || []).filter(function (t) { return !t.done; });
+                tasks = elt.concat(tasks);
                 setHomeTitle('Deine Mission');
                 note.textContent = 'Nur wenn du magst.';
             }
@@ -729,9 +741,11 @@
             list.innerHTML = tasks.map(function (t, i) {
                 var acc = TASK_ACC[i % TASK_ACC.length];
                 var thumb = t.storyPath ? '<img src="' + esc(storyThumb(t.storyPath)) + '" alt="" onerror="this.remove()">' : '';
+                var isElt = typeof t.id === 'string' && t.id.indexOf('at-') === 0;
+                var eltBadge = isElt ? '<span style="display:inline-block;font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em;color:#fff;background:var(--salmon,#F97352);border-radius:999px;padding:2px 8px;margin-bottom:3px;">Von Mama &amp; Papa</span><br>' : '';
                 return '<div class="task-card ' + acc + (t.done ? ' is-done' : '') + '" data-task-id="' + esc(t.id) + '">' +
                     '<span class="task-emoji" aria-hidden="true">' + t.emoji + thumb + '</span>' +
-                    '<span class="task-body"><span class="task-title">' + esc(t.title) + '</span>' +
+                    '<span class="task-body"><span class="task-title">' + eltBadge + esc(t.title) + '</span>' +
                     '<span class="task-reward"><svg class="tr-star" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2.5l2.95 5.98 6.6.96-4.78 4.66 1.13 6.57L12 18.6l-5.9 3.07 1.13-6.57L2.45 9.44l6.6-.96z"/></svg>' + t.stars + '</span></span>' +
                     '<button type="button" class="task-check" aria-label="' + (t.done ? 'Erledigt' : 'Als erledigt abhaken') + '">&#10003;</button>' +
                     '</div>';

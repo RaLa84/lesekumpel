@@ -136,9 +136,75 @@
     return c.laute;
   }
 
+  /* ---------- ELTERN-AUFGABEN (am Kind: child.assignedTasks[]) ----------
+     Von Eltern zugewiesene Aufgaben ("Lies diesen Text", "Übe den Ei-Laut",
+     "Hör diese Geschichte"). Liegen am Kind (konsistent mit dailyTasks/laute/
+     library) und werden in kind.html den Tagesaufgaben vorangestellt.
+     Schema: { id:'at-…', type:'read'|'listen'|'laut', title, emoji,
+               storyPath, lautId, stars, note, createdAt, done, doneAt } */
+  function getTasks(childId) {
+    var c = getChild(childId);
+    return (c && c.assignedTasks) ? c.assignedTasks : [];
+  }
+  function addTask(childId, task) {
+    var list = getTasks(childId).slice();
+    if (!task.id) task.id = 'at-' + Date.now() + '-' + Math.floor(Math.random() * 1000);
+    if (task.done == null) task.done = false;
+    if (task.doneAt == null) task.doneAt = null;
+    if (!task.createdAt) task.createdAt = todayStr();
+    list.push(task);
+    updateChild(childId, { assignedTasks: list });
+    return task;
+  }
+  function updateTask(childId, taskId, patch) {
+    var list = getTasks(childId).map(function (t) {
+      if (t.id !== taskId) return t;
+      for (var k in patch) { if (patch.hasOwnProperty(k)) t[k] = patch[k]; }
+      return t;
+    });
+    updateChild(childId, { assignedTasks: list });
+    return getTasks(childId).filter(function (t) { return t.id === taskId; })[0] || null;
+  }
+  function removeTask(childId, taskId) {
+    var list = getTasks(childId).filter(function (t) { return t.id !== taskId; });
+    updateChild(childId, { assignedTasks: list });
+  }
+
+  /* ---------- STORY-PLÄNE (global: lk:storyPlans) ----------
+     Geplante Geschichten pro Kind an bestimmten Wochentagen.
+     ACHTUNG: reiner UI-Prototyp — es gibt KEINEN clientseitigen Scheduler und
+     KEINE echte Auto-Generierung. Ein echter Lauf liefe später über den
+     n8n-Webhook /webhook/lesekumpel-story. Hier nur Speicherung + Anzeige.
+     Schema: { id:'sp-…', childId, persona, neurotyp, genre, kurzbeschreibung,
+               bildstil, weekdays:[1..7] (ISO 1=Mo…7=So), active, createdAt } */
+  function getStoryPlans() { return read('storyPlans', []); }
+  function setStoryPlans(arr) { write('storyPlans', arr || []); }
+  function addStoryPlan(plan) {
+    var arr = getStoryPlans();
+    if (!plan.id) plan.id = 'sp-' + Date.now() + '-' + Math.floor(Math.random() * 1000);
+    if (plan.active == null) plan.active = true;
+    if (!plan.createdAt) plan.createdAt = todayStr();
+    if (!plan.weekdays) plan.weekdays = [];
+    arr.push(plan);
+    setStoryPlans(arr);
+    return plan;
+  }
+  function updateStoryPlan(id, patch) {
+    var arr = getStoryPlans().map(function (p) {
+      if (p.id !== id) return p;
+      for (var k in patch) { if (patch.hasOwnProperty(k)) p[k] = patch[k]; }
+      return p;
+    });
+    setStoryPlans(arr);
+    return getStoryPlans().filter(function (p) { return p.id === id; })[0] || null;
+  }
+  function removeStoryPlan(id) {
+    setStoryPlans(getStoryPlans().filter(function (p) { return p.id !== id; }));
+  }
+
   /* ---------- RESET (Dev/Prototyp) ---------- */
   function reset() {
-    ['parent', 'children', 'activeChildId', 'onboardingDone'].forEach(remove);
+    ['parent', 'children', 'activeChildId', 'onboardingDone', 'storyPlans'].forEach(remove);
     // formkit-Autosaves ebenfalls leeren
     try {
       var kill = [];
@@ -245,6 +311,13 @@
         lastActive: '19. März 2026',
         library: cloneArr(DEMO_CONTENT[1].library),
         recommendations: cloneArr(DEMO_CONTENT[1].recommendations),
+        assignedTasks: [
+          { id: 'at-seed-1', type: 'read', title: 'Lies: Die Schatzkarte im Garten', emoji: '🗺️',
+            storyPath: 'demo-texte/die-schatzkarte-im-garten-1ub9.html', lautId: null,
+            stars: 5, note: 'Nimm dir Zeit — die Karte ist knifflig!', createdAt: '2026-07-01', done: false, doneAt: null },
+          { id: 'at-seed-2', type: 'laut', title: 'Übe den Sch-Laut', emoji: '🔤',
+            storyPath: null, lautId: 'sch', stars: 3, note: '', createdAt: '2026-07-01', done: false, doneAt: null }
+        ],
         friends: ['Max', 'Sophie', 'Tim']
       },
       {
@@ -272,6 +345,18 @@
     ]);
 
     setActiveChild(1);
+
+    // Demo-Story-Pläne (reiner UI-Prototyp, siehe getStoryPlans)
+    if (!getStoryPlans().length) {
+      setStoryPlans([
+        { id: 'sp-seed-1', childId: 1, persona: 'Mia Mitte', neurotyp: 'LRS',
+          genre: 'Tiere', kurzbeschreibung: 'Ein kleiner Fuchs entdeckt den Wald und findet neue Freunde.',
+          bildstil: 'freundlich-bunt', weekdays: [1, 4], active: true, createdAt: '2026-07-01' },
+        { id: 'sp-seed-2', childId: 2, persona: 'Pip Punkt', neurotyp: 'ADHS',
+          genre: 'Fahrzeuge', kurzbeschreibung: 'Ein schnelles Rennauto beim großen Wettrennen.',
+          bildstil: 'dynamisch-comic', weekdays: [3, 6], active: true, createdAt: '2026-07-01' }
+      ]);
+    }
     // onboardingDone bleibt false: Seed ist Demo, kein echtes Onboarding
   }
 
@@ -310,6 +395,11 @@
     isOnboarded: isOnboarded, setOnboarded: setOnboarded,
     // Laut-Lernpfad
     getActiveLaute: getActiveLaute,
+    // Eltern-Aufgaben (am Kind)
+    getTasks: getTasks, addTask: addTask, updateTask: updateTask, removeTask: removeTask,
+    // Story-Pläne (global, UI-Prototyp)
+    getStoryPlans: getStoryPlans, setStoryPlans: setStoryPlans, addStoryPlan: addStoryPlan,
+    updateStoryPlan: updateStoryPlan, removeStoryPlan: removeStoryPlan,
     // Lesehilfen
     deriveReadingHelp: deriveReadingHelp, blankReadingHelp: blankReadingHelp,
     // Lifecycle
