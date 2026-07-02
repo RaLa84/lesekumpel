@@ -76,14 +76,6 @@
   }
 
   /* ================= START / DASHBOARD ================= */
-  function energyCells(c) {
-    var hist = (c.energyHistory || []).slice(-7);
-    if (!hist.length) return '<span class="child-meta">Noch keine Check-ins</span>';
-    return '<span class="cer-cells">' + hist.map(function (e) {
-      var m = ENERGY_META[e] || ENERGY_META.mittel;
-      return '<span class="cer-cell ' + m.cls + '" title="' + m.label + '">' + m.e + '</span>';
-    }).join('') + '</span>';
-  }
   function weekChart(c) {
     var wa = c.weekActivity || [0, 0, 0, 0, 0, 0, 0];
     var maxA = Math.max.apply(null, wa.concat([1]));
@@ -119,51 +111,81 @@
       '<h4 class="card-h3" style="font-size:0.95rem;margin:16px 0 2px;">Lesehilfen</h4>' + rows +
       '</details>';
   }
+  function storySlug(path) { return String(path || '').split('/').pop().replace(/\.html$/, ''); }
+  function storyThumb(path) { return path ? 'bilder/' + storySlug(path) + '-1.png' : ''; }
+  function interestLabels(c) {
+    var map = {}; INTEREST_CATALOG.forEach(function (it) { map[it[0]] = it[2]; });
+    return (c.interests || []).map(function (i) { return map[i] || i; });
+  }
+  // Kind-Auswahl als Avatar-Tabs (Segment-Leiste)
+  function childTabs() {
+    var kids = Konto.getChildren(), act = Konto.getActiveChildId();
+    return '<div class="child-tabs" role="tablist" aria-label="Kind auswählen">' + kids.map(function (c) {
+      var av = c.avatar || {}, on = c.id === act;
+      return '<button type="button" class="child-tab' + (on ? ' is-active' : '') + '" role="tab" aria-selected="' + (on ? 'true' : 'false') + '" onclick="Eltern.switchChild(' + c.id + ')">' +
+        '<span class="ct-avatar" style="background:' + esc(av.bgColor || '#ffe0dc') + '">' + esc(av.base || '🦊') + '</span>' +
+        '<span class="ct-name">' + esc(c.name) + '</span></button>';
+    }).join('') + '</div>';
+  }
+  // Energie der letzten 7 Tage mit Tages-Labels
+  function energyDayCells(c) {
+    var hist = (c.energyHistory || []).slice(-7);
+    if (!hist.length) return '<p class="child-meta">Noch keine Energie-Check-ins.</p>';
+    return '<div class="insight-energy">' + hist.map(function (e, i) {
+      var m = ENERGY_META[e] || ENERGY_META.mittel;
+      return '<div class="ie-day"><span class="cer-cell ' + m.cls + '" title="' + m.label + '">' + m.e + '</span><span class="chart-day">' + (DAYS[i] || '') + '</span></div>';
+    }).join('') + '</div>';
+  }
+  // Menschenlesbarer Energie-Hinweis (müde Tage benennen)
+  function energyNote(c) {
+    var hist = (c.energyHistory || []).slice(-7);
+    if (!hist.length) return 'Sobald ' + esc(c.name) + ' die App startet, siehst du hier den Energie-Verlauf.';
+    var tired = [];
+    hist.forEach(function (e, i) { if (e === 'niedrig') tired.push(DAYS[i]); });
+    if (!tired.length) return esc(c.name) + ' war diese Woche gut in Balance. 🌿';
+    var d = tired.length === 1 ? 'Am ' + tired[0] : 'An ' + tired.slice(0, -1).join(', ') + ' und ' + tired[tired.length - 1];
+    return d + ' brauchte ' + esc(c.name) + ' mehr Ruhe — das ist völlig okay.';
+  }
   function renderStart() {
-    var p = Konto.getParent() || {}, kids = Konto.getChildren();
-    var totalRead = kids.reduce(function (s, c) { return s + (c.storiesRead || 0); }, 0);
-    var openTasks = kids.reduce(function (s, c) { return s + ((c.assignedTasks || []).filter(function (t) { return !t.done; }).length); }, 0);
-    var html =
-      '<div class="dashboard-card"><div class="account-header" style="display:flex;align-items:center;gap:14px;">' +
-        '<div class="account-avatar-lg" style="font-size:2.4rem;">' + esc(p.emoji || '🧑') + '</div>' +
-        '<div><h2 style="margin:0;font-family:var(--font-heading);">' + esc(p.name || 'Elternkonto') + '</h2>' +
-        '<p class="child-meta" style="margin:2px 0 0;">' + esc(p.email || 'Prototyp-Konto') + '</p></div></div></div>' +
-      '<div class="stats-grid">' +
-        '<div class="stat-card"><span class="stat-number">' + kids.length + '</span><span class="stat-label">Kinder</span></div>' +
-        '<div class="stat-card"><span class="stat-number">' + totalRead + '</span><span class="stat-label">Geschichten gelesen</span></div>' +
-        '<div class="stat-card"><span class="stat-number">' + openTasks + '</span><span class="stat-label">Offene Aufgaben</span></div>' +
-      '</div>' +
-      '<h2 class="card-h3" style="margin:22px 0 12px;">Deine Kinder</h2>';
+    var c = Konto.getActiveChild();
+    if (!c) { document.getElementById('elt-start-content').innerHTML = '<div class="info-card">Noch kein Kind angelegt. Leg im Onboarding los.</div>'; return; }
+    var av = c.avatar || {};
+    var totalRead = (c.weekActivity || []).reduce(function (s, v) { return s + v; }, 0);
 
-    html += kids.map(function (c) {
-      var av = c.avatar || {};
-      var cur = ENERGY_META[c.energy && c.energy.current] || ENERGY_META.mittel;
-      return '<div class="dashboard-card">' +
-        '<div style="display:flex;align-items:center;gap:14px;">' +
-          '<div class="child-avatar" style="background:' + esc(av.bgColor || '#ffe0dc') + '">' + esc(av.base || '🦊') + '</div>' +
-          '<div style="flex:1;min-width:0;"><div class="child-name" style="font-weight:700;font-size:1.15rem;">' + esc(c.name) + '</div>' +
-          '<span class="lesestufe-badge">Phase ' + (c.level ? c.level.phase : '–') + ' · ' + esc(c.level ? c.level.label : '') + '</span></div>' +
-        '</div>' +
-        '<div class="child-energy-row"><span style="font-size:1.6rem;">' + cur.e + '</span>' +
-          '<div><div style="font-weight:700;">' + cur.label + '</div>' +
-          '<div class="child-meta">Letzte Tage: </div></div>' + energyCells(c) + '</div>' +
-        weekChart(c) +
-        '<div class="child-statline">' +
-          '<span>⭐ <strong>' + computeStars(c) + '</strong> Sterne</span>' +
-          '<span>📖 <strong>' + (c.storiesRead || 0) + '</strong> gelesen</span>' +
-          '<span>Zuletzt aktiv: <strong>' + esc(c.lastActive || '–') + '</strong></span>' +
-        '</div>' +
-        childDetails(c) +
+    // 1) Kind-Auswahl + Kopf
+    var html = childTabs() +
+      '<div class="insight-head">' +
+        '<div class="child-avatar" style="background:' + esc(av.bgColor || '#ffe0dc') + '">' + esc(av.base || '🦊') + '</div>' +
+        '<div><h2 class="insight-title">Einblicke für ' + esc(c.name) + '</h2>' +
+        '<p class="insight-sub">So erlebt ' + esc(c.name) + ' Lesen gerade — ohne Druck und mit Raum für den eigenen Weg.</p></div>' +
       '</div>';
-    }).join('');
 
-    // Kinder verwalten: neues Kind hinzufügen
-    html += '<div class="dashboard-card"><h3 class="card-h3">Kind hinzufügen</h3>' +
-      '<div class="elt-form">' +
-        '<div class="elt-form-row"><label for="nc-name">Name</label><input type="text" id="nc-name" class="text-input" maxlength="30" placeholder="z. B. Emma"></div>' +
-        '<div class="elt-form-row"><label for="nc-age">Alter</label><input type="number" id="nc-age" class="text-input" min="4" max="12" placeholder="7"></div>' +
-        '<button type="button" class="btn-primary" onclick="Eltern.addChild()">Kind anlegen</button>' +
-      '</div></div>';
+    // 2) Grafik: Energie / Batterie
+    html += '<div class="dashboard-card"><h3 class="card-h3">Wie geht es ' + esc(c.name) + '?</h3>' +
+      energyDayCells(c) +
+      '<p class="energy-note">' + energyNote(c) + '</p></div>';
+
+    // 3) Grafik: Leseaktivität
+    html += '<div class="dashboard-card"><h3 class="card-h3">Leseaktivität</h3>' +
+      weekChart(c) +
+      '<p class="energy-note">In den letzten 7 Tagen: <strong>' + totalRead + '</strong> ' + (totalRead === 1 ? 'Geschichte' : 'Geschichten') + ' gelesen.</p></div>';
+
+    // 4) Empfehlungs-Regal
+    var recs = (c.recommendations || []).slice(0, 6);
+    var ints = interestLabels(c);
+    var shelf = recs.length
+      ? '<p class="insight-sub" style="margin-bottom:12px;">' + (ints.length ? 'Passend zu ' + esc(c.name) + 's Lieblingswelten: ' + esc(ints.join(', ')) : 'Frisch für ' + esc(c.name) + ' ausgewählt') + '.</p>' +
+        '<div class="rec-shelf">' + recs.map(function (r) {
+          return '<div class="rc-cover"><div class="rc-thumb"><span class="rc-emoji">' + esc(r.icon || '📖') + '</span>' +
+            (r.path ? '<img class="rc-img" src="' + esc(storyThumb(r.path)) + '" alt="" onerror="this.remove()">' : '') +
+            '</div><span class="rc-title">' + esc(r.title) + '</span></div>';
+        }).join('') + '</div>' +
+        '<button type="button" class="btn-assign" style="margin-top:14px;" onclick="Eltern.goEmpf()">Alle Empfehlungen ansehen</button>'
+      : '<p class="child-meta">Noch keine Empfehlungen — sobald ' + esc(c.name) + ' liest, lernen wir dazu.</p>';
+    html += '<div class="dashboard-card"><h3 class="card-h3">Geschichten, die ' + esc(c.name) + ' mögen könnte</h3>' + shelf + '</div>';
+
+    // 5) Interessen & Lesehilfen (bewahrt)
+    html += '<div class="dashboard-card">' + childDetails(c) + '</div>';
 
     document.getElementById('elt-start-content').innerHTML = html;
   }
@@ -380,26 +402,7 @@
       Konto.updateChild(cid, { readingHelp: help });
     },
     toggleNoDemand: function (cid, on) { Konto.updateChild(cid, { noDemandMode: !!on }); },
-    addChild: function () {
-      var name = (document.getElementById('nc-name').value || '').trim();
-      var age = parseInt(document.getElementById('nc-age').value, 10) || 6;
-      if (!name) { toast('Bitte gib einen Namen ein. 🙂'); return; }
-      Konto.addChild({
-        name: name, age: age,
-        avatar: { base: '🐨', bgColor: '#e8f5e9', accessory: '' },
-        interests: [],
-        level: { phase: 1, sub: '1.1', label: 'Der Start', selfAssessed: 'anfaenger', miniTestScore: 0 },
-        needs: [], readingHelp: Konto.deriveReadingHelp([]),
-        energy: { current: 'mittel', checkedInAt: '' },
-        laute: { fokus: null, fortschritt: {} },
-        noDemandMode: true, rights: 'nur-lesen',
-        storiesRead: 0, quizzesSolved: 0, storiesRated: 0,
-        weekActivity: [0, 0, 0, 0, 0, 0, 0], energyHistory: [],
-        lastActive: 'neu', library: [], recommendations: [], assignedTasks: [], friends: []
-      });
-      toast('„' + name + '" wurde angelegt! ✨');
-      renderStart();
-    },
+    goEmpf: function () { showSection('empfehlungen'); },
     assignRec: function (recId) {
       var c = Konto.getActiveChild();
       var r = (c.recommendations || []).filter(function (x) { return x.id === recId; })[0];
