@@ -4,13 +4,12 @@
    Reines Daten-Modul (kein DOM): 5-Phasen-Modell aus
    docs/leseapp_konzeption.md ("Der Start" → "Der Profi").
 
-   Ausbaustufe "visueller Pfad + Laute live":
-   - Nur Lektion 2.1 (Sonderlaute) ist voll funktional (lautlese.js).
-   - Alle anderen Lektionen zeigen ein "Kommt bald"-Sheet.
-   - Status wird NUR GELESEN (child.level, child.laute) — keine
-     eigene Persistenz. Später: echter Lektionsfortschritt als
-     child.lernpfad = { done: { '1.1': '2026-07-02', … } };
-     lessonStatus() würde dann zuerst dort nachsehen.
+   Alle Lektionen sind spielbar: 2.1 (Sonderlaute) über lautlese.js,
+   alle anderen über uebungen.js + uebungen-data.js. Der Status
+   kombiniert Einstufung (child.level.sub) und echten Übungs-
+   fortschritt (child.lernpfad, geschrieben von uebungen.js):
+   done = geübt ODER laut Einstufung schon vorbei; locked ist rein
+   visuell ("noch nicht dran") — Antippen öffnet trotzdem die Übung.
 
    Exponiert window.Lernpfad.
    ============================================================ */
@@ -19,9 +18,9 @@
 
   /* ---------- 5 PHASEN / 17 LEKTIONEN ----------
      id-Konvention wie child.level.sub ('3.1'). kind:
-     'top100' = Sheet mit Wortfamilien aus der CSV,
+     'top100' = Wortkarten-Runden aus der CSV (uebungen.js),
      'laute'  = live (bestehendes Meine-Laute-Feature),
-     'soon'   = "Kommt bald"-Sheet mit preview-Text. */
+     'uebung' = Items aus uebungen-data.js (uebungen.js). */
   var PHASES = [
     {
       id: 1, title: 'Der Start', farbe: 'var(--salmon)', farbeSoft: 'rgba(249,115,82,0.14)',
@@ -36,11 +35,11 @@
       motto: 'Knifflige Laute und lange Wörter',
       lessons: [
         { id: '2.1', title: 'Sonderlaute', subtitle: 'Sch, ei, au & Co.', icon: 'audio-lines', kind: 'laute' },
-        { id: '2.2', title: 'Stolpersteine', subtitle: 'Schwierige Wörter meistern', icon: 'footprints', kind: 'soon',
+        { id: '2.2', title: 'Stolpersteine', subtitle: 'Schwierige Wörter meistern', icon: 'footprints', kind: 'uebung',
           preview: 'Manche Wörter sehen komisch aus — zum Beispiel „Fuchs" oder „Quatsch". Hier springst du über alle Stolperwörter, bis keins dich mehr aufhält.' },
-        { id: '2.3', title: 'Endungen', subtitle: '-en, -er, -chen …', icon: 'puzzle', kind: 'soon',
+        { id: '2.3', title: 'Endungen', subtitle: '-en, -er, -chen …', icon: 'puzzle', kind: 'uebung',
           preview: 'Wörter haben oft die gleichen Endstücke: -en, -er, -chen. Wenn du sie kennst, erkennst du das Ende von einem Wort blitzschnell.' },
-        { id: '2.4', title: 'Lange Wörter', subtitle: 'Zusammengesetzt & mehrsilbig', icon: 'blocks', kind: 'soon',
+        { id: '2.4', title: 'Lange Wörter', subtitle: 'Zusammengesetzt & mehrsilbig', icon: 'blocks', kind: 'uebung',
           preview: 'Feu-er-wehr-au-to! Lange Wörter sind wie Türme aus Bausteinen. Hier lernst du, sie Stück für Stück zu lesen — dann sind auch Riesenwörter leicht.' }
       ]
     },
@@ -48,13 +47,13 @@
       id: 3, title: 'Der Fluss', farbe: 'var(--yellow)', farbeSoft: 'rgba(255,217,90,0.22)',
       motto: 'Flüssig lesen wie ein Bach',
       lessons: [
-        { id: '3.1', title: 'Erzählzeit', subtitle: 'Es war einmal … (Präteritum)', icon: 'hourglass', kind: 'soon',
+        { id: '3.1', title: 'Erzählzeit', subtitle: 'Es war einmal … (Präteritum)', icon: 'hourglass', kind: 'uebung',
           preview: 'Märchen und Abenteuer erzählen von früher: „Der Drache flog davon." Hier lernst du die Erzählzeit kennen — so liest du wie im Märchenbuch.' },
-        { id: '3.2', title: 'Vorsilben', subtitle: 'ver-, be-, auf- …', icon: 'corner-down-right', kind: 'soon',
+        { id: '3.2', title: 'Vorsilben', subtitle: 'ver-, be-, auf- …', icon: 'corner-down-right', kind: 'uebung',
           preview: 'Kleine Silben am Anfang verändern das ganze Wort: laufen, weglaufen, verlaufen. Hier entdeckst du, was Vorsilben alles können.' },
-        { id: '3.3', title: 'Nachsilben', subtitle: '-ung, -heit, -keit …', icon: 'corner-down-left', kind: 'soon',
+        { id: '3.3', title: 'Nachsilben', subtitle: '-ung, -heit, -keit …', icon: 'corner-down-left', kind: 'uebung',
           preview: 'Auch am Ende können Silben zaubern: aus „frei" wird „Freiheit". Hier lernst du die wichtigsten Nachsilben kennen.' },
-        { id: '3.4', title: 'Bindewörter', subtitle: 'und, aber, weil …', icon: 'link', kind: 'soon',
+        { id: '3.4', title: 'Bindewörter', subtitle: 'und, aber, weil …', icon: 'link', kind: 'uebung',
           preview: 'Bindewörter kleben Sätze zusammen: „Ich lese gern, WEIL Geschichten spannend sind." Hier übst du die kleinen Wörter mit der großen Wirkung.' }
       ]
     },
@@ -62,13 +61,13 @@
       id: 4, title: 'Die Geschichte', farbe: 'var(--lila)', farbeSoft: 'rgba(125,106,230,0.14)',
       motto: 'Sätze, die Geschichten erzählen',
       lessons: [
-        { id: '4.1', title: 'Satzklammer', subtitle: 'Sätze mit zwei Teilen', icon: 'brackets', kind: 'soon',
+        { id: '4.1', title: 'Satzklammer', subtitle: 'Sätze mit zwei Teilen', icon: 'brackets', kind: 'uebung',
           preview: '„Ich habe den Schatz gestern im Garten GEFUNDEN." Manchmal gehören zwei Wortteile zusammen, obwohl sie weit auseinander stehen. Hier knackst du solche Sätze.' },
-        { id: '4.2', title: 'Dialoge', subtitle: 'Wörtliche Rede lesen', icon: 'messages-square', kind: 'soon',
+        { id: '4.2', title: 'Dialoge', subtitle: 'Wörtliche Rede lesen', icon: 'messages-square', kind: 'uebung',
           preview: '„Los geht\'s!", rief Mia. Hier lernst du, wer in einer Geschichte gerade spricht — und liest Dialoge wie ein Schauspieler.' },
-        { id: '4.3', title: 'Relativsätze', subtitle: 'Der Hund, der bellt …', icon: 'split', kind: 'soon',
+        { id: '4.3', title: 'Relativsätze', subtitle: 'Der Hund, der bellt …', icon: 'split', kind: 'uebung',
           preview: '„Das Mädchen, das den Drachen zähmte, hieß Juna." Eingeschobene Sätze verraten Extra-Infos. Hier lernst du, sie zu entwirren.' },
-        { id: '4.4', title: 'Vergleiche', subtitle: 'Stark wie ein Bär', icon: 'scale', kind: 'soon',
+        { id: '4.4', title: 'Vergleiche', subtitle: 'Stark wie ein Bär', icon: 'scale', kind: 'uebung',
           preview: '„Schnell wie der Blitz" — Sprache kann Bilder malen! Hier entdeckst du Vergleiche und was sie wirklich bedeuten.' }
       ]
     },
@@ -76,13 +75,13 @@
       id: 5, title: 'Der Profi', farbe: 'var(--navy)', farbeSoft: 'rgba(43,49,64,0.10)',
       motto: 'Du liest alles!',
       lessons: [
-        { id: '5.1', title: 'Synonyme', subtitle: 'Viele Wörter, eine Bedeutung', icon: 'wand-sparkles', kind: 'soon',
+        { id: '5.1', title: 'Synonyme', subtitle: 'Viele Wörter, eine Bedeutung', icon: 'wand-sparkles', kind: 'uebung',
           preview: 'Gehen, schlendern, flitzen, schleichen — für fast alles gibt es viele Wörter. Hier sammelst du Zauberwörter für deinen Wortschatz.' },
-        { id: '5.2', title: 'Redewendungen', subtitle: 'Tomaten auf den Augen?', icon: 'quote', kind: 'soon',
+        { id: '5.2', title: 'Redewendungen', subtitle: 'Tomaten auf den Augen?', icon: 'quote', kind: 'uebung',
           preview: '„Da steppt der Bär!" — aber es tanzt gar kein Bär? Hier knackst du Redewendungen und weißt, was wirklich gemeint ist.' },
-        { id: '5.3', title: 'Abstrakte Wörter', subtitle: 'Mut, Glück, Freundschaft', icon: 'cloud', kind: 'soon',
+        { id: '5.3', title: 'Abstrakte Wörter', subtitle: 'Mut, Glück, Freundschaft', icon: 'cloud', kind: 'uebung',
           preview: 'Manche Wörter kann man nicht anfassen: Mut, Glück, Freundschaft. Hier lernst du Wörter für Dinge, die man nur fühlen kann.' },
-        { id: '5.4', title: 'Sachtexte', subtitle: 'Echtes Wissen lesen', icon: 'book-open', kind: 'soon',
+        { id: '5.4', title: 'Sachtexte', subtitle: 'Echtes Wissen lesen', icon: 'book-open', kind: 'uebung',
           preview: 'Wie schlafen Delfine? Warum ist der Himmel blau? Hier liest du echte Wissens-Texte — wie ein richtiger Forscher.' }
       ]
     }
@@ -119,8 +118,9 @@
   }
 
   /* ---------- STATUS-ABLEITUNG (nur lesen) ----------
-     child.level.sub ('3.1') = aktuelle Lektion. Davor = done,
-     danach = locked (trotzdem antippbar → Sheet).
+     Vorrang: child.lernpfad.done[id] (echt geübt) → 'done'.
+     Sonst Einstufung: child.level.sub ('3.1') = aktuelle Lektion,
+     davor = done, danach = locked (rein visuell, trotzdem spielbar).
      Die Laute-Lektion hat einen eigenen Live-Status. */
   function currentSub(child) {
     var lvl = (child && child.level) || {};
@@ -136,6 +136,22 @@
     inv.forEach(function (g) { if (f[g.id] && f[g.id].mastered) mastered++; });
     return { mastered: mastered, total: inv.length };
   }
+  // Übungsfortschritt {done, total} einer Lektion aus child.lernpfad
+  // (Item-Zahl lazy aus window.UebungenData; Top-100 aus lp.top100)
+  function lessonProgress(lesson, child) {
+    var lp = (child && child.lernpfad) || {};
+    if (lesson.kind === 'top100') {
+      var t100 = lp.top100 || {};
+      var totals = t100.totals || {};
+      var total = 0;
+      for (var k in totals) if (totals.hasOwnProperty(k)) total += totals[k];
+      if (!total) total = 100; // CSV noch nie geladen
+      return { done: Object.keys(t100.words || {}).length, total: total };
+    }
+    var totalItems = (window.UebungenData && UebungenData.itemCount(lesson.id)) || 0;
+    var slot = (lp.progress || {})[lesson.id];
+    return { done: slot ? slot.items.length : 0, total: totalItems };
+  }
   function lessonStatus(lesson, child) {
     if (lesson.kind === 'laute') {
       var s = lauteStats(child);
@@ -144,19 +160,22 @@
         mastered: s.mastered, total: s.total
       };
     }
+    var prog = lessonProgress(lesson, child);
+    var lpDone = ((child && child.lernpfad) || {}).done || {};
+    if (lpDone[lesson.id]) return { state: 'done', done: prog.done, total: prog.total };
     var cur = currentSub(child);
     var id = parseFloat(lesson.id);
-    if (id < cur) return { state: 'done' };
-    if (id === cur) return { state: 'active' };
-    return { state: 'locked' };
+    var state = id < cur ? 'done' : (id === cur ? 'active' : 'locked');
+    return { state: state, done: prog.done, total: prog.total };
   }
-  // Fortschritt einer Phase 0..1 (Laute-Lektion zählt anteilig mastered/total)
+  // Fortschritt einer Phase 0..1 (Übungs-/Laute-Lektionen zählen anteilig)
   function phaseProgress(phase, child) {
     var sum = 0;
     phase.lessons.forEach(function (l) {
       var st = lessonStatus(l, child);
       if (st.state === 'done') sum += 1;
       else if (st.state === 'live' && st.total) sum += st.mastered / st.total;
+      else if (st.total) sum += Math.min(1, (st.done || 0) / st.total);
     });
     return phase.lessons.length ? sum / phase.lessons.length : 0;
   }
@@ -193,7 +212,8 @@
       cbs.forEach(function (f) { f(d); });
     }
     try {
-      fetch('Top%20100%20W%C3%B6rter.csv')
+      // no-cache: sonst klebt der Browser per Heuristik an einer alten CSV
+      fetch('Top%20100%20W%C3%B6rter.csv', { cache: 'no-cache' })
         .then(function (r) { if (!r.ok) throw new Error('http ' + r.status); return r.text(); })
         .then(function (t) { done(parseTop100(t)); })
         .catch(function () { done(null); });
@@ -205,6 +225,7 @@
     PHASES: PHASES,
     icon: icon,
     lessonStatus: lessonStatus,
+    lessonProgress: lessonProgress,
     phaseProgress: phaseProgress,
     loadTop100: loadTop100
   };

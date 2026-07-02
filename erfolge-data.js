@@ -7,8 +7,8 @@
    - In der echten App sehen Kinder NUR verdiente Plaketten
      (keine leeren Felder). erfolge.html zeigt als Mockup alle.
    - check(m) leitet aus vorhandenen Kind-Daten ab, ob eine
-     Plakette verdient ist. check: null = braucht künftigen
-     Lektionsfortschritt (child.lernpfad) → im Mockup "verborgen".
+     Plakette verdient ist: storiesRead & Co., child.laute
+     (lautlese.js) und child.lernpfad (uebungen.js).
 
    Exponiert window.Erfolge.
    ============================================================ */
@@ -53,6 +53,25 @@
     }
     var week = c.weekActivity || [];
     var activeDays = week.filter(function (n) { return n > 0; }).length;
+
+    // Lernpfad-Übungsfortschritt (geschrieben von uebungen.js)
+    var lp = c.lernpfad || {};
+    var lpDone = lp.done || {};
+    var t100 = lp.top100 || {};
+    var words = t100.words || {};
+    var totals = t100.totals || {};
+    var top100Total = 0, k;
+    for (k in totals) if (totals.hasOwnProperty(k)) top100Total += totals[k];
+    var perClass = {};
+    Object.keys(words).forEach(function (w) {
+      var kl = words[w];
+      perClass[kl] = (perClass[kl] || 0) + 1;
+    });
+    var classComplete = false;
+    for (k in totals) {
+      if (totals.hasOwnProperty(k) && totals[k] > 0 && (perClass[k] || 0) >= totals[k]) { classComplete = true; break; }
+    }
+
     return {
       storiesRead: c.storiesRead || 0,
       quizzesSolved: c.quizzesSolved || 0,
@@ -61,14 +80,27 @@
       lauteTotal: inv.length || Object.keys(laute).length,
       lautePracticed: practicedAny,
       activeDays: activeDays,
-      phase: (c.level && c.level.phase) || 1
+      phase: (c.level && c.level.phase) || 1,
+      lpDone: lpDone,
+      top100Count: Object.keys(words).length,
+      top100Total: top100Total,
+      top100ClassComplete: classComplete
     };
+  }
+  // Alle 16 Übungs-Lektionen geschafft? (2.1 Sonderlaute zählt über lauteMastered)
+  var UEBUNG_LESSONS = ['1.1', '2.2', '2.3', '2.4', '3.1', '3.2', '3.3', '3.4',
+    '4.1', '4.2', '4.3', '4.4', '5.1', '5.2', '5.3', '5.4'];
+  function allLessonsDone(m) {
+    for (var i = 0; i < UEBUNG_LESSONS.length; i++) {
+      if (!m.lpDone[UEBUNG_LESSONS[i]]) return false;
+    }
+    return true;
   }
 
   /* ---------- PLAKETTEN ----------
      phase 0 = "Immer dabei" (Lesen & Dranbleiben), 1–5 = Lernpfad-Phasen.
-     check(m) = heute berechenbar; check: null = braucht künftigen
-     Lektionsfortschritt (bleibt im Mockup gesperrt/"geheim").
+     check(m) leitet aus Kind-Daten ab (storiesRead, laute,
+     lernpfad — geschrieben von uebungen.js), ob verdient.
      gold: true = die große Abschluss-Plakette. */
   var BADGES = [
     // --- Immer dabei: Lesen & Dranbleiben ---
@@ -102,13 +134,17 @@
 
     // --- Phase 1 · Der Start (Top-100) ---
     { id: 'woerter-sammler', phase: 1, icon: 'shapes', title: 'Wörter-Sammler',
-      description: '25 der 100 wichtigsten Wörter gemeistert.', lessonId: '1.1', check: null },
+      description: '25 der 100 wichtigsten Wörter gemeistert.', lessonId: '1.1',
+      check: function (m) { return m.top100Count >= 25; } },
     { id: 'woerter-jaeger', phase: 1, icon: 'target', title: 'Wörter-Jäger',
-      description: '50 Wörter gemeistert — die Hälfte!', lessonId: '1.1', check: null },
+      description: '50 Wörter gemeistert — die Hälfte!', lessonId: '1.1',
+      check: function (m) { return m.top100Count >= 50; } },
     { id: 'hundert-held', phase: 1, icon: 'crown', title: 'Hundert-Held',
-      description: 'Alle 100 Wörter! Du kennst die wichtigsten Wörter der Welt.', lessonId: '1.1', check: null },
+      description: 'Alle 100 Wörter! Du kennst die wichtigsten Wörter der Welt.', lessonId: '1.1',
+      check: function (m) { return m.top100Total > 0 && m.top100Count >= m.top100Total; } },
     { id: 'familien-forscher', phase: 1, icon: 'users', title: 'Familien-Forscher',
-      description: 'Eine ganze Wortfamilie komplett — zum Beispiel alle Tun-Wörter.', lessonId: '1.1', check: null },
+      description: 'Eine ganze Wortfamilie komplett — zum Beispiel alle Tun-Wörter.', lessonId: '1.1',
+      check: function (m) { return m.top100ClassComplete; } },
 
     // --- Phase 2 · Der Ausbau ---
     { id: 'lauschohr', phase: 2, icon: 'ear', title: 'Lauschohr',
@@ -121,35 +157,47 @@
       description: 'Alle 13 Laute gemeistert!', lessonId: '2.1',
       check: function (m) { return m.lauteTotal > 0 && m.lauteMastered >= m.lauteTotal; } },
     { id: 'stolperstein-springer', phase: 2, icon: 'footprints', title: 'Stolperstein-Springer',
-      description: 'Über alle Stolperwörter gehüpft.', lessonId: '2.2', check: null },
+      description: 'Über alle Stolperwörter gehüpft.', lessonId: '2.2',
+      check: function (m) { return !!m.lpDone['2.2']; } },
     { id: 'endungs-entdecker', phase: 2, icon: 'puzzle', title: 'Endungs-Entdecker',
-      description: 'Die Lektion Endungen geschafft.', lessonId: '2.3', check: null },
+      description: 'Die Lektion Endungen geschafft.', lessonId: '2.3',
+      check: function (m) { return !!m.lpDone['2.3']; } },
     { id: 'wortriesen-baendiger', phase: 2, icon: 'mountain', title: 'Wortriesen-Bändiger',
-      description: 'Richtig lange Wörter gelesen — wie Feu-er-wehr-au-to!', lessonId: '2.4', check: null },
+      description: 'Richtig lange Wörter gelesen — wie Feu-er-wehr-au-to!', lessonId: '2.4',
+      check: function (m) { return !!m.lpDone['2.4']; } },
 
     // --- Phase 3 · Der Fluss ---
     { id: 'zeitreisender', phase: 3, icon: 'hourglass', title: 'Zeitreisender',
-      description: 'Erzählzeit gemeistert: Du liest jetzt wie im Märchen.', lessonId: '3.1', check: null },
+      description: 'Erzählzeit gemeistert: Du liest jetzt wie im Märchen.', lessonId: '3.1',
+      check: function (m) { return !!m.lpDone['3.1']; } },
     { id: 'wort-baumeister', phase: 3, icon: 'blocks', title: 'Wort-Baumeister',
-      description: 'Vorsilben und Nachsilben zusammengebaut.', lessonId: '3.3', check: null },
+      description: 'Vorsilben und Nachsilben zusammengebaut.', lessonId: '3.3',
+      check: function (m) { return !!m.lpDone['3.2'] && !!m.lpDone['3.3']; } },
     { id: 'satz-verbinder', phase: 3, icon: 'link', title: 'Satz-Verbinder',
-      description: 'Bindewörter-Lektion geschafft: und, aber, weil …', lessonId: '3.4', check: null },
+      description: 'Bindewörter-Lektion geschafft: und, aber, weil …', lessonId: '3.4',
+      check: function (m) { return !!m.lpDone['3.4']; } },
 
     // --- Phase 4 · Die Geschichte ---
     { id: 'satz-akrobat', phase: 4, icon: 'move', title: 'Satz-Akrobat',
-      description: 'Satzklammer und Relativsätze gemeistert.', lessonId: '4.3', check: null },
+      description: 'Satzklammer und Relativsätze gemeistert.', lessonId: '4.3',
+      check: function (m) { return !!m.lpDone['4.1'] && !!m.lpDone['4.3']; } },
     { id: 'dialog-star', phase: 4, icon: 'messages-square', title: 'Dialog-Star',
-      description: 'Wörtliche Rede wie ein Schauspieler gelesen.', lessonId: '4.2', check: null },
+      description: 'Wörtliche Rede wie ein Schauspieler gelesen.', lessonId: '4.2',
+      check: function (m) { return !!m.lpDone['4.2']; } },
     { id: 'vergleichs-dichter', phase: 4, icon: 'feather', title: 'Vergleichs-Dichter',
-      description: 'Sprachbilder und Vergleiche verstanden.', lessonId: '4.4', check: null },
+      description: 'Sprachbilder und Vergleiche verstanden.', lessonId: '4.4',
+      check: function (m) { return !!m.lpDone['4.4']; } },
 
     // --- Phase 5 · Der Profi ---
     { id: 'woerter-zauberer', phase: 5, icon: 'wand-sparkles', title: 'Wörter-Zauberer',
-      description: 'Synonyme: Für jedes Wort kennst du ein Zauberwort.', lessonId: '5.1', check: null },
+      description: 'Synonyme: Für jedes Wort kennst du ein Zauberwort.', lessonId: '5.1',
+      check: function (m) { return !!m.lpDone['5.1']; } },
     { id: 'sprichwort-schlaukopf', phase: 5, icon: 'quote', title: 'Sprichwort-Schlaukopf',
-      description: 'Redewendungen geknackt — da steppt der Bär!', lessonId: '5.2', check: null },
+      description: 'Redewendungen geknackt — da steppt der Bär!', lessonId: '5.2',
+      check: function (m) { return !!m.lpDone['5.2']; } },
     { id: 'goldener-lesekumpel', phase: 5, icon: 'award', title: 'Goldener Lesekumpel',
-      description: 'Alle Lektionen geschafft: Du kannst lesen!', gold: true, check: null }
+      description: 'Alle Lektionen geschafft: Du kannst lesen!', gold: true,
+      check: function (m) { return allLessonsDone(m) && m.lauteTotal > 0 && m.lauteMastered >= m.lauteTotal; } }
   ];
 
   function isEarned(badge, m) {

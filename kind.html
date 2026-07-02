@@ -8,7 +8,7 @@
     <meta name="robots" content="noindex">
     <link rel="icon" href="bilder/lesekumpel_logo_v2.png">
     <link rel="stylesheet" href="fonts/fonts.css">
-    <link rel="stylesheet" href="konto.css?v=20260702a">
+    <link rel="stylesheet" href="konto.css?v=20260702b">
 
     <!-- ===== A11y-Modal CSS (1:1 aus partials/a11y.html · Single Source) ===== -->
     <style>
@@ -282,6 +282,13 @@
                     <div id="laute-grid" class="laute-grid"></div>
                     <div id="laute-vorschlag" style="margin-top:24px;"></div>
                 </div>
+                <div id="lp-uebung-view" hidden>
+                    <button type="button" class="lp-back" id="lp-uebung-back">
+                        <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
+                        Zum Pfad
+                    </button>
+                    <div id="uebung-panel" style="margin-top:18px;"></div>
+                </div>
             </section>
 
         </div>
@@ -356,18 +363,6 @@
             </button>
         </div>
         <button type="button" class="btn-text akku-later" id="akku-later">Sp&auml;ter &mdash; jetzt nicht</button>
-    </div>
-
-    <!-- ===== LEKTIONS-SHEET (Lernpfad: Vorschau / "Kommt bald") ===== -->
-    <div class="sheet-backdrop" id="lesson-backdrop" hidden></div>
-    <div class="lesson-sheet" id="lesson-sheet" role="dialog" aria-modal="true" aria-labelledby="ls-title" hidden>
-        <div class="sheet-handle" aria-hidden="true"></div>
-        <div class="ls-icon" id="ls-icon" aria-hidden="true"></div>
-        <h2 class="ls-title" id="ls-title"></h2>
-        <p class="ls-text" id="ls-text"></p>
-        <div class="ls-words" id="ls-words"></div>
-        <div id="ls-soon"></div>
-        <button type="button" class="ls-btn" id="ls-close">Alles klar</button>
     </div>
 
     <!-- ===== BOTTOM-NAVIGATION ===== -->
@@ -511,8 +506,10 @@
     <script src="konto-state.js?v=20260626n"></script>
     <script src="konto-fx.js?v=20260626n"></script>
     <script src="lautlese.js?v=20260702a"></script>
-    <script src="lernpfad-data.js?v=20260702a"></script>
-    <script src="erfolge-data.js?v=20260702a"></script>
+    <script src="lernpfad-data.js?v=20260702b"></script>
+    <script src="uebungen-data.js?v=20260702b"></script>
+    <script src="uebungen.js?v=20260702b"></script>
+    <script src="erfolge-data.js?v=20260702b"></script>
     <script>
     (function () {
         'use strict';
@@ -1011,14 +1008,16 @@
             });
         }
 
-        // ================= LERNPFAD (Pfad-View + Lektions-Sheet) =================
-        // Zwei Sub-Views im selben Panel: 'path' (Phasen-Karte) und 'laute'
-        // (bestehendes Laut-Grid). Kein Routing — nur hidden-Toggles.
+        // ================= LERNPFAD (Pfad + Laute + Übungen) =================
+        // Drei Sub-Views im selben Panel: 'path' (Phasen-Karte), 'laute'
+        // (bestehendes Laut-Grid) und 'uebung' (uebungen.js). Kein Routing.
         function showLernpfadView(name) {
             var pv = document.getElementById('lp-path-view');
             var lv = document.getElementById('lp-laute-view');
+            var uv = document.getElementById('lp-uebung-view');
             if (pv) pv.hidden = name !== 'path';
             if (lv) lv.hidden = name !== 'laute';
+            if (uv) uv.hidden = name !== 'uebung';
         }
 
         function renderLernpfad() {
@@ -1037,9 +1036,13 @@
                     var st = Lernpfad.lessonStatus(l, child);
                     var badge = '', meta = '';
                     if (st.state === 'done') { badge = '<span class="lpn-badge">' + Lernpfad.icon('check') + '</span>'; meta = Lernpfad.icon('check') + ' Geschafft'; }
-                    else if (st.state === 'active') { meta = 'Du bist hier'; }
                     else if (st.state === 'live') { meta = st.mastered + '/' + st.total + ' Laute'; }
-                    else { badge = '<span class="lpn-badge lpn-badge-lock">' + Lernpfad.icon('lock') + '</span>'; }
+                    else {
+                        // Übungsfortschritt anzeigen, sobald etwas geübt wurde
+                        if (st.total && st.done > 0) meta = st.done + '/' + st.total;
+                        else if (st.state === 'active') meta = 'Du bist hier';
+                        if (st.state === 'locked') badge = '<span class="lpn-badge lpn-badge-lock">' + Lernpfad.icon('lock') + '</span>';
+                    }
                     return '<button type="button" class="lp-node is-' + st.state + '" data-lesson="' + l.id + '" data-phase="' + ph.id + '">' +
                         '<span class="lpn-icon">' + Lernpfad.icon(l.icon) + badge + '</span>' +
                         '<span class="lpn-text"><span class="lpn-title">' + esc(l.title) + '</span>' +
@@ -1063,48 +1066,46 @@
                         showLernpfadView('laute');
                         return;
                     }
-                    openLessonSheet(lesson, ph);
+                    KontoFX.sparkleBurst(el);
+                    openUebung(lesson, ph);
                 });
             });
         }
 
-        // ---- "Kommt bald"-Sheet (Muster: showGate/hideGate) ----
-        var lsSheet = document.getElementById('lesson-sheet');
-        var lsBackdrop = document.getElementById('lesson-backdrop');
-        var lsRelease = null, lsHideTimer = null;
-        function openLessonSheet(lesson, phase) {
-            lsSheet.style.setProperty('--lp-c', phase.farbe);
-            lsSheet.style.setProperty('--lp-cs', phase.farbeSoft);
-            document.getElementById('ls-icon').innerHTML = Lernpfad.icon(lesson.icon);
-            document.getElementById('ls-title').textContent = lesson.title;
-            document.getElementById('ls-text').textContent = lesson.preview || '';
-            document.getElementById('ls-soon').innerHTML =
-                '<span class="ls-soon-pill">' + Lernpfad.icon('sprout') + ' Kommt bald</span>';
-            var words = document.getElementById('ls-words');
-            words.innerHTML = '';
-            if (lesson.kind === 'top100') {
-                Lernpfad.loadTop100(function (data) {
-                    if (!data || lsSheet.hidden) return; // offline-Fallback: nur Beschreibung
-                    words.innerHTML = data.klassen.map(function (k) {
-                        return '<div class="ls-word-group"><h4>' + esc(k.name) + '</h4><div class="ls-word-chips">' +
-                            k.words.slice(0, 4).map(function (w) { return '<span class="ls-chip">' + esc(w.wort) + '</span>'; }).join('') +
-                            '</div></div>';
-                    }).join('');
-                });
-            }
-            if (lsHideTimer) { clearTimeout(lsHideTimer); lsHideTimer = null; }
-            lsSheet.hidden = false; lsBackdrop.hidden = false;
-            requestAnimationFrame(function () { lsBackdrop.classList.add('show'); lsSheet.classList.add('show'); });
-            lsRelease = KontoFX.trapFocus(lsSheet, { initial: '#ls-close', onEscape: closeLessonSheet });
+        // ---- Übungs-Sub-View (uebungen.js) ----
+        function openUebung(lesson, phase) {
+            // Plaketten-Schnappschuss VOR der Übung — Schwellen (z. B. 25 Wörter)
+            // können mitten in der Runde überschritten werden.
+            var before = {};
+            Erfolge.earnedList(child).forEach(function (b) { before[b.id] = 1; });
+            showLernpfadView('uebung');
+            window.scrollTo({ top: 0, behavior: FormKit.reducedMotion() ? 'auto' : 'smooth' });
+            Uebungen.renderExercise(document.getElementById('uebung-panel'), lesson, {
+                phase: phase,
+                onItemDone: function () { child = Konto.getActiveChild(); },
+                onComplete: function () {
+                    child = Konto.getActiveChild();
+                    var ruhe = child.energy.current === 'niedrig';
+                    if (!ruhe) KontoFX.confetti(null, { count: 80 });
+                    // Neu verdiente Plaketten feiern (gestaffelt)
+                    var delay = 400;
+                    Erfolge.earnedList(child).forEach(function (b) {
+                        if (before[b.id]) return;
+                        before[b.id] = 1;
+                        setTimeout(function () { toast('Neue Plakette: ' + b.title + '!'); }, delay);
+                        delay += 1800;
+                    });
+                    renderLernpfad();
+                    renderStart();
+                }
+            });
         }
-        function closeLessonSheet() {
-            lsSheet.classList.remove('show'); lsBackdrop.classList.remove('show');
-            if (lsRelease) { lsRelease(); lsRelease = null; }
-            lsHideTimer = setTimeout(function () { lsSheet.hidden = true; lsBackdrop.hidden = true; }, 360);
-        }
-        document.getElementById('ls-close').addEventListener('click', closeLessonSheet);
-        lsBackdrop.addEventListener('click', closeLessonSheet);
         document.getElementById('lp-back').addEventListener('click', function () { showLernpfadView('path'); });
+        document.getElementById('lp-uebung-back').addEventListener('click', function () {
+            try { window.speechSynthesis.cancel(); } catch (e) {}
+            showLernpfadView('path');
+            renderLernpfad();
+        });
 
         // Akku leer (niedrig) -> ruhiger Dunkelmodus. Transient (überschreibt Hell,
         // ohne die manuelle Theme-Wahl zu speichern); Kontrast-Wahl bleibt unangetastet.
