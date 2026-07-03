@@ -2561,6 +2561,33 @@
         /* Tafel-Umschalter: nur auf Desktop sinnvoll */
         #btn-tafel-toggle { display: none; }
         @media (min-width: 1024px) { #btn-tafel-toggle { display: inline-flex; } }
+        /* Lese-Werkzeugleiste im Desktop-Scroll als schwebende Pille (wie die
+           Autoren-Tafel) statt voller Fensterbreite; mobil bleibt full-width */
+        @media (min-width: 900px) {
+            body:not(.view-tafel) .reading-action-bar {
+                left: 50%; right: auto; transform: translateX(-50%);
+                bottom: 20px;
+                width: auto; max-width: 92vw;
+                gap: 10px;
+                border: 1px solid #D9D4CC;
+                border-radius: 999px;
+                padding: 8px 14px;
+                box-shadow: 0 10px 28px rgba(43,49,64,0.16);
+            }
+            body:not(.view-tafel) .reading-action-bar .rab-btn {
+                flex: 0 0 auto; min-width: 62px; min-height: 54px; padding: 8px 18px; border-radius: 14px;
+            }
+        }
+        /* "Weiterdenken" ergibt bei Sachtexten keinen Sinn (kein Erzähl-Weiterspinnen) */
+        #tab-weiterdenken, #panel-weiterdenken { display: none !important; }
+        /* Kurzfassung als Stichpunkte */
+        .kf-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.5em; }
+        .kf-list li { display: flex; gap: 0.55em; align-items: flex-start; }
+        .kf-list li::before { content: ''; flex: 0 0 auto; width: 0.5em; height: 0.5em; border-radius: 50%; background: #2FB8A6; margin-top: 0.55em; }
+        /* Tafel (Sachtext): Textspalte nutzt den Bildschirm besser aus */
+        @media (min-width: 1024px) {
+            body.view-tafel .main-card { grid-template-columns: 2fr 3fr; gap: 40px; max-width: 98vw; padding: 36px 40px; }
+        }
 
         /* ── Dark-Mode ── */
         body.dark-mode .sachtext-box-summary { background: rgba(255,213,79,0.12); }
@@ -2954,7 +2981,12 @@
             // (afterGroup: -1) — wie ein Wikipedia-Intro, das den Lesefluss nicht stört.
             function kurzfassungHtml() {
                 if (typeof rawSummary !== 'string' || !rawSummary.trim()) return null;
-                return '<div class="sachtext-box sachtext-box-summary"><button type="button" class="sachtext-box-head wusstest-toggle" aria-expanded="false">' + ICON_BULB + '<span>Das Wichtigste in Kürze</span>' + ICON_CHEVRON + '</button><div class="sachtext-box-body">' + words(rawSummary) + '</div></div>';
+                // Stichpunkte statt Fließtext: Zusammenfassung an Satzgrenzen splitten
+                const saetze = rawSummary.trim().split(/(?<=[.!?])\s+/).map(s => s.trim()).filter(Boolean);
+                const inhalt = saetze.length > 1
+                    ? '<ul class="kf-list">' + saetze.map(s => '<li><span>' + words(s) + '</span></li>').join('') + '</ul>'
+                    : words(rawSummary);
+                return '<div class="sachtext-box sachtext-box-summary"><button type="button" class="sachtext-box-head wusstest-toggle" aria-expanded="false">' + ICON_BULB + '<span>Das Wichtigste in Kürze</span>' + ICON_CHEVRON + '</button><div class="sachtext-box-body">' + inhalt + '</div></div>';
             }
             function lernblockHtml(ctx) {
                 let h = '';

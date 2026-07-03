@@ -93,7 +93,9 @@ template = template
   .replace(/\{\{RAW_SUMMARY_TEXT\}\}/g, JSON.stringify(data.summaryText || ''))
   .replace(/\{\{EMOJI_SUMMARY_TEXT\}\}/g, JSON.stringify(data.emojiSummaryText || ''))
   .replace(/\{\{QUIZ_DATA_JSON\}\}/g, JSON.stringify(data.quizData || []))
-  .replace(/\{\{WEITERERZAEHLEN_JSON\}\}/g, JSON.stringify(data.weitererzaehlenData || null))
+  // Weiterdenken ergibt bei Sachtexten keinen Sinn (kein Erzähl-Weiterspinnen) -> immer null,
+  // damit das Template den Tab gar nicht erst anbietet (zusätzlich per CSS versteckt)
+  .replace(/\{\{WEITERERZAEHLEN_JSON\}\}/g, 'null')
   .replace(/\{\{SCHATZSUCHE_JSON\}\}/g, JSON.stringify(data.schatzsucheData || null))
   .replace(/\{\{DICTIONARY_JSON\}\}/g, JSON.stringify(data.wortschatz || []))
   .replace(/\{\{IMAGE_POSITIONS_JSON\}\}/g, JSON.stringify(data.imagePositions || []))
