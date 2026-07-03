@@ -1,11 +1,12 @@
 // Knoten: "Bildszenen vorbereiten" — Sachtext-Workflow (Samira), v1
 // Abgeleitet aus bildszenen-vorbereiten-v2.js:
-//   - STYLE_REFS + neuer Stil "Schaubild" (text-arme Infografiken)
 //   - Stil-Lookup über prev.bildstilKey (aus "Daten vorbereiten") statt Webhook-Label
-//   - Verzweigung: bildstilKey === 'Schaubild' -> eigener Infografik-Compiler-Prompt
-//     (gleiches Szenen-JSON-Schema, damit "Szenen parsen" unverändert bleibt) und
-//     Ersatz des VISUAL LOCK durch einen DIAGRAM LOCK ohne Charaktere.
-//   - Alle anderen Stile laufen unverändert über den narrativen Compiler.
+//   - Auto-Infografik: Der Szenen-Compiler darf pro Story HÖCHSTENS EINE Szene als
+//     imageKind=diagram markieren (nur wenn das Thema es hergibt: Prozess/Vergleich/
+//     Querschnitt/Zyklus; sonst alle illustration). Diagramm-Szenen bekommen in
+//     "Szenen parsen" (szenen-parsen-sachtext-v1.js) den DIAGRAM LOCK + die
+//     Diagramm-Stiltexte statt VISUAL LOCK + User-Bildstil; im Gemini-Fallback die
+//     Schaubild-Style-Ref (diagramStyleRefUrl) statt der User-Stil-Referenz.
 const prev = $input.first().json;
 
 if (!prev.imageCount || prev.imageCount === 0) {
@@ -51,80 +52,24 @@ HARD RULES (every scene must satisfy ALL of these):
 4. paragraphIndex values are STRICTLY INCREASING across scenes (scene 1 < scene 2 < scene 3). Scenes follow the text order.`;
 
 // ════════════════════════════════════════════════════════════════════════════════
-// ZWEIG A — Schaubild: Infografik-Compiler (Sachtext)
+// Diagramm-Bausteine für die Auto-Infografik (max. 1 Szene pro Story).
+// Der DIAGRAM LOCK ersetzt für Diagramm-Szenen den charakterbasierten VISUAL LOCK
+// (eingesetzt in szenen-parsen-sachtext-v1.js).
 // ════════════════════════════════════════════════════════════════════════════════
 
-if (bildstilKey === 'Schaubild') {
-  // DIAGRAM LOCK ersetzt den charakterbasierten VISUAL LOCK: Schaubilder zeigen
-  // Konzepte, keine Figuren. "Szenen parsen" fügt diesen Lock in jeden Bild-Prompt ein.
-  const diagramLock = `DIAGRAM LOCK (applies to every panel of this set):
-This is a set of ${imageCount} schematic children's infographic panels about the non-fiction topic: "${prev.title || ''}".
-All panels share ONE consistent flat vector design system: the same limited color palette (4-6 colors), the same stroke width, the same corner rounding, the same arrow style, the same numbered-marker style (plain digits in circles).
-Panels depict CONCEPTS, OBJECTS, ANIMALS or NATURAL PHENOMENA schematically. There are NO named characters, NO mascots, NO human protagonists. Animals and plants appear as simplified schematic figures, not as story characters.
+const DIAGRAM_TYPES = ['process-sequence', 'cross-section', 'comparison', 'scale-comparison', 'anatomy-schematic', 'habitat-map', 'cause-effect', 'lifecycle-circle'];
+
+const diagramLock = `DIAGRAM LOCK (applies to this panel):
+This is ONE schematic children's infographic panel about the non-fiction topic: "${prev.title || ''}".
+Flat vector design system: a limited color palette (4-6 colors), uniform stroke width, soft corner rounding, one consistent arrow style, plain digits in circles as step markers.
+The panel depicts a CONCEPT, OBJECT, ANIMAL or NATURAL PHENOMENON schematically. There are NO named characters, NO mascots, NO human protagonists. Animals and plants appear as simplified schematic figures, not as story characters.
 Absolutely NO words, letters or labels anywhere in the image — the only permitted glyphs are plain digits 1 2 3 used as step markers, and arrows.`;
 
-  const DIAGRAM_TYPES = ['process-sequence', 'cross-section', 'comparison', 'scale-comparison', 'anatomy-schematic', 'habitat-map', 'cause-effect', 'lifecycle-circle'];
-  const LAYOUTS = ['left-to-right flow', 'top-to-bottom flow', 'central subject with radial elements', 'two-panel side-by-side comparison', 'circular cycle arrangement', 'layered cutaway stack'];
-
-  const sceneUserPrompt = `You are a diagram-slot compiler for a children's non-fiction infographic illustrator. You receive a factual text for children and your job is to choose ${imageCount} concept(s) worth explaining visually and fill one diagram slot per concept. Each panel is a text-free schematic infographic — the explanation text lives on the page next to the image, never inside the image.
-
-${diagramLock}
-
-STORY TEXT (paragraphs are numbered, 0-based; choose paragraphIndex per scene to match the concept):
-${numberedStory}
-
-${PARAGRAPH_RULES}
-
-DIAGRAM DESIGN RULES (CRITICAL):
-A) ONE CONCEPT PER PANEL: each panel visualizes exactly ONE fact, mechanism, comparison or sequence from its chosen paragraph. Never combine two concepts.
-B) TEXT-FREE: the panel must be fully understandable WITHOUT any words. Use arrows for flow/causality, plain digits 1 2 3 in circles for sequence steps, size juxtaposition for scale comparisons, cutaways for inner structure. If a concept cannot be shown without words, pick a different concept from the same paragraph.
-C) SCHEMATIC, NOT NARRATIVE: no story moments, no emotions, no characters acting. Show the thing itself: the animal's body schematic, the physical process, the size comparison, the habitat map.
-D) DIVERSITY: "framingType" (= diagram type) MUST be unique across all ${imageCount} panels, and "composition" (= layout) MUST be unique across all ${imageCount} panels.
-
-DIAGRAM TYPE pool (use for "framingType", unique per panel): ${DIAGRAM_TYPES.join(', ')}
-LAYOUT pool (use for "composition", unique per panel): ${LAYOUTS.join(', ')}
-
-TASK: Output ONLY a JSON array with exactly ${imageCount} objects. Each object has this shape (no other keys):
-{
-  "scene": <1-based number>,
-  "momentSummary": "<one English sentence naming the single concept this panel explains and how it is shown visually, e.g. 'cutaway of a glacier showing meltwater channels flowing to the sea, arrows marking the flow'>",
-  "paragraphIndex": <integer — see PARAGRAPH-INDEX RULES above, must be >= 1, distinct, strictly increasing>,
-  "action": "<the visual mechanism, e.g. 'arrows showing heat rising', 'three numbered steps left to right'>",
-  "pose": "flat schematic front view",
-  "camera": "flat frontal diagram view",
-  "lighting": "",
-  "composition": "<EXACTLY one value from LAYOUT pool; unique across panels>",
-  "characters_present": [],
-  "props_shown": [],
-  "setting_focus": "<short English naming the schematic subject(s) in frame, e.g. 'simplified penguin body schematic with fat layer cutaway'>",
-  "medium": "real-scene",
-  "sceneSetting": "clean flat infographic canvas with generous white space",
-  "mood": "clear",
-  "framingType": "<EXACTLY one value from DIAGRAM TYPE pool; unique across panels>",
-  "invariantCheck": "This panel contains no words, letters or labels; only arrows and plain circled digits are used as glyphs.",
-  "compositionCheck": "This panel is a full-bleed square 1:1 flat vector infographic reaching all four corners, no white margin border, no frame."
-}
-
-VERIFY before output: each panel's momentSummary must describe content from its chosen paragraph; every panel is understandable without words; framingType and composition values are unique. If any check fails, fix it before emitting.
-
-Output ONLY the JSON array, no markdown, no explanation.`;
-
-  return [{ json: {
-    ...prev,
-    visualLock: diagramLock,
-    sceneUserPrompt,
-    styleRefUrl,
-    diversityPools: {
-      camera: ['flat frontal diagram view'],
-      lighting: [],
-      composition: LAYOUTS,
-      arcTemplate: null
-    }
-  } }];
-}
+const diagramStyleRefUrl = 'https://rala84.github.io/lesekumpel/bilder/bildstil-vorschau/neutral/schaubild.png';
 
 // ════════════════════════════════════════════════════════════════════════════════
-// ZWEIG B — Narrative Stile: identisch zu bildszenen-vorbereiten-v2.js
+// Narrativer Szenen-Compiler (identisch zu bildszenen-vorbereiten-v2.js) + Auto-
+// Infografik-Erweiterung (imageKind pro Szene)
 // ════════════════════════════════════════════════════════════════════════════════
 
 const visualLock = prev.visualLock || prev.characterReference || '';
@@ -301,8 +246,22 @@ DIVERSITY CONSTRAINTS (validated):
 - "lighting" values MUST be unique across all ${imageCount} scenes.
 - "composition" values MUST be unique across all ${imageCount} scenes.
 - "framingType" values MUST be unique across all ${imageCount} scenes (separate semantic axis, see below).
+- (These uniqueness rules apply to illustration scenes; a diagram scene — see AUTO-DIAGRAM — uses its own fields and is exempt.)
 
 If the story spans a long time (e.g. a day), let "lighting" progress naturally (e.g. morning → afternoon → golden-hour → dusk). If it spans a short time (e.g. one moment), pick lightings that are atmospherically different but still plausible.
+
+AUTO-DIAGRAM (non-fiction infographic — read carefully):
+This is a NON-FICTION text for children. AT MOST ONE of the ${imageCount} scenes may be a schematic infographic instead of an illustration — and ONLY if the text genuinely explains a process/sequence, a comparison of sizes or things, an inner structure (cross-section/anatomy) or a cycle. If the topic offers no such concept, ALL scenes are illustrations — do NOT force a diagram.
+For that one diagram scene set:
+- "imageKind": "diagram" (all other scenes: "illustration")
+- "diagramType": EXACTLY one of: ${DIAGRAM_TYPES.join(', ')}
+- "momentSummary": one English sentence naming the single concept the panel explains and how it is shown visually WITHOUT any words (arrows, plain circled digits 1 2 3, size juxtaposition, cutaways)
+- "action": the visual mechanism (e.g. 'arrows showing heat rising', 'three numbered steps left to right')
+- "pose": "flat schematic front view", "camera": "flat frontal diagram view", "lighting": "", "mood": "clear"
+- "characters_present": [] and "props_shown": [] (a diagram shows the thing itself, no story characters)
+- "setting_focus": the schematic subject(s) in frame (e.g. 'simplified volcano cutaway with magma chamber and rising arrows')
+- "sceneSetting": "clean flat infographic canvas with generous white space"
+- "paragraphIndex": the paragraph that explains the concept (normal PARAGRAPH-INDEX RULES apply; the diagram may be any scene position, including the first)
 
 TASK: Output ONLY a JSON array with exactly ${imageCount} objects. Pick ${imageCount} distinct moment(s) from the story that together cover the story arc. Each scene shows exactly ONE moment — never combine two moments, never show the same character twice.
 
@@ -322,7 +281,9 @@ Each object has this shape (no other keys):
   "medium": "<exactly one of: real-scene | on-screen-game | dream | imagination | memory — default real-scene; pick another ONLY when the chosen paragraph clearly happens inside a video game, on a screen, in a dream, in imagination, or in a recalled memory>",
   "sceneSetting": "<short English naming WHERE / in which world this single moment happens; may differ from the global SETTING ANCHOR when the moment is in a game, on a screen, in a dream, or at a different location>",
   "mood": "<one adjective matching the chosen paragraph's emotion AT this point in the story — not the overall arc; see NARRATIVE & EMOTIONAL FIDELITY (A)>",
-  "framingType": "<exactly one of: overview | detail | interaction | habitat | establishing | reaction — must be UNIQUE across all ${imageCount} scenes>",
+  "framingType": "<exactly one of: overview | detail | interaction | habitat | establishing | reaction — must be UNIQUE across all ${imageCount} scenes; for a diagram scene use its diagramType value instead>",
+  "imageKind": "<'illustration' for normal story scenes; 'diagram' for AT MOST ONE schematic infographic scene — see AUTO-DIAGRAM>",
+  "diagramType": "<ONLY for imageKind=diagram: exactly one of ${DIAGRAM_TYPES.join(' | ')}; omit otherwise>",
   "invariantCheck": "<one English sentence asserting this scene respects every SCENE INVARIANT above>",
   "compositionCheck": "<one English sentence asserting this scene is a full-bleed square 1:1 image with painted scene reaching all four corners, no white margin, no inner matte, no frame>"
 }
@@ -376,6 +337,10 @@ return [{ json: {
   ...prev,
   sceneUserPrompt,
   styleRefUrl,
+  // Auto-Infografik: Lock + Style-Ref für die (max. eine) Diagramm-Szene —
+  // eingesetzt in szenen-parsen-sachtext-v1.js bzw. im Gemini-Fallback-Pfad
+  diagramLock,
+  diagramStyleRefUrl,
   // Pool-Definitionen für nachgelagerte Audit-/Validierungs-Stages durchreichen
   diversityPools: {
     camera: CAMERA,

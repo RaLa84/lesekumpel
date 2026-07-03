@@ -62,6 +62,7 @@ Nach der ZUSAMMENFASSUNG lieferst du IMMER diese Bausteine — sie werden auf de
 
 1. **1–2 [[WUSSTEST-DU]]-Blöcke:** je ein Bonus-Fakt in 1–3 kurzen Sätzen, der NICHT im Fließtext steht. Echte Fakten (Wikipedia!), kein Recycling aus dem Text.
 2. **Genau 1 [[CHECKLISTE: Titel]]-Block:** 3–5 Spiegelstriche, die das Wichtigste zum Merken zusammenfassen. Jeder Punkt maximal 8 Wörter. Der Titel nach dem Doppelpunkt ist kurz und passt zum Thema (z.B. "Das merkst du dir").
+3. **Höchstens 1 [[QUELLEN]]-Block:** 1–4 Zeilen im Format `- Titel | Domain`. Liste NUR Quellen, die deine Werkzeuge (Wikipedia, Websuche) in DIESEM Auftrag tatsächlich geliefert haben — Wikipedia-Artikel als `- Wikipedia: Artikelname | de.wikipedia.org`, Websuche-Treffer mit ihrer echten Domain. Erfinde NIEMALS Domains oder Quellen. Hast du nur dein eigenes Wissen genutzt (keine Werkzeug-Treffer verwendet), lass den Block KOMPLETT weg.
 
 **Format (exakt so, mit doppelten eckigen Klammern):**
 
@@ -75,6 +76,11 @@ Ein Blauwal-Herz ist so groß wie ein kleines Auto. Ein Kind könnte durch seine
 - Sie fressen winzige Krebse: Krill
 - Ihr Herz schlägt nur 2-mal pro Minute
 [[/CHECKLISTE]]
+
+[[QUELLEN]]
+- Wikipedia: Blauwal | de.wikipedia.org
+- Walschutz-Organisation WDC | whales.org
+[[/QUELLEN]]
 ```
 
 **Regeln:**
@@ -187,3 +193,7 @@ Es gibt über 2.000 verschiedene Arten von Glühwürmchen auf der Welt. Das sind
 - Das Blinken hilft bei der Partnersuche
 - Jede Art hat ihr eigenes Blink-Muster
 [[/CHECKLISTE]]
+
+[[QUELLEN]]
+- Wikipedia: Leuchtkäfer | de.wikipedia.org
+[[/QUELLEN]]

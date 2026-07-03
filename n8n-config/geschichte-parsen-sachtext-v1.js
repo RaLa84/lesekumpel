@@ -18,19 +18,22 @@ const responseText = $input.item.json.text || $input.item.json.output || '';
 function extractBlocks(text) {
   const wusstestDu = [];
   let checkliste = null;
+  const quellen = [];
   const spans = [];
 
-  const openRe = /\[\[?\s*(WUSSTEST[-_\s]?DU|CHECKLISTE)\s*(?::\s*([^\]\n]*))?\s*\]\]?/gi;
+  const openRe = /\[\[?\s*(WUSSTEST[-_\s]?DU|CHECKLISTE|QUELLEN)\s*(?::\s*([^\]\n]*))?\s*\]\]?/gi;
   const opens = [];
   let m;
   while ((m = openRe.exec(text)) !== null) {
-    opens.push({ type: m[1].toUpperCase().startsWith('C') ? 'checkliste' : 'wusstestDu', titel: (m[2] || '').trim(), start: m.index, contentStart: m.index + m[0].length });
+    const kw = m[1].toUpperCase();
+    const type = kw.startsWith('C') ? 'checkliste' : kw.startsWith('Q') ? 'quellen' : 'wusstestDu';
+    opens.push({ type, titel: (m[2] || '').trim(), start: m.index, contentStart: m.index + m[0].length });
   }
 
   for (let i = 0; i < opens.length; i++) {
     const o = opens[i];
     const nextOpen = (i + 1 < opens.length) ? opens[i + 1].start : text.length;
-    const closeRe = /\[\[?\s*\/\s*(WUSSTEST[-_\s]?DU|CHECKLISTE)\s*\]\]?/gi;
+    const closeRe = /\[\[?\s*\/\s*(WUSSTEST[-_\s]?DU|CHECKLISTE|QUELLEN)\s*\]\]?/gi;
     closeRe.lastIndex = o.contentStart;
     const c = closeRe.exec(text);
     const contentEnd = (c && c.index < nextOpen) ? c.index : nextOpen;
@@ -41,6 +44,25 @@ function extractBlocks(text) {
     if (o.type === 'wusstestDu') {
       const t = content.replace(/\s+/g, ' ').trim();
       if (t && wusstestDu.length < 3) wusstestDu.push(t);
+    } else if (o.type === 'quellen') {
+      // Zeilenformat "- Titel | Domain" — Domain-Sanitizer, keine erfundenen/kaputten
+      // Einträge durchlassen; NICHT silbengetrennt (Eigennamen/Domains).
+      for (const line of content.split('\n')) {
+        if (quellen.length >= 4) break;
+        const lm = line.trim().match(/^(?:[-*•]|\d+[.)])?\s*(.+)$/);
+        if (!lm || !lm[1].trim()) continue;
+        const parts = lm[1].split('|').map(s => s.trim());
+        let titel = parts[0] || '';
+        let domain = (parts[1] || '')
+          .toLowerCase()
+          .replace(/^https?:\/\//, '').replace(/^www\./, '')
+          .split('/')[0]
+          .replace(/[^a-z0-9.-]/g, '');
+        if (domain && !/^[a-z0-9][a-z0-9.-]*\.[a-z]{2,}$/.test(domain)) domain = '';
+        titel = titel.replace(/\s+/g, ' ').substring(0, 80);
+        if (!titel && !domain) continue;
+        quellen.push({ titel: titel || domain, domain });
+      }
     } else if (!checkliste) {
       const lines = content.split('\n').map(l => l.trim()).filter(Boolean);
       let punkte = lines
@@ -60,9 +82,9 @@ function extractBlocks(text) {
     cleaned = cleaned.substring(0, spans[i].start) + cleaned.substring(spans[i].end);
   }
   // Hard-Sanitizer: Restzeilen mit Marker-Fragmenten dürfen den Story-Text nie verunreinigen
-  cleaned = cleaned.split('\n').filter(l => !/\[\[?\s*\/?\s*(WUSSTEST|CHECKLISTE|KASTEN)/i.test(l)).join('\n');
+  cleaned = cleaned.split('\n').filter(l => !/\[\[?\s*\/?\s*(WUSSTEST|CHECKLISTE|KASTEN|QUELLEN)/i.test(l)).join('\n');
 
-  return { cleaned, wusstestDu, checkliste };
+  return { cleaned, wusstestDu, checkliste, quellen };
 }
 
 const extracted = extractBlocks(responseText);
@@ -223,12 +245,14 @@ function textSilbentrennung(text) {
 const storyText = textSilbentrennung(rawStory);
 const wordCount = rawStory.split(/\s+/).length;
 
-// (c) Bausteine mit Silbentrennung für die Anzeige
+// (c) Bausteine mit Silbentrennung für die Anzeige (Quellen bewusst ohne —
+// Eigennamen/Domains sollen nicht getrennt werden)
 const sachtextBlocks = {
   wusstestDu: extracted.wusstestDu.map(t => textSilbentrennung(t)),
   checkliste: extracted.checkliste
     ? { titel: extracted.checkliste.titel, punkte: extracted.checkliste.punkte.map(p => textSilbentrennung(p)) }
-    : null
+    : null,
+  quellen: extracted.quellen
 };
 
 return { json: { ...input, storyText, rawStoryText: rawStory, summaryText, wordCount, sachtextBlocks } };

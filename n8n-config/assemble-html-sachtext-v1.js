@@ -97,7 +97,7 @@ template = template
   .replace(/\{\{SCHATZSUCHE_JSON\}\}/g, JSON.stringify(data.schatzsucheData || null))
   .replace(/\{\{DICTIONARY_JSON\}\}/g, JSON.stringify(data.wortschatz || []))
   .replace(/\{\{IMAGE_POSITIONS_JSON\}\}/g, JSON.stringify(data.imagePositions || []))
-  .replace(/\{\{SACHTEXT_BLOCKS_JSON\}\}/g, JSON.stringify(data.sachtextBlocks || { wusstestDu: [], checkliste: null }))
+  .replace(/\{\{SACHTEXT_BLOCKS_JSON\}\}/g, JSON.stringify(data.sachtextBlocks || { wusstestDu: [], checkliste: null, quellen: [] }))
   .replace(/\{\{WORD_COUNT\}\}/g, String(data.wordCount || 0))
   .replace(/\{\{IMAGE_MODEL\}\}/g, data.imageModel || '')
   .replace(/\{\{SLUG\}\}/g, data.slug || '')

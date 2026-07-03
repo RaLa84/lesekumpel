@@ -1,9 +1,10 @@
-// Synct die 5 Code-Nodes + Samira-Systemprompt aus den Repo-Dateien in den
-// bestehenden Sachtext-Workflow "Lesekumpel – Sachtext-Generator (Samira)"
-// (mM13X2tdTIbFUgF4) — per PUT, ohne Neuanlage. Für schnelle Iteration nach
-// Node-Fixes, ohne den ganzen Workflow neu zu klonen.
+// Synct die 6 Code-Nodes + Samira-Systemprompt + den Style-Ref-URL-Parameter aus
+// den Repo-Dateien in den bestehenden Sachtext-Workflow "Lesekumpel – Sachtext-
+// Generator (Samira)" (mM13X2tdTIbFUgF4) — per PUT, ohne Neuanlage.
 //
-// Aktiv-Status bleibt unverändert (wir senden active nicht mit; n8n behält den Stand).
+// WICHTIG (n8n-Cloud-Gotcha): Nach einem PUT auf einen AKTIVEN Workflow läuft
+// weiterhin die alte kompilierte Version — deshalb wird nach erfolgreichem PUT
+// automatisch deaktiviert + reaktiviert (Recompile).
 //
 // Aufruf: node n8n-config/scripts/sync-sachtext-nodes.mjs
 
@@ -24,8 +25,14 @@ const JSCODE_SWAPS = {
   'Guardrail: Kind-Safe + Matrix': 'guardrail-sachtext-v1.js',
   'Geschichte parsen': 'geschichte-parsen-sachtext-v1.js',
   'Bildszenen vorbereiten': 'bildszenen-vorbereiten-sachtext-v1.js',
+  'Szenen parsen': 'szenen-parsen-sachtext-v1.js',
   'HTML assemblieren': 'assemble-html-sachtext-v1.js',
 };
+
+// "Style-Ref vorbereiten" (httpRequest): URL pro Bild-Loop-Item aus dem aktuellen
+// Szenen-Item ziehen (Diagramm-Szene -> Schaubild-Referenz), Fallback global.
+const STYLE_REF_NODE = 'Style-Ref vorbereiten';
+const STYLE_REF_URL_EXPR = "={{ $('Szenen parsen').all()[$('Bild-Loop').context.currentRunIndex]?.json.styleRefUrl || $('Bildszenen vorbereiten').first().json.styleRefUrl }}";
 
 const API_KEY = fs.readFileSync(path.join(CONFIG_DIR, '.env'), 'utf8').match(/^N8N_API_KEY=(.+)$/m)[1].trim();
 
@@ -59,6 +66,11 @@ const prompt = fs.readFileSync(path.join(REPO_DIR, 'prompts', 'samira-sachtext.m
 if (samira.parameters.options.systemMessage !== prompt) { samira.parameters.options.systemMessage = prompt; changed++; console.log('systemMessage aktualisiert <- prompts/samira-sachtext.md'); }
 else console.log('systemMessage unverändert');
 
+const styleRefNode = nodes.find((n) => n.name === STYLE_REF_NODE);
+if (!styleRefNode) throw new Error(`Knoten "${STYLE_REF_NODE}" nicht gefunden`);
+if (styleRefNode.parameters.url !== STYLE_REF_URL_EXPR) { styleRefNode.parameters.url = STYLE_REF_URL_EXPR; changed++; console.log(`Parameter aktualisiert: "${STYLE_REF_NODE}".url -> per-Szene-Expression`); }
+else console.log(`Parameter unverändert: "${STYLE_REF_NODE}".url`);
+
 if (changed === 0) { console.log('\nKeine Änderungen — nichts zu tun.'); }
 else {
   const ALLOWED = new Set(['executionOrder', 'saveExecutionProgress', 'saveManualExecutions', 'saveDataErrorExecution', 'saveDataSuccessExecution', 'executionTimeout', 'errorWorkflow', 'timezone', 'callerPolicy', 'callerIds']);
@@ -66,7 +78,13 @@ else {
   for (const [k, v] of Object.entries(wf.settings ?? {})) if (ALLOWED.has(k)) cleanSettings[k] = v;
   await api('PUT', `/workflows/${WF_ID}`, { name: wf.name, nodes, connections: wf.connections, settings: cleanSettings, staticData: wf.staticData ?? null });
   console.log(`\n✓ PUT erfolgreich (${changed} Änderung(en))`);
+  // Recompile erzwingen: PUT auf aktiven Workflow greift erst nach Reaktivierung
+  if (wf.active) {
+    await api('POST', `/workflows/${WF_ID}/deactivate`);
+    await api('POST', `/workflows/${WF_ID}/activate`);
+    console.log('✓ Workflow reaktiviert (Recompile)');
+  }
   const after = await api('GET', `/workflows/${WF_ID}`);
   fs.writeFileSync(LOCAL_REF, JSON.stringify(after, null, 2));
-  console.log('Lokaler Mirror aktualisiert: n8n-config/workflows/lesekumpel-sachtext-generator.json');
+  console.log(`Lokaler Mirror aktualisiert (aktiv: ${after.active}): n8n-config/workflows/lesekumpel-sachtext-generator.json`);
 }

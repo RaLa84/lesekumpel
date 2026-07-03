@@ -78,20 +78,25 @@ const bildstilMap = {
     positive: "low-poly voxel art illustration in the aesthetic of Crossy Road and Minecraft, 3D cube-based geometry with uniform voxel size, limited 16-color-per-character palette, consistent isometric 3/4 camera angle, soft ambient shading with a single directional light, consistent voxel size and palette across all panels of this story, same character voxel silhouette and facial features in every panel, full bleed composition extending to all four image edges, no inner framing, subjects and background reach every corner of the image, square 1:1 aspect ratio",
     negative: "no text, no watermarks, no labels, no tags, no annotations, no nameplates, no UI overlays, no callouts, no captions, no speech bubbles, no sign text, no alphanumeric text in image, no letterboxing, no black bars, no white margin, no cream margin, no paper border, no inner matte, no mat board, no illustration frame, no vignette, no aspect-ratio padding, no smooth curved surfaces, no anti-aliasing, no photorealism, no detailed textures on voxels, no extra limbs, no duplicate props, no floating objects, no mixed art styles, no style drift"
   },
-  // Sachtext-Stil: text-arme schematische Infografiken. Pfeile + Zahlmarker 1/2/3 sind
-  // erlaubt, Woerter/Labels bleiben verboten (KI-Bildtext auf Deutsch ist unzuverlaessig
-  // — der Erklaertext kommt aus den HTML-Kaesten der Sachtext-Seite).
-  'Schaubild': {
-    positive: "flat vector infographic illustration for a children's science book, clean schematic diagram aesthetic, bold simple geometric shapes with clear color coding, generous white space, soft rounded corners on shapes, clear directional arrows showing flow or causality, simple numbered step markers (plain digits 1 2 3 in circles) where a sequence is shown, cross-section and cutaway views where helpful, one clear focal concept per image, consistent color palette and stroke width across all panels of this story, full bleed composition extending to all four image edges, no inner framing, square 1:1 aspect ratio",
-    negative: "no words, no letters, no sentences, no labels, no tags, no annotations, no nameplates, no UI overlays, no callouts, no captions, no speech bubbles, no sign text, no paragraphs of text, no watermarks, no letterboxing, no black bars, no white margin border, no paper border, no inner matte, no mat board, no illustration frame, no vignette, no aspect-ratio padding, no photorealism, no 3D rendering, no gritty textures, no sketchy outlines, no human characters, no cartoon mascots, no extra arrows, no duplicate step markers, no mixed art styles, no style drift"
-  }
+};
+
+// Diagramm-Stil (KEIN User-Bildstil mehr): wird automatisch fuer maximal EINE
+// Szene pro Sachtext verwendet, wenn der Szenen-Compiler sie als imageKind=diagram
+// markiert (Prozess/Vergleich/Querschnitt/Zyklus). Text-arme Infografik: Pfeile +
+// Zahlmarker 1/2/3 erlaubt, Woerter/Labels verboten (KI-Bildtext auf Deutsch ist
+// unzuverlaessig — der Erklaertext kommt aus den HTML-Kaesten der Sachtext-Seite).
+const DIAGRAM_STYLE = {
+  positive: "flat vector infographic illustration for a children's science book, clean schematic diagram aesthetic, bold simple geometric shapes with clear color coding, generous white space, soft rounded corners on shapes, clear directional arrows showing flow or causality, simple numbered step markers (plain digits 1 2 3 in circles) where a sequence is shown, cross-section and cutaway views where helpful, one clear focal concept per image, full bleed composition extending to all four image edges, no inner framing, square 1:1 aspect ratio",
+  negative: "no words, no letters, no sentences, no labels, no tags, no annotations, no nameplates, no UI overlays, no callouts, no captions, no speech bubbles, no sign text, no paragraphs of text, no watermarks, no letterboxing, no black bars, no white margin border, no paper border, no inner matte, no mat board, no illustration frame, no vignette, no aspect-ratio padding, no photorealism, no 3D rendering, no gritty textures, no sketchy outlines, no human characters, no cartoon mascots, no extra arrows, no duplicate step markers, no mixed art styles, no style drift"
 };
 
 // ═══════════════════════════════════════════════════════════════
 // PROMPT ZUSAMMENBAUEN
 // ═══════════════════════════════════════════════════════════════
 
-const styleEntry = bildstilMap[bildstilKey] || bildstilMap['Aquarell'];
+// 'Schaubild' ist kein User-Bildstil mehr (alte Formulare/Caches defensiv auf Default)
+const effBildstilKey = bildstilMap[bildstilKey] ? bildstilKey : 'Aquarell';
+const styleEntry = bildstilMap[effBildstilKey];
 const imageStylePositive = styleEntry.positive;
 const imageStyleNegative = styleEntry.negative;
 
@@ -129,6 +134,8 @@ return { json: {
   personaName: samira.name, personaType: samira.typ,
   personaImg: samira.imgUrl, personaBio: samira.bio,
   woerter: laenge.woerter,
-  imageCount, bildstilKey, imageStylePositive, imageStyleNegative, userPrompt,
-  openerType
+  imageCount, bildstilKey: effBildstilKey, imageStylePositive, imageStyleNegative,
+  diagramStylePositive: DIAGRAM_STYLE.positive,
+  diagramStyleNegative: DIAGRAM_STYLE.negative,
+  userPrompt, openerType
 }};
