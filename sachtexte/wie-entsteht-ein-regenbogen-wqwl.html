@@ -48,7 +48,7 @@
         "@type": "Person",
         "name": "Samira Wissensfreund",
         "image": "https://rala84.github.io/lesekumpel/avatars/samira-wissensfreund.webp",
-        "description": "Samira liebt es, spannende Fakten zu entdecken und sie so zu erzählen, dass du staunst!"
+        "description": ""
       },
       "publisher": {
         "@type": "Organization",
@@ -2459,32 +2459,52 @@
             body.view-tafel .vote-card { width: 64px; height: 64px; font-size: 1.9rem; }
         }
 
-        /* ── Sachtext-Bausteine (Wusstest du? / Checkliste / Zusammenfassung) ── */
-        #sachtext-blocks { max-width: 720px; margin: 2em auto 0; display: grid; gap: 1em; }
-        .sachtext-box { border-radius: 16px; padding: 1em 1.2em; font-size: 1.05em; line-height: 1.55; text-align: left; }
-        .sachtext-box p { margin: 0; }
-        .sachtext-box-head { display: flex; align-items: center; gap: 0.5em; font-family: 'Fredoka', sans-serif; font-weight: 600; font-size: 1.05em; margin-bottom: 0.5em; }
+        /* ── Sachtext-Einschübe & Lern-Block (alle Modi sichtbar) ── */
+        .story-insert { margin: 1.6em 0; font-size: 0.78em; line-height: 1.55; text-align: left; }
+        .sachtext-box { border-radius: 16px; padding: 0.9em 1.1em; }
+        .sachtext-box + .sachtext-box { margin-top: 0.9em; }
+        .sachtext-box-head { display: flex; align-items: center; gap: 0.5em; font-family: 'Fredoka', sans-serif; font-weight: 600; font-size: 0.95em; margin-bottom: 0.45em; }
         .sachtext-box-head svg { width: 1.25em; height: 1.25em; flex: 0 0 auto; }
+        .sachtext-box-body { margin: 0; }
         .sachtext-box-wusstest { background: #FFF3CC; border: 2px solid #FFD54F; }
         .sachtext-box-wusstest .sachtext-box-head { color: #8a6d00; }
-        .sachtext-box-check { background: #E8F5EE; border: 2px solid #7BC29A; }
-        .sachtext-box-check .sachtext-box-head { color: #2E7D52; }
-        .sachtext-box-check ul { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.45em; }
-        .sachtext-box-check li { display: flex; gap: 0.5em; align-items: flex-start; }
-        .sachtext-box-check li svg { width: 1.1em; height: 1.1em; flex: 0 0 auto; margin-top: 0.2em; color: #2E7D52; }
         .sachtext-box-summary { background: #FBE9E7; border: 2px solid #D67171; }
         .sachtext-box-summary .sachtext-box-head { color: #B04A4A; }
+        .sachtext-box-check { background: #E8F5EE; border: 2px solid #7BC29A; }
+        .sachtext-box-check .sachtext-box-head { color: #2E7D52; }
+        .merk-hint { font-size: 0.72em; color: #5a6368; margin-bottom: 0.6em; }
+        .merk-list { display: grid; gap: 0.45em; }
+        button.merk-item { display: flex; gap: 0.6em; align-items: flex-start; width: 100%; background: rgba(255,255,255,0.85); border: 2px solid #7BC29A; border-radius: 12px; padding: 0.5em 0.75em; cursor: pointer; font: inherit; font-size: 0.9em; color: inherit; text-align: left; transition: background 0.15s ease, border-color 0.15s ease; }
+        button.merk-item:hover { border-color: #2E7D52; }
+        button.merk-item:focus-visible { outline: 3px solid #7D6AE6; outline-offset: 2px; }
+        .merk-item .merk-check { width: 1.35em; height: 1.35em; border-radius: 7px; border: 2px solid #2E7D52; display: inline-flex; align-items: center; justify-content: center; flex: 0 0 auto; margin-top: 0.1em; background: #fff; transition: background 0.15s ease; }
+        .merk-item .merk-check svg { width: 0.95em; height: 0.95em; color: #fff; opacity: 0; }
+        .merk-item[aria-checked="true"] { background: rgba(123,194,154,0.28); }
+        .merk-item[aria-checked="true"] .merk-check { background: #2E7D52; }
+        .merk-item[aria-checked="true"] .merk-check svg { opacity: 1; }
+        .merk-praise { font-family: 'Fredoka', sans-serif; font-weight: 600; color: #2E7D52; margin-top: 0.6em; min-height: 1.3em; }
+        .sachtext-box-quellen { background: #EEF2F8; border: 2px solid #94A7C4; font-size: 0.82em; }
+        .sachtext-box-quellen .sachtext-box-head { color: #3D5A80; }
+        .quellen-list { list-style: none; margin: 0; padding: 0; display: grid; gap: 0.35em; }
+        .quellen-list .quelle-domain { color: #5a6368; font-size: 0.85em; margin-left: 0.4em; }
+        /* Tafel: Einschub-Slide zentriert und kompakt */
+        body.view-tafel .tafel-insert .story-insert { margin: 0 auto; max-width: 620px; font-size: 0.62em; }
+        /* Häppchen: Einschub-Häppchen ohne Extra-Rahmen des Chunk-Layouts */
+        #chunk-display .story-insert { margin: 0.4em 0; font-size: 0.72em; }
+        /* Dark-Mode */
         body.dark-mode .sachtext-box-wusstest { background: rgba(255,213,79,0.12); }
         body.dark-mode .sachtext-box-wusstest .sachtext-box-head { color: #FFD54F; }
-        body.dark-mode .sachtext-box-check { background: rgba(123,194,154,0.12); }
-        body.dark-mode .sachtext-box-check .sachtext-box-head,
-        body.dark-mode .sachtext-box-check li svg { color: #7BC29A; }
         body.dark-mode .sachtext-box-summary { background: rgba(214,113,113,0.14); }
         body.dark-mode .sachtext-box-summary .sachtext-box-head { color: #E89999; }
-        /* Kästen nur in der Scroll-Ansicht — Häppchen/Tafel arbeiten ausschließlich auf rawStory */
-        body.haeppchen-active #sachtext-blocks,
-        body.view-tafel #sachtext-blocks,
-        body.view-tafel-cover #sachtext-blocks { display: none; }
+        body.dark-mode .sachtext-box-check { background: rgba(123,194,154,0.12); }
+        body.dark-mode .sachtext-box-check .sachtext-box-head { color: #7BC29A; }
+        body.dark-mode button.merk-item { background: rgba(42,50,66,0.85); }
+        body.dark-mode .merk-item .merk-check { background: #2A3242; }
+        body.dark-mode .merk-item[aria-checked="true"] { background: rgba(123,194,154,0.18); }
+        body.dark-mode .merk-praise { color: #7BC29A; }
+        body.dark-mode .merk-hint, body.dark-mode .quellen-list .quelle-domain { color: #A9B2C2; }
+        body.dark-mode .sachtext-box-quellen { background: rgba(148,167,196,0.14); }
+        body.dark-mode .sachtext-box-quellen .sachtext-box-head { color: #A9C0E8; }
     </style>
     <link rel="stylesheet" href="../fonts/fonts.css">
 </head>
@@ -2656,8 +2676,6 @@
             <div id="chunk-stars" class="chunk-stars" aria-hidden="true"></div>
         </div>
 
-        <section id="sachtext-blocks" aria-label="Wissens-Kästen" hidden></section>
-
         <div class="done-card" id="done-card" hidden>
             <img class="done-buddy" src="https://rala84.github.io/lesekumpel/Konzept_Rebranding/logo-lesekumpel-512.webp" alt="" aria-hidden="true">
             <div class="done-star" aria-hidden="true">⭐</div>
@@ -2819,32 +2837,97 @@
         const sachtextBlocks = {"wusstestDu":["Manch­mal kann man so­gar nachts ei­nen Re­gen­bo­gen se­hen. Der ent­steht dann durch das Licht vom Mond und heißt Mond­bo­gen. Weil es so dun­kel ist, sieht er für un­se­re Au­gen a­ber oft weiß aus."],"checkliste":{"titel":"Das merkst du dir","punkte":["Son­ne scheint dir in den Rü­cken","Vor dir muss es reg­nen","Re­gent­ro­pfen tei­len das Son­nen­licht","Je­de Far­be wird an­ders ab­ge­lenkt","Ein Re­gen­bo­gen ist ein gan­zer Kreis"]}};
         window.sachtextBlocks = sachtextBlocks;
 
-        // Sachtext-Kästen rendern (defensiv: fehlende/kaputte Blöcke -> Sektion bleibt hidden)
-        (function renderSachtextBlocks() {
-            try {
-                const host = document.getElementById('sachtext-blocks');
-                if (!host) return;
-                const b = (sachtextBlocks && typeof sachtextBlocks === 'object') ? sachtextBlocks : {};
-                const esc = s => String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
-                const ICON_BULB = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg>';
-                const ICON_LIST = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 17 2 2 4-4"/><path d="m3 7 2 2 4-4"/><path d="M13 6h8"/><path d="M13 12h8"/><path d="M13 18h8"/></svg>';
-                const ICON_CHECK = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>';
-                const ICON_BOOK = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 7v14"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/></svg>';
-                let html = '';
-                (Array.isArray(b.wusstestDu) ? b.wusstestDu : []).forEach(t => {
-                    if (t) html += '<aside class="sachtext-box sachtext-box-wusstest"><div class="sachtext-box-head">' + ICON_BULB + '<span>Wusstest du?</span></div><p>' + esc(t) + '</p></aside>';
-                });
-                const cl = b.checkliste;
-                if (cl && Array.isArray(cl.punkte) && cl.punkte.length) {
-                    const items = cl.punkte.map(p => '<li>' + ICON_CHECK + '<span>' + esc(p) + '</span></li>').join('');
-                    html += '<aside class="sachtext-box sachtext-box-check"><div class="sachtext-box-head">' + ICON_LIST + '<span>' + esc(cl.titel || 'Das merkst du dir') + '</span></div><ul>' + items + '</ul></aside>';
+        // ── Sachtext-Einschübe: Wusstest-du zwischen den Mini-Kapiteln,
+        //    Lern-Block (Fazit + interaktive Merkliste + Quellen) ans Ende.
+        //    Rendert über den generischen Engine-Hook window.computeStoryInserts;
+        //    defensiv: fehlende/kaputte Blöcke -> weniger/keine Einschübe.
+        (function () {
+            const b = (sachtextBlocks && typeof sachtextBlocks === 'object') ? sachtextBlocks : {};
+            const wusstest = Array.isArray(b.wusstestDu) ? b.wusstestDu.filter(Boolean) : [];
+            const checkliste = (b.checkliste && Array.isArray(b.checkliste.punkte) && b.checkliste.punkte.length) ? b.checkliste : null;
+            const quellen = (Array.isArray(b.quellen) ? b.quellen : []).filter(q => q && (q.titel || q.domain)).slice(0, 4);
+
+            const esc = s => String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+            const words = s => String(s || '').split(/\s+/).map(w => processWord(w)).join(' ');
+            const ICON_BULB = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 14c.2-1 .7-1.7 1.5-2.5 1-.9 1.5-2.2 1.5-3.5A6 6 0 0 0 6 8c0 1 .2 2.2 1.5 3.5.7.7 1.3 1.5 1.5 2.5"/><path d="M9 18h6"/><path d="M10 22h4"/></svg>';
+            const ICON_LIST = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m3 17 2 2 4-4"/><path d="m3 7 2 2 4-4"/><path d="M13 6h8"/><path d="M13 12h8"/><path d="M13 18h8"/></svg>';
+            const ICON_CHECK = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>';
+            const ICON_BOOK = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 7v14"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/></svg>';
+            const ICON_GLOBE = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>';
+
+            // Merklisten-Zustand: überlebt renderText-Neuaufbau (Silben/Emoji-Toggle),
+            // persistent pro Story
+            const MERK_KEY = 'lesekumpel-merkliste-wie-entsteht-ein-regenbogen-wqwl';
+            const merkChecked = new Set();
+            try { (JSON.parse(localStorage.getItem(MERK_KEY)) || []).forEach(i => merkChecked.add(i)); } catch (e) {}
+            let merkCelebrated = false;
+
+            function wusstestHtml(text) {
+                return '<div class="sachtext-box sachtext-box-wusstest"><div class="sachtext-box-head">' + ICON_BULB + '<span>Wusstest du?</span></div><div class="sachtext-box-body">' + words(text) + '</div></div>';
+            }
+            function lernblockHtml(ctx) {
+                let h = '';
+                if (!ctx.summary && typeof rawSummary === 'string' && rawSummary.trim()) {
+                    h += '<div class="sachtext-box sachtext-box-summary"><div class="sachtext-box-head">' + ICON_BOOK + '<span>Das Wichtigste in Kürze</span></div><div class="sachtext-box-body">' + words(rawSummary) + '</div></div>';
                 }
-                const summary = (typeof rawSummary === 'string') ? rawSummary.trim() : '';
-                if (summary) {
-                    html += '<aside class="sachtext-box sachtext-box-summary"><div class="sachtext-box-head">' + ICON_BOOK + '<span>Das Wichtigste in Kürze</span></div><p>' + esc(summary) + '</p></aside>';
+                if (checkliste) {
+                    const items = checkliste.punkte.map((p, i) =>
+                        '<button type="button" class="merk-item" role="checkbox" aria-checked="' + (merkChecked.has(i) ? 'true' : 'false') + '" data-merk-idx="' + i + '"><span class="merk-check" aria-hidden="true">' + ICON_CHECK + '</span><span class="merk-text">' + esc(p) + '</span></button>').join('');
+                    h += '<div class="sachtext-box sachtext-box-check"><div class="sachtext-box-head">' + ICON_LIST + '<span>' + esc(checkliste.titel || 'Das merkst du dir') + '</span></div><div class="merk-hint">Tipp an, was du dir gemerkt hast!</div><div class="merk-list" role="group" aria-label="Merkliste">' + items + '</div><div class="merk-praise" aria-live="polite"></div></div>';
                 }
-                if (html) { host.innerHTML = html; host.hidden = false; }
-            } catch (e) { console.warn('sachtext-blocks render failed', e); }
+                if (quellen.length) {
+                    const rows = quellen.map(q => '<li>' + esc(q.titel || q.domain) + (q.titel && q.domain ? '<span class="quelle-domain">' + esc(q.domain) + '</span>' : '') + '</li>').join('');
+                    h += '<div class="sachtext-box sachtext-box-quellen"><div class="sachtext-box-head">' + ICON_GLOBE + '<span>Woher weiß Samira das?</span></div><ul class="quellen-list">' + rows + '</ul></div>';
+                }
+                return h;
+            }
+
+            window.computeStoryInserts = function (allGroups, ctx) {
+                ctx = ctx || {};
+                const inserts = [];
+                // Kapitelanfänge = Gruppen mit Überschrift; "Lücke k" = letzte Gruppe vor Kapitel k+1
+                const chapterStarts = [];
+                allGroups.forEach((g, i) => { if (g.heading) chapterStarts.push(i); });
+                const K = chapterStarts.length;
+                const gapEnd = k => (chapterStarts[k + 1] !== undefined ? chapterStarts[k + 1] : allGroups.length) - 1;
+
+                if (!ctx.summary && wusstest.length) {
+                    const gaps = Math.max(0, K - 1); // Lücken zwischen Kapiteln
+                    const used = new Set();
+                    wusstest.forEach((t, j) => {
+                        let after = allGroups.length - 1; // Fallback: Textende (vor dem Lern-Block)
+                        if (gaps > 0) {
+                            let gi = Math.floor((j + 1) * gaps / (wusstest.length + 1));
+                            gi = Math.max(0, Math.min(gaps - 1, gi));
+                            while (used.has(gi) && gi < gaps - 1) gi++;
+                            used.add(gi);
+                            after = gapEnd(gi);
+                        }
+                        inserts.push({ afterGroup: after, html: wusstestHtml(t), className: 'insert-wusstest', indicatorLabel: 'Extra-Wissen', asChunk: true });
+                    });
+                }
+                const lern = lernblockHtml(ctx);
+                if (lern) inserts.push({ afterGroup: allGroups.length - 1, html: lern, className: 'insert-lernblock', indicatorLabel: 'Das hast du gelernt', asChunk: true });
+                return inserts;
+            };
+
+            // Merkliste: Tap-to-Check per Event-Delegation (überlebt jeden Re-Render)
+            document.addEventListener('click', function (e) {
+                const btn = e.target.closest && e.target.closest('.merk-item');
+                if (!btn) return;
+                const idx = parseInt(btn.dataset.merkIdx, 10);
+                const on = btn.getAttribute('aria-checked') !== 'true';
+                btn.setAttribute('aria-checked', on ? 'true' : 'false');
+                if (on) merkChecked.add(idx); else merkChecked.delete(idx);
+                try { localStorage.setItem(MERK_KEY, JSON.stringify(Array.from(merkChecked))); } catch (err) {}
+                if (on && checkliste && merkChecked.size >= checkliste.punkte.length && !merkCelebrated) {
+                    merkCelebrated = true;
+                    if (typeof showConfetti === 'function') showConfetti();
+                    const box = btn.closest('.sachtext-box-check');
+                    const praise = box ? box.querySelector('.merk-praise') : null;
+                    if (praise) praise.textContent = 'Super! Alles gemerkt!';
+                }
+            });
         })();
         /* ============================================================ */
 
@@ -3167,6 +3250,16 @@
                 }
             }
 
+            // Einschub-Hook: Seiten (z.B. Sachtexte) können window.computeStoryInserts
+            // definieren und liefern [{afterGroup, html, className, indicatorLabel, asChunk}].
+            // Ohne Hook: leeres Array -> exakt heutiges Verhalten (Autoren-Geschichten).
+            const storyInserts = (typeof window.computeStoryInserts === 'function')
+                ? (window.computeStoryInserts(allGroups, { summary: state.summary }) || [])
+                : [];
+            const attrEsc = s => String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;');
+            const insertAside = (ins, scene) =>
+                `<aside class="story-insert${ins.className ? ' ' + attrEsc(ins.className) : ''}" data-scene="${scene}"${ins.indicatorLabel ? ` data-indicator-label="${attrEsc(ins.indicatorLabel)}"` : ''}>${ins.html || ''}</aside>`;
+
             // HTML zusammenbauen: Überschriften als <h3>, Text als <p>
             let html = allGroups.map((group, i) => {
                 let imgTag = imgPositions[i] ? `<img src="${imgPositions[i]}" alt="Illustration zur Geschichte" class="story-inline-img" loading="lazy" decoding="async" onerror="this.style.display='none'">` : '';
@@ -3180,7 +3273,11 @@
                     let processed = group.text.split(/\s+/).map(w => processWord(w)).join(' ');
                     textHtml = `<p style="margin:0 0 0.8em 0;" data-scene="${scenePlacement.sceneByGroup[i]}">${processed}</p>`;
                 }
-                return imgTag + headingHtml + textHtml;
+                let insertHtml = '';
+                for (const ins of storyInserts) {
+                    if (ins.afterGroup === i) insertHtml += insertAside(ins, scenePlacement.sceneByGroup[i]);
+                }
+                return imgTag + headingHtml + textHtml + insertHtml;
             }).join('');
             document.getElementById('full-text-view').innerHTML = html;
 
@@ -3198,6 +3295,25 @@
                 return g.heading.split(/\s+/).map(w => processWord(w)).join(' ');
             });
             state.chunkImages = allGroups.map((_, i) => imgPositions[i] || null);
+            // Einschübe als eigene Häppchen einfügen (von hinten, damit Indizes stabil bleiben)
+            state.chunkInserts = null;
+            const chunkInserts = storyInserts.filter(ins => ins.asChunk);
+            if (chunkInserts.length) {
+                state.chunkInserts = state.chunks.map(() => false);
+                // Rückwärts einfügen (Indizes stabil); bei gleichem afterGroup den
+                // späteren Array-Eintrag zuerst splicen, damit die Array-Reihenfolge
+                // im Ergebnis erhalten bleibt.
+                chunkInserts
+                    .map((ins, ord) => ({ ins, ord }))
+                    .sort((a, b) => (b.ins.afterGroup - a.ins.afterGroup) || (b.ord - a.ord))
+                    .forEach(({ ins }) => {
+                        const pos = Math.min(ins.afterGroup + 1, state.chunks.length);
+                        state.chunks.splice(pos, 0, insertAside(ins, scenePlacement.sceneByGroup[Math.min(ins.afterGroup, allGroups.length - 1)] || ''));
+                        state.chunkHeadings.splice(pos, 0, null);
+                        state.chunkImages.splice(pos, 0, null);
+                        state.chunkInserts.splice(pos, 0, true);
+                    });
+            }
             updateChunkDisplay();
             updateButtons();
         }
@@ -3601,10 +3717,12 @@
 
         function updateChunkDisplay() {
             if(state.chunkIndex >= state.chunks.length) state.chunkIndex = 0;
+            // Einschub-Häppchen (story-insert): fertiges Markup, ohne Bild/Überschrift
+            const isInsertChunk = !!(state.chunkInserts && state.chunkInserts[state.chunkIndex]);
             let imgHtml = '';
             // Bild für diesen Chunk finden — fallback auf letztes verfügbares
             let imgUrl = null;
-            if (state.chunkImages) {
+            if (!isInsertChunk && state.chunkImages) {
                 for (let j = state.chunkIndex; j >= 0; j--) {
                     if (state.chunkImages[j]) { imgUrl = state.chunkImages[j]; break; }
                 }
@@ -3613,7 +3731,7 @@
                 imgHtml = `<img src="${imgUrl}" alt="Illustration zur Geschichte" class="story-inline-img" loading="lazy" decoding="async" onerror="this.style.display='none'">`;
             }
             let headingHtml = '';
-            if (state.chunkHeadings && state.chunkHeadings[state.chunkIndex]) {
+            if (!isInsertChunk && state.chunkHeadings && state.chunkHeadings[state.chunkIndex]) {
                 headingHtml = `<div style="font-weight:600; font-size:0.75em; color:#1A8676; font-family:var(--font-heading); margin-bottom:0.4em; letter-spacing:0.03em;">${state.chunkHeadings[state.chunkIndex]}</div>`;
             }
             document.getElementById('chunk-display').innerHTML = imgHtml + headingHtml + (state.chunks[state.chunkIndex] || "");
@@ -4968,10 +5086,10 @@
         function paginateStoryByScenes() {
             const view = document.getElementById('full-text-view');
             if (!view || view.querySelector('.tafel-section')) return;
-            // Überschriften (h3) UND Absätze (p) in DOM-Reihenfolge einsammeln, damit
-            // Mini-Überschriften ihrer Folge-Slide zugeordnet werden statt als verwaiste
-            // <h3> dauerhaft oben sichtbar zu bleiben (Sachtext-Mini-Kapitel).
-            const blocks = Array.from(view.querySelectorAll(':scope > p, :scope > h3'));
+            // Überschriften (h3), Absätze (p) UND Einschübe (aside.story-insert) in
+            // DOM-Reihenfolge einsammeln: Überschriften wandern in ihre Folge-Slide,
+            // Einschübe werden eigene Slides (Sachtext: Wusstest-du / Lern-Block).
+            const blocks = Array.from(view.querySelectorAll(':scope > p, :scope > h3, :scope > aside'));
             const paragraphs = blocks.filter(el => el.tagName === 'P');
             if (!paragraphs.length) return;
 
@@ -4989,11 +5107,22 @@
             view.appendChild(cover);
 
             // Pro Absatz eine Slide — vorangehende Überschrift(en) wandern mit hinein.
+            // Einschübe (aside) werden eigene Slides und konsumieren pendingHeadings NICHT
+            // (die Überschrift gehört zum nächsten Text-Kapitel, nicht zum Einschub).
             let pendingHeadings = [];
             let lastSection = null;
             blocks.forEach((el) => {
                 if (el.tagName === 'H3') { pendingHeadings.push(el); return; }
                 const section = document.createElement('section');
+                if (el.tagName === 'ASIDE') {
+                    section.className = 'tafel-section tafel-insert';
+                    section.dataset.scene = el.dataset.scene || String(coverScene);
+                    if (el.dataset.indicatorLabel) section.dataset.indicatorLabel = el.dataset.indicatorLabel;
+                    section.appendChild(el);
+                    view.appendChild(section);
+                    lastSection = section;
+                    return;
+                }
                 section.className = 'tafel-section';
                 section.dataset.scene = el.dataset.scene || String(coverScene);
                 pendingHeadings.forEach(h => section.appendChild(h));
@@ -5243,8 +5372,16 @@
                 indicator.textContent = 'Geschafft! 🎉';
                 return;
             }
-            // Story-Slides = alle Sektionen außer Cover und Abschluss-Seite
-            const storySlides = sections.filter(s => s.dataset.cover !== 'true' && !s.classList.contains('tafel-abschluss'));
+            // Einschub-Slides (Wusstest-du / Lern-Block) zeigen ihr eigenes Label
+            // und zählen nicht als Abschnitt.
+            if (current.classList.contains('tafel-insert')) {
+                const label = current.dataset.indicatorLabel || '';
+                indicator.textContent = label;
+                if (!label) indicator.style.visibility = 'hidden';
+                return;
+            }
+            // Story-Slides = alle Sektionen außer Cover, Einschüben und Abschluss-Seite
+            const storySlides = sections.filter(s => s.dataset.cover !== 'true' && !s.classList.contains('tafel-abschluss') && !s.classList.contains('tafel-insert'));
             const storyIdx = storySlides.indexOf(current) + 1;
             indicator.textContent = `Abschnitt ${storyIdx} von ${storySlides.length}`;
         }
