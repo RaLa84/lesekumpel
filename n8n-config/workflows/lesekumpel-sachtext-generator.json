@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-07-03T12:45:49.391Z",
+  "updatedAt": "2026-07-03T12:49:45.262Z",
   "createdAt": "2026-07-03T10:15:23.173Z",
   "id": "mM13X2tdTIbFUgF4",
   "name": "Lesekumpel – Sachtext-Generator (Samira)",
@@ -1385,7 +1385,7 @@
         }
       },
       "id": "tavily-tool-49325751",
-      "name": "Websuche_Samira (Tavily)",
+      "name": "Websuche_Samira",
       "type": "@n8n/n8n-nodes-langchain.toolHttpRequest",
       "typeVersion": 1.1,
       "position": [
@@ -2137,7 +2137,7 @@
         ]
       ]
     },
-    "Websuche_Samira (Tavily)": {
+    "Websuche_Samira": {
       "ai_tool": [
         [
           {
@@ -2158,9 +2158,9 @@
   "staticData": null,
   "meta": null,
   "pinData": null,
-  "versionId": "2dfd9bbf-5c36-49d6-a79e-3d6635871555",
-  "activeVersionId": "2dfd9bbf-5c36-49d6-a79e-3d6635871555",
-  "versionCounter": 9,
+  "versionId": "fa968c1f-c110-4665-b250-591f51f8df8f",
+  "activeVersionId": "fa968c1f-c110-4665-b250-591f51f8df8f",
+  "versionCounter": 11,
   "triggerCount": 1,
   "shared": [
     {
@@ -2214,9 +2214,9 @@
   ],
   "tags": [],
   "activeVersion": {
-    "updatedAt": "2026-07-03T12:45:49.393Z",
-    "createdAt": "2026-07-03T12:45:49.393Z",
-    "versionId": "2dfd9bbf-5c36-49d6-a79e-3d6635871555",
+    "updatedAt": "2026-07-03T12:49:45.265Z",
+    "createdAt": "2026-07-03T12:49:45.265Z",
+    "versionId": "fa968c1f-c110-4665-b250-591f51f8df8f",
     "workflowId": "mM13X2tdTIbFUgF4",
     "nodes": [
       {
@@ -3597,7 +3597,7 @@
           }
         },
         "id": "tavily-tool-49325751",
-        "name": "Websuche_Samira (Tavily)",
+        "name": "Websuche_Samira",
         "type": "@n8n/n8n-nodes-langchain.toolHttpRequest",
         "typeVersion": 1.1,
         "position": [
@@ -4349,7 +4349,7 @@
           ]
         ]
       },
-      "Websuche_Samira (Tavily)": {
+      "Websuche_Samira": {
         "ai_tool": [
           [
             {

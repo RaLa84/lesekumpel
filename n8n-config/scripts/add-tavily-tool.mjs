@@ -18,7 +18,9 @@ const BASE = 'https://rala84.app.n8n.cloud/api/v1';
 const WF_ID = 'mM13X2tdTIbFUgF4';
 const WF_NAME = 'Lesekumpel – Sachtext-Generator (Samira)';
 const AGENT = '📚 Samira Wissensfreund (Sachtexte)';
-const TOOL_NAME = 'Websuche_Samira (Tavily)';
+// WICHTIG: Tool-Node-Name muss alphanumerisch sein (nur [A-Za-z0-9_]) — LangChain
+// nutzt ihn als Tool-Namen; Leerzeichen/Klammern -> "not a valid alphanumeric string".
+const TOOL_NAME = 'Websuche_Samira';
 const CRED_NAME = 'Tavily API (Samira)';
 const LOCAL_REF = path.join(REPO_DIR, 'n8n-config', 'workflows', 'lesekumpel-sachtext-generator.json');
 
