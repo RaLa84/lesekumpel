@@ -255,7 +255,6 @@
         .stil-card[data-stil="Traumwelt"] { background-image: url('bilder/bildstil-vorschau/traumwelt.webp'); }
         .stil-card[data-stil="Knete"]     { background-image: url('bilder/bildstil-vorschau/knete.webp'); }
         .stil-card[data-stil="Voxel"]     { background-image: url('bilder/bildstil-vorschau/voxel.webp'); }
-        .stil-card[data-stil="Schaubild"] { background-image: url('bilder/bildstil-vorschau/schaubild.webp'); }
 
         /* --- A11Y: Karten sind echte <button> -> Button-Defaults neutralisieren --- */
         button.stil-card { font: inherit; color: inherit; width: 100%; }
@@ -614,10 +613,8 @@
                 <button type="button" class="stil-card" data-stil="Voxel" aria-pressed="false" onclick="selectStil('Voxel')">
                     <span class="stil-label">Voxel</span>
                 </button>
-                <!-- Schaubild (Infografik-Stil): Vorschau schaubild.webp + Style-Ref neutral/schaubild.png vorhanden -->
-                <button type="button" class="stil-card" data-stil="Schaubild" aria-pressed="false" onclick="selectStil('Schaubild')">
-                    <span class="stil-label">Schaubild</span>
-                </button>
+                <!-- Infografiken sind kein waehlbarer Stil mehr: die Pipeline mischt automatisch
+                     max. 1 Schaubild ein, wenn das Thema es hergibt (imageKind=diagram) -->
             </div>
         </div>
 
@@ -819,7 +816,7 @@ const LAENGEN = [
     { id: 'Lang',   label: 'Lang',   info: 'ca. 250–400 Wörter · 6 Bilder', detail: 'Viel Wissen für Vielleser' }
 ];
 
-const BILDSTIL_LABELS = { 'Aquarell': 'Aquarell — Weiche Pastellfarben', 'Cartoon': 'Cartoon — Bunte moderne Illustration', 'Buntstift': 'Buntstift — Handgezeichneter Look', 'Pixel-Art': 'Pixel-Art — Retro-Gaming-Stil', 'Anime': 'Anime — Farbenfroh wie Nintendo & Pokémon', 'Traumwelt': 'Traumwelt — Magische Malerei wie Ori', 'Knete': 'Knete — Stop-Motion Knetfiguren-Look', 'Voxel': 'Voxel — Blocky Gamer-Stil wie Minecraft', 'Schaubild': 'Schaubild — Schlaue Bilder, die erklären' };
+const BILDSTIL_LABELS = { 'Aquarell': 'Aquarell — Weiche Pastellfarben', 'Cartoon': 'Cartoon — Bunte moderne Illustration', 'Buntstift': 'Buntstift — Handgezeichneter Look', 'Pixel-Art': 'Pixel-Art — Retro-Gaming-Stil', 'Anime': 'Anime — Farbenfroh wie Nintendo & Pokémon', 'Traumwelt': 'Traumwelt — Magische Malerei wie Ori', 'Knete': 'Knete — Stop-Motion Knetfiguren-Look', 'Voxel': 'Voxel — Blocky Gamer-Stil wie Minecraft' };
 
 const WEBHOOK_URL = 'https://rala84.app.n8n.cloud/webhook/lesekumpel-sachtext';
 const PRECHECK_URL = 'https://rala84.app.n8n.cloud/webhook/lesekumpel-precheck';
