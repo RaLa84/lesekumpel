@@ -17,6 +17,11 @@ dadurch, dass migrierte Seiten (z.B. magie) mit genau diesen Slots korrekt rende
 
 Aufruf:  python scripts/build-generator-template.py [--check]
   --check : nur prüfen/diffen, nichts schreiben
+
+WICHTIG: Nach jeder Regeneration von demo-template.html auch das Sachtext-Template
+neu bauen:  python scripts/build-generator-template-sachtext.py
+(Der Sachtext-Workflow lädt demo-template-sachtext.html — es ist ein Patch auf
+demo-template.html und driftet sonst.)
 """
 import re
 import sys
