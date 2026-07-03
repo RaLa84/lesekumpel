@@ -4905,7 +4905,11 @@
         function paginateStoryByScenes() {
             const view = document.getElementById('full-text-view');
             if (!view || view.querySelector('.tafel-section')) return;
-            const paragraphs = Array.from(view.querySelectorAll(':scope > p'));
+            // Überschriften (h3) UND Absätze (p) in DOM-Reihenfolge einsammeln, damit
+            // Mini-Überschriften ihrer Folge-Slide zugeordnet werden statt als verwaiste
+            // <h3> dauerhaft oben sichtbar zu bleiben (Sachtext-Mini-Kapitel).
+            const blocks = Array.from(view.querySelectorAll(':scope > p, :scope > h3'));
+            const paragraphs = blocks.filter(el => el.tagName === 'P');
             if (!paragraphs.length) return;
 
             // Szene-Zuordnung kommt aus data-scene der <p> (von renderText/computeScenePlacement
@@ -4921,14 +4925,24 @@
             cover.dataset.cover = 'true';
             view.appendChild(cover);
 
-            // Pro Absatz eine Slide — Szene aus dem data-scene des <p>
-            paragraphs.forEach((p) => {
+            // Pro Absatz eine Slide — vorangehende Überschrift(en) wandern mit hinein.
+            let pendingHeadings = [];
+            let lastSection = null;
+            blocks.forEach((el) => {
+                if (el.tagName === 'H3') { pendingHeadings.push(el); return; }
                 const section = document.createElement('section');
                 section.className = 'tafel-section';
-                section.dataset.scene = p.dataset.scene || String(coverScene);
-                section.appendChild(p);
+                section.dataset.scene = el.dataset.scene || String(coverScene);
+                pendingHeadings.forEach(h => section.appendChild(h));
+                pendingHeadings = [];
+                section.appendChild(el);
                 view.appendChild(section);
+                lastSection = section;
             });
+            // Überschrift(en) ohne Folge-Absatz an die letzte Slide hängen (Randfall).
+            if (pendingHeadings.length && lastSection) {
+                pendingHeadings.forEach(h => lastSection.appendChild(h));
+            }
         }
 
         // Permanenter MutationObserver: wenn renderText() #full-text-view neu rendert
