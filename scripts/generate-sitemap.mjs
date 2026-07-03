@@ -29,6 +29,7 @@ const STORY_DIRS = [
   { dir: 'texte', priority: '0.8', changefreq: 'monthly' },
   { dir: 'comicgeschichten', priority: '0.8', changefreq: 'monthly' },
   { dir: 'demo-texte', priority: '0.7', changefreq: 'monthly' },
+  { dir: 'sachtexte', priority: '0.7', changefreq: 'monthly' },
 ];
 
 function escapeXml(s) {

@@ -5,186 +5,1397 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sachtext mit Samira — Lesekumpel</title>
     <link rel="stylesheet" href="fonts/fonts.css">
-    <link rel="stylesheet" href="formkit.css">
     <style>
         :root {
+            /* INSPIRED-Look — alte Variablennamen bleiben, neue Werte (Akzent: Salmon) */
             --mint:#2FB8A6; --navy:#2B3140; --cream:#FFF6EF; --cream-light:#FEFBF6;
-            --salmon:#F97352; --lila:#7D6AE6; --yellow:#FFD95A; --border-soft:#D9D4CC;
-            --bg-body:var(--cream); --bg-card:#fff; --text-dark:var(--navy);
-            --font-heading:'Fredoka', system-ui, sans-serif;
-            --font-body:'Lexend', system-ui, sans-serif;
-            --accent:#D85A82; --accent-ink:#fff; --accent-soft:rgba(216,90,130,0.15);
+            --salmon:#F97352; --lila:#7D6AE6; --border-soft:#D9D4CC;
+            --bg-body: var(--cream); --bg-card: #ffffff;
+            --primary-yellow: #FFD95A; --accent-coral: #F97352;
+            --accent-coral-light: #FDE7E0; --accent-coral-dark: #D9542F;
+            --text-dark: #2B3140; --text-muted: #5a6368;
+            --success-green: #2FB8A6;
+            /* Aliase fuer aus demo.html uebernommenes A11y-/Deko-CSS */
+            --yellow: #FFD95A; --border: #D9D4CC;
+            --font-heading: 'Fredoka', system-ui, sans-serif;
+            --font-body: 'Lexend', system-ui, sans-serif;
         }
         * { box-sizing: border-box; margin: 0; padding: 0; }
         html { background: var(--cream); }
-        body { font-family: var(--font-body); background: transparent; color: var(--navy); line-height: 1.7; }
-        body::before, body::after { content:''; position: fixed; z-index:-1; border-radius:50%; filter: blur(70px); opacity:.55; pointer-events:none; }
-        body::before { width:420px; height:420px; background:#FFE9B3; top:-130px; left:-150px; }
-        body::after  { width:380px; height:380px; background:#C5EBE4; bottom:-130px; right:-130px; }
+        body { font-family: var(--font-body); background: transparent; color: var(--text-dark); line-height: 1.7; overflow-x: hidden; }
 
-        .main-navbar { background: rgba(255,255,255,0.92); -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px); padding: 12px 24px; border-bottom: 3px solid var(--mint); display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; }
-        .nav-left { display: flex; align-items: center; gap: 10px; }
-        .nav-logo-box { width: 44px; height: 44px; overflow: hidden; border-radius: 10px; flex-shrink: 0; }
-        .nav-logo { height: 100%; width: 100%; object-fit: contain; }
-        .brand-name { font-family: var(--font-heading); font-size: 1.2rem; color: var(--navy); font-weight: 700; text-decoration: none; }
-        .nav-links-desktop { display: none; gap: 18px; align-items: center; margin-left: 18px; }
-        .nav-btn { text-decoration: none; color: var(--navy); font-weight: 600; font-size: 0.95rem; transition: color 0.2s; }
-        .nav-btn:hover { color: var(--mint); }
-        .burger-icon { font-size: 1.6rem; cursor: pointer; display: block; color: var(--navy); background: #fff; border: 1px solid var(--border-soft); border-radius: 12px; padding: 6px 12px; line-height: 1; min-height: 44px; }
-        .burger-icon:hover { background: var(--cream-light); }
-        .mobile-menu { display: none; background: #fff; padding: 12px; position: absolute; top: calc(100% + 8px); right: 12px; width: min(320px, calc(100vw - 24px)); border: 1px solid var(--border-soft); border-radius: 20px; box-shadow: 0 16px 40px rgba(43,49,64,0.16); flex-direction: column; gap: 6px; z-index: 999; }
-        .mobile-menu.open { display: flex; animation: bubblePop 0.25s cubic-bezier(0.34,1.56,0.64,1); }
-        @keyframes bubblePop { from { opacity: 0; transform: translateY(8px) scale(0.9); } to { opacity: 1; transform: none; } }
-        .mobile-menu .nav-btn { padding: 12px 16px; min-height: 48px; border-radius: 14px; background: var(--cream-light); display: flex; align-items: center; }
-        .mobile-menu .nav-btn:hover { background: #E7F6F3; transform: translateX(3px); }
-        @media (min-width: 768px) { .nav-logo-box { width: 54px; height: 54px; } .brand-name { font-size: 1.5rem; } }
-        @media (min-width: 1024px) { .burger-icon { display: none; } .nav-links-desktop { display: flex; } }
+        /* ===== Hintergrund-Deko (Blobs & Sterne) — analog demo.html ===== */
+        body::before, body::after {
+          content: ''; position: fixed; z-index: -2; border-radius: 50%;
+          filter: blur(70px); opacity: 0.55; pointer-events: none;
+        }
+        body::before { width: 460px; height: 460px; background: #FFE9B3; top: -150px; left: -160px; }
+        body::after  { width: 420px; height: 420px; background: #C5EBE4; bottom: -160px; right: -150px; }
+        .bg-blob { position: fixed; z-index: -2; border-radius: 50%; filter: blur(80px); pointer-events: none; opacity: 0.5; }
+        .bg-blob-lila { width: 360px; height: 360px; background: rgba(125,106,230,0.35); top: 38%; right: -130px; }
+        .bg-blob-mint { width: 300px; height: 300px; background: rgba(47,184,166,0.30); top: 55%; left: -120px; }
+        .page-deco { position: fixed; inset: 0; z-index: -1; pointer-events: none; overflow: hidden; }
+        .page-deco .deco-circle { animation: float-slow 9s ease-in-out infinite; }
 
-        .main-container { max-width: 640px; margin: 0 auto; padding: 22px 20px 70px; }
+        /* ===== Skip Link ===== */
+        .skip-link {
+          position: absolute; left: -9999px;
+          background: var(--navy); color: #fff;
+          padding: 10px 18px; border-radius: 0 0 10px 10px;
+          font-weight: 600; font-size: 0.9rem; z-index: 10000; text-decoration: none;
+        }
+        .skip-link:focus { position: fixed; left: 50%; top: 0; transform: translateX(-50%); }
+        :focus-visible { outline: 2px solid var(--lila); outline-offset: 3px; border-radius: 4px; }
+        .modern-footer :focus-visible { outline-color: var(--yellow); }
+
+        /* ===== Floating Decorations ===== */
+        .deco-star, .deco-circle, .deco-sparkle, .deco-blob { position: absolute; pointer-events: none; z-index: 0; }
+        .deco-star { animation: float 7s ease-in-out infinite; }
+        .deco-sparkle { animation: sparkle-blink 4s ease-in-out infinite; }
+        @keyframes float { 0%,100% { transform: translateY(0) rotate(0deg); } 50% { transform: translateY(-18px) rotate(6deg); } }
+        @keyframes float-slow { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-12px) rotate(-3deg); } }
+        @keyframes sparkle-blink { 0%,100% { opacity: 0.3; transform: scale(0.85); } 50% { opacity: 1; transform: scale(1.15); } }
+        @media (max-width: 767px) { .deco-hide-mobile { display: none; } }
+
+        /* ===== A11y-Tool (Barrierefreiheit) — page-side, nicht propagiert ===== */
+        .a11y-wrap { position: relative; }
+        .a11y-popover { position: absolute; top: calc(100% + 8px); right: 0; z-index: 1200; background: #fff; border: 1px solid var(--border); border-radius: 16px; box-shadow: 0 16px 40px rgba(43,49,64,0.16); padding: 6px; min-width: 210px; display: flex; flex-direction: column; gap: 4px; }
+        .a11y-popover[hidden] { display: none; }
+        .a11y-opt { display: flex; align-items: center; gap: 10px; background: none; border: none; border-radius: 10px; padding: 10px 12px; min-height: 44px; font-family: var(--font-body); font-weight: 600; font-size: 0.92rem; color: var(--navy); cursor: pointer; text-align: left; transition: background 0.15s; }
+        .a11y-opt:hover { background: var(--cream-light); }
+        .a11y-opt.on { background: rgba(47,184,166,0.16); color: #136B61; }
+        .a11y-opt.on::after { content: '✓'; margin-left: auto; color: var(--mint); font-weight: 700; }
+
+        /* Lesefreundliche Schrift + Hoher Kontrast (gleiche Klassen wie Leseseiten) */
+        body.dyslexia-mode { --font-body: 'Atkinson Hyperlegible', system-ui, sans-serif; letter-spacing: 0.03em; word-spacing: 0.12em; }
+        body.dyslexia-mode p, body.dyslexia-mode .section-sub, body.dyslexia-mode .neuro-desc { line-height: 1.75; }
+        body.high-contrast { --cream: #ffffff; --cream-light: #ffffff; --navy: #000000; --text-dark: #000000; --text-muted: #1a1d24; --border: #2B3140; --border-soft: #2B3140; }
+
+        @media (prefers-reduced-motion: reduce) {
+          *, *::before, *::after { animation-duration: 0.01ms !important; animation-iteration-count: 1 !important; transition-duration: 0.01ms !important; scroll-behavior: auto !important; }
+          body::before, body::after, .bg-blob { display: none; }
+          .deco-star, .deco-circle, .deco-sparkle, .deco-blob { animation: none !important; }
+        }
+
+        /* === LK-HEADER:CSS START === */
+    .main-navbar { background: rgba(255,255,255,0.92); -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px); padding: 12px 24px; border-bottom: 3px solid var(--mint); display: grid; grid-template-columns: 1fr auto 1fr; align-items: center; position: sticky; top: 0; z-index: 1000; }
+    .nav-left { display: flex; align-items: center; gap: 10px; justify-self: start; position: relative; }
+    .nav-center { justify-self: center; display: flex; align-items: center; gap: 10px; }
+    .nav-right { display: flex; align-items: center; gap: 10px; justify-self: end; }
+    .nav-logo-box { width: 48px; height: 48px; overflow: hidden; border-radius: 12px; flex-shrink: 0; text-decoration: none; }
+    .nav-logo { height: 100%; width: 100%; object-fit: contain; transform: scale(1.8); transform-origin: center; }
+    .brand-name { font-family: var(--font-heading); font-size: 1.2rem; color: var(--navy); font-weight: 700; text-decoration: none; }
+    .nav-btn { text-decoration: none; color: var(--navy); font-weight: 600; font-size: 1rem; display: flex; align-items: center; gap: 5px; }
+    .nav-btn:hover { color: var(--lila); }
+    .burger-icon { width: 44px; height: 44px; box-sizing: border-box; padding: 0; display: inline-flex; align-items: center; justify-content: center; font-size: 1.6rem; line-height: 1; cursor: pointer; color: var(--navy); background: #fff; border: 1px solid var(--border, var(--border-soft, #D9D4CC)); border-radius: 12px; transition: background 0.15s ease; }
+    .burger-icon:hover { background: var(--cream-light); }
+    .nav-icon-btn { width: 44px; height: 44px; box-sizing: border-box; flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center; background: #fff; border: 1px solid var(--border, var(--border-soft, #D9D4CC)); border-radius: 12px; color: var(--navy); cursor: pointer; text-decoration: none; transition: background 0.15s ease; }
+    .nav-icon-btn:hover { background: var(--cream-light); }
+    .nav-icon-btn svg { width: 22px; height: 22px; }
+    .nav-login-btn { margin-left: 6px; }
+    .nav-login-label { display: none; font-family: var(--font-heading); font-weight: 600; font-size: 0.95rem; }
+    .nav-avatar-btn { width: 44px; height: 44px; box-sizing: border-box; border-radius: 50%; flex-shrink: 0; display: inline-flex; align-items: center; justify-content: center; background: var(--cream-light); border: 2px solid var(--primary-yellow, var(--yellow, #FFD95A)); font-size: 1.5rem; line-height: 1; text-decoration: none; box-shadow: 0 2px 8px rgba(43,49,64,0.08); transition: transform 0.15s ease, box-shadow 0.15s ease; }
+    .nav-avatar-btn:hover { transform: scale(1.06); box-shadow: 0 4px 12px rgba(43,49,64,0.14); }
+    .nav-avatar-btn:active { transform: scale(0.96); }
+    .nav-avatar-emoji { pointer-events: none; }
+    .mobile-menu { display: none; background: #fff; padding: 12px; position: absolute; top: calc(100% + 8px); left: 0; right: auto; width: min(320px, calc(100vw - 24px)); border: 1px solid var(--border, var(--border-soft, #D9D4CC)); border-radius: 20px; box-shadow: 0 16px 40px rgba(43,49,64,0.16); flex-direction: column; gap: 6px; z-index: 999; }
+    .mobile-menu.open { display: flex; animation: bubblePop 0.25s cubic-bezier(0.34,1.56,0.64,1); }
+    .mobile-menu .nav-btn { display: flex; align-items: center; gap: 12px; padding: 11px 12px; min-height: 44px; border-radius: 10px; background: transparent; color: var(--navy); font-weight: 600; font-size: 0.98rem; transition: background 0.15s ease; }
+    .mobile-menu .nav-btn:hover { background: var(--cream-light); color: var(--navy); }
+    .mobile-menu .nav-btn svg { width: 18px; height: 18px; color: #8a8f98; flex-shrink: 0; transition: color 0.15s ease; }
+    .mobile-menu .nav-btn:hover svg { color: var(--navy); }
+    .menu-divider { height: 1px; background: var(--border, var(--border-soft, #D9D4CC)); margin: 6px 6px; }
+    .mobile-menu .menu-cta { background: var(--mint); color: var(--navy); justify-content: center; font-family: var(--font-heading); font-weight: 700; margin-top: 4px; box-shadow: 0 3px 10px rgba(47,184,166,0.3); }
+    .mobile-menu .menu-cta:hover { background: var(--navy); color: #fff; }
+    @keyframes bubblePop { from { opacity: 0; transform: translateY(8px) scale(0.9); } to { opacity: 1; transform: none; } }
+    @media (max-width: 767px) { .brand-name { display: none; } }
+    @media (min-width: 768px) {
+      .nav-logo-box { width: 64px; height: 64px; }
+      .nav-logo { transform: scale(2); }
+      .brand-name { font-size: 1.6rem; display: block; }
+      .nav-left { gap: 15px; }
+      .nav-login-btn { width: auto; gap: 8px; padding: 0 16px; margin-left: 10px; }
+      .nav-login-label { display: inline; }
+    }
+/* === LK-HEADER:CSS END === */
+
+        /* --- MAIN --- */
+        .main-container { max-width: 700px; margin: 0 auto; padding: 30px 20px 60px; }
+
+        /* --- PAGE TRANSITIONS --- */
+        .page { display: none; animation: fadeIn 0.35s ease; }
+        .page.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(12px); } to { opacity: 1; transform: translateY(0); } }
+
+        /* --- SECTIONS --- */
+        .form-section { margin-bottom: 32px; }
+        .form-section.hidden { display: none; }
+        .form-section.reveal { animation: fadeIn 0.35s ease; }
+
+        .page-h1 { font-family: var(--font-heading); color: var(--navy); font-size: 1.7rem; text-align: center; margin-bottom: 24px; }
+
+        /* --- SAMIRA-HERO (fixe Autorin statt Persona-Auswahl) --- */
+        .samira-hero { text-align: center; margin-bottom: 16px; }
+        .samira-hero img { width: 104px; height: 104px; border-radius: 50%; border: 4px solid #E07B39; object-fit: cover; margin-bottom: 10px; box-shadow: 0 6px 18px rgba(224,123,57,0.25); }
+        .samira-hero h1 { font-family: var(--font-heading); font-size: 1.7rem; color: var(--navy); margin-bottom: 4px; }
+        .samira-speech { background: #fff; border: 1px solid var(--border-soft); border-radius: 18px; padding: 18px 20px; margin-bottom: 26px; font-size: 1rem; box-shadow: 0 2px 12px rgba(43,49,64,0.05); }
         .hub-back { margin-bottom: 14px; }
-        .hub-back a { color: #5a6368; text-decoration: none; font-weight: 600; font-size: 0.9rem; }
-        .hub-back a:hover { color: var(--mint); }
+        .hub-back a { color: var(--text-muted); text-decoration: none; font-weight: 600; font-size: 0.9rem; }
+        .hub-back a:hover { color: var(--navy); }
+        .section-title { font-family: var(--font-heading); color: var(--navy); font-size: 1.3rem; margin-bottom: 6px; }
+        .section-sub { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 16px; }
+        .section-divider { border: none; border-top: 2px solid rgba(255,213,79,0.3); margin: 28px 0; }
 
-        .samira-hero { text-align: center; margin-bottom: 18px; }
-        .samira-hero img { width: 104px; height: 104px; border-radius: 50%; border: 4px solid var(--accent); object-fit: cover; margin-bottom: 10px; box-shadow: 0 6px 18px var(--accent-soft); }
-        .samira-hero h1 { font-family: var(--font-heading); font-size: 1.7rem; color: var(--navy); margin-bottom: 8px; }
-        .stub-pill { display: inline-block; background: var(--accent-soft); color: var(--accent); font-size: 0.75rem; font-weight: 700; padding: 5px 16px; border-radius: 999px; text-transform: uppercase; letter-spacing: 0.05em; }
-        .samira-speech { background: #fff; border: 1px solid var(--border-soft); border-radius: 18px; padding: 18px 20px; margin-bottom: 22px; font-size: 1rem; position: relative; box-shadow: 0 2px 12px rgba(43,49,64,0.05); }
-        .samira-speech::before { content: '💬'; position: absolute; top: -13px; left: 20px; background: #fff; padding: 0 6px; font-size: 1.2rem; }
+        /* --- INPUTS --- */
+        .text-input, .textarea-input {
+            width: 100%; padding: 14px 18px; border: 2px solid var(--border);
+            border-radius: 14px; font-family: var(--font-body); font-size: 1rem;
+            color: var(--text-dark); background: #fff; transition: border-color 0.2s, box-shadow 0.2s;
+        }
+        .text-input:focus, .textarea-input:focus { border-color: var(--navy); box-shadow: 0 0 0 3px rgba(47,184,166,0.22); outline: none; }
+        .textarea-input { min-height: 80px; resize: vertical; }
 
-        footer { text-align: center; margin-top: 50px; color: #5a6368; font-size: 0.9rem; padding: 20px; border-top: 1px solid var(--border-soft); }
-        .footer-links a { color: #5a6368; text-decoration: underline; margin: 0 5px; }
+        /* --- TOGGLE BUTTONS (Kategorie) --- */
+        .toggle-group { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; }
+        .toggle-btn {
+            display: inline-flex; align-items: center; justify-content: center; gap: 8px;
+            padding: 10px 18px; border: 2px solid var(--border); border-radius: 999px; background: #fff;
+            font-family: var(--font-body); font-weight: 600; font-size: 0.9rem; cursor: pointer;
+            transition: all 0.2s; color: var(--text-dark);
+        }
+        .toggle-btn svg { width: 18px; height: 18px; flex-shrink: 0; }
+        .toggle-btn:hover { border-color: var(--mint); color: #136B61; }
+        .toggle-btn.active { background: rgba(47,184,166,0.16); border-color: var(--mint); color: #136B61; box-shadow: none; }
+
+        /* --- LESEMODUS-KARTEN (Grid) --- */
+        .neuro-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+        .neuro-card {
+            background: #fff; border: 2px solid var(--border); border-radius: 16px;
+            padding: 16px 18px; cursor: pointer; transition: all 0.25s;
+            display: flex; flex-direction: column; gap: 8px; text-align: left;
+            font-family: var(--font-body); color: var(--text-dark);
+        }
+        .neuro-card:hover { border-color: var(--mint); transform: translateY(-3px); box-shadow: 0 6px 16px rgba(0,0,0,0.06); }
+        .neuro-card.active { border-color: var(--mint); background: rgba(47,184,166,0.08); }
+        .neuro-card:focus-visible { outline: 3px solid var(--lila, #7D6AE6); outline-offset: 2px; }
+        .neuro-head { display: flex; align-items: center; gap: 10px; }
+        .neuro-icon {
+            display: inline-flex; align-items: center; justify-content: center;
+            width: 40px; height: 40px; border-radius: 12px; flex-shrink: 0;
+            background: var(--cream-light); color: var(--text-dark);
+        }
+        .neuro-card.active .neuro-icon { background: rgba(47,184,166,0.18); }
+        .neuro-icon svg { width: 21px; height: 21px; }
+        .neuro-name { font-family: var(--font-heading); font-size: 1rem; font-weight: 600; color: var(--navy); }
+        .neuro-tip { margin-left: auto; display: inline-flex; align-items: center; color: var(--text-muted); cursor: help; }
+        .neuro-tip svg { width: 16px; height: 16px; }
+        .neuro-desc { font-size: 0.8rem; color: var(--text-muted); line-height: 1.45; }
+        @media (max-width: 560px) { .neuro-grid { grid-template-columns: 1fr; } }
+        @media (prefers-reduced-motion: reduce) { .neuro-card, .neuro-card:hover { transition: none; transform: none; } }
+
+        /* --- PHASE CARDS --- */
+        .phase-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(120px, 1fr)); gap: 12px; }
+        .phase-card {
+            padding: 20px 12px; border-radius: 18px; text-align: center; cursor: pointer;
+            border: 3px solid transparent; transition: all 0.25s; font-weight: 600; font-size: 0.85rem;
+        }
+        .phase-card:hover { transform: translateY(-3px); box-shadow: 0 6px 16px rgba(0,0,0,0.08); }
+        .phase-card.active { border-color: var(--text-dark); transform: scale(1.03); }
+        .phase-card .phase-emoji { font-size: 2.2rem; display: block; margin-bottom: 8px; }
+        .phase-card .phase-num { font-family: var(--font-heading); font-size: 1.05rem; }
+        .phase-1-bg { background: #FFE0B2; } .phase-2-bg { background: #FFF9C4; }
+        .phase-3-bg { background: #FFF59D; } .phase-4-bg { background: #C8E6C9; } .phase-5-bg { background: #A5D6A7; }
+
+        /* --- STUFE BUTTONS --- */
+        .stufe-grid { display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; margin-top: 16px; }
+        .stufe-btn {
+            padding: 14px 18px; border: 2px solid #eee; border-radius: 14px; background: #fff;
+            cursor: pointer; transition: all 0.2s; text-align: center; min-width: 140px;
+        }
+        .stufe-btn:hover { border-color: var(--accent-coral); transform: translateY(-2px); }
+        .stufe-btn.active { background: var(--accent-coral-light); border-color: var(--accent-coral); }
+        .stufe-num { font-family: var(--font-heading); font-weight: 700; font-size: 1.1rem; color: var(--accent-coral); }
+        .stufe-fokus { font-size: 0.8rem; color: var(--text-muted); margin-top: 3px; }
+
+        /* --- AUTO-KATEGORIE BADGE --- */
+        .auto-kategorie-badge {
+            background: var(--accent-coral-light); border: 2px solid var(--accent-coral);
+            border-radius: 14px; padding: 16px 20px; text-align: center;
+            font-weight: 600; font-size: 0.95rem; color: var(--text-dark);
+        }
+        .auto-kategorie-badge .badge-emoji { font-size: 1.4rem; margin-right: 6px; }
+
+        /* --- BILDSTIL CARDS --- */
+        .stil-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 12px; }
+        @media (min-width: 500px) { .stil-grid { grid-template-columns: repeat(4, 1fr); } }
+        .stil-card {
+            position: relative; aspect-ratio: 1 / 1; overflow: hidden;
+            background: #eee center/cover no-repeat;
+            border: 3px solid #eee; border-radius: 16px;
+            cursor: pointer; transition: border-color 0.2s, transform 0.25s, box-shadow 0.25s;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.06);
+        }
+        .stil-card:hover { border-color: var(--mint); transform: translateY(-3px); box-shadow: 0 6px 16px rgba(0,0,0,0.12); }
+        .stil-card.active { border-color: var(--mint); box-shadow: 0 0 0 3px rgba(47,184,166,0.35), 0 6px 16px rgba(0,0,0,0.12); }
+        .stil-card .stil-label {
+            position: absolute; left: 0; right: 0; bottom: 0;
+            padding: 8px 10px;
+            background: linear-gradient(to top, rgba(0,0,0,0.72) 0%, rgba(0,0,0,0.55) 60%, rgba(0,0,0,0) 100%);
+            color: #fff; font-family: var(--font-heading); font-weight: 600;
+            font-size: 0.95rem; text-align: center; line-height: 1.2;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.5);
+        }
+        .stil-card.active .stil-label { background: linear-gradient(to top, rgba(47,184,166,0.92) 0%, rgba(47,184,166,0.7) 60%, rgba(47,184,166,0) 100%); }
+        /* Placeholder-Look wenn Bild fehlt (Fallback via CSS) */
+        .stil-card[data-stil="Aquarell"]  { background-image: url('bilder/bildstil-vorschau/aquarell.webp'); }
+        .stil-card[data-stil="Cartoon"]   { background-image: url('bilder/bildstil-vorschau/cartoon.webp'); }
+        .stil-card[data-stil="Buntstift"] { background-image: url('bilder/bildstil-vorschau/buntstift.webp'); }
+        .stil-card[data-stil="Pixel-Art"] { background-image: url('bilder/bildstil-vorschau/pixel-art.webp'); }
+        .stil-card[data-stil="Anime"]     { background-image: url('bilder/bildstil-vorschau/anime.webp'); }
+        .stil-card[data-stil="Traumwelt"] { background-image: url('bilder/bildstil-vorschau/traumwelt.webp'); }
+        .stil-card[data-stil="Knete"]     { background-image: url('bilder/bildstil-vorschau/knete.webp'); }
+        .stil-card[data-stil="Voxel"]     { background-image: url('bilder/bildstil-vorschau/voxel.webp'); }
+        .stil-card[data-stil="Schaubild"] { background-image: url('bilder/bildstil-vorschau/schaubild.webp'); }
+
+        /* --- A11Y: Karten sind echte <button> -> Button-Defaults neutralisieren --- */
+        button.stil-card { font: inherit; color: inherit; width: 100%; }
+        .stil-card:focus-visible,
+        .toggle-btn:focus-visible { outline: 3px solid var(--lila, #7D6AE6); outline-offset: 2px; }
+        /* Sichtbares Label fuer Eingabefelder */
+        .field-label { display: block; font-family: var(--font-heading); color: var(--navy); font-size: 0.95rem; font-weight: 600; margin-bottom: 6px; }
+        .field-label .field-req { color: var(--accent-coral, #D67171); }
+        .field-label .field-opt { color: var(--text-muted); font-weight: 400; font-size: 0.85rem; }
+
+        /* --- NAV BUTTONS --- */
+        .step-nav { display: flex; justify-content: space-between; align-items: center; margin-top: 28px; }
+        .btn-next, .btn-submit {
+            background: var(--mint); color: var(--navy); border: none; border-radius: 28px;
+            padding: 14px 36px; font-family: var(--font-body); font-weight: 700; font-size: 1rem;
+            cursor: pointer; transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+            box-shadow: 0 4px 14px rgba(47,184,166,0.3);
+        }
+        .btn-next { margin-left: auto; }
+        .btn-next:hover:not(:disabled), .btn-submit:hover:not(:disabled) { background: var(--navy); color: #fff; transform: translateY(-2px) scale(1.02); }
+        .btn-next:disabled, .btn-submit:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+        .btn-submit { width: 100%; padding: 18px 52px; font-size: 1.1rem; }
+        .btn-back {
+            background: none; border: none; color: var(--text-muted); font-family: var(--font-body);
+            font-weight: 600; font-size: 0.95rem; cursor: pointer; padding: 10px 0;
+        }
+        .btn-back:hover { color: var(--navy); }
+
+        /* --- LOADING OVERLAY --- */
+        .loading-overlay {
+            display: none; position: fixed; inset: 0; background: rgba(255,249,229,0.95);
+            z-index: 9000; flex-direction: column; align-items: center; justify-content: center;
+        }
+        .loading-overlay.visible { display: flex; }
+        .loading-card { background: #fff; border: 4px solid var(--primary-yellow); border-radius: 24px; padding: 40px; text-align: center; max-width: 400px; width: 90%; position: relative; }
+        .loading-title { font-family: var(--font-heading); font-size: 1.5rem; color: var(--navy); margin-bottom: 10px; }
+        .loading-bar-bg { width: 100%; height: 16px; background: #f0f0f0; border-radius: 10px; margin: 20px 0; overflow: hidden; }
+        .loading-bar { height: 100%; background: linear-gradient(90deg, var(--mint), var(--primary-yellow)); width: 0%; transition: width 1s linear; border-radius: 10px; }
+        .loading-status { color: var(--text-muted); font-size: 0.95rem; }
+        .loading-close { display: none; position: absolute; top: 8px; right: 14px; background: none; border: 0; font-size: 1.8rem; line-height: 1; color: var(--text-muted); cursor: pointer; padding: 4px 8px; }
+        .loading-close:hover { color: var(--navy); }
+        .loading-overlay.dismissable .loading-close { display: block; }
+        .story-ready-btn { display: inline-block; margin-top: 12px; background: var(--mint); color: var(--navy); padding: 12px 24px; border-radius: 12px; font-weight: 700; text-decoration: none; }
+        .story-ready-btn:hover { filter: brightness(1.05); }
+        @keyframes wackel { 0%{transform:rotate(0)} 25%{transform:rotate(-10deg)} 75%{transform:rotate(10deg)} 100%{transform:rotate(0)} }
+        .wackel { display: inline-block; animation: wackel 2s infinite; font-size: 3rem; margin-bottom: 15px; }
+
+        /* --- PRE-CHECK MODAL --- */
+        .precheck-modal {
+            display: none; position: fixed; inset: 0; background: rgba(45,52,54,0.55);
+            z-index: 9100; align-items: center; justify-content: center; padding: 20px;
+            animation: fadeIn 0.2s ease;
+        }
+        .precheck-modal.visible { display: flex; }
+        .precheck-card {
+            background: #fff; border-radius: 24px; padding: 28px 24px; max-width: 520px;
+            width: 100%; max-height: 90vh; overflow-y: auto;
+            box-shadow: 0 12px 40px rgba(0,0,0,0.18);
+        }
+        .precheck-card.is-corrected { border-top: 6px solid var(--success-green); }
+        .precheck-card.is-rejected  { border-top: 6px solid var(--accent-coral); }
+        .precheck-headline {
+            font-family: var(--font-heading); font-size: 1.25rem; color: var(--text-dark);
+            margin-bottom: 6px; line-height: 1.3;
+        }
+        .precheck-sub { color: var(--text-muted); font-size: 0.9rem; margin-bottom: 18px; }
+        .precheck-field {
+            background: #FFF9E5; border-radius: 14px; padding: 14px 16px; margin-bottom: 12px;
+            border: 1px solid var(--accent-coral-light);
+        }
+        .precheck-field-label {
+            font-size: 0.75rem; font-weight: 700; color: var(--accent-coral);
+            text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 6px;
+        }
+        .precheck-diff { font-size: 0.95rem; line-height: 1.5; word-wrap: break-word; }
+        .precheck-diff del { background: #FDEAEA; color: var(--accent-coral-dark); text-decoration: line-through; padding: 1px 3px; border-radius: 3px; }
+        .precheck-diff ins { background: #E8F5E9; color: #2E7D32; text-decoration: none; padding: 1px 3px; border-radius: 3px; font-weight: 600; }
+        .precheck-issue-list { list-style: none; padding: 0; margin: 12px 0 0; }
+        .precheck-issue-list li {
+            background: #FDEAEA; border-radius: 10px; padding: 10px 14px; margin-bottom: 8px;
+            color: var(--accent-coral-dark); font-size: 0.92rem; line-height: 1.4;
+        }
+        .precheck-issue-list-info li {
+            background: #FFF8E1; color: #6D4C00; border-left: 3px solid var(--primary-yellow);
+        }
+        .precheck-issue-list li strong { font-weight: 700; }
+        .precheck-actions {
+            display: flex; flex-wrap: wrap; gap: 10px; margin-top: 20px; justify-content: flex-end;
+        }
+        .precheck-btn {
+            padding: 12px 22px; border-radius: 24px; font-family: var(--font-body); font-weight: 700;
+            font-size: 0.95rem; cursor: pointer; border: none; transition: all 0.2s;
+        }
+        .precheck-btn-primary {
+            background: var(--mint); color: var(--navy);
+            box-shadow: 0 4px 12px rgba(47,184,166,0.3);
+        }
+        .precheck-btn-primary:hover { background: var(--navy); color: #fff; transform: translateY(-1px); }
+        .precheck-btn-secondary {
+            background: #fff; color: var(--text-dark); border: 2px solid var(--border);
+        }
+        .precheck-btn-secondary:hover { border-color: var(--mint); color: #136B61; }
+        @media (max-width: 480px) {
+            .precheck-actions { flex-direction: column-reverse; }
+            .precheck-btn { width: 100%; }
+        }
+
+        /* === LK-FOOTER:CSS START === */
+    .modern-footer { background: var(--navy); color: var(--cream); padding: 56px 24px 28px; margin-top: 80px; position: relative; overflow: hidden; }
+    .modern-footer .footer-grid { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 1fr; gap: 40px; }
+    @media (min-width: 768px) { .modern-footer .footer-grid { grid-template-columns: 1.6fr 1fr 1fr; gap: 56px; } }
+    .modern-footer h2 { font-family: var(--font-heading); font-size: 0.92rem; text-transform: uppercase; letter-spacing: 0.06em; color: var(--yellow, var(--primary-yellow, #FFD95A)); margin-bottom: 18px; }
+    .modern-footer .footer-brand-block { max-width: 360px; }
+    .modern-footer .footer-brand-row { display: flex; align-items: center; gap: 12px; font-family: var(--font-heading); font-weight: 700; font-size: 1.4rem; color: var(--cream); margin-bottom: 14px; }
+    .modern-footer .footer-brand-row img { height: 44px; width: auto; }
+    .modern-footer .footer-brand-row .brand-yellow { color: var(--yellow, var(--primary-yellow, #FFD95A)); }
+    .modern-footer .footer-tagline { color: rgba(255,246,239,0.78); font-size: 0.95rem; line-height: 1.6; margin-bottom: 18px; }
+    .modern-footer ul { list-style: none; padding: 0; margin: 0; display: flex; flex-direction: column; gap: 10px; }
+    .modern-footer ul a { color: rgba(255,246,239,0.85); text-decoration: none; font-weight: 500; font-size: 0.95rem; transition: color 0.2s; }
+    .modern-footer ul a:hover { color: var(--yellow, var(--primary-yellow, #FFD95A)); }
+    .modern-footer .footer-social { display: flex; gap: 12px; margin-top: 20px; }
+    .modern-footer .footer-social a { width: 42px; height: 42px; border-radius: 50%; background: rgba(255,255,255,0.08); border: 1px solid rgba(255,246,239,0.2); display: inline-flex; align-items: center; justify-content: center; color: var(--cream); text-decoration: none; transition: all 0.2s; }
+    .modern-footer .footer-social a:hover { background: var(--yellow, var(--primary-yellow, #FFD95A)); color: var(--navy); transform: translateY(-2px); }
+    .modern-footer .footer-bottom { max-width: 1200px; margin: 40px auto 0; padding-top: 24px; border-top: 1px solid rgba(255,246,239,0.15); display: flex; flex-direction: column; gap: 12px; justify-content: space-between; align-items: center; text-align: center; font-size: 0.85rem; color: rgba(255,246,239,0.65); }
+    @media (min-width: 768px) { .modern-footer .footer-bottom { flex-direction: row; text-align: left; } }
+    .modern-footer .footer-bottom a { color: rgba(255,246,239,0.65); text-decoration: none; margin: 0 6px; }
+    .modern-footer .footer-bottom a:hover { color: var(--yellow, var(--primary-yellow, #FFD95A)); }
+/* === LK-FOOTER:CSS END === */
+
+        /* === LK-A11Y:CSS START === */
+    .settings-overlay { position: fixed; inset: 0; z-index: 5000; display: flex; align-items: center; justify-content: center; background: rgba(43,49,64,0.45); -webkit-backdrop-filter: blur(3px); backdrop-filter: blur(3px); padding: 20px; animation: settingsFade 0.18s ease-out; }
+    .settings-overlay[hidden] { display: none; }
+    @keyframes settingsFade { from { opacity: 0; } to { opacity: 1; } }
+    .settings-panel { background: var(--bg-card, #ffffff); border-radius: 24px; width: min(440px, 100%); max-height: 85vh; overflow-y: auto; box-shadow: 0 16px 48px rgba(43,49,64,0.25); border: 2px solid var(--mint, #2FB8A6); animation: settingsPop 0.22s cubic-bezier(0.34, 1.56, 0.64, 1); }
+    @keyframes settingsPop { 0% { transform: scale(0.92); opacity: 0; } 100% { transform: scale(1); opacity: 1; } }
+    .settings-header { display: flex; align-items: center; justify-content: space-between; padding: 18px 20px 12px; }
+    .settings-title { font-family: var(--font-heading, 'Fredoka', sans-serif); color: var(--navy, #2B3140); font-size: 1.3rem; margin: 0; }
+    .settings-close { width: 36px; height: 36px; border-radius: 50%; flex-shrink: 0; background: rgba(47,184,166,0.15); border: none; color: var(--navy, #2B3140); font-size: 1.4rem; line-height: 1; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; transition: background 0.15s ease; }
+    .settings-close:hover { background: rgba(47,184,166,0.3); }
+    .settings-close:focus-visible { outline: 3px solid var(--lila, #7D6AE6); outline-offset: 2px; }
+    .settings-body { display: flex; flex-direction: column; gap: 10px; padding: 0 16px 18px; }
+    .settings-body .toolbar-group-buttons { display: grid; grid-template-columns: repeat(auto-fit, minmax(80px, 1fr)); gap: 8px; }
+    .settings-body .tool-btn { flex-direction: column; gap: 6px; width: 100%; min-width: 0; min-height: 64px; padding: 10px 6px; }
+    .settings-body .tool-btn .btn-label { font-size: 0.8rem; }
+    .settings-body .tool-btn .btn-icon svg, .settings-body .font-size-control .tool-btn svg { width: 22px; height: 22px; }
+    .settings-body .tool-btn svg, .settings-body .btn-icon { pointer-events: none; }
+    .settings-body .font-size-control { grid-column: 1 / -1; display: flex; width: 100%; }
+    .settings-body .font-size-control .tool-btn { flex: 1; flex-direction: row; min-height: 46px; }
+    @media (max-width: 767px) { .settings-panel { width: 100%; max-height: 88vh; } }
+
+    /* Basis-Klassen (auf Katalogseiten sonst nicht vorhanden) */
+    .toolbar-group { border-radius: 20px; padding: 14px 16px 12px; }
+    .toolbar-group.group-view { background: #E7F6F3; }
+    .toolbar-group.group-extra { background: #FFF4D6; }
+    .toolbar-group-label { font-family: var(--font-heading, 'Fredoka', sans-serif); font-size: 0.78rem; font-weight: 600; color: #6b635a; margin-bottom: 10px; padding-left: 2px; }
+    .toolbar-group-buttons { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+    .tool-btn { background: rgba(255,255,255,0.9); border: 1.5px solid rgba(0,0,0,0.05); border-radius: 14px; padding: 10px 16px; min-height: 46px; min-width: 100px; font-family: var(--font-heading, 'Fredoka', sans-serif); font-weight: 500; color: #3B4252; cursor: pointer; display: inline-flex; align-items: center; justify-content: center; gap: 7px; transition: all 0.15s cubic-bezier(0.4, 0, 0.2, 1); font-size: 0.85em; line-height: 1; box-shadow: 0 1px 3px rgba(0,0,0,0.03); -webkit-tap-highlight-color: transparent; }
+    .tool-btn:hover { background: #fff; border-color: rgba(0,0,0,0.09); color: #333; transform: translateY(-1px); box-shadow: 0 3px 10px rgba(0,0,0,0.06); }
+    .tool-btn:focus-visible { outline: 3px solid var(--lila, #7D6AE6); outline-offset: 2px; }
+    .tool-btn:active { transform: scale(0.95); box-shadow: none; transition-duration: 0.06s; }
+    .group-view .tool-btn.active { background: var(--mint, #2FB8A6); color: var(--navy, #2B3140); border-color: #28a392; box-shadow: inset 0 2px 4px rgba(0,0,0,0.12), 0 1px 4px rgba(47,184,166,0.3); }
+    .group-extra .tool-btn.active { background: var(--primary-yellow, #FFD95A); color: var(--navy, #2B3140); border-color: #ecc63e; box-shadow: inset 0 2px 4px rgba(0,0,0,0.12), 0 1px 4px rgba(255,217,90,0.4); }
+    .tool-btn.active:hover { filter: brightness(1.05); }
+    .tool-btn .btn-icon { font-size: 1.1em; line-height: 1; flex-shrink: 0; }
+    .font-size-control { display: inline-flex; border-radius: 14px; overflow: hidden; border: 1.5px solid rgba(0,0,0,0.05); background: rgba(255,255,255,0.9); box-shadow: 0 1px 3px rgba(0,0,0,0.03); min-height: 46px; }
+    .font-size-control .tool-btn { border: none; border-radius: 0; box-shadow: none; min-width: 48px; min-height: 46px; justify-content: center; font-family: var(--font-heading, 'Fredoka', sans-serif); font-size: 0.95em; font-weight: 700; background: transparent; color: #5a5550; padding: 10px 12px; }
+    .font-size-control .tool-btn:first-child { border-right: 1px solid rgba(0,0,0,0.06); }
+    .font-size-control .tool-btn:hover { background: rgba(0,0,0,0.03); }
+
+    /* Lesefreundliche Schrift + Hoher Kontrast (gleiche Body-Klassen wie Leseseiten) */
+    body.dyslexia-mode { --font-body: 'Atkinson Hyperlegible', system-ui, sans-serif; letter-spacing: 0.03em; word-spacing: 0.12em; }
+    body.dyslexia-mode p, body.dyslexia-mode .tile-title, body.dyslexia-mode .bio-desc { line-height: 1.75; }
+    body.high-contrast { --cream: #ffffff; --cream-light: #ffffff; --navy: #000000; --text-muted: #1a1d24; --border: #2B3140; background: #ffffff; }
+    body.high-contrast .story-tile, body.high-contrast .filter-dd-trigger, body.high-contrast .filter-dd-panel,
+    body.high-contrast .search-wrapper input, body.high-contrast .tool-btn, body.high-contrast .font-size-control,
+    body.high-contrast .toolbar-group { border-color: #2B3140 !important; }
+    /* Text/Links durchgaengig auf maximalen Kontrast */
+    body.high-contrast a, body.high-contrast .tile-title, body.high-contrast .nav-btn { color: #000000; }
+    /* Links als solche erkennbar machen (nicht nur ueber Farbe) */
+    body.high-contrast main a, body.high-contrast footer a, body.high-contrast .modern-footer a { text-decoration: underline; }
+    /* Dekorative Hintergruende ruhigstellen, damit Text klar bleibt */
+    body.high-contrast .deco-star, body.high-contrast .deco-circle, body.high-contrast .deco-sparkle,
+    body.high-contrast .deco-blob, body.high-contrast .bg-blob, body.high-contrast .floating-deco { display: none !important; }
+
+    /* ===== THEMA „DUNKEL" (Dark Mode) — opt-in via body.dark-mode, Default bleibt Hell.
+       Warm-anthrazit statt Reinschwarz; Bulk via Token-Override, dazu gezielte Fixes
+       für hartkodierte helle Flächen (Modal-Buttons + Katalog/Seiten-Surfaces). ===== */
+    html:has(body.dark-mode) { background-color: #1C2230; }
+    body.dark-mode {
+        --cream: #1C2230; --cream-light: #232A3A; --bg-body: #1C2230; --bg-card: #2A3242;
+        --navy: #ECEFF4; --text-dark: #ECEFF4; --text-muted: #A9B2C2; --muted: #A9B2C2;
+        --border: #3A4456; --border-soft: #3A4456; --border-card: #3A4456;
+        --mint: #4FD3C0; --accent-teal: #4FD3C0; --coral: #FF8C6B; --accent-coral: #FF8C6B; --salmon: #FF8C6B;
+        --primary-yellow: #FFE082; --yellow: #FFE082; --lila: #A99BF0;
+        /* transparent statt opak: der dunkle Canvas kommt von html:has() oben,
+           so bleiben die z-index:-1-Deko (Sterne/Blobs) sichtbar (wie Anmeldung) */
+        background: transparent;
+    }
+    /* Modal-Chrome + Buttons (hartkodierte Helligkeit aufhellen) */
+    body.dark-mode .settings-panel { background: var(--bg-card); }
+    body.dark-mode .tool-btn,
+    body.dark-mode .font-size-control { background: rgba(42,50,66,0.9); color: var(--text-dark); }
+    body.dark-mode .font-size-control .tool-btn { background: transparent; color: var(--text-dark); }
+    body.dark-mode .tool-btn:hover { background: var(--cream-light); color: var(--text-dark); border-color: var(--border-soft); }
+    body.dark-mode .tool-btn.active { color: #1C2230; }
+    body.dark-mode .toolbar-group-label { color: var(--muted); }
+    body.dark-mode .toolbar-group.group-view { background: #22332F; }
+    body.dark-mode .toolbar-group.group-extra { background: #332E20; }
+    /* Generische Seiten-Surfaces (Katalog-Tiles, Filter, Suche, Legal, Footer) — analog
+       zur high-contrast-Liste, aber mit dunklem BG statt nur Border */
+    body.dark-mode .story-tile, body.dark-mode .filter-dd-trigger, body.dark-mode .filter-dd-panel,
+    body.dark-mode .search-wrapper input { background: var(--bg-card); color: var(--text-dark); border-color: var(--border-soft); }
+    /* Zentraler Header (hartkodierte weiße Navbar-Flächen aus partials/header.html) */
+    body.dark-mode .main-navbar { background: rgba(28,34,48,0.92); }
+    body.dark-mode .burger-icon,
+    body.dark-mode .nav-icon-btn { background: #2A3242; }
+    body.dark-mode .mobile-menu { background: #2A3242; }
+    /* Gemeinsamer Footer + weitere hartkodierte helle Flächen pro Seitentyp
+       (Selektoren ohne Treffer auf einer Seite sind harmlos) */
+    body.dark-mode .modern-footer { background: var(--cream-light); color: var(--text-muted); }
+    /* Wortmarke "Lese" + Social-Icons nutzen --cream (im Dark dunkel) -> aufhellen, sonst dunkel auf dunkel. */
+    body.dark-mode .modern-footer .footer-brand-row,
+    body.dark-mode .modern-footer .footer-social a { color: var(--text-dark); }
+    body.dark-mode .tile-fav, body.dark-mode .tile-speak,
+    body.dark-mode .load-more-btn, body.dark-mode .format-pill,
+    body.dark-mode .placeholder { background: var(--bg-card); color: var(--text-dark); border-color: var(--border-soft); }
+    body.dark-mode .skip-link { background: #3A4456; color: #fff; }
+    /* Glow-Blobs im Dark Mode aus — nur die ruhigen Sterne bleiben (wie Anmeldung) */
+    body.dark-mode .bg-blob { display: none; }
+    body.dark-mode::before, body.dark-mode::after { display: none; }
+/* === LK-A11Y:CSS END === */
     </style>
 </head>
 <body>
 
-<nav class="main-navbar" aria-label="Hauptnavigation">
+  <!-- Hintergrund-Deko: weiche Blobs + schwebende Sterne -->
+  <div class="bg-blob bg-blob-lila" aria-hidden="true"></div>
+  <div class="bg-blob bg-blob-mint" aria-hidden="true"></div>
+  <div class="page-deco" aria-hidden="true">
+    <svg class="deco-star deco-hide-mobile" style="top:14%;left:6%;width:30px;color:var(--yellow);" viewBox="0 0 32 32"><polygon points="16,2 20,12 30,12 22,19 25,30 16,23 7,30 10,19 2,12 12,12" fill="currentColor" opacity="0.7"/></svg>
+    <svg class="deco-sparkle" style="top:22%;right:7%;width:24px;color:var(--accent-coral);animation-delay:-1s;" viewBox="0 0 24 24"><path d="M12 2L13.5 9 21 12L13.5 14.5L12 22L10.5 14.5L3 12L10.5 9Z" fill="currentColor" opacity="0.7"/></svg>
+    <div class="deco-circle deco-hide-mobile" style="top:48%;left:4%;width:18px;height:18px;background:rgba(125,106,230,0.4);animation-delay:-2s;"></div>
+    <svg class="deco-star" style="top:62%;right:6%;width:24px;color:var(--mint);animation-delay:-3s;" viewBox="0 0 32 32"><polygon points="16,2 20,12 30,12 22,19 25,30 16,23 7,30 10,19 2,12 12,12" fill="currentColor" opacity="0.55"/></svg>
+    <svg class="deco-sparkle deco-hide-mobile" style="bottom:14%;left:8%;width:20px;color:var(--yellow);animation-delay:-2.5s;" viewBox="0 0 24 24"><path d="M12 2L13.5 9 21 12L13.5 14.5L12 22L10.5 14.5L3 12L10.5 9Z" fill="currentColor" opacity="0.65"/></svg>
+    <div class="deco-circle" style="bottom:20%;right:9%;width:14px;height:14px;background:rgba(47,184,166,0.45);animation-delay:-1.5s;"></div>
+  </div>
+
+  <a href="#main" class="skip-link">Zum Inhalt springen</a>
+
+<!-- === LK-HEADER:NAV START === -->
+  <nav class="main-navbar" aria-label="Hauptnavigation">
     <div class="nav-left">
-        <span class="nav-logo-box"><img src="bilder/lesekumpel_logo_v2.png" alt="Lesekumpel Logo" class="nav-logo"></span>
-        <a href="landingpage.html" class="brand-name">Lesekumpel</a>
-        <div class="nav-links-desktop">
-            <a href="landingpage.html#mission" class="nav-btn">F&uuml;r euch</a>
-            <a href="ueber-uns.html" class="nav-btn">&Uuml;ber uns</a>
-            <a href="demo.html" class="nav-btn">Demo-Texte</a>
-            <a href="neue-geschichte.html" class="nav-btn">Neue Geschichte</a>
-            <a href="preise.html" class="nav-btn">Preise</a>
-            <a href="anmelden.html" class="nav-btn">Mein Konto</a>
-        </div>
+      <button type="button" class="burger-icon" aria-label="Men&uuml; &ouml;ffnen" aria-expanded="false" aria-controls="mobile-menu" onclick="toggleMenu()">&#9776;</button>
+      <div id="mobile-menu" class="mobile-menu">
+        <a href="landingpage.html#mission" class="nav-btn" onclick="toggleMenu()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 9.5a5.5 5.5 0 0 1 9.591-3.676.56.56 0 0 0 .818 0A5.49 5.49 0 0 1 22 9.5c0 2.29-1.5 4-3 5.5l-5.492 5.313a2 2 0 0 1-3 .019L5 15c-1.5-1.5-3-3.2-3-5.5"/></svg><span>F&uuml;r euch</span></a>
+        <a href="landingpage.html#how-it-works" class="nav-btn" onclick="toggleMenu()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><path d="M12 17h.01"/></svg><span>So funktioniert&rsquo;s</span></a>
+        <a href="ueber-uns.html" class="nav-btn" onclick="toggleMenu()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><path d="M16 3.128a4 4 0 0 1 0 7.744"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><circle cx="9" cy="7" r="4"/></svg><span>&Uuml;ber uns</span></a>
+        <a href="demo.html" class="nav-btn" onclick="toggleMenu()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 7v14"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/></svg><span>Demo-Texte</span></a>
+        <a href="preise.html" class="nav-btn" onclick="toggleMenu()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12.586 2.586A2 2 0 0 0 11.172 2H4a2 2 0 0 0-2 2v7.172a2 2 0 0 0 .586 1.414l8.704 8.704a2.426 2.426 0 0 0 3.42 0l6.58-6.58a2.426 2.426 0 0 0 0-3.42z"/><circle cx="7.5" cy="7.5" r=".5" fill="currentColor"/></svg><span>Preise</span></a>
+        <a href="neue-geschichte.html" class="nav-btn" onclick="toggleMenu()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"/><path d="M20 2v4"/><path d="M22 4h-4"/><circle cx="4" cy="20" r="2"/></svg><span>Geschichte erstellen</span></a>
+        <div class="menu-divider"></div>
+        <a href="anmelden.html" class="nav-btn" onclick="toggleMenu()"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span>Mein Konto</span></a>
+        <a href="anmelden.html" class="nav-btn menu-cta" onclick="toggleMenu()">Jetzt registrieren &rarr;</a>
+      </div>
+    </div>
+    <div class="nav-center">
+      <a href="landingpage.html" class="nav-logo-box" aria-label="Lesekumpel Startseite"><img src="Konzept_Rebranding/logo-lesekumpel-512.webp" alt="Lesekumpel" class="nav-logo"></a>
+      <a href="landingpage.html" class="brand-name">Lesekumpel</a>
     </div>
     <div class="nav-right">
-        <button type="button" class="burger-icon" aria-label="Menü öffnen" aria-expanded="false" aria-controls="mobile-menu" onclick="toggleMenu()">☰</button>
+      <button type="button" class="nav-icon-btn" id="nav-settings" onclick="openSettings()" aria-label="Barrierefreiheit"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="1"/><path d="m9 20 3-6 3 6"/><path d="m6 8 6 2 6-2"/><path d="M12 10v4"/></svg></button>
+      <a href="anmelden.html" class="nav-icon-btn nav-login-btn" aria-label="Anmelden"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg><span class="nav-login-label">Anmelden</span></a>
     </div>
-    <div id="mobile-menu" class="mobile-menu">
-        <a href="landingpage.html#mission" class="nav-btn" onclick="toggleMenu()">F&uuml;r euch</a>
-        <a href="ueber-uns.html" class="nav-btn" onclick="toggleMenu()">&Uuml;ber uns</a>
-        <a href="demo.html" class="nav-btn" onclick="toggleMenu()">Demo-Texte</a>
-        <a href="neue-geschichte.html" class="nav-btn" onclick="toggleMenu()">Neue Geschichte</a>
-        <a href="preise.html" class="nav-btn" onclick="toggleMenu()">Preise</a>
-        <a href="anmelden.html" class="nav-btn" onclick="toggleMenu()">Mein Konto</a>
-    </div>
-</nav>
+  </nav>
+  <!-- === LK-HEADER:NAV END === -->
 
-<main class="main-container">
+<main class="main-container" id="main">
 
-    <div class="hub-back"><a href="neue-geschichte.html">← Zurück zur Auswahl</a></div>
+    <div class="hub-back"><a href="neue-geschichte.html">&larr; Zur&uuml;ck zur Auswahl</a></div>
 
     <section class="samira-hero">
-        <img src="avatars/samira-wissensfreund.webp" alt="Samira Wissensfreund">
+        <img src="avatars/samira-wissensfreund.webp" alt="">
         <h1>Sachtext mit Samira</h1>
-        <span class="stub-pill">Bald verfügbar</span>
     </section>
 
     <div class="samira-speech">
-        Hi, ich bin <strong>Samira</strong>! Ich liebe echte Fakten zum Staunen — von Vulkanen bis zur Tiefsee. Bald erkläre ich dir dein Lieblingsthema so spannend, dass dir garantiert nicht langweilig wird. Sag mir schon mal, worüber du mehr wissen willst!
+        Hi, ich bin <strong>Samira</strong>! Ich liebe echte Fakten zum Staunen — von Vulkanen bis zur Tiefsee. Sag mir, wor&uuml;ber du mehr wissen willst, und ich erkl&auml;re es dir so spannend, dass dir garantiert nicht langweilig wird.
     </div>
 
-    <div class="wizard" id="wizard">
-        <div class="wizard-progress" data-fk-progress></div>
-        <div class="wizard-remain" data-fk-remain></div>
+    <!-- ==================== PAGE 1: Auswahl ==================== -->
+    <div class="page active" id="page-1">
 
-        <section class="wizard-step" data-question="Worüber willst du mehr wissen?">
-            <div class="step-card">
-                <div class="step-q"><h2>Worüber willst du mehr wissen?</h2><button type="button" class="icon-btn" data-fk-read aria-label="Frage vorlesen">🔊</button></div>
-                <p class="step-hint">Tipp ein Thema ein, sprich es — oder wähle eins aus.</p>
-                <div class="field">
-                    <div class="field-row">
-                        <input type="text" class="text-input" id="thema" placeholder="z.B. Vulkane, Dinos, das Weltall …">
-                        <button type="button" class="icon-btn" id="mic-thema" aria-label="Thema sprechen">🎤</button>
-                    </div>
-                </div>
-                <div class="choice-grid" id="thema-grid"></div>
+        <!-- Sektion A: Thema -->
+        <div class="form-section">
+            <h2 class="section-title">Dein Thema</h2>
+            <div class="section-sub">Worüber soll dein Sachtext gehen?</div>
+            <label class="field-label" for="titel">Titel <span class="field-req" aria-hidden="true">*</span></label>
+            <input type="text" class="text-input" id="titel" required aria-required="true" placeholder="z.B. Warum leuchten Glühwürmchen?" style="margin-bottom:14px;">
+            <label class="field-label" for="beschreibung">Kurzbeschreibung <span class="field-opt">(optional)</span></label>
+            <textarea class="textarea-input" id="beschreibung" placeholder="Was möchtest du genau wissen?"></textarea>
+        </div>
+
+        <hr class="section-divider">
+
+        <!-- Sektion B: Textlänge -->
+        <div class="form-section">
+            <h2 class="section-title">Wie lang soll dein Sachtext sein?</h2>
+            <div class="section-sub">Such dir aus, wie viel Lesestoff du möchtest.</div>
+            <div class="neuro-grid" id="laenge-grid" role="group" aria-label="Textlänge wählen"></div>
+        </div>
+
+        <!-- Weiter-Button -->
+        <div class="step-nav">
+            <span></span>
+            <button class="btn-next" id="btn-next-page2" disabled onclick="goPage(2)">Weiter zum Bildstil &rarr;</button>
+        </div>
+    </div>
+
+    <!-- ==================== PAGE 2: Bildstil + Submit ==================== -->
+    <div class="page" id="page-2">
+
+        <div class="form-section">
+            <h2 class="section-title">Bilder?</h2>
+            <div class="section-sub">Bilder machen die Geschichte lebendig, brauchen aber etwas länger.</div>
+            <div class="toggle-group" id="bilder-toggle" role="group" aria-label="Mit Bildern oder nur Text">
+                <button type="button" class="toggle-btn active" data-bilder="true" aria-pressed="true" onclick="selectBilder(true)"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect width="18" height="18" x="3" y="3" rx="2" ry="2"/><circle cx="9" cy="9" r="2"/><path d="m21 15-3.086-3.086a2 2 0 0 0-2.828 0L6 21"/></svg><span>Mit Bildern</span></button>
+                <button type="button" class="toggle-btn" data-bilder="false" aria-pressed="false" onclick="selectBilder(false)"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7Z"/><path d="M14 2v4a2 2 0 0 0 2 2h4"/><path d="M16 13H8"/><path d="M16 17H8"/><path d="M10 9H8"/></svg><span>Nur Text</span></button>
             </div>
-        </section>
+        </div>
 
-        <div class="wizard-nav" data-fk-nav></div>
+        <div class="form-section" id="section-bildstil" style="margin-top:20px;">
+            <h2 class="section-title">Bildstil wählen</h2>
+            <div class="section-sub">Wie sollen die Illustrationen aussehen?</div>
+            <div class="stil-grid" role="group" aria-label="Bildstil wählen">
+                <button type="button" class="stil-card" data-stil="Aquarell" aria-pressed="false" onclick="selectStil('Aquarell')">
+                    <span class="stil-label">Aquarell</span>
+                </button>
+                <button type="button" class="stil-card" data-stil="Cartoon" aria-pressed="false" onclick="selectStil('Cartoon')">
+                    <span class="stil-label">Cartoon</span>
+                </button>
+                <button type="button" class="stil-card" data-stil="Buntstift" aria-pressed="false" onclick="selectStil('Buntstift')">
+                    <span class="stil-label">Buntstift</span>
+                </button>
+                <button type="button" class="stil-card" data-stil="Pixel-Art" aria-pressed="false" onclick="selectStil('Pixel-Art')">
+                    <span class="stil-label">Pixel-Art</span>
+                </button>
+                <button type="button" class="stil-card" data-stil="Anime" aria-pressed="false" onclick="selectStil('Anime')">
+                    <span class="stil-label">Anime</span>
+                </button>
+                <button type="button" class="stil-card" data-stil="Traumwelt" aria-pressed="false" onclick="selectStil('Traumwelt')">
+                    <span class="stil-label">Traumwelt</span>
+                </button>
+                <button type="button" class="stil-card" data-stil="Knete" aria-pressed="false" onclick="selectStil('Knete')">
+                    <span class="stil-label">Knete</span>
+                </button>
+                <button type="button" class="stil-card" data-stil="Voxel" aria-pressed="false" onclick="selectStil('Voxel')">
+                    <span class="stil-label">Voxel</span>
+                </button>
+                <!-- Schaubild (Infografik-Stil): hidden entfernen, sobald bilder/bildstil-vorschau/schaubild.webp
+                     UND bilder/bildstil-vorschau/neutral/schaubild.png existieren (Style-Ref für die Bild-Pipeline) -->
+                <button type="button" class="stil-card" data-stil="Schaubild" aria-pressed="false" onclick="selectStil('Schaubild')" hidden>
+                    <span class="stil-label">Schaubild</span>
+                </button>
+            </div>
+        </div>
+
+        <div style="margin-top:28px;">
+            <button class="btn-submit" id="btn-submit" disabled onclick="submitStory()">✨ Sachtext erstellen</button>
+        </div>
+        <div class="step-nav" style="margin-top:10px;">
+            <button class="btn-back" onclick="goPage(1)">&larr; Zurück zur Auswahl</button>
+            <span></span>
+        </div>
     </div>
 
 </main>
 
-<div class="preview-modal" id="preview-modal" role="dialog" aria-modal="true" aria-labelledby="preview-headline">
-    <div class="preview-card">
-        <img class="preview-buddy" src="avatars/samira-wissensfreund.webp" alt="">
-        <div class="preview-headline" id="preview-headline">Samira übt noch fleißig!</div>
-        <p class="preview-sub">Bald schreibe ich dir richtig spannende Sachtexte. Dein Thema habe ich mir gemerkt:</p>
-        <div class="preview-body" id="preview-body"></div>
-        <div class="preview-actions"><button type="button" class="btn-primary" id="preview-close" style="margin:0;">Alles klar!</button></div>
+<!-- LOADING OVERLAY -->
+<div class="loading-overlay" id="loading-overlay" role="alertdialog" aria-modal="true" aria-labelledby="loading-title" aria-describedby="loading-status">
+    <div class="loading-card">
+        <button class="loading-close" id="loading-close" aria-label="Schließen" type="button">×</button>
+        <span class="wackel" aria-hidden="true">📖</span>
+        <div class="loading-title" id="loading-title">Dein Sachtext wird geschrieben...</div>
+        <div class="loading-bar-bg"><div class="loading-bar" id="loading-bar"></div></div>
+        <div class="loading-status" id="loading-status" aria-live="assertive" aria-atomic="true">Samira recherchiert echte Fakten...</div>
+        <p style="margin-top:15px; font-size:0.8rem; color:var(--text-muted);" id="loading-hint">Das dauert ca. 1-2 Minuten. Bitte schließe das Fenster nicht.</p>
     </div>
 </div>
 
-<footer>
-    <div class="footer-links"><a href="impressum.html">Impressum</a> &bull; <a href="datenschutz.html">Datenschutz</a> &bull; <a href="ueber-uns.html">&Uuml;ber uns</a> &bull; <a href="knowledge-base/snacks/index.html">Wissen</a></div>
-</footer>
+<!-- PRE-CHECK MODAL -->
+<div class="precheck-modal" id="precheck-modal" role="dialog" aria-modal="true" aria-labelledby="precheck-headline">
+    <div class="precheck-card" id="precheck-card">
+        <div class="precheck-headline" id="precheck-headline"></div>
+        <div class="precheck-sub" id="precheck-sub"></div>
+        <div id="precheck-body"></div>
+        <div class="precheck-actions" id="precheck-actions"></div>
+    </div>
+</div>
 
-<script src="formkit.js"></script>
+<!-- === LK-FOOTER:FOOTER START === -->
+  <footer class="modern-footer">
+    <div class="footer-grid">
+      <div class="footer-brand-block">
+        <div class="footer-brand-row">
+          <img src="Konzept_Rebranding/logo-lesekumpel-512.webp" alt="Lesekumpel Logo">
+          <span>Lese<span class="brand-yellow">kumpel</span></span>
+        </div>
+        <p class="footer-tagline">Die inklusive Lese-App, die jedes Kind lieben lernt. Neurodivers gestaltet.</p>
+        <div class="footer-social">
+          <a href="https://www.instagram.com/lesekumpel.de/" target="_blank" rel="noopener" aria-label="Lesekumpel auf Instagram">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none"/></svg>
+          </a>
+          <a href="https://discord.gg/sAr6KEsg" target="_blank" rel="noopener" aria-label="Lesekumpel Discord Community">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.419 2.157-2.419 1.21 0 2.176 1.095 2.157 2.42 0 1.333-.956 2.418-2.157 2.418zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.419 2.157-2.419 1.21 0 2.176 1.095 2.157 2.42 0 1.333-.946 2.418-2.157 2.418z"/></svg>
+          </a>
+        </div>
+      </div>
+
+      <div>
+        <h2>Entdecken</h2>
+        <ul>
+          <li><a href="demo.html">Demo-Texte</a></li>
+          <li><a href="preise.html">Preise</a></li>
+          <li><a href="neue-geschichte.html">Geschichte erstellen</a></li>
+          <li><a href="ueber-uns.html">&Uuml;ber uns</a></li>
+        </ul>
+      </div>
+
+      <div>
+        <h2>Rechtliches</h2>
+        <ul>
+          <li><a href="impressum.html">Impressum</a></li>
+          <li><a href="datenschutz.html">Datenschutz</a></li>
+          <li><a href="knowledge-base/snacks/index.html">Wissen</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer-bottom">
+      <span>&copy; 2026 Lesekumpel &middot; Inklusive Lese-App f&uuml;r jedes Gehirn</span>
+    </div>
+  </footer>
+  <!-- === LK-FOOTER:FOOTER END === -->
+
 <script>
 function toggleMenu() {
-    var menu = document.getElementById('mobile-menu');
-    var btn = document.querySelector('.burger-icon');
-    menu.classList.toggle('open');
-    btn.setAttribute('aria-expanded', menu.classList.contains('open'));
+    const menu = document.getElementById('mobile-menu');
+    const btn = document.querySelector('.burger-icon');
+    const open = menu.classList.toggle('open');
+    if (btn) btn.setAttribute('aria-expanded', open ? 'true' : 'false');
 }
+/* Klick außerhalb schließt das Menü */
+document.addEventListener('click', function (e) {
+    const nav = document.querySelector('.nav-left');
+    const menu = document.getElementById('mobile-menu');
+    if (menu && menu.classList.contains('open') && nav && !nav.contains(e.target)) {
+        menu.classList.remove('open');
+        const btn = document.querySelector('.burger-icon');
+        if (btn) btn.setAttribute('aria-expanded', 'false');
+    }
+});
+/* Escape schließt das Menü und gibt den Fokus zurück */
+document.addEventListener('keydown', function (e) {
+    if (e.key !== 'Escape') return;
+    const menu = document.getElementById('mobile-menu');
+    if (menu && menu.classList.contains('open')) {
+        menu.classList.remove('open');
+        const btn = document.querySelector('.burger-icon');
+        if (btn) { btn.setAttribute('aria-expanded', 'false'); btn.focus(); }
+    }
+});
 
-var state = { thema: '' };
-var THEMEN = [ { t:'Vulkane', e:'🌋' }, { t:'Weltall', e:'🪐' }, { t:'Tiere', e:'🦒' }, { t:'Der Körper', e:'🦴' } ];
-var tg = document.getElementById('thema-grid');
-THEMEN.forEach(function (th) {
-    var t = document.createElement('button');
-    t.type = 'button'; t.className = 'choice-tile'; t.dataset.thema = th.t; t.setAttribute('aria-pressed','false');
-    t.innerHTML = '<span class="choice-emoji" aria-hidden="true">' + th.e + '</span><span class="choice-label">' + th.t + '</span>';
-    t.addEventListener('click', function () {
-        state.thema = th.t;
-        document.getElementById('thema').value = th.t;
-        Array.prototype.forEach.call(tg.children, function (c) { c.classList.remove('active'); c.setAttribute('aria-pressed','false'); });
-        t.classList.add('active'); t.setAttribute('aria-pressed','true');
-        FormKit.speak('Erzähl mir von ' + th.t); wiz.refresh(); wiz.save();
+/* ============================================================
+   A11y: Fokus-Verwaltung fuer Modals (Pre-Check / Loading)
+   Fokus ins Modal, Tab-Falle, Escape, Rueckgabe an Ausloeser.
+   ============================================================ */
+var _modalTrigger = null;
+function _modalFocusables(m) {
+    return Array.prototype.filter.call(
+        m.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'),
+        function (el) { return el.offsetParent !== null && !el.disabled; }
+    );
+}
+function openModalFocus(id) {
+    const m = document.getElementById(id);
+    if (!m) return;
+    _modalTrigger = document.activeElement;
+    const f = _modalFocusables(m);
+    if (f.length) { f[0].focus(); }
+    else { m.setAttribute('tabindex', '-1'); m.focus(); }
+}
+function closeModalFocus() {
+    if (_modalTrigger && typeof _modalTrigger.focus === 'function') _modalTrigger.focus();
+    _modalTrigger = null;
+}
+document.addEventListener('keydown', function (e) {
+    const m = document.querySelector('.precheck-modal.visible, .loading-overlay.visible.dismissable');
+    if (!m) return;
+    if (e.key === 'Escape') {
+        if (m.classList.contains('precheck-modal')) closePrecheckModal();
+        else if (typeof hideLoading === 'function') hideLoading();
+        return;
+    }
+    if (e.key !== 'Tab') return;
+    const f = _modalFocusables(m);
+    if (!f.length) return;
+    const first = f[0], last = f[f.length - 1];
+    if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+    else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+});
+
+/* ============================================================
+   A11y-Tool: Leichter lesen + Mehr Kontrast (localStorage)
+   Gleiche Body-Klassen/Keys wie die Leseseiten -> konsistent.
+   ============================================================ */
+(function initA11y() {
+    const KEY = { dyslexia: 'lesekumpel-lesefreundlich', contrast: 'lesekumpel-kontrast' };
+    const btn = document.getElementById('nav-a11y');
+    const pop = document.getElementById('a11y-popover');
+    function get(k) { try { return localStorage.getItem(KEY[k]) === 'true'; } catch (e) { return false; } }
+    function set(k, v) { try { localStorage.setItem(KEY[k], v ? 'true' : 'false'); } catch (e) {} }
+    function apply() {
+        document.body.classList.toggle('dyslexia-mode', get('dyslexia'));
+        document.body.classList.toggle('high-contrast', get('contrast'));
+        if (pop) pop.querySelectorAll('[data-a11y]').forEach(function (o) {
+            const on = get(o.getAttribute('data-a11y'));
+            o.classList.toggle('on', on);
+            o.setAttribute('aria-checked', on ? 'true' : 'false');
+        });
+    }
+    apply();
+    if (!btn || !pop) return;
+    btn.addEventListener('click', function (e) {
+        e.stopPropagation();
+        const open = !pop.hidden;
+        pop.hidden = open;
+        btn.setAttribute('aria-expanded', open ? 'false' : 'true');
     });
-    tg.appendChild(t);
-});
-document.getElementById('thema').addEventListener('input', function (e) {
-    state.thema = e.target.value.trim();
-    Array.prototype.forEach.call(tg.children, function (c) { c.classList.remove('active'); c.setAttribute('aria-pressed','false'); });
-    wiz.refresh(); wiz.save();
-});
-FormKit.attachDictation(document.getElementById('thema'), document.getElementById('mic-thema'));
+    pop.addEventListener('click', function (e) {
+        const o = e.target.closest('[data-a11y]');
+        if (!o) return;
+        const k = o.getAttribute('data-a11y');
+        set(k, !get(k));
+        apply();
+    });
+    document.addEventListener('click', function (e) {
+        if (!e.target.closest('.a11y-wrap')) { pop.hidden = true; btn.setAttribute('aria-expanded', 'false'); }
+    });
+    document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') { pop.hidden = true; btn.setAttribute('aria-expanded', 'false'); }
+    });
+})();
 
-var modal = document.getElementById('preview-modal');
-function showPreview() {
-    document.getElementById('preview-body').innerHTML = '<dt>Dein Thema</dt><dd>' + FormKit.escapeHtml(state.thema) + '</dd>';
-    FormKit.openPreview(modal);
-    wiz.clearSaved();
+// ============================================================
+// DATA
+// ============================================================
+// ── Textlängen (ersetzen die Persona-/Neurotyp-Auswahl des Autorengeschichten-Formulars) ──
+// Wortspannen + Bildanzahl müssen zu daten-vorbereiten-sachtext-v1.js im n8n-Workflow passen.
+const LAENGEN = [
+    { id: 'Kurz',   label: 'Kurz',   info: 'ca. 80–150 Wörter · 4 Bilder',  detail: 'Ein Kernfakt, schnell gelesen' },
+    { id: 'Mittel', label: 'Mittel', info: 'ca. 150–250 Wörter · 5 Bilder', detail: 'Das klassische Sachtext-Format' },
+    { id: 'Lang',   label: 'Lang',   info: 'ca. 250–400 Wörter · 6 Bilder', detail: 'Viel Wissen für Vielleser' }
+];
+
+const BILDSTIL_LABELS = { 'Aquarell': 'Aquarell — Weiche Pastellfarben', 'Cartoon': 'Cartoon — Bunte moderne Illustration', 'Buntstift': 'Buntstift — Handgezeichneter Look', 'Pixel-Art': 'Pixel-Art — Retro-Gaming-Stil', 'Anime': 'Anime — Farbenfroh wie Nintendo & Pokémon', 'Traumwelt': 'Traumwelt — Magische Malerei wie Ori', 'Knete': 'Knete — Stop-Motion Knetfiguren-Look', 'Voxel': 'Voxel — Blocky Gamer-Stil wie Minecraft', 'Schaubild': 'Schaubild — Schlaue Bilder, die erklären' };
+
+const WEBHOOK_URL = 'https://rala84.app.n8n.cloud/webhook/lesekumpel-sachtext';
+const PRECHECK_URL = 'https://rala84.app.n8n.cloud/webhook/lesekumpel-precheck';
+const PRECHECK_TIMEOUT_MS = 15000;
+
+let state = { laenge: null, stil: null, mitBildern: true };
+
+// ============================================================
+// PAGE NAVIGATION & SECTION VISIBILITY
+// ============================================================
+function goPage(num) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.getElementById('page-' + num).classList.add('active');
+    window.scrollTo({ top: 0, behavior: 'smooth' });
 }
-document.getElementById('preview-close').addEventListener('click', function () { FormKit.closePreview(modal); });
 
-var wiz = new FormKit.Wizard({
-    root: document.getElementById('wizard'),
-    storageKey: 'sachtext',
-    finalLabel: 'Samira fragen ✨',
-    steps: [ { validate: function () { return state.thema.trim().length > 0; } } ],
-    getState: function () { return state; },
-    applyState: function (s) { state = Object.assign(state, s); document.getElementById('thema').value = state.thema || ''; },
-    onComplete: showPreview
-});
-wiz.offerResume(null);
+function showSection(id) {
+    const el = document.getElementById(id);
+    if (el.classList.contains('hidden')) { el.classList.remove('hidden'); el.classList.add('reveal'); }
+}
+
+function hideSection(id) {
+    const el = document.getElementById(id);
+    el.classList.add('hidden'); el.classList.remove('reveal');
+}
+
+// ============================================================
+// TEXTLÄNGE RENDERING & SELECTION
+// ============================================================
+function renderLaengen() {
+    const grid = document.getElementById('laenge-grid');
+    const svg = (paths) => `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">${paths}</svg>`;
+    const LAENGE_ICONS = {
+        Kurz:   svg('<path d="M15 12H3"/><path d="M11 18H3"/><path d="M17 6H3"/>'),
+        Mittel: svg('<path d="M17 12H3"/><path d="M15 18H3"/><path d="M21 6H3"/>'),
+        Lang:   svg('<path d="M21 12H3"/><path d="M21 18H3"/><path d="M21 6H3"/>')
+    };
+    grid.innerHTML = LAENGEN.map(l =>
+        `<button type="button" class="neuro-card" data-laenge="${l.id}" aria-pressed="false" aria-label="${l.label}: ${l.info}" onclick="selectLaenge('${l.id}')">
+            <span class="neuro-head" aria-hidden="true">
+                <span class="neuro-icon">${LAENGE_ICONS[l.id] || ''}</span>
+                <span class="neuro-name">${l.label}</span>
+            </span>
+            <span class="neuro-desc" aria-hidden="true">${l.info}<br>${l.detail}</span>
+        </button>`
+    ).join('');
+}
+
+function selectLaenge(laenge) {
+    state.laenge = laenge;
+    document.querySelectorAll('#laenge-grid .neuro-card').forEach(b => { b.classList.remove('active'); b.setAttribute('aria-pressed', 'false'); });
+    const sel = document.querySelector(`#laenge-grid .neuro-card[data-laenge="${laenge}"]`);
+    sel.classList.add('active'); sel.setAttribute('aria-pressed', 'true');
+    updateNextButton();
+}
+
+// ============================================================
+// VALIDATION & BILDSTIL
+// ============================================================
+function updateNextButton() {
+    const titel = document.getElementById('titel').value.trim();
+    const valid = titel.length > 0 && state.laenge;
+    document.getElementById('btn-next-page2').disabled = !valid;
+}
+
+document.getElementById('titel').addEventListener('input', updateNextButton);
+
+function selectBilder(val) {
+    state.mitBildern = val;
+    document.querySelectorAll('#bilder-toggle .toggle-btn').forEach(b => { b.classList.remove('active'); b.setAttribute('aria-pressed', 'false'); });
+    const selB = document.querySelector(`#bilder-toggle .toggle-btn[data-bilder="${val}"]`);
+    selB.classList.add('active'); selB.setAttribute('aria-pressed', 'true');
+    const stilSection = document.getElementById('section-bildstil');
+    if (val) {
+        stilSection.style.display = '';
+        document.getElementById('btn-submit').disabled = !state.stil;
+    } else {
+        stilSection.style.display = 'none';
+        document.getElementById('btn-submit').disabled = false;
+    }
+}
+
+function selectStil(stil) {
+    state.stil = stil;
+    document.querySelectorAll('.stil-card').forEach(c => { c.classList.remove('active'); c.setAttribute('aria-pressed', 'false'); });
+    const selS = document.querySelector(`.stil-card[data-stil="${stil}"]`);
+    selS.classList.add('active'); selS.setAttribute('aria-pressed', 'true');
+    document.getElementById('btn-submit').disabled = false;
+}
+
+// ============================================================
+// SUBMIT
+// ============================================================
+async function submitStory() {
+    const titel = document.getElementById('titel').value.trim();
+    const beschreibung = document.getElementById('beschreibung').value.trim();
+
+    const payload = {
+        Titel: titel,
+        Textlaenge: state.laenge,
+        Bildstil: BILDSTIL_LABELS[state.stil],
+        Kurzbeschreibung: beschreibung,
+        mitBildern: state.mitBildern
+    };
+
+    showLoading('check');
+
+    let precheck;
+    try {
+        precheck = await runPrecheck(titel, beschreibung);
+    } catch (err) {
+        // Fail open: Pre-Check-Defekt darf User nicht blockieren
+        console.warn('Pre-Check fehlgeschlagen, gehe direkt zur Story-Generierung:', err);
+        proceedToStory(payload);
+        return;
+    }
+
+    if (precheck.status === 'ok') {
+        proceedToStory(payload);
+    } else if (precheck.status === 'corrected') {
+        hideLoading();
+        showCorrectionModal(precheck, payload);
+    } else if (precheck.status === 'rejected') {
+        hideLoading();
+        showRejectionModal(precheck);
+    } else {
+        // Unbekannter Status → fail open
+        proceedToStory(payload);
+    }
+}
+
+async function runPrecheck(titel, kurzbeschreibung) {
+    const ctrl = new AbortController();
+    const timer = setTimeout(() => ctrl.abort(), PRECHECK_TIMEOUT_MS);
+    try {
+        const res = await fetch(PRECHECK_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ Titel: titel, Kurzbeschreibung: kurzbeschreibung }),
+            signal: ctrl.signal
+        });
+        if (!res.ok) throw new Error('Pre-Check HTTP ' + res.status);
+        return await res.json();
+    } finally {
+        clearTimeout(timer);
+    }
+}
+
+function proceedToStory(payload) {
+    showLoading('story');
+    fetch(WEBHOOK_URL, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+    })
+    .then(r => r.json().catch(() => ({})))
+    .then(result => {
+        if (result && result.storyUrl) {
+            // Synchroner Pfad: Workflow ist fertig und liefert URL
+            document.getElementById('loading-status').textContent = 'Fertig! Du wirst weitergeleitet...';
+            document.getElementById('loading-bar').style.width = '100%';
+            setTimeout(() => { window.location.href = result.storyUrl; }, 1500);
+        } else if (result && (result.error || result.message)) {
+            // Echter Fehler vom Server
+            hideLoading();
+            alert('Fehler: ' + (result.message || result.error));
+        } else {
+            // Async-Submit (n8n hat sofort Echo-Body geantwortet, Story läuft im Hintergrund)
+            enterAsyncMode(payload);
+        }
+    })
+    .catch(() => {
+        hideLoading();
+        alert('Verbindungsfehler — bitte versuche es erneut.');
+    });
+}
+
+// Wort-Level-Diff: markiert geänderte Tokens als <del>/<ins>, gleiche als plain
+function diffTokens(oldStr, newStr) {
+    const a = (oldStr || '').split(/(\s+)/);
+    const b = (newStr || '').split(/(\s+)/);
+    const m = a.length, n = b.length;
+    const dp = Array.from({ length: m + 1 }, () => new Array(n + 1).fill(0));
+    for (let i = m - 1; i >= 0; i--) {
+        for (let j = n - 1; j >= 0; j--) {
+            dp[i][j] = a[i] === b[j] ? dp[i + 1][j + 1] + 1 : Math.max(dp[i + 1][j], dp[i][j + 1]);
+        }
+    }
+    const out = [];
+    let i = 0, j = 0;
+    const esc = s => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    while (i < m && j < n) {
+        if (a[i] === b[j]) { out.push(esc(a[i])); i++; j++; }
+        else if (dp[i + 1][j] >= dp[i][j + 1]) { if (a[i].trim()) out.push('<del>' + esc(a[i]) + '</del>'); else out.push(esc(a[i])); i++; }
+        else { if (b[j].trim()) out.push('<ins>' + esc(b[j]) + '</ins>'); else out.push(esc(b[j])); j++; }
+    }
+    while (i < m) { if (a[i].trim()) out.push('<del>' + esc(a[i]) + '</del>'); else out.push(esc(a[i])); i++; }
+    while (j < n) { if (b[j].trim()) out.push('<ins>' + esc(b[j]) + '</ins>'); else out.push(esc(b[j])); j++; }
+    return out.join('');
+}
+
+function showCorrectionModal(precheck, originalPayload) {
+    const card = document.getElementById('precheck-card');
+    card.classList.remove('is-rejected');
+    card.classList.add('is-corrected');
+
+    document.getElementById('precheck-headline').textContent = '✏️ Wir haben kleine Tippfehler gefunden';
+    document.getElementById('precheck-sub').textContent = 'Möchtest du den Vorschlag übernehmen oder dein Original behalten?';
+
+    const orig = precheck.original || {};
+    const corr = precheck.corrected || {};
+    const fields = [];
+    if ((orig.titel || '') !== (corr.titel || '')) {
+        fields.push({ label: 'Titel', diff: diffTokens(orig.titel || '', corr.titel || '') });
+    }
+    if ((orig.kurzbeschreibung || '') !== (corr.kurzbeschreibung || '')) {
+        fields.push({ label: 'Kurzbeschreibung', diff: diffTokens(orig.kurzbeschreibung || '', corr.kurzbeschreibung || '') });
+    }
+    const issues = (precheck.issues || []).filter(i => i && i.typ === 'grammatik' && typeof i.grund === 'string');
+
+    let bodyHtml = fields.map(f =>
+        '<div class="precheck-field">' +
+            '<div class="precheck-field-label">' + f.label + '</div>' +
+            '<div class="precheck-diff">' + f.diff + '</div>' +
+        '</div>'
+    ).join('');
+
+    if (issues.length) {
+        bodyHtml += '<ul class="precheck-issue-list precheck-issue-list-info">' +
+            issues.map(i => '<li>' + (i.feld === 'titel' ? '<strong>Titel:</strong> ' : '<strong>Beschreibung:</strong> ') + i.grund + '</li>').join('') +
+            '</ul>';
+    }
+
+    if (!bodyHtml) {
+        bodyHtml = '<div class="precheck-sub">Keine Änderungen vorgeschlagen.</div>';
+    }
+    document.getElementById('precheck-body').innerHTML = bodyHtml;
+
+    document.getElementById('precheck-actions').innerHTML =
+        '<button class="precheck-btn precheck-btn-secondary" id="precheck-btn-cancel">Zurück zum Formular</button>' +
+        '<button class="precheck-btn precheck-btn-secondary" id="precheck-btn-keep">Original behalten</button>' +
+        '<button class="precheck-btn precheck-btn-primary" id="precheck-btn-accept">Vorschlag übernehmen</button>';
+
+    document.getElementById('precheck-btn-cancel').onclick = closePrecheckModal;
+    document.getElementById('precheck-btn-keep').onclick = function() {
+        closePrecheckModal();
+        proceedToStory(originalPayload);
+    };
+    document.getElementById('precheck-btn-accept').onclick = function() {
+        closePrecheckModal();
+        proceedToStory(Object.assign({}, originalPayload, {
+            Titel: corr.titel || originalPayload.Titel,
+            Kurzbeschreibung: corr.kurzbeschreibung != null ? corr.kurzbeschreibung : originalPayload.Kurzbeschreibung
+        }));
+    };
+
+    document.getElementById('precheck-modal').classList.add('visible');
+    openModalFocus('precheck-modal');
+}
+
+function showRejectionModal(precheck) {
+    const card = document.getElementById('precheck-card');
+    card.classList.remove('is-corrected');
+    card.classList.add('is-rejected');
+
+    document.getElementById('precheck-headline').textContent = '🤔 Bitte formuliere deine Eingabe etwas anders';
+    document.getElementById('precheck-sub').textContent = 'Die Geschichte sollte für Kinder zwischen 5 und 10 Jahren passen.';
+
+    const issues = (precheck.issues || []).filter(i => i.typ === 'jugendfrei');
+    const items = issues.length
+        ? issues.map(i => '<li>' + (i.grund || 'Inhalt nicht jugendfrei.') + '</li>').join('')
+        : '<li>Der Inhalt passt nicht für unsere Altersgruppe.</li>';
+    document.getElementById('precheck-body').innerHTML =
+        '<ul class="precheck-issue-list">' + items + '</ul>';
+
+    document.getElementById('precheck-actions').innerHTML =
+        '<button class="precheck-btn precheck-btn-primary" id="precheck-btn-edit">Eingabe ändern</button>';
+    document.getElementById('precheck-btn-edit').onclick = closePrecheckModal;
+
+    document.getElementById('precheck-modal').classList.add('visible');
+    openModalFocus('precheck-modal');
+}
+
+function closePrecheckModal() {
+    document.getElementById('precheck-modal').classList.remove('visible');
+    closeModalFocus();
+}
+
+function showLoading(mode) {
+    const overlay = document.getElementById('loading-overlay');
+    overlay.classList.add('visible');
+    if (overlay._timer) clearInterval(overlay._timer);
+
+    const titleEl  = document.getElementById('loading-title');
+    const statusEl = document.getElementById('loading-status');
+    const hintEl   = document.getElementById('loading-hint');
+    const barEl    = document.getElementById('loading-bar');
+
+    if (mode === 'check') {
+        titleEl.textContent  = 'Wir prüfen deine Eingabe...';
+        statusEl.textContent = 'Tippfehler & Inhalt werden gecheckt...';
+        hintEl.textContent   = 'Das dauert nur ein paar Sekunden.';
+        barEl.style.width = '0%';
+        let elapsed = 0;
+        overlay._timer = setInterval(() => {
+            elapsed++;
+            barEl.style.width = Math.min(elapsed * 10, 90) + '%';
+        }, 300);
+        return;
+    }
+
+    // mode === 'story' (default)
+    titleEl.textContent = 'Dein Sachtext wird geschrieben...';
+    hintEl.textContent  = 'Das dauert ca. 1-2 Minuten. Bitte schließe das Fenster nicht.';
+    barEl.style.width = '0%';
+    let elapsed = 0;
+    const total = 60;
+    const messages = [
+        [0, 'Samira recherchiert echte Fakten...'],
+        [15, 'Schreibe den Sachtext...'],
+        [40, 'Erstelle Quiz und Wissens-Kästen...'],
+        [60, 'Fast fertig! Letzte Details...'],
+        [85, 'Gleich geschafft...']
+    ];
+    overlay._timer = setInterval(() => {
+        if (overlay._asyncMode) return; // Async-Modus übernommen — nicht mehr überschreiben
+        elapsed++;
+        const pct = Math.min((elapsed / total) * 100, 95);
+        barEl.style.width = pct + '%';
+        const msg = messages.filter(m => m[0] <= pct).pop();
+        if (msg) statusEl.textContent = msg[1];
+        if (elapsed >= total) clearInterval(overlay._timer);
+    }, 1000);
+}
+
+function hideLoading() {
+    const overlay = document.getElementById('loading-overlay');
+    overlay.classList.remove('visible');
+    overlay.classList.remove('dismissable');
+    overlay._asyncMode = false;
+    if (overlay._timer) { clearInterval(overlay._timer); overlay._timer = null; }
+    stopPolling();
+}
+
+// ─── Async-Story-Detection via GitHub-API-Polling ───────────────────
+// n8n quittiert den Webhook sofort und erstellt den Sachtext im Hintergrund.
+// Wir snapshotten die Dateiliste in sachtexte/ und pollen, bis ein neues
+// File auftaucht — dann switcht das Modal in den Fertig-State mit Direktlink.
+
+const STORY_FOLDER = 'sachtexte';
+const STORY_LIST_API = `https://api.github.com/repos/RaLa84/lesekumpel/contents/${STORY_FOLDER}`;
+const POLL_INTERVAL_MS = 10000;
+const POLL_MAX_ATTEMPTS = 30; // ~5 Minuten — toleriert GitHub-API-Cache-Lag
+
+let pollState = null;
+
+function slugifyTitle(title) {
+    const m = { 'ä':'ae','ö':'oe','ü':'ue','ß':'ss','Ä':'ae','Ö':'oe','Ü':'ue' };
+    return (title || '').toLowerCase()
+        .replace(/[äöüßÄÖÜ]/g, c => m[c] || c)
+        .replace(/\s+/g, '-').replace(/[^a-z0-9-]/g, '').replace(/-+/g, '-')
+        .substring(0, 55);
+}
+
+async function fetchStoryFileSet() {
+    try {
+        // Cache-Buster gegen GitHub-API-Cache: ohne diesen kann die Liste mehrere Minuten alt sein
+        const res = await fetch(`${STORY_LIST_API}?_cb=${Date.now()}`, { cache: 'no-store' });
+        if (!res.ok) return null;
+        const data = await res.json();
+        if (!Array.isArray(data)) return null;
+        return new Set(data.filter(f => f && f.name && f.name.endsWith('.html')).map(f => f.name));
+    } catch (e) {
+        return null;
+    }
+}
+
+async function enterAsyncMode(payload) {
+    const overlay = document.getElementById('loading-overlay');
+    // Async-Modus aktivieren — der synthetische Progress-Timer hört dann auf, das Status-Feld zu überschreiben
+    overlay._asyncMode = true;
+    if (overlay._timer) { clearInterval(overlay._timer); overlay._timer = null; }
+    document.getElementById('loading-bar').style.width = '100%';
+    document.getElementById('loading-title').textContent = 'Dein Sachtext wird im Hintergrund erstellt';
+    document.getElementById('loading-status').textContent = 'Er erscheint gleich in der Bibliothek...';
+    document.getElementById('loading-hint').innerHTML = 'Das dauert ca. 1–2 Minuten. <a href="demo.html" style="color:#136B61;font-weight:600;">Zur Bibliothek →</a>';
+    overlay.classList.add('dismissable');
+    const _lc = document.getElementById('loading-close'); if (_lc) _lc.focus(); // Fokus auf Schließen, jetzt erreichbar
+
+    const snapshot = await fetchStoryFileSet();
+    // Status nach dem await nochmal hard-setzen — schützt vor Race-Condition mit pending Timer-Tick
+    document.getElementById('loading-status').textContent = 'Er erscheint gleich in der Bibliothek...';
+    if (!snapshot) return; // Kein Polling möglich — Modal bleibt closeable mit Bibliothek-Link
+    pollState = {
+        snapshot,
+        slugHint: slugifyTitle(payload && payload.Titel),
+        attempts: 0,
+        timer: setInterval(pollForNewStory, POLL_INTERVAL_MS)
+    };
+}
+
+async function pollForNewStory() {
+    if (!pollState) return;
+    pollState.attempts++;
+    if (pollState.attempts > POLL_MAX_ATTEMPTS) {
+        stopPolling();
+        // Modal nicht stumm hängen lassen — User soll wissen, dass die Story bald da sein sollte
+        document.getElementById('loading-title').textContent = 'Fast fertig!';
+        document.getElementById('loading-status').textContent = 'Der Sachtext ist gleich in deiner Bibliothek.';
+        document.getElementById('loading-hint').innerHTML = '<a href="demo.html" class="story-ready-btn" style="margin-top:12px;">📚 Zur Bibliothek →</a>';
+        return;
+    }
+
+    const current = await fetchStoryFileSet();
+    if (!current) return;
+    const newFiles = [...current].filter(n => !pollState.snapshot.has(n));
+    if (newFiles.length === 0) return;
+
+    // Bevorzugt das File, dessen Name mit unserem Title-Slug beginnt; sonst das erste neue
+    const match = (pollState.slugHint && newFiles.find(n => n.startsWith(pollState.slugHint))) || newFiles[0];
+    markStoryReady(`${STORY_FOLDER}/${match}`);
+}
+
+function stopPolling() {
+    if (pollState && pollState.timer) clearInterval(pollState.timer);
+    pollState = null;
+}
+
+function markStoryReady(url) {
+    stopPolling();
+    document.getElementById('loading-title').textContent = '✅ Fertig — dein Sachtext ist da!';
+    document.getElementById('loading-status').textContent = 'Du kannst ihn jetzt lesen.';
+    document.getElementById('loading-bar').style.width = '100%';
+    const hint = document.getElementById('loading-hint');
+    hint.innerHTML = '';
+    const a = document.createElement('a');
+    a.href = url;
+    a.className = 'story-ready-btn';
+    a.textContent = '📖 Sachtext ansehen →';
+    hint.appendChild(a);
+}
+
+// Close-Button binden
+document.getElementById('loading-close').addEventListener('click', hideLoading);
+
+// Init: Längen-Karten rendern
+renderLaengen();
+</script>
+
+  <!-- === LK-A11Y:MODAL START === -->
+  <div class="settings-overlay" id="settings-overlay" hidden onclick="if(event.target===this)closeSettings()">
+    <div class="settings-panel" id="settings-panel" role="dialog" aria-modal="true" aria-labelledby="settings-title">
+      <div class="settings-header">
+        <h2 class="settings-title" id="settings-title">Barrierefreiheit</h2>
+        <button type="button" class="settings-close" onclick="closeSettings()" aria-label="Einstellungen schlie&szlig;en">&times;</button>
+      </div>
+      <div class="settings-body">
+        <div class="toolbar-group group-view">
+          <div class="toolbar-group-label">Schriftgr&ouml;&szlig;e</div>
+          <div class="toolbar-group-buttons">
+            <div class="font-size-control">
+              <button class="tool-btn" onclick="changeFontSize(-2)" aria-label="Schrift kleiner">A&minus;</button>
+              <button class="tool-btn" onclick="changeFontSize(2)" aria-label="Schrift gr&ouml;&szlig;er">A+</button>
+            </div>
+          </div>
+        </div>
+        <div class="toolbar-group group-extra">
+          <div class="toolbar-group-label">Thema</div>
+          <div class="toolbar-group-buttons" role="radiogroup" aria-label="Thema">
+            <button type="button" class="tool-btn" id="btn-theme-light" role="radio" aria-checked="true" onclick="setTheme('light')" aria-label="Helles Thema"><span class="btn-icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/></svg></span> <span class="btn-label">Hell</span></button>
+            <button type="button" class="tool-btn" id="btn-theme-dark" role="radio" aria-checked="false" onclick="setTheme('dark')" aria-label="Dunkles Thema"><span class="btn-icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/></svg></span> <span class="btn-label">Dunkel</span></button>
+            <button type="button" class="tool-btn" id="btn-theme-contrast" role="radio" aria-checked="false" onclick="setTheme('contrast')" aria-label="Hoher Kontrast"><span class="btn-icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><path d="M12 18a6 6 0 0 0 0-12v12z"/></svg></span> <span class="btn-label">Kontrast</span></button>
+          </div>
+        </div>
+        <div class="toolbar-group group-extra">
+          <div class="toolbar-group-label">Darstellung</div>
+          <div class="toolbar-group-buttons">
+            <button type="button" class="tool-btn" onclick="toggleDyslexia(this)" id="btn-dyslexia" aria-pressed="false" aria-label="Lesefreundliche Schrift"><span class="btn-icon" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 4v16"/><path d="M4 7V5a1 1 0 0 1 1-1h14a1 1 0 0 1 1 1v2"/><path d="M9 20h6"/></svg></span> <span class="btn-label">Lesefreundlich</span></button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+<!-- === LK-A11Y:MODAL END === -->
+
+  <script>
+// === LK-A11Y:JS START ===
+(function () {
+  'use strict';
+  var K_DYS = 'lesekumpel-lesefreundlich';
+  var K_CON = 'lesekumpel-kontrast';   // Legacy (Migration)
+  var K_THEME = 'lesekumpel-theme';     // 'light' | 'dark' | 'contrast'
+  var K_FS = 'lesekumpel-schriftgroesse';
+  function ls(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
+  function lsSet(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
+
+  var lastTrigger = null; // Element, das das Modal geoeffnet hat (Fokus-Rueckgabe)
+  var FOCUSABLE = 'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])';
+  function focusables(root) {
+    return Array.prototype.filter.call(
+      root.querySelectorAll(FOCUSABLE),
+      function (el) { return el.offsetParent !== null && !el.disabled; }
+    );
+  }
+
+  window.openSettings = function () {
+    var ov = document.getElementById('settings-overlay');
+    if (!ov) return;
+    lastTrigger = document.activeElement;
+    ov.hidden = false;
+    var m = document.getElementById('mobile-menu');
+    if (m) m.classList.remove('open');
+    var f = focusables(ov);
+    if (f.length) f[0].focus(); // Fokus ins Modal
+  };
+  window.closeSettings = function () {
+    var ov = document.getElementById('settings-overlay');
+    if (ov) ov.hidden = true;
+    if (lastTrigger && typeof lastTrigger.focus === 'function') lastTrigger.focus();
+    lastTrigger = null;
+  };
+  window.changeFontSize = function (d) {
+    // Auf <html> wirken, nicht auf <body>: Der Katalogtext ist in rem
+    // dimensioniert (relativ zur Wurzel). Body-fontSize ignoriert rem komplett.
+    var root = document.documentElement;
+    var s = parseFloat(ls(K_FS)) || parseFloat(window.getComputedStyle(root).fontSize) || 16;
+    var n = Math.max(12, Math.min(40, s + d));
+    root.style.fontSize = n + 'px';
+    lsSet(K_FS, String(n));
+  };
+  function setPressed(b, active) { if (b) b.setAttribute('aria-pressed', active ? 'true' : 'false'); }
+  window.toggleDyslexia = function (btn) {
+    var active = document.body.classList.toggle('dyslexia-mode');
+    var b = btn || document.getElementById('btn-dyslexia');
+    if (b) { b.classList.toggle('active', active); setPressed(b, active); }
+    lsSet(K_DYS, active ? 'true' : 'false');
+  };
+  // Thema (gegenseitig ausschließend): 'light' | 'dark' | 'contrast'.
+  window.setTheme = function (name) {
+    var b = document.body;
+    b.classList.toggle('dark-mode', name === 'dark');
+    b.classList.toggle('high-contrast', name === 'contrast');
+    ['light', 'dark', 'contrast'].forEach(function (t) {
+      var el = document.getElementById('btn-theme-' + t);
+      if (el) { el.classList.toggle('active', t === name); el.setAttribute('aria-checked', t === name ? 'true' : 'false'); }
+    });
+    lsSet(K_THEME, name);
+  };
+
+  // Init: gespeicherte Einstellungen anwenden (idempotent, kein Toggle)
+  if (ls(K_DYS) === 'true') {
+    document.body.classList.add('dyslexia-mode');
+    var bd = document.getElementById('btn-dyslexia'); if (bd) { bd.classList.add('active'); setPressed(bd, true); }
+  }
+  // Thema wiederherstellen (Migration: alter K_CON='true' → 'contrast')
+  var theme = ls(K_THEME);
+  if (!theme && ls(K_CON) === 'true') theme = 'contrast';
+  window.setTheme(theme || 'light');
+  var fs = parseFloat(ls(K_FS));
+  if (fs >= 12 && fs <= 40) document.documentElement.style.fontSize = fs + 'px';
+
+  document.addEventListener('keydown', function (e) {
+    var ov = document.getElementById('settings-overlay');
+    if (!ov || ov.hidden) return;
+    if (e.key === 'Escape') { window.closeSettings(); return; }
+    if (e.key !== 'Tab') return;
+    // Focus-Trap: Tab/Shift+Tab innerhalb des Modals halten
+    var f = focusables(ov);
+    if (!f.length) return;
+    var first = f[0], last = f[f.length - 1];
+    if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+    else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+  });
+})();
+// === LK-A11Y:JS END ===
 </script>
 
 </body>

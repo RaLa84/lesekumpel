@@ -17,7 +17,12 @@ const FOLDERS = [
   { dir: 'demo-texte', type: 'text' },
   { dir: 'texte', type: 'text' },
   { dir: 'comicgeschichten', type: 'comic' },
+  { dir: 'sachtexte', type: 'sachtext' },
 ];
+
+// Alt-Sachtexte: Samira-Texte liegen historisch in demo-texte/ und bleiben dort
+// (keine Redirects auf GitHub Pages) — sie werden per Autor als Sachtext klassifiziert.
+const SACHTEXT_AUTHOR = 'Samira Wissensfreund';
 
 function isoDate(d) {
   return new Date(d).toISOString().slice(0, 10);
@@ -133,12 +138,14 @@ async function buildStories() {
 
       const readingLevel = match1(html, /<meta\s+name=["']reading-level["']\s+content=["']([^"']+)["']/i);
       const lautProfil = profileStory(extractRawStory(html));
+      const author = match1(html, /<meta\s+name=["']author["']\s+content=["']([^"']+)["']/i);
+      const type = author === SACHTEXT_AUTHOR ? 'sachtext' : cfg.type;
 
       stories.push({
         path: `${cfg.dir}/${name}`,
-        type: cfg.type,
+        type,
         title: cleanTitle(match1(html, /<title>([^<]+)<\/title>/i), name),
-        author: match1(html, /<meta\s+name=["']author["']\s+content=["']([^"']+)["']/i),
+        author,
         date,
         readingLevel,
         neurotype: match1(html, /<meta\s+name=["']neurotype["']\s+content=["']([^"']+)["']/i),

@@ -629,12 +629,16 @@
     const GH_USER = 'RaLa84';
     const GH_REPO = 'lesekumpel';
 
-    /* Drei Quell-Ordner: Demo-Texte, kuratierte Texte, Comics. */
+    /* Vier Quell-Ordner: Demo-Texte, kuratierte Texte, Comics, Sachtexte. */
     const FOLDERS = [
       { folder: 'demo-texte', type: 'text' },
       { folder: 'texte', type: 'text' },
-      { folder: 'comicgeschichten', type: 'comic' }
+      { folder: 'comicgeschichten', type: 'comic' },
+      { folder: 'sachtexte', type: 'sachtext' }
     ];
+    /* Alt-Sachtexte: Samira-Texte in demo-texte/ bleiben liegen (keine Redirects auf
+       GitHub Pages) und werden per Autor als Sachtext klassifiziert. */
+    const SACHTEXT_AUTHOR = 'Samira Wissensfreund';
 
     /* ---- Lese-Stufen: Schwierigkeit aus Persona × Neurotyp ---- */
     const LEVELS = [
@@ -650,7 +654,7 @@
       'Jonas Entdecker': 3, 'Samira Wissensfreund': 4, 'Deniz Traumfänger': 4, 'Holzi Pixelkopf': 5
     };
     const SKILL_PERSONAS = new Set(['Pip Punkt', 'Mia Mitte', 'Peter Past', 'Stella Stimmenreich', 'Finja Feder']);
-    const FORMAT_LABELS = { text: '📖 Text', comic: '🎨 Comic' };
+    const FORMAT_LABELS = { text: '📖 Text', comic: '🎨 Comic', sachtext: '🔭 Sachtext' };
 
     // Autorenfarben fuer Text/Avatar-Fallback: alle >=4.5:1 auf Weiss (WCAG AA 1.4.3)
     const authorColors = {
@@ -733,7 +737,8 @@
       { key: 'format', label: 'Format', options: [
         { v: 'all', label: 'Alle' },
         { v: 'text', label: '📖 Text' },
-        { v: 'comic', label: '🎨 Comic' }
+        { v: 'comic', label: '🎨 Comic' },
+        { v: 'sachtext', label: '🔭 Sachtext' }
       ] }
     ];
     const SORT_OPTIONS = [
@@ -1088,6 +1093,7 @@
             }
             const ma = txt.match(/<meta\s+name=["']author["']\s+content=["']([^"']+)["']/i);
             if (ma && ma[1]) s.author = ma[1];
+            if (s.author === SACHTEXT_AUTHOR) s.type = 'sachtext';
             const ml = txt.match(/<meta\s+name=["']reading-level["']\s+content=["']([^"']+)["']/i);
             if (ml && ml[1]) s.readingLevel = ml[1];
             const mn = txt.match(/<meta\s+name=["']neurotype["']\s+content=["']([^"']+)["']/i);
@@ -1166,10 +1172,11 @@
       }
       bookGrid.innerHTML = list.map((s) => {
         const isComic = s.type === 'comic';
+        const isSachtext = s.type === 'sachtext';
         const color = authorColors[s.author] || (isComic ? 'var(--coral)' : 'var(--mint)');
         const slug = s.name.replace(/\.html$/, '');
         const thumbUrl = isComic ? 'comics/' + slug + '-1.png' : 'bilder/thumbs/' + slug + '-1.webp';
-        const icon = isComic ? '🎨' : '📖';
+        const icon = isComic ? '🎨' : (isSachtext ? '🔭' : '📖');
         const wordsPart = s.readingLevel ? s.readingLevel.split(',')[0].trim() : '';
         const levelLabel = getLevelLabel(s.levelKey);
         const levelDisplay = levelLabel ? (wordsPart ? wordsPart + ' · ' + levelLabel : levelLabel) : wordsPart;
@@ -1198,6 +1205,7 @@
                 '</div>' +
                 '<div class="tile-badges">' +
                   (isComic ? '<span class="tile-comic-badge">🎨 Comic</span>' : '') +
+                  (isSachtext ? '<span class="tile-comic-badge">🔭 Sachtext</span>' : '') +
                   (levelDisplay ? '<span class="tile-level-badge">' + levelDisplay + '</span>' : '') +
                 '</div>' +
                 '<div class="tile-meta">' +
