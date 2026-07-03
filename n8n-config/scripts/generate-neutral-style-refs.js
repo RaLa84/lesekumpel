@@ -2,6 +2,12 @@
 // Generiert 8 charakterfreie Stilreferenzen via gpt-image-1
 // und speichert sie als PNG in bilder/bildstil-vorschau/neutral/.
 //
+// HINWEIS: Der 9. Stil "Schaubild" (Sachtext-Infografik) wird NICHT hier per AI
+// erzeugt, sondern hand-authored als Vektor: Quelle
+// bilder/bildstil-vorschau/neutral/schaubild.svg -> gerendert zu schaubild.png
+// (1024x1024) + Thumbnail schaubild.webp. AI-Generierung wäre kontraproduktiv,
+// weil Infografiken exakte Formen/Ziffern und keinen Buchstabensalat brauchen.
+//
 // Aufruf:
 //   OPENAI_API_KEY=sk-... node n8n-config/scripts/generate-neutral-style-refs.js
 //

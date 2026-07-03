@@ -1,0 +1,48 @@
+<svg width="1024" height="1024" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg">
+  <!-- Neutrale Schaubild-Stilreferenz: flaches Vektor-Infografik-Design,
+       begrenzte Palette, Pfeile, Zahlmarker, Querschnitt, viel Weißraum, kein Text. -->
+  <defs>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#2B3140"/>
+    </marker>
+  </defs>
+  <rect width="1024" height="1024" fill="#FBF6EA"/>
+
+  <!-- ==== Oben: 3-Schritt-Ablauf mit nummerierten Markern ==== -->
+  <!-- Schritt 1 -->
+  <circle cx="190" cy="210" r="78" fill="#2FB8A6"/>
+  <text x="190" y="242" font-family="Arial, sans-serif" font-size="66" font-weight="700" fill="#FBF6EA" text-anchor="middle">1</text>
+  <!-- Pfeil 1->2 -->
+  <line x1="290" y1="210" x2="420" y2="210" stroke="#2B3140" stroke-width="9" stroke-linecap="round" marker-end="url(#arrow)"/>
+  <!-- Schritt 2 -->
+  <rect x="440" y="140" width="140" height="140" rx="30" fill="#F97352"/>
+  <text x="510" y="242" font-family="Arial, sans-serif" font-size="66" font-weight="700" fill="#FBF6EA" text-anchor="middle">2</text>
+  <!-- Pfeil 2->3 -->
+  <line x1="600" y1="210" x2="730" y2="210" stroke="#2B3140" stroke-width="9" stroke-linecap="round" marker-end="url(#arrow)"/>
+  <!-- Schritt 3 -->
+  <circle cx="830" cy="210" r="78" fill="#FFD54F"/>
+  <text x="830" y="242" font-family="Arial, sans-serif" font-size="66" font-weight="700" fill="#2B3140" text-anchor="middle">3</text>
+
+  <!-- ==== Unten links: Querschnitt (konzentrische Schichten mit Keil) ==== -->
+  <g transform="translate(300,660)">
+    <circle cx="0" cy="0" r="200" fill="#7BC29A"/>
+    <circle cx="0" cy="0" r="140" fill="#FFD54F"/>
+    <circle cx="0" cy="0" r="72" fill="#F97352"/>
+    <!-- Keil-Ausschnitt zeigt den inneren Aufbau -->
+    <path d="M0,0 L0,-200 A200,200 0 0 1 173,-100 Z" fill="#FBF6EA"/>
+    <path d="M0,0 L0,-140 A140,140 0 0 1 121,-70 Z" fill="#EFE3C7"/>
+    <!-- Radiale Markierungslinie -->
+    <line x1="0" y1="0" x2="150" y2="-86" stroke="#2B3140" stroke-width="6" stroke-linecap="round"/>
+  </g>
+
+  <!-- ==== Unten rechts: Größenvergleich (drei aufsteigende Balken) ==== -->
+  <g transform="translate(620,860)">
+    <rect x="0"   y="-150" width="90" height="150" rx="20" fill="#2FB8A6"/>
+    <rect x="130" y="-250" width="90" height="250" rx="20" fill="#F97352"/>
+    <rect x="260" y="-360" width="90" height="360" rx="20" fill="#FFD54F"/>
+  </g>
+
+  <!-- ==== Verbindender Fluss-Pfeil (geschwungen) vom Ablauf nach unten ==== -->
+  <path d="M830,300 C830,440 620,470 500,470" fill="none" stroke="#2B3140" stroke-width="9"
+        stroke-linecap="round" stroke-dasharray="2 22" marker-end="url(#arrow)"/>
+</svg>
