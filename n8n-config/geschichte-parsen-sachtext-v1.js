@@ -71,7 +71,12 @@ const textOhneBloecke = extracted.cleaned;
 // Tolerant label matcher — accepts Markdown markers (# ## ### ** **), with or without colon,
 // with or without German hyphenation (GE-SCHICH-TE, ZU-SAM-MEN-FAS-SUNG).
 function findLabelPositions(text, labelPattern) {
-  const re = new RegExp("(?:#{1,3}\\s*|\\*\\*\\s*)?" + labelPattern + "(?::|\\s)\\s*\\*?\\*?", "i");
+  // WICHTIG (Sachtext-spezifisch): nach dem Label nur HORIZONTALEN Whitespace ([ \t])
+  // erlauben, nicht \s (das würde Zeilenumbrüche fressen). Sonst verschluckt
+  // "GESCHICHTE:\n**Überschrift**" mit dem abschließenden \*?\*? das ÖFFNENDE ** der
+  // ersten Mini-Überschrift — die würde dann nicht als <h3> erkannt. Im Haupt-Workflow
+  // egal (dort kein Fettdruck), bei Samira aber folgt direkt eine fette Überschrift.
+  const re = new RegExp("(?:#{1,3}\\s*|\\*\\*\\s*)?" + labelPattern + "(?::|\\s)[ \\t]*\\*?\\*?", "i");
   const m = text.match(re);
   if (!m) return null;
   return { start: m.index, end: m.index + m[0].length };
