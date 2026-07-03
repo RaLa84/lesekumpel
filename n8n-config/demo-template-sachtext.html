@@ -2467,10 +2467,9 @@
         .sachtext-box-head { display: flex; align-items: center; gap: 0.5em; font-family: 'Fredoka', sans-serif; font-weight: 600; font-size: 0.95em; margin-bottom: 0.45em; }
         .sachtext-box-head svg { width: 1.25em; height: 1.25em; flex: 0 0 auto; }
         .sachtext-box-body { margin: 0; }
-        .sachtext-box-wusstest { background: #FFF3CC; border: 2px solid #FFD54F; }
-        .sachtext-box-wusstest .sachtext-box-head { color: #8a6d00; }
-        .sachtext-box-summary { background: #FBE9E7; border: 2px solid #D67171; }
-        .sachtext-box-summary .sachtext-box-head { color: #B04A4A; }
+        /* Kurzfassung: gelb (freundlich statt alarmierend) */
+        .sachtext-box-summary { background: #FFF3CC; border: 2px solid #FFD54F; }
+        .sachtext-box-summary .sachtext-box-head { color: #8a6d00; }
         .sachtext-box-check { background: #E8F5EE; border: 2px solid #7BC29A; }
         .sachtext-box-check .sachtext-box-head { color: #2E7D52; }
         .merk-hint { font-size: 0.72em; color: #5a6368; margin-bottom: 0.6em; }
@@ -2547,16 +2546,16 @@
         @media (prefers-reduced-motion: reduce) {
             body:not(.view-tafel) #full-text-view .mag-section.reveal { opacity: 1; transform: none; transition: none; }
         }
-        /* Konzeptkarte "Das Wort heute" */
-        .wdt-card { background: #2B3140; color: #FFF6EF; border-radius: 32px; padding: 44px 34px; text-align: center; position: relative; overflow: hidden; }
+        /* "Wusstest du?" als Navy-Karte (uebernimmt das Konzeptkarten-Design) */
+        .wdt-card { background: #2B3140; color: #FFF6EF; border-radius: 32px; padding: 30px 26px; text-align: center; position: relative; overflow: hidden; }
         .wdt-card::before, .wdt-card::after { content: ''; position: absolute; border-radius: 50%; opacity: 0.15; }
         .wdt-card::before { background: #2FB8A6; width: 180px; height: 180px; top: -56px; right: -56px; }
         .wdt-card::after { background: #7D6AE6; width: 130px; height: 130px; bottom: -40px; left: -40px; }
-        .wdt-label { display: inline-block; background: #FFD95A; color: #2B3140; padding: 7px 16px; border-radius: 999px; font-family: 'Fredoka', sans-serif; font-weight: 600; font-size: 0.85em; margin-bottom: 20px; position: relative; z-index: 1; }
-        .wdt-wort { font-family: 'Fredoka', sans-serif; font-weight: 700; font-size: 1.9em; line-height: 1.15; margin-bottom: 6px; position: relative; z-index: 1; }
-        .wdt-wort .wdt-underline { background: linear-gradient(transparent 65%, #F97352 65%); padding: 0 6px; }
-        .wdt-silben { font-family: 'Fredoka', sans-serif; font-size: 0.95em; opacity: 0.75; margin-bottom: 16px; position: relative; z-index: 1; }
-        .wdt-bedeutung { font-size: 1em; line-height: 1.65; max-width: 560px; margin: 0 auto; opacity: 0.94; position: relative; z-index: 1; }
+        button.wdt-label { display: inline-flex; align-items: center; gap: 0.5em; background: #FFD95A; color: #2B3140; border: 0; padding: 8px 18px; border-radius: 999px; font-family: 'Fredoka', sans-serif; font-weight: 600; font-size: 0.95em; cursor: pointer; position: relative; z-index: 1; }
+        button.wdt-label svg { width: 1.2em; height: 1.2em; }
+        button.wdt-label:focus-visible { outline: 3px solid #7D6AE6; outline-offset: 2px; }
+        .wdt-card .sachtext-box-body { font-size: 1em; line-height: 1.65; max-width: 560px; margin: 16px auto 0; opacity: 0.94; position: relative; z-index: 1; }
+        body:not(.view-tafel) #full-text-view .wdt-card .wusstest-toggle[aria-expanded="false"] + .sachtext-box-body { display: none; }
         /* Lern-Block als Outro-Karte im Scroll */
         body:not(.view-tafel) #full-text-view .mag-outro > aside.insert-lernblock { background: #fff; border: 1px solid #D9D4CC; border-radius: 28px; padding: 26px 26px 20px; box-shadow: 0 2px 12px rgba(43,49,64,0.05); }
         /* Tafel-Umschalter: nur auf Desktop sinnvoll */
@@ -2564,10 +2563,8 @@
         @media (min-width: 1024px) { #btn-tafel-toggle { display: inline-flex; } }
 
         /* ── Dark-Mode ── */
-        body.dark-mode .sachtext-box-wusstest { background: rgba(255,213,79,0.12); }
-        body.dark-mode .sachtext-box-wusstest .sachtext-box-head { color: #FFD54F; }
-        body.dark-mode .sachtext-box-summary { background: rgba(214,113,113,0.14); }
-        body.dark-mode .sachtext-box-summary .sachtext-box-head { color: #E89999; }
+        body.dark-mode .sachtext-box-summary { background: rgba(255,213,79,0.12); }
+        body.dark-mode .sachtext-box-summary .sachtext-box-head { color: #FFD54F; }
         body.dark-mode .sachtext-box-check { background: rgba(123,194,154,0.12); }
         body.dark-mode .sachtext-box-check .sachtext-box-head { color: #7BC29A; }
         body.dark-mode button.merk-item { background: rgba(42,50,66,0.85); }
@@ -2947,24 +2944,13 @@
             let merkCelebrated = false;
 
             function wusstestHtml(text) {
-                return '<div class="sachtext-box sachtext-box-wusstest"><button type="button" class="sachtext-box-head wusstest-toggle" aria-expanded="false">' + ICON_SPARKLES + '<span>Wusstest du?</span>' + ICON_CHEVRON + '</button><div class="sachtext-box-body">' + words(text) + '</div></div>';
+                return '<div class="wdt-card wusstest-card"><button type="button" class="wdt-label wusstest-toggle" aria-expanded="false">' + ICON_SPARKLES + '<span>Wusstest du?</span>' + ICON_CHEVRON + '</button><div class="sachtext-box-body">' + words(text) + '</div></div>';
             }
             // Kurzfassung ("Das Wichtigste in Kürze"): aufklappbare Glühbirnen-Box GANZ OBEN
             // (afterGroup: -1) — wie ein Wikipedia-Intro, das den Lesefluss nicht stört.
             function kurzfassungHtml() {
                 if (typeof rawSummary !== 'string' || !rawSummary.trim()) return null;
                 return '<div class="sachtext-box sachtext-box-summary"><button type="button" class="sachtext-box-head wusstest-toggle" aria-expanded="false">' + ICON_BULB + '<span>Das Wichtigste in Kürze</span>' + ICON_CHEVRON + '</button><div class="sachtext-box-body">' + words(rawSummary) + '</div></div>';
-            }
-            function wortDesTagesHtml() {
-                try {
-                    const e = (typeof rawDictionaryEntry !== 'undefined' && Array.isArray(rawDictionaryEntry)) ? rawDictionaryEntry[0] : null;
-                    if (!e || !e.wort || !e.bedeutung) return null;
-                    const wort = String(e.wort).replace(/\u00AD/g, '').replace(/-/g, '');
-                    const silben = e.silben ? String(e.silben) : '';
-                    return '<div class="wdt-card"><span class="wdt-label">Das Wort heute</span><div class="wdt-wort"><span class="wdt-underline">' + esc(wort) + '</span></div>' +
-                        (silben ? '<div class="wdt-silben">' + esc(silben) + '</div>' : '') +
-                        '<div class="wdt-bedeutung">' + words(e.bedeutung) + '</div></div>';
-                } catch (err) { return null; }
             }
             function lernblockHtml(ctx) {
                 let h = '';
@@ -3009,13 +2995,6 @@
                         inserts.push({ afterGroup: after, html: wusstestHtml(t), className: 'insert-wusstest', indicatorLabel: 'Extra-Wissen', asChunk: true });
                     });
                 }
-                if (!ctx.summary) {
-                    const wdt = wortDesTagesHtml();
-                    if (wdt) {
-                        const after = (K >= 2) ? gapEnd(Math.floor((K - 1) / 2)) : allGroups.length - 1;
-                        inserts.push({ afterGroup: after, html: wdt, className: 'insert-wortdestages', indicatorLabel: 'Das Wort heute', asChunk: true });
-                    }
-                }
                 const lern = lernblockHtml(ctx);
                 if (lern) inserts.push({ afterGroup: allGroups.length - 1, html: lern, className: 'insert-lernblock', indicatorLabel: 'Das hast du gelernt', asChunk: true });
                 return inserts;
@@ -3033,7 +3012,7 @@
                 let run = [];
                 children.forEach(el => {
                     // Kurzfassung + Konzeptkarte + Lern-Block werden eigene Sektionen
-                    const standalone = el.tagName === 'ASIDE' && (el.classList.contains('insert-lernblock') || el.classList.contains('insert-wortdestages') || el.classList.contains('insert-kurzfassung'));
+                    const standalone = el.tagName === 'ASIDE' && (el.classList.contains('insert-lernblock') || el.classList.contains('insert-kurzfassung'));
                     if (standalone) {
                         if (run.length) { runs.push(run); run = []; }
                         runs.push([el]);
