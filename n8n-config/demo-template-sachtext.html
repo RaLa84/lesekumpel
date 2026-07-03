@@ -2460,6 +2460,7 @@
         }
 
         /* ── Sachtext-Einschübe & Lern-Block (alle Modi sichtbar) ── */
+        .story-insert, .story-insert * { box-sizing: border-box; }
         .story-insert { margin: 1.6em 0; font-size: 0.78em; line-height: 1.55; text-align: left; }
         .sachtext-box { border-radius: 16px; padding: 0.9em 1.1em; }
         .sachtext-box + .sachtext-box { margin-top: 0.9em; }
@@ -2491,7 +2492,78 @@
         body.view-tafel .tafel-insert .story-insert { margin: 0 auto; max-width: 620px; font-size: 0.62em; }
         /* Häppchen: Einschub-Häppchen ohne Extra-Rahmen des Chunk-Layouts */
         #chunk-display .story-insert { margin: 0.4em 0; font-size: 0.72em; }
-        /* Dark-Mode */
+
+        /* ── Aufklappbares "Wusstest du?" (nur im Scroll-Fließtext zugeklappt) ── */
+        button.wusstest-toggle { width: 100%; background: none; border: 0; cursor: pointer; padding: 0; font: inherit; }
+        .wusstest-toggle .wusstest-chevron { margin-left: auto; transition: transform 0.2s ease; }
+        .wusstest-toggle[aria-expanded="true"] .wusstest-chevron { transform: rotate(180deg); }
+        .wusstest-toggle:focus-visible { outline: 3px solid #7D6AE6; outline-offset: 2px; border-radius: 8px; }
+        body:not(.view-tafel) #full-text-view .wusstest-toggle[aria-expanded="false"] { margin-bottom: 0; }
+        body:not(.view-tafel) #full-text-view .wusstest-toggle[aria-expanded="false"] + .sachtext-box-body { display: none; }
+        /* In Tafel-Slide und Häppchen immer offen (eigene Seite -> zugeklappt sinnlos) */
+        body.view-tafel .tafel-insert .wusstest-chevron, #chunk-display .wusstest-chevron { display: none; }
+
+        /* ── Magazin-Skin (nur Scroll-Modus) ── */
+        body:not(.view-tafel) .main-card { max-width: 1200px; }
+        .mag-hero-meta { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 14px; margin: 18px 4px 6px; }
+        body.view-tafel .mag-hero-meta { display: none; }
+        .mag-topic-pill { display: inline-flex; align-items: center; gap: 10px; background: #2FB8A6; color: #2B3140; padding: 8px 16px; border-radius: 999px; font-family: 'Fredoka', sans-serif; font-weight: 600; font-size: 0.92rem; }
+        .mag-topic-pill .mag-pill-dot { width: 8px; height: 8px; background: #2B3140; border-radius: 50%; }
+        .mag-author-chip { display: inline-flex; align-items: center; gap: 12px; background: #fff; border: 1px solid #D9D4CC; border-radius: 999px; padding: 6px 20px 6px 6px; box-shadow: 0 2px 12px rgba(43,49,64,0.05); }
+        .mag-author-chip img { width: 42px; height: 42px; border-radius: 50%; object-fit: cover; border: 2px solid #2FB8A6; }
+        .mag-author-chip .mag-ac-text { display: flex; flex-direction: column; line-height: 1.25; }
+        .mag-author-chip .ac-name { font-family: 'Fredoka', sans-serif; font-weight: 600; font-size: 0.95rem; color: #2B3140; }
+        .mag-author-chip .ac-role { font-size: 0.78rem; color: #5a6368; }
+
+        body:not(.view-tafel) #full-text-view { counter-reset: mag-chapter; }
+        body:not(.view-tafel) #full-text-view .mag-section { display: grid; grid-template-columns: 1fr; gap: 22px; margin: 2.6rem 0; align-items: center; }
+        body:not(.view-tafel) #full-text-view .mag-section + .mag-section { border-top: 0; }
+        body:not(.view-tafel) #full-text-view .mag-section + .mag-section::before { content: '\00B7 \00B7 \00B7'; grid-column: 1 / -1; text-align: center; color: #2FB8A6; opacity: 0.5; letter-spacing: 10px; font-size: 1.2em; }
+        body:not(.view-tafel) #full-text-view .mag-section > img.story-inline-img { border-radius: 28px; box-shadow: 0 20px 50px rgba(43,49,64,0.12); aspect-ratio: 4 / 3; object-fit: cover; width: 100%; margin: 0; }
+        /* Kapitelnummer als Mint-Box vor der Kicker-Überschrift */
+        body:not(.view-tafel) #full-text-view .mag-section > h3::before { counter-increment: mag-chapter; content: counter(mag-chapter, decimal-leading-zero); display: inline-flex; align-items: center; justify-content: center; background: #2FB8A6; color: #2B3140; font-family: 'Fredoka', sans-serif; font-weight: 700; font-size: 0.95em; padding: 2px 10px; border-radius: 8px; margin-right: 10px; letter-spacing: 0; }
+        body:not(.view-tafel) #full-text-view .mag-section > aside.story-insert { grid-column: 1 / -1; max-width: 720px; width: 100%; justify-self: center; }
+        @media (min-width: 900px) {
+            /* dense: das Bild belegt grid-row 1/span 8 — ohne dense würde der
+               Auto-Placement-Cursor die Textzeilen DANACH (unter dem Bild) platzieren */
+            body:not(.view-tafel) #full-text-view .mag-section { grid-template-columns: 1fr 1fr; gap: 24px 56px; grid-auto-flow: row dense; }
+            body:not(.view-tafel) #full-text-view .mag-section > h3,
+            body:not(.view-tafel) #full-text-view .mag-section > p { grid-column: 1; max-width: 540px; }
+            body:not(.view-tafel) #full-text-view .mag-section > img.story-inline-img { grid-column: 2; grid-row: 1 / span 8; align-self: center; }
+            body:not(.view-tafel) #full-text-view .mag-section.mag-reverse > h3,
+            body:not(.view-tafel) #full-text-view .mag-section.mag-reverse > p { grid-column: 2; justify-self: end; }
+            body:not(.view-tafel) #full-text-view .mag-section.mag-reverse > img.story-inline-img { grid-column: 1; grid-row: 1 / span 8; }
+            /* Intro, bildlose und Aside-only-Sektionen: einspaltig zentriert */
+            body:not(.view-tafel) #full-text-view .mag-section.mag-intro,
+            body:not(.view-tafel) #full-text-view .mag-section.mag-noimg,
+            body:not(.view-tafel) #full-text-view .mag-section.mag-aside-only { grid-template-columns: 1fr; }
+            body:not(.view-tafel) #full-text-view .mag-section.mag-intro > p,
+            body:not(.view-tafel) #full-text-view .mag-section.mag-noimg > h3,
+            body:not(.view-tafel) #full-text-view .mag-section.mag-noimg > p { grid-column: 1; max-width: 720px; justify-self: center; }
+        }
+        /* Scroll-Reveal (sanft; prefers-reduced-motion deaktiviert komplett) */
+        body:not(.view-tafel) #full-text-view .mag-section.reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.6s ease, transform 0.6s cubic-bezier(0.16, 1, 0.3, 1); }
+        body:not(.view-tafel) #full-text-view .mag-section.reveal.visible { opacity: 1; transform: none; }
+        @media (prefers-reduced-motion: reduce) {
+            body:not(.view-tafel) #full-text-view .mag-section.reveal { opacity: 1; transform: none; transition: none; }
+        }
+        /* Konzeptkarte "Das Wort heute" */
+        .wdt-card { background: #2B3140; color: #FFF6EF; border-radius: 32px; padding: 44px 34px; text-align: center; position: relative; overflow: hidden; }
+        .wdt-card::before, .wdt-card::after { content: ''; position: absolute; border-radius: 50%; opacity: 0.15; }
+        .wdt-card::before { background: #2FB8A6; width: 180px; height: 180px; top: -56px; right: -56px; }
+        .wdt-card::after { background: #7D6AE6; width: 130px; height: 130px; bottom: -40px; left: -40px; }
+        .wdt-label { display: inline-block; background: #FFD95A; color: #2B3140; padding: 7px 16px; border-radius: 999px; font-family: 'Fredoka', sans-serif; font-weight: 600; font-size: 0.85em; margin-bottom: 20px; position: relative; z-index: 1; }
+        .wdt-wort { font-family: 'Fredoka', sans-serif; font-weight: 700; font-size: 1.9em; line-height: 1.15; margin-bottom: 6px; position: relative; z-index: 1; }
+        .wdt-wort .wdt-underline { background: linear-gradient(transparent 65%, #F97352 65%); padding: 0 6px; }
+        .wdt-silben { font-family: 'Fredoka', sans-serif; font-size: 0.95em; opacity: 0.75; margin-bottom: 16px; position: relative; z-index: 1; }
+        .wdt-bedeutung { font-size: 1em; line-height: 1.65; max-width: 560px; margin: 0 auto; opacity: 0.94; position: relative; z-index: 1; }
+        /* Lern-Block als Outro-Karte im Scroll */
+        body:not(.view-tafel) #full-text-view .mag-outro > aside.insert-lernblock { background: #fff; border: 1px solid #D9D4CC; border-radius: 28px; padding: 26px 26px 20px; box-shadow: 0 2px 12px rgba(43,49,64,0.05); }
+        /* Tafel-Umschalter: nur auf Desktop sinnvoll */
+        #btn-tafel-toggle { display: none; }
+        @media (min-width: 1024px) { #btn-tafel-toggle { display: inline-flex; } }
+
+        /* ── Dark-Mode ── */
         body.dark-mode .sachtext-box-wusstest { background: rgba(255,213,79,0.12); }
         body.dark-mode .sachtext-box-wusstest .sachtext-box-head { color: #FFD54F; }
         body.dark-mode .sachtext-box-summary { background: rgba(214,113,113,0.14); }
@@ -2505,6 +2577,12 @@
         body.dark-mode .merk-hint, body.dark-mode .quellen-list .quelle-domain { color: #A9B2C2; }
         body.dark-mode .sachtext-box-quellen { background: rgba(148,167,196,0.14); }
         body.dark-mode .sachtext-box-quellen .sachtext-box-head { color: #A9C0E8; }
+        body.dark-mode .mag-author-chip { background: #2A3242; border-color: #3A4456; }
+        body.dark-mode .mag-author-chip .ac-name { color: #ECEFF4; }
+        body.dark-mode .mag-author-chip .ac-role { color: #A9B2C2; }
+        body.dark-mode .mag-topic-pill { background: #4FD3C0; }
+        body.dark-mode #full-text-view .mag-outro > aside.insert-lernblock { background: #2A3242; border-color: #3A4456; }
+        body.dark-mode .wdt-card { background: #10141d; }
     </style>
     <link rel="stylesheet" href="../fonts/fonts.css">
 </head>
@@ -2563,6 +2641,13 @@
                 <span class="hero-like-heart like-heart" aria-hidden="true"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M2 9.5a5.5 5.5 0 0 1 9.591-3.676.56.56 0 0 0 .818 0A5.49 5.49 0 0 1 22 9.5c0 2.29-1.5 4-3 5.5l-5.492 5.313a2 2 0 0 1-3 .019L5 15c-1.5-1.5-3-3.2-3-5.5"/></svg></span>
             </button>
             <div class="hero-like-toast" id="hero-like-toast" role="status" aria-live="polite"></div>
+        </div>
+        <div class="mag-hero-meta">
+            <span class="mag-topic-pill"><span class="mag-pill-dot" aria-hidden="true"></span>Sachtext · Wissen, das staunen lässt</span>
+            <div class="mag-author-chip">
+                <img src="../avatars/samira-wissensfreund.webp" alt="" loading="lazy">
+                <span class="mag-ac-text"><span class="ac-name">{{PERSONA_NAME}}</span><span class="ac-role">Edutainment · {{TYPICAL_AGE}} Jahre</span></span>
+            </div>
         </div>
 {{STORY_IMAGES_HTML}}<!-- Einstellungs-Menü (Lesehilfen, die man einmal einstellt) — geöffnet über Burger > Leseeinstellungen -->
         <div class="settings-overlay" id="settings-overlay" hidden onclick="if(event.target===this)closeSettings()">
@@ -2832,11 +2917,12 @@
         window.imagePositions = imagePositions; // Für Tafel-Modus (Sticky-Bild)
         const sachtextBlocks = {{SACHTEXT_BLOCKS_JSON}};
         window.sachtextBlocks = sachtextBlocks;
+        // Sachtexte starten auf ALLEN Geräten im Magazin-Scroll (Tafel via ?view=tafel/Umschalter)
+        window.FORCE_SCROLL_DEFAULT = true;
 
-        // ── Sachtext-Einschübe: Wusstest-du zwischen den Mini-Kapiteln,
-        //    Lern-Block (Fazit + interaktive Merkliste + Quellen) ans Ende.
-        //    Rendert über den generischen Engine-Hook window.computeStoryInserts;
-        //    defensiv: fehlende/kaputte Blöcke -> weniger/keine Einschübe.
+        // ── Sachtext-Magazin: Einschübe (Wusstest-du, Konzeptkarte, Lern-Block) über
+        //    computeStoryInserts + Magazin-Sektionen über decorate/undecorateStoryView.
+        //    Defensiv: fehlende/kaputte Blöcke -> weniger/keine Einschübe.
         (function () {
             const b = (sachtextBlocks && typeof sachtextBlocks === 'object') ? sachtextBlocks : {};
             const wusstest = Array.isArray(b.wusstestDu) ? b.wusstestDu.filter(Boolean) : [];
@@ -2850,6 +2936,8 @@
             const ICON_CHECK = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg>';
             const ICON_BOOK = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 7v14"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/></svg>';
             const ICON_GLOBE = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>';
+            const ICON_CHEVRON = '<svg class="wusstest-chevron" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>';
+            const ICON_TAFEL = '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M2 3h20"/><path d="M21 3v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V3"/><path d="m7 21 5-5 5 5"/></svg>';
 
             // Merklisten-Zustand: überlebt renderText-Neuaufbau (Silben/Emoji-Toggle),
             // persistent pro Story
@@ -2859,7 +2947,18 @@
             let merkCelebrated = false;
 
             function wusstestHtml(text) {
-                return '<div class="sachtext-box sachtext-box-wusstest"><div class="sachtext-box-head">' + ICON_BULB + '<span>Wusstest du?</span></div><div class="sachtext-box-body">' + words(text) + '</div></div>';
+                return '<div class="sachtext-box sachtext-box-wusstest"><button type="button" class="sachtext-box-head wusstest-toggle" aria-expanded="false">' + ICON_BULB + '<span>Wusstest du?</span>' + ICON_CHEVRON + '</button><div class="sachtext-box-body">' + words(text) + '</div></div>';
+            }
+            function wortDesTagesHtml() {
+                try {
+                    const e = (typeof rawDictionaryEntry !== 'undefined' && Array.isArray(rawDictionaryEntry)) ? rawDictionaryEntry[0] : null;
+                    if (!e || !e.wort || !e.bedeutung) return null;
+                    const wort = String(e.wort).replace(/\u00AD/g, '').replace(/-/g, '');
+                    const silben = e.silben ? String(e.silben) : '';
+                    return '<div class="wdt-card"><span class="wdt-label">Das Wort heute</span><div class="wdt-wort"><span class="wdt-underline">' + esc(wort) + '</span></div>' +
+                        (silben ? '<div class="wdt-silben">' + esc(silben) + '</div>' : '') +
+                        '<div class="wdt-bedeutung">' + words(e.bedeutung) + '</div></div>';
+                } catch (err) { return null; }
             }
             function lernblockHtml(ctx) {
                 let h = '';
@@ -2902,13 +3001,100 @@
                         inserts.push({ afterGroup: after, html: wusstestHtml(t), className: 'insert-wusstest', indicatorLabel: 'Extra-Wissen', asChunk: true });
                     });
                 }
+                if (!ctx.summary) {
+                    const wdt = wortDesTagesHtml();
+                    if (wdt) {
+                        const after = (K >= 2) ? gapEnd(Math.floor((K - 1) / 2)) : allGroups.length - 1;
+                        inserts.push({ afterGroup: after, html: wdt, className: 'insert-wortdestages', indicatorLabel: 'Das Wort heute', asChunk: true });
+                    }
+                }
                 const lern = lernblockHtml(ctx);
                 if (lern) inserts.push({ afterGroup: allGroups.length - 1, html: lern, className: 'insert-lernblock', indicatorLabel: 'Das hast du gelernt', asChunk: true });
                 return inserts;
             };
 
-            // Merkliste: Tap-to-Check per Event-Delegation (überlebt jeden Re-Render)
+            // ── Magazin-Skin: Kapitel-Runs in .mag-section wrappen (verlustfrei, keine
+            //    innere Umordnung — Bild-Platzierung macht das CSS-Grid). undecorate =
+            //    exakte Umkehrung (depaginateStory-Muster) für den Tafel-Eintritt.
+            let magRevealObserver = null;
+            window.decorateStoryView = function (view) {
+                if (!view || view.querySelector('.mag-section') || view.querySelector('.tafel-section')) return;
+                const children = Array.from(view.children);
+                if (!children.length) return;
+                const runs = [];
+                let run = [];
+                children.forEach(el => {
+                    // Konzeptkarte + Lern-Block werden eigene Sektionen
+                    const standalone = el.tagName === 'ASIDE' && (el.classList.contains('insert-lernblock') || el.classList.contains('insert-wortdestages'));
+                    if (standalone) {
+                        if (run.length) { runs.push(run); run = []; }
+                        runs.push([el]);
+                        return;
+                    }
+                    // h3 startet neues Kapitel; das Kapitelbild steht direkt VOR seinem h3
+                    const startsNew = el.tagName === 'H3' ||
+                        (el.tagName === 'IMG' && el.nextElementSibling && el.nextElementSibling.tagName === 'H3');
+                    if (startsNew && run.length) { runs.push(run); run = []; }
+                    run.push(el);
+                });
+                if (run.length) runs.push(run);
+
+                let imgSectionCount = 0;
+                runs.forEach((els, idx) => {
+                    const section = document.createElement('section');
+                    section.className = 'mag-section';
+                    const hasHeading = els.some(e => e.tagName === 'H3');
+                    const hasImg = els.some(e => e.tagName === 'IMG');
+                    const asideOnly = els.length === 1 && els[0].tagName === 'ASIDE';
+                    if (asideOnly) {
+                        section.classList.add('mag-aside-only');
+                        if (els[0].classList.contains('insert-lernblock')) section.classList.add('mag-outro');
+                    } else if (!hasHeading && idx === 0) {
+                        section.classList.add('mag-intro');
+                    } else if (hasImg) {
+                        imgSectionCount++;
+                        if (imgSectionCount % 2 === 0) section.classList.add('mag-reverse');
+                    } else {
+                        section.classList.add('mag-noimg');
+                    }
+                    view.insertBefore(section, els[0]);
+                    els.forEach(e => section.appendChild(e));
+                });
+
+                // Scroll-Reveal (aus bei reduced motion); bereits sichtbare sofort zeigen
+                if (magRevealObserver) { magRevealObserver.disconnect(); magRevealObserver = null; }
+                const reduced = (typeof REDUCED_MOTION !== 'undefined' && REDUCED_MOTION);
+                if (!reduced && 'IntersectionObserver' in window) {
+                    magRevealObserver = new IntersectionObserver(entries => {
+                        entries.forEach(en => {
+                            if (en.isIntersecting) { en.target.classList.add('visible'); magRevealObserver.unobserve(en.target); }
+                        });
+                    }, { threshold: 0.05, rootMargin: '0px 0px -10%' });
+                    view.querySelectorAll('.mag-section').forEach(s => {
+                        const r = s.getBoundingClientRect();
+                        if (r.top < window.innerHeight && r.bottom > 0) return; // schon sichtbar
+                        s.classList.add('reveal');
+                        magRevealObserver.observe(s);
+                    });
+                }
+            };
+            window.undecorateStoryView = function (view) {
+                if (!view) return;
+                if (magRevealObserver) { magRevealObserver.disconnect(); magRevealObserver = null; }
+                view.querySelectorAll('.mag-section').forEach(s => {
+                    while (s.firstChild) view.insertBefore(s.firstChild, s);
+                    s.remove();
+                });
+            };
+
+            // Merkliste (Tap-to-Check) + Wusstest-du (auf/zu) per Event-Delegation
+            // (überlebt jeden Re-Render)
             document.addEventListener('click', function (e) {
+                const toggle = e.target.closest && e.target.closest('.wusstest-toggle');
+                if (toggle) {
+                    toggle.setAttribute('aria-expanded', toggle.getAttribute('aria-expanded') !== 'true' ? 'true' : 'false');
+                    return;
+                }
                 const btn = e.target.closest && e.target.closest('.merk-item');
                 if (!btn) return;
                 const idx = parseInt(btn.dataset.merkIdx, 10);
@@ -2924,6 +3110,40 @@
                     if (praise) praise.textContent = 'Super! Alles gemerkt!';
                 }
             });
+
+            // Tafel-Umschalter in die Lesehilfen injizieren (Engine-Funktionen sind global)
+            function syncTafelToggleLabel() {
+                const btn = document.getElementById('btn-tafel-toggle');
+                if (!btn) return;
+                const inTafel = document.body.classList.contains('view-tafel');
+                const label = btn.querySelector('.btn-label');
+                if (label) label.textContent = inTafel ? 'Scrollen' : 'Tafel';
+                btn.classList.toggle('active', inTafel);
+            }
+            function injectTafelToggle() {
+                const host = document.querySelector('#tools-overlay .toolbar-group.group-view .toolbar-group-buttons');
+                if (!host || document.getElementById('btn-tafel-toggle')) return;
+                const btn = document.createElement('button');
+                btn.type = 'button';
+                btn.id = 'btn-tafel-toggle';
+                btn.className = 'tool-btn';
+                btn.setAttribute('aria-label', 'Tafel-Ansicht umschalten');
+                btn.innerHTML = '<span class="btn-icon" aria-hidden="true">' + ICON_TAFEL + '</span> <span class="btn-label">Tafel</span>';
+                btn.addEventListener('click', function () {
+                    const inTafel = document.body.classList.contains('view-tafel');
+                    if (typeof readUrlView === 'function' && readUrlView()) history.replaceState(null, '', location.pathname);
+                    window.FORCE_SCROLL_DEFAULT = inTafel; // zurück zu Scroll -> Flag wieder an
+                    if (typeof syncTafelClassFromContext === 'function') syncTafelClassFromContext();
+                    if (typeof applyTafelLayout === 'function') applyTafelLayout();
+                    syncTafelToggleLabel();
+                });
+                host.appendChild(btn);
+                syncTafelToggleLabel();
+                // Label bei externen Modus-Wechseln (Resize, URL) aktuell halten
+                new MutationObserver(syncTafelToggleLabel).observe(document.body, { attributes: true, attributeFilter: ['class'] });
+            }
+            if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', injectTafelToggle);
+            else injectTafelToggle();
         })();
         /* ============================================================ */
 
@@ -3276,6 +3496,12 @@
                 return imgTag + headingHtml + textHtml + insertHtml;
             }).join('');
             document.getElementById('full-text-view').innerHTML = html;
+
+            // Skin-Hook: Seiten (z.B. Sachtext-Magazin) können die Scroll-Ansicht
+            // dekorieren (Sektions-Wrapper). No-Op ohne Definition; nie im Tafel-Modus.
+            if (typeof window.decorateStoryView === 'function' && !document.body.classList.contains('view-tafel')) {
+                window.decorateStoryView(document.getElementById('full-text-view'));
+            }
 
             // Absatz-Nummern für Fahrplan-Modus
             if (document.body.classList.contains('fahrplan-active')) {
@@ -4865,6 +5091,14 @@
                 document.body.classList.add('view-tafel');
                 return;
             }
+            // Seiten-Hook: Sachtexte setzen window.FORCE_SCROLL_DEFAULT und starten
+            // damit auf ALLEN Geräten im Scroll-Modus (URL-Override oben gewinnt weiter).
+            // Ohne Flag: unverändertes Auto-Verhalten (Autoren-Geschichten).
+            if (window.FORCE_SCROLL_DEFAULT) {
+                document.body.classList.remove('view-tafel');
+                document.body.classList.add('view-desktop');
+                return;
+            }
             document.body.classList.remove('view-desktop');
             document.body.classList.toggle('view-tafel', TAFEL_MQ.matches);
         }
@@ -5076,12 +5310,21 @@
                 placeholder?.remove();
                 storyCol.remove();
             }
+            // Skin-Hook: Scroll-Dekoration (z.B. Sachtext-Magazin) wiederherstellen
+            if (typeof window.decorateStoryView === 'function' && !document.body.classList.contains('view-tafel')) {
+                window.decorateStoryView(document.getElementById('full-text-view'));
+            }
         }
 
         // === Pagination (Powerpoint-Style): 1 Cover-Slide + N Slides je 1 Absatz ===
         function paginateStoryByScenes() {
             const view = document.getElementById('full-text-view');
             if (!view || view.querySelector('.tafel-section')) return;
+            // Skin-Hook: evtl. vorhandene Scroll-Dekoration (Magazin-Sektionen) auflösen,
+            // damit der :scope>-Selektor unten wieder flache direkte Kinder vorfindet.
+            if (typeof window.undecorateStoryView === 'function') {
+                window.undecorateStoryView(view);
+            }
             // Überschriften (h3), Absätze (p) UND Einschübe (aside.story-insert) in
             // DOM-Reihenfolge einsammeln: Überschriften wandern in ihre Folge-Slide,
             // Einschübe werden eigene Slides (Sachtext: Wusstest-du / Lern-Block).

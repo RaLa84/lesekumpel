@@ -3135,6 +3135,12 @@
             }).join('');
             document.getElementById('full-text-view').innerHTML = html;
 
+            // Skin-Hook: Seiten (z.B. Sachtext-Magazin) können die Scroll-Ansicht
+            // dekorieren (Sektions-Wrapper). No-Op ohne Definition; nie im Tafel-Modus.
+            if (typeof window.decorateStoryView === 'function' && !document.body.classList.contains('view-tafel')) {
+                window.decorateStoryView(document.getElementById('full-text-view'));
+            }
+
             // Absatz-Nummern für Fahrplan-Modus
             if (document.body.classList.contains('fahrplan-active')) {
                 addParagraphNumbers();
@@ -4723,6 +4729,14 @@
                 document.body.classList.add('view-tafel');
                 return;
             }
+            // Seiten-Hook: Sachtexte setzen window.FORCE_SCROLL_DEFAULT und starten
+            // damit auf ALLEN Geräten im Scroll-Modus (URL-Override oben gewinnt weiter).
+            // Ohne Flag: unverändertes Auto-Verhalten (Autoren-Geschichten).
+            if (window.FORCE_SCROLL_DEFAULT) {
+                document.body.classList.remove('view-tafel');
+                document.body.classList.add('view-desktop');
+                return;
+            }
             document.body.classList.remove('view-desktop');
             document.body.classList.toggle('view-tafel', TAFEL_MQ.matches);
         }
@@ -4934,12 +4948,21 @@
                 placeholder?.remove();
                 storyCol.remove();
             }
+            // Skin-Hook: Scroll-Dekoration (z.B. Sachtext-Magazin) wiederherstellen
+            if (typeof window.decorateStoryView === 'function' && !document.body.classList.contains('view-tafel')) {
+                window.decorateStoryView(document.getElementById('full-text-view'));
+            }
         }
 
         // === Pagination (Powerpoint-Style): 1 Cover-Slide + N Slides je 1 Absatz ===
         function paginateStoryByScenes() {
             const view = document.getElementById('full-text-view');
             if (!view || view.querySelector('.tafel-section')) return;
+            // Skin-Hook: evtl. vorhandene Scroll-Dekoration (Magazin-Sektionen) auflösen,
+            // damit der :scope>-Selektor unten wieder flache direkte Kinder vorfindet.
+            if (typeof window.undecorateStoryView === 'function') {
+                window.undecorateStoryView(view);
+            }
             // Überschriften (h3), Absätze (p) UND Einschübe (aside.story-insert) in
             // DOM-Reihenfolge einsammeln: Überschriften wandern in ihre Folge-Slide,
             // Einschübe werden eigene Slides (Sachtext: Wusstest-du / Lern-Block).
