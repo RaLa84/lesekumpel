@@ -3104,6 +3104,16 @@
                 }
             }
 
+            // Einschub-Hook: Seiten (z.B. Sachtexte) können window.computeStoryInserts
+            // definieren und liefern [{afterGroup, html, className, indicatorLabel, asChunk}].
+            // Ohne Hook: leeres Array -> exakt heutiges Verhalten (Autoren-Geschichten).
+            const storyInserts = (typeof window.computeStoryInserts === 'function')
+                ? (window.computeStoryInserts(allGroups, { summary: state.summary }) || [])
+                : [];
+            const attrEsc = s => String(s == null ? '' : s).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;');
+            const insertAside = (ins, scene) =>
+                `<aside class="story-insert${ins.className ? ' ' + attrEsc(ins.className) : ''}" data-scene="${scene}"${ins.indicatorLabel ? ` data-indicator-label="${attrEsc(ins.indicatorLabel)}"` : ''}>${ins.html || ''}</aside>`;
+
             // HTML zusammenbauen: Überschriften als <h3>, Text als <p>
             let html = allGroups.map((group, i) => {
                 let imgTag = imgPositions[i] ? `<img src="${imgPositions[i]}" alt="Illustration zur Geschichte" class="story-inline-img" loading="lazy" decoding="async" onerror="this.style.display='none'">` : '';
@@ -3117,7 +3127,11 @@
                     let processed = group.text.split(/\s+/).map(w => processWord(w)).join(' ');
                     textHtml = `<p style="margin:0 0 0.8em 0;" data-scene="${scenePlacement.sceneByGroup[i]}">${processed}</p>`;
                 }
-                return imgTag + headingHtml + textHtml;
+                let insertHtml = '';
+                for (const ins of storyInserts) {
+                    if (ins.afterGroup === i) insertHtml += insertAside(ins, scenePlacement.sceneByGroup[i]);
+                }
+                return imgTag + headingHtml + textHtml + insertHtml;
             }).join('');
             document.getElementById('full-text-view').innerHTML = html;
 
@@ -3135,6 +3149,25 @@
                 return g.heading.split(/\s+/).map(w => processWord(w)).join(' ');
             });
             state.chunkImages = allGroups.map((_, i) => imgPositions[i] || null);
+            // Einschübe als eigene Häppchen einfügen (von hinten, damit Indizes stabil bleiben)
+            state.chunkInserts = null;
+            const chunkInserts = storyInserts.filter(ins => ins.asChunk);
+            if (chunkInserts.length) {
+                state.chunkInserts = state.chunks.map(() => false);
+                // Rückwärts einfügen (Indizes stabil); bei gleichem afterGroup den
+                // späteren Array-Eintrag zuerst splicen, damit die Array-Reihenfolge
+                // im Ergebnis erhalten bleibt.
+                chunkInserts
+                    .map((ins, ord) => ({ ins, ord }))
+                    .sort((a, b) => (b.ins.afterGroup - a.ins.afterGroup) || (b.ord - a.ord))
+                    .forEach(({ ins }) => {
+                        const pos = Math.min(ins.afterGroup + 1, state.chunks.length);
+                        state.chunks.splice(pos, 0, insertAside(ins, scenePlacement.sceneByGroup[Math.min(ins.afterGroup, allGroups.length - 1)] || ''));
+                        state.chunkHeadings.splice(pos, 0, null);
+                        state.chunkImages.splice(pos, 0, null);
+                        state.chunkInserts.splice(pos, 0, true);
+                    });
+            }
             updateChunkDisplay();
             updateButtons();
         }
@@ -3538,10 +3571,12 @@
 
         function updateChunkDisplay() {
             if(state.chunkIndex >= state.chunks.length) state.chunkIndex = 0;
+            // Einschub-Häppchen (story-insert): fertiges Markup, ohne Bild/Überschrift
+            const isInsertChunk = !!(state.chunkInserts && state.chunkInserts[state.chunkIndex]);
             let imgHtml = '';
             // Bild für diesen Chunk finden — fallback auf letztes verfügbares
             let imgUrl = null;
-            if (state.chunkImages) {
+            if (!isInsertChunk && state.chunkImages) {
                 for (let j = state.chunkIndex; j >= 0; j--) {
                     if (state.chunkImages[j]) { imgUrl = state.chunkImages[j]; break; }
                 }
@@ -3550,7 +3585,7 @@
                 imgHtml = `<img src="${imgUrl}" alt="Illustration zur Geschichte" class="story-inline-img" loading="lazy" decoding="async" onerror="this.style.display='none'">`;
             }
             let headingHtml = '';
-            if (state.chunkHeadings && state.chunkHeadings[state.chunkIndex]) {
+            if (!isInsertChunk && state.chunkHeadings && state.chunkHeadings[state.chunkIndex]) {
                 headingHtml = `<div style="font-weight:600; font-size:0.75em; color:#1A8676; font-family:var(--font-heading); margin-bottom:0.4em; letter-spacing:0.03em;">${state.chunkHeadings[state.chunkIndex]}</div>`;
             }
             document.getElementById('chunk-display').innerHTML = imgHtml + headingHtml + (state.chunks[state.chunkIndex] || "");
@@ -4905,10 +4940,10 @@
         function paginateStoryByScenes() {
             const view = document.getElementById('full-text-view');
             if (!view || view.querySelector('.tafel-section')) return;
-            // Überschriften (h3) UND Absätze (p) in DOM-Reihenfolge einsammeln, damit
-            // Mini-Überschriften ihrer Folge-Slide zugeordnet werden statt als verwaiste
-            // <h3> dauerhaft oben sichtbar zu bleiben (Sachtext-Mini-Kapitel).
-            const blocks = Array.from(view.querySelectorAll(':scope > p, :scope > h3'));
+            // Überschriften (h3), Absätze (p) UND Einschübe (aside.story-insert) in
+            // DOM-Reihenfolge einsammeln: Überschriften wandern in ihre Folge-Slide,
+            // Einschübe werden eigene Slides (Sachtext: Wusstest-du / Lern-Block).
+            const blocks = Array.from(view.querySelectorAll(':scope > p, :scope > h3, :scope > aside'));
             const paragraphs = blocks.filter(el => el.tagName === 'P');
             if (!paragraphs.length) return;
 
@@ -4926,11 +4961,22 @@
             view.appendChild(cover);
 
             // Pro Absatz eine Slide — vorangehende Überschrift(en) wandern mit hinein.
+            // Einschübe (aside) werden eigene Slides und konsumieren pendingHeadings NICHT
+            // (die Überschrift gehört zum nächsten Text-Kapitel, nicht zum Einschub).
             let pendingHeadings = [];
             let lastSection = null;
             blocks.forEach((el) => {
                 if (el.tagName === 'H3') { pendingHeadings.push(el); return; }
                 const section = document.createElement('section');
+                if (el.tagName === 'ASIDE') {
+                    section.className = 'tafel-section tafel-insert';
+                    section.dataset.scene = el.dataset.scene || String(coverScene);
+                    if (el.dataset.indicatorLabel) section.dataset.indicatorLabel = el.dataset.indicatorLabel;
+                    section.appendChild(el);
+                    view.appendChild(section);
+                    lastSection = section;
+                    return;
+                }
                 section.className = 'tafel-section';
                 section.dataset.scene = el.dataset.scene || String(coverScene);
                 pendingHeadings.forEach(h => section.appendChild(h));
@@ -5180,8 +5226,16 @@
                 indicator.textContent = 'Geschafft! 🎉';
                 return;
             }
-            // Story-Slides = alle Sektionen außer Cover und Abschluss-Seite
-            const storySlides = sections.filter(s => s.dataset.cover !== 'true' && !s.classList.contains('tafel-abschluss'));
+            // Einschub-Slides (Wusstest-du / Lern-Block) zeigen ihr eigenes Label
+            // und zählen nicht als Abschnitt.
+            if (current.classList.contains('tafel-insert')) {
+                const label = current.dataset.indicatorLabel || '';
+                indicator.textContent = label;
+                if (!label) indicator.style.visibility = 'hidden';
+                return;
+            }
+            // Story-Slides = alle Sektionen außer Cover, Einschüben und Abschluss-Seite
+            const storySlides = sections.filter(s => s.dataset.cover !== 'true' && !s.classList.contains('tafel-abschluss') && !s.classList.contains('tafel-insert'));
             const storyIdx = storySlides.indexOf(current) + 1;
             indicator.textContent = `Abschnitt ${storyIdx} von ${storySlides.length}`;
         }

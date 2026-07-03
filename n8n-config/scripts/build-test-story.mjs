@@ -8,14 +8,19 @@
 //              SEO-Metadaten (description, keywords, reading-level, …) werden aus
 //              der alten Story übernommen.
 //
-// Aufruf: node n8n-config/scripts/build-test-story.mjs [--real] <template.html> <story.html> <output.html>
+// Aufruf: node n8n-config/scripts/build-test-story.mjs [--real] [--dir <ordner>] <template.html> <story.html> <output.html>
+//   --dir: Story-Verzeichnis für STORY_PATH im --real-Modus (Default: demo-texte;
+//          für Sachtext-Backfill: --dir sachtexte)
 
 import fs from 'node:fs';
 
 const args = process.argv.slice(2);
 const REAL = args.includes('--real');
+let DIR = 'demo-texte';
+const dirIdx = args.indexOf('--dir');
+if (dirIdx !== -1) { DIR = args[dirIdx + 1]; args.splice(dirIdx, 2); }
 const [templatePath, storyPath, outPath] = args.filter(a => a !== '--real');
-if (!outPath) { console.error('Usage: build-test-story.mjs [--real] <template> <story> <out>'); process.exit(1); }
+if (!outPath) { console.error('Usage: build-test-story.mjs [--real] [--dir <ordner>] <template> <story> <out>'); process.exit(1); }
 
 let template = fs.readFileSync(templatePath, 'utf8');
 const story = fs.readFileSync(storyPath, 'utf8');
@@ -31,6 +36,7 @@ const jsVars = {
   WEITERERZAEHLEN_JSON: /const weitererzaehlenData = (.+);/,
   SCHATZSUCHE_JSON: /const schatzsucheData = (.+);/,
   IMAGE_POSITIONS_JSON: /const imagePositions = (.+);/,
+  SACHTEXT_BLOCKS_JSON: /const sachtextBlocks = (.+);/, // nur in Sachtexten vorhanden (sonst WARN, unschädlich)
 };
 for (const [ph, re] of Object.entries(jsVars)) {
   const m = story.match(re);
@@ -70,7 +76,7 @@ if (REAL) {
     IMAGE_MODEL: grab(/<meta name="image-model" content="([^"]*)"/),
     OG_IMAGE_URL: ogImage,
     PERSONA_AVATAR_URL: ogImage,
-    STORY_PATH: 'demo-texte/' + visual.SLUG + '.html',
+    STORY_PATH: DIR + '/' + visual.SLUG + '.html',
     TYPICAL_AGE: grab(/Kinder ([0-9–\-]+) Jahre/),
   };
   try {
