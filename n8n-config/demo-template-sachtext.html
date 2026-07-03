@@ -2588,6 +2588,9 @@
         @media (min-width: 1024px) {
             body.view-tafel .main-card { grid-template-columns: 2fr 3fr; gap: 40px; max-width: 98vw; padding: 36px 40px; }
         }
+        /* "Noch eine Geschichte?": Karten unter der zentrierten Überschrift zentrieren
+           (im 1200px-Container liefe das auto-fill-Grid sonst linksbündig aus) */
+        body:not(.view-tafel) .related-grid { grid-template-columns: repeat(auto-fit, minmax(150px, 200px)); justify-content: center; }
 
         /* ── Dark-Mode ── */
         body.dark-mode .sachtext-box-summary { background: rgba(255,213,79,0.12); }
