@@ -3131,7 +3131,14 @@
                 for (const ins of storyInserts) {
                     if (ins.afterGroup === i) insertHtml += insertAside(ins, scenePlacement.sceneByGroup[i]);
                 }
-                return imgTag + headingHtml + textHtml + insertHtml;
+                // afterGroup: -1 = Einschub VOR der ersten Gruppe (ganz oben im Text)
+                let prefixHtml = '';
+                if (i === 0) {
+                    for (const ins of storyInserts) {
+                        if (ins.afterGroup < 0) prefixHtml += insertAside(ins, scenePlacement.sceneByGroup[0]);
+                    }
+                }
+                return prefixHtml + imgTag + headingHtml + textHtml + insertHtml;
             }).join('');
             document.getElementById('full-text-view').innerHTML = html;
 
