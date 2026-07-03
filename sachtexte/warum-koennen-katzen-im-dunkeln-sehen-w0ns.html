@@ -2592,6 +2592,39 @@
            (im 1200px-Container liefe das auto-fill-Grid sonst linksbündig aus) */
         body:not(.view-tafel) .related-grid { grid-template-columns: repeat(auto-fit, minmax(150px, 200px)); justify-content: center; }
 
+        /* ── Großbild-Skalierung (Beamer / 75-Zoll-Klassentafel) ──
+           .story-text ist em-basiert -> Font-Bump am Container skaliert Text,
+           Kästen und Einschübe mit; Spaltenbreiten wachsen entsprechend. */
+        @media (min-width: 1800px) {
+            body:not(.view-tafel) .main-card { max-width: 1700px; }
+            body:not(.view-tafel) .story-text { font-size: 1.5em; }
+            body:not(.view-tafel) #full-text-view .mag-section > h3,
+            body:not(.view-tafel) #full-text-view .mag-section > p { max-width: 760px; }
+            body:not(.view-tafel) #full-text-view .mag-section > aside.story-insert { max-width: 1000px; }
+            .mag-topic-pill { font-size: 1.1rem; }
+            .mag-author-chip .ac-name { font-size: 1.1rem; }
+            .mag-author-chip .ac-role { font-size: 0.9rem; }
+            .mag-author-chip img { width: 52px; height: 52px; }
+        }
+        @media (min-width: 3000px) {
+            body:not(.view-tafel) .main-card { max-width: 2800px; padding: 60px 80px; }
+            body:not(.view-tafel) .story-text { font-size: 2.4em; }
+            body:not(.view-tafel) #full-text-view .mag-section { gap: 40px 110px; }
+            body:not(.view-tafel) #full-text-view .mag-section > h3,
+            body:not(.view-tafel) #full-text-view .mag-section > p { max-width: 1250px; }
+            body:not(.view-tafel) #full-text-view .mag-section > aside.story-insert { max-width: 1650px; }
+            .mag-topic-pill { font-size: 1.7rem; padding: 12px 26px; }
+            .mag-author-chip .ac-name { font-size: 1.6rem; }
+            .mag-author-chip .ac-role { font-size: 1.25rem; }
+            .mag-author-chip img { width: 76px; height: 76px; }
+            body:not(.view-tafel) .related-grid { grid-template-columns: repeat(auto-fit, minmax(240px, 320px)); }
+            body:not(.view-tafel) .reading-action-bar .rab-btn { min-height: 92px; min-width: 110px; padding: 12px 30px; }
+            body:not(.view-tafel) .reading-action-bar .rab-icon { font-size: 3rem; }
+            body:not(.view-tafel) .hero-title-box #main-title { font-size: 4.2rem; }
+            /* Tafel-Modus auf 4K ebenfalls größer */
+            body.view-tafel .story-text { font-size: 3.4em; }
+        }
+
         /* ── Dark-Mode ── */
         body.dark-mode .sachtext-box-summary { background: rgba(255,213,79,0.12); }
         body.dark-mode .sachtext-box-summary .sachtext-box-head { color: #FFD54F; }
