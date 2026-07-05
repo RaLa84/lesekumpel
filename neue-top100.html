@@ -248,12 +248,62 @@ FormKit.attachDictation(document.getElementById('eigenes-wort'), document.getEle
 FormKit.attachDictation(document.getElementById('eigenes-thema'), document.getElementById('mic-thema'));
 
 var modal = document.getElementById('preview-modal');
-function showPreview() {
-    document.getElementById('preview-body').innerHTML =
-        '<dt>Thema</dt><dd>' + FormKit.escapeHtml(state.thema || '—') + '</dd>' +
-        '<dt>Deine Wörter (' + state.woerter.length + ')</dt><dd>' + FormKit.escapeHtml(state.woerter.join(', ')) + '</dd>';
-    FormKit.openPreview(modal);
+// Top-100-Workflow (eqd4WKexrhcxsZFd) — eigener Webhook, Persona fix = Pip Punkt.
+var TOP100_WEBHOOK = 'https://rala84.app.n8n.cloud/webhook/lesekumpel-top100';
+
+function setModal(headline, subText, bodyHtml, showListen) {
+    document.getElementById('preview-headline').textContent = headline;
+    var sub = modal.querySelector('.preview-sub');
+    if (sub) sub.textContent = subText;
+    document.getElementById('preview-body').innerHTML = bodyHtml;
+    var listen = document.getElementById('preview-listen');
+    if (listen) listen.style.display = showListen ? '' : 'none';
+}
+
+function submitStory() {
     wiz.clearSaved();
+    var thema = (state.thema || 'Ein Tag').trim();
+    var woerter = state.woerter || [];
+    var titel = thema.charAt(0).toUpperCase() + thema.slice(1);
+    var beschreibung = 'Eine ganz kurze Geschichte über ' + thema + '.' +
+        (woerter.length ? ' Diese Wörter sollen vorkommen: ' + woerter.join(', ') + '.' : '');
+    var payload = {
+        Titel: titel,
+        Persona: 'Pip Punkt',
+        Neurotyp: 'Standard',
+        Bildstil: 'Aquarell',
+        Kurzbeschreibung: beschreibung,
+        mitBildern: true
+    };
+
+    setModal('Pip schreibt deine Geschichte …',
+        'Einen Moment — das dauert ein bis zwei Minuten.',
+        '<dt>Thema</dt><dd>' + FormKit.escapeHtml(titel) + '</dd>' +
+        '<dt>Deine Wörter (' + woerter.length + ')</dt><dd>' + FormKit.escapeHtml(woerter.join(', ') || '—') + '</dd>',
+        false);
+    FormKit.openPreview(modal);
+
+    fetch(TOP100_WEBHOOK, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload)
+    })
+    .then(function (r) { return r.json().catch(function () { return {}; }); })
+    .then(function (result) {
+        if (result && result.storyUrl) { window.location.href = result.storyUrl; return; }
+        // Async: n8n hat sofort quittiert, die Story wird im Hintergrund gebaut.
+        setModal('Deine Geschichte wird gebaut!',
+            'Sie erscheint in ein paar Minuten bei den Demo-Texten.',
+            '<a class="btn-primary" href="demo.html" style="text-decoration:none;display:inline-block;">Zu den Geschichten</a>',
+            false);
+    })
+    .catch(function () {
+        setModal('Ups — das hat nicht geklappt',
+            'Bitte versuch es gleich noch einmal.',
+            '<button type="button" class="btn-ghost" id="retry-btn">Nochmal</button>', false);
+        var rb = document.getElementById('retry-btn');
+        if (rb) rb.addEventListener('click', function () { FormKit.closePreview(modal); });
+    });
 }
 document.getElementById('preview-listen').addEventListener('click', function () { FormKit.speak(state.woerter.join(', ')); });
 document.getElementById('preview-close').addEventListener('click', function () { FormKit.closePreview(modal); });
@@ -280,7 +330,7 @@ var wiz = new FormKit.Wizard({
             if (tile) { tile.classList.add('active'); } else { document.getElementById('eigenes-thema').value = state.thema; }
         }
     },
-    onComplete: showPreview
+    onComplete: submitStory
 });
 wiz.offerResume(document.getElementById('resume-banner'));
 </script>
