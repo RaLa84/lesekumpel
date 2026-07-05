@@ -71,6 +71,30 @@ if (!styleRefNode) throw new Error(`Knoten "${STYLE_REF_NODE}" nicht gefunden`);
 if (styleRefNode.parameters.url !== STYLE_REF_URL_EXPR) { styleRefNode.parameters.url = STYLE_REF_URL_EXPR; changed++; console.log(`Parameter aktualisiert: "${STYLE_REF_NODE}".url -> per-Szene-Expression`); }
 else console.log(`Parameter unverändert: "${STYLE_REF_NODE}".url`);
 
+// Szenen-LLM: Gemini-Safety-Filter blockt Kinderbuch-Illustrationsprompts (VISUAL LOCK
+// mit Kind-Beschreibungen) teils falsch-positiv -> leere Antwort (generations [[]],
+// 0 completionTokens) -> ChainLlm-Crash. Safety auf BLOCK_NONE (Inhalte sind ohnehin
+// durch Guardrail + kindgerechte Prompts abgesichert).
+const SAFETY_VALUES = ['HARM_CATEGORY_HARASSMENT', 'HARM_CATEGORY_HATE_SPEECH', 'HARM_CATEGORY_SEXUALLY_EXPLICIT', 'HARM_CATEGORY_DANGEROUS_CONTENT']
+  .map((category) => ({ category, threshold: 'BLOCK_NONE' }));
+const szenenLlm = nodes.find((n) => n.name === '⚙️ Gemini (Szenen)');
+if (!szenenLlm) throw new Error('Knoten "⚙️ Gemini (Szenen)" nicht gefunden');
+const wantSafety = JSON.stringify({ values: SAFETY_VALUES });
+if (JSON.stringify(szenenLlm.parameters.options?.safetySettings || null) !== wantSafety) {
+  szenenLlm.parameters.options = { ...(szenenLlm.parameters.options || {}), safetySettings: { values: SAFETY_VALUES } };
+  changed++; console.log('Parameter aktualisiert: "⚙️ Gemini (Szenen)".options.safetySettings -> BLOCK_NONE');
+} else console.log('Parameter unverändert: "⚙️ Gemini (Szenen)".safetySettings');
+
+// Crash-Netz: liefert das LLM trotzdem nichts, soll der Extraktor weiterlaufen
+// (Szenen parsen hat einen Fallback: leeres rawText -> 1 generische Szene) statt
+// den ganzen Lauf zu killen.
+const extraktor = nodes.find((n) => n.name === '🎨 Szenen-Extraktor');
+if (!extraktor) throw new Error('Knoten "🎨 Szenen-Extraktor" nicht gefunden');
+if (extraktor.onError !== 'continueRegularOutput') {
+  extraktor.onError = 'continueRegularOutput';
+  changed++; console.log('Parameter aktualisiert: "🎨 Szenen-Extraktor".onError -> continueRegularOutput');
+} else console.log('Parameter unverändert: "🎨 Szenen-Extraktor".onError');
+
 if (changed === 0) { console.log('\nKeine Änderungen — nichts zu tun.'); }
 else {
   const ALLOWED = new Set(['executionOrder', 'saveExecutionProgress', 'saveManualExecutions', 'saveDataErrorExecution', 'saveDataSuccessExecution', 'executionTimeout', 'errorWorkflow', 'timezone', 'callerPolicy', 'callerIds']);

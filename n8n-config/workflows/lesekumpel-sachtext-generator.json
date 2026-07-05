@@ -1,5 +1,5 @@
 {
-  "updatedAt": "2026-07-03T18:56:59.387Z",
+  "updatedAt": "2026-07-05T16:04:44.046Z",
   "createdAt": "2026-07-03T10:15:23.173Z",
   "id": "mM13X2tdTIbFUgF4",
   "name": "Lesekumpel – Sachtext-Generator (Samira)",
@@ -207,13 +207,34 @@
       ],
       "retryOnFail": true,
       "maxTries": 3,
-      "waitBetweenTries": 3000
+      "waitBetweenTries": 3000,
+      "onError": "continueRegularOutput"
     },
     {
       "parameters": {
         "options": {
           "temperature": 0.2,
-          "topP": 0.8
+          "topP": 0.8,
+          "safetySettings": {
+            "values": [
+              {
+                "category": "HARM_CATEGORY_HARASSMENT",
+                "threshold": "BLOCK_NONE"
+              },
+              {
+                "category": "HARM_CATEGORY_HATE_SPEECH",
+                "threshold": "BLOCK_NONE"
+              },
+              {
+                "category": "HARM_CATEGORY_SEXUALLY_EXPLICIT",
+                "threshold": "BLOCK_NONE"
+              },
+              {
+                "category": "HARM_CATEGORY_DANGEROUS_CONTENT",
+                "threshold": "BLOCK_NONE"
+              }
+            ]
+          }
         },
         "modelName": "models/gemini-2.5-flash"
       },
@@ -2158,9 +2179,9 @@
   "staticData": null,
   "meta": null,
   "pinData": null,
-  "versionId": "dd4959cc-4849-4472-9b6f-764d32e86cad",
-  "activeVersionId": "dd4959cc-4849-4472-9b6f-764d32e86cad",
-  "versionCounter": 26,
+  "versionId": "18723d75-0ace-48ea-9467-fa83254ee149",
+  "activeVersionId": "18723d75-0ace-48ea-9467-fa83254ee149",
+  "versionCounter": 31,
   "triggerCount": 1,
   "shared": [
     {
@@ -2184,7 +2205,7 @@
             "userId": "308fb5dc-7474-4112-a328-f5a434552a00",
             "projectId": "7DKNq7xhMrsfvZui",
             "user": {
-              "updatedAt": "2026-07-03T13:07:12.000Z",
+              "updatedAt": "2026-07-05T08:00:30.000Z",
               "createdAt": "2025-12-09T14:04:17.380Z",
               "id": "308fb5dc-7474-4112-a328-f5a434552a00",
               "email": "raik.lasner@googlemail.com",
@@ -2204,7 +2225,7 @@
               },
               "disabled": false,
               "mfaEnabled": false,
-              "lastActiveAt": "2026-07-02",
+              "lastActiveAt": "2026-07-04",
               "isPending": false
             }
           }
@@ -2214,9 +2235,9 @@
   ],
   "tags": [],
   "activeVersion": {
-    "updatedAt": "2026-07-03T18:56:59.392Z",
-    "createdAt": "2026-07-03T18:56:59.392Z",
-    "versionId": "dd4959cc-4849-4472-9b6f-764d32e86cad",
+    "updatedAt": "2026-07-05T16:04:44.051Z",
+    "createdAt": "2026-07-05T16:04:44.051Z",
+    "versionId": "18723d75-0ace-48ea-9467-fa83254ee149",
     "workflowId": "mM13X2tdTIbFUgF4",
     "nodes": [
       {
@@ -2419,13 +2440,34 @@
         ],
         "retryOnFail": true,
         "maxTries": 3,
-        "waitBetweenTries": 3000
+        "waitBetweenTries": 3000,
+        "onError": "continueRegularOutput"
       },
       {
         "parameters": {
           "options": {
             "temperature": 0.2,
-            "topP": 0.8
+            "topP": 0.8,
+            "safetySettings": {
+              "values": [
+                {
+                  "category": "HARM_CATEGORY_HARASSMENT",
+                  "threshold": "BLOCK_NONE"
+                },
+                {
+                  "category": "HARM_CATEGORY_HATE_SPEECH",
+                  "threshold": "BLOCK_NONE"
+                },
+                {
+                  "category": "HARM_CATEGORY_SEXUALLY_EXPLICIT",
+                  "threshold": "BLOCK_NONE"
+                },
+                {
+                  "category": "HARM_CATEGORY_DANGEROUS_CONTENT",
+                  "threshold": "BLOCK_NONE"
+                }
+              ]
+            }
           },
           "modelName": "models/gemini-2.5-flash"
         },
