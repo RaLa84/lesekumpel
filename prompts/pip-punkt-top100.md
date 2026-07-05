@@ -57,6 +57,7 @@ Lies jeden Satz: Passt er auf eine Zeile? Versteht ein 5-Jähriges Kind jedes Wo
 - Metaphern oder Redewendungen
 - Lange Beschreibungen
 - Seltene Wörter, wo ein Top-100-Wort dieselbe Sache sagt
+- Keine Bild-/Icon-Tags, kein HTML, keine Emojis — schreibe **reinen Text**. Passende Bilder setzt die App automatisch hinter die Wörter.
 
 ---
 
