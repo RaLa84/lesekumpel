@@ -254,7 +254,8 @@
     .child-tab:hover { border-color: var(--mint); color: var(--navy); }
     .child-tab.is-active { background: var(--accent-soft); border-color: var(--mint); color: var(--navy); }
     .child-tab:focus-visible { outline: 3px solid var(--lila); outline-offset: 2px; }
-    .ct-avatar { width: 32px; height: 32px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 1.15rem; border: 2px solid #fff; box-shadow: 0 2px 5px rgba(43,49,64,0.12); flex-shrink: 0; }
+    .ct-avatar { width: 32px; height: 32px; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center; font-size: 1.15rem; border: 2px solid #fff; box-shadow: 0 2px 5px rgba(43,49,64,0.12); flex-shrink: 0; overflow: hidden; }
+    .ct-avatar svg, .child-avatar svg { width: 100%; height: 100%; }
     body.dark-mode .child-tab { background: #2A3242; }
 
     /* Kopfbereich */
@@ -539,6 +540,7 @@
 
     <script src="formkit.js?v=20260626n"></script>
     <script src="konto-state.js?v=20260626n"></script>
+    <script src="avatar-svg.js?v=20260705a"></script>
     <script src="konto-fx.js?v=20260626n"></script>
     <script src="lautlese.js?v=20260702a"></script>
     <script src="eltern.js?v=20260702"></script>

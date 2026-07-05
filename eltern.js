@@ -142,13 +142,19 @@
     var map = {}; INTEREST_CATALOG.forEach(function (it) { map[it[0]] = it[2]; });
     return (c.interests || []).map(function (i) { return map[i] || i; });
   }
+  // Avatar-Inhalt: gestalteter SVG-Avatar (avatar.v2) vor Legacy-Emoji
+  function avatarInner(c) {
+    var av = (c && c.avatar) || {};
+    if (av.v2 && window.AvatarSVG) return AvatarSVG.render(av.v2);
+    return esc(av.base || '🦊');
+  }
   // Kind-Auswahl als Avatar-Tabs (Segment-Leiste)
   function childTabs() {
     var kids = Konto.getChildren(), act = Konto.getActiveChildId();
     return '<div class="child-tabs" role="tablist" aria-label="Kind auswählen">' + kids.map(function (c) {
       var av = c.avatar || {}, on = c.id === act;
       return '<button type="button" class="child-tab' + (on ? ' is-active' : '') + '" role="tab" aria-selected="' + (on ? 'true' : 'false') + '" onclick="Eltern.switchChild(' + c.id + ')">' +
-        '<span class="ct-avatar" style="background:' + esc(av.bgColor || '#ffe0dc') + '">' + esc(av.base || '🦊') + '</span>' +
+        '<span class="ct-avatar" style="background:' + esc(av.bgColor || '#ffe0dc') + '">' + avatarInner(c) + '</span>' +
         '<span class="ct-name">' + esc(c.name) + '</span></button>';
     }).join('') + '</div>';
   }
@@ -187,7 +193,7 @@
     // 1) Kind-Auswahl + Kopf
     var html = childTabs() +
       '<div class="insight-head">' +
-        '<div class="child-avatar" style="background:' + esc(av.bgColor || '#ffe0dc') + '">' + esc(av.base || '🦊') + '</div>' +
+        '<div class="child-avatar" style="background:' + esc(av.bgColor || '#ffe0dc') + '">' + avatarInner(c) + '</div>' +
         '<div><h2 class="insight-title">Einblicke für ' + esc(c.name) + '</h2>' +
         '<p class="insight-sub">So erlebt ' + esc(c.name) + ' Lesen gerade — ohne Druck und mit Raum für den eigenen Weg.</p></div>' +
       '</div>';

@@ -291,7 +291,20 @@
     setChildren([
       {
         id: 1, name: 'Lena', age: 7,
-        avatar: { base: '🦊', bgColor: '#ffe0dc', accessory: '🎀' },
+        /* avatar.v2 = gestalteter Held-Avatar (Baukasten in kind.html, Enums in avatar-svg.js):
+           { typ:'mensch'|'fantasie', name, mensch:{hautton,frisur,haarfarbe,brille,hoergeraet,oberteil,accessoire},
+             fantasie:{wesen,farbe,merkmal}, updatedAt }
+           Legacy-Felder base/bgColor/accessory bleiben als Fallback + Hintergrundfarbe.
+           ACHTUNG: updateChild ersetzt Top-Level-Keys — beim Speichern immer das VOLLE avatar-Objekt mergen. */
+        avatar: {
+          base: '🦊', bgColor: '#ffe0dc', accessory: '🎀',
+          v2: {
+            typ: 'mensch', name: 'Lena',
+            mensch: { hautton: 'tan', frisur: 'zoepfe', haarfarbe: 'dunkelbraun', brille: 'keine', hoergeraet: 'keins', oberteil: 'gelb', accessoire: 'schleife' },
+            fantasie: { wesen: 'drache', farbe: 'gruen', merkmal: 'fluegel' },
+            updatedAt: '2026-07-05'
+          }
+        },
         interests: ['tiere', 'weltraum', 'freundschaft'],
         level: { phase: 3, sub: '3.1', label: 'Der Fluss', selfAssessed: 'geuebt', miniTestScore: 5 },
         needs: ['lrs'],

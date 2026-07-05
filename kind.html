@@ -152,6 +152,26 @@
     body.dark-mode .burger-icon, body.dark-mode .nav-icon-btn { background: #2A3242; }
     body.dark-mode .mobile-menu { background: #2A3242; }
     body.dark-mode .nav-avatar-btn { background: #2A3242; }
+
+    /* ===== Avatar-Baukasten (Panel "avatar") ===== */
+    .nav-avatar-emoji.has-svg { display: inline-flex; width: 34px; height: 34px; }
+    .av-preview { width: 170px; height: 170px; margin: 0 auto 4px; border-radius: 50%; border: 3px solid var(--primary-yellow, var(--yellow, #FFD95A)); box-shadow: 0 6px 18px rgba(43,49,64,0.12); overflow: hidden; }
+    .av-typ-row { display: flex; gap: 10px; justify-content: center; margin: 16px 0 6px; flex-wrap: wrap; }
+    .av-typ { display: inline-flex; align-items: center; gap: 8px; padding: 10px 16px; min-height: 48px; border-radius: 14px; border: 2px solid var(--border, var(--border-soft, #D9D4CC)); background: #fff; color: var(--navy); font-family: var(--font-heading); font-weight: 700; font-size: 1rem; cursor: pointer; }
+    .av-typ svg { width: 20px; height: 20px; }
+    .av-typ.active { border-color: var(--coral, #D67171); background: rgba(214,113,113,0.12); }
+    .av-label { display: block; font-weight: 700; margin: 16px 0 6px; color: var(--navy); }
+    .av-name { width: 100%; max-width: 340px; box-sizing: border-box; padding: 11px 14px; border-radius: 12px; border: 2px solid var(--border, var(--border-soft, #D9D4CC)); font-size: 1.05rem; font-family: inherit; background: #fff; color: var(--navy); }
+    .av-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(72px, 1fr)); gap: 10px; }
+    .av-tile { position: relative; min-height: 68px; border-radius: 14px; border: 2px solid var(--border, var(--border-soft, #D9D4CC)); background: #fff; cursor: pointer; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; padding: 8px 4px 6px; color: var(--navy); font-size: 0.72rem; font-weight: 600; font-family: inherit; }
+    .av-tile .av-thumb { width: 46px; height: 46px; pointer-events: none; }
+    .av-tile .av-dot { width: 28px; height: 28px; border-radius: 50%; border: 2px solid rgba(43,49,64,0.15); pointer-events: none; }
+    .av-tile.active { border-color: var(--coral, #D67171); background: rgba(214,113,113,0.10); box-shadow: 0 0 0 3px rgba(214,113,113,0.18); }
+    .av-tile:active { transform: scale(0.95); }
+    .av-save { display: flex; align-items: center; justify-content: center; gap: 8px; margin: 24px auto 4px; min-height: 52px; padding: 12px 32px; border: none; border-radius: 16px; background: var(--primary-yellow, var(--yellow, #FFD95A)); color: var(--navy); font-family: var(--font-heading); font-weight: 700; font-size: 1.1rem; cursor: pointer; box-shadow: 0 4px 14px rgba(232,149,10,0.35); }
+    .av-save svg { width: 20px; height: 20px; }
+    .av-save:active { transform: scale(0.97); }
+    body.dark-mode .av-typ, body.dark-mode .av-tile, body.dark-mode .av-name { background: #2A3242; }
     </style>
 </head>
 <body class="kid-body">
@@ -190,7 +210,7 @@
       </div>
       <div class="nav-right">
         <button type="button" class="nav-icon-btn" id="nav-settings" onclick="openSettings()" aria-label="Barrierefreiheit"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="5" r="1"/><path d="m9 20 3-6 3 6"/><path d="m6 8 6 2 6-2"/><path d="M12 10v4"/></svg></button>
-        <a href="kind.html" class="nav-avatar-btn" id="nav-avatar" aria-label="Mein Bereich"><span class="nav-avatar-emoji" id="nav-avatar-emoji">&#129418;</span></a>
+        <a href="kind.html" class="nav-avatar-btn" id="nav-avatar" aria-label="Meinen Avatar gestalten"><span class="nav-avatar-emoji" id="nav-avatar-emoji">&#129418;</span></a>
       </div>
     </nav>
 
@@ -216,6 +236,10 @@
                             <button type="button" class="scene-menu-item" id="menu-energy" role="menuitem">
                                 <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="16" height="10" rx="2"/><path d="M22 11v2"/><path d="M6 11v2"/></svg>
                                 Akku einstellen
+                            </button>
+                            <button type="button" class="scene-menu-item" id="menu-avatar" role="menuitem">
+                                <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="5"/><path d="M20 21a8 8 0 0 0-16 0"/></svg>
+                                Avatar gestalten
                             </button>
                         </div>
                     </div>
@@ -289,6 +313,19 @@
                     </button>
                     <div id="uebung-panel" style="margin-top:18px;"></div>
                 </div>
+            </section>
+
+            <!-- MEIN AVATAR (geöffnet über Header-Avatar oder Szenen-Menü, kein Bottom-Nav-Item) -->
+            <section data-kidsec-panel="avatar" hidden>
+                <button type="button" class="lp-back" id="avatar-back">
+                    <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m12 19-7-7 7-7"/><path d="M19 12H5"/></svg>
+                    Zur&uuml;ck
+                </button>
+                <h2 class="kid-section-title">Mein Avatar
+                    <button type="button" class="read-aloud-btn" data-read="Gestalte deinen Avatar. Bau dich selbst nach oder erfinde eine Fantasiefigur. Dein Avatar kann die Hauptfigur in deinen Geschichten werden." aria-label="Vorlesen">&#128266;</button>
+                </h2>
+                <p class="kid-sub" style="margin-bottom:14px;">Bau dich selbst nach &mdash; oder erfinde eine Fantasiefigur. Dein Avatar kann die Hauptfigur in deinen Geschichten werden!</p>
+                <div id="avatar-builder"></div>
             </section>
 
         </div>
@@ -504,6 +541,7 @@
 
     <script src="formkit.js?v=20260626n"></script>
     <script src="konto-state.js?v=20260626n"></script>
+    <script src="avatar-svg.js?v=20260705a"></script>
     <script src="konto-fx.js?v=20260626n"></script>
     <script src="lautlese.js?v=20260702a"></script>
     <script src="lernpfad-data.js?v=20260702b"></script>
@@ -602,6 +640,126 @@
             sceneMenuBtn.setAttribute('aria-expanded', willOpen ? 'true' : 'false');
         });
         document.getElementById('menu-energy').addEventListener('click', function () { closeSceneMenu(); showGate(); });
+        document.getElementById('menu-avatar').addEventListener('click', function () { closeSceneMenu(); openAvatarBuilder(); });
+
+        // ================= AVATAR-BAUKASTEN =================
+        // Draft lebt lokal, bis "Speichern" gedrückt wird; gespeichert wird
+        // nach child.avatar.v2 (volles avatar-Objekt mergen — updateChild
+        // ersetzt Top-Level-Keys, siehe konto-state.js).
+        var AV_LABELS = {
+            mensch: { hautton: 'Hautfarbe', frisur: 'Frisur', haarfarbe: 'Haarfarbe', brille: 'Brille', hoergeraet: 'Hörgerät', oberteil: 'Kleidung', accessoire: 'Etwas Cooles' },
+            fantasie: { wesen: 'Wesen', farbe: 'Farbe', merkmal: 'Besonderes Merkmal' }
+        };
+        var AV_COLOR_ATTRS = { hautton: 1, haarfarbe: 1, oberteil: 1, farbe: 1 };
+        var AV_ICON_USER = '<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21v-2a4 4 0 0 0-4-4H9a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>';
+        var AV_ICON_SPARKLES = '<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11.017 2.814a1 1 0 0 1 1.966 0l1.051 5.558a2 2 0 0 0 1.594 1.594l5.558 1.051a1 1 0 0 1 0 1.966l-5.558 1.051a2 2 0 0 0-1.594 1.594l-1.051 5.558a1 1 0 0 1-1.966 0l-1.051-5.558a2 2 0 0 0-1.594-1.594l-5.558-1.051a1 1 0 0 1 0-1.966l5.558-1.051a2 2 0 0 0 1.594-1.594z"/></svg>';
+        var AV_ICON_CHECK = '<svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>';
+        var avDraft = null;
+
+        function openAvatarBuilder() {
+            var saved = child.avatar && child.avatar.v2;
+            avDraft = saved ? JSON.parse(JSON.stringify(saved)) : AvatarSVG.defaults('mensch', child.name);
+            renderAvatarBuilder();
+            showSection('avatar');
+        }
+
+        function avThumbDraft(attr, val) {
+            var t = JSON.parse(JSON.stringify(avDraft));
+            t[t.typ][attr] = val;
+            return t;
+        }
+
+        function avTileHtml(typ, attr, o) {
+            var active = avDraft[typ][attr] === o.id;
+            var inner = AV_COLOR_ATTRS[attr]
+                ? '<span class="av-dot" style="background:' + o.hex + ';"></span><span>' + esc(o.label) + '</span>'
+                : '<span class="av-thumb" aria-hidden="true">' + AvatarSVG.render(avThumbDraft(attr, o.id)) + '</span><span>' + esc(o.label) + '</span>';
+            return '<button type="button" class="av-tile' + (active ? ' active' : '') + '" data-av-attr="' + attr +
+                '" data-av-val="' + o.id + '" aria-pressed="' + (active ? 'true' : 'false') + '">' + inner + '</button>';
+        }
+
+        function renderAvatarBuilder() {
+            var box = document.getElementById('avatar-builder');
+            if (!box || !window.AvatarSVG || !avDraft) return;
+            var typ = avDraft.typ;
+            var bg = (child.avatar && child.avatar.bgColor) || '#ffe0dc';
+            var html = '<div class="av-preview" style="background:' + bg + ';">' + AvatarSVG.render(avDraft) + '</div>';
+            html += '<div class="av-typ-row" role="group" aria-label="Figur-Typ wählen">';
+            html += '<button type="button" class="av-typ' + (typ === 'mensch' ? ' active' : '') + '" data-av-typ="mensch" aria-pressed="' + (typ === 'mensch') + '">' + AV_ICON_USER + 'Wie ich</button>';
+            html += '<button type="button" class="av-typ' + (typ === 'fantasie' ? ' active' : '') + '" data-av-typ="fantasie" aria-pressed="' + (typ === 'fantasie') + '">' + AV_ICON_SPARKLES + 'Fantasiefigur</button>';
+            html += '</div>';
+            html += '<label class="av-label" for="av-name">Wie heißt deine Figur?</label>';
+            html += '<input type="text" id="av-name" class="av-name" maxlength="40" value="' + esc(avDraft.name || '') +
+                '" placeholder="' + (typ === 'mensch' ? esc(child.name) : 'z. B. Funkelblitz') + '" autocomplete="off">';
+            var labels = AV_LABELS[typ];
+            for (var attr in labels) {
+                if (!labels.hasOwnProperty(attr)) continue;
+                var opts = AvatarSVG.CATALOG[typ][attr] || [];
+                html += '<div class="av-group"><span class="av-label" id="avl-' + attr + '">' + labels[attr] + '</span>' +
+                    '<div class="av-grid" role="group" aria-labelledby="avl-' + attr + '">' +
+                    opts.map(function (o) { return avTileHtml(typ, attr, o); }).join('') +
+                    '</div></div>';
+            }
+            html += '<button type="button" class="av-save" id="av-save">' + AV_ICON_CHECK + 'Speichern</button>';
+            box.innerHTML = html;
+            avWire(box);
+        }
+
+        function avSyncName() {
+            var inp = document.getElementById('av-name');
+            if (inp) avDraft.name = inp.value;
+        }
+
+        function avWire(box) {
+            box.querySelectorAll('[data-av-attr]').forEach(function (t) {
+                t.addEventListener('click', function () {
+                    avSyncName();
+                    avDraft[avDraft.typ][t.getAttribute('data-av-attr')] = t.getAttribute('data-av-val');
+                    renderAvatarBuilder();
+                });
+            });
+            box.querySelectorAll('[data-av-typ]').forEach(function (t) {
+                t.addEventListener('click', function () {
+                    var typ = t.getAttribute('data-av-typ');
+                    if (typ === avDraft.typ) return;
+                    avSyncName();
+                    // Name-Default beim Umschalten nur anfassen, wenn er unverändert ist
+                    if (typ === 'mensch' && !(avDraft.name || '').trim()) avDraft.name = child.name;
+                    else if (typ === 'fantasie' && avDraft.name === child.name) avDraft.name = '';
+                    avDraft.typ = typ;
+                    renderAvatarBuilder();
+                });
+            });
+            var save = document.getElementById('av-save');
+            if (save) save.addEventListener('click', function () { avSave(save); });
+        }
+
+        function avSave(btn) {
+            avSyncName();
+            var name = (avDraft.name || '').trim().slice(0, 40);
+            if (!name) {
+                if (avDraft.typ === 'mensch') { name = child.name; }
+                else {
+                    toast('Gib deiner Figur noch einen Namen!');
+                    var inp = document.getElementById('av-name');
+                    if (inp) inp.focus();
+                    return;
+                }
+            }
+            avDraft.name = name;
+            avDraft.updatedAt = Konto.todayStr();
+            child = Konto.updateChild(child.id, {
+                avatar: Object.assign({}, child.avatar, { v2: JSON.parse(JSON.stringify(avDraft)) })
+            });
+            KontoFX.confetti(btn, { count: 90 });
+            toast('Dein Avatar ist gespeichert! Er kann jetzt Hauptfigur deiner Geschichten werden.');
+            renderAll();
+            showSection('start');
+        }
+
+        document.getElementById('avatar-back').addEventListener('click', function () { showSection('start'); });
+        var navAvatarBtn = document.getElementById('nav-avatar');
+        if (navAvatarBtn) navAvatarBtn.addEventListener('click', function (e) { e.preventDefault(); openAvatarBuilder(); });
         document.addEventListener('click', function (e) {
             if (!sceneMenu.hidden && !sceneMenu.contains(e.target) && !sceneMenuBtn.contains(e.target)) closeSceneMenu();
         });
@@ -823,7 +981,15 @@
         }
         function renderHeader() {
             var av = document.getElementById('nav-avatar-emoji');
-            if (av) av.textContent = (child.avatar && child.avatar.base) || '🦊';
+            if (!av) return;
+            var v2 = child.avatar && child.avatar.v2;
+            if (v2 && window.AvatarSVG) {
+                av.innerHTML = AvatarSVG.render(v2);
+                av.classList.add('has-svg');
+            } else {
+                av.textContent = (child.avatar && child.avatar.base) || '🦊';
+                av.classList.remove('has-svg');
+            }
         }
 
         // ---- Buch-Cover (Verlaufs-Karte mit Emoji als Illustration) ----

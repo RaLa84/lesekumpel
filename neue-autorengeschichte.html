@@ -158,6 +158,21 @@
         .toggle-btn:hover { border-color: var(--mint); color: #136B61; }
         .toggle-btn.active { background: rgba(47,184,166,0.16); border-color: var(--mint); color: #136B61; box-shadow: none; }
 
+        /* --- AVATAR-HAUPTFIGUR (Seite 2, nur Skill-Personas + gespeicherter Avatar) --- */
+        .avatar-held-card {
+            display: flex; align-items: center; gap: 14px; padding: 14px 16px;
+            background: #fff; border: 2px solid var(--border); border-radius: 16px;
+            cursor: pointer; transition: all 0.2s; user-select: none;
+        }
+        .avatar-held-card:hover { border-color: var(--mint); }
+        .avatar-held-card:has(:checked) { border-color: var(--mint); background: rgba(47,184,166,0.08); box-shadow: 0 0 0 3px rgba(47,184,166,0.15); }
+        .avatar-held-card input[type="checkbox"] { width: 22px; height: 22px; flex-shrink: 0; accent-color: var(--mint); cursor: pointer; }
+        .ah-preview { width: 52px; height: 52px; border-radius: 50%; flex-shrink: 0; overflow: hidden; border: 2px solid var(--primary-yellow, #FFD54F); background: #ffe0dc; }
+        .ah-preview svg { display: block; width: 100%; height: 100%; }
+        .ah-text { display: flex; flex-direction: column; gap: 2px; font-family: var(--font-body); color: var(--text-dark); }
+        .ah-text strong { font-size: 1rem; }
+        .ah-sub { font-size: 0.85rem; color: var(--text-muted); }
+
         /* --- LESEMODUS-KARTEN (Grid) --- */
         .neuro-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
         .neuro-card {
@@ -608,6 +623,20 @@
     <!-- ==================== PAGE 2: Bildstil + Submit ==================== -->
     <div class="page" id="page-2">
 
+        <!-- Avatar als Hauptfigur (sichtbar nur bei Skill-Persona + gespeichertem Avatar) -->
+        <div class="form-section hidden" id="section-avatar-held">
+            <h2 class="section-title">Deine Hauptfigur</h2>
+            <div class="section-sub">Soll dein Avatar das Abenteuer erleben?</div>
+            <label class="avatar-held-card" for="avatar-held-check">
+                <input type="checkbox" id="avatar-held-check" onchange="toggleAvatarHeld(this.checked)">
+                <span class="ah-preview" id="avatar-held-preview" aria-hidden="true"></span>
+                <span class="ah-text">
+                    <strong>Mein Avatar ist die Hauptfigur</strong>
+                    <span class="ah-sub" id="avatar-held-name"></span>
+                </span>
+            </label>
+        </div>
+
         <div class="form-section">
             <h2 class="section-title">Bilder?</h2>
             <div class="section-sub">Bilder machen die Geschichte lebendig, brauchen aber etwas länger.</div>
@@ -726,6 +755,9 @@
   </footer>
   <!-- === LK-FOOTER:FOOTER END === -->
 
+<!-- Konto-State + Avatar-Renderer (optional: Seite funktioniert auch ohne Konto-Daten) -->
+<script src="konto-state.js?v=20260705a"></script>
+<script src="avatar-svg.js?v=20260705a"></script>
 <script>
 function toggleMenu() {
     const menu = document.getElementById('mobile-menu');
@@ -868,7 +900,7 @@ const WEBHOOK_URL = 'https://rala84.app.n8n.cloud/webhook/lesekumpel-story';
 const PRECHECK_URL = 'https://rala84.app.n8n.cloud/webhook/lesekumpel-precheck';
 const PRECHECK_TIMEOUT_MS = 15000;
 
-let state = { persona: null, neurotyp: null, stil: null, mitBildern: true };
+let state = { persona: null, neurotyp: null, stil: null, mitBildern: true, avatarHauptfigur: false };
 
 // ============================================================
 // PAGE NAVIGATION & SECTION VISIBILITY
@@ -876,6 +908,7 @@ let state = { persona: null, neurotyp: null, stil: null, mitBildern: true };
 function goPage(num) {
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
     document.getElementById('page-' + num).classList.add('active');
+    if (num === 2) updateAvatarHeldSection();
     window.scrollTo({ top: 0, behavior: 'smooth' });
 }
 
@@ -938,6 +971,7 @@ function selectPersona(persona) {
     }
 
     updateNextButton();
+    updateAvatarHeldSection();
 
     if (isSkill) {
         setTimeout(() => {
@@ -995,6 +1029,60 @@ function updateNextButton() {
 
 document.getElementById('titel').addEventListener('input', updateNextButton);
 
+// ============================================================
+// AVATAR ALS HAUPTFIGUR (nur Skill-Personas + gespeicherter Avatar)
+// ============================================================
+// Liest den gestalteten Avatar (child.avatar.v2) des aktiven Kindes.
+// try/catch: Seite läuft auch ohne Konto-Daten / ohne localStorage.
+function getAvatarHeld() {
+    try {
+        if (!window.Konto || !window.AvatarSVG) return null;
+        const child = Konto.getActiveChild();
+        if (!child || !child.avatar || !child.avatar.v2) return null;
+        return { child: child, v2: child.avatar.v2 };
+    } catch (err) { return null; }
+}
+
+function updateAvatarHeldSection() {
+    const section = document.getElementById('section-avatar-held');
+    if (!section) return;
+    const held = getAvatarHeld();
+    const isSkill = state.persona && PERSONAS[state.persona] && PERSONAS[state.persona].type === 'skill';
+    if (held && isSkill) {
+        const name = (held.v2.name || held.child.name || '').trim();
+        document.getElementById('avatar-held-preview').innerHTML = AvatarSVG.render(held.v2);
+        const bg = (held.child.avatar && held.child.avatar.bgColor) || '#ffe0dc';
+        document.getElementById('avatar-held-preview').style.background = bg;
+        document.getElementById('avatar-held-name').textContent = name ? 'Dann erlebt ' + name + ' die Geschichte!' : '';
+        section.classList.remove('hidden');
+    } else {
+        section.classList.add('hidden');
+        state.avatarHauptfigur = false;
+        const check = document.getElementById('avatar-held-check');
+        if (check) check.checked = false;
+    }
+}
+
+function toggleAvatarHeld(checked) {
+    state.avatarHauptfigur = !!checked;
+}
+
+// Payload-Feld Hauptfigur: null oder { name, typ, alter, merkmale }
+function buildHauptfigurPayload() {
+    if (!state.avatarHauptfigur) return null;
+    const held = getAvatarHeld();
+    if (!held || !state.persona || !PERSONAS[state.persona] || PERSONAS[state.persona].type !== 'skill') return null;
+    const v2 = held.v2;
+    const name = String(v2.name || held.child.name || '').trim().slice(0, 40);
+    if (!name) return null;
+    return {
+        name: name,
+        typ: v2.typ === 'fantasie' ? 'fantasie' : 'mensch',
+        alter: held.child.age || null,
+        merkmale: v2.typ === 'fantasie' ? (v2.fantasie || {}) : (v2.mensch || {})
+    };
+}
+
 function selectBilder(val) {
     state.mitBildern = val;
     document.querySelectorAll('#bilder-toggle .toggle-btn').forEach(b => { b.classList.remove('active'); b.setAttribute('aria-pressed', 'false'); });
@@ -1031,7 +1119,8 @@ async function submitStory() {
         Neurotyp: state.neurotyp,
         Bildstil: BILDSTIL_LABELS[state.stil],
         Kurzbeschreibung: beschreibung,
-        mitBildern: state.mitBildern
+        mitBildern: state.mitBildern,
+        Hauptfigur: buildHauptfigurPayload()
     };
 
     showLoading('check');

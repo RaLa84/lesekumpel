@@ -15,7 +15,8 @@ This is a **static site with no build step** — pure vanilla HTML, CSS, and Jav
 ### Content Pipeline
 
 - Stories are generated via **N8N workflows** (`rala84.app.n8n.cloud`) which create HTML files and commit them directly to this repo
-- Webhook-Endpoint: `/webhook/lesekumpel-story` — akzeptiert `Persona`, `Neurotyp`, `Titel`, `Genre`, `Kurzbeschreibung`, `Bildstil`
+- Webhook-Endpoint: `/webhook/lesekumpel-story` — akzeptiert `Persona`, `Neurotyp`, `Titel`, `Genre`, `Kurzbeschreibung`, `Bildstil`, optional `Hauptfigur`
+- **Avatar als Hauptfigur** (Stand 2026-07): Kinder gestalten in `kind.html` einen SVG-Avatar (`avatar-svg.js`, gespeichert als `child.avatar.v2` in `konto-state.js`); die Checkbox auf Seite 2 von `neue-autorengeschichte.html` sendet ihn als `Hauptfigur: { name, typ: 'mensch'|'fantasie', alter, merkmale }` (nur Skill-Personas). Die Pipeline mappt die deutschen Enum-Ids in "Daten vorbereiten" (v5) auf englische Bild-Deskriptoren, erzwingt den Namen im Text-Prompt und überschreibt in "Elemente parsen" (v3) die main-Figur im VISUAL LOCK — dadurch identisches Aussehen in allen Szenenbildern
 - Silbentrennung wird **per Code** nachträglich hinzugefügt (nicht vom LLM) — im Knoten "Geschichte parsen"
 - **Bilderpipeline aktiv** (Stand 2026-06): gpt-image-2-Probe mit Gemini-Fallback (`gemini-2.5-flash-image`), per Webhook-Feld `skipImages` abschaltbar. Scheitert ein Bild, wird die Story trotzdem ohne Bild committed (IF "Bilddaten vorhanden?")
 - Ungültige Requests (Persona unbekannt, Titel fehlt, Blockwort) bekommen HTTP 400; gültige sofort HTTP 202, danach läuft die Generierung asynchron
