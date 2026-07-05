@@ -66,6 +66,29 @@
         { id: 'kopfhoerer', label: 'Kopfhörer' }
       ]
     },
+    tier: {
+      tier: [
+        { id: 'hund',  label: 'Hund' },
+        { id: 'katze', label: 'Katze' },
+        { id: 'hase',  label: 'Hase' },
+        { id: 'eule',  label: 'Eule' },
+        { id: 'pferd', label: 'Pony' }
+      ],
+      fellfarbe: [
+        { id: 'braun',   label: 'Braun',   hex: '#A97C50', shade: '#7F5B38' },
+        { id: 'schwarz', label: 'Schwarz', hex: '#4A4A4A', shade: '#2E2E2E' },
+        { id: 'weiss',   label: 'Weiß',    hex: '#F2EDE3', shade: '#CFC6B5' },
+        { id: 'grau',    label: 'Grau',    hex: '#9AA0A6', shade: '#6F757B' },
+        { id: 'orange',  label: 'Orange',  hex: '#E8954A', shade: '#BA7135' },
+        { id: 'golden',  label: 'Golden',  hex: '#E3BC5F', shade: '#B7913C' }
+      ],
+      muster: [
+        { id: 'einfarbig',     label: 'Einfarbig' },
+        { id: 'flecken',       label: 'Flecken' },
+        { id: 'streifen',      label: 'Streifen' },
+        { id: 'weisse-pfoten', label: 'Weiße Pfoten' }
+      ]
+    },
     fantasie: {
       wesen: [
         { id: 'drache',  label: 'Drache' },
@@ -94,8 +117,13 @@
 
   var DEFAULTS = {
     mensch:   { hautton: 'hell', frisur: 'kurz', haarfarbe: 'dunkelbraun', brille: 'keine', hoergeraet: 'keins', oberteil: 'blau', accessoire: 'keins' },
+    tier:     { tier: 'hund', fellfarbe: 'braun', muster: 'einfarbig' },
     fantasie: { wesen: 'drache', farbe: 'gruen', merkmal: 'fluegel' }
   };
+
+  function normTyp(typ) {
+    return (typ === 'fantasie' || typ === 'tier') ? typ : 'mensch';
+  }
 
   /* Enum-Eintrag nachschlagen; unbekannte Ids fallen auf den Default zurück. */
   function opt(typ, attr, id) {
@@ -106,15 +134,18 @@
   }
 
   function defaults(typ, childName) {
-    typ = (typ === 'fantasie') ? 'fantasie' : 'mensch';
-    var m = {}, f = {}, k;
-    for (k in DEFAULTS.mensch)   { if (DEFAULTS.mensch.hasOwnProperty(k))   m[k] = DEFAULTS.mensch[k]; }
-    for (k in DEFAULTS.fantasie) { if (DEFAULTS.fantasie.hasOwnProperty(k)) f[k] = DEFAULTS.fantasie[k]; }
+    typ = normTyp(typ);
+    function copy(src) {
+      var o = {}, k;
+      for (k in src) { if (src.hasOwnProperty(k)) o[k] = src[k]; }
+      return o;
+    }
     return {
       typ: typ,
       name: (typ === 'mensch' && childName) ? String(childName) : '',
-      mensch: m,
-      fantasie: f,
+      mensch: copy(DEFAULTS.mensch),
+      tier: copy(DEFAULTS.tier),
+      fantasie: copy(DEFAULTS.fantasie),
       updatedAt: ''
     };
   }
@@ -193,6 +224,83 @@
       parts.push('<path d="M35 47 C35 24 85 24 85 47" stroke="#E8950A" stroke-width="5" fill="none" stroke-linecap="round"/>');
       parts.push('<rect x="27" y="44" width="11" height="17" rx="5.5" fill="' + GOLD + '" stroke="#E8950A" stroke-width="2"/>');
       parts.push('<rect x="82" y="44" width="11" height="17" rx="5.5" fill="' + GOLD + '" stroke="#E8950A" stroke-width="2"/>');
+    }
+
+    return parts.join('');
+  }
+
+  /* ---------- RENDER: TIER ----------
+     Echte Tiere (Pipeline-Schema type:'animal' — nicht vermenschlicht,
+     keine Kleidung). Gleicher Chibi-Körper wie Fantasie, Art-spezifische
+     Ohren/Schwanz/Gesicht + Muster-Overlays. */
+
+  function renderTier(a) {
+    var fell = opt('tier', 'fellfarbe', a.fellfarbe);
+    var c = fell.hex, cs = fell.shade;
+    var art = a.tier;
+    var parts = [];
+
+    // Rück-Layer: Ohren + Schwanz je Art
+    if (art === 'hund') {
+      parts.push('<ellipse cx="31" cy="44" rx="9" ry="17" transform="rotate(16 31 44)" fill="' + cs + '"/>');
+      parts.push('<ellipse cx="89" cy="44" rx="9" ry="17" transform="rotate(-16 89 44)" fill="' + cs + '"/>');
+      parts.push('<path d="M90 92 Q106 88 103 70 Q101 82 89 82 Z" fill="' + cs + '"/>');
+    } else if (art === 'katze') {
+      parts.push('<path d="M36 34 L29 10 L54 25 Z" fill="' + c + '"/><path d="M84 34 L91 10 L66 25 Z" fill="' + c + '"/>');
+      parts.push('<path d="M40 30 L36 16 L51 26 Z" fill="#F2A6B8"/><path d="M80 30 L84 16 L69 26 Z" fill="#F2A6B8"/>');
+      parts.push('<path d="M90 96 Q108 92 104 70" stroke="' + cs + '" stroke-width="8" fill="none" stroke-linecap="round"/>');
+    } else if (art === 'hase') {
+      parts.push('<ellipse cx="46" cy="15" rx="8.5" ry="20" fill="' + c + '"/><ellipse cx="74" cy="15" rx="8.5" ry="20" fill="' + c + '"/>');
+      parts.push('<ellipse cx="46" cy="16" rx="4" ry="13" fill="#F2A6B8"/><ellipse cx="74" cy="16" rx="4" ry="13" fill="#F2A6B8"/>');
+    } else if (art === 'eule') {
+      parts.push('<path d="M40 30 L34 14 L52 24 Z" fill="' + cs + '"/><path d="M80 30 L86 14 L68 24 Z" fill="' + cs + '"/>');
+      parts.push('<ellipse cx="29" cy="72" rx="10" ry="21" transform="rotate(12 29 72)" fill="' + cs + '"/>');
+      parts.push('<ellipse cx="91" cy="72" rx="10" ry="21" transform="rotate(-12 91 72)" fill="' + cs + '"/>');
+    } else if (art === 'pferd') {
+      parts.push('<path d="M42 32 L38 12 L54 24 Z" fill="' + c + '"/><path d="M78 32 L82 12 L66 24 Z" fill="' + c + '"/>');
+      parts.push('<circle cx="46" cy="26" r="8" fill="' + cs + '"/><circle cx="58" cy="21" r="9" fill="' + cs + '"/><circle cx="70" cy="24" r="8" fill="' + cs + '"/>');
+      parts.push('<path d="M88 96 Q106 94 103 72 Q100 86 88 85 Z" fill="' + cs + '"/>');
+    }
+
+    // Körper + Bauch + Füße
+    parts.push('<ellipse cx="60" cy="68" rx="33" ry="40" fill="' + c + '"/>');
+    parts.push('<ellipse cx="60" cy="84" rx="18" ry="20" fill="#FFFFFF" opacity="0.35"/>');
+    parts.push('<ellipse cx="46" cy="106" rx="9" ry="6" fill="' + cs + '"/><ellipse cx="74" cy="106" rx="9" ry="6" fill="' + cs + '"/>');
+
+    // Muster-Overlays
+    if (a.muster === 'flecken') {
+      parts.push('<g fill="' + cs + '" opacity="0.85"><circle cx="42" cy="76" r="6"/><circle cx="76" cy="62" r="5"/><circle cx="66" cy="94" r="6.5"/></g>');
+    } else if (a.muster === 'streifen') {
+      parts.push('<g fill="' + cs + '" opacity="0.85"><rect x="29" y="56" width="14" height="5" rx="2.5"/><rect x="77" y="56" width="14" height="5" rx="2.5"/><rect x="31" y="68" width="12" height="5" rx="2.5"/><rect x="77" y="68" width="12" height="5" rx="2.5"/><rect x="52" y="30" width="16" height="5" rx="2.5"/></g>');
+    } else if (a.muster === 'weisse-pfoten') {
+      parts.push('<ellipse cx="46" cy="106" rx="9" ry="6" fill="#F7F3EA"/><ellipse cx="74" cy="106" rx="9" ry="6" fill="#F7F3EA"/>');
+      parts.push('<ellipse cx="60" cy="76" rx="13" ry="14" fill="#F7F3EA" opacity="0.9"/>');
+    }
+
+    // Gesicht je Art
+    if (art === 'eule') {
+      parts.push('<circle cx="48" cy="54" r="9.5" fill="#FFF9E5"/><circle cx="72" cy="54" r="9.5" fill="#FFF9E5"/>');
+      parts.push('<circle cx="48" cy="54" r="3.6" fill="' + NAVY + '"/><circle cx="72" cy="54" r="3.6" fill="' + NAVY + '"/>');
+      parts.push('<path d="M56 60 L64 60 L60 68 Z" fill="#E8950A"/>');
+    } else {
+      parts.push('<circle cx="48" cy="54" r="3.2" fill="' + NAVY + '"/><circle cx="72" cy="54" r="3.2" fill="' + NAVY + '"/>');
+      if (art === 'hund') {
+        parts.push('<ellipse cx="60" cy="68" rx="13" ry="10" fill="#FFF9E5" opacity="0.55"/>');
+        parts.push('<circle cx="60" cy="63" r="3" fill="' + NAVY + '"/>');
+        parts.push('<path d="M52 70 Q60 77 68 70" stroke="' + NAVY + '" stroke-width="2.5" fill="none" stroke-linecap="round"/>');
+      } else if (art === 'katze') {
+        parts.push('<path d="M57 62 L63 62 L60 66 Z" fill="#F2A6B8"/>');
+        parts.push('<path d="M52 69 Q60 75 68 69" stroke="' + NAVY + '" stroke-width="2.5" fill="none" stroke-linecap="round"/>');
+        parts.push('<g stroke="' + NAVY + '" stroke-width="1.5" stroke-linecap="round"><path d="M29 60 L43 62"/><path d="M29 68 L43 65"/><path d="M91 60 L77 62"/><path d="M91 68 L77 65"/></g>');
+      } else if (art === 'hase') {
+        parts.push('<path d="M57 62 L63 62 L60 66 Z" fill="#F2A6B8"/>');
+        parts.push('<path d="M52 69 Q60 75 68 69" stroke="' + NAVY + '" stroke-width="2.5" fill="none" stroke-linecap="round"/>');
+        parts.push('<rect x="55.2" y="70" width="4.4" height="6" rx="1.5" fill="#FFFFFF"/><rect x="60.4" y="70" width="4.4" height="6" rx="1.5" fill="#FFFFFF"/>');
+      } else if (art === 'pferd') {
+        parts.push('<ellipse cx="60" cy="71" rx="14" ry="11" fill="#FFF9E5" opacity="0.5"/>');
+        parts.push('<circle cx="54" cy="72" r="1.9" fill="' + NAVY + '"/><circle cx="66" cy="72" r="1.9" fill="' + NAVY + '"/>');
+        parts.push('<path d="M53 78 Q60 83 67 78" stroke="' + NAVY + '" stroke-width="2.5" fill="none" stroke-linecap="round"/>');
+      }
     }
 
     return parts.join('');
@@ -280,9 +388,11 @@
   /* ---------- RENDER ---------- */
   function render(v2) {
     v2 = v2 || {};
-    var typ = (v2.typ === 'fantasie') ? 'fantasie' : 'mensch';
+    var typ = normTyp(v2.typ);
     var attrs = v2[typ] || {};
-    var inner = (typ === 'fantasie') ? renderFantasie(attrs) : renderMensch(attrs);
+    var inner = (typ === 'fantasie') ? renderFantasie(attrs)
+      : (typ === 'tier') ? renderTier(attrs)
+      : renderMensch(attrs);
     return '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120" aria-hidden="true" focusable="false" style="display:block;width:100%;height:100%;">' + inner + '</svg>';
   }
 

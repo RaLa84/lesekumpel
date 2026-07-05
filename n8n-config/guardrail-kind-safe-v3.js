@@ -43,7 +43,7 @@ if (!guardError && hf != null) {
       guardError = 'Hauptfigur: Name fehlt oder ist zu lang (max. 40 Zeichen)';
     } else if (blockHit(hfName)) {
       guardError = 'Hauptfigur-Name nicht kindgerecht';
-    } else if (!['mensch', 'fantasie'].includes(hf.typ)) {
+    } else if (!['mensch', 'tier', 'fantasie'].includes(hf.typ)) {
       guardError = `Hauptfigur: unbekannter Typ "${hf.typ}"`;
     } else if (Object.entries(hf.merkmale || {}).some(([k, v]) =>
         !/^[a-z-]{1,20}$/.test(k) || !/^[a-z0-9-]{1,20}$/.test(String(v)))) {

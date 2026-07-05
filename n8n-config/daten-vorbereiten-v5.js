@@ -25,7 +25,7 @@ if (hauptfigurRaw && typeof hauptfigurRaw === 'object' && !Array.isArray(hauptfi
   if (hfName) {
     hauptfigur = {
       name: hfName,
-      typ: hauptfigurRaw.typ === 'fantasie' ? 'fantasie' : 'mensch',
+      typ: (hauptfigurRaw.typ === 'fantasie' || hauptfigurRaw.typ === 'tier') ? hauptfigurRaw.typ : 'mensch',
       alter: (typeof hauptfigurRaw.alter === 'number' && hauptfigurRaw.alter >= 5 && hauptfigurRaw.alter <= 12) ? hauptfigurRaw.alter : null,
       merkmale: (hauptfigurRaw.merkmale && typeof hauptfigurRaw.merkmale === 'object') ? hauptfigurRaw.merkmale : {}
     };
@@ -170,6 +170,14 @@ const AVATAR_VISUALS = {
     schleife: 'a pink hair bow',
     kopfhoerer: 'yellow over-ear headphones worn around the neck'
   },
+  tier: { hund: 'dog', katze: 'cat', hase: 'rabbit', eule: 'owl', pferd: 'pony' },
+  fellfarbe: { braun: 'warm brown', schwarz: 'black', weiss: 'white', grau: 'soft grey', orange: 'ginger orange', golden: 'golden' },
+  muster: {
+    einfarbig: 'plain solid',
+    flecken: 'with darker patches',
+    streifen: 'with darker tabby stripes',
+    'weisse-pfoten': 'with white paws and a white chest patch'
+  },
   wesen: { drache: 'dragon', roboter: 'robot', fuchs: 'fox', fee: 'fairy', einhorn: 'unicorn' },
   farbe: { rot: 'warm red', blau: 'sky blue', gruen: 'fresh green', lila: 'purple', tuerkis: 'bright turquoise', rosa: 'soft pink', orange: 'warm orange' },
   merkmal: {
@@ -183,7 +191,11 @@ const AVATAR_VISUALS = {
 const AVATAR_LABELS_DE = {
   frisur: { kurz: 'kurz geschnitten', 'glatt-lang': 'lang und glatt', bob: 'als Bob geschnitten', locken: 'lockig', zoepfe: 'zu zwei Zöpfen geflochten', afro: 'als Afro' },
   haarfarbe: { blond: 'blonden', hellbraun: 'hellbraunen', dunkelbraun: 'dunkelbraunen', schwarz: 'schwarzen', rot: 'roten' },
-  wesen: { drache: 'kleiner Drache', roboter: 'kleiner Roboter', fuchs: 'kleiner Fuchs', fee: 'kleine Fee', einhorn: 'kleines Einhorn' },
+  // Wesen/Tier-Labels inkl. Artikel (Genus variiert: der Drache, die Fee, das Einhorn …)
+  wesen: { drache: 'ein kleiner Drache', roboter: 'ein kleiner Roboter', fuchs: 'ein kleiner Fuchs', fee: 'eine kleine Fee', einhorn: 'ein kleines Einhorn' },
+  tier: { hund: 'ein kleiner Hund', katze: 'eine kleine Katze', hase: 'ein kleiner Hase', eule: 'eine kleine Eule', pferd: 'ein kleines Pony' },
+  fellfarbe: { braun: 'braunem', schwarz: 'schwarzem', weiss: 'weißem', grau: 'grauem', orange: 'orangefarbenem', golden: 'goldenem' },
+  muster: { flecken: 'Flecken', streifen: 'Streifen', 'weisse-pfoten': 'weißen Pfoten' },
   farbe: { rot: 'rot', blau: 'blau', gruen: 'grün', lila: 'lila', tuerkis: 'türkis', rosa: 'rosa', orange: 'orange' },
   merkmal: { fluegel: 'kleinen Flügeln', antenne: 'einer leuchtenden Antenne', krone: 'einer kleinen goldenen Krone', sterne: 'Sternen-Mustern' }
 };
@@ -195,6 +207,21 @@ function buildAvatarCharacter(hf) {
   if (!hf) return null;
   const m = hf.merkmale;
   const V = AVATAR_VISUALS;
+  if (hf.typ === 'tier') {
+    // Echtes Tier (Slot-Regeln type='animal': real, nicht vermenschlicht, keine Kleidung)
+    return {
+      name: hf.name, type: 'animal', role: 'main',
+      species: 'small young ' + (V.tier[m.tier] || 'dog'),
+      ageYears: null,
+      body: { heightCategory: null, build: 'small, young, rounded' },
+      hair: null,
+      eyes: { color: 'warm dark' },
+      skin: null,
+      outfit: null,
+      fur: { color: V.fellfarbe[m.fellfarbe] || 'warm brown', pattern: V.muster[m.muster] || 'plain solid' },
+      distinguishingFeatures: []
+    };
+  }
   if (hf.typ === 'fantasie') {
     return {
       name: hf.name, type: 'creature', role: 'main',
@@ -239,8 +266,11 @@ function buildHauptfigurBlock(hf) {
   const m = hf.merkmale;
   const L = AVATAR_LABELS_DE;
   let beschreibung;
-  if (hf.typ === 'fantasie') {
-    beschreibung = `Sie ist ein ${L.wesen[m.wesen] || 'kleines Fantasiewesen'} (${L.farbe[m.farbe] || 'grün'}) mit ${L.merkmal[m.merkmal] || 'einem besonderen Merkmal'}.`;
+  if (hf.typ === 'tier') {
+    const musterTxt = L.muster[m.muster] ? ` und ${L.muster[m.muster]}` : '';
+    beschreibung = `Sie ist ${L.tier[m.tier] || 'ein kleines Tier'} mit ${L.fellfarbe[m.fellfarbe] || 'braunem'} Fell${musterTxt}.`;
+  } else if (hf.typ === 'fantasie') {
+    beschreibung = `Sie ist ${L.wesen[m.wesen] || 'ein kleines Fantasiewesen'} (${L.farbe[m.farbe] || 'grün'}) mit ${L.merkmal[m.merkmal] || 'einem besonderen Merkmal'}.`;
   } else {
     const teile = [`${L.haarfarbe[m.haarfarbe] || 'dunkelbraunen'} Haaren (${L.frisur[m.frisur] || 'kurz geschnitten'})`];
     if (m.brille && m.brille !== 'keine') teile.push('einer Brille');

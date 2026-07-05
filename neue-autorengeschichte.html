@@ -1075,11 +1075,12 @@ function buildHauptfigurPayload() {
     const v2 = held.v2;
     const name = String(v2.name || held.child.name || '').trim().slice(0, 40);
     if (!name) return null;
+    const typ = (v2.typ === 'fantasie' || v2.typ === 'tier') ? v2.typ : 'mensch';
     return {
         name: name,
-        typ: v2.typ === 'fantasie' ? 'fantasie' : 'mensch',
+        typ: typ,
         alter: held.child.age || null,
-        merkmale: v2.typ === 'fantasie' ? (v2.fantasie || {}) : (v2.mensch || {})
+        merkmale: v2[typ] || {}
     };
 }
 
