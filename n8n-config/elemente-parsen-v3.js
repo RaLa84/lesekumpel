@@ -32,6 +32,11 @@ if (avatarChar && avatarChar.name) {
   // Es darf nur EINE main-Figur geben — andere degradieren
   storyElements.characters = storyElements.characters.map(c =>
     (c !== merged && nm(c.role) === 'main') ? { ...c, role: 'supporting' } : c);
+  // Identitäts-Invariante gegen Charakter-Drift: landet über sceneRules
+  // in jedem Bild-Prompt (zusätzlich zum VISUAL LOCK selbst)
+  storyElements.sceneRules.push(
+    avatarChar.name + ' must look IDENTICAL in every image of this story — exactly the colors, features, proportions and body plan specified for this character in the VISUAL LOCK; no color shifts between images, no added or missing limbs, wings, horns or accessories.'
+  );
 }
 
 const clothingRegex = new RegExp("\\b(wearing|shirt|dress|trousers|pants|shorts|jacket|hoodie|coat|sweater|skirt|outfit|clothes|kleidung)\\b", "i");
@@ -187,6 +192,15 @@ const visualLockSections = [];
 if (characterBlocks.length > 0) visualLockSections.push(characterBlocks.join('\n\n'));
 if (propBlocks.length > 0)      visualLockSections.push(propBlocks.join('\n\n'));
 if (settingBlock)               visualLockSections.push(settingBlock);
+// Avatar-Hauptfigur: Konsistenz-Direktive IM Lock — nur der Lock erreicht
+// den finalen Bild-Prompt wörtlich (sceneRules sehen nur den Szenen-Compiler)
+if (avatarChar && avatarChar.name) {
+  const bodyPlan = (avatarChar.body && avatarChar.body.build) ? ' (body plan: ' + avatarChar.body.build + ')' : '';
+  visualLockSections.push(
+    'CHARACTER CONSISTENCY — ' + avatarChar.name + ': render this character with EXACTLY the appearance specified above in every single image of this story' + bodyPlan +
+    '. Identical colors with no hue shifts between images, identical features and proportions, no added or missing limbs, wings, horns or accessories. Never redesign this character.'
+  );
+}
 
 const visualLock = visualLockSections.length > 0
   ? '=== VISUAL LOCK (REPEAT VERBATIM IN EVERY SCENE — NEVER ALTER) ===\n\n'

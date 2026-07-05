@@ -203,37 +203,60 @@ const AVATAR_LABELS_DE = {
 // avatarCharacter im exakten Slot-Schema von "Story-Elemente vorbereiten" —
 // "Elemente parsen" ersetzt damit die role:'main'-Figur (buildHumanBlock/
 // buildCreatureBlock rendern das Objekt unverändert in den VISUAL LOCK).
+// Wesen-/Tier-Steckbriefe: detaillierte FIXE Beschreibungen, die den SVG-Avatar
+// spiegeln. Je mehr Slots fix sind, desto weniger erfindet das Bildmodell pro
+// Szene neu (Drift). Anatomie steht in body.build (kein filterVisualOnlyDF),
+// alle df-Phrasen sind verbfrei (BEHAVIOR_RE-sicher).
+const SAME_SHADE = ' — the same exact shade in every scene';
+
 function buildAvatarCharacter(hf) {
   if (!hf) return null;
   const m = hf.merkmale;
   const V = AVATAR_VISUALS;
   if (hf.typ === 'tier') {
-    // Echtes Tier (Slot-Regeln type='animal': real, nicht vermenschlicht, keine Kleidung)
+    const fell = V.fellfarbe[m.fellfarbe] || 'warm brown';
+    const T = {
+      hund:  { species: 'small young dog',    build: 'small young rounded dog, exactly four legs, quadruped posture', df: ['soft floppy ears in a darker shade of the coat color', 'a short tail'] },
+      katze: { species: 'small young cat',    build: 'small young slender cat, exactly four legs, quadruped posture', df: ['pointed ears with pink inner ears', 'long fine whiskers', 'a long tail'] },
+      hase:  { species: 'small young rabbit', build: 'small young rounded rabbit, four legs, quadruped posture', df: ['long upright ears with pink inner ears', 'a small round fluffy tail'] },
+      eule:  { species: 'small young owl',    build: 'small young plump owl, two wings and two feet', df: ['large round dark eyes with pale feather rings', 'small pointed ear tufts', 'a short orange beak'] },
+      pferd: { species: 'small pony foal',    build: 'small pony foal, exactly four slender legs, quadruped posture', df: ['a soft mane in a darker shade of the coat color', 'a long tail in the same darker shade'] }
+    }[m.tier] || { species: 'small young dog', build: 'small young rounded dog, exactly four legs, quadruped posture', df: [] };
     return {
       name: hf.name, type: 'animal', role: 'main',
-      species: 'small young ' + (V.tier[m.tier] || 'dog'),
+      species: T.species,
       ageYears: null,
-      body: { heightCategory: null, build: 'small, young, rounded' },
+      body: { heightCategory: null, build: T.build },
       hair: null,
-      eyes: { color: 'warm dark' },
+      eyes: { color: 'warm dark brown' },
       skin: null,
       outfit: null,
-      fur: { color: V.fellfarbe[m.fellfarbe] || 'warm brown', pattern: V.muster[m.muster] || 'plain solid' },
-      distinguishingFeatures: []
+      fur: { color: fell + SAME_SHADE, pattern: V.muster[m.muster] || 'plain solid' },
+      distinguishingFeatures: T.df
     };
   }
   if (hf.typ === 'fantasie') {
+    const farbe = V.farbe[m.farbe] || 'fresh green';
+    const W = {
+      drache:  { species: 'small friendly baby dragon', build: 'small rounded toddler-proportioned baby dragon, two short arms and two short legs', df: ['a pale cream belly', 'two small cream horns on the head and tiny spikes along the back', 'a short curled tail'] },
+      roboter: { species: 'small friendly robot', build: 'small rounded rectangular robot body with two arms and two legs', df: ['a darker chest panel with two small round lights', 'small bolt-shaped ears on the sides of the head'] },
+      fuchs:   { species: 'small fox cub', build: 'small rounded fox cub, exactly four legs, quadruped posture', df: ['a white muzzle and white inner ears', 'a big fluffy tail with a white tip', 'pointed ears'] },
+      fee:     { species: 'tiny fairy pixie', build: 'tiny child-proportioned pixie with two arms and two legs', df: ['skin and short tousled hair both in the body color', 'small pointed ears', 'a small yellow flower on top of the head', 'translucent oval wings on the back'] },
+      einhorn: { species: 'small unicorn foal', build: 'small unicorn foal, exactly four slender legs, quadruped posture', df: ['a single golden spiral horn on the forehead', 'a flowing cream-white mane and tail', 'rounded hooves in a darker shade'] }
+    }[m.wesen] || { species: 'small friendly fantasy creature', build: 'small rounded', df: [] };
+    // Fee hat kanonische Flügel im Steckbrief — Merkmal "fluegel" nicht doppeln
+    const merkmalDF = (m.wesen === 'fee' && m.merkmal === 'fluegel') ? null : V.merkmal[m.merkmal];
     return {
       name: hf.name, type: 'creature', role: 'main',
-      species: 'small friendly ' + (V.wesen[m.wesen] || 'fantasy creature'),
+      species: W.species,
       ageYears: null,
-      body: { heightCategory: 'child', build: 'small rounded' },
+      body: { heightCategory: 'child', build: W.build },
       hair: null,
-      eyes: { color: 'large friendly dark' },
+      eyes: { color: 'large friendly dark brown' },
       skin: null,
       outfit: null,
-      fur: { color: V.farbe[m.farbe] || 'fresh green', pattern: 'plain smooth' },
-      distinguishingFeatures: [V.merkmal[m.merkmal]].filter(Boolean)
+      fur: { color: farbe + SAME_SHADE, pattern: 'plain smooth' },
+      distinguishingFeatures: W.df.concat([merkmalDF]).filter(Boolean)
     };
   }
   const frisur = V.frisur[m.frisur] || V.frisur.kurz;
