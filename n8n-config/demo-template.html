@@ -1047,6 +1047,10 @@
             to { opacity: 1; transform: translateY(0); }
         }
         .schatz-banner[hidden] { display: none; }
+        .schatz-banner-words { display: inline-flex; flex-wrap: wrap; gap: 6px; align-items: center; }
+        .schatz-banner-words .bw-chip { display: inline-flex; align-items: center; gap: 2px; background: rgba(255,255,255,0.6); border-radius: 999px; padding: 2px 9px; font-family: var(--font-heading, 'Fredoka', sans-serif); font-weight: 600; font-size: 0.85rem; color: var(--navy, #2B3140); transition: opacity 0.2s; }
+        .schatz-banner-words .bw-chip .wort-icon { width: 0.9em; height: 0.9em; }
+        .schatz-banner-words .bw-chip.found { opacity: 0.4; text-decoration: line-through; }
         .schatz-banner-icon { font-size: 1.4rem; line-height: 1; flex-shrink: 0; }
         .schatz-banner-text {
             flex-grow: 1; display: flex; align-items: baseline; gap: 10px;
@@ -2587,6 +2591,7 @@
         <span class="schatz-banner-icon">🔍</span>
         <span class="schatz-banner-text">
             <span id="schatz-banner-thema">Finde den Schatz</span>
+            <span id="schatz-banner-words" class="schatz-banner-words"></span>
             <span class="schatz-banner-count" id="schatz-banner-count">0/0</span>
         </span>
         <button type="button" class="schatz-banner-close" onclick="endSchatzsuche()" aria-label="Schatzsuche beenden">✕</button>
@@ -3599,8 +3604,9 @@
                 <div class="schatz-intro-card">
                     <span class="schatz-intro-emoji">${escapeHtml(data.emoji || '🔍')}</span>
                     <h3 class="schatz-intro-title">${escapeHtml(data.titel || 'Schatz-Suche')}</h3>
-                    <p class="schatz-intro-thema">„${escapeHtml(data.thema || '')}“</p>
+                    ${(!data.zeigeWoerter && data.thema) ? '<p class="schatz-intro-thema">„' + escapeHtml(data.thema) + '“</p>' : ''}
                     <p class="schatz-intro-text">${escapeHtml(data.einleitung || 'Finde versteckte Wörter im Text. Tippe sie einfach an!')}</p>
+                    ${data.zeigeWoerter ? '<div class="wsuche-chips" style="display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin:12px 0 2px;">' + (data.schatzwoerter||[]).map(function(w){ return '<span style="display:inline-flex;align-items:center;gap:3px;background:var(--cream-light,#FEFBF6);border:2px solid var(--border,#D9D4CC);border-radius:999px;padding:6px 12px;font-family:var(--font-heading,Fredoka),sans-serif;font-weight:600;font-size:1.05rem;color:var(--navy,#2B3140);">' + escapeHtml(w.charAt(0).toUpperCase()+w.slice(1)) + (typeof wordIcon==='function'?wordIcon(w):'') + '</span>'; }).join('') + '</div>' : ''}
                     <div class="schatz-progress">Gefunden: <span class="schatz-progress-number">${found}</span> / ${data.ziel}</div>
                     <div class="schatz-intro-actions">
                         <button type="button" class="speak-btn" data-say="${escapeHtml('Schatz-Suche! ' + (data.einleitung || 'Finde versteckte Wörter im Text. Tippe sie einfach an!') + ' Du suchst: ' + (data.thema || ''))}" onclick="sayThis(this)" aria-label="Erklärung vorlesen">🔊</button>
@@ -3687,8 +3693,21 @@
         function showSchatzBanner() {
             const banner = document.getElementById('schatz-banner');
             const thema = document.getElementById('schatz-banner-thema');
+            const wordsBox = document.getElementById('schatz-banner-words');
             if (banner) banner.hidden = false;
-            if (thema && schatzsucheData && schatzsucheData.thema) thema.textContent = 'Finde ' + schatzsucheData.thema.toLowerCase();
+            if (schatzsucheData && schatzsucheData.zeigeWoerter) {
+                if (thema) thema.textContent = 'Finde:';
+                if (wordsBox) {
+                    wordsBox.innerHTML = (schatzsucheData.schatzwoerter || []).map(function (w) {
+                        var ic = (typeof wordIcon === 'function') ? wordIcon(w) : '';
+                        return '<span class="bw-chip" data-w="' + w + '">' + escapeHtml(w.charAt(0).toUpperCase() + w.slice(1)) + ic + '</span>';
+                    }).join('');
+                }
+                updateSchatzBanner();
+            } else {
+                if (thema && schatzsucheData && schatzsucheData.thema) thema.textContent = 'Finde ' + schatzsucheData.thema.toLowerCase();
+                if (wordsBox) wordsBox.innerHTML = '';
+            }
         }
 
         function hideSchatzBanner() {
@@ -3703,6 +3722,11 @@
             const count = document.getElementById('schatz-banner-count');
             if (count && typeof schatzsucheData !== 'undefined' && schatzsucheData) {
                 count.textContent = schatzState.found.length + '/' + schatzsucheData.ziel;
+            }
+            if (schatzsucheData && schatzsucheData.zeigeWoerter) {
+                document.querySelectorAll('#schatz-banner-words .bw-chip').forEach(function (chip) {
+                    chip.classList.toggle('found', schatzState.found.indexOf(chip.getAttribute('data-w')) !== -1);
+                });
             }
         }
 
@@ -4588,10 +4612,11 @@
             var words = top100StoryWordSet();
             if (words.length >= 2) {
                 schatzsucheData = {
-                    schatzwoerter: words,
-                    ziel: Math.min(words.length, 5),
+                    schatzwoerter: words.slice(0, 6),
+                    ziel: Math.min(words.length, 6),
                     thema: 'Wörter',
                     titel: 'Wörter-Suche',
+                    zeigeWoerter: true,
                     completeTitel: 'Alle Wörter gefunden!',
                     einleitung: 'Finde diese Wörter in der Geschichte. Tippe sie an!',
                     emoji: ''
