@@ -152,56 +152,42 @@
   }
 
   /* ---------- BILDKARTEN: Top-100-Wortbilder (nur bildbare Wörter) ----------
-     Auflockerung für Lektion 1.1: konkrete Nomen/Farben bekommen ein Bild
-     neben dem Wort. On-brand Inline-SVG (kein Emoji, Style-Guide) bzw. ein
-     Farb-Swatch. Abstrakte Funktionswörter (ich, und, ist …) bleiben bewusst
-     ohne Bild → Wortkarte fällt sauber auf die reine Textzeile zurück.
-     Schlüssel = Wort in Kleinschreibung. */
-  function picSvg(paths) {
-    return '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + paths + '</svg>';
-  }
+     Auflockerung für Lektion 1.1: konkrete Nomen/Verben/Familie bekommen ein
+     Emoji, Farben einen Farb-Swatch. Emoji bewusst statt Lucide gewählt — nur
+     für diese Lern-Icons — weil die Abdeckung viel größer ist (Tiere, Familie,
+     Tun-Wörter) und bunte Bilder für 5–6-Jährige besser erkennbar sind.
+     Abstrakte Funktions-/Eigenschaftswörter (und, ist, gut, viel …) bleiben
+     bewusst ohne Bild. Schlüssel = Wort in Kleinschreibung.
+     QUELLE DER WAHRHEIT — gespiegelt in n8n-config/demo-template.html (REBUS_PIC). */
   var TOP100_PIC = {
-    // Nomen / Natur / Dinge
-    'sonne': { svg: '<circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/>' },
-    'mond': { svg: '<path d="M12 3a6 6 0 0 0 9 9 9 9 0 1 1-9-9Z"/>' },
-    'haus': { svg: '<path d="M15 21v-8a1 1 0 0 0-1-1h-4a1 1 0 0 0-1 1v8"/><path d="M3 10a2 2 0 0 1 .709-1.528l7-5.999a2 2 0 0 1 2.582 0l7 5.999A2 2 0 0 1 21 10v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/>' },
-    'baum': { svg: '<path d="M8 19a4 4 0 0 1-2.24-7.32A3.5 3.5 0 0 1 9 6.03V6a3 3 0 1 1 6 0v.04a3.5 3.5 0 0 1 3.24 5.65A4 4 0 0 1 16 19Z"/><path d="M12 19v3"/>' },
-    'wasser': { svg: '<path d="M12 22a7 7 0 0 0 7-7c0-2-1-3.9-3-5.5s-3.5-4-4-6.5c-.5 2.5-2 4.9-4 6.5C6 11.1 5 13 5 15a7 7 0 0 0 7 7z"/>' },
-    'buch': { svg: '<path d="M12 7v14"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/>' },
-    'auto': { svg: '<path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2"/><circle cx="7" cy="17" r="2"/><path d="M9 17h6"/><circle cx="17" cy="17" r="2"/>' },
-    'bett': { svg: '<path d="M2 4v16"/><path d="M2 8h18a2 2 0 0 1 2 2v10"/><path d="M2 17h20"/><path d="M6 8v9"/>' },
-    'stift': { svg: '<path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"/><path d="m15 5 4 4"/>' },
-    'fisch': { svg: '<path d="M6.5 12c.94-3.46 4.94-6 8.5-6 3.56 0 6.06 2.54 7 6-.94 3.47-3.44 6-7 6s-7.56-2.53-8.5-6Z"/><path d="M18 12v.5"/><path d="M16 17.93a9.77 9.77 0 0 1 0-11.86"/><path d="M7 10.67C7 8 5.58 5.97 2.73 5.5c-1 1.5-1 5 .23 6.5-1.24 1.5-1.24 5-.23 6.5C5.58 18.03 7 16 7 13.33"/><path d="m16.01 17.93-.23 1.67a.75.75 0 0 1-.94.62A6.44 6.44 0 0 1 10 15.44"/>' },
-    'vogel': { svg: '<path d="M16 7h.01"/><path d="M3.4 18H12a8 8 0 0 0 8-8V7a4 4 0 0 0-7.28-2.3L2 20"/><path d="m20 7 2 .5-2 .5"/><path d="M10 18v3"/><path d="M14 17.75V21"/><path d="M7 18a6 6 0 0 0 3.84-10.61"/>' },
-    'katze': { svg: '<path d="M12 5c.67 0 1.35.09 2 .26 1.78-2 5.03-2.84 6.42-2.26 1.4.58-.42 7-.42 7 .57 1.07 1 2.24 1 3.44C21 17.9 16.97 21 12 21s-9-3-9-7.56c0-1.25.5-2.4 1-3.44 0 0-1.89-6.42-.5-7 1.39-.58 4.72.23 6.5 2.23A9.04 9.04 0 0 1 12 5Z"/><path d="M8 14v.5"/><path d="M16 14v.5"/><path d="M11.25 16.25h1.5L12 17l-.75-.75Z"/>' },
-    'hund': { svg: '<path d="M11.25 16.25h1.5L12 17z"/><path d="M16 14v.5"/><path d="M4.42 11.247A13.152 13.152 0 0 0 4 14.556C4 18.728 7.582 21 12 21s8-2.272 8-6.444a11.702 11.702 0 0 0-.493-3.309"/><path d="M8 14v.5"/><path d="M8.5 8.5c-.384 1.05-1.083 2.028-2.344 2.5-1.931.722-3.576-.297-3.656-1-.113-.994 1.177-6.53 4-7 1.923-.321 3.651.845 3.651 2.235A7.497 7.497 0 0 1 14 5.277c0-1.39 1.844-2.598 3.767-2.277 2.823.47 4.113 6.006 4 7-.08.703-1.725 1.722-3.656 1-1.261-.472-1.855-1.45-2.239-2.5"/>' },
-    'maus': { svg: '<path d="M8 2h1a5 5 0 0 1 5 5 3 3 0 0 1-3 3H8"/><circle cx="6" cy="7" r="4"/><path d="M4 7h.01"/><path d="M14 10c2.8 0 5 2.2 5 5v1a3 3 0 0 1-3 3H9a3 3 0 0 1-3-3v-1"/><path d="M9 19v2"/><path d="M13 19v2"/>' },
-    'schule': { svg: '<path d="M14 22v-4a2 2 0 1 0-4 0v4"/><path d="m18 10 3.447 1.724a1 1 0 0 1 .553.894V20a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2v-7.382a1 1 0 0 1 .553-.894L6 10"/><path d="M18 5v17"/><path d="m4 6 7.106-3.553a2 2 0 0 1 1.788 0L20 6"/><path d="M6 5v17"/><circle cx="12" cy="9" r="2"/>' },
-    'baby': { svg: '<path d="M9 12h.01"/><path d="M15 12h.01"/><path d="M10 16c.5.3 1.2.5 2 .5s1.5-.2 2-.5"/><path d="M19 6.3a9 9 0 0 1 1.8 3.9 2 2 0 0 1 0 3.6 9 9 0 0 1-17.6 0 2 2 0 0 1 0-3.6A9 9 0 0 1 12 3"/>' },
-    // Verben / Aktionen
-    'lesen': { svg: '<path d="M12 7v14"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/>' },
-    'schreiben': { svg: '<path d="M21.174 6.812a1 1 0 0 0-3.986-3.987L3.842 16.174a2 2 0 0 0-.5.83l-1.321 4.352a.5.5 0 0 0 .623.622l4.353-1.32a2 2 0 0 0 .83-.497z"/><path d="m15 5 4 4"/>' },
-    'schlafen': { svg: '<path d="M2 4v16"/><path d="M2 8h18a2 2 0 0 1 2 2v10"/><path d="M2 17h20"/><path d="M6 8v9"/>' },
-    'sehen': { svg: '<path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0"/><circle cx="12" cy="12" r="3"/>' },
-    'essen': { svg: '<path d="M3 2v7c0 1.1.9 2 2 2h4a2 2 0 0 0 2-2V2"/><path d="M7 2v20"/><path d="M21 15V2a5 5 0 0 0-5 5v6c0 1.1.9 2 2 2h3Zm0 0v7"/>' },
-    'singen': { svg: '<path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/>' },
-    'laufen': { svg: '<path d="M4 16v-2.38C4 11.5 2.97 10.5 3 8c.03-2.72 1.49-6 4.5-6C9.37 2 10 3.8 10 5.5c0 3.11-2 5.66-2 8.68V16a2 2 0 1 1-4 0Z"/><path d="M20 20v-2.38c0-2.12 1.03-3.12 1-5.62-.03-2.72-1.49-6-4.5-6C14.63 6 14 7.8 14 9.5c0 3.11 2 5.66 2 8.68V20a2 2 0 1 0 4 0Z"/><path d="M16 17h4"/><path d="M4 13h4"/>' },
-    'rennen': { svg: '<path d="M4 16v-2.38C4 11.5 2.97 10.5 3 8c.03-2.72 1.49-6 4.5-6C9.37 2 10 3.8 10 5.5c0 3.11-2 5.66-2 8.68V16a2 2 0 1 1-4 0Z"/><path d="M20 20v-2.38c0-2.12 1.03-3.12 1-5.62-.03-2.72-1.49-6-4.5-6C14.63 6 14 7.8 14 9.5c0 3.11 2 5.66 2 8.68V20a2 2 0 1 0 4 0Z"/><path d="M16 17h4"/><path d="M4 13h4"/>' },
-    // Adjektive
-    'warm': { svg: '<circle cx="12" cy="12" r="4"/><path d="M12 2v2"/><path d="M12 20v2"/><path d="m4.93 4.93 1.41 1.41"/><path d="m17.66 17.66 1.41 1.41"/><path d="M2 12h2"/><path d="M20 12h2"/><path d="m6.34 17.66-1.41 1.41"/><path d="m19.07 4.93-1.41 1.41"/>' },
-    'laut': { svg: '<path d="M11 4.7 6.5 8H3v8h3.5L11 19.3z"/><path d="M16 9a5 5 0 0 1 0 6"/><path d="M19.5 6.5a9 9 0 0 1 0 11"/>' },
-    'leise': { svg: '<path d="M11 4.7 6.5 8H3v8h3.5L11 19.3z"/><line x1="22" x2="16" y1="9" y2="15"/><line x1="16" x2="22" y1="9" y2="15"/>' },
+    // Tiere
+    'hund': { emoji: '🐕' }, 'katze': { emoji: '🐈' }, 'maus': { emoji: '🐭' }, 'vogel': { emoji: '🐦' },
+    'fisch': { emoji: '🐟' }, 'pferd': { emoji: '🐴' }, 'kuh': { emoji: '🐄' }, 'schwein': { emoji: '🐷' },
+    // Natur
+    'sonne': { emoji: '☀️' }, 'mond': { emoji: '🌙' }, 'baum': { emoji: '🌳' }, 'blume': { emoji: '🌸' },
+    'wasser': { emoji: '💧' }, 'wald': { emoji: '🌲' },
+    // Dinge
+    'schule': { emoji: '🏫' }, 'buch': { emoji: '📖' }, 'heft': { emoji: '📓' }, 'stift': { emoji: '✏️' },
+    'haus': { emoji: '🏠' }, 'bett': { emoji: '🛏️' }, 'auto': { emoji: '🚗' }, 'ball': { emoji: '⚽' }, 'sofa': { emoji: '🛋️' },
+    // Menschen & Familie
+    'mama': { emoji: '👩' }, 'papa': { emoji: '👨' }, 'oma': { emoji: '👵' }, 'opa': { emoji: '👴' },
+    'kind': { emoji: '🧒' }, 'baby': { emoji: '👶' }, 'bruder': { emoji: '👦' }, 'schwester': { emoji: '👧' },
+    // Tun-Wörter
+    'lesen': { emoji: '📖' }, 'malen': { emoji: '🎨' }, 'schreiben': { emoji: '✍️' }, 'singen': { emoji: '🎤' },
+    'lachen': { emoji: '😂' }, 'weinen': { emoji: '😢' }, 'gehen': { emoji: '🚶' }, 'laufen': { emoji: '🏃' },
+    'rennen': { emoji: '🏃' }, 'rufen': { emoji: '📣' }, 'essen': { emoji: '🍽️' }, 'trinken': { emoji: '🥤' },
+    'schlafen': { emoji: '😴' }, 'sehen': { emoji: '👀' }, 'sagen': { emoji: '💬' },
+    // Wie-Wörter
+    'kalt': { emoji: '❄️' }, 'warm': { emoji: '☀️' }, 'laut': { emoji: '🔊' }, 'leise': { emoji: '🔇' },
+    'schnell': { emoji: '⚡' }, 'gut': { emoji: '👍' }, 'lieb': { emoji: '❤️' },
     // Farben → Swatch
-    'rot': { color: '#E5484D' },
-    'blau': { color: '#4A7BEC' },
-    'grün': { color: '#46B26A' },
-    'gelb': { color: '#F5C518' }
+    'rot': { color: '#E5484D' }, 'blau': { color: '#4A7BEC' }, 'grün': { color: '#46B26A' }, 'gelb': { color: '#F5C518' }
   };
   function wordPicture(wort) {
     var p = TOP100_PIC[String(wort || '').toLowerCase()];
     if (!p) return '';
     if (p.color) return '<span class="ue-wordpic is-color" style="background:' + p.color + '" aria-hidden="true"></span>';
-    return '<span class="ue-wordpic" aria-hidden="true">' + picSvg(p.svg) + '</span>';
+    return '<span class="ue-wordpic ue-emoji" aria-hidden="true">' + p.emoji + '</span>';
   }
 
   /* ---------- STYLES (einmalig; .ue-* liegt in konto.css) ---------- */
@@ -210,10 +196,10 @@
     if (document.getElementById('ue-pic-styles')) return;
     var css =
       '.ue-wordpic{flex-shrink:0;width:56px;height:56px;border-radius:16px;display:flex;align-items:center;justify-content:center;background:rgba(47,184,166,.12);color:var(--navy,#2B3140);}' +
-      '.ue-wordpic svg{width:34px;height:34px;}' +
+      '.ue-wordpic.ue-emoji{font-size:2rem;line-height:1;}' +
       '.ue-wordpic.is-color{border:2px solid rgba(43,49,64,.12);}' +
       '.ll-row.is-success .ue-wordpic{background:rgba(47,184,166,.2);}' +
-      '@media(max-width:480px){.ue-wordpic{width:46px;height:46px;border-radius:13px;}.ue-wordpic svg{width:28px;height:28px;}}' +
+      '@media(max-width:480px){.ue-wordpic{width:46px;height:46px;border-radius:13px;}.ue-wordpic.ue-emoji{font-size:1.6rem;}}' +
       /* Top-100: Gruppen-Chips + Story-Links */
       '.t100-h{font-family:var(--font-heading,Fredoka),sans-serif;font-size:1.15rem;color:var(--navy,#2B3140);margin:22px 0 10px;}' +
       '.t100-grid{grid-template-columns:repeat(auto-fill,minmax(130px,1fr));}' +
