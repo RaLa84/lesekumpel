@@ -2873,7 +2873,7 @@
         const quizData = [{"q":"Was macht der Hund zuerst?","a":["Er schläft.","Er spielt.","Er isst."],"correct":1},{"q":"Welche Farbe hat der Ball?","a":["Blau.","Grün.","Rot."],"correct":2},{"q":"Wo schläft der Hund?","a":["Im Garten.","Im Bett.","Auf dem Teppich."],"correct":1}];
         const rawDictionaryEntry = [];
         const weitererzaehlenData = {"frage":"Wie geht es weiter?","optionen":[{"emoji":"🐾","titel":"Neuer Tag, neues Spiel!","text":"Nach einem langen Schlaf streckt sich der Hund. Er gähnt. Aus dem Garten hört er ein lustiges Geräusch. Was mag das wohl sein? Er muss nachsehen!"},{"emoji":"😴","titel":"Süßer Traum im Bett","text":"Der Hund träumt von einem riesigen Knochen und vielen roten Bällen. Er wedelt leise mit dem Schwanz im Schlaf. Eine sanfte Berührung weckt ihn."},{"emoji":"🤫","titel":"Ein Geräusch im Haus","text":"Plötzlich hört der Hund ein leises Geräusch aus der Küche. Ein leises Klirren. Er spitzt die Ohren und öffnet vorsichtig ein Auge. Was war das nur?"}]};
-        const schatzsucheData = {"thema":"Bewegungs-Wörter","emoji":"🏃‍♀️","ziel":3,"einleitung":"Überall in der Geschichte versteckt sich ein Schatz voller Bewegungen. Finde drei Wörter, die zeigen, wie sich etwas bewegt — einfach antippen!","schatzwoerter":["spielt","rennt","spielt","geht","schläft"]};
+        let schatzsucheData = {"thema":"Bewegungs-Wörter","emoji":"🏃‍♀️","ziel":3,"einleitung":"Überall in der Geschichte versteckt sich ein Schatz voller Bewegungen. Finde drei Wörter, die zeigen, wie sich etwas bewegt — einfach antippen!","schatzwoerter":["spielt","rennt","spielt","geht","schläft"]};
         const imagePositions = [{"scene":1,"paragraphIndex":1},{"scene":2,"paragraphIndex":2}];
         window.imagePositions = imagePositions; // Für Tafel-Modus (Sticky-Bild)
         /* ============================================================ */
@@ -3600,7 +3600,7 @@
             panel.innerHTML = `
                 <div class="schatz-intro-card">
                     <span class="schatz-intro-emoji">${escapeHtml(data.emoji || '🔍')}</span>
-                    <h3 class="schatz-intro-title">Schatz-Suche</h3>
+                    <h3 class="schatz-intro-title">${escapeHtml(data.titel || 'Schatz-Suche')}</h3>
                     <p class="schatz-intro-thema">„${escapeHtml(data.thema || '')}“</p>
                     <p class="schatz-intro-text">${escapeHtml(data.einleitung || 'Finde versteckte Wörter im Text. Tippe sie einfach an!')}</p>
                     <div class="schatz-progress">Gefunden: <span class="schatz-progress-number">${found}</span> / ${data.ziel}</div>
@@ -3621,7 +3621,7 @@
             panel.innerHTML = `
                 <div class="schatz-complete">
                     <span class="schatz-complete-emoji">🏆</span>
-                    <h3 class="schatz-complete-title">Schatz gefunden!</h3>
+                    <h3 class="schatz-complete-title">${escapeHtml(data.completeTitel || 'Schatz gefunden!')}</h3>
                     <p class="schatz-complete-text">Du hast ${data.ziel} ${escapeHtml((data.thema || '').toLowerCase())} entdeckt:</p>
                     <ul class="schatz-found-list">${chips}</ul>
                     <button type="button" class="schatz-start-btn" onclick="resetSchatzsuche()">
@@ -4577,7 +4577,37 @@
         // DOMContentLoaded statt window.onload: Text soll sofort lesbar sein,
         // nicht erst wenn alle Story-Bilder fertig geladen sind.
         document.addEventListener('DOMContentLoaded', function() {
-            renderText(); renderQuiz(); renderWeitererzaehlen(); renderSchatzsuche(); renderWortschatz(); initActivityTabs();
+            function top100StoryWordSet() {
+                var seen = {}, out = [];
+                String(rawStory || '').split(/\s+/).forEach(function (raw) {
+                    var clean = raw.replace(/­/g, '').replace(/-/g, '').replace(/[.,!?:;„"()]/g, '').toLowerCase();
+                    if (clean && REBUS_PIC[clean] && !seen[clean]) { seen[clean] = true; out.push(clean); }
+                });
+                return out;
+            }
+            function setupTop100Games() {
+                var words = top100StoryWordSet();
+                if (words.length >= 2) {
+                    schatzsucheData = { schatzwoerter: words, ziel: Math.min(words.length, 5), thema: 'Wörter', titel: 'Wörter-Suche', completeTitel: 'Alle Wörter gefunden!', einleitung: 'Finde diese Wörter in der Geschichte. Tippe sie an!', emoji: '' };
+                    if (typeof SPIEL_TITEL !== 'undefined') SPIEL_TITEL.schatz = 'Wörter-Suche';
+                    var lbl = document.querySelector('#tab-schatz .tab-label');
+                    if (lbl) lbl.textContent = 'Wörter-Suche';
+                } else { schatzsucheData = null; }
+            }
+            function hideTop100Advanced() {
+                ['quiz', 'weiterdenken'].forEach(function (t) {
+                    var tab = document.querySelector('[data-tab="' + t + '"]');
+                    var panel = document.getElementById('panel-' + t);
+                    if (tab) tab.style.display = 'none';
+                    if (panel) panel.style.display = 'none';
+                });
+            }
+
+            renderText();
+            if (REBUS_ICONS) setupTop100Games();
+            renderQuiz(); renderWeitererzaehlen(); renderSchatzsuche(); renderWortschatz();
+            if (REBUS_ICONS) hideTop100Advanced();
+            initActivityTabs();
             updateTempoButtons();
             // Vorlese-Modus (Karaoke/Fließend) aus localStorage wiederherstellen
             try { const rm = localStorage.getItem('lesekumpel-read-mode'); if (rm === 'fluent' || rm === 'karaoke') state.readMode = rm; } catch(e) {}

@@ -2871,7 +2871,7 @@
         const quizData = {{QUIZ_DATA_JSON}};
         const rawDictionaryEntry = {{DICTIONARY_JSON}};
         const weitererzaehlenData = {{WEITERERZAEHLEN_JSON}};
-        const schatzsucheData = {{SCHATZSUCHE_JSON}};
+        let schatzsucheData = {{SCHATZSUCHE_JSON}};
         const imagePositions = {{IMAGE_POSITIONS_JSON}};
         window.imagePositions = imagePositions; // Für Tafel-Modus (Sticky-Bild)
         /* ============================================================ */
@@ -3598,7 +3598,7 @@
             panel.innerHTML = `
                 <div class="schatz-intro-card">
                     <span class="schatz-intro-emoji">${escapeHtml(data.emoji || '🔍')}</span>
-                    <h3 class="schatz-intro-title">Schatz-Suche</h3>
+                    <h3 class="schatz-intro-title">${escapeHtml(data.titel || 'Schatz-Suche')}</h3>
                     <p class="schatz-intro-thema">„${escapeHtml(data.thema || '')}“</p>
                     <p class="schatz-intro-text">${escapeHtml(data.einleitung || 'Finde versteckte Wörter im Text. Tippe sie einfach an!')}</p>
                     <div class="schatz-progress">Gefunden: <span class="schatz-progress-number">${found}</span> / ${data.ziel}</div>
@@ -3619,7 +3619,7 @@
             panel.innerHTML = `
                 <div class="schatz-complete">
                     <span class="schatz-complete-emoji">🏆</span>
-                    <h3 class="schatz-complete-title">Schatz gefunden!</h3>
+                    <h3 class="schatz-complete-title">${escapeHtml(data.completeTitel || 'Schatz gefunden!')}</h3>
                     <p class="schatz-complete-text">Du hast ${data.ziel} ${escapeHtml((data.thema || '').toLowerCase())} entdeckt:</p>
                     <ul class="schatz-found-list">${chips}</ul>
                     <button type="button" class="schatz-start-btn" onclick="resetSchatzsuche()">
@@ -4572,10 +4572,54 @@
             quizShowNext(); // auch nach "Lösung zeigen" geht es weiter (ohne Stern)
         }
 
+        /* ── TOP-100-SPIELE (nur wenn <meta rebus-icons> gesetzt) ─────────────
+           Erstleser-Stufe: Quiz + Weiterdenken sind nicht stufengerecht → aus.
+           Schatzsuche wird zur "Wörter-Suche": die Top-100-Wörter der Geschichte
+           (aus rawStory × REBUS_PIC) werden im Text gesucht — gleiche Mechanik. */
+        function top100StoryWordSet() {
+            var seen = {}, out = [];
+            String(rawStory || '').split(/\s+/).forEach(function (raw) {
+                var clean = raw.replace(/­/g, '').replace(/-/g, '').replace(/[.,!?:;„"()]/g, '').toLowerCase();
+                if (clean && REBUS_PIC[clean] && !seen[clean]) { seen[clean] = true; out.push(clean); }
+            });
+            return out;
+        }
+        function setupTop100Games() {
+            var words = top100StoryWordSet();
+            if (words.length >= 2) {
+                schatzsucheData = {
+                    schatzwoerter: words,
+                    ziel: Math.min(words.length, 5),
+                    thema: 'Wörter',
+                    titel: 'Wörter-Suche',
+                    completeTitel: 'Alle Wörter gefunden!',
+                    einleitung: 'Finde diese Wörter in der Geschichte. Tippe sie an!',
+                    emoji: ''
+                };
+                if (typeof SPIEL_TITEL !== 'undefined') SPIEL_TITEL.schatz = 'Wörter-Suche';
+                var lbl = document.querySelector('#tab-schatz .tab-label');
+                if (lbl) lbl.textContent = 'Wörter-Suche';
+            } else {
+                schatzsucheData = null; // keine Zielwörter → renderSchatzsuche versteckt den Tab
+            }
+        }
+        function hideTop100Advanced() {
+            ['quiz', 'weiterdenken'].forEach(function (t) {
+                var tab = document.querySelector('[data-tab="' + t + '"]');
+                var panel = document.getElementById('panel-' + t);
+                if (tab) tab.style.display = 'none';
+                if (panel) panel.style.display = 'none';
+            });
+        }
+
         // DOMContentLoaded statt window.onload: Text soll sofort lesbar sein,
         // nicht erst wenn alle Story-Bilder fertig geladen sind.
         document.addEventListener('DOMContentLoaded', function() {
-            renderText(); renderQuiz(); renderWeitererzaehlen(); renderSchatzsuche(); renderWortschatz(); initActivityTabs();
+            renderText();
+            if (REBUS_ICONS) setupTop100Games();           // vor renderSchatzsuche: Wörter-Suche-Daten setzen
+            renderQuiz(); renderWeitererzaehlen(); renderSchatzsuche(); renderWortschatz();
+            if (REBUS_ICONS) hideTop100Advanced();          // nach deren render: Quiz + Weiterdenken ausblenden
+            initActivityTabs();
             updateTempoButtons();
             // Vorlese-Modus (Karaoke/Fließend) aus localStorage wiederherstellen
             try { const rm = localStorage.getItem('lesekumpel-read-mode'); if (rm === 'fluent' || rm === 'karaoke') state.readMode = rm; } catch(e) {}

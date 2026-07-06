@@ -567,6 +567,104 @@
     try { if (typeof window.showConfetti === 'function') window.showConfetti(); } catch (e) {}
   }
 
+  /* ---------- TOP-100-WÖRTER-ÜBUNG (Story-Seite) ----------
+     Bei Top-100-Erstleser-Stories ersetzt eine Wort-Übung die Laut-Übung:
+     die im Text vorkommenden bildbaren Top-100-Wörter (rawStory × REBUS_PIC)
+     werden gehört und nachgesprochen (Mikro = reine Ermutigung). */
+  function top100StoryWords(limit) {
+    if (typeof rawStory === 'undefined' || typeof REBUS_PIC === 'undefined') return [];
+    var seen = {}, out = [];
+    tokenize(rawStory).forEach(function (raw) {
+      var key = raw.toLowerCase();
+      if (key && REBUS_PIC[key] && !seen[key]) { seen[key] = true; out.push({ wort: raw, silben: silbenString(raw) }); }
+    });
+    return typeof limit === 'number' ? out.slice(0, limit) : out;
+  }
+
+  function renderWordExercise(panel, words) {
+    injectStyles();
+    var total = words.length, doneStars = {};
+    var introText = 'Übe deine Wörter. Hör dir jedes Wort an und sprich es nach.';
+    var head =
+      '<div class="ll-head">' +
+        '<div class="ll-head-chip" aria-hidden="true">' + icon('sound') + '</div>' +
+        '<div class="ll-head-text"><h3>Übe deine Wörter</h3><p>Hör zu und sprich jedes Wort nach.</p></div>' +
+        '<button type="button" class="ll-read-btn ll-intro-read" aria-label="Aufgabe vorlesen">' + icon('volume') + '<span class="ll-read-label">Vorlesen</span></button>' +
+      '</div>' +
+      '<div class="ll-progress-track" aria-hidden="true"><i id="ll-progress-fill"></i></div>';
+    var rows = '<div class="ll-list">';
+    words.forEach(function (w, i) {
+      var ic = (typeof window.wordIcon === 'function') ? window.wordIcon(w.wort.toLowerCase()) : '';
+      rows += '<div class="ll-row" data-i="' + i + '">' +
+        '<div class="ll-main">' +
+          '<div class="ll-word">' + escapeHtml(w.wort) + (ic ? ' ' + ic : '') + '</div>' +
+          '<div class="ll-syl">' + escapeHtml(w.silben) + '</div>' +
+          '<div class="ll-status"></div>' +
+        '</div>' +
+        '<div class="ll-side"><div class="ll-actions">' +
+          '<button type="button" class="ll-iconbtn ll-hear" aria-label="Wort anhören">' + icon('volume') + '</button>' +
+          (micSupported() ? '<button type="button" class="ll-iconbtn ll-say" aria-label="Wort nachsprechen">' + icon('mic') + '</button>' : '') +
+        '</div>' + starsHtml(0) + '</div>' +
+      '</div>';
+    });
+    rows += '</div><div class="ll-done-banner" id="ll-done" hidden></div>';
+    panel.innerHTML = head + rows;
+
+    var introRead = panel.querySelector('.ll-intro-read');
+    if (introRead) introRead.addEventListener('click', function () { speakWord(introText, 0.95); });
+
+    var rowEls = panel.querySelectorAll('.ll-row');
+    function setStars(row, n) { var h = row.querySelector('.ll-stars'); if (h) h.outerHTML = starsHtml(n); var ons = row.querySelectorAll('.ll-stars .on'); if (ons.length) ons[ons.length - 1].classList.add('pop'); }
+    function updateProgress() { var fill = panel.querySelector('#ll-progress-fill'); if (fill) fill.style.width = Math.round(Object.keys(doneStars).length / total * 100) + '%'; }
+    function setStatus(row, kind) {
+      var st = row.querySelector('.ll-status'); if (!st) return;
+      st.style.display = 'flex'; st.style.color = ''; row.classList.remove('is-success', 'is-almost');
+      if (kind === 'listening') { st.style.color = 'var(--accent-coral,#D67171)'; st.innerHTML = icon('mic') + ' Ich höre zu …'; }
+      else if (kind === 'success') { row.classList.add('is-success'); st.innerHTML = icon('check') + ' Super, genau!'; }
+      else if (kind === 'almost') { row.classList.add('is-almost'); st.innerHTML = icon('mic') + ' Fast! Sprich es noch einmal.'; }
+    }
+    function record(i, recognized) {
+      var stars = Math.min(2, Math.max(doneStars[i] || 0, recognized ? 2 : 1));
+      doneStars[i] = stars; setStars(rowEls[i], stars); setStatus(rowEls[i], recognized ? 'success' : 'almost'); updateProgress();
+      if (Object.keys(doneStars).length >= total) {
+        var b = panel.querySelector('#ll-done'); if (b) { b.hidden = false; b.innerHTML = icon('star') + ' Stark! Du hast alle Wörter geübt.'; }
+        celebrate(panel);
+      }
+    }
+    rowEls.forEach(function (row, i) {
+      row.querySelector('.ll-hear').addEventListener('click', function () { speakWord(words[i].wort); });
+      var sayBtn = row.querySelector('.ll-say');
+      if (!micSupported() || !sayBtn) return;
+      sayBtn.addEventListener('click', function () {
+        askConsent(function () {
+          try { window.speechSynthesis.cancel(); } catch (e) {}
+          setStatus(row, 'listening');
+          listenOnce(words[i].wort, function (state) { sayBtn.classList.toggle('listening', state === 'listening'); }, function (recognized) { record(i, recognized); });
+        });
+      });
+    });
+  }
+
+  function bootstrapTop100Words(chooser, content) {
+    if (document.getElementById('tab-woerter')) return;    // idempotent
+    var words = top100StoryWords(8);
+    if (!words.length) return;                             // keine bildbaren Top-100-Wörter im Text
+    injectStyles();
+    var tab = document.createElement('button');
+    tab.className = 'activity-tab';
+    tab.id = 'tab-woerter';
+    tab.setAttribute('data-tab', 'woerter');
+    tab.setAttribute('onclick', "openSpiel('woerter')");
+    tab.innerHTML = '<span class="tab-icon">' + icon('sound') + '</span><span class="tab-label">Wörter üben</span>';
+    chooser.appendChild(tab);
+    var panel = document.createElement('div');
+    panel.id = 'panel-woerter';
+    panel.className = 'activity-panel';
+    content.appendChild(panel);
+    try { if (typeof SPIEL_TITEL !== 'undefined') SPIEL_TITEL.woerter = 'Wörter üben'; } catch (e) {}
+    renderWordExercise(panel, words);
+  }
+
   /* ---------- STORY-BOOTSTRAP ----------
      Hängt synchron (zur Eval-Zeit, vor DOMContentLoaded → initActivityTabs)
      einen „Laute"-Tab + Panel in die bestehende Spielzeit-Aktivität ein. */
@@ -575,6 +673,8 @@
     var chooser = document.querySelector('.activity-tabs.spiel-chooser');
     var content = document.querySelector('.spielzeit-content');
     if (!chooser || !content) return;
+    // Top-100-Erstleser-Story (<meta rebus-icons>): statt Laute die Top-100-Wörter üben.
+    if (document.querySelector('meta[name="rebus-icons"][content="1"]')) { bootstrapTop100Words(chooser, content); return; }
     if (document.getElementById('tab-lautlese')) return;  // idempotent
 
     var profile = profileStory(rawStory);
