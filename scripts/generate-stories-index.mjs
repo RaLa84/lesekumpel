@@ -72,6 +72,35 @@ function profileStory(rawStory) {
   return profile;
 }
 
+// ── Top-100-Wort-Gruppen ────────────────────────────────────────────────────
+// Aus "Top 100 Wörter.csv" (Spalte 4 = kinderfreundliche Gruppe). Pro Story wird
+// gezählt, wie viele DISTINKTE Top-100-Wörter je Gruppe vorkommen → Basis für die
+// "Geschichten mit deinen Wörtern"-Empfehlung im Lernpfad (analog lautProfil).
+function parseTop100Csv(text) {
+  const map = {}; // wort(lowercase) -> gruppe
+  const lines = String(text || '').split('\n');
+  for (let i = 1; i < lines.length; i++) {
+    const line = lines[i].replace(/\r/g, '').trim();
+    if (!line) continue;
+    const p = line.split(',');
+    if (p.length < 3) continue;
+    const wort = p[0].trim().toLowerCase();
+    const gruppe = (p[3] || p[2] || '').trim();
+    if (wort && gruppe) map[wort] = gruppe;
+  }
+  return map;
+}
+function wortGruppenProfil(rawStory, top100Map) {
+  const seen = new Set();
+  for (const w of tokenizeLL(rawStory)) {
+    const lw = w.toLowerCase();
+    if (top100Map[lw]) seen.add(lw);
+  }
+  const prof = {};
+  for (const w of seen) { const g = top100Map[w]; prof[g] = (prof[g] || 0) + 1; }
+  return prof;
+}
+
 // rawStory-Stringliteral aus dem HTML ziehen und entschärfen
 function extractRawStory(html) {
   const m = html.match(/let\s+rawStory\s*=\s*"((?:[^"\\]|\\.)*)"/);
@@ -122,6 +151,7 @@ async function listHtml(dirAbs) {
 }
 
 async function buildStories() {
+  const top100Map = parseTop100Csv(await readFile(join(ROOT, 'Top 100 Wörter.csv'), 'utf-8').catch(() => ''));
   const stories = [];
   for (const cfg of FOLDERS) {
     const dirAbs = join(ROOT, cfg.dir);
@@ -142,6 +172,7 @@ async function buildStories() {
       const type = author === SACHTEXT_AUTHOR ? 'sachtext' : cfg.type;
       // Top-100-Stories tragen das rebus-icons-Meta (nur der Top-100-Workflow setzt es).
       const top100 = /<meta\s+name=["']rebus-icons["']\s+content=["']1["']/i.test(html);
+      const wortGruppen = wortGruppenProfil(extractRawStory(html), top100Map);
 
       stories.push({
         path: `${cfg.dir}/${name}`,
@@ -153,6 +184,7 @@ async function buildStories() {
         neurotype: match1(html, /<meta\s+name=["']neurotype["']\s+content=["']([^"']+)["']/i),
         niveau: niveauPhase(readingLevel),
         lautProfil,
+        ...(Object.keys(wortGruppen).length ? { wortGruppen } : {}),
         ...(top100 ? { top100: true } : {}),
       });
     }

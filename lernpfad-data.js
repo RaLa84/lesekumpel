@@ -194,12 +194,14 @@
       var parts = line.split(',');
       if (parts.length < 3) continue;
       var wort = parts[0].trim(), silben = parts[1].trim(), klasse = parts[2].trim();
-      if (!wort || !klasse) continue;
-      if (!byName[klasse]) { byName[klasse] = { name: klasse, words: [] }; order.push(klasse); }
-      byName[klasse].words.push({ wort: wort, silben: silben });
+      var gruppe = (parts[3] || klasse).trim();   // 4. Spalte = kinderfreundliche Gruppe (Tiere, Farben …)
+      if (!wort || !gruppe) continue;
+      if (!byName[gruppe]) { byName[gruppe] = { name: gruppe, words: [] }; order.push(gruppe); }
+      byName[gruppe].words.push({ wort: wort, silben: silben, gruppe: gruppe });
     }
     if (!order.length) return null;
-    return { klassen: order.map(function (k) { return byName[k]; }) };
+    var arr = order.map(function (k) { return byName[k]; });
+    return { klassen: arr, gruppen: arr };   // klassen bleibt als Alias (uebungen.js)
   }
   function loadTop100(cb) {
     if (_t100State === 2) { cb(_t100); return; }

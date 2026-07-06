@@ -213,7 +213,15 @@
       '.ue-wordpic svg{width:34px;height:34px;}' +
       '.ue-wordpic.is-color{border:2px solid rgba(43,49,64,.12);}' +
       '.ll-row.is-success .ue-wordpic{background:rgba(47,184,166,.2);}' +
-      '@media(max-width:480px){.ue-wordpic{width:46px;height:46px;border-radius:13px;}.ue-wordpic svg{width:28px;height:28px;}}';
+      '@media(max-width:480px){.ue-wordpic{width:46px;height:46px;border-radius:13px;}.ue-wordpic svg{width:28px;height:28px;}}' +
+      /* Top-100: Gruppen-Chips + Story-Links */
+      '.t100-h{font-family:var(--font-heading,Fredoka),sans-serif;font-size:1.15rem;color:var(--navy,#2B3140);margin:22px 0 10px;}' +
+      '.t100-grid{grid-template-columns:repeat(auto-fill,minmax(130px,1fr));}' +
+      '.t100-lc{font-size:1rem!important;line-height:1.2;}' +
+      '.t100-story{display:flex;flex-direction:column;gap:2px;background:var(--bg-card,#fff);border:2px solid var(--border,#D9D4CC);border-radius:16px;padding:12px 16px;margin-bottom:8px;text-decoration:none;transition:border-color .15s,transform .12s;}' +
+      '.t100-story:hover{border-color:var(--mint,#2FB8A6);transform:translateY(-1px);}' +
+      '.t100-story-title{font-family:var(--font-heading,Fredoka),sans-serif;font-weight:600;color:var(--navy,#2B3140);}' +
+      '.t100-story-reason{font-size:.85rem;color:var(--text-muted,#7a7468);}';
     var st = document.createElement('style');
     st.id = 'ue-pic-styles';
     st.textContent = css;
@@ -245,47 +253,120 @@
     });
   }
 
-  /* ---------- TOP-100 (Runden à 10 aus der CSV) ---------- */
+  /* ---------- TOP-100 (Wort-Gruppen wählen → üben → passende Geschichten) ----------
+     Analog zu "Meine Laute": Das Kind wählt eine Wort-Gruppe (Tiere, Farben …),
+     übt deren Wörter als Karten und bekommt darunter passende Geschichten verlinkt. */
   var ROUND_SIZE = 10;
+
+  function getTop100Gruppe() { var lp = getLernpfad(); return (lp.top100 && lp.top100.gruppe) || null; }
+  function setTop100Gruppe(name) { var lp = getLernpfad(); lp.top100.gruppe = name; saveLernpfad(lp); }
+
+  // Story-Index für "Geschichten mit deinen Wörtern" (Callback-Puffer wie kind.html)
+  var _t100idx = null, _t100idxState = 0, _t100idxCbs = [];
+  function loadT100Index(cb) {
+    if (_t100idxState === 2) { cb(_t100idx); return; }
+    _t100idxCbs.push(cb);
+    if (_t100idxState === 1) return;
+    _t100idxState = 1;
+    function done(d) { _t100idx = d; _t100idxState = 2; var c = _t100idxCbs; _t100idxCbs = []; c.forEach(function (f) { f(d); }); }
+    try { fetch('stories-index.json').then(function (r) { return r.json(); }).then(done).catch(function () { done(null); }); }
+    catch (e) { done(null); }
+  }
+
   function renderTop100(panel, lesson, opts) {
     panel.innerHTML = '<div class="info-card">Ich hole die W&ouml;rter&hellip;</div>';
     if (!window.Lernpfad) return;
     Lernpfad.loadTop100(function (data) {
-      if (!data) {
-        panel.innerHTML = '<div class="info-card">Die W&ouml;rter gibt es online auf der Webseite.</div>';
-        return;
+      if (!data) { panel.innerHTML = '<div class="info-card">Die W&ouml;rter gibt es online auf der Webseite.</div>'; return; }
+      var gruppen = data.gruppen || data.klassen || [];
+      setTop100Totals(gruppen);
+      injectStyles();
+      var practiced = getLernpfad().top100.words;
+      var focus = getTop100Gruppe();
+      if (!focus || !gruppen.some(function (g) { return g.name === focus; })) {
+        var openG = gruppen.filter(function (g) { return g.words.some(function (w) { return !practiced[w.wort.toLowerCase()]; }); });
+        focus = ((openG[0] || gruppen[0]) || {}).name || null;
       }
-      setTop100Totals(data.klassen);
-      var lp = getLernpfad();
-      var practiced = lp.top100.words;
-      var all = [];
-      data.klassen.forEach(function (kl) {
-        kl.words.forEach(function (w) { all.push({ wort: w.wort, silben: w.silben, klasse: kl.name }); });
+      panel.innerHTML =
+        '<div id="t100-groups"></div>' +
+        '<div id="t100-practice"></div>' +
+        '<div id="t100-stories"></div>';
+      renderGroupChips(panel.querySelector('#t100-groups'), gruppen, focus, function (name) {
+        setTop100Gruppe(name); renderTop100(panel, lesson, opts);
       });
-      var total = all.length;
-      var open = all.filter(function (w) { return !practiced[w.wort.toLowerCase()]; });
-      var roundWords = (open.length ? open : all).slice(0, ROUND_SIZE);
-      var items = roundWords.map(function (w) {
-        return { id: 't100-' + w.wort.toLowerCase(), type: 'word', wort: w.wort, silben: w.silben, klasse: w.klasse };
-      });
-      var doneCount = function () { return Object.keys(getLernpfad().top100.words).length; };
-      renderItems(panel, lesson, opts, items, {
-        countLabel: function () { return doneCount() + ' von ' + total + ' Wörtern gesammelt'; },
-        isPersisted: function (item) {
-          return !!getLernpfad().top100.words[item.wort.toLowerCase()];
-        },
-        persist: function (item) { return recordTop100(item.wort, item.klasse); },
-        // Funktion: wird erst bei Runden-Abschluss ausgewertet (aktueller Stand)
-        doneText: function () {
-          var dc = doneCount();
-          return dc >= total
-            ? 'Wow — du hast alle ' + total + ' Wörter geübt!'
-            : 'Runde geschafft! Schon ' + dc + ' von ' + total + ' Wörtern gesammelt.';
-        },
-        nextRound: true,
-        nextRoundLabel: open.length > ROUND_SIZE ? 'Nächste Runde' : 'Nochmal üben',
-        rerender: function () { renderTop100(panel, lesson, opts); }
-      });
+      var grp = gruppen.filter(function (g) { return g.name === focus; })[0];
+      if (grp) {
+        renderGroupPractice(panel.querySelector('#t100-practice'), lesson, opts, grp);
+        renderT100Stories(panel.querySelector('#t100-stories'), focus);
+      }
+    });
+  }
+
+  function renderGroupChips(box, gruppen, focus, onPick) {
+    var practiced = getLernpfad().top100.words;
+    box.innerHTML = '<h3 class="t100-h">Wähle deine Wörter</h3><div class="laute-grid t100-grid"></div>';
+    var grid = box.querySelector('.laute-grid');
+    gruppen.forEach(function (g) {
+      var done = g.words.filter(function (w) { return practiced[w.wort.toLowerCase()]; }).length;
+      var pct = Math.round(done / g.words.length * 100);
+      var el = document.createElement('button');
+      el.type = 'button';
+      el.className = 'laut-chip' + (g.name === focus ? ' is-focus' : '') + (done >= g.words.length ? ' is-master' : '');
+      el.innerHTML =
+        '<span class="lc-label t100-lc">' + esc(g.name) + '</span>' +
+        '<span class="lc-bsp">' + done + ' / ' + g.words.length + '</span>' +
+        '<span class="lc-bar"><i style="width:' + pct + '%"></i></span>';
+      el.addEventListener('click', function () { onPick(g.name); });
+      grid.appendChild(el);
+    });
+  }
+
+  function renderGroupPractice(box, lesson, opts, grp) {
+    var practiced = getLernpfad().top100.words;
+    var open = grp.words.filter(function (w) { return !practiced[w.wort.toLowerCase()]; });
+    var roundWords = (open.length ? open : grp.words).slice(0, ROUND_SIZE);
+    var items = roundWords.map(function (w) {
+      return { id: 't100-' + w.wort.toLowerCase(), type: 'word', wort: w.wort, silben: w.silben, klasse: grp.name };
+    });
+    var total = grp.words.length;
+    function doneCount() {
+      var pw = getLernpfad().top100.words;
+      return grp.words.filter(function (w) { return pw[w.wort.toLowerCase()]; }).length;
+    }
+    renderItems(box, lesson, opts, items, {
+      countLabel: function () { return esc(grp.name) + ': ' + doneCount() + ' von ' + total + ' Wörtern'; },
+      isPersisted: function (item) { return !!getLernpfad().top100.words[item.wort.toLowerCase()]; },
+      persist: function (item) { return recordTop100(item.wort, item.klasse); },
+      doneText: function () {
+        var dc = doneCount();
+        return dc >= total ? 'Wow — du hast alle „' + grp.name + '"-Wörter geübt!' : 'Runde geschafft! ' + dc + ' von ' + total + ' bei „' + grp.name + '".';
+      },
+      nextRound: true,
+      nextRoundLabel: open.length > ROUND_SIZE ? 'Nächste Runde' : 'Nochmal üben',
+      rerender: function () { renderGroupPractice(box, lesson, opts, grp); }
+    });
+  }
+
+  function renderT100Stories(box, focus) {
+    box.innerHTML = '<h3 class="t100-h">Geschichten mit deinen Wörtern</h3><div class="info-card">Ich suche passende Geschichten&hellip;</div>';
+    loadT100Index(function (idx) {
+      var head = '<h3 class="t100-h">Geschichten mit deinen Wörtern</h3>';
+      if (!idx || !idx.stories) { box.innerHTML = ''; return; }
+      var matches = idx.stories
+        .filter(function (s) { return s.wortGruppen && s.wortGruppen[focus]; })
+        .sort(function (a, b) {
+          var na = a.niveau || 9, nb = b.niveau || 9;                       // erst Erstleser-Niveau
+          if (na !== nb) return na - nb;
+          return (b.wortGruppen[focus] || 0) - (a.wortGruppen[focus] || 0); // dann viele Gruppen-Wörter
+        })
+        .slice(0, 4);
+      if (!matches.length) { box.innerHTML = head + '<div class="info-card">Dafür habe ich gerade keine passende Geschichte — probier eine andere Gruppe!</div>'; return; }
+      box.innerHTML = head + matches.map(function (s) {
+        var n = s.wortGruppen[focus];
+        return '<a class="t100-story" href="' + esc(s.path) + '">' +
+          '<span class="t100-story-title">' + esc(s.title || '') + '</span>' +
+          '<span class="t100-story-reason">' + n + (n === 1 ? ' Wort' : ' Wörter') + ' aus „' + esc(focus) + '"</span></a>';
+      }).join('');
     });
   }
 

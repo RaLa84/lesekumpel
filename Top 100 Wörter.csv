@@ -1,101 +1,101 @@
-Wort (DE),Silbentrennung,Klasse
-ich,ich,Funktionswörter
-du,du,Funktionswörter
-er,er,Funktionswörter
-sie,sie,Funktionswörter
-es,es,Funktionswörter
-wir,wir,Funktionswörter
-und,und,Funktionswörter
-ist,ist,Funktionswörter
-sind,sind,Funktionswörter
-der,der,Funktionswörter
-die,die,Funktionswörter
-das,das,Funktionswörter
-ein,ein,Funktionswörter
-eine,ei·ne,Funktionswörter
-im,im,Funktionswörter
-in,in,Funktionswörter
-mit,mit,Funktionswörter
-zu,zu,Funktionswörter
-auf,auf,Funktionswörter
-nicht,nicht,Funktionswörter
-da,da,Funktionswörter
-hier,hier,Funktionswörter
-Mama,Ma·ma,Personen & Familie
-Papa,Pa·pa,Personen & Familie
-Oma,O·ma,Personen & Familie
-Opa,O·pa,Personen & Familie
-Kind,Kind,Personen & Familie
-Baby,Ba·by,Personen & Familie
-Bruder,Bru·der,Personen & Familie
-Schwester,Schwes·ter,Personen & Familie
-haben,ha·ben,Verben
-hat,hat,Verben
-lesen,le·sen,Verben
-malen,ma·len,Verben
-schreiben,schrei·ben,Verben
-spielen,spie·len,Verben
-singen,sin·gen,Verben
-lachen,la·chen,Verben
-weinen,wei·nen,Verben
-gehen,ge·hen,Verben
-laufen,lau·fen,Verben
-rennen,ren·nen,Verben
-kommen,kom·men,Verben
-rufen,ru·fen,Verben
-essen,es·sen,Verben
-trinken,trin·ken,Verben
-schlafen,schla·fen,Verben
-sehen,se·hen,Verben
-sagen,sa·gen,Verben
-machen,ma·chen,Verben
-Schule,Schu·le,Nomen
-Klasse,Klas·se,Nomen
-Buch,Buch,Nomen
-Heft,Heft,Nomen
-Stift,Stift,Nomen
-Tisch,Tisch,Nomen
-Haus,Haus,Nomen
-Bett,Bett,Nomen
-Auto,Au·to,Nomen
-Ball,Ball,Nomen
-Hund,Hund,Nomen
-Katze,Kat·ze,Nomen
-Maus,Maus,Nomen
-Vogel,Vo·gel,Nomen
-Fisch,Fisch,Nomen
-Pferd,Pferd,Nomen
-Kuh,Kuh,Nomen
-Schwein,Schwein,Nomen
-Sofa,So·fa,Nomen
-Sonne,Son·ne,Nomen
-Mond,Mond,Nomen
-Baum,Baum,Nomen
-Blume,Blu·me,Nomen
-Wasser,Was·ser,Nomen
-Wald,Wald,Nomen
-rot,rot,Adjektive & Farben
-blau,blau,Adjektive & Farben
-grün,grün,Adjektive & Farben
-gelb,gelb,Adjektive & Farben
-groß,groß,Adjektive & Farben
-klein,klein,Adjektive & Farben
-gut,gut,Adjektive & Farben
-lieb,lieb,Adjektive & Farben
-schön,schön,Adjektive & Farben
-kalt,kalt,Adjektive & Farben
-warm,warm,Adjektive & Farben
-laut,laut,Adjektive & Farben
-leise,lei·se,Adjektive & Farben
-schnell,schnell,Adjektive & Farben
-viel,viel,Adjektive & Farben
-alle,al·le,Adjektive & Farben
-neu,neu,Adjektive & Farben
-alt,alt,Adjektive & Farben
-kann,kann,Funktionswörter
-will,will,Funktionswörter
-aber,a·ber,Funktionswörter
-ja,ja,Funktionswörter
-nein,nein,Funktionswörter
-wo,wo,Funktionswörter
-auch,auch,Funktionswörter
+Wort (DE),Silbentrennung,Klasse,Gruppe
+ich,ich,Funktionswörter,Kleine Wörter
+du,du,Funktionswörter,Kleine Wörter
+er,er,Funktionswörter,Kleine Wörter
+sie,sie,Funktionswörter,Kleine Wörter
+es,es,Funktionswörter,Kleine Wörter
+wir,wir,Funktionswörter,Kleine Wörter
+und,und,Funktionswörter,Kleine Wörter
+ist,ist,Funktionswörter,Kleine Wörter
+sind,sind,Funktionswörter,Kleine Wörter
+der,der,Funktionswörter,Kleine Wörter
+die,die,Funktionswörter,Kleine Wörter
+das,das,Funktionswörter,Kleine Wörter
+ein,ein,Funktionswörter,Kleine Wörter
+eine,ei·ne,Funktionswörter,Kleine Wörter
+im,im,Funktionswörter,Kleine Wörter
+in,in,Funktionswörter,Kleine Wörter
+mit,mit,Funktionswörter,Kleine Wörter
+zu,zu,Funktionswörter,Kleine Wörter
+auf,auf,Funktionswörter,Kleine Wörter
+nicht,nicht,Funktionswörter,Kleine Wörter
+da,da,Funktionswörter,Kleine Wörter
+hier,hier,Funktionswörter,Kleine Wörter
+Mama,Ma·ma,Personen & Familie,Menschen
+Papa,Pa·pa,Personen & Familie,Menschen
+Oma,O·ma,Personen & Familie,Menschen
+Opa,O·pa,Personen & Familie,Menschen
+Kind,Kind,Personen & Familie,Menschen
+Baby,Ba·by,Personen & Familie,Menschen
+Bruder,Bru·der,Personen & Familie,Menschen
+Schwester,Schwes·ter,Personen & Familie,Menschen
+haben,ha·ben,Verben,Tun-Wörter
+hat,hat,Verben,Tun-Wörter
+lesen,le·sen,Verben,Tun-Wörter
+malen,ma·len,Verben,Tun-Wörter
+schreiben,schrei·ben,Verben,Tun-Wörter
+spielen,spie·len,Verben,Tun-Wörter
+singen,sin·gen,Verben,Tun-Wörter
+lachen,la·chen,Verben,Tun-Wörter
+weinen,wei·nen,Verben,Tun-Wörter
+gehen,ge·hen,Verben,Tun-Wörter
+laufen,lau·fen,Verben,Tun-Wörter
+rennen,ren·nen,Verben,Tun-Wörter
+kommen,kom·men,Verben,Tun-Wörter
+rufen,ru·fen,Verben,Tun-Wörter
+essen,es·sen,Verben,Tun-Wörter
+trinken,trin·ken,Verben,Tun-Wörter
+schlafen,schla·fen,Verben,Tun-Wörter
+sehen,se·hen,Verben,Tun-Wörter
+sagen,sa·gen,Verben,Tun-Wörter
+machen,ma·chen,Verben,Tun-Wörter
+Schule,Schu·le,Nomen,Dinge
+Klasse,Klas·se,Nomen,Dinge
+Buch,Buch,Nomen,Dinge
+Heft,Heft,Nomen,Dinge
+Stift,Stift,Nomen,Dinge
+Tisch,Tisch,Nomen,Dinge
+Haus,Haus,Nomen,Dinge
+Bett,Bett,Nomen,Dinge
+Auto,Au·to,Nomen,Dinge
+Ball,Ball,Nomen,Dinge
+Hund,Hund,Nomen,Tiere
+Katze,Kat·ze,Nomen,Tiere
+Maus,Maus,Nomen,Tiere
+Vogel,Vo·gel,Nomen,Tiere
+Fisch,Fisch,Nomen,Tiere
+Pferd,Pferd,Nomen,Tiere
+Kuh,Kuh,Nomen,Tiere
+Schwein,Schwein,Nomen,Tiere
+Sofa,So·fa,Nomen,Dinge
+Sonne,Son·ne,Nomen,Natur
+Mond,Mond,Nomen,Natur
+Baum,Baum,Nomen,Natur
+Blume,Blu·me,Nomen,Natur
+Wasser,Was·ser,Nomen,Natur
+Wald,Wald,Nomen,Natur
+rot,rot,Adjektive & Farben,Farben & Wie-Wörter
+blau,blau,Adjektive & Farben,Farben & Wie-Wörter
+grün,grün,Adjektive & Farben,Farben & Wie-Wörter
+gelb,gelb,Adjektive & Farben,Farben & Wie-Wörter
+groß,groß,Adjektive & Farben,Farben & Wie-Wörter
+klein,klein,Adjektive & Farben,Farben & Wie-Wörter
+gut,gut,Adjektive & Farben,Farben & Wie-Wörter
+lieb,lieb,Adjektive & Farben,Farben & Wie-Wörter
+schön,schön,Adjektive & Farben,Farben & Wie-Wörter
+kalt,kalt,Adjektive & Farben,Farben & Wie-Wörter
+warm,warm,Adjektive & Farben,Farben & Wie-Wörter
+laut,laut,Adjektive & Farben,Farben & Wie-Wörter
+leise,lei·se,Adjektive & Farben,Farben & Wie-Wörter
+schnell,schnell,Adjektive & Farben,Farben & Wie-Wörter
+viel,viel,Adjektive & Farben,Farben & Wie-Wörter
+alle,al·le,Adjektive & Farben,Farben & Wie-Wörter
+neu,neu,Adjektive & Farben,Farben & Wie-Wörter
+alt,alt,Adjektive & Farben,Farben & Wie-Wörter
+kann,kann,Funktionswörter,Kleine Wörter
+will,will,Funktionswörter,Kleine Wörter
+aber,a·ber,Funktionswörter,Kleine Wörter
+ja,ja,Funktionswörter,Kleine Wörter
+nein,nein,Funktionswörter,Kleine Wörter
+wo,wo,Funktionswörter,Kleine Wörter
+auch,auch,Funktionswörter,Kleine Wörter
