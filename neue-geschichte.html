@@ -103,6 +103,20 @@
             background: #fff; color: var(--accent); border: 1px solid var(--accent);
         }
 
+        /* --- BALD VERFÜGBAR: kleinere, dezentere Karten (nicht klickbar) --- */
+        .format-soon-section { margin-top: 44px; position: relative; z-index: 1; }
+        .format-soon-head { text-align: center; font-family: var(--font-heading); font-size: 1.05rem; font-weight: 600; color: #9aa0a8; margin-bottom: 16px; }
+        .format-grid--soon { gap: 14px; }
+        .format-card--soon { min-height: 0; padding: 18px 16px 20px; gap: 10px; opacity: 0.72; cursor: default; box-shadow: 0 2px 8px rgba(43,49,64,0.05); border-top-width: 4px; }
+        .format-card--soon::before { display: none; }
+        .format-card--soon:hover { transform: none; box-shadow: 0 2px 8px rgba(43,49,64,0.05); }
+        .format-card--soon .format-medallion { width: 62px; height: 62px; border-radius: 20px; font-size: 1.7rem; transform: none; box-shadow: 0 4px 10px var(--accent-soft), inset 0 2px 4px rgba(255,255,255,0.4); }
+        .format-card--soon:hover .format-medallion { transform: none; }
+        .format-card--soon .format-medallion::after { display: none; }
+        .format-card--soon .format-title { font-size: 1.2rem; }
+        .format-card--soon .format-text { font-size: 0.92rem; }
+        .format-card--soon .format-pill { background: rgba(43,49,64,0.06); color: #8a8f98; border-color: transparent; text-transform: none; letter-spacing: 0.02em; font-weight: 600; }
+
         /* --- REDUZIERTE BEWEGUNG --- */
         @media (prefers-reduced-motion: reduce) {
             *, *::before, *::after { animation: none !important; transition: none !important; }
@@ -324,7 +338,7 @@
         <h1>Such dir ein Format aus</h1>
     </section>
 
-    <section class="format-grid" aria-label="Geschichtenformate">
+    <section class="format-grid" aria-label="Verfügbare Formate">
 
         <a href="neue-autorengeschichte.html" class="format-card" style="--accent:#F97352;--accent-soft:rgba(249,115,82,0.14);">
             <span class="format-medallion" aria-hidden="true"><span class="format-emoji">📖</span></span>
@@ -334,50 +348,56 @@
             </span>
         </a>
 
-        <a href="neue-comicgeschichte.html" class="format-card" style="--accent:#7D6AE6;--accent-soft:rgba(125,106,230,0.14);">
-            <span class="format-pill">⏳ Bald</span>
-            <span class="format-medallion" aria-hidden="true"><span class="format-emoji">💬</span></span>
-            <span class="format-body">
-                <span class="format-title">Comicgeschichte</span>
-                <span class="format-text">Bau deinen eigenen Comic mit Bildern und Sprechblasen.</span>
-            </span>
-        </a>
-
         <a href="neue-top100.html" class="format-card" style="--accent:#E0982A;--accent-soft:rgba(242,169,59,0.18);">
-            <span class="format-pill">⏳ Bald</span>
             <span class="format-medallion" aria-hidden="true"><span class="format-emoji">💯</span></span>
             <span class="format-body">
                 <span class="format-title">Top 100 Wörter</span>
-                <span class="format-text">Such dir Wörter aus und mach daraus deine Mini-Geschichte.</span>
-            </span>
-        </a>
-
-        <a href="neue-social-story.html" class="format-card" style="--accent:#2FB8A6;--accent-soft:rgba(47,184,166,0.15);">
-            <span class="format-pill">⏳ Bald</span>
-            <span class="format-medallion" aria-hidden="true"><span class="format-emoji">🫶</span></span>
-            <span class="format-body">
-                <span class="format-title">Social Story</span>
-                <span class="format-text">Eine ruhige Geschichte, die auf eine neue Situation vorbereitet.</span>
-            </span>
-        </a>
-
-        <a href="neue-geschichte-generator.html" class="format-card" style="--accent:#3F9FC4;--accent-soft:rgba(79,179,217,0.16);">
-            <span class="format-pill">⏳ Bald</span>
-            <span class="format-medallion" aria-hidden="true"><span class="format-emoji">🪄</span></span>
-            <span class="format-body">
-                <span class="format-title">Geschichten-Generator</span>
-                <span class="format-text">Tipp auf Bilder und bau deine Geschichte — ganz ohne Lesen.</span>
+                <span class="format-text">Such dir ein Thema aus — Pip macht daraus deine Mini-Geschichte.</span>
             </span>
         </a>
 
         <a href="neue-sachtext.html" class="format-card" style="--accent:#D85A82;--accent-soft:rgba(216,90,130,0.15);">
             <span class="format-medallion" aria-hidden="true"><span class="format-emoji">🔭</span></span>
             <span class="format-body">
-                <span class="format-title">Sachtext mit Samira</span>
-                <span class="format-text">Staune über echte Fakten zu deinem Lieblingsthema.</span>
+                <span class="format-title">Sachgeschichte</span>
+                <span class="format-text">Staune mit Samira über echte Fakten zu deinem Lieblingsthema.</span>
             </span>
         </a>
 
+    </section>
+
+    <section class="format-soon-section" aria-label="Bald verfügbare Formate">
+        <h2 class="format-soon-head">Bald verfügbar</h2>
+        <div class="format-grid format-grid--soon">
+
+            <div class="format-card format-card--soon" style="--accent:#7D6AE6;--accent-soft:rgba(125,106,230,0.14);" aria-disabled="true">
+                <span class="format-pill">Bald</span>
+                <span class="format-medallion" aria-hidden="true"><span class="format-emoji">💬</span></span>
+                <span class="format-body">
+                    <span class="format-title">Comicgeschichte</span>
+                    <span class="format-text">Bau deinen eigenen Comic mit Bildern und Sprechblasen.</span>
+                </span>
+            </div>
+
+            <div class="format-card format-card--soon" style="--accent:#2FB8A6;--accent-soft:rgba(47,184,166,0.15);" aria-disabled="true">
+                <span class="format-pill">Bald</span>
+                <span class="format-medallion" aria-hidden="true"><span class="format-emoji">🫶</span></span>
+                <span class="format-body">
+                    <span class="format-title">Social Story</span>
+                    <span class="format-text">Eine ruhige Geschichte, die auf eine neue Situation vorbereitet.</span>
+                </span>
+            </div>
+
+            <div class="format-card format-card--soon" style="--accent:#3F9FC4;--accent-soft:rgba(79,179,217,0.16);" aria-disabled="true">
+                <span class="format-pill">Bald</span>
+                <span class="format-medallion" aria-hidden="true"><span class="format-emoji">🪄</span></span>
+                <span class="format-body">
+                    <span class="format-title">Geschichten-Generator</span>
+                    <span class="format-text">Tipp auf Bilder und bau deine Geschichte — ganz ohne Lesen.</span>
+                </span>
+            </div>
+
+        </div>
     </section>
 
 </main>
