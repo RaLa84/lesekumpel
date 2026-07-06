@@ -90,14 +90,41 @@ function parseTop100Csv(text) {
   }
   return map;
 }
-function wortGruppenProfil(rawStory, top100Map) {
-  const seen = new Set();
-  for (const w of tokenizeLL(rawStory)) {
-    const lw = w.toLowerCase();
-    if (top100Map[lw]) seen.add(lw);
+// Light-Stemming (nur fürs Matching, NICHT für die Lernliste): flektierte Formen
+// von Inhaltswörtern zählen zu ihrer Gruppe (spielt/spielte→spielen, Kinder→Kind).
+// Funktionswörter ("Kleine Wörter") bleiben Exakt-Match — der/die/das darf NICHT
+// gestemmt werden. Reguläre Endungen; starke Umlaut-/Ablaut-Formen werden bewusst
+// nicht erfasst (Recall > Precision beim Story-Finden).
+const NO_STEM = new Set(['Kleine Wörter']);
+const STEM_SUFFIXES = ['test', 'ten', 'tet', 'tem', 'ter', 'tes', 'est', 'en', 'em', 'er', 'es', 'et', 'st', 'te', 'n', 'e', 't'];
+function stemDe(w) {
+  w = String(w || '').toLowerCase();
+  for (const s of STEM_SUFFIXES) {
+    if (w.length - s.length >= 3 && w.endsWith(s)) return w.slice(0, -s.length);
   }
-  const prof = {};
-  for (const w of seen) { const g = top100Map[w]; prof[g] = (prof[g] || 0) + 1; }
+  return w;
+}
+function buildStemMap(top100Map) {
+  const m = {}; // stamm -> gruppe (nur stembare Gruppen)
+  for (const [w, g] of Object.entries(top100Map)) {
+    if (!NO_STEM.has(g)) m[stemDe(w)] = g;
+  }
+  return m;
+}
+function wortGruppenProfil(rawStory, top100Map, stemMap) {
+  const seen = new Set(); const prof = {};
+  for (const tok of tokenizeLL(rawStory)) {
+    const lw = tok.toLowerCase();
+    let g = null, key = null;
+    if (top100Map[lw]) {                       // exakter Treffer (Grundform / Funktionswort)
+      g = top100Map[lw];
+      key = NO_STEM.has(g) ? 'e:' + lw : 's:' + stemDe(lw); // Inhaltswörter über Stamm entdoppeln
+    } else {                                    // flektierte Form → Stamm-Treffer
+      const st = stemDe(lw);
+      if (stemMap[st]) { g = stemMap[st]; key = 's:' + st; }
+    }
+    if (g && !seen.has(key)) { seen.add(key); prof[g] = (prof[g] || 0) + 1; }
+  }
   return prof;
 }
 
@@ -152,6 +179,7 @@ async function listHtml(dirAbs) {
 
 async function buildStories() {
   const top100Map = parseTop100Csv(await readFile(join(ROOT, 'Top 100 Wörter.csv'), 'utf-8').catch(() => ''));
+  const stemMap = buildStemMap(top100Map);
   const stories = [];
   for (const cfg of FOLDERS) {
     const dirAbs = join(ROOT, cfg.dir);
@@ -172,7 +200,7 @@ async function buildStories() {
       const type = author === SACHTEXT_AUTHOR ? 'sachtext' : cfg.type;
       // Top-100-Stories tragen das rebus-icons-Meta (nur der Top-100-Workflow setzt es).
       const top100 = /<meta\s+name=["']rebus-icons["']\s+content=["']1["']/i.test(html);
-      const wortGruppen = wortGruppenProfil(extractRawStory(html), top100Map);
+      const wortGruppen = wortGruppenProfil(extractRawStory(html), top100Map, stemMap);
 
       stories.push({
         path: `${cfg.dir}/${name}`,
