@@ -242,6 +242,9 @@
     .story-tile.tile-comic { border-left: 4px solid var(--coral); }
     .tile-comic-badge { display: inline-block; background: rgba(249,115,82,0.16); border: 1px solid var(--coral); color: var(--navy); font-size: 0.7rem; font-weight: 700; padding: 3px 10px; border-radius: var(--radius-pill); }
     .tile-top100-badge { background: rgba(255,213,79,0.28); border-color: var(--yellow, #FFD54F); }
+    .lu-ico { display: inline-block; width: 1em; height: 1em; vertical-align: -0.14em; }
+    .tile-comic-badge .lu-ico { width: 0.9em; height: 0.9em; margin-right: 1px; }
+    .filter-dd-option .lu-ico { width: 18px; height: 18px; vertical-align: -0.28em; margin-right: 8px; color: var(--navy); }
     .tile-badges { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
     .tile-badges:empty { display: none; }
     .tile-cover { height: 200px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; }
@@ -655,7 +658,18 @@
       'Jonas Entdecker': 3, 'Samira Wissensfreund': 4, 'Deniz Traumfänger': 4, 'Holzi Pixelkopf': 5
     };
     const SKILL_PERSONAS = new Set(['Pip Punkt', 'Mia Mitte', 'Peter Past', 'Stella Stimmenreich', 'Finja Feder']);
-    const FORMAT_LABELS = { text: '📖 Text', comic: '🎨 Comic', sachtext: '🔭 Sachtext' };
+    const FORMAT_LABELS = { text: 'Text', comic: 'Comic', sachtext: 'Sachtext' };
+
+    /* Lucide-Inline-Icons (Style-Guide: keine Emojis) */
+    const LUCIDE_PATHS = {
+      'book-open': '<path d="M12 7v14"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/>',
+      'palette': '<circle cx="13.5" cy="6.5" r=".5" fill="currentColor"/><circle cx="17.5" cy="10.5" r=".5" fill="currentColor"/><circle cx="8.5" cy="7.5" r=".5" fill="currentColor"/><circle cx="6.5" cy="12.5" r=".5" fill="currentColor"/><path d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10c.926 0 1.648-.746 1.648-1.688 0-.437-.18-.835-.437-1.125-.29-.289-.438-.652-.438-1.125a1.64 1.64 0 0 1 1.668-1.668h1.996c3.051 0 5.555-2.503 5.555-5.555C21.965 6.012 17.461 2 12 2z"/>',
+      'telescope': '<path d="m10.065 12.493-6.18 1.318a.934.934 0 0 1-1.108-.702l-.537-2.15a1.07 1.07 0 0 1 .691-1.265l13.504-4.44"/><path d="m13.56 11.747 4.332-.924"/><path d="m16 21-3.105-6.21"/><path d="M16.485 5.94a2 2 0 0 1 1.455-2.425l1.09-.272a1 1 0 0 1 1.212.727l1.515 6.06a1 1 0 0 1-.727 1.213l-1.09.272a2 2 0 0 1-2.425-1.455z"/><path d="m6.158 8.633 1.114 4.456"/><path d="m8 21 3.105-6.21"/><circle cx="12" cy="13" r="2"/>',
+      'sparkles': '<path d="M9.937 15.5A2 2 0 0 0 8.5 14.063l-6.135-1.582a.5.5 0 0 1 0-.962L8.5 9.936A2 2 0 0 0 9.937 8.5l1.582-6.135a.5.5 0 0 1 .962 0L14.063 8.5A2 2 0 0 0 15.5 9.937l6.135 1.581a.5.5 0 0 1 0 .964L15.5 14.063a2 2 0 0 0-1.437 1.437l-1.582 6.135a.5.5 0 0 1-.962 0z"/><path d="M20 3v4"/><path d="M22 5h-4"/>'
+    };
+    function lucide(name) {
+      return '<svg class="lu-ico" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">' + (LUCIDE_PATHS[name] || '') + '</svg>';
+    }
 
     // Autorenfarben fuer Text/Avatar-Fallback: alle >=4.5:1 auf Weiss (WCAG AA 1.4.3)
     const authorColors = {
@@ -737,9 +751,10 @@
       ] },
       { key: 'format', label: 'Format', options: [
         { v: 'all', label: 'Alle' },
-        { v: 'text', label: '📖 Text' },
-        { v: 'comic', label: '🎨 Comic' },
-        { v: 'sachtext', label: '🔭 Sachtext' }
+        { v: 'text', label: 'Text', icon: 'book-open' },
+        { v: 'comic', label: 'Comic', icon: 'palette' },
+        { v: 'sachtext', label: 'Sachtext', icon: 'telescope' },
+        { v: 'top100', label: 'Top 100', icon: 'sparkles' }
       ] }
     ];
     const SORT_OPTIONS = [
@@ -815,9 +830,10 @@
       if (opt.divider) return '<div class="filter-dd-divider" role="presentation" aria-hidden="true"></div>';
       const on = opt.v === selectedVal;
       const avatar = opt.avatar ? '<img class="opt-avatar" src="' + opt.avatar + '" alt="">' : '';
+      const ico = opt.icon ? lucide(opt.icon) : '';
       return '<button type="button" class="filter-dd-option' + (on ? ' selected' : '') + '" role="option" aria-selected="' + (on ? 'true' : 'false') +
         '" data-facet="' + facetKey + '" data-val="' + esc(opt.v) + '">' +
-        avatar + '<span>' + opt.label + '</span><span class="opt-check" aria-hidden="true">✓</span></button>';
+        avatar + ico + '<span>' + opt.label + '</span><span class="opt-check" aria-hidden="true">✓</span></button>';
     }
     function facetHtml(facet) {
       return '<div class="filter-dd" data-facet="' + facet.key + '">' +
@@ -1124,7 +1140,8 @@
     function render() {
       const term = (searchEl ? searchEl.value : '').toLowerCase();
       let f = stories.filter(s => s.isValid).filter(s => {
-        if (state.format !== 'all' && s.type !== state.format) return false;
+        if (state.format === 'top100') { if (!s.top100) return false; }
+        else if (state.format !== 'all' && s.type !== state.format) return false;
         if (state.author !== 'all' && (!s.author || s.author.toLowerCase() !== state.author.toLowerCase())) return false;
         if (state.level !== 'all') {
           if (!s.levelKey || s.levelKey !== state.level) return false;
@@ -1183,7 +1200,11 @@
         const icon = isComic ? '🎨' : (isSachtext ? '🔭' : '📖');
         const wordsPart = s.readingLevel ? s.readingLevel.split(',')[0].trim() : '';
         const levelLabel = getLevelLabel(s.levelKey);
-        const levelDisplay = levelLabel ? (wordsPart ? wordsPart + ' · ' + levelLabel : levelLabel) : wordsPart;
+        // Top-100: nur die Wortanzahl (die Stufe steckt schon im "Top 100"-Badge) →
+        // beide Badges passen in EINE Zeile, bündig zu den Ein-Badge-Kacheln.
+        const levelDisplay = isTop100
+          ? wordsPart
+          : (levelLabel ? (wordsPart ? wordsPart + ' · ' + levelLabel : levelLabel) : wordsPart);
         const title = s.displayTitle || formatName(s.name);
         const saved = favs.has(s.path);
         const avatar = authorBios[s.author] && authorBios[s.author].avatar;
@@ -1208,9 +1229,9 @@
                   '<button type="button" class="tile-speak" data-text="' + esc(title) + '" aria-label="Titel vorlesen" title="Titel vorlesen"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11 4.7a.7.7 0 0 0-1.2-.5L6.4 7.6A1.4 1.4 0 0 1 5.4 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.4a1.4 1.4 0 0 1 1 .4l3.4 3.4a.7.7 0 0 0 1.2-.5z"/><path d="M16 9a5 5 0 0 1 0 6"/><path d="M19.4 5.6a9 9 0 0 1 0 12.7"/></svg></button>' +
                 '</div>' +
                 '<div class="tile-badges">' +
-                  (isTop100 ? '<span class="tile-comic-badge tile-top100-badge">Top 100</span>' : '') +
-                  (isComic ? '<span class="tile-comic-badge">🎨 Comic</span>' : '') +
-                  (isSachtext ? '<span class="tile-comic-badge">🔭 Sachtext</span>' : '') +
+                  (isTop100 ? '<span class="tile-comic-badge tile-top100-badge">' + lucide('sparkles') + ' Top 100</span>' : '') +
+                  (isComic ? '<span class="tile-comic-badge">' + lucide('palette') + ' Comic</span>' : '') +
+                  (isSachtext ? '<span class="tile-comic-badge">' + lucide('telescope') + ' Sachtext</span>' : '') +
                   (levelDisplay ? '<span class="tile-level-badge">' + levelDisplay + '</span>' : '') +
                 '</div>' +
                 '<div class="tile-meta">' +
