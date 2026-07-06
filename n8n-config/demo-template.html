@@ -3104,7 +3104,9 @@
                     .filter(p => srcByScene[p.scene] != null)
                     .slice().sort((a, b) => a.paragraphIndex - b.paragraphIndex)
                     .forEach(p => {
-                        if (p.paragraphIndex <= 0) {
+                        // Top-100-Erstleser-Stories: JEDER Abschnitt (auch der erste) bekommt ein
+                        // Inline-Bild → paragraphIndex 0 kommt in Gruppe 0 statt nur aufs Cover.
+                        if (p.paragraphIndex <= 0 && !REBUS_ICONS) {
                             placed.push({ scene: p.scene, src: srcByScene[p.scene], groupIdx: 0, cover: true });
                         } else {
                             placed.push({ scene: p.scene, src: srcByScene[p.scene], groupIdx: mapSectionToGroup(allGroups, p.paragraphIndex) });
