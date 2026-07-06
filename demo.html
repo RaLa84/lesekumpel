@@ -241,6 +241,7 @@
     .story-tile:hover { transform: translateY(-4px); box-shadow: var(--shadow-card-hover); }
     .story-tile.tile-comic { border-left: 4px solid var(--coral); }
     .tile-comic-badge { display: inline-block; background: rgba(249,115,82,0.16); border: 1px solid var(--coral); color: var(--navy); font-size: 0.7rem; font-weight: 700; padding: 3px 10px; border-radius: var(--radius-pill); }
+    .tile-top100-badge { background: rgba(255,213,79,0.28); border-color: var(--yellow, #FFD54F); }
     .tile-badges { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 12px; }
     .tile-badges:empty { display: none; }
     .tile-cover { height: 200px; flex-shrink: 0; display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden; }
@@ -1019,6 +1020,7 @@
         neurotype: neurotype,
         levelKey: getStoryLevelKey(author, neurotype, readingLevel),
         displayTitle: s.title || '',
+        top100: !!s.top100,
         isValid: true
       };
     }
@@ -1096,6 +1098,7 @@
             if (s.author === SACHTEXT_AUTHOR) s.type = 'sachtext';
             const ml = txt.match(/<meta\s+name=["']reading-level["']\s+content=["']([^"']+)["']/i);
             if (ml && ml[1]) s.readingLevel = ml[1];
+            if (/<meta\s+name=["']rebus-icons["']\s+content=["']1["']/i.test(txt)) s.top100 = true;
             const mn = txt.match(/<meta\s+name=["']neurotype["']\s+content=["']([^"']+)["']/i);
             if (mn && mn[1]) s.neurotype = mn[1];
             s.levelKey = getStoryLevelKey(s.author, s.neurotype, s.readingLevel);
@@ -1173,6 +1176,7 @@
       bookGrid.innerHTML = list.map((s) => {
         const isComic = s.type === 'comic';
         const isSachtext = s.type === 'sachtext';
+        const isTop100 = !!s.top100;
         const color = authorColors[s.author] || (isComic ? 'var(--coral)' : 'var(--mint)');
         const slug = s.name.replace(/\.html$/, '');
         const thumbUrl = isComic ? 'comics/' + slug + '-1.png' : 'bilder/thumbs/' + slug + '-1.webp';
@@ -1204,6 +1208,7 @@
                   '<button type="button" class="tile-speak" data-text="' + esc(title) + '" aria-label="Titel vorlesen" title="Titel vorlesen"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M11 4.7a.7.7 0 0 0-1.2-.5L6.4 7.6A1.4 1.4 0 0 1 5.4 8H3a1 1 0 0 0-1 1v6a1 1 0 0 0 1 1h2.4a1.4 1.4 0 0 1 1 .4l3.4 3.4a.7.7 0 0 0 1.2-.5z"/><path d="M16 9a5 5 0 0 1 0 6"/><path d="M19.4 5.6a9 9 0 0 1 0 12.7"/></svg></button>' +
                 '</div>' +
                 '<div class="tile-badges">' +
+                  (isTop100 ? '<span class="tile-comic-badge tile-top100-badge">Top 100</span>' : '') +
                   (isComic ? '<span class="tile-comic-badge">🎨 Comic</span>' : '') +
                   (isSachtext ? '<span class="tile-comic-badge">🔭 Sachtext</span>' : '') +
                   (levelDisplay ? '<span class="tile-level-badge">' + levelDisplay + '</span>' : '') +

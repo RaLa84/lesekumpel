@@ -140,6 +140,8 @@ async function buildStories() {
       const lautProfil = profileStory(extractRawStory(html));
       const author = match1(html, /<meta\s+name=["']author["']\s+content=["']([^"']+)["']/i);
       const type = author === SACHTEXT_AUTHOR ? 'sachtext' : cfg.type;
+      // Top-100-Stories tragen das rebus-icons-Meta (nur der Top-100-Workflow setzt es).
+      const top100 = /<meta\s+name=["']rebus-icons["']\s+content=["']1["']/i.test(html);
 
       stories.push({
         path: `${cfg.dir}/${name}`,
@@ -151,6 +153,7 @@ async function buildStories() {
         neurotype: match1(html, /<meta\s+name=["']neurotype["']\s+content=["']([^"']+)["']/i),
         niveau: niveauPhase(readingLevel),
         lautProfil,
+        ...(top100 ? { top100: true } : {}),
       });
     }
   }
